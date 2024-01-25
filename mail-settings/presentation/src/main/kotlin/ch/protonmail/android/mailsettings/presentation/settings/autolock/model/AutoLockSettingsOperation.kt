@@ -25,6 +25,10 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreferen
 sealed interface AutoLockSettingsOperation
 
 sealed interface AutoLockSettingsViewAction : AutoLockSettingsOperation {
+    data class ToggleAutoLockBiometricsPreference(
+        val autoLockBiometricsUiModel: AutoLockBiometricsUiModel
+    ) : AutoLockSettingsViewAction
+
     data class ToggleAutoLockPreference(val newValue: Boolean) : AutoLockSettingsViewAction
 
     data class UpdateAutoLockInterval(val interval: AutoLockInterval) : AutoLockSettingsViewAction
@@ -47,7 +51,11 @@ sealed interface AutoLockSettingsEvent : AutoLockSettingsOperation {
         data class AutoLockPreferenceEnabled(val newValue: Boolean) : Update
         data class AutoLockIntervalSet(val newValue: AutoLockInterval) : Update
         data class AutoLockIntervalsDropDownToggled(val newValue: Boolean) : Update
+        data class AutoLockBiometricsToggled(val newValue: Boolean) : Update
     }
+
+    object AutoLockBiometricsEnrollmentError : AutoLockSettingsEvent
+    object AutoLockBiometricsHwError : AutoLockSettingsEvent
 
     object UpdateError : AutoLockSettingsEvent
 

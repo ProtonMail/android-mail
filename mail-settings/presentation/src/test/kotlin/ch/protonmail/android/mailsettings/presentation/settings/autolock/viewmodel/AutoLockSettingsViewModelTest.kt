@@ -21,7 +21,9 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmo
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
@@ -30,6 +32,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceEr
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveSelectedAutoLockInterval
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateAutoLockInterval
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.ObserveAutoLockBiometricsState
@@ -43,6 +46,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.A
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.AutoLockSettingsReducer
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -64,6 +68,8 @@ internal class AutoLockSettingsViewModelTest {
     private val observeAutoLockPinValue = mockk<ObserveAutoLockPinValue>()
     private val observeAutoLockBiometricsState = mockk<ObserveAutoLockBiometricsState>()
     private val toggleAutoLockEnabled = mockk<ToggleAutoLockEnabled>()
+    private val toggleAutoLockBiometricsPreference = mockk<ToggleAutoLockBiometricsPreference>()
+
     private val updateAutoLockInterval = mockk<UpdateAutoLockInterval>()
     private val reducer = spyk(AutoLockSettingsReducer(intervalsUiModelMapper, biometricsUiModelMapper))
 
@@ -74,6 +80,7 @@ internal class AutoLockSettingsViewModelTest {
             observeAutoLockBiometricsState,
             observeAutoLockPinValue,
             toggleAutoLockEnabled,
+            toggleAutoLockBiometricsPreference,
             updateAutoLockInterval,
             reducer
         )
@@ -163,6 +170,107 @@ internal class AutoLockSettingsViewModelTest {
             assertEquals(expectedState, awaitItem())
         }
     }
+
+    @Test
+    fun `should update the biometric state when the biometric preference is toggled`() = runTest {
+        // Given
+        expectAutoLockBiometricState()
+        expectAutoLockPreference()
+        expectAutoLockInterval()
+        coEvery { toggleAutoLockBiometricsPreference(false) } returns Unit.right()
+        val expectedState = defaultBaseState.copy(
+            autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(AutoLockEnabledUiModel(true)),
+            autoLockBiometricsState = defaultBaseBiometricsState.copy(enabled = false)
+        )
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1) // Base state
+
+            viewModel.submit(AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference(defaultBaseBiometricsState))
+
+            assertEquals(expectedState, awaitItem())
+            coVerify { toggleAutoLockBiometricsPreference(false) }
+        }
+    }
+
+    @Test
+    fun `should not update the biometric state when the biometric preference is toggled given biometric hw error`() =
+        runTest {
+            // Given
+            expectAutoLockBiometricHwError()
+            expectAutoLockPreference()
+            expectAutoLockInterval()
+            val biometricErrorState = AutoLockBiometricsUiModel(
+                enabled = false,
+                biometricsEnrolled = false,
+                biometricsHwAvailable = false
+            )
+            val expectedBaseState = defaultBaseState.copy(
+                autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(
+                    AutoLockEnabledUiModel(true)
+                ),
+                autoLockBiometricsState = biometricErrorState
+            )
+            val expectedToggleState = expectedBaseState.copy(
+                autoLockBiometricsState = biometricErrorState.copy(
+                    biometricsHwError = Effect.of(TextUiModel(R.string.biometric_error_hw_not_available))
+                )
+            )
+
+            // When + Then
+            viewModel.state.test {
+                assertEquals(expectedBaseState, awaitItem())
+
+                viewModel.submit(
+                    AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference(
+                        biometricErrorState
+                    )
+                )
+
+                assertEquals(expectedToggleState, awaitItem())
+                coVerify(exactly = 0) { toggleAutoLockBiometricsPreference(false) }
+            }
+        }
+
+    @Test
+    fun `should not update biometric state when the biometric preference is toggled given biometric not enrolled`() =
+        runTest {
+            // Given
+            expectAutoLockBiometricNotEnrolledError()
+            expectAutoLockPreference()
+            expectAutoLockInterval()
+            val biometricErrorState = AutoLockBiometricsUiModel(
+                enabled = false,
+                biometricsEnrolled = false,
+                biometricsHwAvailable = true
+            )
+            val expectedBaseState = defaultBaseState.copy(
+                autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(
+                    AutoLockEnabledUiModel(true)
+                ),
+                autoLockBiometricsState = biometricErrorState
+            )
+            val expectedToggleState = expectedBaseState.copy(
+                autoLockBiometricsState = biometricErrorState.copy(
+                    biometricsEnrollmentError = Effect.of(TextUiModel(R.string.no_biometric_data_enrolled))
+                )
+            )
+
+            // When + Then
+            viewModel.state.test {
+                assertEquals(expectedBaseState, awaitItem())
+
+                viewModel.submit(
+                    AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference(
+                        biometricErrorState
+                    )
+                )
+
+                assertEquals(expectedToggleState, awaitItem())
+                coVerify(exactly = 0) { toggleAutoLockBiometricsPreference(false) }
+            }
+        }
 
     @Test
     fun `should update the state when the auto lock interval is manually set`() = runTest {
@@ -273,6 +381,16 @@ internal class AutoLockSettingsViewModelTest {
             viewModel.submit(AutoLockSettingsViewAction.ToggleIntervalDropDownVisibility(true))
             assertEquals(expectedState, awaitItem())
         }
+    }
+
+    private fun expectAutoLockBiometricNotEnrolledError() {
+        every {
+            observeAutoLockBiometricsState()
+        } returns flowOf(AutoLockBiometricsState.BiometricsAvailable.BiometricsNotEnrolled)
+    }
+
+    private fun expectAutoLockBiometricHwError() {
+        every { observeAutoLockBiometricsState() } returns flowOf(AutoLockBiometricsState.BiometricsNotAvailable)
     }
 
     private fun expectAutoLockBiometricState(isEnabled: Boolean = true) {

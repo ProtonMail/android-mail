@@ -27,6 +27,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.Obse
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveSelectedAutoLockInterval
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateAutoLockInterval
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsEvent
@@ -50,6 +51,7 @@ class AutoLockSettingsViewModel @Inject constructor(
     observeAutoLockBiometricsState: ObserveAutoLockBiometricsState,
     private val observeAutoLockPinValue: ObserveAutoLockPinValue,
     private val toggleAutoLockEnabled: ToggleAutoLockEnabled,
+    private val toggleAutoLockBiometricsPreference: ToggleAutoLockBiometricsPreference,
     private val updateAutoLockInterval: UpdateAutoLockInterval,
     private val reducer: AutoLockSettingsReducer
 ) : ViewModel() {
@@ -78,6 +80,9 @@ class AutoLockSettingsViewModel @Inject constructor(
                     updateAutoLockDropDownVisible(action.value)
 
                 is AutoLockSettingsViewAction.UpdateAutoLockInterval -> updateAutoLockIntervalValue(action.interval)
+
+                is AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference ->
+                    handleToggleAutoLockBiometricsPreference(action)
             }
         }
     }
@@ -94,6 +99,26 @@ class AutoLockSettingsViewModel @Inject constructor(
 
         toggleAutoLockEnabled(newValue)
             .onRight { emitNewStateFrom(AutoLockSettingsEvent.Update.AutoLockPreferenceEnabled(newValue)) }
+            .onLeft { emitNewStateFrom(AutoLockSettingsEvent.UpdateError) }
+    }
+
+    private suspend fun handleToggleAutoLockBiometricsPreference(
+        action: AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference
+    ) {
+        val biometricsUiModel = action.autoLockBiometricsUiModel
+        return if (!biometricsUiModel.biometricsHwAvailable) {
+            emitNewStateFrom(AutoLockSettingsEvent.AutoLockBiometricsHwError)
+        } else if (!biometricsUiModel.biometricsEnrolled) {
+            emitNewStateFrom(AutoLockSettingsEvent.AutoLockBiometricsEnrollmentError)
+        } else {
+            updateAutoLockBiometricsPreference(!biometricsUiModel.enabled)
+        }
+    }
+
+    private suspend fun updateAutoLockBiometricsPreference(enabled: Boolean) {
+
+        toggleAutoLockBiometricsPreference(enabled)
+            .onRight { emitNewStateFrom(AutoLockSettingsEvent.Update.AutoLockBiometricsToggled(enabled)) }
             .onLeft { emitNewStateFrom(AutoLockSettingsEvent.UpdateError) }
     }
 

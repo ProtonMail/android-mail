@@ -19,9 +19,11 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockBiometricsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockBiometricsUiModel
@@ -159,6 +161,42 @@ internal class AutoLockSettingsReducerTest(
                 baseDataLoaded.copy(autoLockIntervalsState = baseAutoLockIntervalState.copy(dropdownExpanded = true)),
                 AutoLockSettingsEvent.Update.AutoLockIntervalsDropDownToggled(false),
                 baseDataLoaded.copy(autoLockIntervalsState = baseAutoLockIntervalState.copy(dropdownExpanded = false))
+            ),
+            TestInput(
+                baseDataLoaded,
+                AutoLockSettingsEvent.AutoLockBiometricsHwError,
+                baseDataLoaded.copy(
+                    autoLockBiometricsState = baseAutoLockBiometricsState.copy(
+                        biometricsHwError = Effect.of(TextUiModel(R.string.biometric_error_hw_not_available))
+                    )
+                )
+            ),
+            TestInput(
+                baseDataLoaded,
+                AutoLockSettingsEvent.AutoLockBiometricsEnrollmentError,
+                baseDataLoaded.copy(
+                    autoLockBiometricsState = baseAutoLockBiometricsState.copy(
+                        biometricsEnrollmentError = Effect.of(TextUiModel(R.string.no_biometric_data_enrolled))
+                    )
+                )
+            ),
+            TestInput(
+                baseDataLoaded,
+                AutoLockSettingsEvent.Update.AutoLockBiometricsToggled(false),
+                baseDataLoaded.copy(
+                    autoLockBiometricsState = baseAutoLockBiometricsState.copy(
+                        enabled = false
+                    )
+                )
+            ),
+            TestInput(
+                baseDataLoaded,
+                AutoLockSettingsEvent.Update.AutoLockBiometricsToggled(true),
+                baseDataLoaded.copy(
+                    autoLockBiometricsState = baseAutoLockBiometricsState.copy(
+                        enabled = true
+                    )
+                )
             )
         )
     }

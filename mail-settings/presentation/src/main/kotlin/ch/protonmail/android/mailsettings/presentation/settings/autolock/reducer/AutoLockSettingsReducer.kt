@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockBiometricsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
@@ -36,6 +38,7 @@ class AutoLockSettingsReducer @Inject constructor(
     fun newStateFrom(currentState: AutoLockSettingsState, event: AutoLockSettingsEvent) =
         currentState.toNewStateFromEvent(event)
 
+    @Suppress("ComplexMethod")
     private fun AutoLockSettingsState.toNewStateFromEvent(event: AutoLockSettingsEvent): AutoLockSettingsState {
         return when (this) {
             is AutoLockSettingsState.Loading -> when (event) {
@@ -51,6 +54,12 @@ class AutoLockSettingsReducer @Inject constructor(
                 is AutoLockSettingsEvent.Update.AutoLockPreferenceEnabled -> updateAutoLockEnabledToggle(event.newValue)
                 is AutoLockSettingsEvent.Update.AutoLockIntervalsDropDownToggled ->
                     updateAutoLockIntervalsDropdown(event.newValue)
+
+                is AutoLockSettingsEvent.Update.AutoLockBiometricsToggled ->
+                    updateAutoLockBiometricsPreference(event.newValue)
+
+                is AutoLockSettingsEvent.AutoLockBiometricsHwError -> newStateForBiometricsHwError()
+                is AutoLockSettingsEvent.AutoLockBiometricsEnrollmentError -> newStateForBiometricsEnrollmentError()
 
                 AutoLockSettingsEvent.UpdateError -> triggerUpdateError()
             }
@@ -78,12 +87,32 @@ class AutoLockSettingsReducer @Inject constructor(
     private fun AutoLockSettingsState.DataLoaded.updateAutoLockIntervalsDropdown(newValue: Boolean) =
         copy(autoLockIntervalsState = autoLockIntervalsState.copy(dropdownExpanded = newValue))
 
+    private fun AutoLockSettingsState.DataLoaded.updateAutoLockBiometricsPreference(
+        enabled: Boolean
+    ): AutoLockSettingsState.DataLoaded = copy(
+        autoLockBiometricsState = this.autoLockBiometricsState.copy(
+            enabled = enabled
+        )
+    )
+
     private fun AutoLockSettingsState.DataLoaded.updateAutoLockEnabledToggle(
         value: Boolean
     ): AutoLockSettingsState.DataLoaded {
         val updatedUiModel = AutoLockEnabledUiModel(value)
         return copy(autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(updatedUiModel))
     }
+
+    private fun AutoLockSettingsState.DataLoaded.newStateForBiometricsHwError() = copy(
+        autoLockBiometricsState = autoLockBiometricsState.copy(
+            biometricsHwError = Effect.of(TextUiModel(R.string.biometric_error_hw_not_available))
+        )
+    )
+
+    private fun AutoLockSettingsState.DataLoaded.newStateForBiometricsEnrollmentError() = copy(
+        autoLockBiometricsState = autoLockBiometricsState.copy(
+            biometricsEnrollmentError = Effect.of(TextUiModel(R.string.no_biometric_data_enrolled))
+        )
+    )
 
     private fun AutoLockSettingsState.DataLoaded.triggerUpdateError() = copy(updateError = Effect.of(Unit))
 

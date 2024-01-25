@@ -156,4 +156,7 @@
     <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
     <!-- Error messages -->
     <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
+    <!-- strings used for biometric enrollment -->
+    <string name="no_biometric_data_enrolled">No biometric data enrolled</string>
+    <string name="biometric_error_hw_not_available">Biometric hardware not available.</string>
 </resources>
