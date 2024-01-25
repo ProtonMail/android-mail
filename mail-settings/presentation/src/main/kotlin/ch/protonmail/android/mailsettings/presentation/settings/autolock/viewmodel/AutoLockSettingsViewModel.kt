@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.ObserveAutoLockBiometricsState
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveSelectedAutoLockInterval
@@ -46,6 +47,7 @@ import javax.inject.Inject
 class AutoLockSettingsViewModel @Inject constructor(
     observeAutoLockEnabled: ObserveAutoLockEnabled,
     observeSelectedAutoLockInterval: ObserveSelectedAutoLockInterval,
+    observeAutoLockBiometricsState: ObserveAutoLockBiometricsState,
     private val observeAutoLockPinValue: ObserveAutoLockPinValue,
     private val toggleAutoLockEnabled: ToggleAutoLockEnabled,
     private val updateAutoLockInterval: UpdateAutoLockInterval,
@@ -58,12 +60,13 @@ class AutoLockSettingsViewModel @Inject constructor(
     init {
         combine(
             observeAutoLockEnabled(),
-            observeSelectedAutoLockInterval()
-        ) { enabled, interval ->
+            observeSelectedAutoLockInterval(),
+            observeAutoLockBiometricsState()
+        ) { enabled, interval, biometrics ->
             val isEnabled = enabled.getOrElse { AutoLockPreference(false) }
             val lockInterval = interval.getOrElse { AutoLockInterval.Immediately }
 
-            emitNewStateFrom(AutoLockSettingsEvent.Data.Loaded(isEnabled, lockInterval))
+            emitNewStateFrom(AutoLockSettingsEvent.Data.Loaded(isEnabled, lockInterval, biometrics))
         }.launchIn(viewModelScope)
     }
 

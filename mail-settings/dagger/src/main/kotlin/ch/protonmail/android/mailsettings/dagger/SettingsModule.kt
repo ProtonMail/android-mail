@@ -26,6 +26,7 @@ import ch.protonmail.android.mailsettings.data.repository.AlternativeRoutingRepo
 import ch.protonmail.android.mailsettings.data.repository.AppLanguageRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.BackgroundSyncSettingRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.BiometricsSystemStateRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.LocalStorageDataRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.MobileFooterRepositoryImpl
@@ -47,6 +48,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AlternativeRoutingRe
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.BackgroundSyncSettingRepository
+import ch.protonmail.android.mailsettings.domain.repository.BiometricsSystemStateRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.LocalStorageDataRepository
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
@@ -161,5 +163,10 @@ object SettingsModule {
         @Binds
         @Singleton
         fun bindAutoLockLocalDataSource(impl: AutoLockLocalDataSourceImpl): AutoLockLocalDataSource
+
+        @Binds
+        fun bindBiometricsSystemStateRepository(
+            impl: BiometricsSystemStateRepositoryImpl
+        ): BiometricsSystemStateRepository
     }
 }

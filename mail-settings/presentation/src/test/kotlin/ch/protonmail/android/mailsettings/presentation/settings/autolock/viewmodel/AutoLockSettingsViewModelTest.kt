@@ -25,14 +25,18 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveSelectedAutoLockInterval
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateAutoLockInterval
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.ObserveAutoLockBiometricsState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockBiometricsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockBiometricsUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalsUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsState
@@ -58,14 +62,16 @@ internal class AutoLockSettingsViewModelTest {
     private val observeAutoLockEnabled = mockk<ObserveAutoLockEnabled>()
     private val observeSelectedAutoLockInterval = mockk<ObserveSelectedAutoLockInterval>()
     private val observeAutoLockPinValue = mockk<ObserveAutoLockPinValue>()
+    private val observeAutoLockBiometricsState = mockk<ObserveAutoLockBiometricsState>()
     private val toggleAutoLockEnabled = mockk<ToggleAutoLockEnabled>()
     private val updateAutoLockInterval = mockk<UpdateAutoLockInterval>()
-    private val reducer = spyk(AutoLockSettingsReducer(mapper))
+    private val reducer = spyk(AutoLockSettingsReducer(intervalsUiModelMapper, biometricsUiModelMapper))
 
     private val viewModel by lazy {
         AutoLockSettingsViewModel(
             observeAutoLockEnabled,
             observeSelectedAutoLockInterval,
+            observeAutoLockBiometricsState,
             observeAutoLockPinValue,
             toggleAutoLockEnabled,
             updateAutoLockInterval,
@@ -88,6 +94,7 @@ internal class AutoLockSettingsViewModelTest {
         // Given
         every { observeAutoLockEnabled() } returns flowOf()
         every { observeSelectedAutoLockInterval() } returns flowOf()
+        every { observeAutoLockBiometricsState() } returns flowOf()
 
         // When + Then
         viewModel.state.test {
@@ -99,6 +106,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should return default values when settings are not present`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         every { observeAutoLockEnabled() } returns flowOf(AutoLockPreferenceError.DataStoreError.left())
         every { observeSelectedAutoLockInterval() } returns flowOf(AutoLockPreferenceError.DataStoreError.left())
 
@@ -114,6 +122,7 @@ internal class AutoLockSettingsViewModelTest {
         // Given
         expectAutoLockPreference()
         expectAutoLockInterval(interval = AutoLockInterval.OneDay)
+        expectAutoLockBiometricState(false)
 
         val expectedState = defaultBaseState.copy(
             AutoLockSettingsState.DataLoaded.AutoLockEnabledState(AutoLockEnabledUiModel(true)),
@@ -123,7 +132,8 @@ internal class AutoLockSettingsViewModelTest {
                     toSelectedUiModel(AutoLockInterval.OneDay),
                     baseModels
                 )
-            )
+            ),
+            autoLockBiometricsState = defaultBaseBiometricsState.copy(enabled = false)
         )
 
         // When + Then
@@ -136,6 +146,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should update the state when the auto lock preference is toggled`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         expectAutoLockPreference()
         expectAutoLockInterval()
         coEvery { toggleAutoLockEnabled(false) } returns Unit.right()
@@ -156,6 +167,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should update the state when the auto lock interval is manually set`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         expectAutoLockPreference(isEnabled = false)
         expectAutoLockInterval()
         coEvery { updateAutoLockInterval(AutoLockInterval.OneHour) } returns Unit.right()
@@ -182,6 +194,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should force pin creation when pin does not exist or is empty and feature is enabled`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         expectAutoLockPreference(false)
         expectAutoLockInterval()
         coEvery { toggleAutoLockEnabled(true) } returns Unit.right()
@@ -201,6 +214,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should signal an error when auto lock preference cannot be updated`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         expectAutoLockPreference(false)
         expectAutoLockInterval()
         coEvery {
@@ -224,6 +238,7 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should signal an error when auto lock interval cannot be updated`() = runTest {
         // Given
+        expectAutoLockBiometricState()
         expectAutoLockPreference(isEnabled = false)
         expectAutoLockInterval()
         coEvery {
@@ -245,6 +260,7 @@ internal class AutoLockSettingsViewModelTest {
     fun `should update the state when interacting with the auto lock interval item`() = runTest {
         expectAutoLockPreference(isEnabled = false)
         expectAutoLockInterval()
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(
             autoLockIntervalsState = defaultBaseState.autoLockIntervalsState.copy(dropdownExpanded = true)
@@ -259,6 +275,11 @@ internal class AutoLockSettingsViewModelTest {
         }
     }
 
+    private fun expectAutoLockBiometricState(isEnabled: Boolean = true) {
+        val expectedState = AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(enabled = isEnabled)
+        every { observeAutoLockBiometricsState() } returns flowOf(expectedState)
+    }
+
     private fun expectAutoLockPreference(isEnabled: Boolean = true) {
         val expectedPreferenceValue = AutoLockPreference(isEnabled)
         every { observeAutoLockEnabled() } returns flowOf(expectedPreferenceValue.right())
@@ -270,8 +291,14 @@ internal class AutoLockSettingsViewModelTest {
 
     private companion object {
 
-        val mapper = AutoLockIntervalsUiModelMapper()
-        val baseModels = mapper.toIntervalsListUiModel()
+        val intervalsUiModelMapper = AutoLockIntervalsUiModelMapper()
+        val biometricsUiModelMapper = AutoLockBiometricsUiModelMapper()
+        val baseModels = intervalsUiModelMapper.toIntervalsListUiModel()
+        val defaultBaseBiometricsState = AutoLockBiometricsUiModel(
+            enabled = true,
+            biometricsEnrolled = true,
+            biometricsHwAvailable = true
+        )
 
         val defaultBaseState = AutoLockSettingsState.DataLoaded(
             AutoLockSettingsState.DataLoaded.AutoLockEnabledState(AutoLockEnabledUiModel(false)),
@@ -282,11 +309,12 @@ internal class AutoLockSettingsViewModelTest {
                     baseModels
                 )
             ),
+            defaultBaseBiometricsState,
             Effect.empty(),
             Effect.empty(),
             Effect.empty()
         )
 
-        fun toSelectedUiModel(interval: AutoLockInterval) = mapper.toSelectedIntervalUiModel(interval)
+        fun toSelectedUiModel(interval: AutoLockInterval) = intervalsUiModelMapper.toSelectedIntervalUiModel(interval)
     }
 }

@@ -18,25 +18,15 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.model
 
+import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-sealed interface AutoLockSettingsState {
-
-    object Loading : AutoLockSettingsState
-
-    data class DataLoaded(
-        val autoLockEnabledState: AutoLockEnabledState,
-        val autoLockIntervalsState: AutoLockIntervalState,
-        val autoLockBiometricsState: AutoLockBiometricsUiModel,
-        val forceOpenPinCreation: Effect<Unit>,
-        val pinLockChangeRequested: Effect<Unit>,
-        val updateError: Effect<Unit>
-    ) : AutoLockSettingsState {
-
-        data class AutoLockEnabledState(val autoLockEnabledUiModel: AutoLockEnabledUiModel)
-        data class AutoLockIntervalState(
-            val autoLockIntervalsUiModel: AutoLockIntervalsUiModel,
-            val dropdownExpanded: Boolean
-        )
-    }
-}
+@Stable
+data class AutoLockBiometricsUiModel(
+    val enabled: Boolean,
+    val biometricsEnrolled: Boolean,
+    val biometricsHwAvailable: Boolean,
+    val biometricsEnrollmentError: Effect<TextUiModel> = Effect.empty(),
+    val biometricsHwError: Effect<TextUiModel> = Effect.empty()
+)

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.model
 
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 
@@ -37,6 +38,7 @@ sealed interface AutoLockSettingsEvent : AutoLockSettingsOperation {
         data class Loaded(
             val lockEnabled: AutoLockPreference,
             val selectedInterval: AutoLockInterval,
+            val biometricsState: AutoLockBiometricsState,
             val dropDownMenuVisible: Boolean = false
         ) : Data
     }

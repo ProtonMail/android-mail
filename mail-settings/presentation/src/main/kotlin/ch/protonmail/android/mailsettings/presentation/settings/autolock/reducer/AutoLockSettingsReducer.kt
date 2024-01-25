@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.reduce
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockBiometricsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalsUiModel
@@ -28,7 +29,8 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.A
 import javax.inject.Inject
 
 class AutoLockSettingsReducer @Inject constructor(
-    private val intervalsMapper: AutoLockIntervalsUiModelMapper
+    private val intervalsMapper: AutoLockIntervalsUiModelMapper,
+    private val biometricsUiModelMapper: AutoLockBiometricsUiModelMapper
 ) {
 
     fun newStateFrom(currentState: AutoLockSettingsState, event: AutoLockSettingsEvent) =
@@ -86,6 +88,7 @@ class AutoLockSettingsReducer @Inject constructor(
     private fun AutoLockSettingsState.DataLoaded.triggerUpdateError() = copy(updateError = Effect.of(Unit))
 
     private fun AutoLockSettingsEvent.Data.Loaded.toDataState(): AutoLockSettingsState.DataLoaded {
+        val biometricsStateUiModel = biometricsUiModelMapper.toUiModel(biometricsState)
         val autoLockEnabledUiModel = AutoLockEnabledUiModel(lockEnabled.isEnabled)
         val autoLockSelectedIntervalUiModel = intervalsMapper.toSelectedIntervalUiModel(selectedInterval)
         val autoLockIntervalsListUiModel = intervalsMapper.toIntervalsListUiModel()
@@ -101,6 +104,7 @@ class AutoLockSettingsReducer @Inject constructor(
         return AutoLockSettingsState.DataLoaded(
             autoLockEnabledState = autoLockEnabledState,
             autoLockIntervalsState = autoLockIntervalsState,
+            autoLockBiometricsState = biometricsStateUiModel,
             forceOpenPinCreation = Effect.empty(),
             pinLockChangeRequested = Effect.empty(),
             updateError = Effect.empty()

@@ -21,7 +21,10 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.reduce
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockBiometricsUiModelMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.AutoLockIntervalsUiModelMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockBiometricsUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockEnabledUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockIntervalsUiModel
@@ -43,7 +46,8 @@ internal class AutoLockSettingsReducerTest(
 ) {
 
     private val intervalsMapper = spyk<AutoLockIntervalsUiModelMapper>()
-    private val reducer = AutoLockSettingsReducer(intervalsMapper)
+    private val biometricsUiModelMapper = spyk<AutoLockBiometricsUiModelMapper>()
+    private val reducer = AutoLockSettingsReducer(intervalsMapper, biometricsUiModelMapper)
 
     @Before
     fun setup() {
@@ -80,6 +84,12 @@ internal class AutoLockSettingsReducerTest(
             AutoLockEnabledUiModel(true)
         )
 
+        private val baseAutoLockBiometricsState =
+            AutoLockBiometricsUiModel(
+                enabled = true, biometricsEnrolled = true,
+                biometricsHwAvailable = true
+            )
+
         private val baseAutoLockIntervalState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
             dropdownExpanded = false,
             autoLockIntervalsUiModel = AutoLockIntervalsUiModel(
@@ -91,6 +101,7 @@ internal class AutoLockSettingsReducerTest(
         private val baseDataLoaded = AutoLockSettingsState.DataLoaded(
             autoLockEnabledState = baseAutoLockState,
             autoLockIntervalsState = baseAutoLockIntervalState,
+            autoLockBiometricsState = baseAutoLockBiometricsState,
             Effect.empty(),
             Effect.empty(),
             Effect.empty()
@@ -101,7 +112,10 @@ internal class AutoLockSettingsReducerTest(
         fun data() = arrayOf(
             TestInput(
                 AutoLockSettingsState.Loading,
-                AutoLockSettingsEvent.Data.Loaded(AutoLockPreference(true), AutoLockInterval.Immediately),
+                AutoLockSettingsEvent.Data.Loaded(
+                    AutoLockPreference(true), AutoLockInterval.Immediately,
+                    AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(true)
+                ),
                 baseDataLoaded
             ),
             TestInput(
