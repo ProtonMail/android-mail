@@ -396,9 +396,6 @@ fun Home(
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
-                    },
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
                     }
                 )
                 addAlternativeRoutingSetting(navController)
