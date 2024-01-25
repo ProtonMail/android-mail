@@ -29,9 +29,13 @@ class ContactFormReducer @Inject constructor() {
         return when (event) {
             is ContactFormEvent.NewContact -> reduceNewContact(event)
             is ContactFormEvent.EditContact -> reduceEditContact(event)
-            is ContactFormEvent.LoadContactError -> reduceLoadContactError(currentState)
-            is ContactFormEvent.CloseContactForm -> reduceCloseContactForm(currentState)
             is ContactFormEvent.UpdateContactFormUiModel -> reduceUpdateContactFormUiModel(currentState, event)
+            ContactFormEvent.LoadContactError -> reduceLoadContactError(currentState)
+            ContactFormEvent.CloseContactForm -> reduceCloseContactForm(currentState)
+            ContactFormEvent.SaveContactError -> reduceSaveContactError(currentState)
+            ContactFormEvent.ContactCreated -> reduceContactCreated(currentState)
+            ContactFormEvent.ContactUpdated -> reduceContactUpdated(currentState)
+            ContactFormEvent.CreatingContact -> reduceCreatingContact(currentState)
         }
     }
 
@@ -55,6 +59,53 @@ class ContactFormReducer @Inject constructor() {
             is ContactFormState.Data.Create -> currentState.copy(close = Effect.of(Unit))
             is ContactFormState.Data.Update -> currentState.copy(close = Effect.of(Unit))
             is ContactFormState.Loading -> currentState.copy(close = Effect.of(Unit))
+        }
+    }
+
+    private fun reduceSaveContactError(currentState: ContactFormState): ContactFormState {
+        return when (currentState) {
+            is ContactFormState.Data.Create -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error)),
+                displayCreateLoader = false
+            )
+            is ContactFormState.Data.Update -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error))
+            )
+            is ContactFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceContactCreated(currentState: ContactFormState): ContactFormState {
+        return when (currentState) {
+            is ContactFormState.Data.Create -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+            )
+            is ContactFormState.Data.Update -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+            )
+            is ContactFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceContactUpdated(currentState: ContactFormState): ContactFormState {
+        return when (currentState) {
+            is ContactFormState.Data.Create -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+            )
+            is ContactFormState.Data.Update -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+            )
+            is ContactFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceCreatingContact(currentState: ContactFormState): ContactFormState {
+        return when (currentState) {
+            is ContactFormState.Data.Create -> currentState.copy(
+                displayCreateLoader = true
+            )
+            is ContactFormState.Data.Update -> currentState
+            is ContactFormState.Loading -> currentState
         }
     }
 
