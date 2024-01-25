@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.pin
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -33,7 +34,8 @@ import javax.inject.Inject
 class AutoLockPinReducer @Inject constructor(
     private val stepUiMapper: AutoLockPinStepUiMapper,
     private val successfulOperationUiMapper: AutoLockSuccessfulOperationUiMapper,
-    private val errorsUiMapper: AutoLockPinErrorUiMapper
+    private val errorsUiMapper: AutoLockPinErrorUiMapper,
+    private val biometricPinUiMapper: AutoLockBiometricPinUiMapper
 ) {
 
     fun newStateFrom(currentState: AutoLockPinState, operation: AutoLockPinEvent) =
@@ -48,6 +50,7 @@ class AutoLockPinReducer @Inject constructor(
             }
 
             is AutoLockPinState.DataLoaded -> when (event) {
+                is AutoLockPinEvent.Update.BiometricStateChanged -> updateBiometricState(this, event)
                 is AutoLockPinEvent.Update.PinValueChanged -> updatePinValue(this, event)
                 is AutoLockPinEvent.Update.MovedToStep -> moveToStep(this, event.step)
                 is AutoLockPinEvent.Update.OperationAborted -> abortOperation(this)
@@ -110,6 +113,15 @@ class AutoLockPinReducer @Inject constructor(
         )
     }
 
+    private fun updateBiometricState(
+        state: AutoLockPinState.DataLoaded,
+        event: AutoLockPinEvent.Update.BiometricStateChanged
+    ): AutoLockPinState.DataLoaded {
+        return state.copy(
+            biometricPinState = biometricPinUiMapper.toUiModel(event.biometricState, state.pinInsertionState.step)
+        )
+    }
+
     private fun updatePinValue(
         state: AutoLockPinState.DataLoaded,
         event: AutoLockPinEvent.Update.PinValueChanged
@@ -139,6 +151,7 @@ class AutoLockPinReducer @Inject constructor(
         state.copy(closeScreenEffect = Effect.of(Unit))
 
     private fun AutoLockPinEvent.Data.Loaded.toDataState(): AutoLockPinState.DataLoaded {
+        val biometricPinState = biometricPinUiMapper.toUiModel(initialBiometricsState, step)
         val pinInsertionUiModel = PinInsertionUiModel(InsertedPin.Empty)
         val topBarUiModel = stepUiMapper.toTopBarUiModel(step)
         val confirmButtonUiModel = stepUiMapper.toConfirmButtonUiModel(isEnabled = false, step)
@@ -155,6 +168,7 @@ class AutoLockPinReducer @Inject constructor(
             ),
             confirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel),
             signOutButtonState = AutoLockPinState.SignOutButtonState(signOutUiModel),
+            biometricPinState = biometricPinState,
             closeScreenEffect = Effect.empty(),
             pinInsertionErrorEffect = errorEffect,
             snackbarSuccessEffect = Effect.empty()

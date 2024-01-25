@@ -32,3 +32,6 @@ data class ConfirmButtonUiModel(val isEnabled: Boolean, @StringRes val textRes: 
 
 @Stable
 data class SignOutUiModel(val isDisplayed: Boolean, val isRequested: Boolean)
+
+@Stable
+data class BiometricPinUiModel(val shouldDisplayButton: Boolean)

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin
 
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
+
 sealed interface AutoLockPinOperation
 
 sealed interface AutoLockPinViewAction : AutoLockPinOperation {
@@ -33,10 +35,16 @@ sealed interface AutoLockPinViewAction : AutoLockPinOperation {
 sealed interface AutoLockPinEvent : AutoLockPinOperation {
 
     sealed interface Data : AutoLockPinEvent {
-        data class Loaded(val step: PinInsertionStep, val remainingAttempts: PinVerificationRemainingAttempts) : Data
+        data class Loaded(
+            val step: PinInsertionStep,
+            val remainingAttempts: PinVerificationRemainingAttempts,
+            val initialBiometricsState: AutoLockBiometricsState
+        ) : Data
     }
 
     sealed interface Update : AutoLockPinEvent {
+        data class BiometricStateChanged(val biometricState: AutoLockBiometricsState) : Update
+
         data class PinValueChanged(val newPin: InsertedPin) : Update
         data class MovedToStep(val step: PinInsertionStep) : Update
 

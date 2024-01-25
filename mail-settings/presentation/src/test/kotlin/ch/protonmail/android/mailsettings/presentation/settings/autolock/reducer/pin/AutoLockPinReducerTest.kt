@@ -20,8 +20,10 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.reduce
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -39,7 +41,10 @@ import kotlin.test.assertEquals
 @RunWith(Parameterized::class)
 internal class AutoLockPinReducerTest(private val testInput: TestInput) {
 
-    private val reducer = AutoLockPinReducer(stepMapper, operationMapper, errorMapper)
+    private val reducer = AutoLockPinReducer(
+        stepMapper, operationMapper, errorMapper,
+        biometricPinUiMapper
+    )
 
     @Test
     fun `should map the step to the appropriate top bar ui model`() = with(testInput) {
@@ -55,6 +60,7 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
         val stepMapper = AutoLockPinStepUiMapper()
         val operationMapper = AutoLockSuccessfulOperationUiMapper()
         val errorMapper = AutoLockPinErrorUiMapper()
+        val biometricPinUiMapper = AutoLockBiometricPinUiMapper()
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
@@ -63,7 +69,8 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                 state = AutoLockPinState.Loading,
                 event = AutoLockPinEvent.Data.Loaded(
                     PinInsertionStep.PinInsertion,
-                    PinVerificationRemainingAttempts.Default
+                    PinVerificationRemainingAttempts.Default,
+                    AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(enabled = true)
                 ),
                 expected = AutoLockTestData.BaseLoadedState
             ),
@@ -71,7 +78,8 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
                 state = AutoLockPinState.Loading,
                 event = AutoLockPinEvent.Data.Loaded(
                     PinInsertionStep.PinInsertion,
-                    AutoLockTestData.OneRemainingAttempt
+                    AutoLockTestData.OneRemainingAttempt,
+                    AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(enabled = true)
                 ),
                 expected = AutoLockTestData.BaseLoadedState.copy(
                     pinInsertionState = AutoLockTestData.BasePinInsertionState.copy(

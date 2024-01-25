@@ -71,8 +71,12 @@ fun AutoLockPinInsertionScreen(
             Spacer(modifier = Modifier.size(SpacerSize))
 
             AutoLockPinKeyboardGrid(
-                onDigitAdded = actions.onDigitAdded,
-                onBackSpaceClick = actions.onBackspaceClick
+                showBiometricPin = state.biometricPinState.shouldDisplayButton,
+                actions = AutoLockPinKeyboardGrid.Actions(
+                    onBiometricPinClick = actions.onBiometricsClick,
+                    onDigitAdded = actions.onDigitAdded,
+                    onBackSpaceClick = actions.onBackspaceClick
+                )
             )
 
             Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))

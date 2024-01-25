@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsState
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
@@ -35,8 +36,11 @@ import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLock
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.GetCurrentAutoLockBiometricState
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.ObserveAutoLockBiometricsState
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -74,6 +78,8 @@ import kotlin.test.assertEquals
 
 internal class AutoLockPinViewModelTest {
 
+    private val observeAutoLockBiometricsState = mockk<ObserveAutoLockBiometricsState>()
+    private val getCurrentAutoLockBiometricState = mockk<GetCurrentAutoLockBiometricState>()
     private val observeAutoLockPin = mockk<ObserveAutoLockPinValue>()
     private val toggleAutoLockEnabled = mockk<ToggleAutoLockEnabled>()
     private val getRemainingAutoLockAttempts = mockk<GetRemainingAutoLockAttempts>()
@@ -86,13 +92,16 @@ internal class AutoLockPinViewModelTest {
     private val reducer = AutoLockPinReducer(
         AutoLockPinStepUiMapper(),
         AutoLockSuccessfulOperationUiMapper(),
-        AutoLockPinErrorUiMapper()
+        AutoLockPinErrorUiMapper(),
+        AutoLockBiometricPinUiMapper()
     )
 
     private val viewModel by lazy {
         AutoLockPinViewModel(
             observeAutoLockPin,
             toggleAutoLockEnabled,
+            observeAutoLockBiometricsState,
+            getCurrentAutoLockBiometricState,
             getRemainingAutoLockAttempts,
             updateRemainingAutoLockAttempts,
             saveAutoLockPin,
@@ -117,6 +126,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should return loaded state when data is fetched from a standalone start`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -132,6 +142,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should move to previous screen when back action is performed from pin confirmation`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -157,6 +168,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should dismiss the screen when going back from the main pin insertion screen`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -175,6 +187,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should dismiss the screen when going back from the main pin change screen`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -195,6 +208,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should not dismiss the screen when going back from the main pin verification screen`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -212,6 +226,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit new state when pin digit is added`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -232,6 +247,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit new state when pin digit is removed`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -257,6 +273,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit error when pins do not match`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -282,6 +299,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit a generic error when pin cannot be saved`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -311,6 +329,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit a generic error when auto lock cannot be toggled`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -339,6 +358,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit a completion event when pin confirmation succeeds`() = runTest {
         // Given
+        expectBiometricState()
         expectStandaloneStart()
         expectAttempts()
         expectAttemptStatusToggling()
@@ -368,6 +388,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should restore pin attempts when the pin change verification has success`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -393,6 +414,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should decrement pin attempts when the pin change verification fails`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts(value = PinVerificationRemainingAttempts.MaxAttempts)
         expectAttemptStatusToggling()
@@ -418,6 +440,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should call use case to force logout and clear auto lock to defaults when no attempts are left`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts(value = 1)
         expectAttemptStatusToggling()
@@ -448,6 +471,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should close the screen when verification is completed without continuation`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -473,6 +497,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should update the sign out confirmation dialog when the button is pressed`() = runTest {
         // Given
+        expectBiometricState()
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
             SignOutUiModel(isDisplayed = true, isRequested = true)
         )
@@ -497,6 +522,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should update the sign out confirmation dialog when the dialog is dismissed`() = runTest {
         // Given
+        expectBiometricState()
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
             SignOutUiModel(isDisplayed = true, isRequested = false)
         )
@@ -524,6 +550,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should update the sign out confirmation dialog when the dialog is confirmed`() = runTest {
         // Given
+        expectBiometricState()
         val expectedSignOutState = AutoLockPinState.SignOutButtonState(
             SignOutUiModel(isDisplayed = true, isRequested = true)
         )
@@ -552,6 +579,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should not emit the snackbar confirmation when the starting flow is verification`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.VerifyPin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -577,6 +605,7 @@ internal class AutoLockPinViewModelTest {
     @Test
     fun `should emit a snackbar state when completing the change pin flow`() = runTest {
         // Given
+        expectBiometricState()
         expectConditionalStart(AutoLockInsertionMode.ChangePin)
         expectAttempts()
         expectAttemptStatusToggling()
@@ -618,6 +647,12 @@ internal class AutoLockPinViewModelTest {
 
             assertEquals(expectedState, actual)
         }
+    }
+
+    private fun expectBiometricState() {
+        val defaultBiometricState = AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(true)
+        coEvery { getCurrentAutoLockBiometricState() } returns defaultBiometricState
+        coEvery { observeAutoLockBiometricsState() } returns flowOf()
     }
 
     private fun expectConditionalStart(mode: AutoLockInsertionMode) {

@@ -24,12 +24,14 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetRemainingAutoLockAttempts
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.ObserveAutoLockBiometricsState
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ObserveAutoLockPinValue
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.SaveAutoLockPin
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ToggleAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateRemainingAutoLockAttempts
+import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.GetCurrentAutoLockBiometricState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinEvent
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinViewAction
@@ -43,6 +45,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.proton.core.util.kotlin.deserialize
@@ -53,6 +56,8 @@ import javax.inject.Inject
 class AutoLockPinViewModel @Inject constructor(
     private val observeAutoLockPin: ObserveAutoLockPinValue,
     private val toggleAutoLockEnabled: ToggleAutoLockEnabled,
+    private val observeAutoLockBiometricsState: ObserveAutoLockBiometricsState,
+    private val getCurrentAutoLockBiometricState: GetCurrentAutoLockBiometricState,
     private val getRemainingAutoLockAttempts: GetRemainingAutoLockAttempts,
     private val updateRemainingAutoLockAttempts: UpdateRemainingAutoLockAttempts,
     private val saveAutoLockPin: SaveAutoLockPin,
@@ -87,7 +92,13 @@ class AutoLockPinViewModel @Inject constructor(
 
             toggleAutoLockAttemptStatus(value = true)
 
-            emitNewStateFrom(AutoLockPinEvent.Data.Loaded(step, remainingAttempts))
+            val currentBiometricsState = getCurrentAutoLockBiometricState()
+            emitNewStateFrom(AutoLockPinEvent.Data.Loaded(step, remainingAttempts, currentBiometricsState))
+
+            observeAutoLockBiometricsState()
+                .onEach {
+                    emitNewStateFrom(AutoLockPinEvent.Update.BiometricStateChanged(it))
+                }
         }
     }
 

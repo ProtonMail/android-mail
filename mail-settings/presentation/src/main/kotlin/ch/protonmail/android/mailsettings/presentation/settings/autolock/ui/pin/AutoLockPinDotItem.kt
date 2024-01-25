@@ -74,8 +74,8 @@ fun AutoLockPinDotsGrid(insertedPinSize: Int, modifier: Modifier = Modifier) {
 
 @Composable
 fun AutoLockPinKeyboardGrid(
-    onDigitAdded: (Int) -> Unit,
-    onBackSpaceClick: () -> Unit,
+    showBiometricPin: Boolean,
+    actions: AutoLockPinKeyboardGrid.Actions,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -88,25 +88,49 @@ fun AutoLockPinKeyboardGrid(
         items(Constants.KeyboardMainElementsSize) { element ->
             VirtualKeyboardDigitItem(
                 value = element + 1, // Index starts at 0
-                onElementClicked = onDigitAdded
+                onElementClicked = actions.onDigitAdded
             )
         }
 
+
         item {
-            // Empty item, will be populated with Biometrics icon
+            if (showBiometricPin) {
+                VirtualKeyboardButtonItem(
+                    drawableRes = R.drawable.ic_proton_fingerprint,
+                    onClick = actions.onBiometricPinClick,
+                    contentDescription = stringResource(id = R.string.mail_settings_pin_insertion_biometric_description)
+                )
+            }
         }
 
         item {
             VirtualKeyboardDigitItem(
                 value = 0,
-                onElementClicked = onDigitAdded
+                onElementClicked = actions.onDigitAdded
             )
         }
         item {
             VirtualKeyboardButtonItem(
                 drawableRes = R.drawable.ic_proton_backspace,
-                onClick = onBackSpaceClick,
+                onClick = actions.onBackSpaceClick,
                 contentDescription = stringResource(id = R.string.mail_settings_pin_insertion_backspace_description)
+            )
+        }
+    }
+}
+
+object AutoLockPinKeyboardGrid {
+
+    data class Actions(
+        val onBiometricPinClick: () -> Unit,
+        val onDigitAdded: (Int) -> Unit,
+        val onBackSpaceClick: () -> Unit
+    ) {
+        companion object {
+            val Empty = Actions(
+                onBiometricPinClick = {},
+                onDigitAdded = {},
+                onBackSpaceClick = {}
             )
         }
     }

@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.BiometricPinUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.ConfirmButtonUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.InsertedPin
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.PinInsertionStep
@@ -59,9 +60,10 @@ private fun AutoLockPinScreenPreview() {
                 AutoLockPinState.SignOutButtonState(
                     SignOutUiModel(isDisplayed = true, isRequested = false)
                 ),
+                BiometricPinUiModel(shouldDisplayButton = false),
                 Effect.empty(),
                 Effect.empty(),
-                Effect.of(TextUiModel.Text("PIN error placeholder")),
+                Effect.of(TextUiModel.Text("PIN error placeholder"))
             ),
             actions = AutoLockPinDetailScreen.Actions(
                 onConfirmation = {},
