@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin
 
-import android.content.pm.ActivityInfo
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -35,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens.AutoLockPinScreen.SpacerSize
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
-import ch.protonmail.android.uicomponents.effects.LockScreenOrientationEffect
 import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
@@ -45,7 +43,6 @@ fun AutoLockPinInsertionScreen(
     signOutActions: AutoLockPinDetailScreen.SignOutActions,
     modifier: Modifier = Modifier
 ) {
-    LockScreenOrientationEffect(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     BackHandler(true) {
         actions.onBack()
