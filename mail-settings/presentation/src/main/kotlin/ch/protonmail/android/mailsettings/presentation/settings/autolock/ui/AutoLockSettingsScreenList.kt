@@ -22,15 +22,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockBiometricsUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsState
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 
 @Composable
 fun AutoLockSettingsScreenList(
     modifier: Modifier = Modifier,
     state: AutoLockSettingsState.DataLoaded,
-    actions: AutoLockSettingsScreenList.Actions
+    actions: AutoLockSettingsScreenList.Actions,
+    snackbarHostState: ProtonSnackbarHostState
 ) {
     LazyColumn(modifier = modifier) {
         AutoLockEnabledItem(state.autoLockEnabledState.autoLockEnabledUiModel, actions.onToggleAutoLockEnabled)
@@ -42,6 +47,8 @@ fun AutoLockSettingsScreenList(
                 actions.onPinScreenNavigation,
                 actions.onTimerItemClick
             )
+
+            AutoLockBiometricsItem(state.autoLockBiometricsState, actions.onToggleBiometricsEnabled)
         }
     }
 
@@ -56,6 +63,20 @@ fun AutoLockSettingsScreenList(
     ConsumableLaunchedEffect(state.pinLockChangeRequested) {
         actions.onPinScreenNavigation(AutoLockInsertionMode.ChangePin)
     }
+
+    ConsumableTextEffect(state.autoLockBiometricsState.biometricsHwError) { message ->
+        snackbarHostState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.WARNING
+        )
+    }
+
+    ConsumableTextEffect(state.autoLockBiometricsState.biometricsEnrollmentError) { message ->
+        snackbarHostState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.WARNING
+        )
+    }
 }
 
 object AutoLockSettingsScreenList {
@@ -64,6 +85,7 @@ object AutoLockSettingsScreenList {
         val onToggleAutoLockEnabled: (Boolean) -> Unit,
         val onPinScreenNavigation: (AutoLockInsertionMode) -> Unit,
         val onIntervalSelected: (AutoLockInterval) -> Unit,
+        val onToggleBiometricsEnabled: (AutoLockBiometricsUiModel) -> Unit,
         val onTimerItemClick: (show: Boolean) -> Unit,
         val onUpdateError: suspend () -> Unit
     )

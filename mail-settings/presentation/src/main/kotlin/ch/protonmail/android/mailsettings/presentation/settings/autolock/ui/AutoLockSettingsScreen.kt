@@ -51,7 +51,10 @@ fun AutoLockSettingsScreen(
         onToggleAutoLockEnabled = { viewModel.submit(AutoLockSettingsViewAction.ToggleAutoLockPreference(it)) },
         onIntervalSelected = { viewModel.submit(AutoLockSettingsViewAction.UpdateAutoLockInterval(it)) },
         onTimerItemClick = { viewModel.submit(AutoLockSettingsViewAction.ToggleIntervalDropDownVisibility(it)) },
-        onUpdateError = {}
+        onUpdateError = {},
+        onToggleBiometricsEnabled = {
+            viewModel.submit(AutoLockSettingsViewAction.ToggleAutoLockBiometricsPreference(it))
+        }
     )
 
     AutoLockSettingsScreen(
@@ -92,7 +95,8 @@ private fun AutoLockSettingsScreen(
                     AutoLockSettingsScreenList(
                         modifier = Modifier.padding(paddingValues),
                         state = state,
-                        actions = updatedActions
+                        actions = updatedActions,
+                        snackbarHostState = snackbarHostState
                     )
                 }
             }
