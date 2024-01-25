@@ -116,6 +116,13 @@ object AndroidX {
         const val process = "androidx.lifecycle:lifecycle-process:$version"
     }
 
+    object Biometrics {
+
+        private const val version = Versions.AndroidX.biometrics
+
+        const val biometric = "androidx.biometric:biometric-ktx:$version"
+    }
+
     object Navigation {
 
         private const val version = Versions.AndroidX.navigation

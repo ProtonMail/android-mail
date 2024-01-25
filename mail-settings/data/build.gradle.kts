@@ -52,6 +52,7 @@ dependencies {
     implementation(AndroidX.AppCompat.appCompat)
     implementation(Proton.Core.mailSettings)
     implementation(Proton.Core.user)
+    implementation(AndroidX.Biometrics.biometric)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
