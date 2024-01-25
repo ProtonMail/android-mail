@@ -36,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
-import kotlin.math.min
 
 @Composable
 fun FormInputField(
@@ -55,7 +54,7 @@ fun FormInputField(
         onValueChange = {
             textFieldValue = it.copy(
                 text = maxCharacters?.let { maxCharacters ->
-                    it.text.substring(0, min(it.text.length, maxCharacters))
+                    it.text.take(maxCharacters)
                 } ?: it.text
             )
             onTextChange(textFieldValue.text)
