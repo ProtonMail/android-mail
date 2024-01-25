@@ -39,7 +39,7 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiMo
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
-import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -60,7 +60,7 @@ import kotlin.test.assertEquals
 class ContactFormViewModelTest {
 
     private val testUserId = UserIdTestData.userId
-    private val testContactId = ContactFormPreviewData.contactFormSampleData.id!!
+    private val testContactId = contactFormSampleData.id!!
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
@@ -161,6 +161,65 @@ class ContactFormViewModelTest {
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel,
                 close = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given create mode, when OnSaveClick action is submitted, then close with success is emitted`() = runTest {
+        // Given
+        expectSavedStateContactId(null)
+        every {
+            contactFormUiModelMapperMock.toDecryptedContact(any())
+        } returns DecryptedContact(ContactId(""))
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnUpdateDisplayName("Create"))
+
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Create(
+                contact = emptyContactFormUiModel.copy(displayName = "Create"),
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success)),
+                displayCreateLoader = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given update mode, when OnSaveClick action is submitted, then close with success is emitted`() = runTest {
+        // Given
+        expectContactFormStateUpdate()
+        every {
+            contactFormUiModelMapperMock.toDecryptedContact(any())
+        } returns DecryptedContact(ContactId(""))
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnUpdateDisplayName("Update"))
+
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormSampleData.copy(displayName = "Update"),
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
             )
 
             assertEquals(expected, actual)
@@ -707,7 +766,7 @@ class ContactFormViewModelTest {
 
     private fun expectContactFormStateUpdate(): ContactFormUiModel {
         val expectedDecryptedContact = DecryptedContact(testContactId)
-        val expectedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
+        val expectedContactFormUiModel = contactFormSampleData
         expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
         expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
 
