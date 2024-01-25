@@ -26,6 +26,7 @@ sealed interface ContactFormOperation
 
 sealed interface ContactFormViewAction : ContactFormOperation {
     object OnCloseContactFormClick : ContactFormViewAction
+    object OnSaveClick : ContactFormViewAction
     data class OnUpdateDisplayName(
         val displayName: String
     ) : ContactFormViewAction

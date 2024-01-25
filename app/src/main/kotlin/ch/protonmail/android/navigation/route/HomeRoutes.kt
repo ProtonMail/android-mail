@@ -464,9 +464,6 @@ internal fun NavGraphBuilder.addContactForm(
         exitWithErrorMessage = { message ->
             navController.popBackStack()
             showErrorSnackbar(message)
-        },
-        onSaveClick = {
-            showFeatureMissingSnackbar()
         }
     )
     composable(route = Destination.Screen.CreateContact.route) {

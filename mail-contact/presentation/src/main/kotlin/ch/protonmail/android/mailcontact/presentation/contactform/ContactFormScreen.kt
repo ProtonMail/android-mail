@@ -115,7 +115,7 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                     viewModel.submit(ContactFormViewAction.OnCloseContactFormClick)
                 },
                 onSaveContactClick = {
-                    // Trigger save action here
+                    viewModel.submit(ContactFormViewAction.OnSaveClick)
                 }
             )
         },
@@ -705,8 +705,7 @@ object ContactFormScreen {
     data class Actions(
         val onCloseClick: () -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
-        val exitWithErrorMessage: (String) -> Unit,
-        val onSaveClick: () -> Unit
+        val exitWithErrorMessage: (String) -> Unit
     ) {
 
         companion object {
@@ -714,8 +713,7 @@ object ContactFormScreen {
             val Empty = Actions(
                 onCloseClick = {},
                 exitWithSuccessMessage = {},
-                exitWithErrorMessage = {},
-                onSaveClick = {}
+                exitWithErrorMessage = {}
             )
         }
     }
