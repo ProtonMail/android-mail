@@ -68,7 +68,7 @@ class ContactFormViewModel @Inject constructor(
                     userId = primaryUserId(),
                     contactId = ContactId(contactId)
                 ).first().getOrElse {
-                    Timber.e("Error while getting contact")
+                    Timber.e("Error while getting contact in init")
                     return@launch emitNewStateFor(ContactFormEvent.LoadContactError)
                 }
                 emitNewStateFor(
@@ -252,6 +252,45 @@ class ContactFormViewModel @Inject constructor(
                 contact.copy(lastName = action.lastName)
             )
         )
+    }
+
+    private suspend fun handleSave() {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        when (stateValue) {
+            is ContactFormState.Data.Create -> {
+                contactFormUiModelMapper.toDecryptedContact(
+                    contact = stateValue.contact
+                )
+                emitNewStateFor(ContactFormEvent.CreatingContact)
+
+                // Call save UC with mapping result as param here
+
+                emitNewStateFor(ContactFormEvent.ContactCreated)
+            }
+            is ContactFormState.Data.Update -> {
+                val contactId = stateValue.contact.id ?: run {
+                    return emitNewStateFor(ContactFormEvent.SaveContactError)
+                }
+                val decryptedContact = observeDecryptedContact(
+                    userId = primaryUserId(),
+                    contactId = contactId
+                ).first().getOrElse {
+                    Timber.e("Error while getting contact in handleSave")
+                    return emitNewStateFor(ContactFormEvent.SaveContactError)
+                }
+                contactFormUiModelMapper.toDecryptedContact(
+                    contact = stateValue.contact,
+                    contactGroups = decryptedContact.contactGroups,
+                    photos = decryptedContact.photos,
+                    logos = decryptedContact.logos
+                )
+
+                // Call save UC with mapping result as param here
+
+                emitNewStateFor(ContactFormEvent.ContactUpdated)
+            }
+        }
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
