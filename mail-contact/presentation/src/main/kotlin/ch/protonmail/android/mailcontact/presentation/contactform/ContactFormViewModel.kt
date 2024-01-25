@@ -94,7 +94,7 @@ class ContactFormViewModel @Inject constructor(
                     is ContactFormViewAction.OnUpdateDisplayName -> handleDisplayName(action)
                     is ContactFormViewAction.OnUpdateFirstName -> handleFirstName(action)
                     is ContactFormViewAction.OnUpdateLastName -> handleLastName(action)
-                    is ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
+                    ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
                 }
             }
         }
