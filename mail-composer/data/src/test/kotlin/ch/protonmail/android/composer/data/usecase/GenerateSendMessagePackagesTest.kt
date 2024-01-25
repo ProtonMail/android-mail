@@ -22,20 +22,24 @@ import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.test.runTest
 import me.proton.core.crypto.common.context.CryptoContext
+import me.proton.core.crypto.common.pgp.PGPCrypto
+import me.proton.core.crypto.common.srp.Auth
+import me.proton.core.crypto.common.srp.SrpCrypto
 import me.proton.core.key.domain.encryptSessionKey
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.util.kotlin.toInt
 import org.junit.Assert.assertEquals
 import org.junit.Rule
-import org.junit.Test
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.test.Test
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalEncodingApi::class)
@@ -44,7 +48,12 @@ class GenerateSendMessagePackagesTest {
     @get:Rule
     val loggingRule = LoggingTestRule()
 
-    private val cryptoContextMock = mockk<CryptoContext>()
+    private val pgpCryptoMock = mockk<PGPCrypto>()
+    private val srpCryptoMock = mockk<SrpCrypto>()
+    private val cryptoContextMock = mockk<CryptoContext> {
+        every { pgpCrypto } returns pgpCryptoMock
+        every { srpCrypto } returns srpCryptoMock
+    }
 
     private val sut = GenerateSendMessagePackages(cryptoContextMock)
 
@@ -63,7 +72,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -89,7 +100,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             emptyMap(),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -114,7 +127,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -153,7 +168,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -191,7 +208,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -225,7 +244,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -260,7 +281,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.Html,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -297,7 +320,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = false
+            areAllAttachmentsSigned = false,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -339,7 +364,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             emptyMap(),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -376,7 +403,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             emptyMap(),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -411,7 +440,9 @@ class GenerateSendMessagePackagesTest {
             MimeType.PlainText,
             mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
             emptyMap(),
-            areAllAttachmentsSigned = true
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
         )
 
         // Then
@@ -435,6 +466,58 @@ class GenerateSendMessagePackagesTest {
         assertEquals(null, actual.first().bodyKey)
     }
 
+    @Test
+    fun `generate package for EncryptedOutside`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.ClearMime
+        expectEncryptBodySessionKeyWithPassword()
+        expectEncryptAttachmentSessionKeyWithPassword()
+        expectGenerateRandomBytes()
+        expectEncryptTextWithPassword()
+        expectCalculatePasswordVerifier()
+
+        // When
+        val actual = sut(
+            mapOf(SendMessageSample.RecipientEmail to sendPreferences),
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
+            mapOf(SendMessageSample.AttachmentId to SendMessageSample.AttachmentSessionKey),
+            areAllAttachmentsSigned = true,
+            messagePassword = SendMessageSample.MessagePassword,
+            modulus = SendMessageSample.Modulus
+        )
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.EncryptedOutside(
+                    bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
+                    attachmentKeyPackets = mapOf(
+                        SendMessageSample.AttachmentId to Base64.encode(SendMessageSample.EncryptedAttachmentSessionKey)
+                    ),
+                    token = SendMessageSample.Token,
+                    encToken = SendMessageSample.EncryptedToken,
+                    auth = SendMessageSample.Auth,
+                    passwordHint = SendMessageSample.MessagePassword.passwordHint,
+                    signature = true.toInt()
+                )
+            ),
+            mimeType = MimeType.PlainText.value,
+            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+            type = 2
+        )
+
+        // Then
+        assertEquals(listOf(expected), actual)
+        // make sure we don't leak keys, because everything should be encrypted
+        assertEquals(null, actual.first().attachmentKeys)
+        assertEquals(null, actual.first().bodyKey)
+    }
+
     private fun expectPublicKeyEncryptSessionKey(): PublicKey {
         mockkStatic(PublicKey::encryptSessionKey)
         return mockk {
@@ -442,6 +525,53 @@ class GenerateSendMessagePackagesTest {
                 encryptSessionKey(cryptoContextMock, SendMessageSample.BodySessionKey)
             } returns SendMessageSample.RecipientBodyKeyPacket
         }
+    }
+
+    private fun expectEncryptBodySessionKeyWithPassword() {
+        every {
+            pgpCryptoMock.encryptSessionKeyWithPassword(
+                SendMessageSample.BodySessionKey,
+                SendMessageSample.PasswordByteArray
+            )
+        } returns SendMessageSample.RecipientBodyKeyPacket
+    }
+
+    private fun expectEncryptAttachmentSessionKeyWithPassword() {
+        every {
+            pgpCryptoMock.encryptSessionKeyWithPassword(
+                SendMessageSample.AttachmentSessionKey,
+                SendMessageSample.PasswordByteArray
+            )
+        } returns SendMessageSample.EncryptedAttachmentSessionKey
+    }
+
+    private fun expectGenerateRandomBytes() {
+        every { pgpCryptoMock.generateRandomBytes(size = 32) } returns SendMessageSample.TokenByteArray
+    }
+
+    private fun expectEncryptTextWithPassword() {
+        every {
+            pgpCryptoMock.encryptTextWithPassword(
+                SendMessageSample.Token,
+                SendMessageSample.PasswordByteArray
+            )
+        } returns SendMessageSample.EncryptedToken
+    }
+
+    private fun expectCalculatePasswordVerifier() {
+        coEvery {
+            srpCryptoMock.calculatePasswordVerifier(
+                "",
+                SendMessageSample.PasswordByteArray,
+                SendMessageSample.Modulus.modulusId,
+                SendMessageSample.Modulus.modulus
+            )
+        } returns Auth(
+            version = SendMessageSample.Auth.version,
+            modulusId = SendMessageSample.Auth.modulusId,
+            salt = SendMessageSample.Auth.salt,
+            verifier = SendMessageSample.Auth.verifier
+        )
     }
 
 }

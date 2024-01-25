@@ -20,17 +20,22 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackages
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import me.proton.core.auth.domain.entity.Modulus
 import me.proton.core.crypto.common.keystore.EncryptedByteArray
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.EncryptedPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
 import me.proton.core.crypto.common.pgp.PacketType
 import me.proton.core.crypto.common.pgp.SessionKey
+import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
 import me.proton.core.mailsettings.domain.entity.MimeType
 import me.proton.core.mailsettings.domain.entity.PackageType
+import me.proton.core.network.domain.session.SessionId
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -45,6 +50,7 @@ object SendMessageSample {
     val BodySessionKey = SessionKey("BodySessionKey".toByteArray())
     val MimeBodySessionKey = SessionKey("MimeBodySessionKey".toByteArray())
     val AttachmentSessionKey = SessionKey("AttachmentSessionKey".toByteArray())
+    val EncryptedAttachmentSessionKey: KeyPacket = "EncryptedAttachmentSessionKey".toByteArray()
     val EncryptedBodyDataPacket: DataPacket = "EncryptedBodyDataPacket".toByteArray()
     val EncryptedMimeBodyDataPacket: DataPacket = "EncryptedMimeBodyDataPacket".toByteArray()
     val RecipientBodyKeyPacket: KeyPacket = "RecipientBodyKeyPacket".toByteArray()
@@ -91,6 +97,26 @@ object SendMessageSample {
         true,
         EncryptedByteArray("encrypted passphrase".encodeToByteArray())
     )
+
+    const val AttachmentId = "attachmentId"
+    val PasswordByteArray = "password".encodeToByteArray()
+    val MessagePassword = MessagePassword(
+        UserId("userId"), MessageId("messageId"), PasswordByteArray.decodeToString(), "hint"
+    )
+
+    val Modulus = Modulus("modulusId", "modulus")
+    val Auth = SendMessagePackage.Auth(
+        modulusId = Modulus.modulusId,
+        version = 4,
+        salt = "salt",
+        verifier = "verifier"
+    )
+
+    val TokenByteArray = "token".encodeToByteArray()
+    val Token = Base64.encode(TokenByteArray)
+    const val EncryptedToken = "encryptedToken"
+
+    val SessionId = SessionId("sessionId")
 
     object SendPreferences {
 

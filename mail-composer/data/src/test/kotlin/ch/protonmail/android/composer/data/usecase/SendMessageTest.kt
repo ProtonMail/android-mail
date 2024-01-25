@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.Participant
@@ -46,6 +47,8 @@ import io.mockk.mockk
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import me.proton.core.account.domain.repository.AccountRepository
+import me.proton.core.auth.domain.repository.AuthRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.entity.key.PublicKey
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
@@ -62,6 +65,8 @@ import kotlin.test.assertEquals
 
 class SendMessageTest {
 
+    private val accountRepository = mockk<AccountRepository>()
+    private val authRepository = mockk<AuthRepository>()
     private val messageRemoteDataSource = mockk<MessageRemoteDataSource>()
     private val resolveUserAddress = mockk<ResolveUserAddress>()
     private val generateMessagePackages = mockk<GenerateMessagePackages>()
@@ -69,15 +74,19 @@ class SendMessageTest {
     private val obtainSendPreferences = mockk<ObtainSendPreferences>()
     private val observeMailSettings = mockk<ObserveMailSettings>()
     private val getAttachmentFiles = mockk<GetAttachmentFiles>()
+    private val observeMessagePassword = mockk<ObserveMessagePassword>()
 
     private val sendMessage = SendMessage(
+        accountRepository,
+        authRepository,
         messageRemoteDataSource,
         resolveUserAddress,
         generateMessagePackages,
         findLocalDraft,
         obtainSendPreferences,
         observeMailSettings,
-        getAttachmentFiles
+        getAttachmentFiles,
+        observeMessagePassword
     )
 
     private val userId = UserAddressSample.PrimaryAddress.userId
@@ -180,6 +189,7 @@ class SendMessageTest {
         expectReadAttachmentsFromStorageSucceeds(attachmentIds, attachments)
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
         expectSendOperationSucceeds(messagePackages)
+        expectMessagePasswordDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -202,6 +212,7 @@ class SendMessageTest {
         expectReadAttachmentsFromStorageSucceeds(attachmentIds, attachments)
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
         expectSendOperationSucceeds(messagePackages)
+        expectMessagePasswordDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -221,6 +232,7 @@ class SendMessageTest {
         expectObtainSendPreferencesSucceeds { sendPreferences }
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         expectSendOperationSucceeds(messagePackages)
+        expectMessagePasswordDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -239,12 +251,15 @@ class SendMessageTest {
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
         expectObserveMailSettingsReturnsNull()
+        expectMessagePasswordDoesNotExist()
         coEvery {
             generateMessagePackages(
                 senderAddress,
                 sampleMessage,
                 sendPreferences.forMessagePackages(),
-                emptyMap()
+                emptyMap(),
+                null,
+                null
             )
         } returns GenerateMessagePackages.Error.GeneratingPackages.left()
 
@@ -264,6 +279,7 @@ class SendMessageTest {
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
         expectObserveMailSettingsReturnsNull()
+        expectMessagePasswordDoesNotExist()
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         coEvery {
             messageRemoteDataSource.send(
@@ -289,6 +305,7 @@ class SendMessageTest {
         expectObserveMailSettingsReturnsNull()
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         expectSendOperationSucceeds(messagePackages)
+        expectMessagePasswordDoesNotExist()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -315,6 +332,7 @@ class SendMessageTest {
                 sendPreferences = sendPreferences, expectedMessage = expectedMessage
             )
             expectSendOperationSucceeds(messagePackages)
+            expectMessagePasswordDoesNotExist()
 
             // When
             val result = sendMessage(userId, messageId)
@@ -342,6 +360,7 @@ class SendMessageTest {
                 sendPreferences = sendPreferences, expectedMessage = expectedMessage
             )
             expectSendOperationSucceeds(messagePackages)
+            expectMessagePasswordDoesNotExist()
 
             // When
             val result = sendMessage(userId, messageId)
@@ -363,6 +382,30 @@ class SendMessageTest {
 
         // Then
         assertEquals(SendMessage.Error.SendPreferences(emptyMap()).left(), result)
+    }
+
+    @Test
+    fun `when message password exists, get random modulus`() = runTest {
+        // Given
+        val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, doesMessagePasswordExist = true)
+        expectSendOperationSucceeds(messagePackages)
+        expectMessagePasswordExists()
+        expectGetSessionIdSucceeds()
+        expectGetRandomModulusSucceeds()
+
+        // When
+        val result = sendMessage(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), result)
+        coVerify {
+            accountRepository.getSessionIdOrNull(userId)
+            authRepository.randomModulus(SendMessageSample.SessionId)
+        }
     }
 
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {
@@ -406,14 +449,17 @@ class SendMessageTest {
     private fun expectGenerateMessagePackagesSucceeds(
         sendPreferences: Map<String, ObtainSendPreferences.Result>,
         attachments: Map<AttachmentId, File> = emptyMap(),
-        expectedMessage: MessageWithBody = sampleMessage
+        expectedMessage: MessageWithBody = sampleMessage,
+        doesMessagePasswordExist: Boolean = false
     ) = generateSendPackages(UserAddressSample.PrimaryAddress.email).also { messagePackages ->
         coEvery {
             generateMessagePackages(
                 UserAddressSample.PrimaryAddress,
                 expectedMessage,
                 sendPreferences.forMessagePackages(),
-                attachments
+                attachments,
+                if (doesMessagePasswordExist) SendMessageSample.MessagePassword else null,
+                if (doesMessagePasswordExist) SendMessageSample.Modulus else null
             )
         } returns messagePackages.right()
     }
@@ -426,6 +472,22 @@ class SendMessageTest {
                 generateSendMessageBody(messagePackages)
             )
         } returns SendMessageResponse(200, mockk()).right()
+    }
+
+    private fun expectMessagePasswordExists() {
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(SendMessageSample.MessagePassword)
+    }
+
+    private fun expectMessagePasswordDoesNotExist() {
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
+    }
+
+    private fun expectGetSessionIdSucceeds() {
+        coEvery { accountRepository.getSessionIdOrNull(userId) } returns SendMessageSample.SessionId
+    }
+
+    private fun expectGetRandomModulusSucceeds() {
+        coEvery { authRepository.randomModulus(SendMessageSample.SessionId) } returns SendMessageSample.Modulus
     }
 
     private fun generateDraftMessage(

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -164,7 +165,9 @@ class GenerateMessagePackagesTest {
             userAddress,
             draft,
             sendPreferences,
-            mapOf(attachment.attachmentId to attachmentFile)
+            mapOf(attachment.attachmentId to attachmentFile),
+            SendMessageSample.MessagePassword,
+            SendMessageSample.Modulus
         )
 
         // Then
@@ -194,7 +197,7 @@ class GenerateMessagePackagesTest {
         recipient3: String,
         recipient4: String
     ) {
-        every {
+        coEvery {
             generateSendMessagePackagesMock.invoke(
                 mapOf(
                     recipient1 to SendMessageSample.SendPreferences.ProtonMail,
@@ -214,7 +217,9 @@ class GenerateMessagePackagesTest {
                     )
                 ),
                 mapOf(MessageAttachmentSample.document.attachmentId.id to SendMessageSample.AttachmentSessionKey),
-                areAllAttachmentsSigned = false
+                areAllAttachmentsSigned = false,
+                messagePassword = SendMessageSample.MessagePassword,
+                modulus = SendMessageSample.Modulus
             )
         } returns listOf(
             SendMessagePackage(
