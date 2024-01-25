@@ -29,9 +29,9 @@ import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
-import ch.protonmail.android.mailcontact.presentation.model.emptyRandomOtherField
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
+import ch.protonmail.android.mailcontact.presentation.model.emptyRandomOtherField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -104,21 +104,32 @@ class ContactFormViewModel @Inject constructor(
         emitNewStateFor(
             ContactFormEvent.UpdateContactFormUiModel(
                 when (action.section) {
-                    Section.Emails -> contact.copy(
-                        emails = contact.emails.plus(emptyEmailField)
-                    )
-                    Section.Telephones -> contact.copy(
-                        telephones = contact.telephones.plus(emptyTelephoneField)
-                    )
-                    Section.Addresses -> contact.copy(
-                        addresses = contact.addresses.plus(emptyAddressField)
-                    )
-                    Section.Notes -> contact.copy(
-                        notes = contact.notes.plus(emptyNoteField)
-                    )
-                    Section.Others -> contact.copy(
-                        others = contact.others.plus(emptyRandomOtherField())
-                    )
+                    Section.Emails -> {
+                        // We need to make a new list here through `toMutableList` so that it triggers recomposition
+                        val newEmails = contact.emails.toMutableList()
+                        newEmails.add(emptyEmailField)
+                        contact.copy(emails = newEmails)
+                    }
+                    Section.Telephones -> {
+                        val newTelephones = contact.telephones.toMutableList()
+                        newTelephones.add(emptyTelephoneField)
+                        contact.copy(telephones = newTelephones)
+                    }
+                    Section.Addresses -> {
+                        val newAddresses = contact.addresses.toMutableList()
+                        newAddresses.add(emptyAddressField)
+                        contact.copy(addresses = newAddresses)
+                    }
+                    Section.Notes -> {
+                        val newNotes = contact.notes.toMutableList()
+                        newNotes.add(emptyNoteField)
+                        contact.copy(notes = newNotes)
+                    }
+                    Section.Others -> {
+                        val newOthers = contact.others.toMutableList()
+                        newOthers.add(emptyRandomOtherField())
+                        contact.copy(others = newOthers)
+                    }
                 }
             )
         )
@@ -132,24 +143,30 @@ class ContactFormViewModel @Inject constructor(
             ContactFormEvent.UpdateContactFormUiModel(
                 when (action.section) {
                     Section.Emails -> {
-                        val mutableEmails = contact.emails.toMutableList().apply { this.removeAt(action.index) }
-                        contact.copy(emails = mutableEmails)
+                        // We need to make a new list here through `toMutableList` so that it triggers recomposition
+                        val newEmails = contact.emails.toMutableList()
+                        newEmails.removeAt(action.index)
+                        contact.copy(emails = newEmails)
                     }
                     Section.Telephones -> {
-                        val mutableTelephones = contact.telephones.toMutableList().apply { this.removeAt(action.index) }
-                        contact.copy(telephones = mutableTelephones)
+                        val newTelephones = contact.telephones.toMutableList()
+                        newTelephones.removeAt(action.index)
+                        contact.copy(telephones = newTelephones)
                     }
                     Section.Addresses -> {
-                        val mutableAddresses = contact.addresses.toMutableList().apply { this.removeAt(action.index) }
-                        contact.copy(addresses = mutableAddresses)
+                        val newAddresses = contact.addresses.toMutableList()
+                        newAddresses.removeAt(action.index)
+                        contact.copy(addresses = newAddresses)
                     }
                     Section.Notes -> {
-                        val mutableNotes = contact.notes.toMutableList().apply { this.removeAt(action.index) }
-                        contact.copy(notes = mutableNotes)
+                        val newNotes = contact.notes.toMutableList()
+                        newNotes.removeAt(action.index)
+                        contact.copy(notes = newNotes)
                     }
                     Section.Others -> {
-                        val mutableOthers = contact.others.toMutableList().apply { this.removeAt(action.index) }
-                        contact.copy(others = mutableOthers)
+                        val newOthers = contact.others.toMutableList()
+                        newOthers.removeAt(action.index)
+                        contact.copy(others = newOthers)
                     }
                 }
             )
