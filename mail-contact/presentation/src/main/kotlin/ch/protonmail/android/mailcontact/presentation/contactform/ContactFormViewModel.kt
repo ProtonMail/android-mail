@@ -181,31 +181,33 @@ class ContactFormViewModel @Inject constructor(
             ContactFormEvent.UpdateContactFormUiModel(
                 when (action.section) {
                     Section.Emails -> {
-                        val mutableEmails = contact.emails.toMutableList().apply {
+                        // We don't want to trigger recomposition here so we just update the item at specified index
+                        //  without making a new list.
+                        val mutableEmails = contact.emails.apply {
                             this[action.index] = action.newValue as InputField.SingleTyped
                         }
                         contact.copy(emails = mutableEmails)
                     }
                     Section.Telephones -> {
-                        val mutableTelephones = contact.telephones.toMutableList().apply {
+                        val mutableTelephones = contact.telephones.apply {
                             this[action.index] = action.newValue as InputField.SingleTyped
                         }
                         contact.copy(telephones = mutableTelephones)
                     }
                     Section.Addresses -> {
-                        val mutableAddresses = contact.addresses.toMutableList().apply {
+                        val mutableAddresses = contact.addresses.apply {
                             this[action.index] = action.newValue as InputField.Address
                         }
                         contact.copy(addresses = mutableAddresses)
                     }
                     Section.Notes -> {
-                        val mutableNotes = contact.notes.toMutableList().apply {
+                        val mutableNotes = contact.notes.apply {
                             this[action.index] = action.newValue as InputField.Note
                         }
                         contact.copy(notes = mutableNotes)
                     }
                     Section.Others -> {
-                        val mutableOthers = contact.others.toMutableList().apply {
+                        val mutableOthers = contact.others.apply {
                             this[action.index] = action.newValue
                         }
                         contact.copy(others = mutableOthers)
