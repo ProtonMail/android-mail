@@ -180,7 +180,9 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    emails = emptyContactFormUiModel.emails.plus(emptyEmailField)
+                    emails = emptyContactFormUiModel.emails.apply {
+                        this.add(emptyEmailField)
+                    }
                 )
             )
 
@@ -203,7 +205,9 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    telephones = emptyContactFormUiModel.telephones.plus(emptyTelephoneField)
+                    telephones = emptyContactFormUiModel.telephones.apply {
+                        this.add(emptyTelephoneField)
+                    }
                 )
             )
 
@@ -226,7 +230,9 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    addresses = emptyContactFormUiModel.addresses.plus(emptyAddressField)
+                    addresses = emptyContactFormUiModel.addresses.apply {
+                        this.add(emptyAddressField)
+                    }
                 )
             )
 
@@ -249,7 +255,9 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    notes = emptyContactFormUiModel.notes.plus(emptyNoteField)
+                    notes = emptyContactFormUiModel.notes.apply {
+                        this.add(emptyNoteField)
+                    }
                 )
             )
 
@@ -272,9 +280,11 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    others = emptyContactFormUiModel.others.plus(
-                        (contactFormViewModel.state.value as ContactFormState.Data.Create).contact.others.last()
-                    )
+                    others = emptyContactFormUiModel.others.apply {
+                        this.add(
+                            (contactFormViewModel.state.value as ContactFormState.Data.Create).contact.others.last()
+                        )
+                    }
                 )
             )
 
@@ -297,11 +307,9 @@ class ContactFormViewModelTest {
             )
 
             val actual = awaitItem()
-            val newEmails = contactFormUiModel.emails.toMutableList()
-            newEmails.removeAt(0)
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
-                    emails = newEmails
+                    emails = contactFormUiModel.emails.apply { this.removeAt(0) }
                 )
             )
 
@@ -324,11 +332,9 @@ class ContactFormViewModelTest {
             )
 
             val actual = awaitItem()
-            val newTelephones = contactFormUiModel.telephones.toMutableList()
-            newTelephones.removeAt(0)
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
-                    telephones = newTelephones
+                    telephones = contactFormUiModel.telephones.apply { this.removeAt(0) }
                 )
             )
 
@@ -351,11 +357,9 @@ class ContactFormViewModelTest {
             )
 
             val actual = awaitItem()
-            val newAddresses = contactFormUiModel.addresses.toMutableList()
-            newAddresses.removeAt(0)
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
-                    addresses = newAddresses
+                    addresses = contactFormUiModel.addresses.apply { this.removeAt(0) }
                 )
             )
 
@@ -378,11 +382,9 @@ class ContactFormViewModelTest {
             )
 
             val actual = awaitItem()
-            val newNotes = contactFormUiModel.notes.toMutableList()
-            newNotes.removeAt(0)
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
-                    notes = newNotes
+                    notes = contactFormUiModel.notes.apply { this.removeAt(0) }
                 )
             )
 
@@ -405,11 +407,9 @@ class ContactFormViewModelTest {
             )
 
             val actual = awaitItem()
-            val newOthers = contactFormUiModel.others.toMutableList()
-            newOthers.removeAt(0)
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
-                    others = newOthers
+                    others = contactFormUiModel.others.apply { this.removeAt(0) }
                 )
             )
 
