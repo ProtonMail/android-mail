@@ -187,7 +187,7 @@ class ContactFormUiModelMapperTest {
             displayName = "Mario@protonmail.com",
             firstName = "Mario First Name",
             lastName = "Mario Last Name",
-            emails = listOf(
+            emails = mutableListOf(
                 InputField.SingleTyped(
                     value = "Mario@protonmail.com",
                     selectedType = FieldType.EmailType.Email
@@ -205,7 +205,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.EmailType.Other
                 )
             ),
-            telephones = listOf(
+            telephones = mutableListOf(
                 InputField.SingleTyped(
                     value = "1231231235",
                     selectedType = FieldType.TelephoneType.Telephone
@@ -239,7 +239,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.TelephoneType.Pager
                 )
             ),
-            addresses = listOf(
+            addresses = mutableListOf(
                 InputField.Address(
                     streetAddress = "Address Street1",
                     city = "City",
@@ -276,7 +276,7 @@ class ContactFormUiModelMapperTest {
             birthday = InputField.Birthday(
                 value = LocalDate.of(2023, 12, 14)
             ),
-            notes = listOf(
+            notes = mutableListOf(
                 InputField.Note(
                     value = "Note1"
                 ),
@@ -284,7 +284,7 @@ class ContactFormUiModelMapperTest {
                     value = "Note2"
                 )
             ),
-            others = listOf(
+            others = mutableListOf(
                 InputField.SingleTyped(
                     value = "Organization1",
                     selectedType = FieldType.OtherType.Organization

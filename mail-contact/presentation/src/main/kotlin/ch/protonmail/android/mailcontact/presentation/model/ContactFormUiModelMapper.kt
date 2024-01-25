@@ -38,13 +38,13 @@ class ContactFormUiModelMapper @Inject constructor(
                     value = it.value,
                     selectedType = FieldType.EmailType.valueOf(it.type.name)
                 )
-            },
+            }.toMutableList(),
             telephones = decryptedContact.telephones.map {
                 InputField.SingleTyped(
                     value = it.text,
                     selectedType = FieldType.TelephoneType.valueOf(it.type.name)
                 )
-            },
+            }.toMutableList(),
             addresses = decryptedContact.addresses.map {
                 InputField.Address(
                     streetAddress = it.streetAddress,
@@ -54,7 +54,7 @@ class ContactFormUiModelMapper @Inject constructor(
                     country = it.country,
                     selectedType = FieldType.AddressType.valueOf(it.type.name)
                 )
-            },
+            }.toMutableList(),
             birthday = decryptedContact.birthday?.let {
                 InputField.Birthday(value = it.date)
             },
@@ -62,13 +62,13 @@ class ContactFormUiModelMapper @Inject constructor(
                 InputField.Note(
                     value = it.value
                 )
-            },
+            }.toMutableList(),
             others = buildOthers(decryptedContact),
             otherTypes = FieldType.OtherType.values().toList()
         )
     }
 
-    private fun buildOthers(decryptedContact: DecryptedContact): List<InputField> {
+    private fun buildOthers(decryptedContact: DecryptedContact): MutableList<InputField> {
         val others = arrayListOf<InputField>()
         decryptedContact.photos.forEachIndexed { index, photo ->
             // Skip first index as we use it for avatar already

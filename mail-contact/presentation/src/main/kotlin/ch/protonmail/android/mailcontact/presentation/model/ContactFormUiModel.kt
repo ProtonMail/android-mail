@@ -35,12 +35,13 @@ data class ContactFormUiModel(
     val displayName: String,
     val firstName: String,
     val lastName: String,
-    val emails: List<InputField.SingleTyped>,
-    val telephones: List<InputField.SingleTyped>,
-    val addresses: List<InputField.Address>,
+    // Using `MutableList` so that the items content can be updated without recomposing the instantiated list items.
+    val emails: MutableList<InputField.SingleTyped>,
+    val telephones: MutableList<InputField.SingleTyped>,
+    val addresses: MutableList<InputField.Address>,
     val birthday: InputField.Birthday?,
-    val notes: List<InputField.Note>,
-    val others: List<InputField>,
+    val notes: MutableList<InputField.Note>,
+    val others: MutableList<InputField>,
     val otherTypes: List<FieldType.OtherType>
 )
 
@@ -158,12 +159,12 @@ val emptyContactFormUiModel = ContactFormUiModel(
     displayName = "",
     firstName = "",
     lastName = "",
-    emails = emptyList(),
-    telephones = emptyList(),
-    addresses = emptyList(),
+    emails = mutableListOf(),
+    telephones = mutableListOf(),
+    addresses = mutableListOf(),
     birthday = null,
-    notes = emptyList(),
-    others = emptyList(),
+    notes = mutableListOf(),
+    others = mutableListOf(),
     otherTypes = FieldType.OtherType.values().toList()
 )
 val emptyEmailField = InputField.SingleTyped(
