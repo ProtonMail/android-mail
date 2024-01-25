@@ -449,8 +449,7 @@ internal fun NavGraphBuilder.addContactDetails(
 internal fun NavGraphBuilder.addContactForm(
     navController: NavHostController,
     showSuccessSnackbar: (message: String) -> Unit,
-    showErrorSnackbar: (message: String) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    showErrorSnackbar: (message: String) -> Unit
 ) {
 
     val actions = ContactFormScreen.Actions.Empty.copy(

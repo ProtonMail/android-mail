@@ -71,7 +71,7 @@ class ContactFormUiModelMapper @Inject constructor(
         )
     }
 
-    @SuppressWarnings("LongMethod")
+    @SuppressWarnings("LongMethod", "ComplexMethod")
     fun toDecryptedContact(
         contact: ContactFormUiModel,
         contactGroups: List<ContactGroup> = listOf(),
@@ -136,7 +136,7 @@ class ContactFormUiModelMapper @Inject constructor(
             }
         }
         return DecryptedContact(
-            id = contact.id ?: ContactId(""), // TODO Empty for create ?
+            id = contact.id ?: ContactId(""),
             contactGroups = contactGroups,
             structuredName = ContactProperty.StructuredName(
                 family = contact.lastName,
