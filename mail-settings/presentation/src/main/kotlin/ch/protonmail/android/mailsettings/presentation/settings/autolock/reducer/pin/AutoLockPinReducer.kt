@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.autolock.reduce
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPromptUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -35,7 +36,8 @@ class AutoLockPinReducer @Inject constructor(
     private val stepUiMapper: AutoLockPinStepUiMapper,
     private val successfulOperationUiMapper: AutoLockSuccessfulOperationUiMapper,
     private val errorsUiMapper: AutoLockPinErrorUiMapper,
-    private val biometricPinUiMapper: AutoLockBiometricPinUiMapper
+    private val biometricPinUiMapper: AutoLockBiometricPinUiMapper,
+    private val biometricPromptUiMapper: AutoLockBiometricPromptUiMapper
 ) {
 
     fun newStateFrom(currentState: AutoLockPinState, operation: AutoLockPinEvent) =
@@ -152,6 +154,7 @@ class AutoLockPinReducer @Inject constructor(
 
     private fun AutoLockPinEvent.Data.Loaded.toDataState(): AutoLockPinState.DataLoaded {
         val biometricPinState = biometricPinUiMapper.toUiModel(initialBiometricsState, step)
+        val showBiometricPromptEffect = biometricPromptUiMapper.toUiModel(initialBiometricsState)
         val pinInsertionUiModel = PinInsertionUiModel(InsertedPin.Empty)
         val topBarUiModel = stepUiMapper.toTopBarUiModel(step)
         val confirmButtonUiModel = stepUiMapper.toConfirmButtonUiModel(isEnabled = false, step)
@@ -169,6 +172,7 @@ class AutoLockPinReducer @Inject constructor(
             confirmButtonState = AutoLockPinState.ConfirmButtonState(confirmButtonUiModel),
             signOutButtonState = AutoLockPinState.SignOutButtonState(signOutUiModel),
             biometricPinState = biometricPinState,
+            showBiometricPromptEffect = showBiometricPromptEffect,
             closeScreenEffect = Effect.empty(),
             pinInsertionErrorEffect = errorEffect,
             snackbarSuccessEffect = Effect.empty()

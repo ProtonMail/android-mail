@@ -31,6 +31,7 @@ sealed interface AutoLockPinState {
         val confirmButtonState: ConfirmButtonState,
         val signOutButtonState: SignOutButtonState,
         val biometricPinState: BiometricPinUiModel,
+        val showBiometricPromptEffect: Effect<Unit>,
         val closeScreenEffect: Effect<Unit>,
         val pinInsertionErrorEffect: Effect<TextUiModel>,
         val snackbarSuccessEffect: Effect<TextUiModel>

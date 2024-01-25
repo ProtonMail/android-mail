@@ -45,6 +45,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.A
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.reducer.AutoLockSettingsReducer
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -113,9 +114,9 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should return default values when settings are not present`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         every { observeAutoLockEnabled() } returns flowOf(AutoLockPreferenceError.DataStoreError.left())
         every { observeSelectedAutoLockInterval() } returns flowOf(AutoLockPreferenceError.DataStoreError.left())
+        expectAutoLockBiometricState()
 
         // When + Then
         viewModel.state.test {
@@ -153,10 +154,10 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should update the state when the auto lock preference is toggled`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference()
         expectAutoLockInterval()
         coEvery { toggleAutoLockEnabled(false) } returns Unit.right()
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(
             AutoLockSettingsState.DataLoaded.AutoLockEnabledState(AutoLockEnabledUiModel(false))
@@ -174,9 +175,9 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should update the biometric state when the biometric preference is toggled`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference()
         expectAutoLockInterval()
+        expectAutoLockBiometricState()
         coEvery { toggleAutoLockBiometricsPreference(false) } returns Unit.right()
         val expectedState = defaultBaseState.copy(
             autoLockEnabledState = AutoLockSettingsState.DataLoaded.AutoLockEnabledState(AutoLockEnabledUiModel(true)),
@@ -198,9 +199,9 @@ internal class AutoLockSettingsViewModelTest {
     fun `should not update the biometric state when the biometric preference is toggled given biometric hw error`() =
         runTest {
             // Given
-            expectAutoLockBiometricHwError()
             expectAutoLockPreference()
             expectAutoLockInterval()
+            expectAutoLockBiometricHwError()
             val biometricErrorState = AutoLockBiometricsUiModel(
                 enabled = false,
                 biometricsEnrolled = false,
@@ -229,7 +230,7 @@ internal class AutoLockSettingsViewModelTest {
                 )
 
                 assertEquals(expectedToggleState, awaitItem())
-                coVerify(exactly = 0) { toggleAutoLockBiometricsPreference(false) }
+                coVerify { toggleAutoLockBiometricsPreference wasNot called }
             }
         }
 
@@ -237,9 +238,9 @@ internal class AutoLockSettingsViewModelTest {
     fun `should not update biometric state when the biometric preference is toggled given biometric not enrolled`() =
         runTest {
             // Given
-            expectAutoLockBiometricNotEnrolledError()
             expectAutoLockPreference()
             expectAutoLockInterval()
+            expectAutoLockBiometricNotEnrolledError()
             val biometricErrorState = AutoLockBiometricsUiModel(
                 enabled = false,
                 biometricsEnrolled = false,
@@ -268,17 +269,17 @@ internal class AutoLockSettingsViewModelTest {
                 )
 
                 assertEquals(expectedToggleState, awaitItem())
-                coVerify(exactly = 0) { toggleAutoLockBiometricsPreference(false) }
+                coVerify { toggleAutoLockBiometricsPreference wasNot called }
             }
         }
 
     @Test
     fun `should update the state when the auto lock interval is manually set`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference(isEnabled = false)
         expectAutoLockInterval()
         coEvery { updateAutoLockInterval(AutoLockInterval.OneHour) } returns Unit.right()
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(
             autoLockIntervalsState = AutoLockSettingsState.DataLoaded.AutoLockIntervalState(
@@ -302,11 +303,11 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should force pin creation when pin does not exist or is empty and feature is enabled`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference(false)
         expectAutoLockInterval()
         coEvery { toggleAutoLockEnabled(true) } returns Unit.right()
         coEvery { observeAutoLockPinValue() } returns flowOf(AutoLockPin("").right())
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(forceOpenPinCreation = Effect.of(Unit))
 
@@ -322,7 +323,6 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should signal an error when auto lock preference cannot be updated`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference(false)
         expectAutoLockInterval()
         coEvery {
@@ -331,6 +331,7 @@ internal class AutoLockSettingsViewModelTest {
         coEvery {
             observeAutoLockPinValue()
         } returns flowOf(AutoLockTestData.BaseAutoLockPin.right())
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(updateError = Effect.of(Unit))
 
@@ -346,12 +347,12 @@ internal class AutoLockSettingsViewModelTest {
     @Test
     fun `should signal an error when auto lock interval cannot be updated`() = runTest {
         // Given
-        expectAutoLockBiometricState()
         expectAutoLockPreference(isEnabled = false)
         expectAutoLockInterval()
         coEvery {
             updateAutoLockInterval(AutoLockInterval.OneHour)
         } returns AutoLockPreferenceError.DataStoreError.left()
+        expectAutoLockBiometricState()
 
         val expectedState = defaultBaseState.copy(updateError = Effect.of(Unit))
 

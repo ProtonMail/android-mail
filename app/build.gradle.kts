@@ -209,6 +209,7 @@ dependencies {
     implementation(Dependencies.appLibs)
     implementation(KotlinX.immutableCollections)
     implementation(Proton.Core.proguardRules)
+    implementation(AndroidX.Biometrics.biometric)
 
     implementation(project(":mail-common"))
     implementation(project(":mail-composer"))

@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -415,7 +416,8 @@ fun Home(
                         scope.launch {
                             snackbarHostSuccessState.showSnackbar(message = it, type = ProtonSnackbarType.SUCCESS)
                         }
-                    }
+                    },
+                    activityActions = LockScreenActivity.Actions.Empty
                 )
                 addSwipeActionsSettings(navController)
                 addThemeSettings(navController)

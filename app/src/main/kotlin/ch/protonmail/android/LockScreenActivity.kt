@@ -18,12 +18,16 @@
 
 package ch.protonmail.android
 
+import java.util.concurrent.Executors
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricPrompt
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.BiometricPromptCallback
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +36,8 @@ import me.proton.core.compose.theme.ProtonTheme
 
 @AndroidEntryPoint
 internal class LockScreenActivity : AppCompatActivity() {
+
+    private var biometricPrompt: BiometricPrompt? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +52,13 @@ internal class LockScreenActivity : AppCompatActivity() {
                 ) {
                     addAutoLockPinScreen(
                         onShowSuccessSnackbar = {},
-                        onBack = { this@LockScreenActivity.finish() }
+                        onBack = { this@LockScreenActivity.finish() },
+                        activityActions = Actions(
+                            finishActivity = { finish() },
+                            showBiometricPrompt = { callback ->
+                                showBiometricPrompt(callback)
+                            }
+                        )
                     )
                 }
 
@@ -56,6 +68,53 @@ internal class LockScreenActivity : AppCompatActivity() {
                     popUpTo(navController.graph.id) { inclusive = true }
                 }
             }
+        }
+    }
+
+    private fun showBiometricPrompt(callback: BiometricPromptCallback) {
+        val executor = Executors.newSingleThreadExecutor()
+        biometricPrompt = BiometricPrompt(
+            this, executor,
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    callback.onAuthenticationError()
+
+                    if (!this@LockScreenActivity.isFinishing &&
+                        lifecycle.currentState.isAtLeast(Lifecycle.State.CREATED)
+                    ) {
+                        biometricPrompt?.cancelAuthentication()
+                        biometricPrompt = null
+                    }
+                }
+
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+
+                    callback.onAuthenticationSucceeded()
+                }
+            }
+        )
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle(getString(R.string.app_locked))
+            .setDescription(getString(R.string.log_in_using_biometric_credential))
+            .setNegativeButtonText(getString(R.string.use_pin_instead))
+            .build()
+        biometricPrompt?.authenticate(promptInfo)
+    }
+
+
+    data class Actions(
+        val finishActivity: () -> Unit,
+        val showBiometricPrompt: (BiometricPromptCallback) -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                finishActivity = {},
+                showBiometricPrompt = {}
+            )
         }
     }
 }

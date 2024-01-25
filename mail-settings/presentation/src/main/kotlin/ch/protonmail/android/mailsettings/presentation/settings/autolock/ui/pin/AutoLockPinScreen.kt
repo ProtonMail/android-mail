@@ -27,27 +27,35 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.BiometricPromptCallback
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.pin.AutoLockPinViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmodel.pin.AutoLockPinViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
+import timber.log.Timber
 
 @Composable
 @Suppress("UseComposableActions")
 fun AutoLockPinScreen(
     onBackClick: () -> Unit,
     onShowSuccessSnackbar: (String) -> Unit,
+    onBiometricsClick: (BiometricPromptCallback) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AutoLockPinViewModel = hiltViewModel()
 ) {
     val state: AutoLockPinState by viewModel.state.collectAsState()
+
+    val biometricPromptCallback = BiometricPromptCallback(
+        onAuthenticationError = { Timber.d("Biometric authentication failed!") },
+        onAuthenticationSucceeded = { viewModel.submit(AutoLockPinViewAction.BiometricAuthenticationSucceeded) }
+    )
 
     val actions = AutoLockPinDetailScreen.Actions(
         onBackspaceClick = { viewModel.submit(AutoLockPinViewAction.RemovePinDigit) },
         onDigitAdded = { viewModel.submit(AutoLockPinViewAction.AddPinDigit(it)) },
         onBack = { viewModel.submit(AutoLockPinViewAction.PerformBack) },
         onConfirmation = { viewModel.submit(AutoLockPinViewAction.PerformConfirm) },
-        onBiometricsClick = {},
+        onBiometricsClick = { onBiometricsClick(biometricPromptCallback) },
         onShowSuccessSnackbar = onShowSuccessSnackbar
     )
 
@@ -97,6 +105,9 @@ fun AutoLockPinScreen(
                     }
                     ConsumableTextEffect(state.snackbarSuccessEffect) {
                         actions.onShowSuccessSnackbar(it)
+                    }
+                    ConsumableLaunchedEffect(effect = state.showBiometricPromptEffect) {
+                        actions.onBiometricsClick()
                     }
                 }
             }

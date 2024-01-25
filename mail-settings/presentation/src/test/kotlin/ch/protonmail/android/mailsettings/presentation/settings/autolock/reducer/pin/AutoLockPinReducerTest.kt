@@ -24,6 +24,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLo
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPromptUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -43,7 +44,7 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
 
     private val reducer = AutoLockPinReducer(
         stepMapper, operationMapper, errorMapper,
-        biometricPinUiMapper
+        biometricPinUiMapper, biometricPromptUiMapper
     )
 
     @Test
@@ -61,6 +62,7 @@ internal class AutoLockPinReducerTest(private val testInput: TestInput) {
         val operationMapper = AutoLockSuccessfulOperationUiMapper()
         val errorMapper = AutoLockPinErrorUiMapper()
         val biometricPinUiMapper = AutoLockBiometricPinUiMapper()
+        val biometricPromptUiMapper = AutoLockBiometricPromptUiMapper()
 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")

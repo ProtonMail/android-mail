@@ -112,6 +112,7 @@ class AutoLockPinViewModel @Inject constructor(
                 AutoLockPinViewAction.RequestSignOut -> onSignOutRequested()
                 AutoLockPinViewAction.ConfirmSignOut -> onSignOutConfirmed()
                 AutoLockPinViewAction.CancelSignOut -> onSignOutCanceled()
+                AutoLockPinViewAction.BiometricAuthenticationSucceeded -> onBiometricAuthenticationSucceeded()
             }
         }
     }
@@ -209,6 +210,21 @@ class AutoLockPinViewModel @Inject constructor(
         }
 
         continuation()
+    }
+
+    private suspend fun onBiometricAuthenticationSucceeded() {
+        updateRemainingAutoLockAttempts(PinVerificationRemainingAttempts.MaxAttempts).onLeft {
+            Timber.e("Unable to reset remaining auto lock attempts. - $it")
+        }
+
+        toggleAutoLockAttemptStatus(value = false).onLeft {
+            Timber.e("Unable to reset pending lock attempt. - $it")
+        }
+
+        updateAutoLockLastForegroundMillis(Long.MAX_VALUE).onLeft {
+            Timber.e("Unable to update last foreground millis - $it")
+        }
+        emitNewStateFrom(AutoLockPinEvent.Update.VerificationCompleted)
     }
 
     private suspend fun onPerformConfirm() {

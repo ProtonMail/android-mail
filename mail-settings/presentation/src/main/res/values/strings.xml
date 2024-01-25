@@ -159,6 +159,7 @@
     <string name="mail_settings_generic_error_message">An error occurred. Try again.</string>
     <!-- strings used for biometric enrollment -->
     <string name="no_biometric_data_enrolled">No biometric data enrolled</string>
+    <string name="log_in_using_biometric_credential">Unlock using your biometric credentials</string>
     <string name="unlock_using_biometrics">Unlock using biometrics</string>
     <string name="biometric_error_hw_not_available">Biometric hardware not available.</string>
 </resources>

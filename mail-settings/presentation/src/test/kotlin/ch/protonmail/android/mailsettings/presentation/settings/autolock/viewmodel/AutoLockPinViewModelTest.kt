@@ -41,6 +41,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.autolock.biometric.Obse
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.helpers.AutoLockTestData
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPinUiMapper
+import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockBiometricPromptUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinErrorUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockPinStepUiMapper
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.mapper.pin.AutoLockSuccessfulOperationUiMapper
@@ -93,7 +94,8 @@ internal class AutoLockPinViewModelTest {
         AutoLockPinStepUiMapper(),
         AutoLockSuccessfulOperationUiMapper(),
         AutoLockPinErrorUiMapper(),
-        AutoLockBiometricPinUiMapper()
+        AutoLockBiometricPinUiMapper(),
+        AutoLockBiometricPromptUiMapper()
     )
 
     private val viewModel by lazy {
@@ -136,6 +138,94 @@ internal class AutoLockPinViewModelTest {
         viewModel.state.test {
             val state = awaitItem()
             assertEquals(expectedState, state)
+        }
+    }
+
+    @Test
+    fun `should not display biometric prompt or pin when user disabled the preference`() = runTest {
+        // Given
+        expectBiometricState(false)
+        expectStandaloneStart()
+        expectAttempts()
+        expectAttemptStatusToggling()
+        val expectedState = AutoLockTestData.BaseLoadedState.copy(
+            biometricPinState = AutoLockTestData.biometricPinState.copy(
+                shouldDisplayButton = false
+            ),
+            showBiometricPromptEffect = Effect.empty()
+        )
+
+        // When + Then
+        viewModel.state.test {
+            val state = awaitItem()
+            assertEquals(expectedState, state)
+        }
+    }
+
+    @Test
+    fun `should not display biometric prompt or pin given biometric hw not available`() = runTest {
+        // Given
+        expectBiometricHwError()
+        expectStandaloneStart()
+        expectAttempts()
+        expectAttemptStatusToggling()
+        val expectedState = AutoLockTestData.BaseLoadedState.copy(
+            biometricPinState = AutoLockTestData.biometricPinState.copy(
+                shouldDisplayButton = false
+            ),
+            showBiometricPromptEffect = Effect.empty()
+        )
+
+        // When + Then
+        viewModel.state.test {
+            val state = awaitItem()
+            assertEquals(expectedState, state)
+        }
+    }
+
+    @Test
+    fun `should not display biometric prompt or pin given biometric is not enrolled`() = runTest {
+        // Given
+        expectBiometricNotEnrolledError()
+        expectStandaloneStart()
+        expectAttempts()
+        expectAttemptStatusToggling()
+        val expectedState = AutoLockTestData.BaseLoadedState.copy(
+            biometricPinState = AutoLockTestData.biometricPinState.copy(
+                shouldDisplayButton = false
+            ),
+            showBiometricPromptEffect = Effect.empty()
+        )
+
+        // When + Then
+        viewModel.state.test {
+            val state = awaitItem()
+            assertEquals(expectedState, state)
+        }
+    }
+
+    @Test
+    fun `should restore pin state when biometric authentication is successfull`() = runTest {
+        // Given
+        expectBiometricState()
+        expectConditionalStart(AutoLockInsertionMode.ChangePin)
+        expectAttempts()
+        expectAttemptStatusToggling()
+        expectValidAutoLockAttemptsUpdate()
+        expectLastForegroundReset()
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(AutoLockPinViewAction.BiometricAuthenticationSucceeded)
+
+            cancelAndConsumeRemainingEvents()
+        }
+
+        coVerifySequence {
+            updateRemainingAutoLockAttempts(PinVerificationRemainingAttempts.MaxAttempts)
+            clearPinDataAndForceLogout wasNot called
         }
     }
 
@@ -649,8 +739,21 @@ internal class AutoLockPinViewModelTest {
         }
     }
 
-    private fun expectBiometricState() {
-        val defaultBiometricState = AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(true)
+    private fun expectBiometricNotEnrolledError() {
+        coEvery { getCurrentAutoLockBiometricState() } returns
+            AutoLockBiometricsState.BiometricsAvailable.BiometricsNotEnrolled
+        coEvery { observeAutoLockBiometricsState() } returns flowOf()
+
+    }
+
+    private fun expectBiometricHwError() {
+        coEvery { getCurrentAutoLockBiometricState() } returns AutoLockBiometricsState.BiometricsNotAvailable
+        coEvery { observeAutoLockBiometricsState() } returns flowOf()
+
+    }
+
+    private fun expectBiometricState(isEnabled: Boolean = true) {
+        val defaultBiometricState = AutoLockBiometricsState.BiometricsAvailable.BiometricsEnrolled(isEnabled)
         coEvery { getCurrentAutoLockBiometricState() } returns defaultBiometricState
         coEvery { observeAutoLockBiometricsState() } returns flowOf()
     }

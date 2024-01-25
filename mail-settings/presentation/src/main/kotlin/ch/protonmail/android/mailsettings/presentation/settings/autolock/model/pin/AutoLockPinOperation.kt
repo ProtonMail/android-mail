@@ -30,6 +30,7 @@ sealed interface AutoLockPinViewAction : AutoLockPinOperation {
     object RequestSignOut : AutoLockPinViewAction
     object ConfirmSignOut : AutoLockPinViewAction
     object CancelSignOut : AutoLockPinViewAction
+    object BiometricAuthenticationSucceeded : AutoLockPinViewAction
 }
 
 sealed interface AutoLockPinEvent : AutoLockPinOperation {

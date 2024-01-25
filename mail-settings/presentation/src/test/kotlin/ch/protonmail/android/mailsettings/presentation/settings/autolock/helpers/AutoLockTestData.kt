@@ -59,6 +59,7 @@ internal object AutoLockTestData {
         confirmButtonState = BaseConfirmButtonState,
         signOutButtonState = BaseSignOutState,
         biometricPinState = biometricPinState,
+        showBiometricPromptEffect = Effect.of(Unit),
         Effect.empty(),
         Effect.empty(),
         Effect.empty()

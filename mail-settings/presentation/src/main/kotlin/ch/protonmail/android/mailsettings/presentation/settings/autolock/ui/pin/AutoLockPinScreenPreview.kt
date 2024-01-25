@@ -63,6 +63,7 @@ private fun AutoLockPinScreenPreview() {
                 BiometricPinUiModel(shouldDisplayButton = false),
                 Effect.empty(),
                 Effect.empty(),
+                Effect.empty(),
                 Effect.of(TextUiModel.Text("PIN error placeholder"))
             ),
             actions = AutoLockPinDetailScreen.Actions(

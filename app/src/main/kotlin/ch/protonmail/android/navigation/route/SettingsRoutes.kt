@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
@@ -125,12 +126,17 @@ internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostControlle
     }
 }
 
-internal fun NavGraphBuilder.addAutoLockPinScreen(onBack: () -> Unit, onShowSuccessSnackbar: (String) -> Unit) {
+internal fun NavGraphBuilder.addAutoLockPinScreen(
+    activityActions: LockScreenActivity.Actions,
+    onBack: () -> Unit,
+    onShowSuccessSnackbar: (String) -> Unit
+) {
     composable(route = Screen.AutoLockPinScreen.route) {
         AutoLockPinScreen(
             modifier = Modifier,
             onBackClick = onBack,
-            onShowSuccessSnackbar = onShowSuccessSnackbar
+            onShowSuccessSnackbar = onShowSuccessSnackbar,
+            onBiometricsClick = activityActions.showBiometricPrompt
         )
     }
 }
