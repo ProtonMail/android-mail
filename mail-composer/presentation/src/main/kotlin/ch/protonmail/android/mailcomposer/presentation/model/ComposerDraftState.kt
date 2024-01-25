@@ -43,7 +43,6 @@ data class ComposerDraftState(
     val attachmentsReEncryptionFailed: Effect<Unit>,
     val replaceDraftBody: Effect<TextUiModel>,
     val warning: Effect<TextUiModel>,
-    val isPasswordActionVisible: Boolean,
     val isMessagePasswordSet: Boolean,
     val focusTextBody: Effect<Unit> = Effect.empty(),
     val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
@@ -89,7 +88,6 @@ data class ComposerDraftState(
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
             sendingErrorEffect = Effect.empty(),
-            isPasswordActionVisible = false,
             isMessagePasswordSet = false
         )
     }

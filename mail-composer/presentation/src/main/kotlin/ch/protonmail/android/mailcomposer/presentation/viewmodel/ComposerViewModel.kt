@@ -24,12 +24,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.decode
 import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
@@ -140,7 +138,6 @@ class ComposerViewModel @Inject constructor(
     private val deleteAttachment: DeleteAttachment,
     private val deleteAllAttachments: DeleteAllAttachments,
     private val reEncryptAttachments: ReEncryptAttachments,
-    private val observeMailFeature: ObserveMailFeature,
     private val observeMessagePassword: ObserveMessagePassword,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
@@ -190,11 +187,6 @@ class ComposerViewModel @Inject constructor(
             draftActionForShare != null -> prefillForShareDraftAction(draftActionForShare)
             else -> uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
         }
-
-        primaryUserId
-            .flatMapLatest { userId -> observeMailFeature(userId, MailFeatureId.PasswordMessages) }
-            .onEach { mutableState.emit(mutableState.value.copy(isPasswordActionVisible = it.value)) }
-            .launchIn(viewModelScope)
 
         observeMessageAttachments()
         observeSendingError()

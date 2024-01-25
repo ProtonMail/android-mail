@@ -136,14 +136,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 )
             },
             bottomBar = {
-                if (state.isPasswordActionVisible) {
-                    ComposerBottomBar(
-                        draftId = state.fields.draftId,
-                        senderEmail = SenderEmail(state.fields.sender.email),
-                        isMessagePasswordSet = state.isMessagePasswordSet,
-                        onSetMessagePasswordClick = actions.onSetMessagePasswordClick
-                    )
-                }
+                ComposerBottomBar(
+                    draftId = state.fields.draftId,
+                    senderEmail = SenderEmail(state.fields.sender.email),
+                    isMessagePasswordSet = state.isMessagePasswordSet,
+                    onSetMessagePasswordClick = actions.onSetMessagePasswordClick
+                )
             },
             snackbarHost = {
                 ProtonSnackbarHost(
