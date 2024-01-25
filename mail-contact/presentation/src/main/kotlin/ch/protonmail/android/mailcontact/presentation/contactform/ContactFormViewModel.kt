@@ -106,7 +106,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 when (action.section) {
                     Section.Emails -> {
                         // We need to make a new list here through `toMutableList` so that it triggers recomposition
@@ -144,7 +144,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 when (action.section) {
                     Section.Emails -> {
                         // We need to make a new list here through `toMutableList` so that it triggers recomposition
@@ -182,7 +182,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 when (action.section) {
                     Section.Emails -> {
                         // We don't want to trigger recomposition here so we just update the item at specified index
@@ -226,7 +226,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 contact.copy(displayName = action.displayName)
             )
         )
@@ -237,7 +237,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 contact.copy(firstName = action.firstName)
             )
         )
@@ -248,7 +248,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
         val contact = stateValue.contact
         emitNewStateFor(
-            ContactFormEvent.UpdateContactFormUiModel(
+            ContactFormEvent.UpdateContact(
                 contact.copy(lastName = action.lastName)
             )
         )

@@ -97,8 +97,8 @@ class ContactFormReducerTest(
             ),
             TestInput(
                 currentState = loadedCreateContactState,
-                event = ContactFormEvent.UpdateContactFormUiModel(
-                    contactFormUiModel = loadedContactFormUiModel.copy(displayName = "Updated displayName")
+                event = ContactFormEvent.UpdateContact(
+                    contact = loadedContactFormUiModel.copy(displayName = "Updated displayName")
                 ),
                 expectedState = loadedCreateContactState.copy(
                     contact = loadedContactFormUiModel.copy(displayName = "Updated displayName")
@@ -106,8 +106,8 @@ class ContactFormReducerTest(
             ),
             TestInput(
                 currentState = loadedUpdateContactState,
-                event = ContactFormEvent.UpdateContactFormUiModel(
-                    contactFormUiModel = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                event = ContactFormEvent.UpdateContact(
+                    contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
                 ),
                 expectedState = loadedUpdateContactState.copy(
                     contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
@@ -115,8 +115,8 @@ class ContactFormReducerTest(
             ),
             TestInput(
                 currentState = loadedCreateContactState,
-                event = ContactFormEvent.UpdateContactFormUiModel(
-                    contactFormUiModel = loadedContactFormUiModel.copy(
+                event = ContactFormEvent.UpdateContact(
+                    contact = loadedContactFormUiModel.copy(
                         emails = loadedContactFormUiModel.emails.apply {
                             this[0] = InputField.SingleTyped(
                                 value = "Updated",

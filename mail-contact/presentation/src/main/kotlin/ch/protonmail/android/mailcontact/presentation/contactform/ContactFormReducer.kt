@@ -29,7 +29,7 @@ class ContactFormReducer @Inject constructor() {
         return when (event) {
             is ContactFormEvent.NewContact -> reduceNewContact(event)
             is ContactFormEvent.EditContact -> reduceEditContact(event)
-            is ContactFormEvent.UpdateContactFormUiModel -> reduceUpdateContactFormUiModel(currentState, event)
+            is ContactFormEvent.UpdateContact -> reduceUpdateContact(currentState, event)
             ContactFormEvent.LoadContactError -> reduceLoadContactError(currentState)
             ContactFormEvent.CloseContactForm -> reduceCloseContactForm(currentState)
             ContactFormEvent.SaveContactError -> reduceSaveContactError(currentState)
@@ -109,13 +109,13 @@ class ContactFormReducer @Inject constructor() {
         }
     }
 
-    private fun reduceUpdateContactFormUiModel(
+    private fun reduceUpdateContact(
         currentState: ContactFormState,
-        event: ContactFormEvent.UpdateContactFormUiModel
+        event: ContactFormEvent.UpdateContact
     ): ContactFormState {
         return when (currentState) {
-            is ContactFormState.Data.Create -> currentState.copy(contact = event.contactFormUiModel)
-            is ContactFormState.Data.Update -> currentState.copy(contact = event.contactFormUiModel)
+            is ContactFormState.Data.Create -> currentState.copy(contact = event.contact)
+            is ContactFormState.Data.Update -> currentState.copy(contact = event.contact)
             is ContactFormState.Loading -> currentState
         }
     }
