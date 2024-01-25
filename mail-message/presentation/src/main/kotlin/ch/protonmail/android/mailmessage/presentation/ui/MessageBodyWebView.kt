@@ -115,6 +115,13 @@ fun MessageBodyWebView(
                     super.shouldInterceptRequest(view, request)
                 }
             }
+
+            override fun onLoadResource(view: WebView?, url: String?) {
+                if (!messageBodyUiModel.shouldShowRemoteContent && url?.isRemoteContent() == true) {
+                    return
+                }
+                super.onLoadResource(view, url)
+            }
         }
     }
 
