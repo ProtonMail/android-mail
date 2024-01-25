@@ -21,6 +21,8 @@ package ch.protonmail.android.mailcontact.presentation.contactform
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.FieldType
+import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData
 import org.junit.Test
@@ -109,6 +111,29 @@ class ContactFormReducerTest(
                 ),
                 expectedState = loadedUpdateContactState.copy(
                     contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                )
+            ),
+            TestInput(
+                currentState = loadedCreateContactState,
+                event = ContactFormEvent.UpdateContactFormUiModel(
+                    contactFormUiModel = loadedContactFormUiModel.copy(
+                        emails = loadedContactFormUiModel.emails.apply {
+                            this[0] = InputField.SingleTyped(
+                                value = "Updated",
+                                selectedType = FieldType.EmailType.Work
+                            )
+                        }
+                    )
+                ),
+                expectedState = loadedCreateContactState.copy(
+                    contact = loadedContactFormUiModel.copy(
+                        emails = loadedContactFormUiModel.emails.apply {
+                            this[0] = InputField.SingleTyped(
+                                value = "Updated",
+                                selectedType = FieldType.EmailType.Work
+                            )
+                        }
+                    )
                 )
             )
         )
