@@ -166,6 +166,84 @@ class ContactFormViewModelTest {
     }
 
     @Test
+    fun `when on update display name action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            val newValue = "Updated"
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateDisplayName(newValue)
+            )
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    displayName = newValue
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update first name action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            val newValue = "Updated"
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateFirstName(newValue)
+            )
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    firstName = newValue
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update last name action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            val newValue = "Updated"
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateLastName(newValue)
+            )
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    lastName = newValue
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
     fun `when on add email action is submitted, then state contact is updated`() = runTest {
         // Given
         expectSavedStateContactId(null)
