@@ -79,6 +79,18 @@ sealed interface InputField {
     ) : InputField
 }
 
+fun getEmailTypeByValue(value: TextUiModel) =
+    FieldType.EmailType.values().find { it.localizedValue == value } ?: FieldType.EmailType.Email
+
+fun getTelephoneTypeByValue(value: TextUiModel) =
+    FieldType.TelephoneType.values().find { it.localizedValue == value } ?: FieldType.TelephoneType.Telephone
+
+fun getAddressTypeByValue(value: TextUiModel) =
+    FieldType.AddressType.values().find { it.localizedValue == value } ?: FieldType.AddressType.Address
+
+fun getOtherTypeByValue(value: TextUiModel) =
+    FieldType.OtherType.values().find { it.localizedValue == value } ?: FieldType.OtherType.Role
+
 sealed interface FieldType {
     val localizedValue: TextUiModel
 
