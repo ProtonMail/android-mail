@@ -19,7 +19,10 @@
 package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import me.proton.core.contact.domain.entity.ContactId
 import javax.inject.Inject
 
 class ContactFormUiModelMapper @Inject constructor(
@@ -65,6 +68,132 @@ class ContactFormUiModelMapper @Inject constructor(
             }.toMutableList(),
             others = buildOthers(decryptedContact),
             otherTypes = FieldType.OtherType.values().toList()
+        )
+    }
+
+    @SuppressWarnings("LongMethod")
+    fun toDecryptedContact(
+        contact: ContactFormUiModel,
+        contactGroups: List<ContactGroup> = listOf(),
+        // Remove those fields once they are implemented in form
+        photos: List<ContactProperty.Photo> = listOf(),
+        logos: List<ContactProperty.Logo> = listOf()
+    ): DecryptedContact {
+        val organizations = listOf<ContactProperty.Organization>()
+        val titles = listOf<ContactProperty.Title>()
+        val roles = listOf<ContactProperty.Role>()
+        val timezones = listOf<ContactProperty.Timezone>()
+        val members = listOf<ContactProperty.Member>()
+        val languages = listOf<ContactProperty.Language>()
+        val urls = listOf<ContactProperty.Url>()
+        var gender: ContactProperty.Gender? = null
+        var anniversary: ContactProperty.Anniversary? = null
+        contact.others.map { other ->
+            when (other) {
+                is InputField.SingleTyped -> {
+                    when (other.selectedType as FieldType.OtherType) {
+                        FieldType.OtherType.Organization -> organizations.plus(
+                            ContactProperty.Organization(other.value)
+                        )
+                        FieldType.OtherType.Title -> titles.plus(
+                            ContactProperty.Title(other.value)
+                        )
+                        FieldType.OtherType.Role -> roles.plus(
+                            ContactProperty.Role(other.value)
+                        )
+                        FieldType.OtherType.TimeZone -> timezones.plus(
+                            ContactProperty.Timezone(other.value)
+                        )
+                        FieldType.OtherType.Member -> members.plus(
+                            ContactProperty.Member(other.value)
+                        )
+                        FieldType.OtherType.Language -> languages.plus(
+                            ContactProperty.Language(other.value)
+                        )
+                        FieldType.OtherType.Url -> urls.plus(
+                            ContactProperty.Url(other.value)
+                        )
+                        FieldType.OtherType.Gender -> gender = ContactProperty.Gender(gender = other.value)
+                        else -> {
+                            // Not applicable for `SingleTyped`
+                        }
+                    }
+                }
+                is InputField.DateTyped -> {
+                    when (other.selectedType as FieldType.OtherType) {
+                        FieldType.OtherType.Anniversary -> anniversary = ContactProperty.Anniversary(date = other.value)
+                        else -> {
+                            // Not applicable for `DateTyped`
+                        }
+                    }
+                }
+                is InputField.ImageTyped -> {
+                    // Not yet implemented (photo, logo)
+                }
+                else -> {
+                    // Not applicable to `others` section
+                }
+            }
+        }
+        return DecryptedContact(
+            id = contact.id ?: ContactId(""), // TODO Empty for create ?
+            contactGroups = contactGroups,
+            structuredName = ContactProperty.StructuredName(
+                family = contact.lastName,
+                given = contact.firstName
+            ),
+            formattedName = ContactProperty.FormattedName(
+                value = contact.displayName
+            ),
+            emails = contact.emails.map { email ->
+                ContactProperty.Email(
+                    type = ContactProperty.Email.Type.valueOf(
+                        (email.selectedType as FieldType.EmailType).name
+                    ),
+                    value = email.value
+                )
+            },
+            telephones = contact.telephones.map { telephone ->
+                ContactProperty.Telephone(
+                    type = ContactProperty.Telephone.Type.valueOf(
+                        (telephone.selectedType as FieldType.TelephoneType).name
+                    ),
+                    text = telephone.value
+                )
+            },
+            addresses = contact.addresses.map { address ->
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.valueOf(
+                        (address.selectedType as FieldType.AddressType).name
+                    ),
+                    streetAddress = address.streetAddress,
+                    locality = address.city,
+                    region = address.region,
+                    postalCode = address.postalCode,
+                    country = address.country
+                )
+            },
+            birthday = contact.birthday?.let { birthday ->
+                ContactProperty.Birthday(
+                    date = birthday.value
+                )
+            },
+            notes = contact.notes.map { note ->
+                ContactProperty.Note(
+                    value = note.value
+                )
+            },
+            photos = photos,
+            organizations = organizations,
+            titles = titles,
+            roles = roles,
+            timezones = timezones,
+            logos = logos,
+            members = members,
+            languages = languages,
+            urls = urls,
+            gender = gender,
+            anniversary = anniversary
         )
     }
 
