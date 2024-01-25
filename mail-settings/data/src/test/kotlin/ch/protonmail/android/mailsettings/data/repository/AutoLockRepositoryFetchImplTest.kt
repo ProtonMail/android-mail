@@ -38,6 +38,8 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastFore
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import io.mockk.coEvery
 import io.mockk.every
@@ -70,6 +72,60 @@ internal class AutoLockRepositoryFetchImplTest {
     @After
     fun teardown() {
         unmockkAll()
+    }
+
+    @Test
+    fun `should return current data correctly when auto lock biometric preference is requested`() = runTest {
+        // Given
+        val expectedValue = AutoLockBiometricsPreference(enabled = false)
+        coEvery { autoLockLocalDataSource.getAutoLockBiometricEncryptedValue() } returns
+            AutoLockBiometricsEncryptedValue(BaseEncryptedDummyValue).right()
+
+        expectSuccessfulDecryption(expectedValue.enabled.toString())
+
+        // When
+        val result = autoLockRepository.getCurrentAutoLockBiometricsPreference()
+
+        // Then
+        assertEquals(false, result.getOrNull()?.enabled)
+    }
+
+    @Test
+    fun `should propagate data correctly when auto lock biometric preference is observed`() = runTest {
+        // Given
+        val expectedValue = AutoLockBiometricsPreference(enabled = false)
+        every { autoLockLocalDataSource.observeAutoLockBiometricEncryptedValue() } returns flowOf(
+            AutoLockBiometricsEncryptedValue(BaseEncryptedDummyValue).right()
+        )
+
+        expectSuccessfulDecryption(expectedValue.enabled.toString())
+
+        // When + Then
+        autoLockRepository.observeAutoLockBiometricsPreference().assertValue(expectedValue)
+    }
+
+    @Test
+    fun `should propagate data store error when auto lock biometric preference cannot be retrieved`() = runTest {
+        // Given
+        val expectedValue = AutoLockPreferenceError.DataStoreError
+        every { autoLockLocalDataSource.observeAutoLockBiometricEncryptedValue() } returns
+            flowOf(PreferencesError.left())
+
+        // When + Then
+        autoLockRepository.observeAutoLockBiometricsPreference().assertError(expectedValue)
+    }
+
+    @Test
+    fun `should propagate deserialization error when auto lock biometric preference cannot be decoded`() = runTest {
+        // Given
+        every { autoLockLocalDataSource.observeAutoLockBiometricEncryptedValue() } returns flowOf(
+            AutoLockBiometricsEncryptedValue(BaseEncryptedDummyValue).right()
+        )
+
+        expectDecryptionError()
+
+        // When + Then
+        autoLockRepository.observeAutoLockBiometricsPreference().assertError(baseDecryptionError)
     }
 
     @Test

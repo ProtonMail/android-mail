@@ -37,6 +37,8 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastFore
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPreference
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockRemainingAttempts
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.repository.AutoLockPreferenceError
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -65,6 +67,23 @@ internal class AutoLockRepositoryImplUpdateTest {
     @After
     fun teardown() {
         unmockkAll()
+    }
+
+    @Test
+    fun `should return unit when auto lock biometric preference update is successful`() = runTest {
+        // Given
+        val biometricPreference = AutoLockBiometricsPreference(true)
+        val biometricEncryptedPreference = AutoLockBiometricsEncryptedValue("encrypted")
+        coEvery {
+            autoLockLocalDataSource.updateAutoLockBiometricEncryptedValue(biometricEncryptedPreference)
+        } returns Unit.right()
+        expectSuccessfulEncryption()
+
+        // When
+        val result = autoLockRepository.updateAutoLockBiometricsPreference(biometricPreference)
+
+        // Then
+        assertEquals(Unit.right(), result)
     }
 
     @Test

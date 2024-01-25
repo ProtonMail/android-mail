@@ -19,12 +19,14 @@
 package ch.protonmail.android.mailsettings.data.repository.local
 
 import androidx.datastore.preferences.core.stringPreferencesKey
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
@@ -32,6 +34,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncrypte
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundTimestamp
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import javax.inject.Inject
@@ -46,6 +49,19 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
     private val attemptsKey = stringPreferencesKey("autoLockAttemptsPrefKey")
     private val pendingAutoLockAttemptKey = stringPreferencesKey("pendingAutoLockAttemptPrefKey")
     private val pinKey = stringPreferencesKey("pinCodePrefKey")
+    private val autoLockBiometricsKey = stringPreferencesKey("autoLockBiometricsKey")
+
+    override suspend fun getAutoLockBiometricEncryptedValue():
+        Either<PreferencesError, AutoLockBiometricsEncryptedValue> =
+        dataStoreProvider.autoLockDataStore.data.first().let {
+            val encryptedValue = it[autoLockBiometricsKey] ?: return@let PreferencesError.left()
+            AutoLockBiometricsEncryptedValue(encryptedValue).right()
+        }
+
+    override fun observeAutoLockBiometricEncryptedValue() = dataStoreProvider.autoLockDataStore.data.map {
+        val encryptedValue = it[autoLockBiometricsKey] ?: return@map PreferencesError.left()
+        AutoLockBiometricsEncryptedValue(encryptedValue).right()
+    }
 
     override fun observeAutoLockEnabledEncryptedValue() = dataStoreProvider.autoLockDataStore.data.map {
         val encryptedValue = it[hasAutoLockKey] ?: return@map PreferencesError.left()
@@ -83,6 +99,13 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
             }.bind()
         }
 
+    override suspend fun updateAutoLockBiometricEncryptedValue(value: AutoLockBiometricsEncryptedValue) =
+        either<PreferencesError, Unit> {
+            dataStoreProvider.autoLockDataStore.safeEdit {
+                it[autoLockBiometricsKey] = value.encryptedValue
+            }.bind()
+        }
+
     override suspend fun updateAutoLockEncryptedInterval(interval: AutoLockEncryptedInterval) =
         either<PreferencesError, Unit> {
             dataStoreProvider.autoLockDataStore.safeEdit {
@@ -93,12 +116,11 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
     override suspend fun updateLastEncryptedForegroundMillis(timestamp: AutoLockEncryptedLastForegroundMillis) =
         either<PreferencesError, Unit> { lastForegroundMillis.update(timestamp) }
 
-    override suspend fun updateAutoLockEncryptedPin(pin: AutoLockEncryptedPin) =
-        either<PreferencesError, Unit> {
-            dataStoreProvider.autoLockDataStore.safeEdit {
-                it[pinKey] = pin.encryptedValue
-            }.bind()
-        }
+    override suspend fun updateAutoLockEncryptedPin(pin: AutoLockEncryptedPin) = either<PreferencesError, Unit> {
+        dataStoreProvider.autoLockDataStore.safeEdit {
+            it[pinKey] = pin.encryptedValue
+        }.bind()
+    }
 
     override suspend fun updateAutoLockAttemptsLeft(attempts: AutoLockEncryptedRemainingAttempts) =
         either<PreferencesError, Unit> {

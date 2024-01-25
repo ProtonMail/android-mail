@@ -26,6 +26,8 @@ import ch.protonmail.android.mailsettings.data.repository.local.AutoLockLocalDat
 import ch.protonmail.android.mailsettings.data.usecase.DecryptSerializableValue
 import ch.protonmail.android.mailsettings.data.usecase.EncryptSerializableValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
@@ -48,6 +50,23 @@ class AutoLockRepositoryImpl @Inject constructor(
     private val encryptSerializableValue: EncryptSerializableValue,
     private val decryptSerializableValue: DecryptSerializableValue
 ) : AutoLockRepository {
+
+    override suspend fun getCurrentAutoLockBiometricsPreference():
+        Either<AutoLockPreferenceError, AutoLockBiometricsPreference> =
+        autoLockLocalDataSource.getAutoLockBiometricEncryptedValue().let {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockBiometricsPreference>(encryptedValue).bind()
+            }
+        }
+
+    override fun observeAutoLockBiometricsPreference(): AutoLockPreferenceEitherFlow<AutoLockBiometricsPreference> =
+        autoLockLocalDataSource.observeAutoLockBiometricEncryptedValue().map {
+            either {
+                val encryptedValue = it.getOrElse { raise(AutoLockPreferenceError.DataStoreError) }.encryptedValue
+                decryptSerializedValue<AutoLockBiometricsPreference>(encryptedValue).bind()
+            }
+        }
 
     override fun observeAutoLockEnabledValue(): AutoLockPreferenceEitherFlow<AutoLockPreference> =
         autoLockLocalDataSource.observeAutoLockEnabledEncryptedValue().map {
@@ -96,6 +115,19 @@ class AutoLockRepositoryImpl @Inject constructor(
                 decryptSerializedValue<AutoLockAttemptPendingStatus>(encryptedValue).bind()
             }
         }
+
+    override suspend fun updateAutoLockBiometricsPreference(
+        value: AutoLockBiometricsPreference
+    ): Either<AutoLockPreferenceError, Unit> = either {
+        val encryptedValue = encryptValueWithSerialization(value).bind()
+        autoLockLocalDataSource.updateAutoLockBiometricEncryptedValue(
+            AutoLockBiometricsEncryptedValue(
+                encryptedValue
+            )
+        )
+            .mapEither()
+            .bind()
+    }
 
     override suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): AutoLockPreferenceEither<Unit> =
         either {

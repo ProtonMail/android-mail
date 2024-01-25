@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.data.repository.local
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
@@ -30,6 +31,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AutoLockLocalDataSource {
 
+    suspend fun getAutoLockBiometricEncryptedValue(): Either<PreferencesError, AutoLockBiometricsEncryptedValue>
+    fun observeAutoLockBiometricEncryptedValue(): Flow<Either<PreferencesError, AutoLockBiometricsEncryptedValue>>
+
     fun observeAutoLockEnabledEncryptedValue(): Flow<Either<PreferencesError, AutoLockEnabledEncryptedValue>>
     fun observeAutoLockEncryptedInterval(): Flow<Either<PreferencesError, AutoLockEncryptedInterval>>
     fun observeLastEncryptedForegroundMillis(): Flow<Either<PreferencesError, AutoLockEncryptedLastForegroundMillis>>
@@ -39,6 +43,10 @@ interface AutoLockLocalDataSource {
 
     suspend fun updateAutoLockEnabledEncryptedValue(
         value: AutoLockEnabledEncryptedValue
+    ): Either<PreferencesError, Unit>
+
+    suspend fun updateAutoLockBiometricEncryptedValue(
+        value: AutoLockBiometricsEncryptedValue
     ): Either<PreferencesError, Unit>
 
     suspend fun updateAutoLockEncryptedInterval(interval: AutoLockEncryptedInterval): Either<PreferencesError, Unit>

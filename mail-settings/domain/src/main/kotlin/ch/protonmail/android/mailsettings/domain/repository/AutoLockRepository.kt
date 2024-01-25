@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockAttemptPendingStatus
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsPreference
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInterval
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundMillis
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockPin
@@ -29,12 +30,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface AutoLockRepository {
 
+    suspend fun getCurrentAutoLockBiometricsPreference(): Either<AutoLockPreferenceError, AutoLockBiometricsPreference>
+    fun observeAutoLockBiometricsPreference(): Flow<Either<AutoLockPreferenceError, AutoLockBiometricsPreference>>
     fun observeAutoLockEnabledValue(): Flow<Either<AutoLockPreferenceError, AutoLockPreference>>
     fun observeAutoLockInterval(): Flow<Either<AutoLockPreferenceError, AutoLockInterval>>
     fun observeAutoLockLastForegroundMillis(): Flow<Either<AutoLockPreferenceError, AutoLockLastForegroundMillis>>
     fun observeAutoLockPin(): Flow<Either<AutoLockPreferenceError, AutoLockPin>>
     fun observeAutoLockRemainingAttempts(): Flow<Either<AutoLockPreferenceError, AutoLockRemainingAttempts>>
     fun observeAutoLockAttemptPendingStatus(): Flow<Either<AutoLockPreferenceError, AutoLockAttemptPendingStatus>>
+
+    suspend fun updateAutoLockBiometricsPreference(
+        value: AutoLockBiometricsPreference
+    ): Either<AutoLockPreferenceError, Unit>
 
     suspend fun updateAutoLockEnabledValue(value: AutoLockPreference): Either<AutoLockPreferenceError, Unit>
     suspend fun updateAutoLockInterval(interval: AutoLockInterval): Either<AutoLockPreferenceError, Unit>
