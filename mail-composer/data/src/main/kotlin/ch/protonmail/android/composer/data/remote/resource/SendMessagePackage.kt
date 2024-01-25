@@ -77,6 +77,24 @@ data class SendMessagePackage(
             @SerialName("Signature")
             val signature: Int
         ) : Address(PackageType.Cleartext.type)
+
+        @Serializable
+        data class EncryptedOutside(
+            @SerialName("BodyKeyPacket")
+            val bodyKeyPacket: String,
+            @SerialName("AttachmentKeyPackets")
+            val attachmentKeyPackets: Map<String, String>,
+            @SerialName("Token")
+            val token: String,
+            @SerialName("EncToken")
+            val encToken: String,
+            @SerialName("Auth")
+            val auth: Auth,
+            @SerialName("PasswordHint")
+            val passwordHint: String?,
+            @SerialName("Signature")
+            val signature: Int
+        ) : Address(PackageType.EncryptedOutside.type)
     }
 
     @Serializable
@@ -85,6 +103,18 @@ data class SendMessagePackage(
         val key: String,
         @SerialName("Algorithm")
         val algorithm: String
+    )
+
+    @Serializable
+    data class Auth(
+        @SerialName("ModulusID")
+        val modulusId: String,
+        @SerialName("Version")
+        val version: Int,
+        @SerialName("Salt")
+        val salt: String,
+        @SerialName("Verifier")
+        val verifier: String
     )
 
 }

@@ -19,7 +19,9 @@
 package ch.protonmail.android.composer.data.usecase
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import me.proton.core.auth.domain.entity.Modulus
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
@@ -42,7 +44,7 @@ class GenerateSendMessagePackages @Inject constructor(
 ) {
 
     @Suppress("LongMethod")
-    operator fun invoke(
+    suspend operator fun invoke(
         sendPreferences: Map<Email, SendPreferences>,
         decryptedBodySessionKey: SessionKey,
         encryptedBodyDataPacket: ByteArray,
@@ -51,10 +53,14 @@ class GenerateSendMessagePackages @Inject constructor(
         bodyContentType: MimeType,
         signedEncryptedMimeBodies: Map<Email, Pair<KeyPacket, DataPacket>>,
         decryptedAttachmentSessionKeys: Map<String, SessionKey>,
-        areAllAttachmentsSigned: Boolean
+        areAllAttachmentsSigned: Boolean,
+        messagePassword: MessagePassword?,
+        modulus: Modulus?
     ): List<SendMessagePackage> {
 
-        val sendPreferencesBySubpackageType = groupBySubpackageType(sendPreferences)
+        val sendPreferencesBySubpackageType = groupBySubpackageType(
+            sendPreferences, isEncryptOutside = messagePassword != null
+        )
 
         val protonMailAndCleartextSendPreferences =
             sendPreferencesBySubpackageType.getOrDefault(
@@ -84,6 +90,22 @@ class GenerateSendMessagePackages @Inject constructor(
                 decryptedMimeBodySessionKey
             )
 
+        val encryptedOutsideSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
+            PackageType.EncryptedOutside, emptyList()
+        )
+
+        val encryptedOutsidePackage =
+            generateEncryptedOutside(
+                encryptedOutsideSendPreferences,
+                decryptedBodySessionKey,
+                decryptedAttachmentSessionKeys,
+                encryptedBodyDataPacket,
+                bodyContentType,
+                messagePassword,
+                modulus,
+                areAllAttachmentsSigned
+            )
+
         val pgpMimeSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
             PackageType.PgpMime, emptyList()
         )
@@ -97,7 +119,8 @@ class GenerateSendMessagePackages @Inject constructor(
 
         return listOfNotNull(
             protonMailAndCleartextPackage.takeIf { it.addresses.isNotEmpty() },
-            clearMimePackage.takeIf { it.addresses.isNotEmpty() }
+            clearMimePackage.takeIf { it.addresses.isNotEmpty() },
+            encryptedOutsidePackage.takeIf { it.addresses.isNotEmpty() }
         ) + pgpMimePackages
     }
 
@@ -179,17 +202,21 @@ class GenerateSendMessagePackages @Inject constructor(
     }
 
     private fun groupBySubpackageType(
-        allSendPreferences: Map<Email, SendPreferences>
+        allSendPreferences: Map<Email, SendPreferences>,
+        isEncryptOutside: Boolean
     ): Map<PackageType?, List<Map.Entry<Email, SendPreferences>>> = allSendPreferences.entries.groupBy {
         when (it.value.pgpScheme) {
             PackageType.ProtonMail -> PackageType.ProtonMail
-            PackageType.Cleartext -> if (it.value.sign) PackageType.ClearMime else PackageType.Cleartext
+            PackageType.Cleartext -> when {
+                isEncryptOutside -> PackageType.EncryptedOutside
+                it.value.sign -> PackageType.ClearMime
+                else -> PackageType.Cleartext
+            }
             PackageType.PgpMime -> if (it.value.encrypt) PackageType.PgpMime else PackageType.ClearMime
-            PackageType.ClearMime -> PackageType.ClearMime
+            PackageType.ClearMime -> if (isEncryptOutside) PackageType.EncryptedOutside else PackageType.ClearMime
             else -> null
         }
     }
-
 
     private fun generateClearMime(
         sendPreferences: List<Map.Entry<Email, SendPreferences>>,
@@ -197,7 +224,7 @@ class GenerateSendMessagePackages @Inject constructor(
         decryptedMimeBodySessionKey: SessionKey
     ): SendMessagePackage {
 
-        val addresses = sendPreferences.map { (recipientEmail, _) ->
+        val addresses = sendPreferences.associate { (recipientEmail, _) ->
             recipientEmail to SendMessagePackage.Address.ExternalSigned(signature = true.toInt())
         }.toMap()
 
@@ -233,6 +260,71 @@ class GenerateSendMessagePackages @Inject constructor(
         } ?: null.also {
             Timber.e("GenerateSendMessagePackages: signedEncryptedMimeBody was null")
         }
+    }
+
+    private suspend fun generateEncryptedOutside(
+        sendPreferences: List<Map.Entry<Email, SendPreferences>>,
+        decryptedBodySessionKey: SessionKey,
+        decryptedAttachmentSessionKeys: Map<String, SessionKey>,
+        encryptedBodyDataPacket: ByteArray,
+        bodyContentType: MimeType,
+        messagePassword: MessagePassword?,
+        modulus: Modulus?,
+        areAllAttachmentsSigned: Boolean
+    ): SendMessagePackage {
+
+        val addresses = if (messagePassword != null && modulus != null) {
+
+            sendPreferences.associate { (recipientEmail, _) ->
+
+                val passwordByteArray = messagePassword.password.toByteArray()
+
+                val bodyKeyPacket = Base64.encode(
+                    cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(decryptedBodySessionKey, passwordByteArray)
+                )
+
+                val attachmentKeyPackets = decryptedAttachmentSessionKeys.mapValues {
+                    Base64.encode(cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(it.value, passwordByteArray))
+                }
+
+                val token = Base64.encode(cryptoContext.pgpCrypto.generateRandomBytes(size = 32))
+                val encryptedToken = cryptoContext.pgpCrypto.encryptTextWithPassword(token, passwordByteArray)
+
+                val passwordVerifier = cryptoContext.srpCrypto.calculatePasswordVerifier(
+                    username = "", // required for legacy reasons, can be empty
+                    password = passwordByteArray,
+                    modulusId = modulus.modulusId,
+                    modulus = modulus.modulus
+                )
+                val auth = SendMessagePackage.Auth(
+                    modulusId = passwordVerifier.modulusId,
+                    version = passwordVerifier.version,
+                    salt = passwordVerifier.salt,
+                    verifier = passwordVerifier.verifier
+                )
+
+                recipientEmail to SendMessagePackage.Address.EncryptedOutside(
+                    bodyKeyPacket = bodyKeyPacket,
+                    attachmentKeyPackets = attachmentKeyPackets,
+                    token = token,
+                    encToken = encryptedToken,
+                    auth = auth,
+                    passwordHint = messagePassword.passwordHint,
+                    signature = areAllAttachmentsSigned.toInt()
+                )
+            }.toMap()
+        } else emptyMap()
+
+        val globalPackageType = addresses.map { it.value.type }.takeIfNotEmpty()?.reduce { a, b ->
+            a.or(b) // logical OR of package types
+        } ?: -1
+
+        return SendMessagePackage(
+            addresses = addresses,
+            mimeType = bodyContentType.value,
+            body = Base64.encode(encryptedBodyDataPacket),
+            type = globalPackageType
+        )
     }
 
     companion object {

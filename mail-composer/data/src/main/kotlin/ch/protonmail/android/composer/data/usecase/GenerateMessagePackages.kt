@@ -25,11 +25,13 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
+import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import com.github.mangstadt.vinnie.io.FoldedLineWriter
+import me.proton.core.auth.domain.entity.Modulus
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.DataPacket
 import me.proton.core.crypto.common.pgp.KeyPacket
@@ -61,11 +63,13 @@ class GenerateMessagePackages @Inject constructor(
 ) {
 
     @Suppress("LongMethod")
-    operator fun invoke(
+    suspend operator fun invoke(
         senderAddress: UserAddress,
         localDraft: MessageWithBody,
         sendPreferences: Map<Email, SendPreferences>,
-        attachmentFiles: Map<AttachmentId, File>
+        attachmentFiles: Map<AttachmentId, File>,
+        messagePassword: MessagePassword?,
+        modulus: Modulus?
     ): Either<Error, List<SendMessagePackage>> {
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
         lateinit var encryptedPlaintextBodyDataPacket: DataPacket
@@ -129,7 +133,9 @@ class GenerateMessagePackages @Inject constructor(
             localDraft.messageBody.mimeType,
             signedAndEncryptedMimeBodyForRecipients,
             decryptedAttachmentSessionKeys,
-            areAllAttachmentsSigned
+            areAllAttachmentsSigned,
+            messagePassword,
+            modulus
         )
 
         val areAllSubpackagesGenerated = packages.sumOf { it.addresses.size } == sendPreferences.size

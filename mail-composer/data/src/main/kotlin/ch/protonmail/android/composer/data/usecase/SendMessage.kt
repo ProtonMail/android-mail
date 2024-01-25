@@ -27,9 +27,13 @@ import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import me.proton.core.account.domain.repository.AccountRepository
+import me.proton.core.auth.domain.repository.AuthRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailmessage.domain.entity.Email
 import me.proton.core.mailsendpreferences.domain.model.SendPreferences
@@ -42,13 +46,16 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SendMessage @Inject constructor(
+    private val accountRepository: AccountRepository,
+    private val authRepository: AuthRepository,
     private val messageRemoteDataSource: MessageRemoteDataSource,
     private val resolveUserAddress: ResolveUserAddress,
     private val generateMessagePackages: GenerateMessagePackages,
     private val findLocalDraft: FindLocalDraft,
     private val obtainSendPreferences: ObtainSendPreferences,
     private val observeMailSettings: ObserveMailSettings,
-    private val getAttachmentFiles: GetAttachmentFiles
+    private val getAttachmentFiles: GetAttachmentFiles,
+    private val observeMessagePassword: ObserveMessagePassword
 ) {
 
     /**
@@ -77,7 +84,20 @@ class SendMessage @Inject constructor(
             emptyMap()
         }
 
-        val messagePackages = generateMessagePackages(senderAddress, localDraft, sendPreferences, attachmentFiles)
+        val messagePassword = observeMessagePassword(userId, messageId).first()
+        val modulus = if (messagePassword != null) {
+            val sessionId = accountRepository.getSessionIdOrNull(userId)
+            authRepository.randomModulus(sessionId)
+        } else null
+
+        val messagePackages = generateMessagePackages(
+            senderAddress = senderAddress,
+            localDraft = localDraft,
+            sendPreferences = sendPreferences,
+            attachmentFiles = attachmentFiles,
+            messagePassword = messagePassword,
+            modulus = modulus
+        )
             .mapLeft { Error.GeneratingPackages }
             .bind()
 
