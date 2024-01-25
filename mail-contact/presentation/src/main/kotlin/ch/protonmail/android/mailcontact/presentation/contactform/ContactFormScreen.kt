@@ -127,6 +127,9 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                         modifier = Modifier.padding(paddingValues),
                         actions = ContactFormContent.Actions(
                             onAddItemClick = { viewModel.submit(ContactFormViewAction.OnAddItemClick(it)) },
+                            onUpdateDisplayName = { viewModel.submit(ContactFormViewAction.OnUpdateDisplayName(it)) },
+                            onUpdateFirstName = { viewModel.submit(ContactFormViewAction.OnUpdateFirstName(it)) },
+                            onUpdateLastName = { viewModel.submit(ContactFormViewAction.OnUpdateLastName(it)) },
                             onRemoveItemClick = { section, index ->
                                 viewModel.submit(ContactFormViewAction.OnRemoveItemClick(section, index))
                             },
@@ -202,7 +205,7 @@ fun ContactFormContent(
                     }
                 }
 
-                NameSection(state)
+                NameSection(state, actions)
             }
         }
         this.emailSection(state, actions)
@@ -416,7 +419,7 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
 }
 
 @Composable
-private fun NameSection(state: ContactFormState.Data) {
+private fun NameSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     FormInputField(
         modifier = Modifier
             .fillMaxWidth()
@@ -429,7 +432,7 @@ private fun NameSection(state: ContactFormState.Data) {
         hint = stringResource(R.string.display_name),
         maxCharacters = CONTACT_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            actions.onUpdateDisplayName(it)
         }
     )
     FormInputField(
@@ -444,7 +447,7 @@ private fun NameSection(state: ContactFormState.Data) {
         hint = stringResource(R.string.first_name),
         maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            actions.onUpdateFirstName(it)
         }
     )
     FormInputField(
@@ -459,7 +462,7 @@ private fun NameSection(state: ContactFormState.Data) {
         hint = stringResource(R.string.last_name),
         maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            // Trigger action here
+            actions.onUpdateLastName(it)
         }
     )
 }
@@ -722,6 +725,9 @@ object ContactFormContent {
 
     data class Actions(
         val onAddItemClick: (Section) -> Unit,
+        val onUpdateDisplayName: (String) -> Unit,
+        val onUpdateFirstName: (String) -> Unit,
+        val onUpdateLastName: (String) -> Unit,
         val onRemoveItemClick: (Section, Int) -> Unit,
         val onUpdateItem: (Section, Int, InputField) -> Unit
     ) {
@@ -730,6 +736,9 @@ object ContactFormContent {
 
             val Empty = Actions(
                 onAddItemClick = {},
+                onUpdateDisplayName = {},
+                onUpdateFirstName = {},
+                onUpdateLastName = {},
                 onRemoveItemClick = { _, _ -> },
                 onUpdateItem = { _, _, _ -> }
             )
