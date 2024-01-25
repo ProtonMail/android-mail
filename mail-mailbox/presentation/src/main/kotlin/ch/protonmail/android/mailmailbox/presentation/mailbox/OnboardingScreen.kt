@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
-import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -26,19 +25,27 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.ContentScale
@@ -46,15 +53,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutScope
-import androidx.constraintlayout.compose.Dimension
-import ch.protonmail.android.mailcommon.presentation.compose.HyperlinkText
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingUiModel
-import ch.protonmail.android.uicomponents.effects.LockScreenOrientationEffect
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -67,8 +68,6 @@ import me.proton.core.compose.theme.headlineNorm
 @Composable
 fun OnboardingScreen(actions: MailboxScreen.Actions) {
     val pagerState = rememberPagerState()
-
-    LockScreenOrientationEffect(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     val contentMap = listOf(
         OnboardingUiModel(
@@ -94,99 +93,97 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
     )
     val viewCount = contentMap.size
 
-    ConstraintLayout(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
-        val (positiveButton, dismissButton, dots) = createRefs()
+
+        // Keep the spacing to avoid the jumping effect on transitioning to the last page.
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = MailDimens.OnboardingCloseButtonToolbarHeight)
+        ) {
+            if (pagerState.currentPage != viewCount.minus(1)) {
+                IconButton(
+                    modifier = Modifier.horizontalScroll(state = ScrollState(0), enabled = true),
+                    onClick = {
+                        actions.closeOnboarding()
+                    }
+                ) {
+                    Icon(
+                        tint = ProtonTheme.colors.iconNorm,
+                        imageVector = androidx.compose.material.icons.Icons.Filled.Close,
+                        contentDescription = stringResource(id = R.string.onboarding_close_content_description)
+                    )
+                }
+            }
+        }
 
         HorizontalPager(
             state = pagerState,
             pageCount = viewCount,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.weight(1f)
         ) { pageIndex ->
             OnboardingContent(content = contentMap[pageIndex])
         }
 
-        OnboardingButton(actions, pagerState, viewCount, positiveButton, dismissButton, dots)
-
-        OnboardingIndexDots(pagerState, viewCount, dots)
+        OnboardingButton(actions, pagerState, viewCount)
+        OnboardingIndexDots(pagerState, viewCount)
     }
 }
 
 @Composable
 fun OnboardingContent(content: OnboardingUiModel) {
-    ConstraintLayout(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        val (illustration, headline, description) = createRefs()
-
+    Column(Modifier.fillMaxHeight()) {
         Image(
             modifier = Modifier
                 .fillMaxHeight(MailDimens.OnboardingIllustrationWeight)
-                .fillMaxWidth()
-                .constrainAs(illustration) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-            contentScale = ContentScale.Crop,
+                .fillMaxWidth(),
+            contentScale = ContentScale.Fit,
             painter = painterResource(id = content.illustrationId),
             contentDescription = stringResource(id = R.string.onboarding_illustration_content_description)
         )
+
         Text(
             modifier = Modifier
-                .constrainAs(headline) {
-                    width = Dimension.fillToConstraints
-                    top.linkTo(illustration.bottom, margin = ProtonDimens.DefaultSpacing)
-                    start.linkTo(parent.start, margin = ProtonDimens.LargeSpacing)
-                    end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
-                },
-            textAlign = TextAlign.Center,
+                .align(Alignment.CenterHorizontally)
+                .padding(top = ProtonDimens.DefaultSpacing)
+                .padding(horizontal = ProtonDimens.DefaultSpacing),
             text = stringResource(id = content.headlineId),
-            style = ProtonTheme.typography.headlineNorm
+            style = ProtonTheme.typography.headlineNorm.copy(textAlign = TextAlign.Center)
         )
-        HyperlinkText(
-            modifier = Modifier
-                .constrainAs(description) {
-                    width = Dimension.fillToConstraints
-                    height = Dimension.fillToConstraints
-                    top.linkTo(headline.bottom, margin = ProtonDimens.DefaultSpacing)
-                    start.linkTo(parent.start, margin = ProtonDimens.LargeSpacing)
-                    end.linkTo(parent.end, margin = ProtonDimens.LargeSpacing)
-                    bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
-                },
-            textResource = content.descriptionId,
-            textStyle = ProtonTheme.typography.defaultWeak.copy(
-                textAlign = TextAlign.Center
-            ),
-            linkTextColor = ProtonTheme.colors.textAccent
-        )
+
+        Column(
+            Modifier
+                .align(Alignment.CenterHorizontally)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                modifier = Modifier
+                    .padding(ProtonDimens.DefaultSpacing),
+                text = stringResource(id = content.descriptionId),
+                style = ProtonTheme.typography.defaultWeak.copy(textAlign = TextAlign.Center)
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ConstraintLayoutScope.OnboardingButton(
+fun OnboardingButton(
     actions: MailboxScreen.Actions,
     pagerState: PagerState,
-    viewCount: Int,
-    positiveButton: ConstrainedLayoutReference,
-    dismissButton: ConstrainedLayoutReference,
-    dots: ConstrainedLayoutReference
+    viewCount: Int
 ) {
     val scope = rememberCoroutineScope()
 
     ProtonSolidButton(
         modifier = Modifier
-            .constrainAs(positiveButton) {
-                width = Dimension.fillToConstraints
-                height = Dimension.value(MailDimens.onboardingBottomButtonHeight)
-                start.linkTo(parent.start, margin = ProtonDimens.MediumSpacing)
-                end.linkTo(parent.end, margin = ProtonDimens.MediumSpacing)
-                bottom.linkTo(dots.top, margin = ProtonDimens.DefaultSpacing)
-            }
+            .padding(ProtonDimens.DefaultSpacing)
+            .height(MailDimens.onboardingBottomButtonHeight)
+            .fillMaxWidth()
             .horizontalScroll(state = ScrollState(0), enabled = true),
         onClick = {
             val nextPageIndex = pagerState.currentPage.plus(1)
@@ -204,64 +201,38 @@ fun ConstraintLayoutScope.OnboardingButton(
             else R.string.onboarding_next
         Text(text = stringResource(id = positiveButtonTextId))
     }
-
-    if (pagerState.currentPage != viewCount.minus(1)) {
-        IconButton(
-            modifier = Modifier
-                .constrainAs(dismissButton) {
-                    width = Dimension.fillToConstraints
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-                .horizontalScroll(state = ScrollState(0), enabled = true),
-            onClick = {
-                actions.closeOnboarding()
-            }
-        ) {
-            Icon(
-                tint = ProtonTheme.colors.iconNorm,
-                imageVector = androidx.compose.material.icons.Icons.Filled.Close,
-                contentDescription = stringResource(id = R.string.onboarding_close_content_description)
-            )
-        }
-    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ConstraintLayoutScope.OnboardingIndexDots(
-    pagerState: PagerState,
-    viewCount: Int,
-    dots: ConstrainedLayoutReference
-) {
+fun OnboardingIndexDots(pagerState: PagerState, viewCount: Int) {
     val highlightedDotColor = ProtonTheme.colors.brandNorm
     val defaultDotColor = ProtonTheme.colors.shade20
-    Canvas(
-        modifier = Modifier
-            .size(MailDimens.pagerDotsCircleSize)
-            .constrainAs(dots) {
-                width = Dimension.fillToConstraints
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom, margin = ProtonDimens.LargeSpacing)
-            },
-        onDraw = {
-            var centerOffset = Offset(
-                size.width.div(2).minus(MailDimens.pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
-                this.center.y
-            )
-            for (i in 0 until viewCount) {
-                drawCircle(
-                    color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
-                    center = centerOffset
+
+    Row {
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(ProtonDimens.SmallSpacing)
+                .size(MailDimens.pagerDotsCircleSize),
+            onDraw = {
+                var centerOffset = Offset(
+                    size.width.div(2).minus(MailDimens.pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
+                    this.center.y
                 )
-                centerOffset = Offset(
-                    centerOffset.x.plus(MailDimens.pagerDotsCircleSize.toPx().times(2)),
-                    centerOffset.y
-                )
+                for (i in 0 until viewCount) {
+                    drawCircle(
+                        color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
+                        center = centerOffset
+                    )
+                    centerOffset = Offset(
+                        centerOffset.x.plus(MailDimens.pagerDotsCircleSize.toPx().times(2)),
+                        centerOffset.y
+                    )
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
