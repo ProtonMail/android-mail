@@ -44,7 +44,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -76,6 +75,10 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
+import ch.protonmail.android.mailcontact.presentation.model.getAddressTypeByValue
+import ch.protonmail.android.mailcontact.presentation.model.getEmailTypeByValue
+import ch.protonmail.android.mailcontact.presentation.model.getOtherTypeByValue
+import ch.protonmail.android.mailcontact.presentation.model.getTelephoneTypeByValue
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
@@ -94,7 +97,6 @@ import me.proton.core.compose.theme.captionNorm
 import me.proton.core.compose.theme.captionWeak
 import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultStrongNorm
-import kotlin.math.min
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -127,6 +129,9 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                             onAddItemClick = { viewModel.submit(ContactFormViewAction.OnAddItemClick(it)) },
                             onRemoveItemClick = { section, index ->
                                 viewModel.submit(ContactFormViewAction.OnRemoveItemClick(section, index))
+                            },
+                            onUpdateItem = { section, index, newValue ->
+                                viewModel.submit(ContactFormViewAction.OnUpdateItem(section, index, newValue))
                             }
                         )
                     )
@@ -217,20 +222,26 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
     }
     itemsIndexed(state.contact.emails) { index, email ->
         key(email) {
-            var emailValue by rememberSaveable { mutableStateOf(email.value) }
-            var selectedType by remember { mutableStateOf(email.selectedType.localizedValue) }
+            val mutableEmail = remember { mutableStateOf(email) }
             InputFieldWithTrash(
-                value = emailValue,
+                value = email.value,
                 hint = stringResource(id = R.string.email_address),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Emails, index) }
             ) {
-                emailValue = it
+                mutableEmail.value = mutableEmail.value.copy(value = it)
+                actions.onUpdateItem(Section.Emails, index, mutableEmail.value)
             }
             TypePickerField(
-                selectedType = selectedType,
-                types = FieldType.EmailType.values().map { it.localizedValue }
+                initialSelectedType = email.selectedType
             ) { selectedValue ->
-                selectedType = selectedValue
+                mutableEmail.value = mutableEmail.value.copy(
+                    selectedType = getEmailTypeByValue(selectedValue)
+                )
+                actions.onUpdateItem(
+                    Section.Emails,
+                    index,
+                    mutableEmail.value
+                )
             }
         }
     }
@@ -248,20 +259,26 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
     }
     itemsIndexed(state.contact.telephones) { index, telephone ->
         key(telephone) {
-            var telephoneValue by rememberSaveable { mutableStateOf(telephone.value) }
-            var selectedType by remember { mutableStateOf(telephone.selectedType.localizedValue) }
+            val mutableTelephone = remember { mutableStateOf(telephone) }
             InputFieldWithTrash(
-                value = telephoneValue,
+                value = telephone.value,
                 hint = stringResource(id = R.string.phone_number),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, index) }
             ) {
-                telephoneValue = it
+                mutableTelephone.value = mutableTelephone.value.copy(value = it)
+                actions.onUpdateItem(Section.Telephones, index, mutableTelephone.value)
             }
             TypePickerField(
-                selectedType = selectedType,
-                types = FieldType.TelephoneType.values().map { it.localizedValue }
+                initialSelectedType = telephone.selectedType
             ) { selectedValue ->
-                selectedType = selectedValue
+                mutableTelephone.value = mutableTelephone.value.copy(
+                    selectedType = getTelephoneTypeByValue(selectedValue)
+                )
+                actions.onUpdateItem(
+                    Section.Telephones,
+                    index,
+                    mutableTelephone.value
+                )
             }
         }
     }
@@ -279,36 +296,42 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
     }
     itemsIndexed(state.contact.addresses) { index, address ->
         key(address) {
-            var streetAddress by rememberSaveable { mutableStateOf(address.streetAddress) }
-            var postalCode by rememberSaveable { mutableStateOf(address.postalCode) }
-            var city by rememberSaveable { mutableStateOf(address.city) }
-            var region by rememberSaveable { mutableStateOf(address.region) }
-            var country by rememberSaveable { mutableStateOf(address.country) }
-            var selectedType by remember { mutableStateOf(address.selectedType.localizedValue) }
+            val mutableAddress = remember { mutableStateOf(address) }
             InputFieldWithTrash(
-                value = streetAddress,
+                value = address.streetAddress,
                 hint = stringResource(R.string.address_street),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, index) }
             ) {
-                streetAddress = it
+                mutableAddress.value = mutableAddress.value.copy(streetAddress = it)
+                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = postalCode, hint = stringResource(R.string.address_postal_code)) {
-                postalCode = it
+            InputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code)) {
+                mutableAddress.value = mutableAddress.value.copy(postalCode = it)
+                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = city, hint = stringResource(R.string.address_city)) {
-                city = it
+            InputField(value = address.city, hint = stringResource(R.string.address_city)) {
+                mutableAddress.value = mutableAddress.value.copy(city = it)
+                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = region, hint = stringResource(R.string.address_region)) {
-                region = it
+            InputField(value = address.region, hint = stringResource(R.string.address_region)) {
+                mutableAddress.value = mutableAddress.value.copy(region = it)
+                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = country, hint = stringResource(R.string.address_country)) {
-                country = it
+            InputField(value = address.country, hint = stringResource(R.string.address_country)) {
+                mutableAddress.value = mutableAddress.value.copy(country = it)
+                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
             TypePickerField(
-                selectedType = selectedType,
-                types = FieldType.AddressType.values().map { it.localizedValue }
+                initialSelectedType = address.selectedType
             ) { selectedValue ->
-                selectedType = selectedValue
+                mutableAddress.value = mutableAddress.value.copy(
+                    selectedType = getAddressTypeByValue(selectedValue)
+                )
+                actions.onUpdateItem(
+                    Section.Addresses,
+                    index,
+                    mutableAddress.value
+                )
             }
         }
     }
@@ -326,13 +349,14 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
     }
     itemsIndexed(state.contact.notes) { index, note ->
         key(note) {
-            var noteValue by rememberSaveable { mutableStateOf(note.value) }
+            val mutableNote = remember { mutableStateOf(note) }
             InputFieldWithTrash(
-                value = noteValue,
+                value = note.value,
                 hint = stringResource(id = R.string.note_section),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Notes, index) }
             ) {
-                noteValue = it
+                mutableNote.value = mutableNote.value.copy(value = it)
+                actions.onUpdateItem(Section.Notes, index, mutableNote.value)
             }
         }
     }
@@ -358,20 +382,26 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                     // Add image picker / image display field for photos and logos here
                 }
                 is InputField.SingleTyped -> {
-                    var otherValue by rememberSaveable { mutableStateOf(other.value) }
-                    var selectedType by remember { mutableStateOf(other.selectedType.localizedValue) }
+                    val mutableOther = remember { mutableStateOf(other) }
                     InputFieldWithTrash(
-                        value = otherValue,
+                        value = other.value,
                         hint = stringResource(id = R.string.additional_info),
                         onDeleteClick = { actions.onRemoveItemClick(Section.Others, index) }
                     ) {
-                        otherValue = it
+                        mutableOther.value = mutableOther.value.copy(value = it)
+                        actions.onUpdateItem(Section.Others, index, mutableOther.value)
                     }
                     TypePickerField(
-                        selectedType = selectedType,
-                        types = FieldType.OtherType.values().map { it.localizedValue }
+                        initialSelectedType = other.selectedType
                     ) { selectedValue ->
-                        selectedType = selectedValue
+                        mutableOther.value = mutableOther.value.copy(
+                            selectedType = getOtherTypeByValue(selectedValue)
+                        )
+                        actions.onUpdateItem(
+                            Section.Others,
+                            index,
+                            mutableOther.value
+                        )
                     }
                 }
                 else -> {
@@ -387,9 +417,6 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
 
 @Composable
 private fun NameSection(state: ContactFormState.Data) {
-    var displayName by rememberSaveable { mutableStateOf(state.contact.displayName) }
-    var firstName by rememberSaveable { mutableStateOf(state.contact.firstName) }
-    var lastName by rememberSaveable { mutableStateOf(state.contact.lastName) }
     FormInputField(
         modifier = Modifier
             .fillMaxWidth()
@@ -398,10 +425,11 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        value = displayName,
+        initialValue = state.contact.displayName,
         hint = stringResource(R.string.display_name),
+        maxCharacters = CONTACT_NAME_MAX_LENGTH,
         onTextChange = {
-            displayName = it.substring(0, min(it.length, CONTACT_NAME_MAX_LENGTH))
+            // Trigger action here
         }
     )
     FormInputField(
@@ -412,10 +440,11 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        value = firstName,
+        initialValue = state.contact.firstName,
         hint = stringResource(R.string.first_name),
+        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            firstName = it.substring(0, min(it.length, CONTACT_FIRST_LAST_NAME_MAX_LENGTH))
+            // Trigger action here
         }
     )
     FormInputField(
@@ -426,10 +455,11 @@ private fun NameSection(state: ContactFormState.Data) {
                 end = ProtonDimens.DefaultSpacing,
                 bottom = ProtonDimens.DefaultSpacing
             ),
-        value = lastName,
+        initialValue = state.contact.lastName,
         hint = stringResource(R.string.last_name),
+        maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
-            lastName = it.substring(0, min(it.length, CONTACT_FIRST_LAST_NAME_MAX_LENGTH))
+            // Trigger action here
         }
     )
 }
@@ -499,7 +529,7 @@ private fun InputField(
                     end = MailDimens.ContactFormTypedFieldPaddingEnd,
                     top = ProtonDimens.DefaultSpacing
                 ),
-            value = value,
+            initialValue = value,
             hint = hint,
             onTextChange = onTextChange
         )
@@ -523,7 +553,7 @@ private fun InputFieldWithTrash(
                     end = ProtonDimens.DefaultSpacing,
                     top = ProtonDimens.DefaultSpacing
                 ),
-            value = value,
+            initialValue = value,
             hint = hint,
             onTextChange = onTextChange
         )
@@ -547,20 +577,29 @@ private fun InputFieldWithTrash(
 
 @Composable
 private fun TypePickerField(
-    selectedType: TextUiModel,
-    types: List<TextUiModel>,
+    initialSelectedType: FieldType,
     onValueSelected: (TextUiModel) -> Unit
 ) {
     val openDialog = remember { mutableStateOf(false) }
+    var selectedType by remember { mutableStateOf(initialSelectedType.localizedValue) }
+
+    val localizedValues = when (initialSelectedType) {
+        is FieldType.EmailType -> FieldType.EmailType.values()
+        is FieldType.TelephoneType -> FieldType.TelephoneType.values()
+        is FieldType.AddressType -> FieldType.AddressType.values()
+        is FieldType.OtherType -> FieldType.OtherType.values()
+    }.map { it.localizedValue }
+
     when {
         openDialog.value -> {
             PickerDialog(
                 title = stringResource(R.string.property_label),
                 selectedValue = selectedType,
-                values = types,
+                values = localizedValues,
                 onDismissRequest = { openDialog.value = false },
                 onValueSelected = { selectedValue ->
                     openDialog.value = false
+                    selectedType = selectedValue
                     onValueSelected(selectedValue)
                 }
             )
@@ -683,14 +722,16 @@ object ContactFormContent {
 
     data class Actions(
         val onAddItemClick: (Section) -> Unit,
-        val onRemoveItemClick: (Section, Int) -> Unit
+        val onRemoveItemClick: (Section, Int) -> Unit,
+        val onUpdateItem: (Section, Int, InputField) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
                 onAddItemClick = {},
-                onRemoveItemClick = { _, _ -> }
+                onRemoveItemClick = { _, _ -> },
+                onUpdateItem = { _, _, _ -> }
             )
         }
     }
