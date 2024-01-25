@@ -91,7 +91,10 @@ class ContactFormViewModel @Inject constructor(
                     is ContactFormViewAction.OnAddItemClick -> handleAddItem(action)
                     is ContactFormViewAction.OnRemoveItemClick -> handleRemoveItem(action)
                     is ContactFormViewAction.OnUpdateItem -> handleUpdateItem(action)
-                    ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
+                    is ContactFormViewAction.OnUpdateDisplayName -> handleDisplayName(action)
+                    is ContactFormViewAction.OnUpdateFirstName -> handleFirstName(action)
+                    is ContactFormViewAction.OnUpdateLastName -> handleLastName(action)
+                    is ContactFormViewAction.OnCloseContactFormClick -> emitNewStateFor(ContactFormEvent.CloseContactForm)
                 }
             }
         }
@@ -213,6 +216,39 @@ class ContactFormViewModel @Inject constructor(
                         contact.copy(others = mutableOthers)
                     }
                 }
+            )
+        )
+    }
+
+    private fun handleDisplayName(action: ContactFormViewAction.OnUpdateDisplayName) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                contact.copy(displayName = action.displayName)
+            )
+        )
+    }
+
+    private fun handleFirstName(action: ContactFormViewAction.OnUpdateFirstName) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                contact.copy(firstName = action.firstName)
+            )
+        )
+    }
+
+    private fun handleLastName(action: ContactFormViewAction.OnUpdateLastName) {
+        val stateValue = state.value
+        if (stateValue !is ContactFormState.Data) return
+        val contact = stateValue.contact
+        emitNewStateFor(
+            ContactFormEvent.UpdateContactFormUiModel(
+                contact.copy(lastName = action.lastName)
             )
         )
     }
