@@ -34,10 +34,12 @@ object ContactFormPreviewData {
         firstName = "firstName",
         lastName = "lastName",
         emails = mutableListOf(
-            InputField.SingleTyped("email@proton.me", FieldType.EmailType.Email)
+            InputField.SingleTyped("email@proton.me", FieldType.EmailType.Email),
+            InputField.SingleTyped("email2@proton.me", FieldType.EmailType.Other)
         ),
         telephones = mutableListOf(
-            InputField.SingleTyped("0123456789", FieldType.TelephoneType.Telephone)
+            InputField.SingleTyped("0123456789", FieldType.TelephoneType.Telephone),
+            InputField.SingleTyped("9876543210", FieldType.TelephoneType.Other)
         ),
         addresses = mutableListOf(
             InputField.Address(
@@ -47,11 +49,20 @@ object ContactFormPreviewData {
                 "Region",
                 "Country",
                 FieldType.AddressType.Address
+            ),
+            InputField.Address(
+                "Street 2",
+                "Postal Code 2",
+                "City 2",
+                "Region 2",
+                "Country 2",
+                FieldType.AddressType.Home
             )
         ),
         birthday = InputField.Birthday(LocalDate.now()),
         notes = mutableListOf(
-            InputField.Note("Notes")
+            InputField.Note("Notes"),
+            InputField.Note("Notes 2")
         ),
         others = mutableListOf(
             InputField.SingleTyped("Title", FieldType.OtherType.Title),

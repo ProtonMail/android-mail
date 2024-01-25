@@ -31,6 +31,8 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
+import ch.protonmail.android.mailcontact.presentation.model.FieldType
+import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
@@ -236,6 +238,189 @@ class ContactFormViewModelTest {
             val expected = ContactFormState.Data.Update(
                 contact = contactFormUiModel.copy(
                     lastName = newValue
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update email action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            val index = 0
+            val newValue = InputField.SingleTyped(
+                value = "Updated",
+                selectedType = FieldType.EmailType.Work
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Emails,
+                    index = index,
+                    newValue = newValue
+                )
+            )
+
+            val mutableEmails = contactFormUiModel.emails.apply {
+                this[index] = newValue
+            }
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    emails = mutableEmails
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update telephone action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            val index = 0
+            val newValue = InputField.SingleTyped(
+                value = "Updated",
+                selectedType = FieldType.TelephoneType.Work
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Telephones,
+                    index = index,
+                    newValue = newValue
+                )
+            )
+
+            val mutableTelephones = contactFormUiModel.telephones.apply {
+                this[index] = newValue
+            }
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    telephones = mutableTelephones
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update address action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            val index = 0
+            val newValue = InputField.Address(
+                streetAddress = "Updated",
+                postalCode = "Updated",
+                city = "Updated",
+                region = "Updated",
+                country = "Updated",
+                selectedType = FieldType.AddressType.Work
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Addresses,
+                    index = index,
+                    newValue = newValue
+                )
+            )
+
+            val mutableAddresses = contactFormUiModel.addresses.apply {
+                this[index] = newValue
+            }
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    addresses = mutableAddresses
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update note action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            val index = 0
+            val newValue = InputField.Note(
+                value = "Updated"
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Notes,
+                    index = index,
+                    newValue = newValue
+                )
+            )
+
+            val mutableNotes = contactFormUiModel.notes.apply {
+                this[index] = newValue
+            }
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    notes = mutableNotes
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on update other action is submitted, then state contact is updated`() = runTest {
+        // Given
+        val contactFormUiModel = expectContactFormStateUpdate()
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            val index = 0
+            val newValue = InputField.SingleTyped(
+                value = "Updated",
+                selectedType = FieldType.OtherType.Role
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Others,
+                    index = index,
+                    newValue = newValue
+                )
+            )
+
+            val mutableOthers = contactFormUiModel.others.apply {
+                this[index] = newValue
+            }
+            val expected = ContactFormState.Data.Update(
+                contact = contactFormUiModel.copy(
+                    others = mutableOthers
                 )
             )
 
