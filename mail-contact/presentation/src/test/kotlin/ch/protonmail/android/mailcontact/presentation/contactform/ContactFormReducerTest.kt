@@ -135,6 +135,34 @@ class ContactFormReducerTest(
                         }
                     )
                 )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactState,
+                event = ContactFormEvent.SaveContactError,
+                expectedState = loadedUpdateContactState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error))
+                )
+            ),
+            TestInput(
+                currentState = loadedCreateContactState,
+                event = ContactFormEvent.CreatingContact,
+                expectedState = loadedCreateContactState.copy(
+                    displayCreateLoader = true
+                )
+            ),
+            TestInput(
+                currentState = loadedCreateContactState,
+                event = ContactFormEvent.ContactCreated,
+                expectedState = loadedCreateContactState.copy(
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactState,
+                event = ContactFormEvent.ContactUpdated,
+                expectedState = loadedUpdateContactState.copy(
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+                )
             )
         )
 
