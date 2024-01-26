@@ -28,7 +28,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMa
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
-import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
+import ch.protonmail.android.mailcontact.presentation.model.emptyRandomOtherField
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
@@ -114,7 +114,7 @@ class ContactFormViewModel @Inject constructor(
                         notes = contact.notes.plus(emptyNoteField)
                     )
                     Section.Others -> contact.copy(
-                        others = contact.others.plus(emptyDefaultOtherField)
+                        others = contact.others.plus(emptyRandomOtherField())
                     )
                 }
             )

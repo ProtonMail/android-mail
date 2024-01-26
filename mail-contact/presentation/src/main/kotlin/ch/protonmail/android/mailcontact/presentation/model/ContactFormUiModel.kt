@@ -23,6 +23,7 @@ import android.graphics.Bitmap
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.ContactId
+import kotlin.random.Random
 
 const val CONTACT_NAME_MAX_LENGTH = 190
 // We remove one to avoid issue with space when computing the full name
@@ -172,7 +173,19 @@ val emptyAddressField = InputField.Address(
 val emptyNoteField = InputField.Note(
     value = ""
 )
-val emptyDefaultOtherField = InputField.SingleTyped(
+
+fun emptyRandomOtherField() = InputField.SingleTyped(
     value = "",
-    selectedType = FieldType.OtherType.Role
+    selectedType = listOf(
+        FieldType.OtherType.Organization,
+        FieldType.OtherType.Title,
+        FieldType.OtherType.Role,
+        FieldType.OtherType.TimeZone,
+        FieldType.OtherType.Member,
+        FieldType.OtherType.Language,
+        FieldType.OtherType.Url,
+        FieldType.OtherType.Gender
+    ).run {
+        this[Random.nextInt(this.size)]
+    }
 )

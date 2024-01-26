@@ -34,7 +34,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMa
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
-import ch.protonmail.android.mailcontact.presentation.model.emptyDefaultOtherField
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
@@ -278,7 +277,9 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(
-                    others = emptyContactFormUiModel.others.plus(emptyDefaultOtherField)
+                    others = emptyContactFormUiModel.others.plus(
+                        (contactFormViewModel.state.value as ContactFormState.Data.Create).contact.others.last()
+                    )
                 )
             )
 
