@@ -22,6 +22,7 @@ import android.net.Uri
 import io.mockk.every
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class IntentShareInfoTest {
@@ -49,9 +50,44 @@ class IntentShareInfoTest {
         )
 
         // When
-        val encodedDecodedFileShareInfo = intentShareInfo.encode().decode()
+        val encodedDecodedIntentShareInfo = intentShareInfo.encode().decode()
 
         // Then
-        assertEquals(intentShareInfo, encodedDecodedFileShareInfo)
+        assertEquals(intentShareInfo, encodedDecodedIntentShareInfo)
+    }
+
+    @Test
+    fun `encode should not add forward slashes when encoding very long content`() {
+        // Given
+        every { uri1.toString() } returns "content://test1"
+        every { uri2.toString() } returns "content://test2"
+        val toRecipients = arrayOf("toemail1@example.com", "toemail2@example.com")
+        val ccRecipients = arrayOf("ccemail1@example.com", "ccemail2@example.com")
+        val bccRecipients = arrayOf("bccemail1@example.com", "bccemail2@example.com")
+        val subject = "Test Subject"
+        val body = AVeryLongString
+        val intentShareInfo = IntentShareInfo.Empty.copy(
+            attachmentUris = listOf(uri1.toString(), uri2.toString()),
+            emailRecipientTo = toRecipients.toList(),
+            emailRecipientCc = ccRecipients.toList(),
+            emailRecipientBcc = bccRecipients.toList(),
+            emailBody = body,
+            emailSubject = subject
+        )
+
+        // When
+        val encodedFileShareInfo = intentShareInfo.encode()
+        val encodedDecodedIntentShareInfo = encodedFileShareInfo.decode()
+
+        // Then
+        assertFalse(encodedFileShareInfo.emailBody!!.contains("/"))
+        assertEquals(intentShareInfo, encodedDecodedIntentShareInfo)
+    }
+
+    private companion object {
+
+        @Suppress("MaxLineLength")
+        const val AVeryLongString =
+            "Lorem ipsum の痛みは改善され、エリートの脂肪が蓄積され、一時的に痛みが発生し、労働力と痛みが大きくなります。 iaculis nunc sed augueのウルトリス。アンティのティンシダント・イド・アリケット・リスス・フェウギア。 Vitae tortor condimentum lacinia quis vel eros donec。ウルナのテルスにあるscelerisque purus semper eget duis。 Ut sem nulla pharetra diam sit amet.オルナーレのEnim lobortis scelerisque fermentum dui faucibus。ペレンテスクの生息地モルビ トリスティック セネクトゥスとネットスなど。テルスのリスス・ビベラ・アディピシングで。 nisl nisi scelerisqueのViverra accumsan。"
     }
 }

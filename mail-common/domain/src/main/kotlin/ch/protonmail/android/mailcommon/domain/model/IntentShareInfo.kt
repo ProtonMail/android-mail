@@ -55,30 +55,42 @@ fun IntentShareInfo.hasEmailData(): Boolean = emailSubject != null ||
     emailRecipientBcc.isNotEmpty()
 
 /**
- * Without Base64 encoding, navigation graph fails to resolve the destination with the serialized form of this class.
+ * Encodes the current [IntentShareInfo] instance's fields to [Base64.UrlSafe] strings.
+ *
+ * The current implementation relies on [Base64.UrlSafe] to avoid issues when passing these values as navigation
+ * arguments, as if standard [Base64] encoding were to add forward slashes, navigation would make the app crash.
  */
-@OptIn(ExperimentalEncodingApi::class)
 fun IntentShareInfo.encode(): IntentShareInfo {
     return IntentShareInfo(
-        attachmentUris = attachmentUris.map { Base64.encode(it.toByteArray()) },
-        emailSubject = emailSubject?.let { Base64.encode(it.toByteArray()) },
-        emailRecipientTo = emailRecipientTo.map { Base64.encode(it.toByteArray()) },
-        emailRecipientCc = emailRecipientCc.map { Base64.encode(it.toByteArray()) },
-        emailRecipientBcc = emailRecipientBcc.map { Base64.encode(it.toByteArray()) },
-        emailBody = emailBody?.let { Base64.encode(it.toByteArray()) },
+        attachmentUris = attachmentUris.map { it.toUrlSafeBase64String() },
+        emailSubject = emailSubject?.toUrlSafeBase64String(),
+        emailRecipientTo = emailRecipientTo.map { it.toUrlSafeBase64String() },
+        emailRecipientCc = emailRecipientCc.map { it.toUrlSafeBase64String() },
+        emailRecipientBcc = emailRecipientBcc.map { it.toUrlSafeBase64String() },
+        emailBody = emailBody?.toUrlSafeBase64String(),
         encoded = true
     )
 }
 
-@OptIn(ExperimentalEncodingApi::class)
+/**
+ * Decodes the current [IntentShareInfo] instance's fields by using [Base64.UrlSafe] decoding.
+ *
+ * See [IntentShareInfo.encode] for further details.
+ */
 fun IntentShareInfo.decode(): IntentShareInfo {
     return IntentShareInfo(
-        attachmentUris = attachmentUris.map { String(Base64.decode(it)) },
-        emailSubject = emailSubject?.let { String(Base64.decode(it)) },
-        emailRecipientTo = emailRecipientTo.map { String(Base64.decode(it)) },
-        emailRecipientCc = emailRecipientCc.map { String(Base64.decode(it)) },
-        emailRecipientBcc = emailRecipientBcc.map { String(Base64.decode(it)) },
-        emailBody = emailBody?.let { String(Base64.decode(it)) },
+        attachmentUris = attachmentUris.map { it.fromUrlSafeBase64String() },
+        emailSubject = emailSubject?.fromUrlSafeBase64String(),
+        emailRecipientTo = emailRecipientTo.map { it.fromUrlSafeBase64String() },
+        emailRecipientCc = emailRecipientCc.map { it.fromUrlSafeBase64String() },
+        emailRecipientBcc = emailRecipientBcc.map { it.fromUrlSafeBase64String() },
+        emailBody = emailBody?.fromUrlSafeBase64String(),
         encoded = false
     )
 }
+
+@OptIn(ExperimentalEncodingApi::class)
+private fun String.toUrlSafeBase64String() = Base64.UrlSafe.encode(this.toByteArray())
+
+@OptIn(ExperimentalEncodingApi::class)
+private fun String.fromUrlSafeBase64String() = String(Base64.UrlSafe.decode(source = this))
