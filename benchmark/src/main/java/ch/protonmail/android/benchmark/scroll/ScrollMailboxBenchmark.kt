@@ -27,7 +27,9 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Direction
 import ch.protonmail.android.benchmark.common.BenchmarkConfig
 import ch.protonmail.android.benchmark.common.coreTraceSectionsList
+import ch.protonmail.android.benchmark.common.performLogin
 import ch.protonmail.android.benchmark.common.remoteApiTraceSectionsList
+import ch.protonmail.android.benchmark.common.skipOnboarding
 import ch.protonmail.android.benchmark.common.waitUntilFirstEmailRowShownOnMailboxList
 import junit.framework.TestCase
 import org.junit.Rule
@@ -64,10 +66,12 @@ class ScrollMailboxBenchmark {
             startupMode = null,
             iterations = BenchmarkConfig.DefaultIterations,
             setupBlock = {
-                if (firstStart) {
-                    startActivityAndWait()
-                    firstStart = false
-                }
+                if (!firstStart) return@measureRepeated
+
+                startActivityAndWait()
+                performLogin()
+                skipOnboarding()
+                firstStart = false
             }
         ) {
             waitUntilFirstEmailRowShownOnMailboxList()
@@ -93,5 +97,4 @@ class ScrollMailboxBenchmark {
         const val GestureMarginRatio = 10
         const val NumberOfListFlings = 5
     }
-
 }

@@ -28,7 +28,9 @@ import androidx.test.filters.LargeTest
 import ch.protonmail.android.benchmark.common.BenchmarkConfig
 import ch.protonmail.android.benchmark.common.clickOnTheFirstEmailRowWaitDetailsShown
 import ch.protonmail.android.benchmark.common.coreTraceSectionsList
+import ch.protonmail.android.benchmark.common.performLogin
 import ch.protonmail.android.benchmark.common.remoteApiTraceSectionsList
+import ch.protonmail.android.benchmark.common.skipOnboarding
 import ch.protonmail.android.benchmark.common.waitUntilFirstEmailRowShownOnMailboxList
 import org.junit.Rule
 import org.junit.Test
@@ -49,24 +51,35 @@ class ConversationDetailsBenchmark {
      */
     @OptIn(ExperimentalMetricApi::class)
     @Test
-    fun testLoadingConversationDetailsScreen() = benchmarkRule.measureRepeated(
-        packageName = BenchmarkConfig.PackageName,
-        metrics = listOf(
-            StartupTimingMetric(),
-            FrameTimingMetric()
-        ) + coreTraceSectionsList() +
-            remoteApiTraceSectionsList(),
-        iterations = BenchmarkConfig.DefaultIterations,
-        startupMode = StartupMode.COLD,
-        setupBlock = {
-            pressHome()
+    fun testLoadingConversationDetailsScreen() {
+        var firstStart = true
+
+        benchmarkRule.measureRepeated(
+            packageName = BenchmarkConfig.PackageName,
+            metrics = listOf(
+                StartupTimingMetric(),
+                FrameTimingMetric()
+            ) + coreTraceSectionsList() +
+                remoteApiTraceSectionsList(),
+            iterations = BenchmarkConfig.DefaultIterations,
+            startupMode = StartupMode.COLD,
+            setupBlock = {
+                if (!firstStart) return@measureRepeated
+
+                startActivityAndWait()
+                performLogin()
+                skipOnboarding()
+                firstStart = false
+
+                pressHome()
+            }
+        ) {
+
+            startActivityAndWait()
+
+            waitUntilFirstEmailRowShownOnMailboxList()
+
+            clickOnTheFirstEmailRowWaitDetailsShown()
         }
-    ) {
-
-        startActivityAndWait()
-
-        waitUntilFirstEmailRowShownOnMailboxList()
-
-        clickOnTheFirstEmailRowWaitDetailsShown()
     }
 }
