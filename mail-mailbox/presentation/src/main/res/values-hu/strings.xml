@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welcome to the new app</string>
   <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Kezdés</string>
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
   <string name="onboarding_close_content_description">Bezárás</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
   <string name="mailbox_action_spam_message">üzenet a levélszemét mappába áthelyezve</string>

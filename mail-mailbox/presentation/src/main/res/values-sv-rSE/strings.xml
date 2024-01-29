@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Välkommen till den nya appen</string>
   <string name="onboarding_description_ga">Helt ombyggd från grunden, den nya Proton Mail-appen gjordes för stabilitet och prestanda.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Kom igång</string>
   <string name="onboarding_illustration_content_description">Onboarding-illustration</string>
   <string name="onboarding_close_content_description">Stäng</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Meddelande flyttat till papperskorg</string>
   <string name="mailbox_action_archive_message">Meddelande flyttat till arkiv</string>
   <string name="mailbox_action_spam_message">Meddelande flyttat till skräppost</string>

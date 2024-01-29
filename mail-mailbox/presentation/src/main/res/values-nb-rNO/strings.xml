@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente fargeinnstillinger</string>
   <string name="mailbox_action_move_messages_failed">Flytteoperasjonen mislyktes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Velkommen til den nye appen</string>
   <string name="onboarding_description_ga">Den nye Proton Mail-appen ble fullstendig gjenoppbygd fra bunnen av, og ble laget for stabilitet og ytelse.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Kom i gang</string>
   <string name="onboarding_illustration_content_description">Illustrasjon om introduksjon</string>
   <string name="onboarding_close_content_description">Lukk</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Melding flyttet til papirkurven</string>
   <string name="mailbox_action_archive_message">Melding flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Melding flyttet til søppelpost</string>

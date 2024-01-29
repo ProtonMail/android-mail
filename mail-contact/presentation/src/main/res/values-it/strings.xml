@@ -35,7 +35,7 @@
   <string name="contact_details_loading_error">Errore nel caricamento del contatto. Riprova più tardi.</string>
   <string name="contact_details_delete_success">Contatto eliminato</string>
   <string name="edit_contact_content_description">Modifica il contatto</string>
-  <string name="delete_contact_content_description">Elimina questo contatto</string>
+  <string name="delete_contact_content_description">Elimina il contatto</string>
   <string name="contact_avatar_image_content_description">Immagine del contatto</string>
   <string name="contact_groups_content_description">Gruppi di contatti</string>
   <string name="contact_type_email">Email</string>
@@ -79,7 +79,7 @@
   <string name="email_address">Indirizzo email</string>
   <string name="phone_number">Numero di telefono</string>
   <string name="additional_info">Informazioni aggiuntive</string>
-  <string name="remove_contact_property">Rimuovi questo dettaglio</string>
+  <string name="remove_contact_property">Rimuovi il dettaglio</string>
   <string name="property_type">Tipo di dettaglio</string>
   <string name="property_label">Etichetta</string>
   <string name="address_street">Via</string>
@@ -87,4 +87,8 @@
   <string name="address_city">Città</string>
   <string name="address_region">Regione</string>
   <string name="address_country">Paese</string>
+  <string name="contact_details_delete_dialog_title">Elimina il contatto</string>
+  <string name="contact_details_delete_dialog_text">Sei sicuro di voler eliminare questo contatto?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Annulla</string>
+  <string name="contact_details_delete_dialog_confirm_button">OK</string>
 </resources>

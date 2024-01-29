@@ -129,7 +129,7 @@
   <string name="mail_settings_auto_lock_update_error">Ошибка сохранения настроек</string>
   <string name="mail_settings_pin_insertion_input_title">Вставьте PIN-код</string>
   <string name="mail_settings_pin_insertion_set_title">Установите PIN-код</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Подтвердите ПИН-код</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Подтвердите PIN-код</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Значок блокировки</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>

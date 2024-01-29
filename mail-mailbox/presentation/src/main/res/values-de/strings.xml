@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Fehler beim Laden der Farbeinstellungen.</string>
   <string name="mailbox_action_move_messages_failed">Fehler beim Verschieben.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Fehler beim Laden der Ordner.</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Willkommen in der neuen App</string>
   <string name="onboarding_description_ga">Die neue Proton Mail-App wurde von Grund auf neu entwickelt und ist auf Stabilität und Leistung ausgelegt.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Los geht\'s</string>
   <string name="onboarding_illustration_content_description">Onboarding-Illustration</string>
   <string name="onboarding_close_content_description">Schliessen</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Nachricht wurde in den Papierkorb verschoben</string>
   <string name="mailbox_action_archive_message">Nachricht wurde in das Archiv verschoben</string>
   <string name="mailbox_action_spam_message">Nachricht wurde in den Spam-Ordner verschoben</string>

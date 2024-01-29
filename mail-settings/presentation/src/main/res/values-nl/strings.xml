@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">Pincode instellen</string>
   <string name="mail_settings_pin_insertion_confirm_title">Pincode bevestigen</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Vergrendel icoon</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pincode</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_button_create">Aanmaken</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bevestigen</string>

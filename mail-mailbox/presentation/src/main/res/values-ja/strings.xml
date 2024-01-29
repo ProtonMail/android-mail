@@ -70,7 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">新しいアプリへようこそ</string>
   <string name="onboarding_description_ga">新しい Proton Mail アプリは、安定性とパフォーマンスを重視してゼロから完全に再構築されました。</string>
@@ -88,7 +87,6 @@
   <string name="onboarding_get_started">はじめましょう</string>
   <string name="onboarding_illustration_content_description">Onboarding illustration</string>
   <string name="onboarding_close_content_description">閉じる</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
   <string name="mailbox_action_spam_message">件のメッセージが迷惑メールに移動されました</string>

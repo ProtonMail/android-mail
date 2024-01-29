@@ -17,14 +17,14 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Sign out</string>
+  <string name="dialog_sign_out_account_title">サインアウト</string>
   <string name="dialog_sign_out_account_description">サインアウトしてよろしいでしょうか?</string>
-  <string name="dialog_sign_out_account_confirm">Yes</string>
-  <string name="dialog_sign_out_account_cancel">No</string>
-  <string name="dialog_remove_account_title">Remove Account</string>
+  <string name="dialog_sign_out_account_confirm">はい</string>
+  <string name="dialog_sign_out_account_cancel">いいえ</string>
+  <string name="dialog_remove_account_title">アカウントの削除</string>
   <string name="dialog_remove_account_description">サインアウトして、このアカウントに関連するすべての情報を削除することになります。</string>
-  <string name="dialog_remove_account_confirm">Remove</string>
-  <string name="dialog_remove_account_cancel">Cancel</string>
+  <string name="dialog_remove_account_confirm">削除</string>
+  <string name="dialog_remove_account_cancel">キャンセル</string>
   <string name="user_select_other_account_content_description">別のアカウントを選択する</string>
   <string name="you_are_offline">オフラインです</string>
   <string name="feature_coming_soon">近日公開予定です。</string>
@@ -33,7 +33,7 @@
   <string name="mailbox_message_sending_offline">オフライン、メッセージは送信待ち</string>
   <string name="mailbox_message_sending_success">メッセージ送信</string>
   <string name="mailbox_message_sending_error">メッセージ送信エラー</string>
-  <string name="mailbox_message_sending_error_action">Go to Drafts</string>
+  <string name="mailbox_message_sending_error_action">下書きを開く</string>
   <string name="mailbox_attachment_uploading_error">添付ファイルのアップロードエラー</string>
   <string name="notification_switched_account">アカウントを %s に切り替えました</string>
   <string name="label_saved">ラベルが保存されました</string>

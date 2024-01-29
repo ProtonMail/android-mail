@@ -24,12 +24,12 @@
   <string name="mail_settings_app_settings">Налаштування програми</string>
   <string name="mail_settings_theme">Тема</string>
   <string name="mail_settings_push_notifications">Push-сповіщення</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">Автоблокування</string>
   <string name="mail_settings_alternative_routing">Альтернативна маршрутизація</string>
   <string name="mail_settings_app_language">Мова програми</string>
   <string name="mail_settings_combined_contacts">Об\'єднані контакти</string>
   <string name="mail_settings_local_cache">Локальний кеш</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_hint">Використано простору: %s</string>
   <string name="mail_settings_local_cache_clear_button">Очистити дані</string>
   <string name="mail_settings_swipe_actions">Жести посування</string>
   <string name="mail_settings_combined_contacts_hint">Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх ваших під\'єднаних облікових записів.</string>
@@ -66,19 +66,19 @@
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Типова адреса електронної пошти</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Неактивні адреси</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Немає активних адрес</string>
   <string name="mail_settings_default_email_address_error_loading">Помилка завантаження налаштувань</string>
   <string name="mail_settings_default_email_address_error_update">Помилка оновлення налаштувань</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Перейдіть на платний тариф, щоби встановити цю адресу як типову</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Ім\'я та підпис</string>
   <string name="mail_settings_identity_save_button">Зберегти</string>
-  <string name="mail_settings_identity_display_name">Display name</string>
-  <string name="mail_settings_identity_display_name_hint">Display name</string>
+  <string name="mail_settings_identity_display_name">Видиме ім\'я</string>
+  <string name="mail_settings_identity_display_name_hint">Видиме ім\'я</string>
   <string name="mail_settings_identity_signature">Підпис</string>
   <string name="mail_settings_identity_signature_hint">Підпис</string>
   <string name="mail_settings_identity_mobile_footer">Підпис мобільного клієнта</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Нижній колонтитул додається після вашого підпису.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Підпис мобільного клієнта</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Надіслано з Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Помилка оновлення налаштувань</string>
@@ -88,8 +88,8 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Автопоказ вбудованих зображень</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Не дозволяти знімки екрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Підтверджувати відкриття посилань</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
-  <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
+  <string name="mail_settings_privacy_background_sync">Фонова синхронізація</string>
+  <string name="mail_settings_privacy_background_sync_description">Якщо цей параметр увімкнено, застосунок синхронізуватиметься з сервером у фоновому режимі. Вимкнення цієї функції також вимкне push-сповіщення.</string>
   <string name="mail_settings_privacy_error_updating">Помилка оновлення налаштувань</string>
   <string name="mail_settings_privacy_error_loading">Помилка завантаження налаштувань</string>
   <!-- Swipe Actions -->
@@ -111,27 +111,27 @@
   <string name="mail_settings_notifications_title">Push-сповіщення</string>
   <string name="mail_settings_notifications_extended_notifications_title">Розширені сповіщення</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Увімкніть цю функцію, щоб бачити відправника листів у push-сповіщеннях.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings">Налаштування сповіщень</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Перейдіть до налаштувань системних сповіщень</string>
   <string name="mail_settings_notifications_update_error">Помилка оновлення налаштувань</string>
   <string name="mail_settings_notifications_loading_error">Помилка завантаження налаштувань</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_title">Автоблокування</string>
   <string name="mail_settings_auto_lock_item_title">Автоблокування програми</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
+  <string name="mail_settings_auto_lock_item_description">Увімкніть цю функцію, щоб автоматично заблокувати застосунок та розблокувати його за допомогою PIN-коду.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Змінити PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Таймер автоблокування</string>
   <string name="mail_settings_auto_lock_immediately">Негайно</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 хвилин бездіяльності</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 хвилин бездіяльності</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 год бездіяльності</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 день бездіяльності</string>
   <string name="mail_settings_auto_lock_update_error">Помилка оновлення налаштувань</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
-  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_input_title">Вставте PIN-код</string>
+  <string name="mail_settings_pin_insertion_set_title">Встановити PIN-код</string>
   <string name="mail_settings_pin_insertion_confirm_title">Підтвердьте PIN-код</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Піктограма блокування</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">PIN-крапка</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_button_create">Створити</string>
   <string name="mail_settings_pin_insertion_button_confirm">Підтвердити</string>
@@ -143,19 +143,19 @@
     <item quantity="other">Залишилось %s спроби.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="few">%s remaining attempts until secure data wipe.</item>
-    <item quantity="many">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Залишилася %s спроба до безпечного стирання даних.</item>
+    <item quantity="few">Залишилося %s спроби до безпечно стирання даних.</item>
+    <item quantity="many">Залишилося %s спроб до безпечного стирання даних.</item>
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Виникла помилка при перевірці PIN-коду.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Вийти</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Вийти</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Ви дійсно хочете вийти?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
-  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Так</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ні</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN-код успішно створено.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN-код успішно змінено.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->

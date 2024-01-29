@@ -97,7 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
   <string name="mailbox_action_move_messages_failed">Presunutie zlyhalo</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Vitajte v novej aplikácii</string>
   <string name="onboarding_description_ga">Nová aplikácia Proton Mail bola úplne od základu prepracovaná, aby bola stabilná a výkonná.</string>
@@ -115,7 +114,6 @@
   <string name="onboarding_get_started">Začať</string>
   <string name="onboarding_illustration_content_description">Ukážka privítania</string>
   <string name="onboarding_close_content_description">Zavrieť</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
   <string name="mailbox_action_archive_message">Správa bola presunutá do archívu</string>
   <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>

@@ -24,9 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Вийти з режиму вибору</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Вийти з режиму пошуку</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистити пошуковий запит</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введіть пошуковий запит</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Вибрано %d</item>
     <item quantity="few">Вибрано %d</item>
@@ -46,7 +46,7 @@
   <string name="mailbox_error_message_unexpected">Щось пішло не так</string>
   <string name="mailbox_is_empty_title">Немає повідомлень</string>
   <string name="mailbox_is_empty_description">Усе в актуальному стані</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Немає непрочитаних повідомлень</string>
   <string name="mailbox_is_empty_folder_description">Ця тека порожня</string>
   <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
   <string name="mailbox_is_empty_trash_description">Смітник порожній</string>
@@ -92,18 +92,17 @@
     <item quantity="many">%d розмов остаточно видалено</item>
     <item quantity="other">%d розмов остаточно видалено</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Failed to get labels</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
-  <!--  Spotlight V6 Beta  -->
+  <string name="mailbox_action_label_messages_failed">Помилка операції з міткою</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Не вдалося отримати мітки</string>
+  <string name="mailbox_action_failed_retrieving_colors">Не вдалося отримати налаштування кольору</string>
+  <string name="mailbox_action_move_messages_failed">Помилка операцію переміщення</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Не вдалося отримати теки</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_headline_ga">Ласкаво просимо в новому застосунку</string>
+  <string name="onboarding_description_ga">Повністю перебудована з нуля, нова програма Proton Mail була створена для стабільності та продуктивності.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Приватність для всіх</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_description">Запросіть інших до Proton Mail, щоб усі ви могли скористатися наскрізним шифруванням.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Зручне оновлення</string>
   <string name="onboarding_easily_up_to_date_description">Переглядайте ланцюжки повідомлень у режимі розмови.</string>
@@ -113,24 +112,23 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Далі</string>
   <string name="onboarding_get_started">Розпочати</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">Ілюстрації для ознайомлення</string>
   <string name="onboarding_close_content_description">Закрити</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Листа переміщено до кошика</string>
   <string name="mailbox_action_archive_message">Повідомлення переміщено до архіву</string>
   <string name="mailbox_action_spam_message">повідомлення переміщено до спаму</string>
   <string name="mailbox_search_placeholder_text">Пошук повідомлень</string>
   <string name="mailbox_search_no_results_title">Нічого не знайдено</string>
   <string name="mailbox_search_no_results_explanation">Пошук за датою, ім\'ям, електронною адресою або темою листа</string>
-  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
-  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_button_clear_trash">Очистити смітник</string>
+  <string name="mailbox_action_button_clear_spam">Очистити спам</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Очистити теку смітника</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Очистити теку спаму</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Ви впевнені, що хочете остаточно видалити всі повідомлення в «Смітнику»?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Ви впевнені, що хочете остаточно видалити всі повідомлення зі «Спаму»?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Ви впевнені, що хочете остаточно видалити всі розмови в «Смітнику»?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ви впевнені, що хочете остаточно видалити всі розмови зі «Спаму»?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Заплановано операцію з очищення"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Warning</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>

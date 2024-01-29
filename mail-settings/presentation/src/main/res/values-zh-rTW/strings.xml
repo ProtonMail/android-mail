@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">設定 PIN 碼</string>
   <string name="mail_settings_pin_insertion_confirm_title">確認個人識別數字代碼</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">鎖定圖示</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">PIN 點點</string>
   <string name="mail_settings_pin_insertion_backspace_description">倒退鍵</string>
   <string name="mail_settings_pin_insertion_button_create">建立</string>
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
@@ -140,9 +140,9 @@
     <item quantity="other">最後 %s 次嘗試機會.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">%s 次嘗試錯誤後將清除資料。</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">驗證 PIN 碼時出了一些錯誤。</string>
   <string name="mail_settings_pin_insertion_signout_text">登出</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">登出</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">您確定要登出嗎？</string>

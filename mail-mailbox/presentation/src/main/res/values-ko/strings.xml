@@ -70,7 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">색상 설정 불러오기를 실패했습니다.</string>
   <string name="mailbox_action_move_messages_failed">이동 작업에 실패했습니다</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 불러오기에 실패했습니다</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">새 앱에 오신 것을 환영합니다</string>
   <string name="onboarding_description_ga">완전히 새롭게 다시 만든, 새 Proton Mail 앱은 안정성과 성능을 위해 만들어졌습니다.</string>
@@ -88,7 +87,6 @@
   <string name="onboarding_get_started">시작하기</string>
   <string name="onboarding_illustration_content_description">온보딩 일러스트레이션</string>
   <string name="onboarding_close_content_description">닫기</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">메시지를 휴지통으로 이동함</string>
   <string name="mailbox_action_archive_message">메시지가 보관함으로 이동함</string>
   <string name="mailbox_action_spam_message">메시지를 스팸으로 옮겼습니다</string>

@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">No s\'han pogut obtenir les preferències de color.</string>
   <string name="mailbox_action_move_messages_failed">No s\'ha pogut moure.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">No s\'han pogut obtenir les carpetes.</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Us donem la benvinguda a la nova aplicació</string>
   <string name="onboarding_description_ga">Completament reconstruïda des de zero, la nova aplicació de Proton Mail s\'ha fet per a l\'estabilitat i el rendiment.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Comença</string>
   <string name="onboarding_illustration_content_description">Il·lustració de benvinguda</string>
   <string name="onboarding_close_content_description">Tanca</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">S\'ha mogut el missatge a la paperera.</string>
   <string name="mailbox_action_archive_message">S\'ha mogut el missatge a l\'arxiu.</string>
   <string name="mailbox_action_spam_message">S\'ha mogut el missatge al correu brossa.</string>
@@ -106,7 +104,7 @@
   <string name="mailbox_search_no_results_explanation">Cerca data, nom, adreça de correu electrònic o línia de l\'assumpte</string>
   <string name="mailbox_action_button_clear_trash">Buida la paperera</string>
   <string name="mailbox_action_button_clear_spam">Buida el correu brossa</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Buida la carpeta Paperera</string>
   <string name="mailbox_action_clear_spam_dialog_title">Buida la carpeta del correu brossa</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>

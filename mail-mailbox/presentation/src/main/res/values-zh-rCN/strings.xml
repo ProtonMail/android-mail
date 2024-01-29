@@ -70,7 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
   <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>
@@ -88,7 +87,6 @@
   <string name="onboarding_get_started">立即体验</string>
   <string name="onboarding_illustration_content_description">入职流程插画</string>
   <string name="onboarding_close_content_description">关闭</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
   <string name="mailbox_action_archive_message">邮件已存档</string>
   <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>

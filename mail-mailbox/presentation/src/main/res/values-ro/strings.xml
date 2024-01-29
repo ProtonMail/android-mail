@@ -88,13 +88,12 @@
   <string name="mailbox_action_failed_retrieving_colors">Eșuare obținere setări culori.</string>
   <string name="mailbox_action_move_messages_failed">Mutarea nu a reușit.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Preluarea folderelor a eșuat.</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bun venit la noua aplicație</string>
   <string name="onboarding_description_ga">Complet reconstruită de la zero, noua aplicație Proton Mail a fost creată pentru stabilitate și performanță.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Intimitate pentru toți</string>
-  <string name="onboarding_privacy_for_all_description">Invitați alții la Proton Mail, astfel încât să puteți beneficia cu toții de criptarea bilaterală.</string>
+  <string name="onboarding_privacy_for_all_description">Invitați alte persoane la Proton Mail, astfel încât să puteți beneficia cu toții de criptarea bilaterală.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Ușor de actualizat</string>
   <string name="onboarding_easily_up_to_date_description">Parcurgeți rapid mesajele înșiruite în modul conversație.</string>
@@ -106,7 +105,6 @@
   <string name="onboarding_get_started">Începeți</string>
   <string name="onboarding_illustration_content_description">Ilustrație de integrare</string>
   <string name="onboarding_close_content_description">Închidere</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi».</string>
   <string name="mailbox_action_archive_message">Mesaj mutat în «Arhivă».</string>
   <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>

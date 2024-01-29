@@ -70,7 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Pengaturan warna gagal diperoleh</string>
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Gagal mendapatkan folder</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Selamat datang di aplikasi yang baru</string>
   <string name="onboarding_description_ga">Dibuat ulang sepenuhnya dari awal, aplikasi Proton Mail baru dibuat untuk stabilitas dan kinerja.</string>
@@ -88,7 +87,6 @@
   <string name="onboarding_get_started">Mulai</string>
   <string name="onboarding_illustration_content_description">Ilustrasi pengenalan</string>
   <string name="onboarding_close_content_description">Tutup</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Pesan dipindahkan ke sampah</string>
   <string name="mailbox_action_archive_message">Pesan dipindahkan ke arsip</string>
   <string name="mailbox_action_spam_message">Pesan dipindahkan ke spam</string>

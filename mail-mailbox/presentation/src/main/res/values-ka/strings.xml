@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">ფერის პარამეტრების მიღება ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed">გადატანის ოპერაცია ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">მოგესალმებით ახალ აპში</string>
   <string name="onboarding_description_ga">სრულად 0-დან შექმნილი ახალი Proton Mail-ის აპი, რომელიც სტაბილურობით და წარმადობით გამოირჩევა.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">დაიწყეთ</string>
   <string name="onboarding_illustration_content_description">გაცნობის ილუსტრაცია</string>
   <string name="onboarding_close_content_description">დახურვა</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">შეტყობინება გადატანილია ნაგავში</string>
   <string name="mailbox_action_archive_message">შეტყობინება გადატანილია არქივში</string>
   <string name="mailbox_action_spam_message">შეტყობინება გადატანილია სპამში</string>

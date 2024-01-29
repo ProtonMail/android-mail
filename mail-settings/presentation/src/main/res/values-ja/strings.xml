@@ -30,7 +30,7 @@
   <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
   <string name="mail_settings_local_cache">ローカルキャッシュ</string>
   <string name="mail_settings_local_cache_hint">Space used: %s</string>
-  <string name="mail_settings_local_cache_clear_button">Clear data</string>
+  <string name="mail_settings_local_cache_clear_button">データを消去</string>
   <string name="mail_settings_swipe_actions">スワイプ操作</string>
   <string name="mail_settings_combined_contacts_hint">この機能を有効にすると、ログイン済みアカウントの連絡先のメールアドレスの自動補完を利用することができます。</string>
   <string name="mail_settings_alternative_routing_hint">Proton への接続がブロックされている場合、アプリは別のネットワーク経由で Proton へ接続を試みます。この設定は、ファイアウォールやネットワーク上の問題を回避するのに役立ちます。信頼性向上の観点から、この設定を有効にしておくことをおすすめします。</string>
@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">表示名</string>
   <string name="mail_settings_identity_signature">署名</string>
   <string name="mail_settings_identity_signature_hint">署名</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile footer</string>
+  <string name="mail_settings_identity_mobile_footer">モバイルフッター</string>
   <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile footer</string>
+  <string name="mail_settings_identity_mobile_footer_hint">モバイルフッター</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android から送信</string>
   <string name="mail_settings_identity_error_updating">設定更新エラー</string>
   <string name="mail_settings_identity_error_loading">設定の読み込みエラー</string>
@@ -88,7 +88,7 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">埋め込み画像を自動表示</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">スクリーンショットの撮影を禁止する</string>
   <string name="mail_settings_privacy_request_link_confirmation">リンク確認のリクエスト</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync">バックグラウンド同期</string>
   <string name="mail_settings_privacy_background_sync_description">If this option is enabled, the app will sync with the server in the background. Disabling this feature will also disable push notifications.</string>
   <string name="mail_settings_privacy_error_updating">設定更新エラー</string>
   <string name="mail_settings_privacy_error_loading">設定の読み込みエラー</string>
@@ -109,14 +109,14 @@
   <string name="mail_settings_swipe_action_trash_description">ごみ箱に移動</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">プッシュ通知</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">拡張通知</string>
   <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にするとメールの送信者をプッシュ通知します。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
   <string name="mail_settings_notifications_update_error">設定更新エラー</string>
   <string name="mail_settings_notifications_loading_error">設定の読み込みエラー</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_title">自動ロック</string>
   <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">PINコードを変更する</string>
@@ -133,8 +133,8 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_button_create">Create</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
+  <string name="mail_settings_pin_insertion_button_create">作成</string>
+  <string name="mail_settings_pin_insertion_button_confirm">確認</string>
   <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="other">残りの試行回数は %s 回です.</item>
@@ -143,15 +143,15 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_text">サインアウト</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">サインアウト</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">サインアウトしてよろしいでしょうか?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">はい</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">いいえ</string>
   <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
   <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
+  <string name="mail_settings_clearing_cached_data">ローカルキャッシュデータを消去中…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
 </resources>

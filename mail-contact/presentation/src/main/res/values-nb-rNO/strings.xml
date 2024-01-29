@@ -87,4 +87,8 @@
   <string name="address_city">Poststed</string>
   <string name="address_region">Region</string>
   <string name="address_country">Land</string>
+  <string name="contact_details_delete_dialog_title">Slett kontakt</string>
+  <string name="contact_details_delete_dialog_text">Er du sikker på at du vil slette denne kontakten?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Avbryt</string>
+  <string name="contact_details_delete_dialog_confirm_button">OK</string>
 </resources>

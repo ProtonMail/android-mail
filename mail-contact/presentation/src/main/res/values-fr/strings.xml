@@ -79,12 +79,16 @@
   <string name="email_address">Adresse électronique</string>
   <string name="phone_number">Numéro de téléphone</string>
   <string name="additional_info">Informations complémentaires</string>
-  <string name="remove_contact_property">Remove contact property</string>
-  <string name="property_type">Property type</string>
+  <string name="remove_contact_property">Retirer la propriété du contact</string>
+  <string name="property_type">Type de propriété</string>
   <string name="property_label">Étiquette</string>
   <string name="address_street">Rue</string>
   <string name="address_postal_code">Code postal</string>
   <string name="address_city">Ville</string>
   <string name="address_region">Région</string>
   <string name="address_country">Pays</string>
+  <string name="contact_details_delete_dialog_title">Supprimer le contact</string>
+  <string name="contact_details_delete_dialog_text">Voulez-vous vraiment supprimer ce contact ?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Annuler</string>
+  <string name="contact_details_delete_dialog_confirm_button">OK</string>
 </resources>

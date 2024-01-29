@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">選單</string>
   <string name="mailbox_toolbar_search_button_content_description">搜尋</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">結束搜尋模式</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜尋欄</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">輸入搜索查詢</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已選取 %d 個</item>
   </plurals>
@@ -70,7 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">取得顏色設定失敗</string>
   <string name="mailbox_action_move_messages_failed">移動失敗</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">取得資料夾失敗</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">歡迎使用全新的應用程式</string>
   <string name="onboarding_description_ga">完全從零開始重建，全新的 Proton Mail 應用程式專為穩定性和性能而設計。</string>
@@ -88,7 +87,6 @@
   <string name="onboarding_get_started">入門指南</string>
   <string name="onboarding_illustration_content_description">入門指南</string>
   <string name="onboarding_close_content_description">關閉</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">郵件丟進垃圾桶</string>
   <string name="mailbox_action_archive_message">要移動到至「封存」的郵件</string>
   <string name="mailbox_action_spam_message">訊息移至垃圾郵件</string>
@@ -105,13 +103,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">您確定要永久刪除於垃圾郵件的全部對話內容嗎？</string>
   <string name="mailbox_action_clear_operation_scheduled">"清除於規劃中的程序"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_title">注意</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">您的 Proton 帳號儲存空間已超過 80% 滿。清理一下資料，或者升級以獲取更多空間。</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">您的 Proton 帳號儲存空間已超過 90% 滿。清理一下資料，或者升級以獲取更多空間。</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">不要再提醒我</string>
+  <string name="storage_limit_warning_dialog_confirm_button">好</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_title">注意</string>
+  <string name="storage_quota_over_dialog_text">您的 Proton 帳號空間已經 100% 滿了。直到您永久刪除一些郵件或升級得到更多空間之前，您將無法收發信件。</string>
+  <string name="storage_quota_over_dialog_confirm_button">好</string>
 </resources>

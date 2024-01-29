@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Renk ayarları alınamadı</string>
   <string name="mailbox_action_move_messages_failed">Taşıma işlemi tamamlanamadı</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
   <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Başlayalım</string>
   <string name="onboarding_illustration_content_description">Başlama çizimi</string>
   <string name="onboarding_close_content_description">Kapat</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">İleti çöpe atıldı</string>
   <string name="mailbox_action_archive_message">İleti arşivlendi</string>
   <string name="mailbox_action_spam_message">ileti İstenmeyen kutusuna taşındı</string>

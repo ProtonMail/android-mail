@@ -28,7 +28,7 @@
   <string name="action_reply_all">回覆全部收件者</string>
   <string name="action_forward">轉發</string>
   <string name="action_reply_description">回覆</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">回覆 %s</string>
   <string name="action_reply_all_description">全部回覆</string>
   <string name="action_forward_description">轉寄</string>
   <string name="action_mark_read_description">標示為已讀取</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">儲存附件</string>
   <string name="action_more_description">更多</string>
   <string name="action_reply_content_description">回覆</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">回覆 %s</string>
   <string name="action_reply_all_content_description">回覆全部收件者</string>
   <string name="action_forward_content_description">轉寄</string>
   <string name="action_mark_read_content_description">標記為已讀</string>

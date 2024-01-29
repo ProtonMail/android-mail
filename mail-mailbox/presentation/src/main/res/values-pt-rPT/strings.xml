@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Falha ao obter definições de cor</string>
   <string name="mailbox_action_move_messages_failed">Falha na operação de mover</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Falha ao obter pastas</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bem-vindo à nova aplicação</string>
   <string name="onboarding_description_ga">Completamente reconstruída de raiz, a nova aplicação Proton Mail foi feita para estabilidade e desempenho.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Começar</string>
   <string name="onboarding_illustration_content_description">Ilustração \'onboarding\'</string>
   <string name="onboarding_close_content_description">Fechar</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
   <string name="mailbox_action_archive_message">Mensagem movida para Arquivo</string>
   <string name="mailbox_action_spam_message">Mensagem movida para Spam</string>

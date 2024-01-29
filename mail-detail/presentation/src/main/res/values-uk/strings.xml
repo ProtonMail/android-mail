@@ -27,8 +27,8 @@
     <item quantity="many">%d повідомлень</item>
     <item quantity="other">%d повідомлень</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Відповісти</string>
+  <string name="quick_reply_all_button_content_description">Відповісти всім</string>
   <string name="more_button_content_description">Докладніше</string>
   <string name="to">Кому:</string>
   <string name="cc">Копія:</string>
@@ -65,14 +65,14 @@
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматичне завантаження вбудованих зображень і віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
   <string name="message_phishing_banner_text">Наша система позначила це повідомлення спробою шахрайства. Переконайтеся, що воно надійне.</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">Ви збираєтеся вийти з програми та перейти до:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Не питати знову</string>
   <string name="external_link_confirmation_dialog_cancel_button">Скасувати</string>
   <string name="external_link_confirmation_dialog_continue_button">Продовжити</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Попередження: імовірно підроблений вебсайт</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Це посилання веде на вебсайт, який, можливо, намагається викрасти ваші дані, як-от паролі та дані кредитної картки.</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Задля вашої безпеки, не продовжуйте.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Повернутися (рекомендовано)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Нехтувати попередженням і продовжити</string>
   <string name="message_delete_dialog_title">Видалити повідомлення</string>

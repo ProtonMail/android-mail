@@ -97,7 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Сардэчна запрашаем у новую праграму</string>
   <string name="onboarding_description_ga">Новая праграма Proton Mail цалкам перапрацавана з нуля, каб забяспечыць стабільнасць і прадукцыйнасць.</string>
@@ -115,7 +114,6 @@
   <string name="onboarding_get_started">Пачаць працу</string>
   <string name="onboarding_illustration_content_description">Ілюстрацыі для азнаямлення</string>
   <string name="onboarding_close_content_description">Закрыць</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
   <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>

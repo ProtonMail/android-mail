@@ -87,4 +87,8 @@
   <string name="address_city">Горад</string>
   <string name="address_region">Вобласць</string>
   <string name="address_country">Краіна</string>
+  <string name="contact_details_delete_dialog_title">Выдаліць кантакт</string>
+  <string name="contact_details_delete_dialog_text">Вы сапраўды хочаце выдаліць гэты кантакт?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Скасаваць</string>
+  <string name="contact_details_delete_dialog_confirm_button">Добра</string>
 </resources>

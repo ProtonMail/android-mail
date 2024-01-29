@@ -45,8 +45,8 @@
   <string name="label_form_edit_label">Modifica questa etichetta</string>
   <string name="folder_form_edit_folder">Modifica questa cartella</string>
   <string name="label_form_save">Salva</string>
-  <string name="label_form_delete">Elimina questa etichetta</string>
-  <string name="folder_form_delete">Elimina questa cartella</string>
+  <string name="label_form_delete">Elimina l\'etichetta</string>
+  <string name="folder_form_delete">Elimina la cartella</string>
   <string name="label_name_title">Nome</string>
   <string name="add_a_label_name_hint">Aggiungi un nome all\'etichetta</string>
   <string name="add_a_folder_name_hint">Aggiungi un nome alla cartella</string>

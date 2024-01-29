@@ -79,7 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Kan geen kleurinstellingen ophalen</string>
   <string name="mailbox_action_move_messages_failed">Verplaatsactie mislukt</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kan geen mappen ophalen</string>
-  <!--  Spotlight V6 Beta  -->
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Welkom bij de nieuwe app</string>
   <string name="onboarding_description_ga">Volledig opnieuw van de grond  opgebouwd, de nieuwe Proton Mail-app werd gemaakt voor stabiliteit en prestaties.</string>
@@ -97,7 +96,6 @@
   <string name="onboarding_get_started">Aan de slag</string>
   <string name="onboarding_illustration_content_description">Onboardingillustratie</string>
   <string name="onboarding_close_content_description">Sluiten</string>
-  <!-- Sidebar Beta label -->
   <string name="mailbox_action_trash_message">Bericht verplaatst naar de prullenbak</string>
   <string name="mailbox_action_archive_message">Bericht verplaatst naar archief</string>
   <string name="mailbox_action_spam_message">Bericht verplaatst naar spam</string>

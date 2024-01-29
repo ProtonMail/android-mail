@@ -87,4 +87,8 @@
   <string name="address_city">Stadt</string>
   <string name="address_region">Region</string>
   <string name="address_country">Land</string>
+  <string name="contact_details_delete_dialog_title">Kontakt löschen</string>
+  <string name="contact_details_delete_dialog_text">Möchtest du diesen Kontakt wirklich löschen?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Abbrechen</string>
+  <string name="contact_details_delete_dialog_confirm_button">OK</string>
 </resources>

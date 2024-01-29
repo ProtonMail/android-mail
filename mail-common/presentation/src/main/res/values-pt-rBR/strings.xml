@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Nenhum aplicativo foi encontrado para executar essa ação</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
   <string name="mailbox_action_delete_dialog_button_delete">Excluir</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Cancelar</string>
 </resources>
