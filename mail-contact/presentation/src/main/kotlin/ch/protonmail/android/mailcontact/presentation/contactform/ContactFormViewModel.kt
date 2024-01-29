@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
@@ -258,39 +259,43 @@ class ContactFormViewModel @Inject constructor(
         val stateValue = state.value
         if (stateValue !is ContactFormState.Data) return
         when (stateValue) {
-            is ContactFormState.Data.Create -> {
-                contactFormUiModelMapper.toDecryptedContact(
-                    contact = stateValue.contact
-                )
-                emitNewStateFor(ContactFormEvent.CreatingContact)
-
-                // Call save UC with mapping result as param here
-
-                emitNewStateFor(ContactFormEvent.ContactCreated)
-            }
-            is ContactFormState.Data.Update -> {
-                val contactId = stateValue.contact.id ?: run {
-                    return emitNewStateFor(ContactFormEvent.SaveContactError)
-                }
-                val decryptedContact = observeDecryptedContact(
-                    userId = primaryUserId(),
-                    contactId = contactId
-                ).first().getOrElse {
-                    Timber.e("Error while getting contact in handleSave")
-                    return emitNewStateFor(ContactFormEvent.SaveContactError)
-                }
-                contactFormUiModelMapper.toDecryptedContact(
-                    contact = stateValue.contact,
-                    contactGroups = decryptedContact.contactGroups,
-                    photos = decryptedContact.photos,
-                    logos = decryptedContact.logos
-                )
-
-                // Call save UC with mapping result as param here
-
-                emitNewStateFor(ContactFormEvent.ContactUpdated)
-            }
+            is ContactFormState.Data.Create -> handleCreateContact(stateValue.contact)
+            is ContactFormState.Data.Update -> handleUpdateContact(stateValue.contact)
         }
+    }
+
+    private fun handleCreateContact(contact: ContactFormUiModel) {
+        contactFormUiModelMapper.toDecryptedContact(
+            contact = contact
+        )
+        emitNewStateFor(ContactFormEvent.CreatingContact)
+
+        // Call save UC with mapping result as param here
+
+        emitNewStateFor(ContactFormEvent.ContactCreated)
+    }
+
+    private suspend fun handleUpdateContact(contact: ContactFormUiModel) {
+        val contactId = contact.id ?: run {
+            return emitNewStateFor(ContactFormEvent.SaveContactError)
+        }
+        val decryptedContact = observeDecryptedContact(
+            userId = primaryUserId(),
+            contactId = contactId
+        ).first().getOrElse {
+            Timber.e("Error while getting contact in handleSave")
+            return emitNewStateFor(ContactFormEvent.SaveContactError)
+        }
+        contactFormUiModelMapper.toDecryptedContact(
+            contact = contact,
+            contactGroups = decryptedContact.contactGroups,
+            photos = decryptedContact.photos,
+            logos = decryptedContact.logos
+        )
+
+        // Call save UC with mapping result as param here
+
+        emitNewStateFor(ContactFormEvent.ContactUpdated)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
