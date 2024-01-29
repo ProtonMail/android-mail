@@ -18,29 +18,25 @@
 
 package ch.protonmail.android.benchmark.common
 
-import androidx.benchmark.macro.ExperimentalMetricApi
 import androidx.benchmark.macro.MacrobenchmarkScope
-import androidx.benchmark.macro.TraceSectionMetric
 import androidx.test.uiautomator.By
 import androidx.test.uiautomator.Until
-import ch.protonmail.android.benchmark.common.BenchmarkConfig.WaitForMailboxTimeout
-import ch.protonmail.android.benchmark.common.BenchmarkConfig.WaitForMessageDetailsTimeout
 
 /**
  * Wait until the first row within the mailbox list is rendered.
  */
 fun MacrobenchmarkScope.waitUntilFirstEmailRowShownOnMailboxList() {
-    device.wait(Until.hasObject(By.res(TestTags.MailboxListTag)), WaitForMailboxTimeout)
+    device.wait(Until.hasObject(By.res(TestTags.MailboxListTag)), BenchmarkConfig.WaitForMailboxTimeout)
 
     val mailboxList = device.findObject(By.res(TestTags.MailboxListTag))
 
     // Wait until the first row within the list is rendered
-    mailboxList.wait(Until.hasObject(By.res(TestTags.FirstMailboxItemRow)), WaitForMailboxTimeout)
+    mailboxList.wait(Until.hasObject(By.res(TestTags.FirstMailboxItemRow)), BenchmarkConfig.WaitForMailboxTimeout)
 }
 
 
 /**
- * Click on the first row and wait until message details are shown
+ * Click on the first row and wait until message details are shown.
  */
 fun MacrobenchmarkScope.clickOnTheFirstEmailRowWaitDetailsShown() {
 
@@ -50,33 +46,12 @@ fun MacrobenchmarkScope.clickOnTheFirstEmailRowWaitDetailsShown() {
 
     firstEmailRow.click()
 
-    device.wait(Until.hasObject(By.res(TestTags.MessageBodyNoWebView)), WaitForMessageDetailsTimeout)
+    device.wait(Until.hasObject(By.res(TestTags.MessageBodyNoWebView)), BenchmarkConfig.WaitForMessageDetailsTimeout)
 }
 
 /**
  * Wait until the mailbox list is rendered but emails are not loaded.
  */
 fun MacrobenchmarkScope.waitUntilMailboxShownButEmailsNotLoaded() {
-    device.wait(Until.hasObject(By.res(TestTags.MailboxRootTag)), WaitForMailboxTimeout)
-}
-
-/**
- * Core trace sections to be benchmarked.
- */
-@OptIn(ExperimentalMetricApi::class)
-fun coreTraceSectionsList(): List<TraceSectionMetric> {
-    return listOf(
-        TraceSectionMetric("proton-app-init")
-    )
-}
-
-/**
- * Remote Api trace sections to be benchmarked.
- */
-@OptIn(ExperimentalMetricApi::class)
-fun remoteApiTraceSectionsList(): List<TraceSectionMetric> {
-    return listOf(
-        TraceSectionMetric("proton-api-get-conversations"),
-        TraceSectionMetric("proton-api-get-messages")
-    )
+    device.wait(Until.hasObject(By.res(TestTags.MailboxRootTag)), BenchmarkConfig.WaitForMailboxTimeout)
 }

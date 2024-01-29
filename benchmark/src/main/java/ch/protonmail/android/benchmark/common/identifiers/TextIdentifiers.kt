@@ -16,13 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.benchmark.common
+package ch.protonmail.android.benchmark.common.identifiers
 
-object BenchmarkConfig {
+internal object TextIdentifiers {
 
-    const val PackageName = "ch.protonmail.android.alpha"
-    const val WaitForLoginToDisappearTimeout = 15_000L
-    const val WaitForMailboxTimeout = 20_000L
-    const val WaitForMessageDetailsTimeout = 10_000L
-    const val DefaultIterations = 5
+    const val OnboardingScreenButtonText = "Next"
+    const val OnboardingCompleteButtonText = "Get started"
 }

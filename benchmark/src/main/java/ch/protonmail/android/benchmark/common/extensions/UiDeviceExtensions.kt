@@ -16,13 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.benchmark.common
+package ch.protonmail.android.benchmark.common.extensions
 
-object BenchmarkConfig {
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiSelector
+import androidx.test.uiautomator.Until
 
-    const val PackageName = "ch.protonmail.android.alpha"
-    const val WaitForLoginToDisappearTimeout = 15_000L
-    const val WaitForMailboxTimeout = 20_000L
-    const val WaitForMessageDetailsTimeout = 10_000L
-    const val DefaultIterations = 5
-}
+internal fun UiDevice.findUiObjectByText(text: String) =
+    findObject(UiSelector().text(text))
+
+internal fun UiDevice.findUiObjectByResource(resId: String) =
+    findObject(UiSelector().resourceId(resId))
+
+internal fun UiDevice.findUiObjectByClassWithParent(childClass: Class<*>, parentResourceId: String) =
+    findObject(UiSelector().resourceId(parentResourceId).childSelector(UiSelector().className(childClass)))
+
+internal fun UiDevice.waitUntilGone(resId: String, timeout: Long) =
+    wait(Until.gone(By.res(resId)), timeout)

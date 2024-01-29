@@ -18,11 +18,26 @@
 
 package ch.protonmail.android.benchmark.common
 
-object BenchmarkConfig {
+import androidx.benchmark.macro.ExperimentalMetricApi
+import androidx.benchmark.macro.TraceSectionMetric
 
-    const val PackageName = "ch.protonmail.android.alpha"
-    const val WaitForLoginToDisappearTimeout = 15_000L
-    const val WaitForMailboxTimeout = 20_000L
-    const val WaitForMessageDetailsTimeout = 10_000L
-    const val DefaultIterations = 5
+/**
+ * Core trace sections to be benchmarked.
+ */
+@OptIn(ExperimentalMetricApi::class)
+fun coreTraceSectionsList(): List<TraceSectionMetric> {
+    return listOf(
+        TraceSectionMetric("proton-app-init")
+    )
+}
+
+/**
+ * Remote Api trace sections to be benchmarked.
+ */
+@OptIn(ExperimentalMetricApi::class)
+fun remoteApiTraceSectionsList(): List<TraceSectionMetric> {
+    return listOf(
+        TraceSectionMetric("proton-api-get-conversations"),
+        TraceSectionMetric("proton-api-get-messages")
+    )
 }
