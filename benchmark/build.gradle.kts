@@ -1,3 +1,5 @@
+import java.util.Properties
+
 /*
  * Copyright (c) 2022 Proton Technologies AG
  * This file is part of Proton Technologies AG and Proton Mail.
@@ -21,6 +23,18 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+private val benchmarkProperties = Properties().apply {
+    @Suppress("SwallowedException")
+    try {
+        load(projectDir.resolve("benchmark.properties").inputStream())
+    } catch (exception: java.io.FileNotFoundException) {
+        Properties()
+    }
+}
+
+private val benchmarkUsername = benchmarkProperties["username"].toString()
+private val benchmarkPassword = benchmarkProperties["password"].toString()
+
 android {
     namespace = "ch.protonmail.android.benchmark"
     compileSdk = Config.compileSdk
@@ -39,6 +53,9 @@ android {
         targetSdk = Config.targetSdk
 
         missingDimensionStrategy("default", "alpha")
+
+        buildConfigField("String", "DEFAULT_LOGIN", benchmarkUsername.toBuildConfigValue())
+        buildConfigField("String", "DEFAULT_PASSWORD", benchmarkPassword.toBuildConfigValue())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -70,3 +87,5 @@ androidComponents {
         it.enabled = it.buildType == "benchmark"
     }
 }
+
+fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"
