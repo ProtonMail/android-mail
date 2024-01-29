@@ -57,7 +57,7 @@ sealed interface ContactFormEvent : ContactFormOperation {
     data class EditContact(
         val contactFormUiModel: ContactFormUiModel
     ) : ContactFormEvent
-    data class UpdateContact(
+    data class UpdateContactForm(
         val contact: ContactFormUiModel
     ) : ContactFormEvent
     object LoadContactError : ContactFormEvent
