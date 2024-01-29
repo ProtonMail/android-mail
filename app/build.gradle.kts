@@ -233,15 +233,15 @@ dependencies {
 
     coreLibraryDesugaring(AndroidTools.desugarJdkLibs)
 
-    // To see the traces as results we need to include perfetto. We should not include in the production
-    // as it increases the Apk size.
-    if (android.defaultConfig.name.contains("benchmark", true)) {
-        // Add dependencies specifically for the "benchmark" build type
-        implementation(AndroidX.Profile.Tracing.tracing)
-        implementation(AndroidX.Profile.ComposeTracing.composeTracing)
-        implementation(AndroidX.Profile.Perfetto.perfetto)
-        implementation(AndroidX.Profile.Perfetto.perfettoBinary)
-    }
+    // To see the traces as results we need to include Perfetto.
+    // We should not include in the production as it increases the APK size.
+    val benchmarkImplementation by configurations
+    benchmarkImplementation(AndroidX.Profile.Tracing.tracing)
+    benchmarkImplementation(AndroidX.Profile.ComposeTracing.composeTracing)
+    benchmarkImplementation(AndroidX.Profile.Perfetto.perfetto)
+    benchmarkImplementation(AndroidX.Profile.Perfetto.perfettoBinary)
+    // Also include configDaggerStatic to provide the required Hilt bindings in benchmark.
+    benchmarkImplementation(Proton.Core.configDaggerStatic)
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
