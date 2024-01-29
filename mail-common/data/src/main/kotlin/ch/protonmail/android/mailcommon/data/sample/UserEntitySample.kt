@@ -43,6 +43,10 @@ object UserEntitySample {
         subscribed = user.subscribed,
         usedSpace = user.usedSpace,
         userId = user.userId,
-        recovery = null
+        recovery = null,
+        maxBaseSpace = null,
+        maxDriveSpace = null,
+        usedBaseSpace = null,
+        usedDriveSpace = null
     )
 }
