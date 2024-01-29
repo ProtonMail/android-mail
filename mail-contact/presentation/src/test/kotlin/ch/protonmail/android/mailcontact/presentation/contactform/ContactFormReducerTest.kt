@@ -101,7 +101,8 @@ class ContactFormReducerTest(
                     contact = loadedContactFormUiModel.copy(displayName = "Updated displayName")
                 ),
                 expectedState = loadedCreateContactState.copy(
-                    contact = loadedContactFormUiModel.copy(displayName = "Updated displayName")
+                    contact = loadedContactFormUiModel.copy(displayName = "Updated displayName"),
+                    isSaveEnabled = true
                 )
             ),
             TestInput(
@@ -133,7 +134,8 @@ class ContactFormReducerTest(
                                 selectedType = FieldType.EmailType.Work
                             )
                         }
-                    )
+                    ),
+                    isSaveEnabled = true
                 )
             ),
             TestInput(

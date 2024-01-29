@@ -190,7 +190,8 @@ class ContactFormViewModelTest {
             val expected = ContactFormState.Data.Create(
                 contact = emptyContactFormUiModel.copy(displayName = "Create"),
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success)),
-                displayCreateLoader = true
+                displayCreateLoader = true,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)

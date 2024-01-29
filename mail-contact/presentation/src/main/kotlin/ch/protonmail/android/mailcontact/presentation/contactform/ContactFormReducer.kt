@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.contactform
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import javax.inject.Inject
 
 class ContactFormReducer @Inject constructor() {
@@ -114,9 +115,18 @@ class ContactFormReducer @Inject constructor() {
         event: ContactFormEvent.UpdateContactForm
     ): ContactFormState {
         return when (currentState) {
-            is ContactFormState.Data.Create -> currentState.copy(contact = event.contact)
-            is ContactFormState.Data.Update -> currentState.copy(contact = event.contact)
+            is ContactFormState.Data.Create -> currentState.copy(
+                contact = event.contact,
+                isSaveEnabled = isSaveEnabled(event.contact)
+            )
+            is ContactFormState.Data.Update -> currentState.copy(
+                contact = event.contact,
+                isSaveEnabled = isSaveEnabled(event.contact)
+            )
             is ContactFormState.Loading -> currentState
         }
     }
+
+    private fun isSaveEnabled(contact: ContactFormUiModel) =
+        contact.displayName.isNotEmpty() || contact.firstName.isNotEmpty() && contact.lastName.isNotEmpty()
 }
