@@ -22,7 +22,6 @@ import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
-import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
@@ -134,7 +133,7 @@ class ContactFormUiModelMapper @Inject constructor(
         logos: List<ContactProperty.Logo>
     ): DecryptedContact {
         return DecryptedContact(
-            id = contact.id ?: ContactId(""),
+            id = contact.id,
             contactGroups = contactGroups,
             structuredName = contact.getStructuredNameContactProperty(),
             formattedName = contact.getFormattedNameContactProperty(),

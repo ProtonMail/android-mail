@@ -51,7 +51,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
             if (decryptedContact.formattedName?.value.isNullOrBlank()) ""
             else formattedStructuredName
         return ContactDetailsUiModel(
-            id = decryptedContact.id,
+            id = decryptedContact.id!!,
             defaultPhoneNumber = defaultPhoneNumber,
             defaultEmail = defaultEmail,
             nameHeader = nameHeader,
