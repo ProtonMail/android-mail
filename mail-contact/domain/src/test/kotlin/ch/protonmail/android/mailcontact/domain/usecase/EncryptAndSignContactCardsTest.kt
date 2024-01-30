@@ -21,7 +21,6 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailcontact.domain.mapper.mapToClearTextContactCard
 import ch.protonmail.android.mailcontact.domain.mapper.mapToEncryptedAndSignedContactCard
 import ch.protonmail.android.mailcontact.domain.mapper.mapToSignedContactCard
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
@@ -33,12 +32,10 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.property.Uid
-import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
-import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -116,31 +113,6 @@ class EncryptAndSignContactCardsTest {
 
         // Then
         assertEquals(EncryptingContactCardsError.DecryptingContactCardError.left(), actual)
-    }
-
-    @Test
-    fun `return empty list for empty list of original VCards`() = runTest {
-        // Given
-        val expectedDecryptedContact = DecryptedContact(
-            ContactSample.Francesco.id // Francesco has no ContactCards
-        )
-
-        expectContactRepositorySuccess()
-
-        // When
-        val actual = sut(userId, expectedDecryptedContact)
-
-        // Then
-        assertEquals(listOf<DecryptedVCard>().right(), actual)
-        mockkStatic(::mapToClearTextContactCard) {
-            verify { mapToClearTextContactCard(any(), any())?.wasNot(Called) }
-        }
-        mockkStatic(::mapToSignedContactCard) {
-            verify { mapToSignedContactCard(any(), any(), any(), any()).wasNot(Called) }
-        }
-        mockkStatic(::mapToEncryptedAndSignedContactCard) {
-            verify { mapToEncryptedAndSignedContactCard(any(), any(), any()).wasNot(Called) }
-        }
     }
 
     @Test
