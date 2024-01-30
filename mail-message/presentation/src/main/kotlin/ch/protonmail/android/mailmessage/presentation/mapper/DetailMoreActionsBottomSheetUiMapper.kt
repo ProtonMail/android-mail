@@ -63,7 +63,8 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
             }
 
             add(ActionUiModel(Action.Forward))
-            add(ActionUiModel(Action.ReportPhishing))
+//            To be re reintroduced with MAILANDR-1455
+//            add(ActionUiModel(Action.ReportPhishing))
         }.toImmutableList()
     }
 }
