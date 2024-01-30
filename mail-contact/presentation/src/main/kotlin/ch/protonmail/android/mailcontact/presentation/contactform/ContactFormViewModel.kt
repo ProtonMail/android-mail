@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.CreateContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMapper
@@ -51,6 +52,7 @@ class ContactFormViewModel @Inject constructor(
     private val observeDecryptedContact: ObserveDecryptedContact,
     private val reducer: ContactFormReducer,
     private val contactFormUiModelMapper: ContactFormUiModelMapper,
+    private val createContact: CreateContact,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -264,8 +266,8 @@ class ContactFormViewModel @Inject constructor(
         }
     }
 
-    private fun handleCreateContact(contact: ContactFormUiModel) {
-        contactFormUiModelMapper.toDecryptedContact(
+    private suspend fun handleCreateContact(contact: ContactFormUiModel) {
+        val decryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
             contactGroups = listOf(),
             photos = listOf(),
@@ -273,7 +275,12 @@ class ContactFormViewModel @Inject constructor(
         )
         emitNewStateFor(ContactFormEvent.CreatingContact)
 
-        // Call save UC with mapping result as param here
+        createContact(
+            userId = primaryUserId(),
+            decryptedContact = decryptedContact
+        ).getOrElse {
+            return emitNewStateFor(ContactFormEvent.SaveContactError)
+        }
 
         emitNewStateFor(ContactFormEvent.ContactCreated)
     }
