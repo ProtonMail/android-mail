@@ -266,7 +266,10 @@ class ContactFormViewModel @Inject constructor(
 
     private fun handleCreateContact(contact: ContactFormUiModel) {
         contactFormUiModelMapper.toDecryptedContact(
-            contact = contact
+            contact = contact,
+            contactGroups = listOf(),
+            photos = listOf(),
+            logos = listOf()
         )
         emitNewStateFor(ContactFormEvent.CreatingContact)
 

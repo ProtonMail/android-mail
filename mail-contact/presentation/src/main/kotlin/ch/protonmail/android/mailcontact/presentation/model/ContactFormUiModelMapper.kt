@@ -74,10 +74,10 @@ class ContactFormUiModelMapper @Inject constructor(
     @SuppressWarnings("LongMethod", "ComplexMethod")
     fun toDecryptedContact(
         contact: ContactFormUiModel,
-        contactGroups: List<ContactGroup> = listOf(),
+        contactGroups: List<ContactGroup>,
         // Remove those fields once they are implemented in form
-        photos: List<ContactProperty.Photo> = listOf(),
-        logos: List<ContactProperty.Logo> = listOf()
+        photos: List<ContactProperty.Photo>,
+        logos: List<ContactProperty.Logo>
     ): DecryptedContact {
         val organizations = listOf<ContactProperty.Organization>()
         val titles = listOf<ContactProperty.Title>()
