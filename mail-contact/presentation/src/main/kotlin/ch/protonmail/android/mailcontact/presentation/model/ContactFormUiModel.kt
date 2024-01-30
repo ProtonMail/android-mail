@@ -153,7 +153,7 @@ sealed interface ContactFormAvatar {
     ) : ContactFormAvatar
 }
 
-val emptyContactFormUiModel = ContactFormUiModel(
+fun emptyContactFormUiModel() = ContactFormUiModel(
     id = null,
     avatar = ContactFormAvatar.Empty,
     displayName = "",
@@ -167,15 +167,15 @@ val emptyContactFormUiModel = ContactFormUiModel(
     others = mutableListOf(),
     otherTypes = FieldType.OtherType.values().toList()
 )
-val emptyEmailField = InputField.SingleTyped(
+fun emptyEmailField() = InputField.SingleTyped(
     value = "",
     selectedType = FieldType.EmailType.Email
 )
-val emptyTelephoneField = InputField.SingleTyped(
+fun emptyTelephoneField() = InputField.SingleTyped(
     value = "",
     selectedType = FieldType.TelephoneType.Telephone
 )
-val emptyAddressField = InputField.Address(
+fun emptyAddressField() = InputField.Address(
     streetAddress = "",
     postalCode = "",
     city = "",
@@ -183,10 +183,9 @@ val emptyAddressField = InputField.Address(
     country = "",
     selectedType = FieldType.AddressType.Address
 )
-val emptyNoteField = InputField.Note(
+fun emptyNoteField() = InputField.Note(
     value = ""
 )
-
 fun emptyRandomOtherField() = InputField.SingleTyped(
     value = "",
     selectedType = listOf(

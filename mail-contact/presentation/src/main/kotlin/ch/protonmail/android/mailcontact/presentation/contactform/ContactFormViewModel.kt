@@ -82,7 +82,7 @@ class ContactFormViewModel @Inject constructor(
             }
         } ?: run {
             emitNewStateFor(
-                ContactFormEvent.NewContact(emptyContactFormUiModel)
+                ContactFormEvent.NewContact(emptyContactFormUiModel())
             )
         }
     }
@@ -114,22 +114,22 @@ class ContactFormViewModel @Inject constructor(
                     Section.Emails -> {
                         // We need to make a new list here through `toMutableList` so that it triggers recomposition
                         val newEmails = contact.emails.toMutableList()
-                        newEmails.add(emptyEmailField)
+                        newEmails.add(emptyEmailField())
                         contact.copy(emails = newEmails)
                     }
                     Section.Telephones -> {
                         val newTelephones = contact.telephones.toMutableList()
-                        newTelephones.add(emptyTelephoneField)
+                        newTelephones.add(emptyTelephoneField())
                         contact.copy(telephones = newTelephones)
                     }
                     Section.Addresses -> {
                         val newAddresses = contact.addresses.toMutableList()
-                        newAddresses.add(emptyAddressField)
+                        newAddresses.add(emptyAddressField())
                         contact.copy(addresses = newAddresses)
                     }
                     Section.Notes -> {
                         val newNotes = contact.notes.toMutableList()
-                        newNotes.add(emptyNoteField)
+                        newNotes.add(emptyNoteField())
                         contact.copy(notes = newNotes)
                     }
                     Section.Others -> {

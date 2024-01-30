@@ -118,7 +118,7 @@ class ContactFormUiModelMapperTest {
 
         val actual = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
 
-        val expected = emptyContactFormUiModel.copy(
+        val expected = emptyContactFormUiModel().copy(
             id = ContactSample.Mario.id
         )
 

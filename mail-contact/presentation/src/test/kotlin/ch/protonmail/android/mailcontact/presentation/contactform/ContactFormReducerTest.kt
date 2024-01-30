@@ -50,13 +50,13 @@ class ContactFormReducerTest(
         private val loadedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
 
         private val emptyLoadingState = ContactFormState.Loading()
-        private val loadedCreateContactState = ContactFormState.Data.Create(contact = emptyContactFormUiModel)
+        private val loadedCreateContactState = ContactFormState.Data.Create(contact = emptyContactFormUiModel())
         private val loadedUpdateContactState = ContactFormState.Data.Update(contact = loadedContactFormUiModel)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactFormEvent.NewContact(emptyContactFormUiModel),
+                event = ContactFormEvent.NewContact(emptyContactFormUiModel()),
                 expectedState = loadedCreateContactState
             ),
             TestInput(
@@ -108,10 +108,10 @@ class ContactFormReducerTest(
             TestInput(
                 currentState = loadedUpdateContactState,
                 event = ContactFormEvent.UpdateContactForm(
-                    contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                    contact = emptyContactFormUiModel().copy(displayName = "Updated displayName")
                 ),
                 expectedState = loadedUpdateContactState.copy(
-                    contact = emptyContactFormUiModel.copy(displayName = "Updated displayName")
+                    contact = emptyContactFormUiModel().copy(displayName = "Updated displayName")
                 )
             ),
             TestInput(

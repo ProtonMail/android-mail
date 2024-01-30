@@ -107,7 +107,7 @@ class ContactFormViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel
+                contact = emptyContactFormUiModel()
             )
 
             assertEquals(expected, actual)
@@ -163,7 +163,7 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel,
+                contact = emptyContactFormUiModel(),
                 close = Effect.of(Unit)
             )
 
@@ -195,7 +195,7 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(displayName = "Create"),
+                contact = emptyContactFormUiModel().copy(displayName = "Create"),
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success)),
                 displayCreateLoader = true,
                 isSaveEnabled = true
@@ -509,9 +509,9 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(
-                    emails = emptyContactFormUiModel.emails.apply {
-                        this.add(emptyEmailField)
+                contact = emptyContactFormUiModel().copy(
+                    emails = emptyContactFormUiModel().emails.apply {
+                        this.add(emptyEmailField())
                     }
                 )
             )
@@ -534,9 +534,9 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(
-                    telephones = emptyContactFormUiModel.telephones.apply {
-                        this.add(emptyTelephoneField)
+                contact = emptyContactFormUiModel().copy(
+                    telephones = emptyContactFormUiModel().telephones.apply {
+                        this.add(emptyTelephoneField())
                     }
                 )
             )
@@ -559,9 +559,9 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(
-                    addresses = emptyContactFormUiModel.addresses.apply {
-                        this.add(emptyAddressField)
+                contact = emptyContactFormUiModel().copy(
+                    addresses = emptyContactFormUiModel().addresses.apply {
+                        this.add(emptyAddressField())
                     }
                 )
             )
@@ -584,9 +584,9 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(
-                    notes = emptyContactFormUiModel.notes.apply {
-                        this.add(emptyNoteField)
+                contact = emptyContactFormUiModel().copy(
+                    notes = emptyContactFormUiModel().notes.apply {
+                        this.add(emptyNoteField())
                     }
                 )
             )
@@ -609,8 +609,8 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Create(
-                contact = emptyContactFormUiModel.copy(
-                    others = emptyContactFormUiModel.others.apply {
+                contact = emptyContactFormUiModel().copy(
+                    others = emptyContactFormUiModel().others.apply {
                         this.add(
                             (contactFormViewModel.state.value as ContactFormState.Data.Create).contact.others.last()
                         )
