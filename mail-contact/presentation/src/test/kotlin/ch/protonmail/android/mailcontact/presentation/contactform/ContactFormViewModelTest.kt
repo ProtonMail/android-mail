@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.mailcontact.domain.usecase.CreateContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModel
@@ -41,6 +42,7 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -67,6 +69,7 @@ class ContactFormViewModelTest {
     }
 
     private val contactFormUiModelMapperMock = mockk<ContactFormUiModelMapper>()
+    private val createContactMock = mockk<CreateContact>()
     private val observeDecryptedContactMock = mockk<ObserveDecryptedContact>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
 
@@ -77,6 +80,7 @@ class ContactFormViewModelTest {
             observeDecryptedContactMock,
             reducer,
             contactFormUiModelMapperMock,
+            createContactMock,
             observePrimaryUserId,
             savedStateHandleMock
         )
@@ -174,6 +178,9 @@ class ContactFormViewModelTest {
         every {
             contactFormUiModelMapperMock.toDecryptedContact(any(), any(), any(), any())
         } returns DecryptedContact(ContactId(""))
+        coEvery {
+            createContactMock(testUserId, any())
+        } returns Unit.right()
 
         // When
         contactFormViewModel.state.test {
