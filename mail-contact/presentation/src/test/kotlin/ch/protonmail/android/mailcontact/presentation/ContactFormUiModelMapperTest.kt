@@ -66,9 +66,46 @@ class ContactFormUiModelMapperTest {
 
     @Test
     fun `maps DecryptedContact to ContactFormUiModel`() {
-        val photoByteArray = ContactImagesSample.Photo
-        val logoByteArray = ContactImagesSample.Logo
+        val decryptedContact = getDecryptedContact()
+        val contactFormUiModel = getContactFormUiModel()
+
+        val actual = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
+
+        assertEquals(contactFormUiModel, actual)
+    }
+
+    @Test
+    fun `maps ContactFormUiModel to DecryptedContact`() {
+        val decryptedContact = getDecryptedContact()
+        val contactFormUiModel = getContactFormUiModel()
+
+        val actual = contactFormUiModelMapper.toDecryptedContact(
+            contactFormUiModel,
+            decryptedContact.contactGroups,
+            decryptedContact.photos,
+            decryptedContact.logos
+        )
+
+        assertEquals(decryptedContact, actual)
+    }
+
+    @Test
+    fun `maps empty DecryptedContact to empty ContactFormUiModel`() {
         val decryptedContact = DecryptedContact(
+            id = ContactSample.Mario.id
+        )
+
+        val actual = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
+
+        val expected = emptyContactFormUiModel.copy(
+            id = ContactSample.Mario.id
+        )
+
+        assertEquals(actual, expected)
+    }
+
+    private fun getDecryptedContact(): DecryptedContact {
+        return DecryptedContact(
             id = ContactSample.Mario.id,
             contactGroups = listOf(
                 ContactGroup(
@@ -155,7 +192,7 @@ class ContactFormUiModelMapperTest {
             notes = listOf(ContactProperty.Note(value = "Note1"), ContactProperty.Note(value = "Note2")),
             photos = listOf(
                 ContactProperty.Photo(
-                    data = photoByteArray,
+                    data = ContactImagesSample.Photo,
                     contentType = "jpeg"
                 )
             ),
@@ -168,7 +205,7 @@ class ContactFormUiModelMapperTest {
             timezones = listOf(ContactProperty.Timezone(text = "Europe/Paris")),
             logos = listOf(
                 ContactProperty.Logo(
-                    data = logoByteArray,
+                    data = ContactImagesSample.Logo,
                     contentType = "jpeg"
                 )
             ),
@@ -178,12 +215,12 @@ class ContactFormUiModelMapperTest {
             gender = ContactProperty.Gender(gender = "Gender"),
             anniversary = ContactProperty.Anniversary(date = LocalDate.of(2023, 12, 6))
         )
+    }
 
-        val actual = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
-
-        val expected = ContactFormUiModel(
+    private fun getContactFormUiModel(): ContactFormUiModel {
+        return ContactFormUiModel(
             id = ContactSample.Mario.id,
-            avatar = ContactFormAvatar.Photo(bitmap = decodeByteArray(photoByteArray)!!),
+            avatar = ContactFormAvatar.Photo(bitmap = decodeByteArray(ContactImagesSample.Photo)!!),
             displayName = "Mario@protonmail.com",
             firstName = "Mario First Name",
             lastName = "Mario Last Name",
@@ -306,7 +343,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.OtherType.TimeZone
                 ),
                 InputField.ImageTyped(
-                    value = decodeByteArray(logoByteArray)!!,
+                    value = decodeByteArray(ContactImagesSample.Logo)!!,
                     selectedType = FieldType.OtherType.Logo
                 ),
                 InputField.SingleTyped(
@@ -332,22 +369,5 @@ class ContactFormUiModelMapperTest {
             ),
             otherTypes = FieldType.OtherType.values().toList()
         )
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `maps empty DecryptedContact to empty ContactFormUiModel`() {
-        val decryptedContact = DecryptedContact(
-            id = ContactSample.Mario.id
-        )
-
-        val actual = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
-
-        val expected = emptyContactFormUiModel.copy(
-            id = ContactSample.Mario.id
-        )
-
-        assertEquals(actual, expected)
     }
 }

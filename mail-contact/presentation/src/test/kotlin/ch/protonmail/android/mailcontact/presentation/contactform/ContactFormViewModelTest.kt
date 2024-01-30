@@ -172,7 +172,7 @@ class ContactFormViewModelTest {
         // Given
         expectSavedStateContactId(null)
         every {
-            contactFormUiModelMapperMock.toDecryptedContact(any())
+            contactFormUiModelMapperMock.toDecryptedContact(any(), any(), any(), any())
         } returns DecryptedContact(ContactId(""))
 
         // When
@@ -203,7 +203,7 @@ class ContactFormViewModelTest {
         // Given
         expectContactFormStateUpdate()
         every {
-            contactFormUiModelMapperMock.toDecryptedContact(any())
+            contactFormUiModelMapperMock.toDecryptedContact(any(), any(), any(), any())
         } returns DecryptedContact(ContactId(""))
 
         // When
