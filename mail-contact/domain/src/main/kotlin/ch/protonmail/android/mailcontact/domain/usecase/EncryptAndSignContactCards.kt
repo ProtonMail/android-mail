@@ -22,7 +22,9 @@ import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
-import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
+import ch.protonmail.android.mailcontact.domain.mapper.mapToClearTextContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.mapToEncryptedAndSignedContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.mapToSignedContactCard
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.property.Uid
 import kotlinx.coroutines.flow.firstOrNull
@@ -41,8 +43,7 @@ class EncryptAndSignContactCards @Inject constructor(
     private val userManager: UserManager,
     private val cryptoContext: CryptoContext,
     private val contactRepository: ContactRepository,
-    private val decryptContactCards: DecryptContactCards,
-    private val decryptedContactMapper: DecryptedContactMapper
+    private val decryptContactCards: DecryptContactCards
 ) {
 
     suspend operator fun invoke(
@@ -92,13 +93,13 @@ class EncryptAndSignContactCards @Inject constructor(
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
             listOfNotNull(
                 clearTextContactCard?.let {
-                    decryptedContactMapper.mapToClearTextContactCard(
+                    mapToClearTextContactCard(
                         fallbackUid,
                         clearTextContactCard
                     )?.let { ContactCard.ClearText(it.write()) }
                 },
                 signedContactCard?.let {
-                    decryptedContactMapper.mapToSignedContactCard(
+                    mapToSignedContactCard(
                         fallbackUid,
                         fallbackName,
                         decryptedContact,
@@ -106,7 +107,7 @@ class EncryptAndSignContactCards @Inject constructor(
                     ).let { signContactCard(it) }
                 },
                 encryptedAndSignedContactCard?.let {
-                    decryptedContactMapper.mapToEncryptedAndSignedContactCard(
+                    mapToEncryptedAndSignedContactCard(
                         fallbackUid,
                         decryptedContact,
                         encryptedAndSignedContactCard

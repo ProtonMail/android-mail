@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
-import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
+import ch.protonmail.android.mailcontact.domain.mapper.mapToClearTextContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.mapToEncryptedAndSignedContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.mapToSignedContactCard
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
@@ -27,14 +29,12 @@ import ezvcard.VCardVersion
 import ezvcard.property.Expertise
 import ezvcard.property.Uid
 import org.junit.Test
-import kotlin.test.assertNull
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DecryptedContactMapperTest {
-
-    private val sut = DecryptedContactMapper()
 
     private val contactId = ContactWithCardsSample.Mario.id
 
@@ -58,7 +58,7 @@ class DecryptedContactMapperTest {
         val expectedContactCard = null
 
         // When
-        val actual = sut.mapToClearTextContactCard(
+        val actual = mapToClearTextContactCard(
             fallbackUid,
             expectedContactCard
         )
@@ -73,7 +73,7 @@ class DecryptedContactMapperTest {
         val expectedContactCard = existingVCard
 
         // When
-        val actual = sut.mapToClearTextContactCard(
+        val actual = mapToClearTextContactCard(
             fallbackUid,
             expectedContactCard
         )!!
@@ -91,7 +91,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToClearTextContactCard(
+        val actual = mapToClearTextContactCard(
             fallbackUid,
             expectedContactCard
         )!!
@@ -109,7 +109,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToSignedContactCard(
+        val actual = mapToSignedContactCard(
             fallbackUid,
             fallbackName,
             decryptedContact,
@@ -129,7 +129,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToEncryptedAndSignedContactCard(
+        val actual = mapToEncryptedAndSignedContactCard(
             fallbackUid,
             decryptedContact,
             expectedContactCard
@@ -147,7 +147,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToClearTextContactCard(
+        val actual = mapToClearTextContactCard(
             fallbackUid,
             expectedContactCard
         )!!
@@ -164,7 +164,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToSignedContactCard(
+        val actual = mapToSignedContactCard(
             fallbackUid,
             fallbackName,
             decryptedContact,
@@ -183,7 +183,7 @@ class DecryptedContactMapperTest {
         }
 
         // When
-        val actual = sut.mapToEncryptedAndSignedContactCard(
+        val actual = mapToEncryptedAndSignedContactCard(
             fallbackUid,
             decryptedContact,
             expectedContactCard
@@ -207,19 +207,19 @@ class DecryptedContactMapperTest {
         )
 
         // When
-        val actualClearText = sut.mapToClearTextContactCard(
+        val actualClearText = mapToClearTextContactCard(
             fallbackUid,
             VCard()
         )!!
 
-        val actualSigned = sut.mapToSignedContactCard(
+        val actualSigned = mapToSignedContactCard(
             fallbackUid,
             fallbackName,
             expectedDecryptedContact,
             VCard()
         )
 
-        val actualEncryptedAndSigned = sut.mapToEncryptedAndSignedContactCard(
+        val actualEncryptedAndSigned = mapToEncryptedAndSignedContactCard(
             fallbackUid,
             expectedDecryptedContact,
             VCard()
