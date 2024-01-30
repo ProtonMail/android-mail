@@ -22,9 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
-import ch.protonmail.android.mailcontact.domain.mapper.mapToClearTextContactCard
-import ch.protonmail.android.mailcontact.domain.mapper.mapToEncryptedAndSignedContactCard
-import ch.protonmail.android.mailcontact.domain.mapper.mapToSignedContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.property.Uid
 import kotlinx.coroutines.flow.firstOrNull
@@ -37,28 +35,31 @@ import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserManager
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 class EncryptAndSignContactCards @Inject constructor(
     private val userManager: UserManager,
     private val cryptoContext: CryptoContext,
     private val contactRepository: ContactRepository,
-    private val decryptContactCards: DecryptContactCards
+    private val decryptContactCards: DecryptContactCards,
+    private val decryptedContactMapper: DecryptedContactMapper
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         decryptedContact: DecryptedContact
     ): Either<EncryptingContactCardsError, List<ContactCard>> = either {
-
         // retrieve original ContactCards
-        val contactWithCards = contactRepository.observeContactWithCards(
-            userId,
-            decryptedContact.id
-        ).mapToEither().firstOrNull()?.getOrNull() ?: raise(EncryptingContactCardsError.ContactNotFoundInDB)
+        val contactWithCards = decryptedContact.id?.let {
+            contactRepository.observeContactWithCards(
+                userId,
+                decryptedContact.id
+            ).mapToEither().firstOrNull()?.getOrNull() ?: raise(EncryptingContactCardsError.ContactNotFoundInDB)
+        }
 
         // decrypt them and check signatures
-        val cardsToDecryptedCards = contactWithCards.contactCards.mapNotNull { contactCard ->
+        val cardsToDecryptedCards = contactWithCards?.contactCards?.mapNotNull { contactCard ->
             val decryptedContactCard = decryptContactCards(
                 userId,
                 contactWithCards.copy(
@@ -70,49 +71,47 @@ class EncryptAndSignContactCards @Inject constructor(
             }.getOrNull()?.firstOrNull()
 
             decryptedContactCard?.let { contactCard to it }
-        }.filter {
+        }?.filter {
             // only take the correctly signed ones
             it.second.status == VerificationStatus.Success || it.second.status == VerificationStatus.NotSigned
         }
 
         // find first UID from existing VCards or generate new one
-        val fallbackUid = cardsToDecryptedCards.find { it.second.card.uid != null }?.second?.card?.uid ?: Uid.random()
+        val fallbackUid = cardsToDecryptedCards?.find { it.second.card.uid != null }?.second?.card?.uid ?: Uid.random()
         // generate fallback name in an unlikely case the Signed ContactCard doesn't contain it
         //  and it's not provided in our DecryptedContact
-        val fallbackName = contactWithCards.contact.name
+        val fallbackName = contactWithCards?.contact?.name
+            ?: decryptedContact.formattedName?.value?.takeIfNotEmpty()
+            ?: decryptedContact.structuredName?.let {
+                it.given.plus(" ${it.family}")
+            } ?: raise(EncryptingContactCardsError.MissingFormattedName)
 
-        val clearTextContactCard = cardsToDecryptedCards.find {
+        val clearTextContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.ClearText
         }?.second?.card
-        val signedContactCard = cardsToDecryptedCards.find { it.first is ContactCard.Signed }?.second?.card
-        val encryptedAndSignedContactCard = cardsToDecryptedCards.find {
+        val signedContactCard = cardsToDecryptedCards?.find { it.first is ContactCard.Signed }?.second?.card
+        val encryptedAndSignedContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.Encrypted
         }?.second?.card
 
         // insert all properties from DecryptedContact where they belong inside the ContactCards, encrypt and sign
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
             listOfNotNull(
-                clearTextContactCard?.let {
-                    mapToClearTextContactCard(
-                        fallbackUid,
-                        clearTextContactCard
-                    )?.let { ContactCard.ClearText(it.write()) }
-                },
-                signedContactCard?.let {
-                    mapToSignedContactCard(
-                        fallbackUid,
-                        fallbackName,
-                        decryptedContact,
-                        signedContactCard
-                    ).let { signContactCard(it) }
-                },
-                encryptedAndSignedContactCard?.let {
-                    mapToEncryptedAndSignedContactCard(
-                        fallbackUid,
-                        decryptedContact,
-                        encryptedAndSignedContactCard
-                    ).let { encryptAndSignContactCard(it) }
-                }
+                decryptedContactMapper.mapToClearTextContactCard(
+                    fallbackUid,
+                    clearTextContactCard
+                )?.let { ContactCard.ClearText(it.write()) },
+                decryptedContactMapper.mapToSignedContactCard(
+                    fallbackUid,
+                    fallbackName,
+                    decryptedContact,
+                    signedContactCard
+                ).let { signContactCard(it) },
+                decryptedContactMapper.mapToEncryptedAndSignedContactCard(
+                    fallbackUid,
+                    decryptedContact,
+                    encryptedAndSignedContactCard
+                ).let { encryptAndSignContactCard(it) }
             )
         }
 
@@ -124,4 +123,5 @@ class EncryptAndSignContactCards @Inject constructor(
 sealed class EncryptingContactCardsError {
     object ContactNotFoundInDB : EncryptingContactCardsError()
     object DecryptingContactCardError : EncryptingContactCardsError()
+    object MissingFormattedName : EncryptingContactCardsError()
 }
