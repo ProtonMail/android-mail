@@ -142,6 +142,12 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                     ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
                         actions.exitWithSuccessMessage(message)
                     }
+                    ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
+                        snackbarHostErrorState.showSnackbar(
+                            message = message,
+                            type = ProtonSnackbarType.ERROR
+                        )
+                    }
                 }
                 is ContactFormState.Loading -> {
                     ProtonCenteredProgress(
