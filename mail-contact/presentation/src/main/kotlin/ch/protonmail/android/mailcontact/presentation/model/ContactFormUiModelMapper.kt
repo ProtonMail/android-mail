@@ -79,38 +79,38 @@ class ContactFormUiModelMapper @Inject constructor(
         photos: List<ContactProperty.Photo>,
         logos: List<ContactProperty.Logo>
     ): DecryptedContact {
-        val organizations = listOf<ContactProperty.Organization>()
-        val titles = listOf<ContactProperty.Title>()
-        val roles = listOf<ContactProperty.Role>()
-        val timezones = listOf<ContactProperty.Timezone>()
-        val members = listOf<ContactProperty.Member>()
-        val languages = listOf<ContactProperty.Language>()
-        val urls = listOf<ContactProperty.Url>()
+        val organizations = mutableListOf<ContactProperty.Organization>()
+        val titles = mutableListOf<ContactProperty.Title>()
+        val roles = mutableListOf<ContactProperty.Role>()
+        val timezones = mutableListOf<ContactProperty.Timezone>()
+        val members = mutableListOf<ContactProperty.Member>()
+        val languages = mutableListOf<ContactProperty.Language>()
+        val urls = mutableListOf<ContactProperty.Url>()
         var gender: ContactProperty.Gender? = null
         var anniversary: ContactProperty.Anniversary? = null
         contact.others.map { other ->
             when (other) {
                 is InputField.SingleTyped -> {
                     when (other.selectedType as FieldType.OtherType) {
-                        FieldType.OtherType.Organization -> organizations.plus(
+                        FieldType.OtherType.Organization -> organizations.add(
                             ContactProperty.Organization(other.value)
                         )
-                        FieldType.OtherType.Title -> titles.plus(
+                        FieldType.OtherType.Title -> titles.add(
                             ContactProperty.Title(other.value)
                         )
-                        FieldType.OtherType.Role -> roles.plus(
+                        FieldType.OtherType.Role -> roles.add(
                             ContactProperty.Role(other.value)
                         )
-                        FieldType.OtherType.TimeZone -> timezones.plus(
+                        FieldType.OtherType.TimeZone -> timezones.add(
                             ContactProperty.Timezone(other.value)
                         )
-                        FieldType.OtherType.Member -> members.plus(
+                        FieldType.OtherType.Member -> members.add(
                             ContactProperty.Member(other.value)
                         )
-                        FieldType.OtherType.Language -> languages.plus(
+                        FieldType.OtherType.Language -> languages.add(
                             ContactProperty.Language(other.value)
                         )
-                        FieldType.OtherType.Url -> urls.plus(
+                        FieldType.OtherType.Url -> urls.add(
                             ContactProperty.Url(other.value)
                         )
                         FieldType.OtherType.Gender -> gender = ContactProperty.Gender(gender = other.value)
