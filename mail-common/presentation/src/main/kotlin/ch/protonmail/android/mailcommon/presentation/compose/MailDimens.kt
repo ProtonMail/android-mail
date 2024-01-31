@@ -101,4 +101,6 @@ object MailDimens {
     val ContactFormTypedFieldPaddingEnd = 56.dp
 
     val PickerDialogItemVerticalPadding = 12.dp
+
+    val ProtonCalendarIconSize = 40.dp
 }
