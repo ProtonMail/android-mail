@@ -143,5 +143,16 @@ object MessageAttachmentSample {
         headers = emptyMap()
     )
 
+    val calendar = MessageAttachment(
+        attachmentId = AttachmentId("calendar"),
+        name = "invite.ics",
+        size = 1234,
+        mimeType = "text/calendar",
+        disposition = null,
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = emptyMap()
+    )
 
 }

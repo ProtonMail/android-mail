@@ -30,4 +30,6 @@ data class MessageAttachment(
     val signature: String?,
     val encSignature: String?,
     val headers: Map<String, String>
-)
+) {
+    fun isCalendarAttachment(): Boolean = mimeType.lowercase().split(";").any { it.contains("text/calendar") }
+}
