@@ -31,7 +31,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
@@ -122,7 +121,6 @@ private fun ConversationDetailExpandedItem(
             uiModel = uiModel.messageDetailHeaderUiModel,
             headerActions = headerActions
         )
-        MailDivider()
         MessageBanners(messageBannersUiModel = uiModel.messageBannersUiModel)
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,

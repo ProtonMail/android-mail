@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
+import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
@@ -81,6 +82,7 @@ fun MessageBody(
                 onButtonClicked = { actions.onLoadRemoteAndEmbeddedContent(messageBodyUiModel.messageId) }
             )
         }
+
         messageBodyUiModel.shouldShowEmbeddedImagesBanner -> {
             MessageBodyButtonBanner(
                 bannerText = R.string.message_body_embedded_images_banner_text,
@@ -88,6 +90,7 @@ fun MessageBody(
                 onButtonClicked = { actions.onLoadEmbeddedImages(messageBodyUiModel.messageId) }
             )
         }
+
         messageBodyUiModel.shouldShowRemoteContentBanner -> {
             MessageBodyButtonBanner(
                 bannerText = R.string.message_body_remote_content_banner_text,
@@ -96,6 +99,12 @@ fun MessageBody(
             )
         }
     }
+
+    if (messageBodyUiModel.shouldShowOpenInProtonCalendar) {
+        OpenInProtonCalendarBanner {}
+    }
+
+    MailDivider(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing))
 
     if (hasWebView) {
         MessageBodyWebView(

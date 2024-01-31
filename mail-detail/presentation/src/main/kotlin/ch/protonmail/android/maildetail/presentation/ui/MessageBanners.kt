@@ -3,6 +3,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import me.proton.core.compose.theme.ProtonDimens
@@ -32,7 +34,8 @@ fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
             iconTint = ProtonTheme.colors.iconInverted,
             text = R.string.message_phishing_banner_text,
             textStyle = ProtonTheme.typography.defaultSmallInverted,
-            backgroundColor = ProtonTheme.colors.notificationError
+            backgroundColor = ProtonTheme.colors.notificationError,
+            borderColorIsBackgroundColor = true
         )
     }
 }
@@ -45,12 +48,22 @@ fun MessageBanner(
     @StringRes text: Int,
     textStyle: TextStyle,
     backgroundColor: Color,
+    borderColorIsBackgroundColor: Boolean = false,
     content: @Composable () -> Unit = {}
 ) {
     Column(
         modifier = modifier
             .testTag(MessageBodyTestTags.MessageBodyBanner)
-            .padding(ProtonDimens.DefaultSpacing)
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing
+            )
+            .border(
+                width = MailDimens.DefaultBorder,
+                color = if (borderColorIsBackgroundColor) backgroundColor else ProtonTheme.colors.separatorNorm,
+                shape = ProtonTheme.shapes.medium
+            )
             .background(color = backgroundColor, shape = ProtonTheme.shapes.medium)
             .padding(ProtonDimens.DefaultSpacing)
     ) {

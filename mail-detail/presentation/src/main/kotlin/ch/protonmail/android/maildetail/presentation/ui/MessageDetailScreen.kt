@@ -55,7 +55,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
-import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.R
@@ -414,7 +413,6 @@ private fun MessageDetailContent(
                 uiModel = messageMetadataState.messageDetailHeader,
                 headerActions = headerActions
             )
-            MailDivider()
             when (messageBannersState) {
                 is MessageBannersState.Loading -> {}
                 is MessageBannersState.Data -> MessageBanners(messageBannersState.messageBannersUiModel)

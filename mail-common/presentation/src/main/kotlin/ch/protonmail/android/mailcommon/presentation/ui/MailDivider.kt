@@ -26,9 +26,9 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-fun MailDivider() {
+fun MailDivider(modifier: Modifier = Modifier) {
     Divider(
-        modifier = Modifier.testTag(MailDividerTestTags.HeaderDivider),
+        modifier = modifier.testTag(MailDividerTestTags.HeaderDivider),
         thickness = MailDimens.SeparatorHeight,
         color = ProtonTheme.colors.separatorNorm
     )
