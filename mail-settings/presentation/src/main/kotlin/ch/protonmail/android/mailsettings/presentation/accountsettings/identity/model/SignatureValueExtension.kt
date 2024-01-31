@@ -21,4 +21,10 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.identity
 import ch.protonmail.android.mailsettings.domain.model.SignatureValue
 import org.jsoup.Jsoup
 
-fun SignatureValue.toPlainText(): String = Jsoup.parse(text).wholeText()
+fun SignatureValue.toPlainText(): String {
+    val document = Jsoup.parse(text)
+    document.body().select("div").forEach {
+        if (!it.wholeText().contains("\n")) it.appendText("\n")
+    }
+    return document.wholeText().trimEnd()
+}
