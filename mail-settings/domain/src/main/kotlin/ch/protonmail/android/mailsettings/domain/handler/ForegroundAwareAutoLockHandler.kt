@@ -21,7 +21,6 @@ package ch.protonmail.android.mailsettings.domain.handler
 import java.time.Instant
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
-import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetLastAppForegroundTimestamp
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.HasAutoLockPendingAttempt
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.IsAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
@@ -35,7 +34,6 @@ class ForegroundAwareAutoLockHandler @Inject constructor(
     private val appInBackgroundState: AppInBackgroundState,
     private val updateAutoLockLastForegroundMillis: UpdateLastForegroundMillis,
     private val hasAutoLockPendingAttempt: HasAutoLockPendingAttempt,
-    private val getLastAppForegroundTimestamp: GetLastAppForegroundTimestamp,
     private val isAutoLockEnabled: IsAutoLockEnabled,
     @AppScope private val coroutineScope: CoroutineScope
 ) {
@@ -48,11 +46,6 @@ class ForegroundAwareAutoLockHandler @Inject constructor(
 
                 if (hasAutoLockPendingAttempt()) {
                     Timber.d("Auto Lock last foreground millis NOT updated, pending attempt still present.")
-                    return@collectLatest
-                }
-
-                if (getLastAppForegroundTimestamp().value == 0L) {
-                    Timber.d("Auto Lock last foreground millis NOT updated, app was killed/force closed.")
                     return@collectLatest
                 }
 

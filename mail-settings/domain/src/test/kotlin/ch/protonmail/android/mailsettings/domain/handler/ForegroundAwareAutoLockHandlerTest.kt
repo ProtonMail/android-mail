@@ -21,7 +21,6 @@ package ch.protonmail.android.mailsettings.domain.handler
 import java.time.Instant
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailsettings.domain.usecase.autolock.GetLastAppForegroundTimestamp
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.HasAutoLockPendingAttempt
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.IsAutoLockEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.UpdateLastForegroundMillis
@@ -49,7 +48,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
     private val updateAutoLockLastForegroundMillis = mockk<UpdateLastForegroundMillis>()
     private val hasAutoLockPendingAttempt = mockk<HasAutoLockPendingAttempt>()
     private val isAutoLockEnabled = mockk<IsAutoLockEnabled>()
-    private val getLastAppForegroundTimestamp = mockk<GetLastAppForegroundTimestamp>()
     private val testDispatcher = StandardTestDispatcher()
     private val scope = TestScope(testDispatcher)
 
@@ -57,7 +55,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
         appInBackgroundState,
         updateAutoLockLastForegroundMillis,
         hasAutoLockPendingAttempt,
-        getLastAppForegroundTimestamp,
         isAutoLockEnabled,
         scope
     )
@@ -76,7 +73,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
     fun `should do nothing if the app is not in the background`() = runTest {
         // Given
         expectAppInBackground(false)
-        expectAppColdStart(false)
 
         // When
         handler.handle()
@@ -95,7 +91,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
         // Given
         expectAppInBackground(true)
         expectAutoLockEnabled(false)
-        expectAppColdStart(false)
 
         // When
         handler.handle()
@@ -114,25 +109,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
         expectAppInBackground(true)
         expectAutoLockEnabled(true)
         expectAutoLockPending(true)
-        expectAppColdStart(false)
-
-        // When
-        handler.handle()
-        advanceUntilIdle()
-
-        // Then
-        coVerify {
-            updateAutoLockLastForegroundMillis wasNot called
-        }
-    }
-
-    @Test
-    fun `should do nothing if the app is cold starting`() = runTest {
-        // Given
-        expectAppInBackground(false)
-        expectAutoLockEnabled(true)
-        expectAutoLockPending(false)
-        expectAppColdStart(true)
 
         // When
         handler.handle()
@@ -154,7 +130,6 @@ internal class ForegroundAwareAutoLockHandlerTest {
         expectAppInBackground(true)
         expectAutoLockEnabled(true)
         expectAutoLockPending(false)
-        expectAppColdStart(false)
         coEvery { updateAutoLockLastForegroundMillis(any()) } returns Unit.right()
 
         // When
@@ -177,13 +152,5 @@ internal class ForegroundAwareAutoLockHandlerTest {
 
     private fun expectAutoLockPending(value: Boolean) {
         coEvery { hasAutoLockPendingAttempt() } returns value
-    }
-
-    private fun expectAppColdStart(value: Boolean) {
-        if (value) {
-            coEvery { getLastAppForegroundTimestamp().value } returns 0L
-        } else {
-            coEvery { getLastAppForegroundTimestamp().value } returns Long.MAX_VALUE
-        }
     }
 }

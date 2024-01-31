@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcommon.domain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -29,11 +29,19 @@ import javax.inject.Singleton
 @Singleton
 class AppInBackgroundState @Inject constructor() {
 
-    private val _state = MutableStateFlow(true)
+    private val _state: MutableStateFlow<Boolean?> = MutableStateFlow(null)
 
-    suspend fun isAppInBackground(): Boolean = observe().firstOrNull() ?: true
+    /**
+     * Returns the current background state of the the app.
+     *
+     * If the state is unset, it defaults to `true`.
+     */
+    fun isAppInBackground(): Boolean = _state.value ?: true
 
-    fun observe(): Flow<Boolean> = _state.asStateFlow()
+    /**
+     * Will emit the current background state of the app according to lifecycle events.
+     */
+    fun observe(): Flow<Boolean> = _state.asStateFlow().filterNotNull()
 
     @Synchronized
     fun setAppInBackground(isAppInBackground: Boolean) = _state.update { isAppInBackground }

@@ -189,7 +189,7 @@ internal class ProcessPushNotificationDataWorkerNewMessageTest {
         coEvery { sessionManager.getUserId(any()) } returns userId
         coEvery { decryptNotificationContent(any(), any()) } returns baseNewMessageNotification
         coEvery { userManager.getUser(any()) } returns UserSample.Primary
-        coEvery { appInBackgroundState.isAppInBackground() } returns isAppInBackground
+        every { appInBackgroundState.isAppInBackground() } returns isAppInBackground
         coEvery {
             getNotificationsExtendedPreference()
         } returns ExtendedNotificationPreference(hasNotificationsExtended).right()

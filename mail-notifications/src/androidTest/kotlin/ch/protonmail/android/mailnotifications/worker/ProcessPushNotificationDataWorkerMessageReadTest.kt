@@ -160,7 +160,7 @@ internal class ProcessPushNotificationDataWorkerMessageReadTest {
         coEvery { sessionManager.getUserId(any()) } returns userId
         coEvery { decryptNotificationContent(any(), any()) } returns baseMessageReadNotification
         coEvery { userManager.getUser(any()) } returns UserSample.Primary
-        coEvery { appInBackgroundState.isAppInBackground() } returns isAppInBackground
+        every { appInBackgroundState.isAppInBackground() } returns isAppInBackground
         coEvery {
             observeBackgroundSyncSetting()
         } returns flowOf(BackgroundSyncPreference(hasBackgroundSyncEnabled).right())
