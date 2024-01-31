@@ -240,6 +240,9 @@ fun ConversationDetailScreen(
                 },
                 onLoadRemoteAndEmbeddedContent = {
                     viewModel.submit(ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(MessageIdUiModel(it.id)))
+                },
+                onOpenInProtonCalendar = {
+                    Timber.d("onOpenInProtonCalendar: $it")
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -412,7 +415,8 @@ fun ConversationDetailScreen(
                     onMoreActionsClick = actions.onMoreActionsClick,
                     onLoadRemoteContent = actions.onLoadRemoteContent,
                     onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
-                    onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) }
+                    onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
+                    onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -653,7 +657,8 @@ object ConversationDetailScreen {
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
-        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -686,7 +691,8 @@ object ConversationDetailScreen {
                 onMoreActionsClick = {},
                 onLoadRemoteContent = {},
                 onLoadEmbeddedImages = {},
-                onLoadRemoteAndEmbeddedContent = {}
+                onLoadRemoteAndEmbeddedContent = {},
+                onOpenInProtonCalendar = {}
             )
         }
     }

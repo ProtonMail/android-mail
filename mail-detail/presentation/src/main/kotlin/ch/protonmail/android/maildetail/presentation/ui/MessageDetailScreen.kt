@@ -209,6 +209,9 @@ fun MessageDetailScreen(
                 onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.ShowEmbeddedImages(it)) },
                 onLoadRemoteAndEmbeddedContent = {
                     viewModel.submit(MessageViewAction.LoadRemoteAndEmbeddedContent(it))
+                },
+                onOpenInProtonCalendar = {
+                    Timber.d("onOpenInProtonCalendar: $it")
                 }
             )
         )
@@ -353,7 +356,8 @@ fun MessageDetailScreen(
                     onMoreActionsClick = actions.onMoreActionsClick,
                     onLoadRemoteContent = actions.onLoadRemoteContent,
                     onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
-                    onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent
+                    onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
+                    onOpenInProtonCalendar = actions.onOpenInProtonCalendar
 
                 )
                 MessageDetailContent(
@@ -433,7 +437,8 @@ private fun MessageDetailContent(
                         onForward = actions.onForward,
                         onLoadRemoteContent = actions.onLoadRemoteContent,
                         onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
-                        onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent
+                        onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
+                        onOpenInProtonCalendar = actions.onOpenInProtonCalendar
                     )
                 )
 
@@ -458,7 +463,8 @@ private fun MessageDetailContent(
                             onForward = { Timber.d("Message: Forward message $it") },
                             onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                             onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
-                            onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) }
+                            onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
+                            onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
                         )
                     )
                 }
@@ -511,7 +517,8 @@ object MessageDetailScreen {
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
-        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -541,7 +548,8 @@ object MessageDetailScreen {
                 onMoreActionsClick = {},
                 onLoadRemoteContent = {},
                 onLoadEmbeddedImages = {},
-                onLoadRemoteAndEmbeddedContent = {}
+                onLoadRemoteAndEmbeddedContent = {},
+                onOpenInProtonCalendar = {}
             )
         }
     }
@@ -563,7 +571,8 @@ object MessageDetailContent {
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
-        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit
     )
 }
 

@@ -138,7 +138,8 @@ private fun ConversationDetailExpandedItem(
                 onForward = actions.onForward,
                 onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                 onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
-                onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) }
+                onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
+                onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )
@@ -163,7 +164,8 @@ object ConversationDetailItem {
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
-        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit,
     )
 }
 

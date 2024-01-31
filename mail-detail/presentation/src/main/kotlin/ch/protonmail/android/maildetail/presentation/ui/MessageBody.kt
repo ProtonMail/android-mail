@@ -101,7 +101,10 @@ fun MessageBody(
     }
 
     if (messageBodyUiModel.shouldShowOpenInProtonCalendar) {
-        OpenInProtonCalendarBanner {}
+        OpenInProtonCalendarBanner(
+            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerProtonCalendar),
+            onOpenInProtonCalendarClick = { actions.onOpenInProtonCalendar(messageBodyUiModel.messageId) }
+        )
     }
 
     MailDivider(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing))
@@ -298,7 +301,8 @@ object MessageBody {
         val onForward: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
-        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit
+        val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit
     )
 }
 
@@ -312,4 +316,5 @@ object MessageBodyTestTags {
     const val MessageReplyButton = "MessageReplyButton"
     const val MessageReplyAllButton = "MessageReplyAllButton"
     const val MessageForwardButton = "MessageForwardButton"
+    const val MessageBodyBannerProtonCalendar = "MessageBodyBannerProtonCalendar"
 }
