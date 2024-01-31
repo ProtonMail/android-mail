@@ -75,4 +75,12 @@ object AttachmentUiModelSample {
         size = 1234,
         mimeType = "image/png"
     )
+
+    val calendar = AttachmentUiModel(
+        attachmentId = "calendar",
+        fileName = "invite",
+        extension = "ics",
+        size = 1234,
+        mimeType = "text/calendar"
+    )
 }

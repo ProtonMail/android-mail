@@ -76,6 +76,7 @@ class MessageBodyUiModelMapper @Inject constructor(
             shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
             shouldShowRemoteContentBanner = !shouldShowRemoteContent && doesMessageBodyHaveRemoteContent,
             shouldShowExpandCollapseButton = extractQuoteResult.hasQuote,
+            shouldShowOpenInProtonCalendar = decryptedMessageBody.attachments.any { it.isCalendarAttachment() },
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 AttachmentGroupUiModel(
                     attachments = decryptedMessageBody.attachments.map {
@@ -96,6 +97,7 @@ class MessageBodyUiModelMapper @Inject constructor(
         shouldShowEmbeddedImagesBanner = false,
         shouldShowRemoteContentBanner = false,
         shouldShowExpandCollapseButton = false,
+        shouldShowOpenInProtonCalendar = false,
         attachments = null
     )
 

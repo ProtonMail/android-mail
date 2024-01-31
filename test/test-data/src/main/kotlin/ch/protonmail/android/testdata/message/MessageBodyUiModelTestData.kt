@@ -18,12 +18,12 @@
 
 package ch.protonmail.android.testdata.message
 
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
-import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
-import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 
 object MessageBodyUiModelTestData {
 
@@ -108,6 +108,7 @@ object MessageBodyUiModelTestData {
         shouldShowRemoteContent: Boolean = false,
         shouldShowEmbeddedImagesBanner: Boolean = false,
         shouldShowRemoteContentBanner: Boolean = false,
+        shouldShowOpenInProtonCalendar: Boolean = false,
         attachments: AttachmentGroupUiModel? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
@@ -119,6 +120,7 @@ object MessageBodyUiModelTestData {
             shouldShowRemoteContent = shouldShowRemoteContent,
             shouldShowEmbeddedImagesBanner = shouldShowEmbeddedImagesBanner,
             shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
+            shouldShowOpenInProtonCalendar = shouldShowOpenInProtonCalendar,
             attachments = attachments,
             shouldShowExpandCollapseButton = false
         )

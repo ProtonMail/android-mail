@@ -54,5 +54,6 @@ private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
     shouldShowEmbeddedImagesBanner = false,
     shouldShowRemoteContentBanner = false,
     shouldShowExpandCollapseButton = false,
+    shouldShowOpenInProtonCalendar = false,
     attachments = null
 )

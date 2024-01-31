@@ -30,6 +30,7 @@ data class MessageBodyUiModel(
     val shouldShowEmbeddedImagesBanner: Boolean,
     val shouldShowRemoteContentBanner: Boolean,
     val shouldShowExpandCollapseButton: Boolean,
+    val shouldShowOpenInProtonCalendar: Boolean,
     val attachments: AttachmentGroupUiModel?
 )
 

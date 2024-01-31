@@ -28,6 +28,7 @@ import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamp
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -36,7 +37,6 @@ import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -58,6 +58,7 @@ class MessageBodyUiModelMapperTest {
         every {
             this@mockk.toUiModel(MessageAttachmentSample.documentWithMultipleDots)
         } returns AttachmentUiModelSample.documentWithMultipleDots
+        every { this@mockk.toUiModel(MessageAttachmentSample.calendar) } returns AttachmentUiModelSample.calendar
     }
     private val doesMessageBodyHaveEmbeddedImages = mockk<DoesMessageBodyHaveEmbeddedImages> {
         every { this@mockk.invoke(any()) } returns false
@@ -108,6 +109,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = false,
             attachments = null
         )
 
@@ -142,11 +144,49 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = false,
             attachments = AttachmentGroupUiModel(
                 attachments = listOf(
                     AttachmentUiModelSample.invoice,
                     AttachmentUiModelSample.document,
                     AttachmentUiModelSample.documentWithMultipleDots
+                )
+            )
+        )
+
+        // When
+        val actual = messageBodyUiModelMapper.toUiModel(UserIdTestData.userId, messageBody)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `plain text message body is correctly mapped to a message body ui model with calendar invite`() = runTest {
+        // Given
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(
+            messageId,
+            decryptedMessageBody,
+            MimeType.PlainText,
+            listOf(
+                MessageAttachmentSample.calendar
+            )
+        )
+        val expected = MessageBodyUiModel(
+            messageId = messageId,
+            messageBody = decryptedMessageBody,
+            messageBodyWithoutQuote = decryptedMessageBody,
+            mimeType = MimeTypeUiModel.PlainText,
+            shouldShowEmbeddedImages = false,
+            shouldShowRemoteContent = false,
+            shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = false,
+            shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = true,
+            attachments = AttachmentGroupUiModel(
+                attachments = listOf(
+                    AttachmentUiModelSample.calendar
                 )
             )
         )
@@ -179,6 +219,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = false,
             attachments = null
         )
 
@@ -205,6 +246,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
+                shouldShowOpenInProtonCalendar = false,
                 attachments = null
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
@@ -233,6 +275,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = true,
                 shouldShowExpandCollapseButton = false,
+                shouldShowOpenInProtonCalendar = false,
                 attachments = null
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
@@ -261,6 +304,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImagesBanner = false,
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
+                shouldShowOpenInProtonCalendar = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -289,6 +333,7 @@ class MessageBodyUiModelMapperTest {
                 shouldShowEmbeddedImagesBanner = true,
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
+                shouldShowOpenInProtonCalendar = false,
                 attachments = null
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
@@ -316,6 +361,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = false,
             attachments = null
         )
 
@@ -345,6 +391,7 @@ class MessageBodyUiModelMapperTest {
             shouldShowEmbeddedImagesBanner = false,
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = true,
+            shouldShowOpenInProtonCalendar = false,
             attachments = null
         )
 
