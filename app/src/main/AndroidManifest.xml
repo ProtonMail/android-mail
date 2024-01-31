@@ -27,6 +27,7 @@
     <queries>
         <package android:name="com.android.webview" />
         <package android:name="com.google.android.webview" />
+        <package android:name="me.proton.android.calendar" />
     </queries>
 
     <application
