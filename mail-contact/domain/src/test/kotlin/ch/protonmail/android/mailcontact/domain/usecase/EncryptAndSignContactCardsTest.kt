@@ -172,6 +172,82 @@ class EncryptAndSignContactCardsTest {
         assertNotNull(actual.getOrNull()!!.find { it is ContactCard.Encrypted && it.signature!!.isNotBlank() })
     }
 
+    @Test
+    fun `return Signed + EncryptedAndSigned for DecryptedContact with null contactId`() = runTest {
+        // Given
+        val expectedDecryptedContact = DecryptedContact(
+            null,
+            formattedName = ContactProperty.FormattedName("Mario@protonmail.com"),
+            emails = listOf(
+                ContactProperty.Email(
+                    ContactProperty.Email.Type.Home,
+                    "mario_secret_email@proton.me"
+                )
+            )
+        )
+
+        mockkStatic(Uid::random)
+        every {
+            Uid.random()
+        } returns fallbackUid
+
+        val mappedSignedVCard = DecryptedVCard(
+            Ezvcard.parse(
+                ContactCard.Signed(
+                    """
+                    BEGIN:VCARD
+                    VERSION:4.0
+                    FN;PREF=1:Mario@protonmail.com
+                    UID:Fallback-Uid
+                    ITEM1.EMAIL;TYPE=home;PREF=1:mario_secret_email@proton.me
+                    END:VCARD
+                    """.trimIndent(),
+                    "signature"
+                ).data
+            ).first(),
+            VerificationStatus.Success
+        ).card
+        expectMapToSignedContactCard(
+            fallbackUid,
+            expectedDecryptedContact.formattedName!!.value,
+            expectedDecryptedContact,
+            null,
+            mappedSignedVCard
+        )
+
+        val mappedEncryptedVCard = DecryptedVCard(
+            Ezvcard.parse(
+                ContactCard.Encrypted(
+                    """
+                    BEGIN:VCARD
+                    VERSION:4.0
+                    UID:Fallback-Uid
+                    END:VCARD
+                    """.trimIndent(),
+                    "signature"
+                ).data
+            ).first(),
+            VerificationStatus.Success
+        ).card
+        expectMapToEncryptedAndSignedContactCard(
+            fallbackUid,
+            expectedDecryptedContact,
+            null,
+            mappedEncryptedVCard
+        )
+
+        expectSignContactCard(mappedSignedVCard)
+        expectEncryptAndSignContactCard(mappedEncryptedVCard)
+
+        // When
+        val actual = sut(userId, expectedDecryptedContact)
+
+        // Then
+        assertEquals(actual.getOrNull()!!.size, 2)
+        assertNotNull(actual.getOrNull()!!.find { it is ContactCard.Signed })
+        assertNotNull(actual.getOrNull()!!.find { it is ContactCard.Encrypted && it.signature!!.isNotBlank() })
+    }
+
     private fun expectContactRepositoryError() {
         every {
             contactRepositoryMock.observeContactWithCards(userId, contactId)
