@@ -49,7 +49,7 @@ class ContactDetailsReducerTest(
         private val loadedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData
         private val loadedContactDetailsUiModel2 = ContactDetailsPreviewData.contactDetailsSampleData.copy(
             id = ContactId("Id 2"),
-            displayName = "John Doe 2",
+            nameHeader = "John Doe 2",
             avatar = Avatar.Initials("JD 2")
         )
 

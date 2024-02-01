@@ -209,7 +209,7 @@ fun ContactDetailsContent(
                         .padding(top = ProtonDimens.MediumSpacing)
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.headlineNorm,
-                    text = state.contact.displayName
+                    text = state.contact.nameHeader
                 )
                 ActionItemsRow(
                     modifier = Modifier

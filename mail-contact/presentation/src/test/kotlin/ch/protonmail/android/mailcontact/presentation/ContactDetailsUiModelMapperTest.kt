@@ -94,7 +94,7 @@ class ContactDetailsUiModelMapperTest {
                 )
             ),
             structuredName = ContactProperty.StructuredName(
-                family = "Mario Last Name", given = "Mario First Name"
+                family = "Last", given = "First"
             ),
             formattedName = ContactProperty.FormattedName(value = "Mario@protonmail.com"),
             emails = listOf(
@@ -202,9 +202,8 @@ class ContactDetailsUiModelMapperTest {
             id = ContactSample.Mario.id,
             defaultPhoneNumber = "1231231235",
             defaultEmail = "Mario@protonmail.com",
-            displayName = "Mario@protonmail.com",
-            firstName = "Mario First Name",
-            lastName = "Mario Last Name",
+            nameHeader = "Mario@protonmail.com",
+            nameSubText = "First Last",
             avatar = Avatar.Photo(bitmap = decodeByteArray(photoByteArray)!!),
             contactMainDetailsItemList = listOf(
                 /* Emails */
@@ -451,7 +450,7 @@ class ContactDetailsUiModelMapperTest {
 
         val expected = ContactDetailsUiModel(
             id = ContactSample.Mario.id,
-            displayName = "",
+            nameHeader = "",
             avatar = Avatar.Initials(""),
             contactMainDetailsItemList = emptyList(),
             contactOtherDetailsItemList = emptyList(),

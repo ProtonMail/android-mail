@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class ContactDetailsUiModelMapper @Inject constructor(
@@ -37,13 +38,20 @@ class ContactDetailsUiModelMapper @Inject constructor(
         val groupLabelList = getGroupLabelList(decryptedContact)
         val defaultPhoneNumber = decryptedContact.telephones.firstOrNull()?.text ?: ""
         val defaultEmail = decryptedContact.emails.firstOrNull()?.value ?: ""
+        val formattedStructuredName = (decryptedContact.structuredName?.given?.takeIfNotBlank() ?: "").plus(
+            decryptedContact.structuredName?.family?.takeIfNotBlank()?.let { " $it" } ?: ""
+        )
+        val nameHeader = decryptedContact.formattedName?.value?.takeIfNotBlank() ?: formattedStructuredName
+        val nameSubText =
+            // We only show subtext if we have both formatted name and structured name with values.
+            if (decryptedContact.formattedName?.value.isNullOrBlank()) ""
+            else formattedStructuredName
         return ContactDetailsUiModel(
             id = decryptedContact.id,
             defaultPhoneNumber = defaultPhoneNumber,
             defaultEmail = defaultEmail,
-            displayName = decryptedContact.formattedName?.value ?: "",
-            firstName = decryptedContact.structuredName?.given ?: "",
-            lastName = decryptedContact.structuredName?.family ?: "",
+            nameHeader = nameHeader,
+            nameSubText = nameSubText,
             avatar = getAvatar(decryptedContact),
             contactMainDetailsItemList = getContactMainDetailsItemList(decryptedContact),
             contactOtherDetailsItemList = getContactOtherDetailsItemList(decryptedContact),

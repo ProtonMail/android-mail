@@ -32,7 +32,7 @@ object ContactDetailsPreviewData {
 
     val contactDetailsSampleData = ContactDetailsUiModel(
         id = ContactId("Id"),
-        displayName = "John Doe",
+        nameHeader = "John Doe",
         avatar = Avatar.Initials("JD"),
         contactMainDetailsItemList = listOf(
             ContactDetailsItem.Text(
