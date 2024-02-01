@@ -63,6 +63,7 @@ import io.mockk.slot
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -117,9 +118,10 @@ class ConversationLocalDataSourceImplTest {
         val user2conversationIds = listOf(ConversationId("1"))
 
         // When
-        conversationLocalDataSource.upsertConversations(conversations)
+        val result = conversationLocalDataSource.upsertConversations(conversations)
 
         // Then
+        assertTrue(result.isRight())
         coVerify { db.inTransaction(any()) }
         coVerify { labelDao.deleteAll(userId, user1conversationIds) }
         coVerify { labelDao.deleteAll(userId1, user2conversationIds) }
@@ -142,9 +144,10 @@ class ConversationLocalDataSourceImplTest {
             listOf(ConversationId("1"), ConversationId("2"), ConversationId("3"))
 
         // When
-        conversationLocalDataSource.upsertConversations(userId, pageKey, conversations)
+        val result = conversationLocalDataSource.upsertConversations(userId, pageKey, conversations)
 
         // Then
+        assertTrue(result.isRight())
         coVerify { db.inTransaction(any()) }
         coVerify { labelDao.deleteAll(userId, user1conversationIds) }
         coVerify(exactly = 1) { conversationDao.insertOrUpdate(entities = anyVararg()) }
@@ -298,13 +301,14 @@ class ConversationLocalDataSourceImplTest {
         val conversation = getConversation(userId, conversationId.id, labelIds = listOf("0", "10"))
 
         // When
-        conversationLocalDataSource.upsertConversation(userId, conversation)
+        val result = conversationLocalDataSource.upsertConversation(userId, conversation)
 
         // Then
         val expectedLabels = listOf(
             TestConversationLabel.createConversationLabel(conversationId, conversation, LabelId("0")),
             TestConversationLabel.createConversationLabel(conversationId, conversation, LabelId("10"))
         )
+        assertTrue(result.isRight())
         coVerify { conversationDao.insertOrUpdate(conversation.toEntity()) }
         coVerify { labelDao.deleteAll(userId, listOf(conversation.conversationId)) }
         coVerify { labelDao.insertOrUpdate(expectedLabels.first()) }

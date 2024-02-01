@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.db.dao.upsertOrError
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
@@ -73,15 +74,17 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey,
         items: List<ConversationWithContext>
     ) = db.inTransaction {
-        upsertConversations(items.map { it.conversation })
-        upsertPageInterval(userId, pageKey, items)
+        upsertConversations(items.map { it.conversation }).onRight {
+            upsertPageInterval(userId, pageKey, items)
+        }
     }
 
     override suspend fun upsertConversations(
         items: List<Conversation>
     ) = db.inTransaction {
-        conversationDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
-        updateLabels(items)
+        conversationDao.upsertOrError(*items.map { it.toEntity() }.toTypedArray()).onRight {
+            updateLabels(items)
+        }
     }
 
     override suspend fun deleteConversation(
@@ -137,12 +140,12 @@ class ConversationLocalDataSourceImpl @Inject constructor(
             .observe(userId, conversationId)
             .mapLatest { it?.toConversation() }
 
-    override suspend fun upsertConversation(userId: UserId, conversation: Conversation) {
+    override suspend fun upsertConversation(userId: UserId, conversation: Conversation) =
         db.inTransaction {
-            conversationDao.insertOrUpdate(conversation.toEntity())
-            updateLabels(listOf(conversation))
+            conversationDao.upsertOrError(conversation.toEntity()).onRight {
+                updateLabels(listOf(conversation))
+            }
         }
-    }
 
     override suspend fun addLabel(
         userId: UserId,

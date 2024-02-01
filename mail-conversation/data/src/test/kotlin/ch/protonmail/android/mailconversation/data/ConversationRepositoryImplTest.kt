@@ -73,6 +73,8 @@ class ConversationRepositoryImplTest {
     private val conversationLocalDataSource = mockk<ConversationLocalDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any<PageKey>()) } returns emptyList()
         coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
+        coEvery { this@mockk.upsertConversations(any(), any(), any()) } returns Unit.right()
+        coEvery { this@mockk.upsertConversation(any(), any()) } returns Unit.right()
     }
     private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource>(relaxUnitFun = true) {
         coEvery { this@mockk.getConversations(any(), any()) } returns listOf(

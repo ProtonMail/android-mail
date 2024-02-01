@@ -20,6 +20,7 @@ package ch.protonmail.android.mailconversation.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DaoError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
@@ -53,12 +54,12 @@ interface ConversationLocalDataSource {
         userId: UserId,
         pageKey: PageKey,
         items: List<ConversationWithContext>
-    )
+    ): Either<DaoError.UpsertError, Unit>
 
     /**
      * Update or insert [Conversation].
      */
-    suspend fun upsertConversations(items: List<Conversation>)
+    suspend fun upsertConversations(items: List<Conversation>): Either<DaoError.UpsertError, Unit>
 
     /**
      * Delete Conversation(s) for [userId], by [ids].
@@ -103,7 +104,7 @@ interface ConversationLocalDataSource {
 
     fun observeConversation(userId: UserId, conversationId: ConversationId): Flow<Conversation?>
 
-    suspend fun upsertConversation(userId: UserId, conversation: Conversation)
+    suspend fun upsertConversation(userId: UserId, conversation: Conversation): Either<DaoError.UpsertError, Unit>
 
     /**
      * Adds [labelId] to given [conversationIds] related to the same [userId]
