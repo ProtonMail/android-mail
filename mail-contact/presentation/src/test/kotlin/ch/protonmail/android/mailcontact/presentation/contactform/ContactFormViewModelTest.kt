@@ -235,6 +235,36 @@ class ContactFormViewModelTest {
     }
 
     @Test
+    fun `given invalid email, when OnSaveClick action is submitted, then show error message is emitted`() = runTest {
+        // Given
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactFormUiModel = contactFormSampleData().copy(
+            emails = mutableListOf(
+                InputField.SingleTyped("invalidEmail", FieldType.EmailType.Email)
+            )
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data.Update(
+                contact = expectedContactFormUiModel,
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_invalid_email_error))
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
     fun `when on update display name action is submitted, then state contact is updated`() = runTest {
         // Given
         val contactFormUiModel = expectContactFormStateUpdate()
