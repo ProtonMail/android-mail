@@ -62,7 +62,7 @@ import kotlin.test.assertEquals
 class ContactFormViewModelTest {
 
     private val testUserId = UserIdTestData.userId
-    private val testContactId = contactFormSampleData.id!!
+    private val testContactId = contactFormSampleData().id!!
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
@@ -226,7 +226,7 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data.Update(
-                contact = contactFormSampleData.copy(displayName = "Update"),
+                contact = contactFormSampleData().copy(displayName = "Update"),
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
             )
 
@@ -804,7 +804,7 @@ class ContactFormViewModelTest {
 
     private fun expectContactFormStateUpdate(): ContactFormUiModel {
         val expectedDecryptedContact = DecryptedContact(testContactId)
-        val expectedContactFormUiModel = contactFormSampleData
+        val expectedContactFormUiModel = contactFormSampleData()
         expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
         expectContactFormUiModel(expectedDecryptedContact, expectedContactFormUiModel)
 

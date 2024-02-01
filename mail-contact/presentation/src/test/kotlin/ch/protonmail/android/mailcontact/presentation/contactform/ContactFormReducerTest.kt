@@ -47,7 +47,7 @@ class ContactFormReducerTest(
 
     companion object {
 
-        private val loadedContactFormUiModel = ContactFormPreviewData.contactFormSampleData
+        private val loadedContactFormUiModel = ContactFormPreviewData.contactFormSampleData()
 
         private val emptyLoadingState = ContactFormState.Loading()
         private val loadedCreateContactState = ContactFormState.Data.Create(contact = emptyContactFormUiModel())

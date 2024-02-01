@@ -27,7 +27,7 @@ import me.proton.core.contact.domain.entity.ContactId
 
 object ContactFormPreviewData {
 
-    val contactFormSampleData = ContactFormUiModel(
+    fun contactFormSampleData() = ContactFormUiModel(
         id = ContactId("Id"),
         avatar = ContactFormAvatar.Empty,
         displayName = "displayName",
