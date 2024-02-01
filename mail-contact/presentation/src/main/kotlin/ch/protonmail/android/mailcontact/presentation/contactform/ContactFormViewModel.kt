@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.presentation.utils.InputValidationResult
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -260,6 +261,10 @@ class ContactFormViewModel @Inject constructor(
     private suspend fun handleSave() {
         val stateValue = state.value
         if (stateValue !is ContactFormState.Data) return
+        val containsInvalidEmail = stateValue.contact.emails.any {
+            validateEmail(it.value).not()
+        }
+        if (containsInvalidEmail) return emitNewStateFor(ContactFormEvent.InvalidEmailError)
         when (stateValue) {
             is ContactFormState.Data.Create -> handleCreateContact(stateValue.contact)
             is ContactFormState.Data.Update -> handleUpdateContact(stateValue.contact)
@@ -267,13 +272,14 @@ class ContactFormViewModel @Inject constructor(
     }
 
     private suspend fun handleCreateContact(contact: ContactFormUiModel) {
+        emitNewStateFor(ContactFormEvent.CreatingContact)
+
         val decryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
             contactGroups = listOf(),
             photos = listOf(),
             logos = listOf()
         )
-        emitNewStateFor(ContactFormEvent.CreatingContact)
 
         createContact(
             userId = primaryUserId(),
@@ -306,6 +312,11 @@ class ContactFormViewModel @Inject constructor(
         // Call save UC with mapping result as param here
 
         emitNewStateFor(ContactFormEvent.ContactUpdated)
+    }
+
+    private fun validateEmail(email: CharSequence): Boolean {
+        val regex = InputValidationResult.EMAIL_VALIDATION_PATTERN.toRegex(RegexOption.IGNORE_CASE)
+        return regex.matches(email)
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

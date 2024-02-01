@@ -165,6 +165,13 @@ class ContactFormReducerTest(
                 expectedState = loadedUpdateContactState.copy(
                     closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
                 )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactState,
+                event = ContactFormEvent.InvalidEmailError,
+                expectedState = loadedUpdateContactState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_invalid_email_error))
+                )
             )
         )
 

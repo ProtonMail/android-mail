@@ -37,6 +37,7 @@ class ContactFormReducer @Inject constructor() {
             ContactFormEvent.ContactCreated -> reduceContactCreated(currentState)
             ContactFormEvent.ContactUpdated -> reduceContactUpdated(currentState)
             ContactFormEvent.CreatingContact -> reduceCreatingContact(currentState)
+            ContactFormEvent.InvalidEmailError -> reduceInvalidEmailError(currentState)
         }
     }
 
@@ -106,6 +107,18 @@ class ContactFormReducer @Inject constructor() {
                 displayCreateLoader = true
             )
             is ContactFormState.Data.Update -> currentState
+            is ContactFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceInvalidEmailError(currentState: ContactFormState): ContactFormState {
+        return when (currentState) {
+            is ContactFormState.Data.Create -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_invalid_email_error))
+            )
+            is ContactFormState.Data.Update -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_invalid_email_error))
+            )
             is ContactFormState.Loading -> currentState
         }
     }

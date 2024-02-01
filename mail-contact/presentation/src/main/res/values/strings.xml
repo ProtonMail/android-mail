@@ -101,4 +101,5 @@
         <item quantity="one">%1$d member</item>
         <item quantity="other">%1$d members</item>
     </plurals>
+    <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>
