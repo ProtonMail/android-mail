@@ -29,8 +29,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import me.proton.core.compose.theme.ProtonDimens
@@ -42,6 +40,8 @@ fun FormInputField(
     modifier: Modifier = Modifier,
     initialValue: String = "",
     hint: String,
+    singleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxCharacters: Int? = null,
     onTextChange: (String) -> Unit
 ) {
@@ -68,12 +68,9 @@ fun FormInputField(
         },
         shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius),
         colors = formTextFieldColors(),
-        singleLine = true,
+        singleLine = singleLine,
         textStyle = ProtonTheme.typography.defaultNorm,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.Sentences,
-            imeAction = ImeAction.Done
-        )
+        keyboardOptions = keyboardOptions
     )
 }
 

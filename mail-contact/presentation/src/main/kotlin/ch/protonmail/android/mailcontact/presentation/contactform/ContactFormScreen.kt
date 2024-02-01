@@ -31,6 +31,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -56,6 +57,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -235,6 +239,11 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
             InputFieldWithTrash(
                 value = email.value,
                 hint = stringResource(id = R.string.email_address),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    capitalization = KeyboardCapitalization.None,
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Emails, index) }
             ) {
                 mutableEmail.value = mutableEmail.value.copy(value = it)
@@ -272,6 +281,11 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
             InputFieldWithTrash(
                 value = telephone.value,
                 hint = stringResource(id = R.string.phone_number),
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    capitalization = KeyboardCapitalization.None,
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next
+                ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, index) }
             ) {
                 mutableTelephone.value = mutableTelephone.value.copy(value = it)
@@ -296,6 +310,7 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
     }
 }
 
+@SuppressWarnings("LongMethod")
 private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
     item {
         SectionHeader(
@@ -306,27 +321,48 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
     itemsIndexed(state.contact.addresses) { index, address ->
         key(address) {
             val mutableAddress = remember { mutableStateOf(address) }
+            val keyboardOptions = KeyboardOptions.Default.copy(
+                capitalization = KeyboardCapitalization.Sentences,
+                imeAction = ImeAction.Next
+            )
             InputFieldWithTrash(
                 value = address.streetAddress,
                 hint = stringResource(R.string.address_street),
+                keyboardOptions = keyboardOptions,
                 onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, index) }
             ) {
                 mutableAddress.value = mutableAddress.value.copy(streetAddress = it)
                 actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = address.postalCode, hint = stringResource(R.string.address_postal_code)) {
+            InputField(
+                value = address.postalCode,
+                hint = stringResource(R.string.address_postal_code),
+                keyboardOptions = keyboardOptions
+            ) {
                 mutableAddress.value = mutableAddress.value.copy(postalCode = it)
                 actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = address.city, hint = stringResource(R.string.address_city)) {
+            InputField(
+                value = address.city,
+                hint = stringResource(R.string.address_city),
+                keyboardOptions = keyboardOptions
+            ) {
                 mutableAddress.value = mutableAddress.value.copy(city = it)
                 actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = address.region, hint = stringResource(R.string.address_region)) {
+            InputField(
+                value = address.region,
+                hint = stringResource(R.string.address_region),
+                keyboardOptions = keyboardOptions
+            ) {
                 mutableAddress.value = mutableAddress.value.copy(region = it)
                 actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
-            InputField(value = address.country, hint = stringResource(R.string.address_country)) {
+            InputField(
+                value = address.country,
+                hint = stringResource(R.string.address_country),
+                keyboardOptions = keyboardOptions
+            ) {
                 mutableAddress.value = mutableAddress.value.copy(country = it)
                 actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
             }
@@ -362,6 +398,11 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
             InputFieldWithTrash(
                 value = note.value,
                 hint = stringResource(id = R.string.note_section),
+                singleLine = false,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    imeAction = ImeAction.Default
+                ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Notes, index) }
             ) {
                 mutableNote.value = mutableNote.value.copy(value = it)
@@ -395,6 +436,10 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                     InputFieldWithTrash(
                         value = other.value,
                         hint = stringResource(id = R.string.additional_info),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            imeAction = ImeAction.Next
+                        ),
                         onDeleteClick = { actions.onRemoveItemClick(Section.Others, index) }
                     ) {
                         mutableOther.value = mutableOther.value.copy(value = it)
@@ -426,6 +471,10 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
 
 @Composable
 private fun NameSection(state: ContactFormState.Data, actions: ContactFormContent.Actions) {
+    val namesKeyboardOptions = KeyboardOptions.Default.copy(
+        capitalization = KeyboardCapitalization.Words,
+        imeAction = ImeAction.Next
+    )
     FormInputField(
         modifier = Modifier
             .fillMaxWidth()
@@ -436,6 +485,7 @@ private fun NameSection(state: ContactFormState.Data, actions: ContactFormConten
             ),
         initialValue = state.contact.displayName,
         hint = stringResource(R.string.display_name),
+        keyboardOptions = namesKeyboardOptions,
         maxCharacters = CONTACT_NAME_MAX_LENGTH,
         onTextChange = {
             actions.onUpdateDisplayName(it)
@@ -451,6 +501,7 @@ private fun NameSection(state: ContactFormState.Data, actions: ContactFormConten
             ),
         initialValue = state.contact.firstName,
         hint = stringResource(R.string.first_name),
+        keyboardOptions = namesKeyboardOptions,
         maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
             actions.onUpdateFirstName(it)
@@ -466,6 +517,7 @@ private fun NameSection(state: ContactFormState.Data, actions: ContactFormConten
             ),
         initialValue = state.contact.lastName,
         hint = stringResource(R.string.last_name),
+        keyboardOptions = namesKeyboardOptions,
         maxCharacters = CONTACT_FIRST_LAST_NAME_MAX_LENGTH,
         onTextChange = {
             actions.onUpdateLastName(it)
@@ -526,6 +578,8 @@ private fun AddNewButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 private fun InputField(
     value: String,
     hint: String,
+    singleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onTextChange: (String) -> Unit
 ) {
     Row {
@@ -540,6 +594,8 @@ private fun InputField(
                 ),
             initialValue = value,
             hint = hint,
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
             onTextChange = onTextChange
         )
     }
@@ -549,6 +605,8 @@ private fun InputField(
 private fun InputFieldWithTrash(
     value: String,
     hint: String,
+    singleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onDeleteClick: () -> Unit,
     onTextChange: (String) -> Unit
 ) {
@@ -564,6 +622,8 @@ private fun InputFieldWithTrash(
                 ),
             initialValue = value,
             hint = hint,
+            singleLine = singleLine,
+            keyboardOptions = keyboardOptions,
             onTextChange = onTextChange
         )
         Icon(
