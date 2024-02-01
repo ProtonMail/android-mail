@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 class ContactFormUiModelMapper @Inject constructor(
@@ -68,132 +69,6 @@ class ContactFormUiModelMapper @Inject constructor(
             }.toMutableList(),
             others = buildOthers(decryptedContact),
             otherTypes = FieldType.OtherType.values().toList()
-        )
-    }
-
-    @SuppressWarnings("LongMethod", "ComplexMethod")
-    fun toDecryptedContact(
-        contact: ContactFormUiModel,
-        contactGroups: List<ContactGroup>,
-        // Remove those fields once they are implemented in form
-        photos: List<ContactProperty.Photo>,
-        logos: List<ContactProperty.Logo>
-    ): DecryptedContact {
-        val organizations = mutableListOf<ContactProperty.Organization>()
-        val titles = mutableListOf<ContactProperty.Title>()
-        val roles = mutableListOf<ContactProperty.Role>()
-        val timezones = mutableListOf<ContactProperty.Timezone>()
-        val members = mutableListOf<ContactProperty.Member>()
-        val languages = mutableListOf<ContactProperty.Language>()
-        val urls = mutableListOf<ContactProperty.Url>()
-        var gender: ContactProperty.Gender? = null
-        var anniversary: ContactProperty.Anniversary? = null
-        contact.others.map { other ->
-            when (other) {
-                is InputField.SingleTyped -> {
-                    when (other.selectedType as FieldType.OtherType) {
-                        FieldType.OtherType.Organization -> organizations.add(
-                            ContactProperty.Organization(other.value)
-                        )
-                        FieldType.OtherType.Title -> titles.add(
-                            ContactProperty.Title(other.value)
-                        )
-                        FieldType.OtherType.Role -> roles.add(
-                            ContactProperty.Role(other.value)
-                        )
-                        FieldType.OtherType.TimeZone -> timezones.add(
-                            ContactProperty.Timezone(other.value)
-                        )
-                        FieldType.OtherType.Member -> members.add(
-                            ContactProperty.Member(other.value)
-                        )
-                        FieldType.OtherType.Language -> languages.add(
-                            ContactProperty.Language(other.value)
-                        )
-                        FieldType.OtherType.Url -> urls.add(
-                            ContactProperty.Url(other.value)
-                        )
-                        FieldType.OtherType.Gender -> gender = ContactProperty.Gender(gender = other.value)
-                        else -> {
-                            // Not applicable for `SingleTyped`
-                        }
-                    }
-                }
-                is InputField.DateTyped -> {
-                    when (other.selectedType as FieldType.OtherType) {
-                        FieldType.OtherType.Anniversary -> anniversary = ContactProperty.Anniversary(date = other.value)
-                        else -> {
-                            // Not applicable for `DateTyped`
-                        }
-                    }
-                }
-                is InputField.ImageTyped -> {
-                    // Not yet implemented (photo, logo)
-                }
-                else -> {
-                    // Not applicable to `others` section
-                }
-            }
-        }
-        return DecryptedContact(
-            id = contact.id ?: ContactId(""),
-            contactGroups = contactGroups,
-            structuredName = ContactProperty.StructuredName(
-                family = contact.lastName,
-                given = contact.firstName
-            ),
-            formattedName = ContactProperty.FormattedName(
-                value = contact.displayName
-            ),
-            emails = contact.emails.map { email ->
-                ContactProperty.Email(
-                    type = ContactProperty.Email.Type.valueOf(
-                        (email.selectedType as FieldType.EmailType).name
-                    ),
-                    value = email.value
-                )
-            },
-            telephones = contact.telephones.map { telephone ->
-                ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.valueOf(
-                        (telephone.selectedType as FieldType.TelephoneType).name
-                    ),
-                    text = telephone.value
-                )
-            },
-            addresses = contact.addresses.map { address ->
-                ContactProperty.Address(
-                    type = ContactProperty.Address.Type.valueOf(
-                        (address.selectedType as FieldType.AddressType).name
-                    ),
-                    streetAddress = address.streetAddress,
-                    locality = address.city,
-                    region = address.region,
-                    postalCode = address.postalCode,
-                    country = address.country
-                )
-            },
-            birthday = contact.birthday?.let { birthday ->
-                ContactProperty.Birthday(
-                    date = birthday.value
-                )
-            },
-            notes = contact.notes.map { note ->
-                ContactProperty.Note(
-                    value = note.value
-                )
-            },
-            photos = photos,
-            organizations = organizations,
-            titles = titles,
-            roles = roles,
-            timezones = timezones,
-            logos = logos,
-            members = members,
-            languages = languages,
-            urls = urls,
-            gender = gender,
-            anniversary = anniversary
         )
     }
 
@@ -249,5 +124,200 @@ class ContactFormUiModelMapper @Inject constructor(
             }
         }
         return ContactFormAvatar.Empty
+    }
+
+    fun toDecryptedContact(
+        contact: ContactFormUiModel,
+        contactGroups: List<ContactGroup>,
+        // Remove those fields once they are implemented in form
+        photos: List<ContactProperty.Photo>,
+        logos: List<ContactProperty.Logo>
+    ): DecryptedContact {
+        return DecryptedContact(
+            id = contact.id ?: ContactId(""),
+            contactGroups = contactGroups,
+            structuredName = contact.getStructuredNameContactProperty(),
+            formattedName = contact.getFormattedNameContactProperty(),
+            emails = contact.getEmailContactPropertyList(),
+            telephones = contact.getTelephoneContactPropertyList(),
+            addresses = contact.getAddressContactPropertyList(),
+            birthday = contact.getBirthdayContactProperty(),
+            notes = contact.getNoteContactPropertyList(),
+            photos = photos,
+            organizations = contact.getOrganizationContactPropertyList(),
+            titles = contact.getTitleContactPropertyList(),
+            roles = contact.getRoleContactPropertyList(),
+            timezones = contact.getTimezoneContactPropertyList(),
+            logos = logos,
+            members = contact.getMemberContactPropertyList(),
+            languages = contact.getLanguageContactPropertyList(),
+            urls = contact.getUrlContactPropertyList(),
+            gender = contact.getGenderContactProperty(),
+            anniversary = contact.getAnniversaryContactProperty()
+        )
+    }
+
+    private fun ContactFormUiModel.getFormattedNameContactProperty(): ContactProperty.FormattedName? {
+        return this.displayName.takeIfNotBlank()?.let { displayName ->
+            ContactProperty.FormattedName(
+                value = displayName
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getStructuredNameContactProperty(): ContactProperty.StructuredName? {
+        return if (this.lastName.isBlank() && this.firstName.isBlank()) {
+            null
+        } else {
+            ContactProperty.StructuredName(
+                family = this.lastName,
+                given = this.firstName
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getEmailContactPropertyList(): List<ContactProperty.Email> {
+        return this.emails.map { email ->
+            ContactProperty.Email(
+                type = ContactProperty.Email.Type.valueOf(
+                    (email.selectedType as FieldType.EmailType).name
+                ),
+                value = email.value
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getTelephoneContactPropertyList(): List<ContactProperty.Telephone> {
+        return this.telephones.map { telephone ->
+            ContactProperty.Telephone(
+                type = ContactProperty.Telephone.Type.valueOf(
+                    (telephone.selectedType as FieldType.TelephoneType).name
+                ),
+                text = telephone.value
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getAddressContactPropertyList(): List<ContactProperty.Address> {
+        return this.addresses.map { address ->
+            ContactProperty.Address(
+                type = ContactProperty.Address.Type.valueOf(
+                    (address.selectedType as FieldType.AddressType).name
+                ),
+                streetAddress = address.streetAddress,
+                locality = address.city,
+                region = address.region,
+                postalCode = address.postalCode,
+                country = address.country
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getBirthdayContactProperty(): ContactProperty.Birthday? {
+        return this.birthday?.let { birthday ->
+            ContactProperty.Birthday(
+                date = birthday.value
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getNoteContactPropertyList(): List<ContactProperty.Note> {
+        return this.notes.map { note ->
+            ContactProperty.Note(
+                value = note.value
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getOrganizationContactPropertyList(): List<ContactProperty.Organization> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Organization) {
+                ContactProperty.Organization(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getTitleContactPropertyList(): List<ContactProperty.Title> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Title) {
+                ContactProperty.Title(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getRoleContactPropertyList(): List<ContactProperty.Role> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Role) {
+                ContactProperty.Role(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getTimezoneContactPropertyList(): List<ContactProperty.Timezone> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.TimeZone) {
+                ContactProperty.Timezone(
+                    text = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getMemberContactPropertyList(): List<ContactProperty.Member> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Member) {
+                ContactProperty.Member(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getLanguageContactPropertyList(): List<ContactProperty.Language> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Language) {
+                ContactProperty.Language(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getUrlContactPropertyList(): List<ContactProperty.Url> {
+        return this.others.mapNotNull { other ->
+            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Url) {
+                ContactProperty.Url(
+                    value = other.value
+                )
+            } else null
+        }
+    }
+
+    private fun ContactFormUiModel.getGenderContactProperty(): ContactProperty.Gender? {
+        val genderInputField = this.others.find {
+            it is InputField.SingleTyped && it.selectedType == FieldType.OtherType.Gender
+        }
+        return genderInputField?.let {
+            ContactProperty.Gender(
+                gender = (genderInputField as InputField.SingleTyped).value
+            )
+        }
+    }
+
+    private fun ContactFormUiModel.getAnniversaryContactProperty(): ContactProperty.Anniversary? {
+        val anniversaryInputField = this.others.find {
+            it is InputField.DateTyped && it.selectedType == FieldType.OtherType.Anniversary
+        }
+        return anniversaryInputField?.let {
+            ContactProperty.Anniversary(
+                date = (anniversaryInputField as InputField.DateTyped).value
+            )
+        }
     }
 }
