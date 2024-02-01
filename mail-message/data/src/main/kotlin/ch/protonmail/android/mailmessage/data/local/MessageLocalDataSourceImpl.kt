@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.raise.either
 import arrow.core.right
+import ch.protonmail.android.mailcommon.data.db.dao.upsertOrError
 import ch.protonmail.android.mailcommon.data.file.shouldBeStoredAsFile
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -172,8 +173,9 @@ class MessageLocalDataSourceImpl @Inject constructor(
     }
 
     override suspend fun upsertMessages(items: List<Message>) = db.inTransaction {
-        messageDao.insertOrUpdate(*items.map { it.toEntity() }.toTypedArray())
-        updateLabels(items)
+        messageDao.upsertOrError(*items.map { it.toEntity() }.toTypedArray()).onRight {
+            updateLabels(items)
+        }
     }
 
     override suspend fun upsertMessages(
@@ -181,11 +183,11 @@ class MessageLocalDataSourceImpl @Inject constructor(
         pageKey: PageKey,
         items: List<Message>
     ) = db.inTransaction {
-        upsertMessages(items)
-        upsertPageInterval(userId, pageKey, items)
-
-        if (pageKey.filter.keyword.isNotEmpty()) {
-            upsertSearchResults(userId, pageKey.filter.keyword, items)
+        upsertMessages(items).onRight {
+            upsertPageInterval(userId, pageKey, items)
+            if (pageKey.filter.keyword.isNotEmpty()) {
+                upsertSearchResults(userId, pageKey.filter.keyword, items)
+            }
         }
     }
 
@@ -215,15 +217,15 @@ class MessageLocalDataSourceImpl @Inject constructor(
         val messageBodyEntity = messageWithBodyEntityMapper.toMessageBodyEntity(messageWithBody.messageBody)
         if (messageWithBody.messageBody.body.shouldBeStoredAsFile()) {
             messageBodyFileStorage.saveMessageBody(userId, messageWithBody.messageBody)
-            messageBodyDao.insertOrUpdate(messageBodyEntity.copy(body = null))
+            messageBodyDao.upsertOrError(messageBodyEntity.copy(body = null))
         } else {
-            messageBodyDao.insertOrUpdate(messageBodyEntity)
+            messageBodyDao.upsertOrError(messageBodyEntity)
         }
         if (messageWithBody.messageBody.attachments.isNotEmpty()) {
             val attachmentEntities = messageWithBody.messageBody.attachments.map {
                 messageAttachmentEntityMapper.toMessageAttachmentEntity(userId, messageWithBody.message.messageId, it)
             }.toTypedArray()
-            messageAttachmentDao.insertOrUpdate(*attachmentEntities)
+            messageAttachmentDao.upsertOrError(*attachmentEntities)
         }
     }
 

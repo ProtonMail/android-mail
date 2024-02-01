@@ -104,6 +104,8 @@ class MessageRepositoryImplTest {
             observeMessageWithBody(userId = any(), messageId = any())
         } returns flowOf(MessageWithBody(MessageTestData.message, MessageBodyTestData.messageBody))
         every { observeMessageAttachments(any(), any()) } returns flowOf(listOf(MessageAttachmentSample.invoice))
+        coEvery { upsertMessages(any()) } returns Unit.right()
+        coEvery { upsertMessages(any(), any(), any()) } returns Unit.right()
     }
 
     private val messageRepository = MessageRepositoryImpl(
@@ -549,7 +551,7 @@ class MessageRepositoryImplTest {
         val messageFlow = MutableStateFlow(listOf(message))
         coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns messageFlow
         coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
-            messageFlow.emit(listOf(messageWithoutLabels))
+            messageFlow.emit(listOf(messageWithoutLabels)).right()
         }
         coEvery {
             localDataSource.relabelMessages(
@@ -597,7 +599,7 @@ class MessageRepositoryImplTest {
         val messageFlow = MutableStateFlow(listOf(message))
         coEvery { localDataSource.observeMessages(userId, listOf(messageId)) } returns messageFlow
         coEvery { localDataSource.upsertMessage(messageWithoutLabels) } coAnswers {
-            messageFlow.emit(listOf(messageWithoutLabels))
+            messageFlow.emit(listOf(messageWithoutLabels)).right()
         }
         coEvery {
             localDataSource.relabelMessages(

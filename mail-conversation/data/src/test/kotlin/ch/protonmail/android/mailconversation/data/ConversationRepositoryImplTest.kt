@@ -74,6 +74,7 @@ class ConversationRepositoryImplTest {
         coEvery { this@mockk.getConversations(any(), any<PageKey>()) } returns emptyList()
         coEvery { this@mockk.isLocalPageValid(any(), any(), any()) } returns false
         coEvery { this@mockk.upsertConversations(any(), any(), any()) } returns Unit.right()
+        coEvery { this@mockk.upsertConversations(any()) } returns Unit.right()
         coEvery { this@mockk.upsertConversation(any(), any()) } returns Unit.right()
     }
     private val conversationRemoteDataSource = mockk<ConversationRemoteDataSource>(relaxUnitFun = true) {
@@ -92,6 +93,9 @@ class ConversationRepositoryImplTest {
         coEvery { this@mockk.observeMessages(any(), any<ConversationId>()) } returns flowOf(
             MessageTestData.unStarredMessagesByConversation
         )
+        coEvery { this@mockk.upsertMessages(any(), any(), any()) } returns Unit.right()
+        coEvery { this@mockk.upsertMessages(any()) } returns Unit.right()
+        coEvery { this@mockk.upsertMessage(any()) } returns Unit.right()
     }
 
     private val conversationRepository = ConversationRepositoryImpl(

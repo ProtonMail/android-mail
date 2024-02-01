@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.data.local
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.model.DaoError
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
@@ -121,12 +122,12 @@ interface MessageLocalDataSource {
     /**
      * Update or insert [Message].
      */
-    suspend fun upsertMessage(message: Message)
+    suspend fun upsertMessage(message: Message): Either<DaoError.UpsertError, Unit>
 
     /**
      * Update or insert a list of [Message].
      */
-    suspend fun upsertMessages(items: List<Message>)
+    suspend fun upsertMessages(items: List<Message>): Either<DaoError.UpsertError, Unit>
 
     /**
      * Update or insert [Message] related to the same [userId] and [pageKey].
@@ -135,7 +136,7 @@ interface MessageLocalDataSource {
         userId: UserId,
         pageKey: PageKey,
         items: List<Message>
-    )
+    ): Either<DaoError.UpsertError, Unit>
 
     /**
      * Observe [MessageWithBody] by [messageId] for this [userId].
