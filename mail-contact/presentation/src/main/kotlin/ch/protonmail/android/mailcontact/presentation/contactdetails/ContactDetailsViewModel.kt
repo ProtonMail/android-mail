@@ -63,7 +63,7 @@ class ContactDetailsViewModel @Inject constructor(
         extractContactId()?.let { contactId ->
             viewModelScope.launch {
                 flowContactDetailsEvent(userId = primaryUserId(), contactId = ContactId(contactId))
-                    .onEach { contactListEvent -> emitNewStateFor(contactListEvent) }
+                    .onEach { contactDetailsEvent -> emitNewStateFor(contactDetailsEvent) }
                     .launchIn(viewModelScope)
             }
         } ?: run {
