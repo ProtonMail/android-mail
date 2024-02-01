@@ -211,6 +211,16 @@ fun ContactDetailsContent(
                     style = ProtonTheme.typography.headlineNorm,
                     text = state.contact.nameHeader
                 )
+                if (state.contact.nameSubText.isNotBlank()) {
+                    Text(
+                        modifier = Modifier
+                            .padding(top = ProtonDimens.ExtraSmallSpacing)
+                            .align(Alignment.CenterHorizontally),
+                        style = ProtonTheme.typography.defaultNorm,
+                        color = ProtonTheme.colors.textWeak,
+                        text = state.contact.nameSubText
+                    )
+                }
                 ActionItemsRow(
                     modifier = Modifier
                         .padding(vertical = ProtonDimens.MediumSpacing)
