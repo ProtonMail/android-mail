@@ -55,9 +55,8 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         // Given
         val expectedList = listOf(
             ActionUiModel(Action.Reply),
-            ActionUiModel(Action.Forward)
-//            To be reintroduced with MAILANDR-1455
-//            ActionUiModel(Action.ReportPhishing)
+            ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 
         // When
@@ -83,9 +82,8 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
                 )
             ),
             ActionUiModel(Action.ReplyAll),
-            ActionUiModel(Action.Forward)
-//            To be reintroduced with MAILANDR-1455
-//            ActionUiModel(Action.ReportPhishing)
+            ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 
         // When
