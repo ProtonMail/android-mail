@@ -90,6 +90,27 @@ class ContactFormUiModelMapperTest {
     }
 
     @Test
+    fun `given empty display name when mapping ContactFormUiModel to DecryptedContact use first and last name`() {
+        val contactFormUiModel = getContactFormUiModel().copy(
+            displayName = ""
+        )
+        val decryptedContact = getDecryptedContact().copy(
+            formattedName = ContactProperty.FormattedName(
+                value = "${contactFormUiModel.firstName} ${contactFormUiModel.lastName}"
+            )
+        )
+
+        val actual = contactFormUiModelMapper.toDecryptedContact(
+            contactFormUiModel,
+            decryptedContact.contactGroups,
+            decryptedContact.photos,
+            decryptedContact.logos
+        )
+
+        assertEquals(decryptedContact, actual)
+    }
+
+    @Test
     fun `maps empty DecryptedContact to empty ContactFormUiModel`() {
         val decryptedContact = DecryptedContact(
             id = ContactSample.Mario.id

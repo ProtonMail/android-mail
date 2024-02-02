@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.util.kotlin.takeIfNotBlank
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 class ContactFormUiModelMapper @Inject constructor(
@@ -157,12 +158,15 @@ class ContactFormUiModelMapper @Inject constructor(
         )
     }
 
-    private fun ContactFormUiModel.getFormattedNameContactProperty(): ContactProperty.FormattedName? {
-        return this.displayName.takeIfNotBlank()?.let { displayName ->
-            ContactProperty.FormattedName(
-                value = displayName
-            )
-        }
+    private fun ContactFormUiModel.getFormattedNameContactProperty(): ContactProperty.FormattedName {
+        return ContactProperty.FormattedName(
+            value = this.displayName.takeIfNotBlank()?.trim() ?: run {
+                // Formatted name is mandatory in contacts. Fallback to first and last name combo.
+                (this.firstName.takeIfNotEmpty()?.trim() ?: "").plus(
+                    this.lastName.takeIfNotEmpty()?.let { " ${it.trim()}" } ?: ""
+                )
+            }
+        )
     }
 
     private fun ContactFormUiModel.getStructuredNameContactProperty(): ContactProperty.StructuredName? {
@@ -170,8 +174,8 @@ class ContactFormUiModelMapper @Inject constructor(
             null
         } else {
             ContactProperty.StructuredName(
-                family = this.lastName,
-                given = this.firstName
+                family = this.lastName.trim(),
+                given = this.firstName.trim()
             )
         }
     }
