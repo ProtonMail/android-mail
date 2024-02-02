@@ -16,17 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
@@ -41,10 +44,11 @@ class ReportPhishingMessageTest {
     private val messageId = MessageIdSample.Invoice
 
     private val repository = mockk<MessageRepository>()
+    private val moveMessage = mockk<MoveMessage>()
     private val decryptedMessageBody = mockk<GetDecryptedMessageBody>()
 
     private val reportPhishingMessage by lazy {
-        ReportPhishingMessage(repository, decryptedMessageBody)
+        ReportPhishingMessage(repository, moveMessage, decryptedMessageBody)
     }
 
     @Test
@@ -52,6 +56,7 @@ class ReportPhishingMessageTest {
         // Given
         val expectedDecryptedMessage = DecryptedMessageBodyTestData.PlainTextDecryptedBody
         coEvery { decryptedMessageBody(userId, messageId) } returns expectedDecryptedMessage.right()
+        coEvery { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) } returns Unit.right()
         coEvery { repository.reportPhishing(userId, expectedDecryptedMessage) } returns Unit.right()
 
         // When
@@ -62,6 +67,7 @@ class ReportPhishingMessageTest {
         coVerifyOrder {
             decryptedMessageBody(userId, messageId)
             repository.reportPhishing(userId, expectedDecryptedMessage)
+            moveMessage(userId, messageId, SystemLabelId.Spam.labelId)
         }
     }
 
@@ -89,6 +95,7 @@ class ReportPhishingMessageTest {
         val expectedError = ReportPhishingMessage.ReportPhishingError.FailedToReportPhishing
         coEvery { decryptedMessageBody(userId, messageId) } returns expectedDecryptedMessage.right()
         coEvery { repository.reportPhishing(userId, expectedDecryptedMessage) } returns DataError.Remote.Unknown.left()
+        coEvery { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) } returns Unit.right()
 
         // When
         val result = reportPhishingMessage(userId, messageId)
@@ -98,6 +105,28 @@ class ReportPhishingMessageTest {
         coVerifyOrder {
             decryptedMessageBody(userId, messageId)
             repository.reportPhishing(userId, expectedDecryptedMessage)
+            moveMessage wasNot called
+        }
+    }
+
+    @Test
+    fun `return FailedToMoveToSpam when failed to move message to spam`() = runTest {
+        // Given
+        val expectedDecryptedMessage = DecryptedMessageBodyTestData.PlainTextDecryptedBody
+        val expectedError = ReportPhishingMessage.ReportPhishingError.FailedToMoveToSpam
+        coEvery { decryptedMessageBody(userId, messageId) } returns expectedDecryptedMessage.right()
+        coEvery { repository.reportPhishing(userId, expectedDecryptedMessage) } returns Unit.right()
+        coEvery { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) } returns DataError.Local.Unknown.left()
+
+        // When
+        val result = reportPhishingMessage(userId, messageId)
+
+        // Then
+        assertEquals(expectedError.left(), result)
+        coVerifyOrder {
+            decryptedMessageBody(userId, messageId)
+            repository.reportPhishing(userId, expectedDecryptedMessage)
+            moveMessage(userId, messageId, SystemLabelId.Spam.labelId)
         }
     }
 

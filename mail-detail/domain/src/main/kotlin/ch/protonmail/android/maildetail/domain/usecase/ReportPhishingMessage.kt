@@ -16,18 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.maildetail.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class ReportPhishingMessage @Inject constructor(
     private val repository: MessageRepository,
+    private val moveMessage: MoveMessage,
     private val decryptedMessageBody: GetDecryptedMessageBody
 ) {
 
@@ -42,11 +45,16 @@ class ReportPhishingMessage @Inject constructor(
                 ReportPhishingError.FailedToReportPhishing
             }
             .bind()
+
+        moveMessage(userId, messageId, SystemLabelId.Spam.labelId).mapLeft {
+            Timber.e("Failed to move phishing message to spam folder: $it")
+            ReportPhishingError.FailedToMoveToSpam
+        }.bind()
     }
 
     sealed interface ReportPhishingError {
         object FailedToGetDecryptedMessage : ReportPhishingError
         object FailedToReportPhishing : ReportPhishingError
+        object FailedToMoveToSpam : ReportPhishingError
     }
-
 }
