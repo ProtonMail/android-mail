@@ -21,19 +21,19 @@ package ch.protonmail.android.maildetail.presentation.sample
 import java.util.UUID
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
-import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
+import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -167,6 +167,19 @@ object ConversationDetailMessageUiModelSample {
                     AttachmentUiModelSample.documentWithReallyLongFileName,
                     AttachmentUiModelSample.invoice,
                     AttachmentUiModelSample.image
+                )
+            )
+        )
+    )
+
+    fun calendarInviteExpandedWithAttachments(limit: Int) = buildExpanded(
+        messageWithLabels = MessageWithLabelsSample.CalendarWithoutLabels,
+        messageBodyUiModel = MessageDetailBodyUiModelSample.build(
+            messageBody = "Calendar Invite",
+            attachments = AttachmentGroupUiModel(
+                limit = limit,
+                attachments = listOf(
+                    AttachmentUiModelSample.calendar
                 )
             )
         )

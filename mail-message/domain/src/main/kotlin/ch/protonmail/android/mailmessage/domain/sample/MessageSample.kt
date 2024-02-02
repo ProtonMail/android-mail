@@ -179,6 +179,14 @@ object MessageSample {
         messageId = MessageIdSample.PgpMimeMessage
     )
 
+    val CalendarInvite = build(
+        messageId = MessageIdSample.CalendarInvite,
+        numAttachments = 1,
+        subject = "Calendar invite",
+        sender = RecipientSample.John,
+        toList = listOf(RecipientSample.Bob)
+    )
+
     private val Aug2022 get() = 1_659_312_000L
     private val Oct2022 get() = 1_664_582_400L
     private val Sep2022 get() = 1_661_990_400L

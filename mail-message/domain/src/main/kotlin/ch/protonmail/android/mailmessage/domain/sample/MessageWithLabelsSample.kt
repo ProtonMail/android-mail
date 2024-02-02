@@ -85,6 +85,11 @@ object MessageWithLabelsSample {
         labels = emptyList()
     )
 
+    val CalendarWithoutLabels = build(
+        message = MessageSample.CalendarInvite,
+        labels = emptyList()
+    )
+
     fun build(message: Message = MessageSample.build(), labels: List<Label> = emptyList()) = MessageWithLabels(
         message = message,
         labels = labels

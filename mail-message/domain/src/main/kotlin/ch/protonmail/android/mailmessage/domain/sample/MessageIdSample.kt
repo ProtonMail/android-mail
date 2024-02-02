@@ -40,6 +40,7 @@ object MessageIdSample {
     val PlainTextMessage = MessageId("plain_text_message")
     val MessageWithAttachments = MessageId("Message_with_attachments")
     val PgpMimeMessage = MessageId("pgp_mime_message")
+    val CalendarInvite = MessageId("calendar_invite")
 
     fun build() = MessageId("message")
 }
