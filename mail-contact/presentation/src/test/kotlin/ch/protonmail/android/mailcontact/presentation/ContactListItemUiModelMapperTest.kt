@@ -163,6 +163,18 @@ class ContactListItemUiModelMapperTest {
                 ContactId("5"),
                 "Bella",
                 emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("6"),
+                " ",
+                emptyList()
+            ),
+            Contact(
+                UserIdTestData.userId,
+                ContactId("7"),
+                "",
+                emptyList()
             )
         )
 
@@ -170,15 +182,18 @@ class ContactListItemUiModelMapperTest {
         val actual = contactListItemUiModelMapper.toContactListItemUiModel(contacts)
 
         // Then
-        assertEquals((actual[0] as ContactListItemUiModel.Header).value, "A")
-        assertEquals((actual[1] as ContactListItemUiModel.Contact).name, "abc")
-        assertEquals((actual[2] as ContactListItemUiModel.Contact).name, "adam")
-        assertEquals((actual[3] as ContactListItemUiModel.Header).value, "B")
-        assertEquals((actual[4] as ContactListItemUiModel.Contact).name, "Bella")
-        assertEquals((actual[5] as ContactListItemUiModel.Header).value, "C")
-        assertEquals((actual[6] as ContactListItemUiModel.Contact).name, "Clara")
-        assertEquals((actual[7] as ContactListItemUiModel.Contact).name, "coccodrillo")
-        assertEquals((actual[8] as ContactListItemUiModel.Header).value, "D")
-        assertEquals((actual[9] as ContactListItemUiModel.Contact).name, "diego")
+        assertEquals((actual[0] as ContactListItemUiModel.Header).value, "?")
+        assertEquals((actual[1] as ContactListItemUiModel.Contact).name, "")
+        assertEquals((actual[2] as ContactListItemUiModel.Contact).name, "")
+        assertEquals((actual[3] as ContactListItemUiModel.Header).value, "A")
+        assertEquals((actual[4] as ContactListItemUiModel.Contact).name, "abc")
+        assertEquals((actual[5] as ContactListItemUiModel.Contact).name, "adam")
+        assertEquals((actual[6] as ContactListItemUiModel.Header).value, "B")
+        assertEquals((actual[7] as ContactListItemUiModel.Contact).name, "Bella")
+        assertEquals((actual[8] as ContactListItemUiModel.Header).value, "C")
+        assertEquals((actual[9] as ContactListItemUiModel.Contact).name, "Clara")
+        assertEquals((actual[10] as ContactListItemUiModel.Contact).name, "coccodrillo")
+        assertEquals((actual[11] as ContactListItemUiModel.Header).value, "D")
+        assertEquals((actual[12] as ContactListItemUiModel.Contact).name, "diego")
     }
 }
