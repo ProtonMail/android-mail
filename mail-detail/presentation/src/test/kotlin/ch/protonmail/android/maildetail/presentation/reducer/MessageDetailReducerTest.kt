@@ -451,7 +451,7 @@ class MessageDetailReducerTest(
                 shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
-                shouldReduceExitEffect = false,
+                shouldReduceExitEffect = true,
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false,

@@ -89,8 +89,9 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewExitStateFrom(operation: MessageDetailOperation): Effect<Unit> =
         when (operation) {
-            MessageDetailEvent.NoCachedMetadata -> Effect.of(Unit)
-            MessageViewAction.MarkUnread -> Effect.of(Unit)
+            MessageDetailEvent.NoCachedMetadata,
+            MessageViewAction.MarkUnread,
+            MessageViewAction.ReportPhishingConfirmed -> Effect.of(Unit)
             else -> exitScreenEffect
         }
 

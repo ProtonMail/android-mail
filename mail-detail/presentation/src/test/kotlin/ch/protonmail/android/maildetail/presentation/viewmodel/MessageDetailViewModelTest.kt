@@ -92,7 +92,6 @@ import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
-import ch.protonmail.android.mailmessage.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
@@ -1563,16 +1562,16 @@ class MessageDetailViewModelTest {
             // When
             viewModel.submit(MessageViewAction.ReportPhishing(MessageIdSample.Invoice))
 
+            // Then
             assertEquals(expected, awaitItem().reportPhishingDialogState)
         }
     }
 
     @Test
-    fun `when user confirms report phishing then report use case is called`() = runTest {
+    fun `when report phishing confirmed, use case is called and view is closed`() = runTest {
         // Given
         coEvery { networkManager.networkStatus } returns NetworkStatus.Metered
         coEvery { reportPhishingMessage(userId, messageId) } returns Unit.right()
-
 
         viewModel.state.test {
             initialStateEmitted()
@@ -1582,10 +1581,11 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.ReportPhishingConfirmed)
             advanceUntilIdle()
 
-            coVerify { reportPhishingMessage(userId, messageId) }
+            // Then
+            assertEquals(Effect.of(Unit), awaitItem().exitScreenEffect)
+            coVerify(exactly = 1) { reportPhishingMessage(userId, messageId) }
         }
     }
-
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())
