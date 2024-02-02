@@ -36,7 +36,7 @@ class ContactListItemUiModelMapper @Inject constructor() {
         }.sortedBy {
             it.name.uppercase()
         }.groupBy {
-            it.name.first().uppercaseChar()
+            it.name.takeIfNotBlank()?.first()?.uppercaseChar() ?: "?"
         }.forEach { nameGroup ->
             contacts.add(
                 ContactListItemUiModel.Header(value = nameGroup.key.toString())
