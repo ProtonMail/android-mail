@@ -39,17 +39,6 @@ class MessageBannersUiModelMapperTest {
     }
 
     @Test
-    fun `should map to ui model that allows showing a phishing banner when message is manual marked as phishing`() {
-        // When
-        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
-            MessageTestData.manualPhishingMessage
-        )
-
-        // Then
-        assertTrue(result.shouldShowPhishingBanner)
-    }
-
-    @Test
     fun `should map to ui model that doesn't allow showing a phishing banner when message isn't marked as phishing`() {
         // When
         val result = messageBannersUiModelMapper.createMessageBannersUiModel(

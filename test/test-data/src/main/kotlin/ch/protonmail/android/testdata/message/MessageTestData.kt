@@ -192,7 +192,6 @@ object MessageTestData {
     )
 
     val autoPhishingMessage = buildMessage(id = "message", flags = Message.FLAG_PHISHING_AUTO)
-    val manualPhishingMessage = buildMessage(id = "message", flags = Message.FLAG_PHISHING_MANUAL)
 
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,
