@@ -518,6 +518,58 @@ class GenerateSendMessagePackagesTest {
         assertEquals(null, actual.first().bodyKey)
     }
 
+    @Test
+    fun `generate a package for EncryptedOutside when pgp scheme is PGP MIME but encrypt setting is false`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.PgpMimeEncryptFalse
+        expectEncryptBodySessionKeyWithPassword()
+        expectEncryptAttachmentSessionKeyWithPassword()
+        expectGenerateRandomBytes()
+        expectEncryptTextWithPassword()
+        expectCalculatePasswordVerifier()
+
+        // When
+        val actual = sut(
+            mapOf(SendMessageSample.RecipientEmail to sendPreferences),
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
+            mapOf(SendMessageSample.AttachmentId to SendMessageSample.AttachmentSessionKey),
+            areAllAttachmentsSigned = true,
+            messagePassword = SendMessageSample.MessagePassword,
+            modulus = SendMessageSample.Modulus
+        )
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.EncryptedOutside(
+                    bodyKeyPacket = Base64.encode(SendMessageSample.RecipientBodyKeyPacket),
+                    attachmentKeyPackets = mapOf(
+                        SendMessageSample.AttachmentId to Base64.encode(SendMessageSample.EncryptedAttachmentSessionKey)
+                    ),
+                    token = SendMessageSample.Token,
+                    encToken = SendMessageSample.EncryptedToken,
+                    auth = SendMessageSample.Auth,
+                    passwordHint = SendMessageSample.MessagePassword.passwordHint,
+                    signature = true.toInt()
+                )
+            ),
+            mimeType = MimeType.PlainText.value,
+            body = Base64.encode(SendMessageSample.EncryptedBodyDataPacket),
+            type = 2
+        )
+
+        // Then
+        assertEquals(listOf(expected), actual)
+        // make sure we don't leak keys, because everything should be encrypted
+        assertEquals(null, actual.first().attachmentKeys)
+        assertEquals(null, actual.first().bodyKey)
+    }
+
     private fun expectPublicKeyEncryptSessionKey(): PublicKey {
         mockkStatic(PublicKey::encryptSessionKey)
         return mockk {

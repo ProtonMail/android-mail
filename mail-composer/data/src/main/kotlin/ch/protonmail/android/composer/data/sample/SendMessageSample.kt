@@ -134,6 +134,8 @@ object SendMessageSample {
 
         val PgpMime = ProtonMail.copy(pgpScheme = PackageType.PgpMime)
 
+        val PgpMimeEncryptFalse = ProtonMail.copy(pgpScheme = PackageType.PgpMime, encrypt = false)
+
         val ClearMime = ProtonMail.copy(pgpScheme = PackageType.ClearMime, encrypt = false, sign = true)
 
         val Cleartext = ProtonMail.copy(pgpScheme = PackageType.Cleartext, encrypt = false, sign = false)
