@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 
 data class ConversationDetailState(
@@ -35,6 +36,7 @@ data class ConversationDetailState(
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<MessageBodyLink>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
+    val openProtonCalendarIntent: Effect<OpenProtonCalendarIntentValues>,
     val scrollToMessage: MessageIdUiModel?,
     val requestLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState,
@@ -53,6 +55,7 @@ data class ConversationDetailState(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
+            openProtonCalendarIntent = Effect.empty(),
             scrollToMessage = null,
             requestLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,

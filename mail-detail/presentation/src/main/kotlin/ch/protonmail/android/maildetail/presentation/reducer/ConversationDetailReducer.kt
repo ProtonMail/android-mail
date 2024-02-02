@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
@@ -79,6 +80,7 @@ class ConversationDetailReducer @Inject constructor(
             exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
+            openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
             scrollToMessage = currentState.toScrollToMessageState(operation),
             deleteDialogState = currentState.toNewDeleteDialogState(operation),
             reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation)
@@ -213,6 +215,14 @@ class ConversationDetailReducer @Inject constructor(
         is OpenAttachmentEvent -> Effect.of(operation.values)
         else -> openAttachmentEffect
     }
+
+    private fun ConversationDetailState.toNewOpenProtonCalendarIntentFrom(
+        operation: ConversationDetailOperation
+    ): Effect<OpenProtonCalendarIntentValues> = when (operation) {
+        is ConversationDetailEvent.HandleOpenProtonCalendarRequest -> Effect.of(operation.intent)
+        else -> openProtonCalendarIntent
+    }
+
 
     private fun ConversationDetailState.toNewDeleteDialogState(
         operation: ConversationDetailOperation

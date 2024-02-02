@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.model
 import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
@@ -119,6 +120,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messageId: MessageId,
         val isOffline: Boolean
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
+
+    data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -166,5 +169,4 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class ReportPhishingConfirmed(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingReportPhishingDialog
-
 }
