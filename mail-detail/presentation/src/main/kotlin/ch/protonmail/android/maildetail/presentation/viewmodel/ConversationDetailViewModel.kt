@@ -37,9 +37,11 @@ import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -170,6 +172,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
     private val resolveParticipantName: ResolveParticipantName,
     private val reportPhishingMessage: ReportPhishingMessage,
+    private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
     private val networkManager: NetworkManager
 ) : ViewModel() {
 
@@ -214,6 +217,7 @@ class ConversationDetailViewModel @Inject constructor(
 
             is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing(action)
             is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
+            is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -826,6 +830,44 @@ class ConversationDetailViewModel @Inject constructor(
             }
             emitNewStateFrom(operation)
         }
+    }
+
+    private fun handleOpenInProtonCalendar(action: ConversationDetailViewAction.OpenInProtonCalendar) {
+        viewModelScope.launch {
+            val isProtonCalendarInstalled = isProtonCalendarInstalled()
+            if (isProtonCalendarInstalled) {
+                val dataState = mutableDetailState.value.messagesState as? ConversationDetailsMessagesState.Data
+                dataState?.messages?.mapNotNull { it as? ConversationDetailMessageUiModel.Expanded }
+                    ?.first { it.messageId.id == action.messageId.id }
+                    ?.let { messageUiModel -> handleOpenInProtonCalendar(messageUiModel) }
+            } else {
+                val intent = OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
+                emitNewStateFrom(ConversationDetailEvent.HandleOpenProtonCalendarRequest(intent))
+            }
+        }
+    }
+
+    private suspend fun handleOpenInProtonCalendar(messageUiModel: ConversationDetailMessageUiModel.Expanded) {
+        val sender = messageUiModel.messageDetailHeaderUiModel.sender.participantAddress
+        val recipient = messageUiModel.messageDetailHeaderUiModel.toRecipients.first().participantAddress
+        val firstCalendarAttachment = messageUiModel.messageBodyUiModel
+            .attachments
+            ?.attachments
+            ?.firstOrNull { uiModel -> uiModel.mimeType.split(";").any { it == "text/calendar" } }
+
+        if (firstCalendarAttachment == null) return
+
+        getAttachmentIntentValues(
+            userId = primaryUserId.first(),
+            messageId = MessageId(messageUiModel.messageId.id),
+            attachmentId = AttachmentId(firstCalendarAttachment.attachmentId)
+        ).fold(
+            ifLeft = { Timber.d("Failed to download attachment: $it") },
+            ifRight = {
+                val intent = OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar(it.uri, sender, recipient)
+                emitNewStateFrom(ConversationDetailEvent.HandleOpenProtonCalendarRequest(intent))
+            }
+        )
     }
 
     companion object {

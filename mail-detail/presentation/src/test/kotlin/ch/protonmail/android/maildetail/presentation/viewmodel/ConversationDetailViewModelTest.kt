@@ -47,6 +47,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -294,6 +295,7 @@ class ConversationDetailViewModelTest {
     private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
     private val networkManager = mockk<NetworkManager>()
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
+    private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -331,7 +333,8 @@ class ConversationDetailViewModelTest {
             updateLinkConfirmationSetting = updateLinkConfirmationSetting,
             resolveParticipantName = resolveParticipantsName,
             networkManager = networkManager,
-            reportPhishingMessage = reportPhishingMessage
+            reportPhishingMessage = reportPhishingMessage,
+            isProtonCalendarInstalled = isProtonCalendarInstalled
         )
     }
 

@@ -69,6 +69,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
@@ -217,6 +218,7 @@ fun ConversationDetailScreen(
                     )
                 },
                 openAttachment = actions.openAttachment,
+                handleProtonCalendarRequest = actions.handleProtonCalendarRequest,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
                 loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) },
                 onReply = actions.onReply,
@@ -242,7 +244,7 @@ fun ConversationDetailScreen(
                     viewModel.submit(ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(MessageIdUiModel(it.id)))
                 },
                 onOpenInProtonCalendar = {
-                    Timber.d("onOpenInProtonCalendar: $it")
+                   viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -293,6 +295,10 @@ fun ConversationDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         actions.openAttachment(it)
+    }
+
+    ConsumableLaunchedEffect(effect = state.openProtonCalendarIntent) {
+        actions.handleProtonCalendarRequest(it)
     }
 
     if (linkConfirmationDialogState.value != null) {
@@ -613,6 +619,7 @@ object ConversationDetail {
         val onExit: (notifyUserMessage: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
         val onAddLabel: () -> Unit,
         val onAddFolder: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
@@ -648,6 +655,7 @@ object ConversationDetailScreen {
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
         val onAttachmentClicked: (MessageIdUiModel, AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
@@ -682,6 +690,7 @@ object ConversationDetailScreen {
                 onShowAllAttachmentsForMessage = {},
                 onAttachmentClicked = { _, _ -> },
                 openAttachment = {},
+                handleProtonCalendarRequest = {},
                 showFeatureMissingSnackbar = {},
                 loadEmbeddedImage = { _, _ -> null },
                 onReply = {},

@@ -31,6 +31,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
+import ch.protonmail.android.maildetail.presentation.util.ProtonCalendarUtil
 import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.LauncherViewModel
 import ch.protonmail.android.navigation.model.LauncherState
@@ -77,6 +79,7 @@ class MainActivity : AppCompatActivity() {
                         Actions(
                             openInActivityInNewTask = { openInActivityInNewTask(it) },
                             openIntentChooser = { openIntentChooser(it) },
+                            openProtonCalendarIntentValues = { handleProtonCalendarRequest(it) },
                             finishActivity = { finishAfterTransition() }
                         ),
                         launcherViewModel
@@ -116,9 +119,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleProtonCalendarRequest(values: OpenProtonCalendarIntentValues) {
+        val intent = when (values) {
+            is OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar ->
+                ProtonCalendarUtil.getIntentToOpenIcsInProtonCalendar(
+                    values.uriToIcsAttachment,
+                    values.sender,
+                    values.recipient
+                )
+
+            is OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore ->
+                ProtonCalendarUtil.getIntentToProtonCalendarOnPlayStore()
+        }
+        startActivity(intent)
+    }
+
     data class Actions(
         val openInActivityInNewTask: (uri: Uri) -> Unit,
         val openIntentChooser: (values: OpenAttachmentIntentValues) -> Unit,
+        val openProtonCalendarIntentValues: (values: OpenProtonCalendarIntentValues) -> Unit,
         val finishActivity: () -> Unit
     )
 }

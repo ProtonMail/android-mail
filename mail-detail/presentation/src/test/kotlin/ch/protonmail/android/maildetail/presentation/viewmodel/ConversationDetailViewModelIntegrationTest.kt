@@ -56,10 +56,14 @@ import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
+import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
@@ -276,6 +280,8 @@ class ConversationDetailViewModelIntegrationTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(userId) } returns true
     }
+    private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
+
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
@@ -1486,6 +1492,82 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `when a user click open proton calendar and calendar is installed, then open in proton calendar is called`() =
+        runTest {
+            // Given
+            val expectedUri = mockk<Uri>()
+            val message = MessageWithLabelsSample.CalendarWithoutLabels
+            val messages = nonEmptyListOf(message)
+
+            val messageId = message.message.messageId
+            coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+            coEvery { getDecryptedMessageBody.invoke(userId, messageId) } returns DecryptedMessageBody(
+                messageId = messageId,
+                value = EmailBodyTestSamples.BodyWithoutQuotes,
+                mimeType = MimeType.Html,
+                attachments = listOf(MessageAttachmentSample.calendar)
+            ).right()
+            coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
+            coEvery { isProtonCalendarInstalled() } returns true
+            coEvery {
+                getAttachmentIntentValues(userId, messageId, AttachmentId("calendar"))
+            } returns OpenAttachmentIntentValues(
+                mimeType = " text/calendar",
+                uri = expectedUri
+            ).right()
+
+            val viewModel = buildConversationDetailViewModel()
+            viewModel.state.test {
+                // The initial states
+                skipItems(4)
+                viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+                awaitItem() // Expanded message
+
+                // When
+                viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(messageId))
+                val actual = awaitItem()
+                val calendarIntentValues = actual.openProtonCalendarIntent.consume() as? OpenIcsInProtonCalendar
+                assertNotNull(calendarIntentValues)
+                assertEquals(expectedUri, calendarIntentValues.uriToIcsAttachment)
+                assertEquals(message.message.sender.address, calendarIntentValues.sender)
+                assertEquals(message.message.toList.first().address, calendarIntentValues.recipient)
+            }
+        }
+
+    @Test
+    fun `when a user click open proton calendar and calendar is not installed, then open play store is called`() =
+        runTest {
+            // Given
+            val message = MessageWithLabelsSample.CalendarWithoutLabels
+            val messages = nonEmptyListOf(message)
+
+            val messageId = message.message.messageId
+            coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+            coEvery { getDecryptedMessageBody.invoke(userId, messageId) } returns DecryptedMessageBody(
+                messageId = messageId,
+                value = EmailBodyTestSamples.BodyWithoutQuotes,
+                mimeType = MimeType.Html,
+                attachments = listOf(MessageAttachmentSample.calendar)
+            ).right()
+            coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
+            coEvery { isProtonCalendarInstalled() } returns false
+
+            val viewModel = buildConversationDetailViewModel()
+            viewModel.state.test {
+                // The initial states
+                skipItems(4)
+                viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+                awaitItem() // Expanded message
+
+                // When
+                viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(messageId))
+                val actual = awaitItem()
+                val calendarIntentValues = actual.openProtonCalendarIntent.consume() as? OpenProtonCalendarOnPlayStore
+                assertNotNull(calendarIntentValues)
+            }
+        }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1516,6 +1598,7 @@ class ConversationDetailViewModelIntegrationTest {
         getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
         ioDispatcher: CoroutineDispatcher = testDispatcher!!,
         networkMgmt: NetworkManager = networkManager,
+        protonCalendarInstalled: IsProtonCalendarInstalled = isProtonCalendarInstalled,
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
         messageIdUiModelMapper = messageIdUiModelMapper,
@@ -1551,6 +1634,7 @@ class ConversationDetailViewModelIntegrationTest {
         observePrivacySettings = observePrivacySettings,
         updateLinkConfirmationSetting = updateLinkConfirmationSetting,
         resolveParticipantName = resolveParticipantName,
+        isProtonCalendarInstalled = protonCalendarInstalled,
         networkManager = networkMgmt
     )
 

@@ -55,35 +55,10 @@ import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.util.kotlin.takeIfNotBlank
 
-internal fun NavGraphBuilder.addConversationDetail(
-    navController: NavHostController,
-    showSnackbar: (message: String) -> Unit,
-    openMessageBodyLink: (uri: Uri) -> Unit,
-    openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
-) {
-    composable(route = Destination.Screen.Conversation.route) {
-        ConversationDetailScreen(
-            actions = ConversationDetail.Actions(
-                onExit = { notifyUserMessage ->
-                    navController.popBackStack()
-                    notifyUserMessage?.let(showSnackbar)
-                },
-                openMessageBodyLink = { uri -> openMessageBodyLink(uri) },
-                openAttachment = openAttachment,
-                onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
-                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
-                onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
-                onReplyAll = {
-                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ReplyAll(it)))
-                },
-                onForward = {
-                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Forward(it)))
-                }
 
-            )
-        )
+internal fun NavGraphBuilder.addConversationDetail(actions: ConversationDetail.Actions) {
+    composable(route = Destination.Screen.Conversation.route) {
+        ConversationDetailScreen(actions = actions)
     }
 }
 

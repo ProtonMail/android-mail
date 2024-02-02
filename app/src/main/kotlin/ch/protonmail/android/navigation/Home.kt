@@ -43,7 +43,9 @@ import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
@@ -243,20 +245,28 @@ fun Home(
             ) {
                 // home
                 addConversationDetail(
-                    navController = navController,
-                    showSnackbar = { message ->
-                        scope.launch {
-                            snackbarHostNormState.showSnackbar(
-                                message = message,
-                                type = ProtonSnackbarType.NORM
-                            )
-                        }
-                    },
-                    openMessageBodyLink = activityActions.openInActivityInNewTask,
-                    openAttachment = activityActions.openIntentChooser,
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
-                    }
+                    actions = ConversationDetail.Actions(
+                        onExit = { notifyUserMessage ->
+                            navController.popBackStack()
+                            notifyUserMessage?.let {
+                                scope.launch {
+                                    snackbarHostNormState.showSnackbar(
+                                        message = it,
+                                        type = ProtonSnackbarType.NORM
+                                    )
+                                }
+                            }
+                        },
+                        openMessageBodyLink = activityActions.openInActivityInNewTask,
+                        openAttachment = activityActions.openIntentChooser,
+                        handleProtonCalendarRequest = activityActions.openProtonCalendarIntentValues,
+                        onAddLabel = { navController.navigate(Screen.LabelList.route) },
+                        onAddFolder = { navController.navigate(Screen.FolderList.route) },
+                        showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+                        onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
+                        onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
+                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) }
+                    )
                 )
                 addMailbox(
                     navController,
@@ -425,20 +435,18 @@ fun Home(
     }
 }
 
-private fun buildSidebarActions(
-    navController: NavHostController,
-    launcherActions: Launcher.Actions
-) = Sidebar.NavigationActions(
-    onSignIn = launcherActions.onSignIn,
-    onSignOut = { navController.navigate(Dialog.SignOut(it)) },
-    onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
-    onSwitchAccount = launcherActions.onSwitchAccount,
-    onSettings = { navController.navigate(Screen.Settings.route) },
-    onLabelList = { navController.navigate(Screen.LabelList.route) },
-    onFolderList = { navController.navigate(Screen.FolderList.route) },
-    onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
-    onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
-    onSubscription = launcherActions.onSubscription,
-    onContacts = { navController.navigate(Screen.Contacts.route) },
-    onReportBug = launcherActions.onReportBug
-)
+private fun buildSidebarActions(navController: NavHostController, launcherActions: Launcher.Actions) =
+    Sidebar.NavigationActions(
+        onSignIn = launcherActions.onSignIn,
+        onSignOut = { navController.navigate(Dialog.SignOut(it)) },
+        onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
+        onSwitchAccount = launcherActions.onSwitchAccount,
+        onSettings = { navController.navigate(Screen.Settings.route) },
+        onLabelList = { navController.navigate(Screen.LabelList.route) },
+        onFolderList = { navController.navigate(Screen.FolderList.route) },
+        onLabelAdd = { navController.navigate(Screen.CreateLabel.route) },
+        onFolderAdd = { navController.navigate(Screen.CreateFolder.route) },
+        onSubscription = launcherActions.onSubscription,
+        onContacts = { navController.navigate(Screen.Contacts.route) },
+        onReportBug = launcherActions.onReportBug
+    )
