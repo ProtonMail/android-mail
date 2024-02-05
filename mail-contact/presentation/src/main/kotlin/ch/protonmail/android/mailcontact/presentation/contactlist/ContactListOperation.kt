@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactlist
 
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 
 sealed interface ContactListOperation
@@ -32,7 +33,8 @@ internal sealed interface ContactListViewAction : ContactListOperation {
 
 sealed interface ContactListEvent : ContactListOperation {
     data class ContactListLoaded(
-        val contactList: List<ContactListItemUiModel>
+        val contactList: List<ContactListItemUiModel>,
+        val contactGroups: List<ContactGroupItemUiModel>
     ) : ContactListEvent
     object ErrorLoadingContactList : ContactListEvent
     object OpenContactForm : ContactListEvent

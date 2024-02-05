@@ -45,7 +45,8 @@ class ContactListReducer @Inject constructor() {
             is ContactListState.Loading -> {
                 if (event.contactList.isNotEmpty()) {
                     ContactListState.ListLoaded.Data(
-                        contacts = event.contactList
+                        contacts = event.contactList,
+                        contactGroups = event.contactGroups
                     )
                 } else ContactListState.ListLoaded.Empty()
             }
@@ -53,7 +54,8 @@ class ContactListReducer @Inject constructor() {
                 if (event.contactList.isNotEmpty()) {
                     ContactListState.ListLoaded.Data(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        contacts = event.contactList
+                        contacts = event.contactList,
+                        contactGroups = event.contactGroups
                     )
                 } else {
                     ContactListState.ListLoaded.Empty(

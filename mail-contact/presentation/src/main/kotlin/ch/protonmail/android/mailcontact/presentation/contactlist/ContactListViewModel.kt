@@ -22,17 +22,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -44,8 +46,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
+    private val observeContactGroups: ObserveContactGroups,
     private val reducer: ContactListReducer,
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
+    private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -81,12 +85,23 @@ class ContactListViewModel @Inject constructor(
     }
 
     private fun flowContactListEvent(userId: UserId): Flow<ContactListEvent> {
-        return observeContacts(userId).map { contacts ->
+        return combine(
+            observeContacts(userId),
+            observeContactGroups(userId)
+        ) { contacts, contactGroups ->
+            val contactList = contacts.getOrElse {
+                Timber.e("Error while observing contacts")
+                return@combine ContactListEvent.ErrorLoadingContactList
+            }
             ContactListEvent.ContactListLoaded(
                 contactList = contactListItemUiModelMapper.toContactListItemUiModel(
-                    contacts.getOrElse {
-                        Timber.e("Error while observing contacts")
-                        return@map ContactListEvent.ErrorLoadingContactList
+                    contactList
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    contactList,
+                    contactGroups.getOrElse {
+                        Timber.e("Error while observing contact groups")
+                        return@combine ContactListEvent.ErrorLoadingContactList
                     }
                 )
             )

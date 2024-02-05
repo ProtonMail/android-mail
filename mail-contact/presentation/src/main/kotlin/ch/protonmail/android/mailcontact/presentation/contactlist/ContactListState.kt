@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.contactlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 
 sealed interface ContactListState {
@@ -40,7 +41,8 @@ sealed interface ContactListState {
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
-            val contacts: List<ContactListItemUiModel>
+            val contacts: List<ContactListItemUiModel>,
+            val contactGroups: List<ContactGroupItemUiModel>
         ) : ListLoaded
 
         data class Empty(
