@@ -394,7 +394,8 @@ internal fun NavGraphBuilder.addContacts(
         ContactListScreen(
             actions = ContactListScreen.Actions(
                 openContactForm = {
-                    navController.navigate(Destination.Screen.CreateContact.route)
+                    showFeatureMissingSnackbar()
+//                    navController.navigate(Destination.Screen.CreateContact.route)
                 },
                 openContactGroupForm = {
                     showFeatureMissingSnackbar()
