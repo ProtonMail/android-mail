@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -50,6 +52,7 @@ fun ComposerBottomBar(
     draftId: MessageId,
     senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
+    isExpirationActionVisible: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -63,6 +66,9 @@ fun ComposerBottomBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, onSetMessagePasswordClick)
+            if (isExpirationActionVisible) {
+                SetExpirationButton()
+            }
         }
     }
 }
@@ -74,31 +80,56 @@ private fun AddPasswordButton(
     isMessagePasswordSet: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit
 ) {
+    BottomBarButton(
+        iconRes = R.drawable.ic_proton_lock,
+        contentDescriptionRes = R.string.composer_button_add_password,
+        shouldShowCheckmark = isMessagePasswordSet,
+        onClick = { onSetMessagePasswordClick(draftId, senderEmail) }
+    )
+}
+
+@Composable
+private fun SetExpirationButton() {
+    BottomBarButton(
+        iconRes = R.drawable.ic_proton_hourglass,
+        contentDescriptionRes = R.string.composer_button_set_expiration,
+        shouldShowCheckmark = false,
+        onClick = {}
+    )
+}
+
+@Composable
+private fun BottomBarButton(
+    @DrawableRes iconRes: Int,
+    @StringRes contentDescriptionRes: Int,
+    shouldShowCheckmark: Boolean,
+    onClick: () -> Unit
+) {
     Box {
         IconButton(
-            onClick = { onSetMessagePasswordClick(draftId, senderEmail) }
+            onClick = onClick
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_proton_lock),
-                contentDescription = stringResource(id = R.string.composer_button_add_password),
+                painter = painterResource(id = iconRes),
+                contentDescription = stringResource(id = contentDescriptionRes),
                 tint = ProtonTheme.colors.iconNorm
             )
         }
-        if (isMessagePasswordSet) {
+        if (shouldShowCheckmark) {
             Box(
                 modifier = Modifier
                     .size(MailDimens.ExtraLargeSpacing)
                     .padding(bottom = ProtonDimens.SmallSpacing, end = ProtonDimens.ExtraSmallSpacing),
                 contentAlignment = Alignment.BottomEnd
             ) {
-                AddPasswordCheckmark()
+                BottomBarButtonCheckmark()
             }
         }
     }
 }
 
 @Composable
-private fun AddPasswordCheckmark(modifier: Modifier = Modifier) {
+private fun BottomBarButtonCheckmark(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .size(ProtonDimens.SmallIconSize)

@@ -140,6 +140,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     draftId = state.fields.draftId,
                     senderEmail = SenderEmail(state.fields.sender.email),
                     isMessagePasswordSet = state.isMessagePasswordSet,
+                    isExpirationActionVisible = state.isExpirationActionVisible,
                     onSetMessagePasswordClick = actions.onSetMessagePasswordClick
                 )
             },
