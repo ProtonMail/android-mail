@@ -18,9 +18,12 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+import me.proton.core.user.domain.entity.UserAddress
+
 data class DecryptedMessageBody(
     val messageId: MessageId,
     val value: String,
     val mimeType: MimeType,
-    val attachments: List<MessageAttachment> = emptyList()
+    val attachments: List<MessageAttachment> = emptyList(),
+    val userAddress: UserAddress
 )

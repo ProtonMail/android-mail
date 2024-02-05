@@ -38,6 +38,7 @@ import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.user.domain.entity.UserAddress
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -86,7 +87,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         decryptedMessageBody: DecryptedMessageBody,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        userAddress: UserAddress
     ): ConversationDetailMessageUiModel.Expanded {
         val (message, _) = messageWithLabels
         val uiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
@@ -101,7 +103,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
             requestPhishingLinkConfirmation = message.isPhishing(),
             messageBodyUiModel = uiModel,
-            expandCollapseMode = getInitialBodyExpandCollapseMode(uiModel)
+            expandCollapseMode = getInitialBodyExpandCollapseMode(uiModel),
+            userAddress = userAddress
         )
     }
 

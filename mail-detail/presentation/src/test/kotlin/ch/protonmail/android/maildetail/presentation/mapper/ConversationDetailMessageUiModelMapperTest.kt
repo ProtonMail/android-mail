@@ -18,23 +18,29 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import java.util.UUID
 import android.text.format.Formatter
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
-import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
+import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamples
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
+import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -43,11 +49,6 @@ import io.mockk.mockkStatic
 import io.mockk.spyk
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
-import java.util.UUID
-import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
-import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamples
-import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
-import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -179,7 +180,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val decryptedMessageBody = DecryptedMessageBody(
             messageWithLabels.message.messageId,
             UUID.randomUUID().toString(),
-            MimeType.Html
+            MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // when
@@ -187,7 +189,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             messageWithLabels,
             contacts = contactsList,
             decryptedMessageBody = decryptedMessageBody,
-            folderColorSettings = folderColorSettings
+            folderColorSettings = folderColorSettings,
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // then

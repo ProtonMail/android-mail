@@ -24,6 +24,7 @@ import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import kotlinx.collections.immutable.ImmutableList
+import me.proton.core.user.domain.entity.UserAddress
 
 sealed interface ConversationDetailMessageUiModel {
 
@@ -58,7 +59,8 @@ sealed interface ConversationDetailMessageUiModel {
         val messageBannersUiModel: MessageBannersUiModel,
         val messageBodyUiModel: MessageBodyUiModel,
         val requestPhishingLinkConfirmation: Boolean,
-        val expandCollapseMode: MessageBodyExpandCollapseMode
+        val expandCollapseMode: MessageBodyExpandCollapseMode,
+        val userAddress: UserAddress
     ) : ConversationDetailMessageUiModel
 
     enum class ForwardedIcon {

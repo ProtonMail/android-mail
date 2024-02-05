@@ -404,7 +404,8 @@ class ConversationDetailViewModel @Inject constructor(
         messageWithLabels,
         contacts,
         decryptedBody,
-        folderColorSettings
+        folderColorSettings,
+        decryptedBody.userAddress
     )
 
     private fun observeBottomBarActions(conversationId: ConversationId) {
@@ -849,7 +850,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun handleOpenInProtonCalendar(messageUiModel: ConversationDetailMessageUiModel.Expanded) {
         val sender = messageUiModel.messageDetailHeaderUiModel.sender.participantAddress
-        val recipient = messageUiModel.messageDetailHeaderUiModel.toRecipients.first().participantAddress
+        val recipient = messageUiModel.userAddress.email
         val firstCalendarAttachment = messageUiModel.messageBodyUiModel
             .attachments
             ?.attachments

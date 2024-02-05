@@ -26,11 +26,11 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
+import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
@@ -42,6 +42,7 @@ import me.proton.core.key.domain.decryptText
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
 import me.proton.core.key.domain.useKeys
 import me.proton.core.user.domain.UserAddressManager
+import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.EMPTY_STRING
 import timber.log.Timber
 import javax.inject.Inject
@@ -69,7 +70,7 @@ class GetDecryptedMessageBody @Inject constructor(
                 return@flatMap if (userAddress != null) {
                     try {
                         userAddress.useKeys(cryptoContext) {
-                            decryptMessageBody(messageBody)
+                            decryptMessageBody(userAddress, messageBody)
                         }.right()
                     } catch (cryptoException: CryptoException) {
                         Timber.e(cryptoException, "Error decrypting message")
@@ -82,18 +83,33 @@ class GetDecryptedMessageBody @Inject constructor(
             }
     }
 
-    private suspend fun KeyHolderContext.decryptMessageBody(messageBody: MessageBody): DecryptedMessageBody {
+    private suspend fun KeyHolderContext.decryptMessageBody(
+        userAddress: UserAddress,
+        messageBody: MessageBody
+    ): DecryptedMessageBody {
         return if (messageBody.mimeType == MimeType.MultipartMixed) {
             decryptMimeMessage(messageBody.body).run {
                 val attachments = this.attachments.map {
                     val attachmentId = provideNewAttachmentId()
                     it.saveAttachmentToCache(messageBody.userId, messageBody.messageId, attachmentId)
                 }
-                DecryptedMessageBody(messageBody.messageId, body.content, MimeType.from(body.mimeType), attachments)
+                DecryptedMessageBody(
+                    messageId = messageBody.messageId,
+                    value = body.content,
+                    mimeType = MimeType.from(body.mimeType),
+                    attachments = attachments,
+                    userAddress = userAddress
+                )
             }
         } else {
             decryptText(messageBody.body).run {
-                DecryptedMessageBody(messageBody.messageId, this, messageBody.mimeType, messageBody.attachments)
+                DecryptedMessageBody(
+                    messageId = messageBody.messageId,
+                    value = this,
+                    mimeType = messageBody.mimeType,
+                    attachments = messageBody.attachments,
+                    userAddress = userAddress
+                )
             }
         }
     }
@@ -129,6 +145,7 @@ class GetDecryptedMessageBody @Inject constructor(
     }
 
     companion object {
+
         private const val FilenameKey = "filename"
         private const val NameKey = "name"
         private const val ContentTypeKey = "Content-Type"

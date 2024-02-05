@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -262,7 +263,7 @@ class ConversationDetailViewModelTest {
     }
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
-            MessageIdSample.build(), "", MimeType.Html
+            MessageIdSample.build(), "", MimeType.Html, emptyList(), UserAddressSample.PrimaryAddress
         ).right()
     }
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels> {
@@ -357,6 +358,7 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns messages.first()
@@ -389,7 +391,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
@@ -422,7 +425,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val expectedState = initialState.copy(
@@ -460,7 +464,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val dataState = initialState.copy(
@@ -512,7 +517,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns
             InvoiceWithLabelExpanded
@@ -549,7 +555,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(), // Model here has 3 labels, sample models only have one or two
                 contacts = emptyList(),
                 decryptedMessageBody = any(),
-                folderColorSettings = any()
+                folderColorSettings = any(),
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns
             InvoiceWithLabelExpanded
@@ -623,7 +630,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val actions = listOf(Action.Archive)
@@ -658,7 +666,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val expected = initialState.copy(bottomBarState = BottomBarState.Error.FailedLoadingActions)
@@ -691,7 +700,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         givenReducerReturnsStarredUiModel()
@@ -718,7 +728,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val actionUiModels = listOf(
@@ -754,7 +765,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery { starConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
@@ -790,7 +802,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         every {
@@ -825,7 +838,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery { unStarConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
@@ -860,7 +874,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery {
@@ -899,7 +914,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery {
@@ -938,7 +954,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery {
@@ -1005,7 +1022,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1058,7 +1076,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1150,7 +1169,8 @@ class ConversationDetailViewModelTest {
                     messageWithLabels = any(),
                     contacts = any(),
                     decryptedMessageBody = any(),
-                    folderColorSettings = defaultFolderColorSettings
+                    folderColorSettings = defaultFolderColorSettings,
+                    userAddress = UserAddressSample.PrimaryAddress
                 )
             } returns messages.first()
             val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1257,7 +1277,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1358,7 +1379,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
@@ -1380,7 +1402,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
@@ -1413,7 +1436,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns DataError.Local.NoDataCached.left()
@@ -1470,7 +1494,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
 
@@ -1593,7 +1618,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
         every {
@@ -1637,7 +1663,8 @@ class ConversationDetailViewModelTest {
                     messageWithLabels = any(),
                     contacts = any(),
                     decryptedMessageBody = any(),
-                    folderColorSettings = defaultFolderColorSettings
+                    folderColorSettings = defaultFolderColorSettings,
+                    userAddress = UserAddressSample.PrimaryAddress
                 )
             } returns expectedUiModel
             every {
@@ -1688,7 +1715,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns expectedUiModel
         every {
@@ -1751,7 +1779,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
 
@@ -1774,7 +1803,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
 
@@ -1889,7 +1919,8 @@ class ConversationDetailViewModelTest {
                 messageWithLabels = any(),
                 contacts = any(),
                 decryptedMessageBody = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
             )
         } returns
             InvoiceWithLabelExpanded

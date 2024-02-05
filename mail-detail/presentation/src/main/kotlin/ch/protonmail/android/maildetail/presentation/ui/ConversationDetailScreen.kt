@@ -244,7 +244,7 @@ fun ConversationDetailScreen(
                     viewModel.submit(ConversationDetailViewAction.LoadRemoteAndEmbeddedContent(MessageIdUiModel(it.id)))
                 },
                 onOpenInProtonCalendar = {
-                   viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
+                    viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id

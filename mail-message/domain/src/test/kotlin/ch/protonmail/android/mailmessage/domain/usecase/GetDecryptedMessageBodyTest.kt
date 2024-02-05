@@ -50,6 +50,7 @@ import me.proton.core.crypto.common.pgp.decryptTextOrNull
 import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.user.domain.UserAddressManager
+import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.UserAddressKey
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -92,11 +93,7 @@ class GetDecryptedMessageBodyTest(
             passphrase = encryptedPassphrase
         )
     }
-    private val userAddressManager = mockk<UserAddressManager> {
-        coEvery { getAddress(UserIdTestData.userId, MessageTestData.message.addressId) } returns mockk {
-            every { keys } returns listOf(userAddressKey)
-        }
-    }
+    private val userAddressManager = mockk<UserAddressManager>()
     private val parseMimeAttachmentHeaders = mockk<ParseMimeAttachmentHeaders> {
         every { this@mockk.invoke(decryptedMimeAttachment.headers) } returns parsedMimeAttachmentHeaders
     }
@@ -129,16 +126,18 @@ class GetDecryptedMessageBodyTest(
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
         runTest {
             // Given
+            val expectedUserAddress = mockGetUserAddressSucceeds()
+            mockDecryptionIsSuccessful()
             val expected = DecryptedMessageBody(
                 testInput.messageWithBody.message.messageId,
                 decryptedMessageBody,
                 testInput.mimeType,
-                testInput.mimeAttachments
+                testInput.mimeAttachments,
+                expectedUserAddress
             ).right()
             coEvery {
                 messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
             } returns testInput.messageWithBody.right()
-            mockDecryptionIsSuccessful()
 
             // When
             val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
@@ -156,6 +155,7 @@ class GetDecryptedMessageBodyTest(
         coEvery {
             messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
         } returns testInput.messageWithBody.right()
+        mockGetUserAddressSucceeds()
         mockDecryptionFails()
 
         // When
@@ -175,9 +175,7 @@ class GetDecryptedMessageBodyTest(
         coEvery {
             messageRepository.getMessageWithBody(UserIdTestData.userId, messageId)
         } returns testInput.messageWithBody.right()
-        coEvery {
-            userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
-        } returns null
+        expectGetUserAddressFails()
 
         // When
         val actual = getDecryptedMessageBody(UserIdTestData.userId, messageId)
@@ -221,6 +219,22 @@ class GetDecryptedMessageBodyTest(
                 )
             } returns decryptedMessageBody
         }
+    }
+
+    private fun mockGetUserAddressSucceeds(): UserAddress {
+        val expectedUserAddress = mockk<UserAddress> {
+            every { keys } returns listOf(userAddressKey)
+        }
+        coEvery {
+            userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
+        } returns expectedUserAddress
+        return expectedUserAddress
+    }
+
+    private fun expectGetUserAddressFails() {
+        coEvery {
+            userAddressManager.getAddress(UserIdTestData.userId, MessageTestData.message.addressId)
+        } returns null
     }
 
     private fun mockDecryptionFails() {

@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
@@ -159,7 +160,13 @@ import kotlin.test.assertTrue
 class MessageDetailViewModelTest {
 
     private val messageId = MessageId("detailMessageId")
-    private val decryptedMessageBody = DecryptedMessageBody(messageId, "Decrypted message body.", MimeType.PlainText)
+    private val decryptedMessageBody = DecryptedMessageBody(
+        messageId = messageId,
+        value = "Decrypted message body.",
+        mimeType = MimeType.PlainText,
+        attachments = emptyList(),
+        userAddress = UserAddressSample.PrimaryAddress
+    )
     private val decryptedHtmlMessageBody = DecryptedMessageBody(
         messageId = messageId,
         value = EmailBodyTestSamples.BodyWithoutQuotes,
@@ -169,7 +176,8 @@ class MessageDetailViewModelTest {
             MessageAttachmentSample.document,
             MessageAttachmentSample.documentWithMultipleDots,
             MessageAttachmentSample.image
-        )
+        ),
+        userAddress = UserAddressSample.PrimaryAddress
     )
     private val extractMessageBodyWithoutQuote = ExtractMessageBodyWithoutQuote()
     private val actionUiModelMapper = ActionUiModelMapper()
@@ -1161,7 +1169,8 @@ class MessageDetailViewModelTest {
                 MessageAttachmentSample.document,
                 MessageAttachmentSample.documentWithMultipleDots,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
         coEvery {
@@ -1199,7 +1208,8 @@ class MessageDetailViewModelTest {
                     MessageAttachmentSample.document,
                     MessageAttachmentSample.documentWithMultipleDots,
                     MessageAttachmentSample.image
-                )
+                ),
+                userAddress = UserAddressSample.PrimaryAddress
             )
             coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
             coEvery {
@@ -1243,7 +1253,8 @@ class MessageDetailViewModelTest {
                 MessageAttachmentSample.document,
                 MessageAttachmentSample.documentWithMultipleDots,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
         coEvery {
@@ -1292,7 +1303,8 @@ class MessageDetailViewModelTest {
                 MessageAttachmentSample.document,
                 MessageAttachmentSample.documentWithMultipleDots,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
         coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
         coEvery {
@@ -1333,7 +1345,8 @@ class MessageDetailViewModelTest {
                     MessageAttachmentSample.document,
                     MessageAttachmentSample.documentWithMultipleDots,
                     MessageAttachmentSample.image
-                )
+                ),
+                userAddress = UserAddressSample.PrimaryAddress
             )
             coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
             coEvery {

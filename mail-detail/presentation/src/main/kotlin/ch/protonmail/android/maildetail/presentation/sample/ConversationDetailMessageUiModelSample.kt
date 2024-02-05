@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.sample
 
 import java.util.UUID
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
@@ -241,7 +242,8 @@ object ConversationDetailMessageUiModelSample {
         messageBannersUiModel = MessageBannersUiModel(shouldShowPhishingBanner = true),
         messageBodyUiModel = messageBodyUiModel,
         requestPhishingLinkConfirmation = false,
-        expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
+        expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed,
+        userAddress = UserAddressSample.PrimaryAddress
     )
 
     private fun buildExpanding(

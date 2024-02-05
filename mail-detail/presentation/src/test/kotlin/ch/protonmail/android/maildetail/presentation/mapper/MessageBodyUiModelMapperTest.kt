@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -98,7 +99,12 @@ class MessageBodyUiModelMapperTest {
     fun `plain text message body is correctly mapped to a message body ui model`() = runTest {
         // Given
         val messageId = MessageIdSample.build()
-        val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.PlainText)
+        val messageBody = DecryptedMessageBody(
+            messageId = messageId,
+            value = decryptedMessageBody,
+            mimeType = MimeType.PlainText,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = decryptedMessageBody,
@@ -132,7 +138,8 @@ class MessageBodyUiModelMapperTest {
                 MessageAttachmentSample.invoice,
                 MessageAttachmentSample.document,
                 MessageAttachmentSample.documentWithMultipleDots
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
         val expected = MessageBodyUiModel(
             messageId = messageId,
@@ -171,7 +178,8 @@ class MessageBodyUiModelMapperTest {
             MimeType.PlainText,
             listOf(
                 MessageAttachmentSample.calendar
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
         val expected = MessageBodyUiModel(
             messageId = messageId,
@@ -208,7 +216,12 @@ class MessageBodyUiModelMapperTest {
             injectCssIntoDecryptedMessageBody(sanitizedDecryptedMessageBody, MimeTypeUiModel.Html)
         } returns sanitizedDecryptedMessageBodyWithCss
         val messageId = MessageIdSample.build()
-        val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+        val messageBody = DecryptedMessageBody(
+            messageId,
+            decryptedMessageBody,
+            MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
         val expected = MessageBodyUiModel(
             messageId = messageId,
             messageBody = sanitizedDecryptedMessageBodyWithCss,
@@ -235,7 +248,12 @@ class MessageBodyUiModelMapperTest {
         runTest {
             // Given
             val messageId = MessageIdSample.build()
-            val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+            val messageBody = DecryptedMessageBody(
+                messageId,
+                decryptedMessageBody,
+                MimeType.Html,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
@@ -264,7 +282,12 @@ class MessageBodyUiModelMapperTest {
         runTest {
             // Given
             val messageId = MessageIdSample.build()
-            val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+            val messageBody = DecryptedMessageBody(
+                messageId,
+                decryptedMessageBody,
+                MimeType.Html,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
@@ -293,7 +316,12 @@ class MessageBodyUiModelMapperTest {
         runTest {
             // Given
             val messageId = MessageIdSample.build()
-            val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+            val messageBody = DecryptedMessageBody(
+                messageId,
+                decryptedMessageBody,
+                MimeType.Html,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
@@ -322,7 +350,12 @@ class MessageBodyUiModelMapperTest {
         runTest {
             // Given
             val messageId = MessageIdSample.build()
-            val messageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+            val messageBody = DecryptedMessageBody(
+                messageId,
+                decryptedMessageBody,
+                MimeType.Html,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
             val expected = MessageBodyUiModel(
                 messageId = messageId,
                 messageBody = decryptedMessageBody,
@@ -376,7 +409,12 @@ class MessageBodyUiModelMapperTest {
     fun `both the original and the no-quote bodies are mapped correctly`() = runTest {
         // Given
         val messageId = MessageIdSample.build()
-        val originalMessageBody = DecryptedMessageBody(messageId, decryptedMessageBody, MimeType.Html)
+        val originalMessageBody = DecryptedMessageBody(
+            messageId,
+            decryptedMessageBody,
+            MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
         val noQuoteMessageBody = EmailBodyTestSamples.BodyWithoutQuotes
         coEvery { extractMessageBodyWithoutQuote(decryptedMessageBody) } returns
             MessageBodyWithoutQuote(noQuoteMessageBody, true)

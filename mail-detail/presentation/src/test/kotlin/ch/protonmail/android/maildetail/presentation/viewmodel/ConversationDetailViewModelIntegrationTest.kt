@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
+import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetCurrentEpochTimeDuration
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -262,7 +263,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val unStarConversations: UnStarConversations = mockk()
     private val getDecryptedMessageBody: GetDecryptedMessageBody = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns DecryptedMessageBody(
-            MessageId("default"), "", MimeType.Html
+            MessageId("default"), "", MimeType.Html, emptyList(), UserAddressSample.PrimaryAddress
         ).right()
     }
 
@@ -460,7 +461,8 @@ class ConversationDetailViewModelIntegrationTest {
                 MessageAttachmentSample.documentWithReallyLongFileName,
                 MessageAttachmentSample.invoice,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
@@ -519,7 +521,8 @@ class ConversationDetailViewModelIntegrationTest {
                 MessageAttachmentSample.documentWithReallyLongFileName,
                 MessageAttachmentSample.invoice,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
@@ -560,7 +563,8 @@ class ConversationDetailViewModelIntegrationTest {
                 MessageAttachmentSample.documentWithReallyLongFileName,
                 MessageAttachmentSample.invoice,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
@@ -608,7 +612,8 @@ class ConversationDetailViewModelIntegrationTest {
                 MessageAttachmentSample.documentWithReallyLongFileName,
                 MessageAttachmentSample.invoice,
                 MessageAttachmentSample.image
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         ).right()
         coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
 
@@ -836,7 +841,12 @@ class ConversationDetailViewModelIntegrationTest {
             // Add a delay, so we're able to receive the `Expanding` state.
             // Without it, we'd only get the final `Expanded` state.
             delay(1)
-            DecryptedMessageBody(defaultExpanded.message.messageId, "", MimeType.Html).right()
+            DecryptedMessageBody(
+                messageId = defaultExpanded.message.messageId,
+                value = "",
+                mimeType = MimeType.Html,
+                userAddress = UserAddressSample.PrimaryAddress
+            ).right()
         }
 
         val viewModel = buildConversationDetailViewModel()
@@ -938,7 +948,8 @@ class ConversationDetailViewModelIntegrationTest {
                 mimeType = MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
                     aMessageAttachment(id = it.toString())
-                }
+                },
+                userAddress = UserAddressSample.PrimaryAddress
             ).right()
         coEvery { observeAttachmentStatus.invoke(userId, any(), any()) } returns flowOf()
 
@@ -988,7 +999,8 @@ class ConversationDetailViewModelIntegrationTest {
                 mimeType = MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
                     aMessageAttachment(id = it.toString())
-                }
+                },
+                userAddress = UserAddressSample.PrimaryAddress
             ).right()
         coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
         coEvery {
@@ -1044,7 +1056,8 @@ class ConversationDetailViewModelIntegrationTest {
                     mimeType = MimeType.Html,
                     attachments = (0 until expectedAttachmentCount).map {
                         aMessageAttachment(id = it.toString())
-                    }
+                    },
+                    userAddress = UserAddressSample.PrimaryAddress
                 ).right()
             coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
             coEvery {
@@ -1301,7 +1314,8 @@ class ConversationDetailViewModelIntegrationTest {
                 MimeType.Html,
                 attachments = (0 until expectedAttachmentCount).map {
                     aMessageAttachment(id = it.toString())
-                }
+                },
+                userAddress = UserAddressSample.PrimaryAddress
             ).right()
         coEvery { observeAttachmentStatus(userId, expandedMessageId, any()) } returns flowOf()
         coEvery {
@@ -1506,7 +1520,8 @@ class ConversationDetailViewModelIntegrationTest {
                 messageId = messageId,
                 value = EmailBodyTestSamples.BodyWithoutQuotes,
                 mimeType = MimeType.Html,
-                attachments = listOf(MessageAttachmentSample.calendar)
+                attachments = listOf(MessageAttachmentSample.calendar),
+                userAddress = UserAddressSample.PrimaryAddress
             ).right()
             coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
             coEvery { isProtonCalendarInstalled() } returns true
@@ -1531,7 +1546,7 @@ class ConversationDetailViewModelIntegrationTest {
                 assertNotNull(calendarIntentValues)
                 assertEquals(expectedUri, calendarIntentValues.uriToIcsAttachment)
                 assertEquals(message.message.sender.address, calendarIntentValues.sender)
-                assertEquals(message.message.toList.first().address, calendarIntentValues.recipient)
+                assertEquals(UserAddressSample.PrimaryAddress.email, calendarIntentValues.recipient)
             }
         }
 
@@ -1548,7 +1563,8 @@ class ConversationDetailViewModelIntegrationTest {
                 messageId = messageId,
                 value = EmailBodyTestSamples.BodyWithoutQuotes,
                 mimeType = MimeType.Html,
-                attachments = listOf(MessageAttachmentSample.calendar)
+                attachments = listOf(MessageAttachmentSample.calendar),
+                userAddress = UserAddressSample.PrimaryAddress
             ).right()
             coEvery { observeAttachmentStatus.invoke(userId, messageId, any()) } returns flowOf()
             coEvery { isProtonCalendarInstalled() } returns false
