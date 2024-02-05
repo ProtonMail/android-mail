@@ -24,11 +24,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -53,7 +56,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -66,6 +71,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactGroupSampleData
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
@@ -300,7 +306,11 @@ fun ContactTabLayout(
                     )
                 }
                 1 -> {
-                    // Contact groups
+                    ContactGroupsScreenContent(
+                        state = state,
+                        actions = actions,
+                        onAddClick = actions.openContactGroupForm
+                    )
                 }
             }
         }
@@ -389,6 +399,102 @@ fun ContactListItem(
             )
             Text(
                 text = contact.emailSubtext.string(),
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ContactGroupsScreenContent(
+    modifier: Modifier = Modifier,
+    state: ContactListState.ListLoaded.Data,
+    actions: ContactListScreen.Actions,
+    onAddClick: () -> Unit
+) {
+    if (state.contactGroups.isNotEmpty()) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(top = ProtonDimens.ListItemTextStartPadding)
+        ) {
+            items(state.contactGroups) { contactGroupItemUiModel ->
+                ContactGroupItem(
+                    modifier = Modifier.animateItemPlacement(),
+                    contact = contactGroupItemUiModel,
+                    actions = actions
+                )
+            }
+        }
+    } else {
+        EmptyDataScreen(
+            iconResId = R.drawable.ic_proton_users_plus,
+            title = stringResource(R.string.no_contact_groups),
+            description = stringResource(R.string.no_contact_groups_description),
+            buttonText = stringResource(R.string.add_contact_group),
+            onAddClick = onAddClick
+        )
+    }
+}
+
+@Composable
+fun ContactGroupItem(
+    modifier: Modifier = Modifier,
+    contact: ContactGroupItemUiModel,
+    actions: ContactListScreen.Actions
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                role = Role.Button,
+                onClick = {
+                    actions.onContactGroupSelected(contact.labelId.id)
+                }
+            )
+            .padding(start = ProtonDimens.DefaultSpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .sizeIn(
+                        minWidth = MailDimens.AvatarMinSize,
+                        minHeight = MailDimens.AvatarMinSize
+                    )
+                    .background(
+                        color = contact.color,
+                        shape = ProtonTheme.shapes.medium
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                    painter = painterResource(id = R.drawable.ic_proton_users_filled),
+                    tint = Color.White,
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.padding(
+                start = ProtonDimens.ListItemTextStartPadding,
+                top = ProtonDimens.ListItemTextStartPadding,
+                bottom = ProtonDimens.ListItemTextStartPadding,
+                end = ProtonDimens.DefaultSpacing
+            )
+        ) {
+            Text(
+                text = contact.name,
+                style = ProtonTheme.typography.defaultNorm
+            )
+            Text(
+                text = pluralStringResource(
+                    R.plurals.contact_group_member_count,
+                    contact.memberCount,
+                    contact.memberCount
+                ),
                 style = ProtonTheme.typography.defaultSmallWeak
             )
         }
