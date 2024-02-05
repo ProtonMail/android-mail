@@ -103,13 +103,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">\'스팸함\' 내에 있는 모든 메시지를 완전히 삭제하시겠어요?</string>
   <string name="mailbox_action_clear_operation_scheduled">"삭제 작업이 예약되어 있습니다."</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_title">경고</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">사용자의 Proton 계정 저장 공간이 80% 이상 찼습니다. 공간을 비우거나 더 많은 저장 공간을 사용하기 위해 업그레이드 하세요.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">사용자의 Proton 계정 저장 공간이 90% 이상 찼습니다. 공간을 비우거나 더 많은 저장 공간을 사용하기 위해 업그레이드 하세요.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">다시 보지 않기</string>
+  <string name="storage_limit_warning_dialog_confirm_button">확인</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_title">경고</string>
+  <string name="storage_quota_over_dialog_text">사용자의 Proton 계정 저장 공간이 100% 가득 찼습니다. 몇 개의 필요 없는 이메일을 지우거나 스토리지 확장을 위해 업그레이드 하기 전 까진 이메일 수발신이 불가합니다.</string>
+  <string name="storage_quota_over_dialog_confirm_button">확인</string>
 </resources>

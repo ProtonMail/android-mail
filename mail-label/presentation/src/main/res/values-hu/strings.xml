@@ -33,13 +33,13 @@
   <string name="label_title_folders">Mappák</string>
   <string name="label_title_parent_folder">Szülő mappa</string>
   <string name="label_title_labels">Címkék</string>
-  <string name="label_title_add_folder">Új mappa</string>
-  <string name="label_title_add_label">Új címke</string>
+  <string name="label_title_create_folder">Create folder</string>
+  <string name="label_title_create_label">Create label</string>
   <string name="label_title_label_list">Label list</string>
   <string name="label_title_folder_list">Folder list</string>
   <string name="label_list_no_labels_found">No labels found.</string>
   <string name="label_list_create_label_placeholder_description">Create a label to enhance your email experience.</string>
-  <string name="add_label_content_description">Új címke</string>
+  <string name="create_label_content_description">Create label</string>
   <string name="label_form_create_label">Címke létrehozása</string>
   <string name="folder_form_create_folder">Mappa létrehozása</string>
   <string name="label_form_edit_label">Címke szerkesztése</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Folder list item</string>
   <string name="folder_list_no_folders_found">No folders found.</string>
   <string name="folder_list_create_folder_placeholder_description">Create a folder to enhance your email experience.</string>
-  <string name="add_folder_content_description">Új mappa</string>
+  <string name="create_folder_content_description">Add folder</string>
   <string name="folder_settings_content_description">Folder settings</string>
   <string name="folder_settings_title">Beállítások</string>
   <string name="folder_settings_done_button">Kész</string>

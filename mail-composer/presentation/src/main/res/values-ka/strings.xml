@@ -49,29 +49,29 @@
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
   <string name="composer_button_add_password">პაროლის დამატება</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
-  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_title">შედგენა</string>
+  <string name="composer_send_without_subject_dialog_text">გავაგზავნო შეტყობინება საგნის გარეშე?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">დიახ</string>
+  <string name="composer_send_without_subject_dialog_reject_button">არა</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
   <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>
   <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზი გამო:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">სანდო გასაღებების გარეშე: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">მისამართი არ არსებობს: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
-  <string name="set_message_password_button_remove_password">Remove password</string>
+  <string name="set_message_password_title">შეტყობინების დაშიფრვა</string>
+  <string name="set_message_password_info_message">ამ შეტყობინების არა-Proton Mail-ის მომხმარებლებისთვის დასაშიფრად დააყენეთ პაროლი.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">გაიგეთ მეტი</a></string>
+  <string name="set_message_password_label">შეტყობინების პაროლი</string>
+  <string name="set_message_password_label_repeat">გაიმეორეთ პაროლი</string>
+  <string name="set_message_password_label_hint">პაროლის მინიშნება (არასავალდებულო)</string>
+  <string name="set_message_password_supporting_text">4-დან 15-მდე სიმბოლო</string>
+  <string name="set_message_password_supporting_error_text">პაროლი სიგრძე 4 და 21 სიმბოლოს შორის უნდა მერყეობდეს</string>
+  <string name="set_message_password_supporting_text_repeat">პაროლები უნდა ემთხვეოდეს</string>
+  <string name="set_message_password_supporting_error_text_repeat">ორი პაროლი ერთმანეთს არ ემთხვევა</string>
+  <string name="set_message_password_button_show">პაროლის ჩვენება</string>
+  <string name="set_message_password_button_hide">პაროლის დამალვა</string>
+  <string name="set_message_password_button_apply">პაროლის დაყენება</string>
+  <string name="set_message_password_button_save_changes">ცვლილებების შენახვა</string>
+  <string name="set_message_password_button_remove_password">პაროლის მოშლა</string>
 </resources>

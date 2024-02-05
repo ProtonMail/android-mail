@@ -33,13 +33,13 @@
   <string name="label_title_folders">Klasörler</string>
   <string name="label_title_parent_folder">Üst klasör</string>
   <string name="label_title_labels">Etiketler</string>
-  <string name="label_title_add_folder">Klasör ekle</string>
-  <string name="label_title_add_label">Etiket ekle</string>
+  <string name="label_title_create_folder">Klasör oluştur</string>
+  <string name="label_title_create_label">Etiket oluştur</string>
   <string name="label_title_label_list">Etiket listesi</string>
   <string name="label_title_folder_list">Klasör listesi</string>
   <string name="label_list_no_labels_found">Herhangi bir etiket bulunamadı.</string>
   <string name="label_list_create_label_placeholder_description">E-posta deneyiminizi iyileştirmek için bir etiket oluşturun.</string>
-  <string name="add_label_content_description">Etiket ekle</string>
+  <string name="create_label_content_description">Etiket oluştur</string>
   <string name="label_form_create_label">Etiket ekle</string>
   <string name="folder_form_create_folder">Klasör ekle</string>
   <string name="label_form_edit_label">Etiketi düzenle</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Klasör listesi ögesi</string>
   <string name="folder_list_no_folders_found">Herhangi bir klasör bulunamadı.</string>
   <string name="folder_list_create_folder_placeholder_description">E-posta deneyiminizi iyileştirmek için bir klasör oluşturun.</string>
-  <string name="add_folder_content_description">Klasör ekle</string>
+  <string name="create_folder_content_description">Klasör ekle</string>
   <string name="folder_settings_content_description">Klasör ayarları</string>
   <string name="folder_settings_title">Ayarlar</string>
   <string name="folder_settings_done_button">Tamam</string>

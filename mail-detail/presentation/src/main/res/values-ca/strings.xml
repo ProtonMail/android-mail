@@ -81,7 +81,14 @@
   <string name="error_delete_conversation_failed">No s\'ha pogut eliminar la conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversa no es troba en una ubicació on es pugui eliminar</string>
   <string name="conversation_deleted">S\'ha eliminat la conversa.</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_remote_content_button_text">Carrega el contingut remot</string>
+  <string name="message_body_load_embedded_images_button_text">Carrega les imatges incrustades</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_report_phishing_dialog_title_offline">Atenció</string>
+  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">D\'acord</string>
+  <string name="message_report_phishing_dialog_title">Confirma l\'informe de phising</string>
+  <string name="message_report_phishing_dialog_message">Informar un missatge com a intent de pesca us enviarà el missatge, per poder analitzar-lo i millorar-ne els filtres. Això significa que podrem veure el contingut del missatge complet.</string>
+  <string name="message_report_phishing_dialog_confim_button">Confirma</string>
+  <string name="message_report_phishing_dialog_cancel_button">Cancel·la</string>
 </resources>

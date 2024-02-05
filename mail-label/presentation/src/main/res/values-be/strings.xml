@@ -33,13 +33,13 @@
   <string name="label_title_folders">Папкі</string>
   <string name="label_title_parent_folder">Бацькоўская папка</string>
   <string name="label_title_labels">Меткі</string>
-  <string name="label_title_add_folder">Дадаць папку</string>
-  <string name="label_title_add_label">Дадаць метку</string>
+  <string name="label_title_create_folder">Стварэнне папкі</string>
+  <string name="label_title_create_label">Стварэнне меткі</string>
   <string name="label_title_label_list">Спіс метак</string>
   <string name="label_title_folder_list">Спіс папак</string>
   <string name="label_list_no_labels_found">Меткі не знойдзены.</string>
   <string name="label_list_create_label_placeholder_description">Стварыце метку, каб палепшыць сваю працу электроннай пошты.</string>
-  <string name="add_label_content_description">Дадаць метку</string>
+  <string name="create_label_content_description">Стварэнне меткі</string>
   <string name="label_form_create_label">Стварыць метку</string>
   <string name="folder_form_create_folder">Стварыць папку</string>
   <string name="label_form_edit_label">Рэдагаваць метку</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Спіс элементаў папкі</string>
   <string name="folder_list_no_folders_found">Папкі не знойдзены.</string>
   <string name="folder_list_create_folder_placeholder_description">Стварыце папку, каб палепшыць сваю працу з электроннай поштай.</string>
-  <string name="add_folder_content_description">Дадаць папку</string>
+  <string name="create_folder_content_description">Дадаць папку</string>
   <string name="folder_settings_content_description">Налады папкі</string>
   <string name="folder_settings_title">Налады</string>
   <string name="folder_settings_done_button">Гатова</string>

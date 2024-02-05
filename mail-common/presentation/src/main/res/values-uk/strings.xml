@@ -33,19 +33,19 @@
   <string name="action_forward_description">Переслати</string>
   <string name="action_mark_read_description">Позначити прочитаним</string>
   <string name="action_mark_unread_description">Позначити непрочитаним</string>
-  <string name="action_star_description">Star</string>
+  <string name="action_star_description">Позначити зірочкою</string>
   <string name="action_unstar_description">Прибрати зірочку</string>
-  <string name="action_label_description">Label as</string>
+  <string name="action_label_description">Позначити як</string>
   <string name="action_move_description">Перемістити до</string>
   <string name="action_trash_description">Смітник</string>
   <string name="action_delete_description">Видалити</string>
   <string name="action_archive_description">Архівувати</string>
-  <string name="action_spam_description">Move to spam</string>
+  <string name="action_spam_description">Перемістити до спаму</string>
   <string name="action_view_in_light_mode_description">Переглянути повідомлення у світлому режимі</string>
   <string name="action_view_in_dark_mode_description">Переглянути повідомлення в темному режимі</string>
   <string name="action_print_description">Друкувати</string>
-  <string name="action_view_headers_description">View headers</string>
-  <string name="action_view_html_description">View HTML</string>
+  <string name="action_view_headers_description">Перегляд заголовків</string>
+  <string name="action_view_html_description">Перегляд HTML</string>
   <string name="action_report_phishing_description">Повідомити про шахрайство</string>
   <string name="action_remind_description">Нагадати мені</string>
   <string name="action_save_pdf_description">Зберегти як PDF</string>
@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Не знайдено програми для обробки цієї дії</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
   <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Скасувати</string>
 </resources>

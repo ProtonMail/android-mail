@@ -38,12 +38,12 @@
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Текст</string>
   <string name="attachment_type_document">Документ</string>
-  <string name="attachment_type_spreadsheet">Табличный файл</string>
+  <string name="attachment_type_spreadsheet">Электронная таблица</string>
   <string name="attachment_type_presentation">Презентация</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Переместить в...</string>
   <string name="bottom_sheet_done_action">Готово</string>
-  <string name="bottom_sheet_archive_action">Также архивировать?</string>
+  <string name="bottom_sheet_archive_action">Тоже архивировать?</string>
   <string name="bottom_sheet_label_as_title">Отметить как...</string>
-  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
+  <string name="bottom_sheet_more_header_message_from">Сообщение от %s</string>
 </resources>

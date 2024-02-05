@@ -39,4 +39,6 @@
   <string name="label_saved">Štítek uložen</string>
   <string name="label_deleted">Štítek smazán</string>
   <string name="label_list_loading_error">Chyba při načítání štítku, zkuste to prosím později</string>
+  <string name="app_locked">Aplikace uzamčena</string>
+  <string name="use_pin_instead">Použít raději PIN</string>
 </resources>

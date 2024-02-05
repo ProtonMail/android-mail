@@ -79,8 +79,8 @@
   <string name="email_address">E-postadress</string>
   <string name="phone_number">Telefonnummer</string>
   <string name="additional_info">Ytterligare information</string>
-  <string name="remove_contact_property">Remove contact property</string>
-  <string name="property_type">Property type</string>
+  <string name="remove_contact_property">Ta bort kontaktegenskap</string>
+  <string name="property_type">Typ av egenskap</string>
   <string name="property_label">Etikett</string>
   <string name="address_street">Gata</string>
   <string name="address_postal_code">Postnummer</string>
@@ -91,4 +91,5 @@
   <string name="contact_details_delete_dialog_text">Är du säker på att du vill ta bort denna kontakt?</string>
   <string name="contact_details_delete_dialog_cancel_button">Avbryt</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
+  <string name="contact_form_save_error">Kunde inte spara kontakt, försök igen senare</string>
 </resources>

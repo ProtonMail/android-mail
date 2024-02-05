@@ -39,4 +39,6 @@
   <string name="label_saved">Etiket gemt</string>
   <string name="label_deleted">Etiket slettet</string>
   <string name="label_list_loading_error">Fejl ved indlæsning af etikette. Prøv igen senere.</string>
+  <string name="app_locked">App er låst</string>
+  <string name="use_pin_instead">Brug i stedet pinkode</string>
 </resources>

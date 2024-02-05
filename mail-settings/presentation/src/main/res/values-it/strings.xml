@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Icona del lucchetto</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Puntino del PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Cancella</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autenticazione biometrica</string>
   <string name="mail_settings_pin_insertion_button_create">Crea</string>
   <string name="mail_settings_pin_insertion_button_confirm">Conferma</string>
   <string name="mail_settings_pin_insertion_error_no_match">I codici PIN non corrispondono</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Cancellazione della cache locale in corso</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprova.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Nessun dato biometrico registrato</string>
+  <string name="log_in_using_biometric_credential">Sblocca con le tue credenziali biometriche</string>
+  <string name="unlock_using_biometrics">Sblocca con la biometria</string>
+  <string name="biometric_error_hw_not_available">Hardware biometrico non disponibile.</string>
 </resources>

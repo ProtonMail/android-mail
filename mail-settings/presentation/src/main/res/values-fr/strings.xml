@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Icône de verrouillage</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN sous forme de points</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retour arrière</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Authentification biométrique</string>
   <string name="mail_settings_pin_insertion_button_create">Créer</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmer</string>
   <string name="mail_settings_pin_insertion_error_no_match">Les codes PIN ne correspondent pas.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Les données locales mises en cache sont en cours d\'effacement.</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Une erreur est survenue. Veuillez réessayer.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Aucune donnée biométrique enregistrée</string>
+  <string name="log_in_using_biometric_credential">Déverrouiller à l\'aide de vos identifiants biométriques</string>
+  <string name="unlock_using_biometrics">Déverrouiller en utilisant la biométrie</string>
+  <string name="biometric_error_hw_not_available">Le capteur biométrique n\'est pas disponible.</string>
 </resources>

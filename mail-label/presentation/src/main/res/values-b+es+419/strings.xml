@@ -33,13 +33,13 @@
   <string name="label_title_folders">Carpetas</string>
   <string name="label_title_parent_folder">Carpeta principal</string>
   <string name="label_title_labels">Etiquetas</string>
-  <string name="label_title_add_folder">Añadir carpeta</string>
-  <string name="label_title_add_label">Añadir etiqueta</string>
+  <string name="label_title_create_folder">Crear una carpeta</string>
+  <string name="label_title_create_label">Crear una etiqueta</string>
   <string name="label_title_label_list">Lista de etiquetas</string>
   <string name="label_title_folder_list">Lista de carpetas</string>
   <string name="label_list_no_labels_found">No se encontraron etiquetas</string>
   <string name="label_list_create_label_placeholder_description">Cree una etiqueta para mejorar su experiencia de correo electrónico.</string>
-  <string name="add_label_content_description">Añadir una etiqueta</string>
+  <string name="create_label_content_description">Crear una etiqueta</string>
   <string name="label_form_create_label">Crear una etiqueta</string>
   <string name="folder_form_create_folder">Crear una carpeta</string>
   <string name="label_form_edit_label">Editar la etiqueta</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Elemento de la lista de carpetas</string>
   <string name="folder_list_no_folders_found">No se encuentra ninguna carpeta.</string>
   <string name="folder_list_create_folder_placeholder_description">Cree una carpeta para mejorar su experiencia de correo electrónico.</string>
-  <string name="add_folder_content_description">Añadir una carpeta</string>
+  <string name="create_folder_content_description">Añadir una carpeta</string>
   <string name="folder_settings_content_description">Ajustes de carpeta</string>
   <string name="folder_settings_title">Ajustes</string>
   <string name="folder_settings_done_button">Terminado</string>

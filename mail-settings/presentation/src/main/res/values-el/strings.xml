@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Εικονίδιο κλειδαριάς</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Τελεία PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Βιομετρική Ταυτοποίηση</string>
   <string name="mail_settings_pin_insertion_button_create">Δημιουργία</string>
   <string name="mail_settings_pin_insertion_button_confirm">Επιβεβαίωση</string>
   <string name="mail_settings_pin_insertion_error_no_match">Οι κωδικοί PIN δεν ταιριάζουν.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Εκκαθάριση τοπικών προσωρινά αποθηκευμένων δεδομένων…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Παρουσιάστηκε σφάλμα. Δοκίμασε ξανά.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Δεν έχουν εγγραφεί βιομετρικά δεδομένα</string>
+  <string name="log_in_using_biometric_credential">Ξεκλειδώστε χρησιμοποιώντας τα βιομετρικά διαπιστευτήρια σας</string>
+  <string name="unlock_using_biometrics">Ξεκλειδώστε βιομετρικά</string>
+  <string name="biometric_error_hw_not_available">Το βιομετρικό υλικό δεν είναι διαθέσιμο.</string>
 </resources>

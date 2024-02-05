@@ -28,7 +28,7 @@
   <string name="action_reply_all">Răspuns tuturor</string>
   <string name="action_forward">Redirecționare</string>
   <string name="action_reply_description">Răspuns</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Răspuns lui %s</string>
   <string name="action_reply_all_description">Răspuns tuturor</string>
   <string name="action_forward_description">Redirecționare</string>
   <string name="action_mark_read_description">Marcare ca citit</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Salvare atașamente</string>
   <string name="action_more_description">Mai multe</string>
   <string name="action_reply_content_description">Răspuns</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Răspuns lui %s</string>
   <string name="action_reply_all_content_description">Răspuns tuturor</string>
   <string name="action_forward_content_description">Redirecționare</string>
   <string name="action_mark_read_content_description">Marcare ca citit</string>
@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Nu există vreo aplicație asociată acestei acțiuni.</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Anulare</string>
   <string name="mailbox_action_delete_dialog_button_delete">Ștergere</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Anulare</string>
 </resources>

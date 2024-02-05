@@ -39,4 +39,6 @@
   <string name="label_saved">Etiqueta guardada</string>
   <string name="label_deleted">Etiqueta eliminada</string>
   <string name="label_list_loading_error">Erro ao carregar a etiqueta, por favor, tente outra vez mais tarde</string>
+  <string name="app_locked">Aplicação bloqueada</string>
+  <string name="use_pin_instead">Utilizar antes PIN</string>
 </resources>

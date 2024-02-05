@@ -49,29 +49,29 @@
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
   <string name="composer_button_add_password">Tilføj adgangskode</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
-  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_title">Skriv</string>
+  <string name="composer_send_without_subject_dialog_text">Afsend besked uden emneindhold?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ja</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nej</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Afsendelsesfejl</string>
   <string name="message_sending_error_dialog_button_dismiss">Luk</string>
   <string name="message_sending_error_dialog_text_error">Din e-mail kan ikke sendes til den indtastede e-mail af følgende grund:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Der er ingen betroede nøgler: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse findes ikke: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
-  <string name="set_message_password_button_remove_password">Remove password</string>
+  <string name="set_message_password_title">Krypter besked</string>
+  <string name="set_message_password_info_message">Indstil en adgangskode for at kryptere denne besked til brugere, som ikke anvender Proton Mail.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Få mere at vide</a></string>
+  <string name="set_message_password_label">Beskedadgangskode</string>
+  <string name="set_message_password_label_repeat">Gentag adgangskode</string>
+  <string name="set_message_password_label_hint">Adgangskodetip (valgfrit)</string>
+  <string name="set_message_password_supporting_text">4 til 21 tegn lang</string>
+  <string name="set_message_password_supporting_error_text">Adgangskoden skal være mellem 4 og 21 tegn lang</string>
+  <string name="set_message_password_supporting_text_repeat">Adgangskoder skal være ens</string>
+  <string name="set_message_password_supporting_error_text_repeat">De to adgangskoder stemmer ikke overens</string>
+  <string name="set_message_password_button_show">Vis adgangskode</string>
+  <string name="set_message_password_button_hide">Skjul adgangskode</string>
+  <string name="set_message_password_button_apply">Anvend adgangskode</string>
+  <string name="set_message_password_button_save_changes">Gem ændringer</string>
+  <string name="set_message_password_button_remove_password">Fjern adgangskode</string>
 </resources>

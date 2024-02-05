@@ -112,13 +112,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Weet u zeker dat u alle gesprekken in de Spam map definitief wilt verwijderen?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Optie om op te ruimen is gepland"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
+  <string name="storage_limit_warning_dialog_title">Waarschuwing</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Je Proton account opslagruimte is meer dan 80% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Je Proton account opslagruimte is meer dan 90% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Herinner me niet meer</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_title">Waarschuwing</string>
+  <string name="storage_quota_over_dialog_text">De opslagruimte van je Proton account is 100% vol. Je kunt geen e-mails verzenden of ontvangen tenzij je een aantal e-mails permanent verwijdert of een upgrade uitvoert voor meer opslagruimte.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

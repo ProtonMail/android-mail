@@ -81,7 +81,14 @@
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
   <string name="conversation_deleted">Conversa eliminada</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_remote_content_button_text">Carregar o conteúdo remoto</string>
+  <string name="message_body_load_embedded_images_button_text">Carregar as imagens incorporadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Confirmar relatório de phishing</string>
+  <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing, enviará a mensagem para nós, para que possamos analisá-la e melhorar os nossos filtros. Isto significa que poderemos ver o conteúdo da mensagem na íntegra.</string>
+  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
+  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
 </resources>

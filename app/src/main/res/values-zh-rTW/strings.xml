@@ -39,4 +39,6 @@
   <string name="label_saved">已儲存標籤</string>
   <string name="label_deleted">已刪除標籤</string>
   <string name="label_list_loading_error">載入標籤時發生錯誤，請稍後再試。</string>
+  <string name="app_locked">應用程式已鎖定</string>
+  <string name="use_pin_instead">改為使用 PIN 碼</string>
 </resources>

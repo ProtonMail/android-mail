@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">鎖定圖示</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">PIN 點點</string>
   <string name="mail_settings_pin_insertion_backspace_description">倒退鍵</string>
+  <string name="mail_settings_pin_insertion_biometric_description">生物辨識驗證</string>
   <string name="mail_settings_pin_insertion_button_create">建立</string>
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN 碼不符.</string>
@@ -154,4 +155,9 @@
   <string name="mail_settings_clearing_cached_data">正在清理本機快取資料中…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">發生錯誤，請再試一次。</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">未註冊任何生物特徵辨識資料</string>
+  <string name="log_in_using_biometric_credential">使用您的生物特徵辨識認證解鎖</string>
+  <string name="unlock_using_biometrics">使用生物特徵辨識解鎖</string>
+  <string name="biometric_error_hw_not_available">無適用的生物特徵辨識硬體</string>
 </resources>

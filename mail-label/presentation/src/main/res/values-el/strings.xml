@@ -33,13 +33,13 @@
   <string name="label_title_folders">Φάκελοι</string>
   <string name="label_title_parent_folder">Γονικός φάκελος</string>
   <string name="label_title_labels">Ετικέτες</string>
-  <string name="label_title_add_folder">Προσθήκη φακέλου</string>
-  <string name="label_title_add_label">Προσθήκη ετικέτας</string>
+  <string name="label_title_create_folder">Δημιουργία φακέλου</string>
+  <string name="label_title_create_label">Δημιουργία ετικέτας</string>
   <string name="label_title_label_list">Λίστα ετικετών</string>
   <string name="label_title_folder_list">Λίστα φακέλων</string>
   <string name="label_list_no_labels_found">Δε βρέθηκαν ετικέτες.</string>
   <string name="label_list_create_label_placeholder_description">Δημιουργήστε μια ετικέτα για να βελτιώσετε την εμπειρία ηλεκτρονικού ταχυδρομείου σας.</string>
-  <string name="add_label_content_description">Προσθήκη ετικέτας</string>
+  <string name="create_label_content_description">Δημιουργία ετικέτας</string>
   <string name="label_form_create_label">Δημιουργία ετικέτας</string>
   <string name="folder_form_create_folder">Δημιουργία φακέλου</string>
   <string name="label_form_edit_label">Επεξεργασία ετικέτας</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Προσθέστε στο φάκελο το στοιχείο λίστας</string>
   <string name="folder_list_no_folders_found">Δεν βρέθηκαν φάκελοι.</string>
   <string name="folder_list_create_folder_placeholder_description">Δημιουργήστε μια φάκελο για να βελτιώσετε την εμπειρία ηλεκτρονικού ταχυδρομείου σας.</string>
-  <string name="add_folder_content_description">Προσθήκη φακέλου</string>
+  <string name="create_folder_content_description">Προσθήκη φακέλου</string>
   <string name="folder_settings_content_description">Ρυθμίσεις φακέλου</string>
   <string name="folder_settings_title">Ρυθμίσεις</string>
   <string name="folder_settings_done_button">Έτοιμο</string>

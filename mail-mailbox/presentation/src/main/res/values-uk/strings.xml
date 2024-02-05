@@ -133,10 +133,10 @@
   <string name="storage_limit_warning_dialog_title">Warning</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Більше не нагадувати</string>
+  <string name="storage_limit_warning_dialog_confirm_button">Гаразд</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Warning</string>
   <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_confirm_button">Гаразд</string>
 </resources>

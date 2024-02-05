@@ -84,4 +84,11 @@
   <string name="message_body_load_remote_content_button_text">Last eksternt innhold</string>
   <string name="message_body_load_embedded_images_button_text">Last innebygde bilder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Last inn eksternt og innebygd innhold</string>
+  <string name="message_report_phishing_dialog_title_offline">Oppmerksomhet</string>
+  <string name="message_report_phishing_dialog_message_offline">Denne funksjonen er kun tilgjengelig på nett.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Bekreft rapporten om nettfisking</string>
+  <string name="message_report_phishing_dialog_message">Hvis du rapporterer en melding som et forsøk på nettfisking, sendes meldingen til oss, slik at vi kan analysere den og forbedre filtrene våre. Dette betyr at vi vil kunne se innholdet i meldingen i sin helhet.</string>
+  <string name="message_report_phishing_dialog_confim_button">Bekreft</string>
+  <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
 </resources>

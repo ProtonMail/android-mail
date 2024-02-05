@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Låseikon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Fest prikk</string>
   <string name="mail_settings_pin_insertion_backspace_description">Bakovertast</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrisk autentisering</string>
   <string name="mail_settings_pin_insertion_button_create">Opprett</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bekreft</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-kodene samsvarer ikke.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Tømmer lokalt hurtigbufrede data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">En feil oppstod. Prøv igjen.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Ingen biometriske data registrert</string>
+  <string name="log_in_using_biometric_credential">Lås opp med din biometriske legitimasjon.</string>
+  <string name="unlock_using_biometrics">Lås opp ved hjelp av biometri</string>
+  <string name="biometric_error_hw_not_available">Biometrisk maskinvare er ikke tilgjengelig.</string>
 </resources>

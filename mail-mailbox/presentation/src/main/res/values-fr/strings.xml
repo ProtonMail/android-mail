@@ -113,8 +113,8 @@
   <string name="mailbox_action_clear_operation_scheduled">"L'opération d'effacement est programmée."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Attention</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Votre compte Proton a dépassé les 80 % d\'espace de stockage disponibles. Libérez de l\'espace ou changez d\'abonnement pour plus d\'espace.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Votre compte Proton a dépassé les 90 % d\'espace de stockage disponibles. Libérez de l\'espace ou changez d\'abonnement pour plus d\'espace.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Votre compte Proton a dépassé les 80 % de votre espace de stockage. Libérez de l\'espace ou changez d\'abonnement pour augmenter votre espace de stockage.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Votre compte Proton a dépassé les 90 % de votre espace de stockage. Libérez de l\'espace ou changez d\'abonnement pour augmenter votre espace de stockage.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Ne plus me le rappeler</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->

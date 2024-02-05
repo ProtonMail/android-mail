@@ -39,4 +39,6 @@
   <string name="label_saved">ラベルが保存されました</string>
   <string name="label_deleted">ラベルが削除されました</string>
   <string name="label_list_loading_error">Error loading label, please try again later</string>
+  <string name="app_locked">アプリはロックされています。</string>
+  <string name="use_pin_instead">代わりにPINコードを使用する</string>
 </resources>

@@ -39,4 +39,6 @@
   <string name="label_saved">Kategorie gespeichert</string>
   <string name="label_deleted">Kategorie gelöscht</string>
   <string name="label_list_loading_error">Fehler beim Laden der Kategorie. Bitte versuche es später erneut.</string>
+  <string name="app_locked">App gesperrt</string>
+  <string name="use_pin_instead">Stattdessen PIN verwenden</string>
 </resources>

@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Ícono de bloqueo</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de puntos</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retroceder</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autenticación biométrica</string>
   <string name="mail_settings_pin_insertion_button_create">Crear</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Los códigos PIN no coinciden.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Borrando los datos de la caché local…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ocurrió un error, intente de nuevo.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">No hay datos biométricos inscritos</string>
+  <string name="log_in_using_biometric_credential">Desbloquear usando sus credenciales biométricas</string>
+  <string name="unlock_using_biometrics">Desbloquear usando biométricas</string>
+  <string name="biometric_error_hw_not_available">Hardware biométrico no disponible.</string>
 </resources>

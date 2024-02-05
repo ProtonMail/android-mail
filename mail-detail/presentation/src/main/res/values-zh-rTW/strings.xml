@@ -80,7 +80,14 @@
   <string name="error_delete_conversation_failed">刪除對話失敗</string>
   <string name="error_delete_conversation_failed_wrong_folder">對話位在無法刪除的地方</string>
   <string name="conversation_deleted">往來對話已刪除</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_remote_content_button_text">載入遠端內容</string>
+  <string name="message_body_load_embedded_images_button_text">載入內嵌圖片</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_report_phishing_dialog_title_offline">注意</string>
+  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">好</string>
+  <string name="message_report_phishing_dialog_title">確認提報釣魚郵件</string>
+  <string name="message_report_phishing_dialog_message">檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。</string>
+  <string name="message_report_phishing_dialog_confim_button">確認</string>
+  <string name="message_report_phishing_dialog_cancel_button">取消</string>
 </resources>

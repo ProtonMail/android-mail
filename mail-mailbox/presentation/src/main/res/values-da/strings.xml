@@ -90,7 +90,7 @@
   <string name="onboarding_easily_up_to_date_description">Gå hurtigt gennem tråd af meddelelser i samtaletilstand.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Pæn og ryddelig</string>
-  <string name="onboarding_neat_and_tidy_description">Arkivér, etikettér og farvekod beskeder for at skabe din perfekte, brugerdefinerede indbakke.</string>
+  <string name="onboarding_neat_and_tidy_description">Arkivér, kategorisér og farvemarkér beskeder for at skabe din perfekte, brugerdefinerede indbakke.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Næste</string>
   <string name="onboarding_get_started">Kom godt i gang</string>
@@ -104,7 +104,7 @@
   <string name="mailbox_search_no_results_explanation">Søg dato, navn, e-mailadresse eller emnelinje</string>
   <string name="mailbox_action_button_clear_trash">Tøm papirkurv</string>
   <string name="mailbox_action_button_clear_spam">Tøm spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Tøm papirkurvsmappe</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Tøm papirkurv</string>
   <string name="mailbox_action_clear_spam_dialog_title">Tøm spammappe</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Er du sikker på, at du vil slette alle beskeder i \'Papirkurv\' permanent?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Er du sikker på, at du vil slette alle beskeder i \'Spam\' permanent?</string>
@@ -112,13 +112,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på, at du vil slette alle samtaler i \'Spam\' permanent?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Rydning er planlagt"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_title">Advarsel</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lageret på din Proton-konto er mere end 80 % fyldt. Frigør plads, eller opgrader for at få mere lagerplads.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lageret på din Proton-konto er mere end 90 % fyldt. Frigør plads, eller opgrader for at få mere lagerplads.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Påmind mig ikke igen</string>
+  <string name="storage_limit_warning_dialog_confirm_button">Ok</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_title">Advarsel</string>
+  <string name="storage_quota_over_dialog_text">Lagerpladsen på din Proton-konto er 100 % fuld. Du vil ikke kunne sende eller modtage e-mails, medmindre du sletter nogle e-mails permanent eller opgraderer for at få mere lagerplads.</string>
+  <string name="storage_quota_over_dialog_confirm_button">Ok</string>
 </resources>

@@ -33,13 +33,13 @@
   <string name="label_title_folders">Mapper</string>
   <string name="label_title_parent_folder">Overordnet mappe</string>
   <string name="label_title_labels">Etiketter</string>
-  <string name="label_title_add_folder">Legg til mappe</string>
-  <string name="label_title_add_label">Legg til etikett</string>
+  <string name="label_title_create_folder">Opprett mappe</string>
+  <string name="label_title_create_label">Opprett etikett</string>
   <string name="label_title_label_list">Etikettliste</string>
   <string name="label_title_folder_list">Mappeliste</string>
   <string name="label_list_no_labels_found">Ingen etiketter funnet.</string>
   <string name="label_list_create_label_placeholder_description">Opprett en etikett for å forsterke e-postopplevelsen.</string>
-  <string name="add_label_content_description">Legg til etikett</string>
+  <string name="create_label_content_description">Opprett etikett</string>
   <string name="label_form_create_label">Opprett etikett</string>
   <string name="folder_form_create_folder">Opprett mappe</string>
   <string name="label_form_edit_label">Rediger etikett</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Mappelisteelement</string>
   <string name="folder_list_no_folders_found">Ingen mapper funnet</string>
   <string name="folder_list_create_folder_placeholder_description">Opprett en mappe for å forsterke e-postopplevelsen.</string>
-  <string name="add_folder_content_description">Legg til mappe</string>
+  <string name="create_folder_content_description">Legg til mappe</string>
   <string name="folder_settings_content_description">Mappeinnstillinger</string>
   <string name="folder_settings_title">Innstillinger</string>
   <string name="folder_settings_done_button">Ferdig</string>

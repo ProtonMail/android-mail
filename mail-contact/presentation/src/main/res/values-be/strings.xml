@@ -91,4 +91,5 @@
   <string name="contact_details_delete_dialog_text">Вы сапраўды хочаце выдаліць гэты кантакт?</string>
   <string name="contact_details_delete_dialog_cancel_button">Скасаваць</string>
   <string name="contact_details_delete_dialog_confirm_button">Добра</string>
+  <string name="contact_form_save_error">Памылка захавання кантакту. Паспрабуйце яшчэ раз пазней</string>
 </resources>

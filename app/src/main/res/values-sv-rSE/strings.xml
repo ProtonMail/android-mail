@@ -39,4 +39,6 @@
   <string name="label_saved">Etikett sparad</string>
   <string name="label_deleted">Etikett borttagen</string>
   <string name="label_list_loading_error">Gick inte ladda etikett, försök igen senare</string>
+  <string name="app_locked">Appen är låst</string>
+  <string name="use_pin_instead">Använd PIN-kod istället</string>
 </resources>

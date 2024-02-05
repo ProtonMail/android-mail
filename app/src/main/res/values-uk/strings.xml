@@ -39,4 +39,6 @@
   <string name="label_saved">Мітку збережено</string>
   <string name="label_deleted">Мітку видалено</string>
   <string name="label_list_loading_error">Помилка завантаження мітки, спробуйте знову пізніше</string>
+  <string name="app_locked">Програму заблоковано</string>
+  <string name="use_pin_instead">Використати PIN-код натомість</string>
 </resources>

@@ -32,9 +32,9 @@
   <string name="bcc">Bcc:</string>
   <string name="hide_details">Sembunyikan rincian</string>
   <string name="undisclosed_recipients">Penerima yang dirahasiakan</string>
-  <string name="error_mark_as_unread_failed">Tandai sebagai belum dibaca gagal. Silahkan coba lagi.</string>
-  <string name="error_star_operation_failed">Pesan gagal dibintangi. Silakan coba lagi.</string>
-  <string name="error_unstar_operation_failed">Bintang pesan gagal dihapus. Silakan coba lagi.</string>
+  <string name="error_mark_as_unread_failed">Tanda belum dibaca gagal disematkan. Silakan coba lagi.</string>
+  <string name="error_star_operation_failed">Tanda bintang gagal disematkan. Silakan coba lagi.</string>
+  <string name="error_unstar_operation_failed">Tanda bintang gagal dihapus. Silakan coba lagi.</string>
   <string name="error_move_to_trash_failed">Pemindahan ke sampah gagal. Silakan coba lagi.</string>
   <string name="message_moved_to_trash">Pesan dipindahkan ke Sampah</string>
   <string name="message_moved_to_archive">Pesan dipindahkan ke Arsip</string>
@@ -53,7 +53,7 @@
   <string name="error_relabel_message_failed">Pesan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="error_relabel_conversation_failed">Percakapan gagal dilabeli ulang. Silakan coba lagi</string>
   <string name="please_go_back_online_to_load_messages">Anda sedang offline. Silakan sambungkan diri Anda ke internet untuk memuat pesan</string>
-  <string name="decryption_error">Dekripsi pesan gagal.</string>
+  <string name="decryption_error">Pesan gagal didekripsi.</string>
   <string name="detail_error_retrieving_message_body">Pesan tidak dapat diambil</string>
   <string name="message_body_error_no_webview">Anda harus menginstal WebView untuk melihat konten pesan ini.</string>
   <!-- Banners -->
@@ -83,4 +83,11 @@
   <string name="message_body_load_remote_content_button_text">Muat remote content</string>
   <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
+  <string name="message_report_phishing_dialog_title_offline">Perhatian</string>
+  <string name="message_report_phishing_dialog_message_offline">Fitur ini hanya tersedia secara online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Konfirmasi laporan phishing</string>
+  <string name="message_report_phishing_dialog_message">Dengan melaporkan pesan sebagai upaya phishing, pesan tersebut akan dikirimkan kepada kami agar kami dapat menganalisanya dan meningkatkan filter kami. Hal ini berarti bahwa kami akan dapat melihat isi pesan tersebut secara utuh.</string>
+  <string name="message_report_phishing_dialog_confim_button">Konfirmasi</string>
+  <string name="message_report_phishing_dialog_cancel_button">Batal</string>
 </resources>

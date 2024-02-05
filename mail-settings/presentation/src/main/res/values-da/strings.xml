@@ -69,7 +69,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Ingen inaktive adresser</string>
   <string name="mail_settings_default_email_address_error_loading">Fejl ved indlæsning af indstillinger</string>
   <string name="mail_settings_default_email_address_error_update">Fejl ved opdatering af indstillinger</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Opgradér til et betalt abonnement for at kunne indstille denne e-mail som standardadresse</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Opgradér til et betalt abonnement for at indstille denne adresse som standard</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Vis navn og signatur</string>
   <string name="mail_settings_identity_save_button">Gem</string>
@@ -130,9 +130,10 @@
   <string name="mail_settings_pin_insertion_input_title">Angiv pinkode</string>
   <string name="mail_settings_pin_insertion_set_title">Indstil pinkode</string>
   <string name="mail_settings_pin_insertion_confirm_title">Bekræft pinkode</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Låsikon</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Låseikon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin-prik</string>
   <string name="mail_settings_pin_insertion_backspace_description">Slettetast</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrisk godkendelse</string>
   <string name="mail_settings_pin_insertion_button_create">Opret</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bekræft</string>
   <string name="mail_settings_pin_insertion_error_no_match">Pinkoder stemmer ikke overens.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Rydder lokale cachelagrede data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Der opstod en fejl. Prøv igen.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Ingen biometriske data registreret</string>
+  <string name="log_in_using_biometric_credential">Lås op ved hjælp af dine biometriske legitimationsoplysninger</string>
+  <string name="unlock_using_biometrics">Lås op med biometri</string>
+  <string name="biometric_error_hw_not_available">Hardware til biometri er ikke tilgængelig.</string>
 </resources>

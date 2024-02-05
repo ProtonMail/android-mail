@@ -28,7 +28,7 @@
   <string name="action_reply_all">Svar alle</string>
   <string name="action_forward">Videresend</string>
   <string name="action_reply_description">Svar</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Svar til %s</string>
   <string name="action_reply_all_description">Svar alle</string>
   <string name="action_forward_description">Videresend</string>
   <string name="action_mark_read_description">Markér som læst</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Gem vedhæftninger</string>
   <string name="action_more_description">Flere</string>
   <string name="action_reply_content_description">Svar</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Svar til %s</string>
   <string name="action_reply_all_content_description">Svar alle</string>
   <string name="action_forward_content_description">Videresend</string>
   <string name="action_mark_read_content_description">Markér som læst</string>
@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app til håndtering af denne handling fundet</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Annullér</string>
   <string name="mailbox_action_delete_dialog_button_delete">Slet</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Annullér</string>
 </resources>

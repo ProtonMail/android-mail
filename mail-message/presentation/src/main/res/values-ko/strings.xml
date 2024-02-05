@@ -42,5 +42,5 @@
   <string name="bottom_sheet_done_action">완료</string>
   <string name="bottom_sheet_archive_action">보관함에 옮길까요?</string>
   <string name="bottom_sheet_label_as_title">다음에 라벨 추가...</string>
-  <string name="bottom_sheet_more_header_message_from">Message from %s</string>
+  <string name="bottom_sheet_more_header_message_from">%s으로부터 온 메시지</string>
 </resources>

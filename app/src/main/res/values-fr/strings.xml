@@ -39,4 +39,6 @@
   <string name="label_saved">Le label a été enregistré.</string>
   <string name="label_deleted">Le label a été supprimé.</string>
   <string name="label_list_loading_error">Une erreur s\'est produite lors du chargement du label. Veuillez réessayer plus tard.</string>
+  <string name="app_locked">Application verrouillée</string>
+  <string name="use_pin_instead">Utiliser le code PIN à la place</string>
 </resources>

@@ -39,4 +39,6 @@
   <string name="label_saved">Etiket kaydedldi</string>
   <string name="label_deleted">Etiket silindi</string>
   <string name="label_list_loading_error">Etiket yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="app_locked">Uygulama kilitlendi</string>
+  <string name="use_pin_instead">Bunun yerine PIN kodu kullanın</string>
 </resources>

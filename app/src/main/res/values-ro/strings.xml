@@ -39,4 +39,6 @@
   <string name="label_saved">Etichetă a fost salvată.</string>
   <string name="label_deleted">Etichetă a fost ștearsă.</string>
   <string name="label_list_loading_error">Eroare la încărcarea etichetei. Reîncercați mai târziu.</string>
+  <string name="app_locked">Aplicație blocată</string>
+  <string name="use_pin_instead">Folosiți PIN</string>
 </resources>

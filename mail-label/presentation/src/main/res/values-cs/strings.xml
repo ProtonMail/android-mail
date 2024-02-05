@@ -33,13 +33,13 @@
   <string name="label_title_folders">Složky</string>
   <string name="label_title_parent_folder">Nadřazená složka</string>
   <string name="label_title_labels">Štítky</string>
-  <string name="label_title_add_folder">Přidat složku</string>
-  <string name="label_title_add_label">Přidat štítek</string>
+  <string name="label_title_create_folder">Vytvořit složku</string>
+  <string name="label_title_create_label">Vytvořit štítek</string>
   <string name="label_title_label_list">Seznam štítků</string>
   <string name="label_title_folder_list">Seznam složek</string>
   <string name="label_list_no_labels_found">Nebyly nalezeny žádné štítky.</string>
   <string name="label_list_create_label_placeholder_description">Vytvořte si štítek, který vám pomůže zlepšit práci s e-maily.</string>
-  <string name="add_label_content_description">Přidat štítek</string>
+  <string name="create_label_content_description">Vytvořit štítek</string>
   <string name="label_form_create_label">Vytvořit štítek</string>
   <string name="folder_form_create_folder">Vytvořit složku</string>
   <string name="label_form_edit_label">Upravit štítek</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Položka seznamu složek</string>
   <string name="folder_list_no_folders_found">Žádné složky nenalezeny.</string>
   <string name="folder_list_create_folder_placeholder_description">Vytvořte si složku, která vám pomůže zlepšit práci s e-maily.</string>
-  <string name="add_folder_content_description">Přidat složku</string>
+  <string name="create_folder_content_description">Přidat složku</string>
   <string name="folder_settings_content_description">Nastavení složky</string>
   <string name="folder_settings_title">Nastavení</string>
   <string name="folder_settings_done_button">Hotovo</string>

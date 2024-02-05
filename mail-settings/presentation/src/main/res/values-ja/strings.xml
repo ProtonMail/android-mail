@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">作成</string>
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
   <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません.</string>
@@ -154,4 +155,9 @@
   <string name="mail_settings_clearing_cached_data">ローカルキャッシュデータを消去中…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">エラーが発生しました。再度お試しください。</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">生体認証データが登録されていません</string>
+  <string name="log_in_using_biometric_credential">生体認証によるロック解除</string>
+  <string name="unlock_using_biometrics">生体認証によるロック解除</string>
+  <string name="biometric_error_hw_not_available">生体認証ハードウェアは使用できません。</string>
 </resources>

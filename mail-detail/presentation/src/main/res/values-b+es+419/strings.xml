@@ -84,4 +84,11 @@
   <string name="message_body_load_remote_content_button_text">Cargar contenido remoto</string>
   <string name="message_body_load_embedded_images_button_text">Cargar imágenes incrustadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Cargar contenido remoto e incrustado</string>
+  <string name="message_report_phishing_dialog_title_offline">Atención</string>
+  <string name="message_report_phishing_dialog_message_offline">Esta función solo está disponible en línea.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">Aceptar</string>
+  <string name="message_report_phishing_dialog_title">Confirmar reporte de suplantación</string>
+  <string name="message_report_phishing_dialog_message">Al reportar un mensaje como suplantación de identidad, enviará una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.</string>
+  <string name="message_report_phishing_dialog_confim_button">Confirmar</string>
+  <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
 </resources>

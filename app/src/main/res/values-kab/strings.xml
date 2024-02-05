@@ -39,4 +39,6 @@
   <string name="label_saved">Label saved</string>
   <string name="label_deleted">Tabzimt tettwakkes</string>
   <string name="label_list_loading_error">Error loading label, please try again later</string>
+  <string name="app_locked">Asnas yesekkeṛ</string>
+  <string name="use_pin_instead">Seqdec PIN deg umḍiq</string>
 </resources>

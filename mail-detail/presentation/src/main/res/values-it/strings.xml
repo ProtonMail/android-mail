@@ -84,4 +84,11 @@
   <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
+  <string name="message_report_phishing_dialog_title_offline">Attenzione</string>
+  <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Conferma la segnalazione di phishing</string>
+  <string name="message_report_phishing_dialog_message">Segnalare un messaggio come tentativo di phishing ci invierà il messaggio, così potremo analizzarlo e migliorare i nostri filtri. Ciò significa che potremo vedere integralmente il contenuto del messaggio.</string>
+  <string name="message_report_phishing_dialog_confim_button">Conferma</string>
+  <string name="message_report_phishing_dialog_cancel_button">Annulla</string>
 </resources>

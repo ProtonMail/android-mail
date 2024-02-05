@@ -28,7 +28,7 @@
   <string name="action_reply_all">Odpovědět všem</string>
   <string name="action_forward">Přeposlat</string>
   <string name="action_reply_description">Odpovědět</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Odpovědět na %s</string>
   <string name="action_reply_all_description">Odpovědět všem</string>
   <string name="action_forward_description">Přeposlat</string>
   <string name="action_mark_read_description">Označit jako přečtené</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Uložit přílohy</string>
   <string name="action_more_description">Další</string>
   <string name="action_reply_content_description">Odpovědět</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Odpovědět na %s</string>
   <string name="action_reply_all_content_description">Odpovědět všem</string>
   <string name="action_forward_content_description">Přeposlat</string>
   <string name="action_mark_read_content_description">Označit jako přečtené</string>

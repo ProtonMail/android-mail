@@ -77,12 +77,12 @@
   <string name="mail_settings_identity_display_name_hint">Nama tampilan</string>
   <string name="mail_settings_identity_signature">Tanda tangan</string>
   <string name="mail_settings_identity_signature_hint">Tanda tangan</string>
-  <string name="mail_settings_identity_mobile_footer">Footer ponsel</string>
+  <string name="mail_settings_identity_mobile_footer">Footer seluler</string>
   <string name="mail_settings_identity_mobile_footer_subtext">Footer ini akan ditambahkan setelah tanda tangan Anda.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Footer ponsel</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Footer seluler</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Dikirim dari Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Terjadu kesalahan memperbarui pengaturan</string>
-  <string name="mail_settings_identity_error_loading">Terjadi kesalahan memuat pengaturan</string>
+  <string name="mail_settings_identity_error_updating">Terdapat kesalahan dalam memperbarui pengaturan</string>
+  <string name="mail_settings_identity_error_loading">Terdapat kesalahan dalam memuat pengaturan</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Tampilkan remote content secara otomatis</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Tampilkan gambar tersemat secara otomatis</string>
@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikon kunci</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Titik pin</string>
   <string name="mail_settings_pin_insertion_backspace_description">Hapus</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autentikasi Biometrik</string>
   <string name="mail_settings_pin_insertion_button_create">Buat</string>
   <string name="mail_settings_pin_insertion_button_confirm">Konfirmasi</string>
   <string name="mail_settings_pin_insertion_error_no_match">Kode PIN tidak sesuai.</string>
@@ -154,4 +155,9 @@
   <string name="mail_settings_clearing_cached_data">Bersihkan cache data lokal...</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Tidak ada data biometrik yang terdaftar</string>
+  <string name="log_in_using_biometric_credential">Buka kunci dengan kredensial biometrik</string>
+  <string name="unlock_using_biometrics">Buka kunci dengan biometrik</string>
+  <string name="biometric_error_hw_not_available">Perangkat keras biometrik tidak tersedia.</string>
 </resources>

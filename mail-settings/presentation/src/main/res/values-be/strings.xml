@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Значок блакіроўкі</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">PIN кропкамі</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Біяметрычная аўтэнтыфікацыя</string>
   <string name="mail_settings_pin_insertion_button_create">Стварыць</string>
   <string name="mail_settings_pin_insertion_button_confirm">Пацвердзіць</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не супадаюць.</string>
@@ -160,4 +161,9 @@
   <string name="mail_settings_clearing_cached_data">Ачыстка даных лакальнага кэша...</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Няма зарэгістраваных біяметрычных даных</string>
+  <string name="log_in_using_biometric_credential">Разблакіраваць з дапамогай вашых біяметрычных даных</string>
+  <string name="unlock_using_biometrics">Разблакіраваць з дапамогай біяметрычных даных</string>
+  <string name="biometric_error_hw_not_available">Адсутнічае біяметрычнае абсталяванне.</string>
 </resources>

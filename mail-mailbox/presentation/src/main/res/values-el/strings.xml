@@ -45,7 +45,7 @@
   <string name="mailbox_is_empty_no_unread_messages_title">Κανένα μη αναγνωσμένο μήνυμα</string>
   <string name="mailbox_is_empty_folder_description">Αυτός ο φάκελος είναι κενός</string>
   <string name="mailbox_is_empty_spam_description">Ο φάκελος ενοχλητικών είναι κενός</string>
-  <string name="mailbox_is_empty_trash_description">Ο κάδος απορριμμάτων είναι άδειος</string>
+  <string name="mailbox_is_empty_trash_description">Τα Διαγραμμένα είναι άδεια</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>
     <item quantity="other">%d μηνύματα μετακινήθηκαν στα Διαγραμμένα</item>
@@ -106,19 +106,19 @@
   <string name="mailbox_action_button_clear_spam">Καθαρισμός Ανεπιθύμητων</string>
   <string name="mailbox_action_clear_trash_dialog_title">Εκκαθάριση φακέλου Διαγραμμένων</string>
   <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στον \"Κάδο απορριμμάτων\";</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα \"Διαγραμμένα\";</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα \"Ανεπιθύμητα\";</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στον \"Κάδο απορριμμάτων\";</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στα \"Διαγραμμένα\";</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στα \"Ανεπιθύμητα\";</string>
   <string name="mailbox_action_clear_operation_scheduled">"Έχει προγραμματιστεί η λειτουργία εκκαθάρισης"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Don\'t remind me again</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_title">Προειδοποίηση</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 80%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 90%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Μην μου υπενθυμίσεις ξανά</string>
+  <string name="storage_limit_warning_dialog_confirm_button">ΟΚ</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_title">Προειδοποίηση</string>
+  <string name="storage_quota_over_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι 100% πλήρης. Δε θα μπορείτε να στέλνετε ή να λαμβάνετε μηνύματα ηλεκτρονικού ταχυδρομείου, εκτός εάν διαγράψετε οριστικά ορισμένα μηνύματα ηλεκτρονικού ταχυδρομείου ή κάνετε αναβάθμιση για περισσότερο χώρο αποθήκευσης.</string>
+  <string name="storage_quota_over_dialog_confirm_button">ΟΚ</string>
 </resources>

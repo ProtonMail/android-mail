@@ -84,4 +84,11 @@
   <string name="message_body_load_remote_content_button_text">Ladda fjärrinnehåll</string>
   <string name="message_body_load_embedded_images_button_text">Ladda inbäddade bilder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Ladda fjärr och inbäddat innehåll</string>
+  <string name="message_report_phishing_dialog_title_offline">Uppmärksamhet</string>
+  <string name="message_report_phishing_dialog_message_offline">Denna funktion är endast tillgänglig online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Bekräfta nätfiskerapport</string>
+  <string name="message_report_phishing_dialog_message">Att rapportera ett meddelande som ett nätfiskeförsök kommer skicka meddelandet till oss så att vi kan analysera det och förbättra våra filter. Detta innebär att vi kommer kunna se innehållet i meddelandet i sin helhet.</string>
+  <string name="message_report_phishing_dialog_confim_button">Bekräfta</string>
+  <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
 </resources>

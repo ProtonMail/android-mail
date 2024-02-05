@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Pictogramă blocare</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Ascundere PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autentificare biometrică</string>
   <string name="mail_settings_pin_insertion_button_create">Creare</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmare</string>
   <string name="mail_settings_pin_insertion_error_no_match">Codurile PIN nu coincid.</string>
@@ -158,4 +159,9 @@
   <string name="mail_settings_clearing_cached_data">Se golesc datele din bufferul local…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">A apărut o eroare. Mai încercați.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Nu există date biometrice</string>
+  <string name="log_in_using_biometric_credential">Deblocare folosind acreditările biometrice</string>
+  <string name="unlock_using_biometrics">Deblocare folosind date biometrice</string>
+  <string name="biometric_error_hw_not_available">Dizpozitiv biometric nedisponibil.</string>
 </resources>

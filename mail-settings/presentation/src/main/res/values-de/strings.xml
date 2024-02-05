@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Sperrsymbol</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin-Code Punkt</string>
   <string name="mail_settings_pin_insertion_backspace_description">Rücktaste</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrische Authentifizierung</string>
   <string name="mail_settings_pin_insertion_button_create">Erstellen</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bestätigen</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-Codes stimmen nicht überein.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Lokal zwischengespeicherte Daten werden bereinigt…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Es ist ein Fehler aufgetreten. Versuche es erneut.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Keine biometrischen Daten erfasst</string>
+  <string name="log_in_using_biometric_credential">Mit deinen biometrischen Zugangsdaten entsperren</string>
+  <string name="unlock_using_biometrics">Mit biometrischen Daten entsperren</string>
+  <string name="biometric_error_hw_not_available">Biometrische Hardware nicht verfügbar.</string>
 </resources>

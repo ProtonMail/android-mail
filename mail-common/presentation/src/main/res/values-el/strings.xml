@@ -28,7 +28,7 @@
   <string name="action_reply_all">Απάντηση σε όλους</string>
   <string name="action_forward">Προώθηση</string>
   <string name="action_reply_description">Απάντηση</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Απάντηση σε %s</string>
   <string name="action_reply_all_description">Απάντηση σε όλους</string>
   <string name="action_forward_description">Προώθηση</string>
   <string name="action_mark_read_description">Επισήμανση ως αναγνωσμένο</string>
@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Αφαίρεση αστεριού</string>
   <string name="action_label_description">Απόδοση ετικετών</string>
   <string name="action_move_description">Μεταφορά σε</string>
-  <string name="action_trash_description">Κάδος Απορριμμάτων</string>
+  <string name="action_trash_description">Διαγραμμένα</string>
   <string name="action_delete_description">Διαγραφή</string>
   <string name="action_archive_description">Αρχειοθετημένα</string>
   <string name="action_spam_description">Μετακίνηση στα ανεπιθύμητα</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Αποθήκευση συνημμένων</string>
   <string name="action_more_description">Περισσότερα</string>
   <string name="action_reply_content_description">Απάντηση</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Απάντηση σε %s</string>
   <string name="action_reply_all_content_description">Απάντηση σε όλους</string>
   <string name="action_forward_content_description">Προώθηση</string>
   <string name="action_mark_read_content_description">Επισήμανση ως αναγνωσμένο</string>
@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Δεν βρέθηκε εφαρμογή να χειριστεί αυτή την ενέργεια</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Ακύρωση</string>
   <string name="mailbox_action_delete_dialog_button_delete">Διαγραφή</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Ακύρωση</string>
 </resources>

@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikona zámku</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Tečky PIN kódu</string>
   <string name="mail_settings_pin_insertion_backspace_description">Vymazat</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrické ověření</string>
   <string name="mail_settings_pin_insertion_button_create">Vytvořit</string>
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdit</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy se neshodují.</string>
@@ -160,4 +161,9 @@
   <string name="mail_settings_clearing_cached_data">Vymazání místních dat z mezipaměti…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Nebyly zapsány žádné biometrické údaje</string>
+  <string name="log_in_using_biometric_credential">Odemknout pomocí Vašich biometrických údajů</string>
+  <string name="unlock_using_biometrics">Odemknout pomocí biometrie</string>
+  <string name="biometric_error_hw_not_available">Biometrický hardware není k dispozici.</string>
 </resources>

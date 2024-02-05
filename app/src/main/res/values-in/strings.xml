@@ -39,4 +39,6 @@
   <string name="label_saved">Label disimpan</string>
   <string name="label_deleted">Label dihapus</string>
   <string name="label_list_loading_error">Terjadi kesalahan memuat label, silakan coba lagi nanti</string>
+  <string name="app_locked">Aplikasi terkunci</string>
+  <string name="use_pin_instead">Gunakan PIN sebagai gantinya</string>
 </resources>

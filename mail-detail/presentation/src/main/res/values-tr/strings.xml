@@ -81,7 +81,14 @@
   <string name="error_delete_conversation_failed">Yazışma silinemedi</string>
   <string name="error_delete_conversation_failed_wrong_folder">Yazışma silinebilecek bir konumda değil</string>
   <string name="conversation_deleted">Yazışma silindi</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_body_load_remote_content_button_text">Uzak içeriği yükle</string>
+  <string name="message_body_load_embedded_images_button_text">Gömülü görselleri yükle</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Gömülü uzak içeriği yükle</string>
+  <string name="message_report_phishing_dialog_title_offline">Dikkat</string>
+  <string name="message_report_phishing_dialog_message_offline">Bu özellik sadece çevrim içi mevcuttur.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">Tamam</string>
+  <string name="message_report_phishing_dialog_title">Kimlik avı girişimi bildirimini onayla</string>
+  <string name="message_report_phishing_dialog_message">Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.</string>
+  <string name="message_report_phishing_dialog_confim_button">Onayla</string>
+  <string name="message_report_phishing_dialog_cancel_button">İptal</string>
 </resources>

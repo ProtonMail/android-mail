@@ -133,11 +133,12 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Icona de bloqueig</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Punt del codi PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retrocés</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autenticació biomètrica</string>
   <string name="mail_settings_pin_insertion_button_create">Crea</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirma</string>
   <string name="mail_settings_pin_insertion_error_no_match">Els codis PIN no coincideixen.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="one">%s intent restant.</item>
     <item quantity="other">%s intents restants.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">S\'estan netejant les dades a la memòria cau local...</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">S\'ha produït un error. Proveu de nou.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">No s’han registrat dades biomètriques</string>
+  <string name="log_in_using_biometric_credential">Desbloquejar amb les vostres credencials biomètriques</string>
+  <string name="unlock_using_biometrics">Desbloquejar usant biomètrica</string>
+  <string name="biometric_error_hw_not_available">Hardware biomètric no disponible.</string>
 </resources>

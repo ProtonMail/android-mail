@@ -28,7 +28,7 @@
   <string name="action_reply_all">Allen beantwoorden</string>
   <string name="action_forward">Doorsturen</string>
   <string name="action_reply_description">Beantwoorden</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Antwoord aan %s</string>
   <string name="action_reply_all_description">Allen beantwoorden</string>
   <string name="action_forward_description">Doorsturen</string>
   <string name="action_mark_read_description">Markeer als gelezen</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Bijlagen opslaan</string>
   <string name="action_more_description">Meer</string>
   <string name="action_reply_content_description">Beantwoorden</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Antwoord aan %s</string>
   <string name="action_reply_all_content_description">Allen beantwoorden</string>
   <string name="action_forward_content_description">Doorsturen</string>
   <string name="action_mark_read_content_description">Markeer als gelezen</string>
@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Er is geen app gevonden om deze actie uit te voeren</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Annuleren</string>
   <string name="mailbox_action_delete_dialog_button_delete">Verwijderen</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Annuleren</string>
 </resources>

@@ -86,4 +86,11 @@
   <string name="message_body_load_remote_content_button_text">Загружаць аддаленае змесціва</string>
   <string name="message_body_load_embedded_images_button_text">Загружаць убудаваныя відарысы</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Загружаць аддаленае і ўбудаванае змесціва</string>
+  <string name="message_report_phishing_dialog_title_offline">Увага</string>
+  <string name="message_report_phishing_dialog_message_offline">Гэта функцыя даступна толькі калі вы ў сетцы.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">Добра</string>
+  <string name="message_report_phishing_dialog_title">Пацвердзіць скаргу на фішынг</string>
+  <string name="message_report_phishing_dialog_message">Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.</string>
+  <string name="message_report_phishing_dialog_confim_button">Пацвердзіць</string>
+  <string name="message_report_phishing_dialog_cancel_button">Скасаваць</string>
 </resources>

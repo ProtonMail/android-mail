@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">Create</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
   <string name="mail_settings_pin_insertion_error_no_match">Tangalin PIN ur mṣadant ara.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Teḍra-d tuccḍa. Ɛawed-as.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Ulac isefka ibyumitren i yettwaskelsen</string>
+  <string name="log_in_using_biometric_credential">Kkes asekkeṛ s useqdec n yisallen-ik·im n tmagit ibyumitren</string>
+  <string name="unlock_using_biometrics">Serreḥ s usemres n tebyumitrikt</string>
+  <string name="biometric_error_hw_not_available">Arrum n tebyumitrikt ulac-it.</string>
 </resources>

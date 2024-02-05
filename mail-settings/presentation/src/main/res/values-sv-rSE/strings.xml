@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Låsikon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backsteg</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrisk autentisering</string>
   <string name="mail_settings_pin_insertion_button_create">Skapa</string>
   <string name="mail_settings_pin_insertion_button_confirm">Bekräfta</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-koder matchar inte.</string>
@@ -156,4 +157,9 @@
   <string name="mail_settings_clearing_cached_data">Rensar lokal cachad data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ett fel uppstod. Försök igen.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Inga biometriska data registrerade</string>
+  <string name="log_in_using_biometric_credential">Lås upp med dina biometriska uppgifter</string>
+  <string name="unlock_using_biometrics">Lås upp med biometri</string>
+  <string name="biometric_error_hw_not_available">Biometrisk hårdvara inte tillgänglig.</string>
 </resources>

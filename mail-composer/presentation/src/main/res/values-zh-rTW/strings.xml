@@ -49,29 +49,29 @@
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">新增密碼</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
-  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_title">撰寫郵件</string>
+  <string name="composer_send_without_subject_dialog_text">確定要傳送沒有主旨的郵件嗎？</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">是</string>
+  <string name="composer_send_without_subject_dialog_reject_button">否</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">回報錯誤</string>
   <string name="message_sending_error_dialog_button_dismiss">關閉</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">無信任金鑰 : %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">地址不存在 : %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
+  <string name="set_message_password_title">加密郵件</string>
+  <string name="set_message_password_info_message">替沒有 Protonv Mail 使用者設定一組密碼以進行加密郵件.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label">郵件密碼</string>
+  <string name="set_message_password_label_repeat">重複輸入密碼</string>
   <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
+  <string name="set_message_password_supporting_text">長度為 4 至 21 個字元</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
-  <string name="set_message_password_button_remove_password">Remove password</string>
+  <string name="set_message_password_supporting_text_repeat">密碼必須相符</string>
+  <string name="set_message_password_supporting_error_text_repeat">兩組密碼並不相符</string>
+  <string name="set_message_password_button_show">顯示密碼</string>
+  <string name="set_message_password_button_hide">隱藏密碼</string>
+  <string name="set_message_password_button_apply">套用密碼</string>
+  <string name="set_message_password_button_save_changes">儲存變更</string>
+  <string name="set_message_password_button_remove_password">移除密碼</string>
 </resources>

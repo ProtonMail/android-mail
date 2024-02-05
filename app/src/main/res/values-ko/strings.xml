@@ -39,4 +39,6 @@
   <string name="label_saved">라벨을 저장했습니다.</string>
   <string name="label_deleted">라벨을 삭제했습니다.</string>
   <string name="label_list_loading_error">라벨 로드 중 오류 발생, 다시 시도하십시오.</string>
+  <string name="app_locked">앱 잠김</string>
+  <string name="use_pin_instead">대신 PIN 사용하기</string>
 </resources>

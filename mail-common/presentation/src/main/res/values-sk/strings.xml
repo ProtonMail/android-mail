@@ -90,5 +90,5 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">Pre spracovanie tejto akcie sa nenašla žiadna aplikácia</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Zrušiť</string>
   <string name="mailbox_action_delete_dialog_button_delete">Vymazať</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">Zrušiť</string>
 </resources>

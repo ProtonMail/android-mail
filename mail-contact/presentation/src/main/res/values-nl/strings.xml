@@ -33,7 +33,7 @@
   <string name="no_contact_email">Geen e-mailadres</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <string name="contact_details_loading_error">Error loading contact, please try again later</string>
-  <string name="contact_details_delete_success">Contact deleted</string>
+  <string name="contact_details_delete_success">Contactpersoon verwijderd</string>
   <string name="edit_contact_content_description">Edit contact</string>
   <string name="delete_contact_content_description">Delete contact</string>
   <string name="contact_avatar_image_content_description">Contact avatar</string>
@@ -88,7 +88,8 @@
   <string name="address_region">Region</string>
   <string name="address_country">Land</string>
   <string name="contact_details_delete_dialog_title">Delete Contact</string>
-  <string name="contact_details_delete_dialog_text">Are you sure you want to delete this contact?</string>
+  <string name="contact_details_delete_dialog_text">Weet u zeker dat u deze contactpersoon wilt verwijderen?</string>
   <string name="contact_details_delete_dialog_cancel_button">Cancel</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
+  <string name="contact_form_save_error">Error saving contact, please try again later</string>
 </resources>

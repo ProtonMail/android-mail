@@ -39,4 +39,6 @@
   <string name="label_saved">Η ετικέτα αποθηκεύτηκε</string>
   <string name="label_deleted">Η ετικέτα διαγράφηκε</string>
   <string name="label_list_loading_error">Σφάλμα φόρτωσης ετικέτας, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="app_locked">Η εφαρμογή είναι κλειδωμένη</string>
+  <string name="use_pin_instead">Εναλλακτικά, χρησιμοποιήστε PIN</string>
 </resources>

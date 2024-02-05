@@ -83,7 +83,14 @@
   <string name="error_delete_conversation_failed">Не удалось удалить цепочку писем</string>
   <string name="error_delete_conversation_failed_wrong_folder">Сообщение находится не в том месте, где его можно удалить</string>
   <string name="conversation_deleted">Цепочка писем удалена</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_remote_content_button_text">Загрузить внешнее содержимое</string>
+  <string name="message_body_load_embedded_images_button_text">Скачать встроенные изображения</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Подтвердить жалобу на фишинг</string>
+  <string name="message_report_phishing_dialog_message">Сообщение о попытке фишинга отправит сообщение нам, чтобы мы смогли проанализировать его и улучшить наши фильтры. Это означает, что мы будем способны увидеть содержимое сообщения полностью.</string>
+  <string name="message_report_phishing_dialog_confim_button">Подтвердить</string>
+  <string name="message_report_phishing_dialog_cancel_button">Отменить</string>
 </resources>

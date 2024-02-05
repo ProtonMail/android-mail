@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Значок блокировки</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">Создать</string>
   <string name="mail_settings_pin_insertion_button_confirm">Подтвердить</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не совпадают.</string>
@@ -160,4 +161,9 @@
   <string name="mail_settings_clearing_cached_data">Очистка кэша на устройстве…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Произошла ошибка. Попробуйте ещё раз.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Нет зарегистрированных биометрических данных</string>
+  <string name="log_in_using_biometric_credential">Разблокировать с помощью ваших биометрических данных</string>
+  <string name="unlock_using_biometrics">Разблокировать с помощью биометрических данных</string>
+  <string name="biometric_error_hw_not_available">Биометрическое оборудование недоступно.</string>
 </resources>

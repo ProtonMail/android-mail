@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Add password</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
-  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_text">Bericht versturen zonder onderwerp?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
   <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
@@ -59,19 +59,19 @@
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
+  <string name="set_message_password_title">Bericht versleutelen</string>
+  <string name="set_message_password_info_message">Voer een wachtwoord in om dit bericht te versleutelen voor niet-Proton Mailgebruikers.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label">Wachtwoord van bericht</string>
+  <string name="set_message_password_label_repeat">Wachtwoord herhalen</string>
   <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
+  <string name="set_message_password_supporting_text">4 tot 21 tekens lang</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
+  <string name="set_message_password_supporting_text_repeat">Wachtwoorden moeten overeenkomen</string>
+  <string name="set_message_password_supporting_error_text_repeat">De 2 wachtwoorden komen niet overeen</string>
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
   <string name="set_message_password_button_save_changes">Save changes</string>
-  <string name="set_message_password_button_remove_password">Remove password</string>
+  <string name="set_message_password_button_remove_password">Verwijder wachtwoord</string>
 </resources>

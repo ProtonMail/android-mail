@@ -133,6 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">Create</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
@@ -158,4 +159,9 @@
   <string name="mail_settings_clearing_cached_data">Clearing local cached data…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Došlo je do pogreške. Pokušajte ponovo.</string>
+  <!-- strings used for biometric enrollment -->
+  <string name="no_biometric_data_enrolled">Nema upisanih biometrijskih podataka</string>
+  <string name="log_in_using_biometric_credential">Otključajte koristeći se biometrijskim vjerodajnicama</string>
+  <string name="unlock_using_biometrics">Otključajte biometrijom</string>
+  <string name="biometric_error_hw_not_available">Biometrijski hardver nije dostupan.</string>
 </resources>

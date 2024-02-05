@@ -33,13 +33,13 @@
   <string name="label_title_folders">Folder</string>
   <string name="label_title_parent_folder">Folder induk</string>
   <string name="label_title_labels">Label</string>
-  <string name="label_title_add_folder">Tambah folder</string>
-  <string name="label_title_add_label">Tambah label</string>
+  <string name="label_title_create_folder">Buat folder</string>
+  <string name="label_title_create_label">Buat label</string>
   <string name="label_title_label_list">Daftar label</string>
   <string name="label_title_folder_list">Daftar folder</string>
   <string name="label_list_no_labels_found">Tidak ada label yang ditemukan.</string>
   <string name="label_list_create_label_placeholder_description">Buat label untuk memperkaya pengalaman email Anda.</string>
-  <string name="add_label_content_description">Tambah label</string>
+  <string name="create_label_content_description">Buat label</string>
   <string name="label_form_create_label">Buat label</string>
   <string name="folder_form_create_folder">Buat folder</string>
   <string name="label_form_edit_label">Sunting label</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">Item daftar folder</string>
   <string name="folder_list_no_folders_found">Tidak ada folder yang ditemukan.</string>
   <string name="folder_list_create_folder_placeholder_description">Buat folder untuk memperkaya pengalaman email Anda.</string>
-  <string name="add_folder_content_description">Tambah folder</string>
+  <string name="create_folder_content_description">Tambah folder</string>
   <string name="folder_settings_content_description">Pengaturan folder</string>
   <string name="folder_settings_title">Pengaturan</string>
   <string name="folder_settings_done_button">Selesai</string>

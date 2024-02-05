@@ -91,4 +91,5 @@
   <string name="contact_details_delete_dialog_text">Er du sikker på at du vil slette denne kontakten?</string>
   <string name="contact_details_delete_dialog_cancel_button">Avbryt</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
+  <string name="contact_form_save_error">Feil ved lagring av kontakt, vennligst prøv igjen senere.</string>
 </resources>

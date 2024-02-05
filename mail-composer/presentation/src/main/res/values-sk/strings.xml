@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Pridať heslo</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
-  <string name="composer_send_without_subject_dialog_text">Send message without subject?</string>
+  <string name="composer_send_without_subject_dialog_text">Poslať správu bez predmetu?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
   <string name="composer_send_without_subject_dialog_reject_button">No</string>
   <!-- Message sending error dialog -->
@@ -59,19 +59,19 @@
   <string name="message_sending_error_dialog_text_error">Váš email nemôže byť odoslaný na zadaný email z nasledovného dôvodu:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Žiadne dôveryhodné kľúče: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
-  <string name="set_message_password_title">Encrypt message</string>
-  <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
+  <string name="set_message_password_title">Šifrovať správu</string>
+  <string name="set_message_password_info_message">Nastavte heslo na zašifrovanie tejto správy pre používateľov, ktorí nemajú Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
-  <string name="set_message_password_label">Message password</string>
-  <string name="set_message_password_label_repeat">Repeat password</string>
+  <string name="set_message_password_label">Heslo správy</string>
+  <string name="set_message_password_label_repeat">Zopakovať heslo</string>
   <string name="set_message_password_label_hint">Password hint (optional)</string>
-  <string name="set_message_password_supporting_text">4 to 21 characters long</string>
+  <string name="set_message_password_supporting_text">4 až 21 znakov</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
-  <string name="set_message_password_supporting_text_repeat">Passwords must match</string>
-  <string name="set_message_password_supporting_error_text_repeat">The 2 passwords are not matching</string>
+  <string name="set_message_password_supporting_text_repeat">Heslá sa musia zhodovať</string>
+  <string name="set_message_password_supporting_error_text_repeat">Tieto 2 heslá sa nezhodujú</string>
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Hide password</string>
   <string name="set_message_password_button_apply">Apply password</string>
   <string name="set_message_password_button_save_changes">Save changes</string>
-  <string name="set_message_password_button_remove_password">Remove password</string>
+  <string name="set_message_password_button_remove_password">Odstrániť heslo</string>
 </resources>

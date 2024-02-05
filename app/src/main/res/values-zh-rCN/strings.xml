@@ -39,4 +39,6 @@
   <string name="label_saved">标签已保存</string>
   <string name="label_deleted">标签已删除</string>
   <string name="label_list_loading_error">加载标签出错。请稍后再试。</string>
+  <string name="app_locked">程序已锁定</string>
+  <string name="use_pin_instead">输入口令</string>
 </resources>

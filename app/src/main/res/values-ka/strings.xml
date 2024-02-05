@@ -39,4 +39,6 @@
   <string name="label_saved">ჭდე შენახულია</string>
   <string name="label_deleted">ჭდე წაშლილია</string>
   <string name="label_list_loading_error">ჭდის ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="app_locked">აპლიკაცია ჩაკეტილია</string>
+  <string name="use_pin_instead">უმჯობესია გამოიყენოთ PIN</string>
 </resources>

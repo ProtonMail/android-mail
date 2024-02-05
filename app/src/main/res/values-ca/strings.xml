@@ -39,4 +39,6 @@
   <string name="label_saved">S\'ha desat l\'etiqueta.</string>
   <string name="label_deleted">S\'ha eliminat l\'etiqueta.</string>
   <string name="label_list_loading_error">S\'ha produït un error en carregar l\'etiqueta. Proveu de nou més tard.</string>
+  <string name="app_locked">L\'aplicació està bloquejada</string>
+  <string name="use_pin_instead">Utilitzeu el PIN en lloc</string>
 </resources>

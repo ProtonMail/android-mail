@@ -39,4 +39,6 @@
   <string name="label_saved">Метка захавана</string>
   <string name="label_deleted">Метка выдалена</string>
   <string name="label_list_loading_error">Памылка загрузкі меткі. Паспрабуйце пазней</string>
+  <string name="app_locked">Праграма заблакіравана</string>
+  <string name="use_pin_instead">Выкарыстаць замест гэтага PIN</string>
 </resources>

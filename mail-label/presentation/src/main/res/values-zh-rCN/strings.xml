@@ -33,13 +33,13 @@
   <string name="label_title_folders">文件夹</string>
   <string name="label_title_parent_folder">上级文件夹</string>
   <string name="label_title_labels">标签</string>
-  <string name="label_title_add_folder">创建文件夹</string>
-  <string name="label_title_add_label">创建标签</string>
+  <string name="label_title_create_folder">Create folder</string>
+  <string name="label_title_create_label">Create label</string>
   <string name="label_title_label_list">标签列表</string>
   <string name="label_title_folder_list">文件夹列表</string>
   <string name="label_list_no_labels_found">未找到标签。</string>
   <string name="label_list_create_label_placeholder_description">创建标签以增强您的邮件体验。</string>
-  <string name="add_label_content_description">添加标签</string>
+  <string name="create_label_content_description">Create label</string>
   <string name="label_form_create_label">创建标签</string>
   <string name="folder_form_create_folder">新建文件夹</string>
   <string name="label_form_edit_label">编辑标签</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">文件夹列表项目</string>
   <string name="folder_list_no_folders_found">找不到文件夹。</string>
   <string name="folder_list_create_folder_placeholder_description">创建文件夹以增强您的邮件体验。</string>
-  <string name="add_folder_content_description">添加文件夹</string>
+  <string name="create_folder_content_description">Add folder</string>
   <string name="folder_settings_content_description">文件夹设置</string>
   <string name="folder_settings_title">设置</string>
   <string name="folder_settings_done_button">完成</string>

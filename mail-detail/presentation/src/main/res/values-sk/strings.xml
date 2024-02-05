@@ -83,7 +83,14 @@
   <string name="error_delete_conversation_failed">Nepodarilo sa odstrániť konverzáciu</string>
   <string name="error_delete_conversation_failed_wrong_folder">Konverzácia sa nenachádza na mieste, kde ju možno vymazať</string>
   <string name="conversation_deleted">Konverzácia bola zmazaná</string>
-  <string name="message_body_load_remote_content_button_text">Load remote content</string>
-  <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
+  <string name="message_body_load_remote_content_button_text">Načítať vzdialený obsah</string>
+  <string name="message_body_load_embedded_images_button_text">Načítať vložené obrázky</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_title">Potvrdiť nahlásenie phishingu</string>
+  <string name="message_report_phishing_dialog_message">Nahlásenie tejto správy ako pokusu o phishing odošle túto správu Nám, aby sme ju mohli analyzovať a zlepšiť tým Naše filtre. To znamená, že uvidíme kompletne celý obsah tejto správy.</string>
+  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
+  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
 </resources>

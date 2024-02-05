@@ -33,13 +33,13 @@
   <string name="label_title_folders">폴더</string>
   <string name="label_title_parent_folder">상위 폴더</string>
   <string name="label_title_labels">라벨</string>
-  <string name="label_title_add_folder">폴더 추가</string>
-  <string name="label_title_add_label">라벨 추가</string>
+  <string name="label_title_create_folder">폴더 생성</string>
+  <string name="label_title_create_label">라벨 생성</string>
   <string name="label_title_label_list">라벨 목록</string>
   <string name="label_title_folder_list">폴더 목록</string>
   <string name="label_list_no_labels_found">라벨이 없습니다.</string>
   <string name="label_list_create_label_placeholder_description">이메일 경험을 극대화 하려면 라벨을 생성하세요.</string>
-  <string name="add_label_content_description">라벨 추가</string>
+  <string name="create_label_content_description">라벨 생성</string>
   <string name="label_form_create_label">라벨 생성</string>
   <string name="folder_form_create_folder">폴더 생성</string>
   <string name="label_form_edit_label">라벨 수정</string>
@@ -63,7 +63,7 @@
   <string name="folder_list_item_content_description">폴더 목록 항목</string>
   <string name="folder_list_no_folders_found">폴더를 찾을 수 없습니다.</string>
   <string name="folder_list_create_folder_placeholder_description">이메일 경험을 극대화하려면 폴더를 생성하세요.</string>
-  <string name="add_folder_content_description">폴더 추가</string>
+  <string name="create_folder_content_description">폴더 추가</string>
   <string name="folder_settings_content_description">폴더 설정</string>
   <string name="folder_settings_title">설정</string>
   <string name="folder_settings_done_button">완료</string>
