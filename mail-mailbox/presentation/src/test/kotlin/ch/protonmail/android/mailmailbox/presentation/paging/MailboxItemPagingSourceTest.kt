@@ -450,15 +450,38 @@ class MailboxItemPagingSourceTest {
         verify { getAdjacentPageKeys(items, mailboxPageKey.pageKey.copy(size = 100), initialPageKeySize) }
     }
 
-    private fun buildPagingSource(pageKey: PageKey = buildPageKey()) =
-        MailboxItemPagingSource(
-            roomDatabase = roomDatabase,
-            getMailboxItems = getMailboxItems,
-            getAdjacentPageKeys = getAdjacentPageKeys,
-            isMultiUserLocalPageValid = isMultiUserLocalPageValid,
-            mailboxPageKey = mailboxPageKey.copy(pageKey = pageKey),
-            type = type
-        )
+    @Test
+    fun `when loading page with equal prev and next keys, then load result page with next key only is returned`() =
+        runTest {
+            // Given
+            val sameKey = nextKey.copy(filter = PageFilter(labelId = LabelId("5")))
+            coEvery { getMailboxItems.invoke(type = type, pageKey = mailboxPageKey) } returns mailboxItems.right()
+            every { getAdjacentPageKeys(any(), any(), any()) } returns AdjacentPageKeys(sameKey, pageKey, sameKey)
+
+            val expected = PagingSource.LoadResult.Page(
+                data = mailboxItems,
+                prevKey = null,
+                nextKey = buildMailboxPageKey(sameKey)
+            )
+
+            // When
+            val actual = buildPagingSource().load(
+                PagingSource.LoadParams.Prepend(key = mailboxPageKey, loadSize = 25, false)
+            )
+
+            // Then
+            assertEquals(actual, expected)
+        }
+
+
+    private fun buildPagingSource(pageKey: PageKey = buildPageKey()) = MailboxItemPagingSource(
+        roomDatabase = roomDatabase,
+        getMailboxItems = getMailboxItems,
+        getAdjacentPageKeys = getAdjacentPageKeys,
+        isMultiUserLocalPageValid = isMultiUserLocalPageValid,
+        mailboxPageKey = mailboxPageKey.copy(pageKey = pageKey),
+        type = type
+    )
 
     private fun buildMockPages(
         items: List<MailboxItem> = mailboxItems

@@ -71,7 +71,7 @@ class MailboxItemPagingSource @AssistedInject constructor(
         val next = key.copy(pageKey = adjacentKeys.next)
         return LoadResult.Page(
             data = items,
-            prevKey = prev.doNotTakeWhenMediatorShouldPrepend(params, items),
+            prevKey = prev.doNotTakeWhenMediatorShouldPrepend(params, items)?.doNotTakeWhenEqualToNext(next),
             nextKey = next.doNotTakeWhenMediatorShouldAppend(params, items)
         )
     }
@@ -139,4 +139,14 @@ class MailboxItemPagingSource @AssistedInject constructor(
         items: List<MailboxItem>
     ) = takeIf { isMultiUserLocalPageValid(type, this) }
         .takeUnless { params is LoadParams.Prepend && items.isEmpty() }
+
+    /*
+     * Use this MailboxPageKey when it is NOT equal as the next key (given as param)
+     *
+     * This is used to prevent two "open" keys (-INF -> +INF) to be loaded at once,
+     * which in some cases (MAILANDR-1419) would result in the same item being returned twice
+     * consequentially causing a crash when trying to render it in the Mailbox
+     * (Compose LazyList unique id violated)
+     */
+    private fun MailboxPageKey.doNotTakeWhenEqualToNext(nextKey: MailboxPageKey) = takeUnless { this == nextKey }
 }
