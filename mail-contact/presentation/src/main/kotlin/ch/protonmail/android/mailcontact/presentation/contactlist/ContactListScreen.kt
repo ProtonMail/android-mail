@@ -426,6 +426,7 @@ object ContactListScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val onContactSelected: (String) -> Unit,
+        val onContactGroupSelected: (String) -> Unit,
         val openContactForm: () -> Unit,
         val openContactGroupForm: () -> Unit,
         val openImportContact: () -> Unit,
@@ -437,6 +438,7 @@ object ContactListScreen {
             val Empty = Actions(
                 onBackClick = {},
                 onContactSelected = {},
+                onContactGroupSelected = {},
                 openContactForm = {},
                 openContactGroupForm = {},
                 openImportContact = {},

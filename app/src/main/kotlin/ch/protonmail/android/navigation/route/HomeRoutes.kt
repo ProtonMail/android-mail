@@ -406,6 +406,9 @@ internal fun NavGraphBuilder.addContacts(
                 onContactSelected = { contactId ->
                     navController.navigate(Destination.Screen.ContactDetails(ContactId(contactId)))
                 },
+                onContactGroupSelected = { _ ->
+                    showFeatureMissingSnackbar()
+                },
                 onBackClick = {
                     navController.popBackStack()
                 },
