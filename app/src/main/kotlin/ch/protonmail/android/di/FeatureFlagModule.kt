@@ -36,7 +36,8 @@ object FeatureFlagModule {
         return MailFeatureDefaults(
             mapOf(
                 MailFeatureId.ConversationMode to true,
-                MailFeatureId.PasswordMessages to buildDebug
+                MailFeatureId.PasswordMessages to buildDebug,
+                MailFeatureId.ExpiringMessages to buildDebug
             )
         )
     }

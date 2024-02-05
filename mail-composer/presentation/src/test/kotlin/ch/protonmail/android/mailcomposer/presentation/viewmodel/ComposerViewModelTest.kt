@@ -24,10 +24,12 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
+import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -121,6 +123,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.featureflag.domain.entity.FeatureId
+import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
@@ -178,6 +183,13 @@ class ComposerViewModelTest {
     private val appInBackgroundState = mockk<AppInBackgroundState> {
         every { observe() } returns appInBackgroundStateFlow
     }
+    private val observeMailFeature = mockk<ObserveMailFeature> {
+        every {
+            this@mockk.invoke(any(), MailFeatureId.ExpiringMessages)
+        } returns flowOf(
+            FeatureFlag(null, FeatureId("ExpiringMessages"), Scope.Local, defaultValue = true, value = true)
+        )
+    }
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
@@ -215,6 +227,7 @@ class ComposerViewModelTest {
             deleteAttachment,
             deleteAllAttachments,
             reEncryptAttachments,
+            observeMailFeature,
             observeMessagePassword,
             getDecryptedDraftFields,
             savedStateHandle,
@@ -2058,7 +2071,8 @@ class ComposerViewModelTest {
             attachmentsReEncryptionFailed = Effect.empty(),
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
-            isMessagePasswordSet = false
+            isMessagePasswordSet = false,
+            isExpirationActionVisible = false
         )
 
         mockkObject(ComposerDraftState.Companion)

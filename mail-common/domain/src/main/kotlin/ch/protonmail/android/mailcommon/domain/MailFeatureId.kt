@@ -29,5 +29,6 @@ enum class MailFeatureId(val id: FeatureId) {
     ConversationMode(FeatureId("ThreadingAndroid")),
 
     // Local only flag (unknown to remote API)
-    PasswordMessages(FeatureId("PasswordMessages"))
+    PasswordMessages(FeatureId("PasswordMessages")),
+    ExpiringMessages(FeatureId("ExpiringMessages"))
 }

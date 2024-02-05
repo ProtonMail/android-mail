@@ -46,7 +46,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.PasswordMessages to true
+                    MailFeatureId.PasswordMessages to true,
+                    MailFeatureId.ExpiringMessages to true
                 )
             ),
             TestInput(
@@ -54,7 +55,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.PasswordMessages to true
+                    MailFeatureId.PasswordMessages to true,
+                    MailFeatureId.ExpiringMessages to true
                 )
             ),
             TestInput(
@@ -62,7 +64,8 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
                     MailFeatureId.ConversationMode to true,
-                    MailFeatureId.PasswordMessages to false
+                    MailFeatureId.PasswordMessages to false,
+                    MailFeatureId.ExpiringMessages to false
                 )
             )
         )

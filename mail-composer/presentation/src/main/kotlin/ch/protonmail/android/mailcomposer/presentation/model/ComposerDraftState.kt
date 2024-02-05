@@ -47,7 +47,8 @@ data class ComposerDraftState(
     val focusTextBody: Effect<Unit> = Effect.empty(),
     val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
     val contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>> = emptyMap(),
-    val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap()
+    val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
+    val isExpirationActionVisible: Boolean
 ) {
 
     companion object {
@@ -88,7 +89,8 @@ data class ComposerDraftState(
             warning = Effect.empty(),
             replaceDraftBody = Effect.empty(),
             sendingErrorEffect = Effect.empty(),
-            isMessagePasswordSet = false
+            isMessagePasswordSet = false,
+            isExpirationActionVisible = false
         )
     }
 }

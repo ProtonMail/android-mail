@@ -858,7 +858,8 @@ class ComposerReducerTest(
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
             replaceDraftBody = Effect.empty(),
-            isMessagePasswordSet = false
+            isMessagePasswordSet = false,
+            isExpirationActionVisible = false
         )
 
         private fun aNotSubmittableState(
@@ -910,7 +911,8 @@ class ComposerReducerTest(
             warning = warning,
             replaceDraftBody = replaceDraftBody,
             areContactSuggestionsExpanded = areContactSuggestionsExpanded,
-            isMessagePasswordSet = false
+            isMessagePasswordSet = false,
+            isExpirationActionVisible = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)
