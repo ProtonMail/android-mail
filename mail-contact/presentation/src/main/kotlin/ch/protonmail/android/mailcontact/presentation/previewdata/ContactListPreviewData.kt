@@ -18,9 +18,13 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import me.proton.core.label.domain.entity.LabelId
+import kotlin.random.Random
 
 object ContactListPreviewData {
 
@@ -33,5 +37,12 @@ object ContactListPreviewData {
         name = "Name",
         emailSubtext = TextUiModel("Email, +2"),
         avatar = AvatarUiModel.ParticipantInitial("JD")
+    )
+
+    val contactGroupSampleData = ContactGroupItemUiModel(
+        labelId = LabelId("Id"),
+        name = "Name",
+        memberCount = Random.nextInt(),
+        color = Color.Blue
     )
 }
