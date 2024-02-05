@@ -25,20 +25,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.TabRowDefaults
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -50,7 +53,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -65,8 +67,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactGroupSampleData
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.headerSampleData
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -149,31 +153,28 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                         actions.openImportContact
                     }
                 }
+
                 when (state) {
                     is ContactListState.ListLoaded.Data -> {
-                        ContactListScreenContent(
-                            modifier = Modifier.padding(
-                                PaddingValues(
-                                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                                    top = paddingValues.calculateTopPadding() + ProtonDimens.SmallSpacing,
-                                    end = paddingValues.calculateEndPadding(LocalLayoutDirection.current),
-                                    bottom = paddingValues.calculateBottomPadding()
-                                )
-                            ),
-                            state = state,
-                            actions = actions
+                        ContactTabLayout(
+                            modifier = Modifier.padding(paddingValues),
+                            scope = scope,
+                            actions = actions,
+                            state = state
                         )
                     }
                     is ContactListState.ListLoaded.Empty -> {
-                        EmptyContactListScreen(
-                            modifier = Modifier.padding(paddingValues),
+                        EmptyDataScreen(
+                            iconResId = R.drawable.ic_proton_users_plus,
+                            title = stringResource(R.string.no_contacts),
+                            description = stringResource(R.string.no_contacts_description),
+                            buttonText = stringResource(R.string.add_contact),
                             onAddClick = { viewModel.submit(ContactListViewAction.OnOpenBottomSheet) }
                         )
                     }
                     is ContactListState.Loading -> {
                         ProtonCenteredProgress(
                             modifier = Modifier
-                                .padding(paddingValues)
                                 .fillMaxSize()
                         )
 
@@ -240,6 +241,69 @@ fun ContactBottomSheetItem(
             text = stringResource(id = titleResId),
             style = ProtonTheme.typography.defaultNorm
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ContactTabLayout(
+    modifier: Modifier = Modifier,
+    scope: CoroutineScope,
+    actions: ContactListScreen.Actions,
+    state: ContactListState.ListLoaded.Data
+) {
+    val pagerState = rememberPagerState()
+    val pages = listOf(
+        stringResource(R.string.all_contacts_tab),
+        stringResource(R.string.contact_groups_tab)
+    )
+
+    Column {
+        TabRow(
+            backgroundColor = ProtonTheme.colors.backgroundNorm,
+            modifier = modifier,
+            selectedTabIndex = pagerState.currentPage,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    color = ProtonTheme.colors.brandNorm,
+                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage])
+                )
+            }
+        ) {
+            pages.forEachIndexed { index, title ->
+                Tab(
+                    selected = pagerState.currentPage == index,
+                    text = {
+                        Text(
+                            text = title,
+                            style = ProtonTheme.typography.defaultSmallStrongUnspecified
+                        )
+                    },
+                    onClick = {
+                        scope.launch {
+                            pagerState.animateScrollToPage(index)
+                        }
+                    }
+                )
+            }
+        }
+
+        HorizontalPager(
+            pageCount = pages.size,
+            state = pagerState
+        ) { index ->
+            when (index) {
+                0 -> {
+                    ContactListScreenContent(
+                        state = state,
+                        actions = actions
+                    )
+                }
+                1 -> {
+                    // Contact groups
+                }
+            }
+        }
     }
 }
 
@@ -332,7 +396,14 @@ fun ContactListItem(
 }
 
 @Composable
-fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit) {
+fun EmptyDataScreen(
+    iconResId: Int,
+    title: String,
+    description: String,
+    buttonText: String,
+    modifier: Modifier = Modifier,
+    onAddClick: () -> Unit
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -346,12 +417,12 @@ fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit
                     shape = RoundedCornerShape(MailDimens.IconWeakRoundBackgroundRadius)
                 )
                 .padding(ProtonDimens.SmallSpacing),
-            painter = painterResource(id = R.drawable.ic_proton_users_plus),
+            painter = painterResource(id = iconResId),
             tint = ProtonTheme.colors.iconNorm,
             contentDescription = NO_CONTENT_DESCRIPTION
         )
         Text(
-            stringResource(R.string.no_contacts),
+            title,
             Modifier.padding(
                 start = ProtonDimens.LargeSpacing,
                 top = ProtonDimens.MediumSpacing,
@@ -360,7 +431,7 @@ fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit
             style = ProtonTheme.typography.defaultStrongNorm
         )
         Text(
-            stringResource(R.string.no_contacts_description),
+            description,
             Modifier.padding(
                 start = ProtonDimens.LargeSpacing,
                 top = MailDimens.TinySpacing,
@@ -374,7 +445,7 @@ fun EmptyContactListScreen(modifier: Modifier = Modifier, onAddClick: () -> Unit
             onClick = onAddClick
         ) {
             Text(
-                text = stringResource(R.string.add_contact),
+                text = buttonText,
                 Modifier.padding(
                     horizontal = ProtonDimens.SmallSpacing
                 ),
@@ -494,6 +565,11 @@ private fun ContactListScreenPreview() {
                 contactSampleData,
                 contactSampleData,
                 contactSampleData
+            ),
+            contactGroups = listOf(
+                contactGroupSampleData,
+                contactGroupSampleData,
+                contactGroupSampleData
             )
         ),
         actions = ContactListScreen.Actions.Empty
@@ -503,7 +579,23 @@ private fun ContactListScreenPreview() {
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun EmptyContactListScreenPreview() {
-    EmptyContactListScreen(
+    EmptyDataScreen(
+        iconResId = R.drawable.ic_proton_users_plus,
+        title = stringResource(R.string.no_contacts),
+        description = stringResource(R.string.no_contacts_description),
+        buttonText = stringResource(R.string.add_contact),
+        onAddClick = {}
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun EmptyContactGroupsScreenPreview() {
+    EmptyDataScreen(
+        iconResId = R.drawable.ic_proton_users_plus,
+        title = stringResource(R.string.no_contact_groups),
+        description = stringResource(R.string.no_contact_groups_description),
+        buttonText = stringResource(R.string.add_contact_group),
         onAddClick = {}
     )
 }
