@@ -128,5 +128,5 @@ class ContactFormReducer @Inject constructor() {
     }
 
     private fun isSaveEnabled(contact: ContactFormUiModel) =
-        contact.displayName.isNotEmpty() || contact.firstName.isNotEmpty() || contact.lastName.isNotEmpty()
+        contact.displayName.isNotBlank() || contact.firstName.isNotBlank() || contact.lastName.isNotBlank()
 }
