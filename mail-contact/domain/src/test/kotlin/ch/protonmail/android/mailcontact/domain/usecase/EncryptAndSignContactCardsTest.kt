@@ -99,7 +99,7 @@ class EncryptAndSignContactCardsTest {
         val actual = sut(userId, expectedDecryptedContact)
 
         // Then
-        assertEquals(GetContactError.left(), actual)
+        assertEquals(EncryptingContactCardsError.ContactNotFoundInDB.left(), actual)
     }
 
     @Test
@@ -116,7 +116,7 @@ class EncryptAndSignContactCardsTest {
         val actual = sut(userId, expectedDecryptedContact)
 
         // Then
-        assertEquals(GetContactError.left(), actual)
+        assertEquals(EncryptingContactCardsError.DecryptingContactCardError.left(), actual)
     }
 
     @Test

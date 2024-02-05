@@ -24,7 +24,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
-import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ezvcard.property.Uid
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.contact.domain.encryptAndSignContactCard
@@ -49,13 +48,13 @@ class EncryptAndSignContactCards @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         decryptedContact: DecryptedContact
-    ): Either<GetContactError, List<ContactCard>> = either {
+    ): Either<EncryptingContactCardsError, List<ContactCard>> = either {
 
         // retrieve original ContactCards
         val contactWithCards = contactRepository.observeContactWithCards(
             userId,
             decryptedContact.id
-        ).mapToEither().firstOrNull()?.getOrNull() ?: raise(GetContactError)
+        ).mapToEither().firstOrNull()?.getOrNull() ?: raise(EncryptingContactCardsError.ContactNotFoundInDB)
 
         // decrypt them and check signatures
         val cardsToDecryptedCards = contactWithCards.contactCards.mapNotNull { contactCard ->
@@ -65,7 +64,9 @@ class EncryptAndSignContactCards @Inject constructor(
                     // pass only one ContactCard so we don't lose the relation before- and -after decryption
                     contactCards = listOf(contactCard)
                 )
-            ).bind().firstOrNull()
+            ).onLeft {
+                raise(EncryptingContactCardsError.DecryptingContactCardError)
+            }.getOrNull()?.firstOrNull()
 
             decryptedContactCard?.let { contactCard to it }
         }.filter {
@@ -117,4 +118,9 @@ class EncryptAndSignContactCards @Inject constructor(
         return encryptedAndSignedContactCards.right()
     }
 
+}
+
+sealed class EncryptingContactCardsError {
+    object ContactNotFoundInDB : EncryptingContactCardsError()
+    object DecryptingContactCardError : EncryptingContactCardsError()
 }
