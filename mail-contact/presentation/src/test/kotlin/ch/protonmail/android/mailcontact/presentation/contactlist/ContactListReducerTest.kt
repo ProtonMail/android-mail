@@ -18,11 +18,14 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactlist
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -60,6 +63,20 @@ class ContactListReducerTest(
                 avatar = AvatarUiModel.ParticipantInitial("FB")
             )
         )
+        private val loadedContactGroupItemUiModels = listOf(
+            ContactGroupItemUiModel(
+                labelId = LabelId("Id1"),
+                name = "Name 1",
+                memberCount = 2,
+                color = Color.Blue
+            ),
+            ContactGroupItemUiModel(
+                labelId = LabelId("Id2"),
+                name = "Name 2",
+                memberCount = 3,
+                color = Color.Red
+            )
+        )
 
         private val emptyLoadingState = ContactListState.Loading()
         private val errorLoadingState = ContactListState.Loading(
@@ -67,18 +84,25 @@ class ContactListReducerTest(
         )
         private val emptyListLoadedState = ContactListState.ListLoaded.Empty()
         private val dataListLoadedState = ContactListState.ListLoaded.Data(
-            contacts = loadedContactListItemUiModels
+            contacts = loadedContactListItemUiModels,
+            contactGroups = loadedContactGroupItemUiModels
         )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactListEvent.ContactListLoaded(loadedContactListItemUiModels),
+                event = ContactListEvent.ContactListLoaded(
+                    loadedContactListItemUiModels,
+                    loadedContactGroupItemUiModels
+                ),
                 expectedState = dataListLoadedState
             ),
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactListEvent.ContactListLoaded(emptyList()),
+                event = ContactListEvent.ContactListLoaded(
+                    emptyList(),
+                    emptyList()
+                ),
                 expectedState = ContactListState.ListLoaded.Empty()
             ),
             TestInput(
@@ -116,14 +140,20 @@ class ContactListReducerTest(
         private val transitionsFromEmptyListLoadedState = listOf(
             TestInput(
                 currentState = emptyListLoadedState,
-                event = ContactListEvent.ContactListLoaded(loadedContactListItemUiModels),
+                event = ContactListEvent.ContactListLoaded(
+                    loadedContactListItemUiModels,
+                    loadedContactGroupItemUiModels
+                ),
                 expectedState = dataListLoadedState
             ),
             TestInput(
                 currentState = emptyListLoadedState.copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
                 ),
-                event = ContactListEvent.ContactListLoaded(emptyList()),
+                event = ContactListEvent.ContactListLoaded(
+                    emptyList(),
+                    emptyList()
+                ),
                 expectedState = ContactListState.ListLoaded.Empty().copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
                 )
@@ -176,12 +206,18 @@ class ContactListReducerTest(
         private val transitionsFromDataListLoadedState = listOf(
             TestInput(
                 currentState = dataListLoadedState,
-                event = ContactListEvent.ContactListLoaded(loadedContactListItemUiModels),
+                event = ContactListEvent.ContactListLoaded(
+                    loadedContactListItemUiModels,
+                    loadedContactGroupItemUiModels
+                ),
                 expectedState = dataListLoadedState
             ),
             TestInput(
                 currentState = dataListLoadedState,
-                event = ContactListEvent.ContactListLoaded(emptyList()),
+                event = ContactListEvent.ContactListLoaded(
+                    emptyList(),
+                    emptyList()
+                ),
                 expectedState = ContactListState.ListLoaded.Empty()
             ),
             TestInput(
