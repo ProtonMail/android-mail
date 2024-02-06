@@ -336,6 +336,7 @@ object Proton {
         val payment = coreArtifact("payment", Versions.Proton.core)
         val paymentIap = coreArtifact("payment-iap", Versions.Proton.core)
         val plan = coreArtifact("plan", Versions.Proton.core)
+        val planCompose = coreArtifact("plan-presentation-compose", Versions.Proton.core)
         val planTest = coreArtifact("plan-test", Versions.Proton.core)
         val presentation = coreArtifact("presentation", Versions.Proton.core)
         val presentationCompose = coreArtifact("presentation-compose", Versions.Proton.core)

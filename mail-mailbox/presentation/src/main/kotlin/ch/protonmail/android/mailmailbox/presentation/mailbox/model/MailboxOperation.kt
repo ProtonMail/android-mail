@@ -51,6 +51,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingClearDialog
     sealed interface AffectingBottomSheet
     sealed interface AffectingErrorBar
+    sealed interface AffectingUpgradeStorage
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -144,6 +145,10 @@ internal sealed interface MailboxViewAction : MailboxOperation {
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
+
+    data class UpgradeStorageStatusChanged(
+        val notificationDotVisible: Boolean
+    ) : MailboxEvent, MailboxOperation.AffectingUpgradeStorage
 
     data class StorageLimitStatusChanged(
         val userAccountStorageStatus: UserAccountStorageStatus,

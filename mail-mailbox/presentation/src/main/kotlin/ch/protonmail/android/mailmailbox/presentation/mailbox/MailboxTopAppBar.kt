@@ -22,9 +22,13 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -32,16 +36,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.HamburgerMenu
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Composable
 fun MailboxTopAppBar(
     modifier: Modifier = Modifier,
     state: MailboxTopAppBarState,
+    upgradeStorageState: UpgradeStorageState,
     actions: MailboxTopAppBar.Actions
 ) {
     val uiModel = when (state) {
@@ -52,7 +61,8 @@ fun MailboxTopAppBar(
             navigationIconContentDescription = stringResource(
                 id = R.string.mailbox_toolbar_menu_button_content_description
             ),
-            shouldShowActions = true
+            shouldShowActions = true,
+            notificationDotVisible = upgradeStorageState.notificationDotVisible
         )
 
         is MailboxTopAppBarState.Data.SelectionMode -> UiModel(
@@ -174,15 +184,27 @@ private fun TopAppBarInSearchMode(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) {
     IconButton(
-        modifier = Modifier.testTag(MailboxTopAppBarTestTags.HamburgerMenu),
+        modifier = Modifier.testTag(HamburgerMenu),
         onClick = onNavigationIconClick
     ) {
-        Icon(
-            painter = painterResource(id = uiModel.navigationIconRes),
-            contentDescription = uiModel.navigationIconContentDescription
-        )
+        BadgedBox(
+            badge = {
+                if (uiModel.notificationDotVisible) {
+                    Badge(
+                        containerColor = ProtonTheme.colors.notificationError,
+                        modifier = Modifier.size(MailDimens.NotificationDotSize)
+                    )
+                }
+            }
+        ) {
+            Icon(
+                painter = painterResource(id = uiModel.navigationIconRes),
+                contentDescription = uiModel.navigationIconContentDescription,
+            )
+        }
     }
 }
 
@@ -204,6 +226,7 @@ private data class UiModel(
     @DrawableRes val navigationIconRes: Int,
     val navigationIconContentDescription: String,
     val shouldShowActions: Boolean,
+    val notificationDotVisible: Boolean = false,
     val searchQuery: String = EMPTY_STRING
 ) {
 
@@ -222,9 +245,11 @@ private data class UiModel(
 @Preview
 fun LoadingMailboxTopAppBarPreview() {
     val state = MailboxTopAppBarState.Loading
+    val upgradeStorageState = UpgradeStorageState(notificationDotVisible = false)
 
     MailboxTopAppBar(
         state = state,
+        upgradeStorageState = upgradeStorageState,
         actions = MailboxTopAppBar.Actions(
             onOpenMenu = {},
             onExitSelectionMode = {},

@@ -102,5 +102,7 @@ object MailDimens {
 
     val PickerDialogItemVerticalPadding = 12.dp
 
+    val NotificationDotSize = 8.dp
+
     val ProtonCalendarIconSize = 40.dp
 }

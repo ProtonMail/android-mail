@@ -40,6 +40,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
@@ -214,6 +215,7 @@ internal class MailboxScreenTest {
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()
                 ),
+                upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,

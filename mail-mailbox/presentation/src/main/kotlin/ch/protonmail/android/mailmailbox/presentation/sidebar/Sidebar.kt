@@ -57,6 +57,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
+import me.proton.core.plan.presentation.compose.component.UpgradeStorageInfo
 
 @Composable
 @Suppress("ComplexMethod")
@@ -144,6 +145,18 @@ fun Sidebar(
             onSignOut = actions.onSignOut,
             onSwitch = actions.onSwitchAccount,
             viewState = viewState.accountPrimaryState
+        )
+    }
+
+    ProtonTheme(
+        colors = ProtonTheme.colors.sidebarColors ?: ProtonTheme.colors
+    ) {
+        UpgradeStorageInfo(
+            modifier = modifier
+                .background(sidebarColors.backgroundNorm),
+            onUpgradeClicked = { actions.onSubscription() },
+            withTopDivider = true,
+            withBottomDivider = true
         )
     }
 

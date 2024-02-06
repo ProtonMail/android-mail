@@ -56,7 +56,8 @@ class MailboxTopAppBarReducer @Inject constructor() {
     ): MailboxTopAppBarState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (this) {
-            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
+            is MailboxTopAppBarState.Loading ->
+                MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
         }
     }
@@ -66,7 +67,8 @@ class MailboxTopAppBarReducer @Inject constructor() {
     ): MailboxTopAppBarState.Data {
         val currentMailLabel = operation.selectedLabel
         return when (this) {
-            is MailboxTopAppBarState.Loading -> MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
+            is MailboxTopAppBarState.Loading ->
+                MailboxTopAppBarState.Data.DefaultMode(currentMailLabel.text())
             is MailboxTopAppBarState.Data -> this.with(currentMailLabel.text())
         }
     }
@@ -85,7 +87,10 @@ class MailboxTopAppBarReducer @Inject constructor() {
 
     private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() = when (this) {
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(currentLabelName, selectedCount = 1)
+        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
+            currentLabelName,
+            selectedCount = 1
+        )
     }
 
     private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() = when (this) {

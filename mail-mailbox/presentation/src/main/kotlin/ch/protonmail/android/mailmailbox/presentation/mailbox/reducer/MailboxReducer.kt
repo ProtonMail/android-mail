@@ -34,6 +34,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -50,6 +51,7 @@ class MailboxReducer @Inject constructor(
     private val bottomAppBarReducer: BottomBarReducer,
     private val onboardingReducer: OnboardingReducer,
     private val storageLimitReducer: StorageLimitReducer,
+    private val upgradeStorageReducer: UpgradeStorageReducer,
     private val actionMessageReducer: MailboxActionMessageReducer,
     private val deleteDialogReducer: MailboxDeleteDialogReducer,
     private val bottomSheetReducer: BottomSheetReducer
@@ -59,6 +61,7 @@ class MailboxReducer @Inject constructor(
         currentState.copy(
             mailboxListState = currentState.toNewMailboxListStateFrom(operation),
             topAppBarState = currentState.toNewTopAppBarStateFrom(operation),
+            upgradeStorageState = currentState.toNewStorageSplitStateFrom(operation),
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
             onboardingState = currentState.toNewOnboardingStateFrom(operation),
@@ -117,6 +120,14 @@ class MailboxReducer @Inject constructor(
             storageLimitReducer.newStateFrom(this.storageLimitState, operation)
         } else {
             storageLimitState
+        }
+    }
+
+    private fun MailboxState.toNewStorageSplitStateFrom(operation: MailboxOperation): UpgradeStorageState {
+        return if (operation is MailboxOperation.AffectingUpgradeStorage) {
+            upgradeStorageReducer.newStateFrom(operation)
+        } else {
+            upgradeStorageState
         }
     }
 

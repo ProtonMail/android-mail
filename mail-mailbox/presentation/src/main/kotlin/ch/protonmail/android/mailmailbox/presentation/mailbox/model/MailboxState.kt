@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 data class MailboxState(
     val mailboxListState: MailboxListState,
     val topAppBarState: MailboxTopAppBarState,
+    val upgradeStorageState: UpgradeStorageState,
     val unreadFilterState: UnreadFilterState,
     val bottomAppBarState: BottomBarState,
     val onboardingState: OnboardingState,

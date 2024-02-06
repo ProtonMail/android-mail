@@ -33,6 +33,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.InstrumentationHolder
@@ -203,6 +204,7 @@ internal class MailboxTopAppBarTest {
             ProtonTheme {
                 MailboxTopAppBar(
                     state = state,
+                    upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = {},
                         onExitSelectionMode = {},

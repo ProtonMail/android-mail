@@ -94,6 +94,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
@@ -170,6 +171,7 @@ import me.proton.core.mailsettings.domain.entity.SwipeAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
+import me.proton.core.plan.presentation.compose.usecase.ShouldUpgradeStorage
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import kotlin.test.AfterTest
@@ -275,6 +277,9 @@ class MailboxViewModelTest {
         coEvery { saveFirstLimitWarningPreference(any()) } returns Unit.right()
         coEvery { saveSecondLimitWarningPreference(any()) } returns Unit.right()
     }
+    private val shouldUpgradeStorage = mockk<ShouldUpgradeStorage> {
+        every { this@mockk() } returns flowOf()
+    }
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -318,7 +323,8 @@ class MailboxViewModelTest {
             deleteSearchResults = deleteSearchResults,
             observePrimaryUserAccountStorageStatus = observePrimaryUserAccountStorageStatus,
             observeStorageLimitPreference = observeStorageLimitPreference,
-            saveStorageLimitPreference = saveStorageLimitPreference
+            saveStorageLimitPreference = saveStorageLimitPreference,
+            shouldUpgradeStorage = shouldUpgradeStorage
         )
     }
 
@@ -348,6 +354,7 @@ class MailboxViewModelTest {
             val expected = MailboxState(
                 mailboxListState = MailboxListState.Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
+                upgradeStorageState = UpgradeStorageState(false),
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,

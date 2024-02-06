@@ -74,6 +74,7 @@ dependencies {
     implementation(Proton.Core.featureFlag)
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
+    implementation(Proton.Core.planCompose)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))

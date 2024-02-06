@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -45,6 +46,7 @@ object MailboxStateSampleData {
     val Loading = MailboxState(
         mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading,
+        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
         onboardingState = OnboardingState.Hidden,
@@ -74,6 +76,7 @@ object MailboxStateSampleData {
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
         ),
+        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
@@ -106,8 +109,9 @@ object MailboxStateSampleData {
             clearState = MailboxListState.Data.ClearState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
+            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),
         ),
+        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1
@@ -127,6 +131,7 @@ object MailboxStateSampleData {
     val OnboardingShown = MailboxState(
         mailboxListState = MailboxListState.Loading,
         topAppBarState = MailboxTopAppBarState.Loading,
+        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
         onboardingState = OnboardingState.Shown,
@@ -160,6 +165,7 @@ object MailboxStateSampleData {
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
             selectedCount = selectedMailboxItemUiModels.size
         ),
+        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Data(
             isFilterEnabled = false,
             numUnread = 1

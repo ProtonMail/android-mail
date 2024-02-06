@@ -315,6 +315,7 @@ fun MailboxScreen(
             ) {
                 MailboxTopAppBar(
                     state = mailboxState.topAppBarState,
+                    upgradeStorageState = mailboxState.upgradeStorageState,
                     actions = MailboxTopAppBar.Actions(
                         onOpenMenu = actions.openDrawerMenu,
                         onExitSelectionMode = { actions.onExitSelectionMode() },

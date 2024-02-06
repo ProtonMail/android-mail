@@ -85,6 +85,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UsedLabels
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -130,6 +131,7 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
+import me.proton.core.plan.presentation.compose.usecase.ShouldUpgradeStorage
 import me.proton.core.util.kotlin.DispatcherProvider
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
@@ -178,7 +180,8 @@ class MailboxViewModel @Inject constructor(
     private val deleteSearchResults: DeleteSearchResults,
     private val observePrimaryUserAccountStorageStatus: ObservePrimaryUserAccountStorageStatus,
     private val observeStorageLimitPreference: ObserveStorageLimitPreference,
-    private val saveStorageLimitPreference: SaveStorageLimitPreference
+    private val saveStorageLimitPreference: SaveStorageLimitPreference,
+    private val shouldUpgradeStorage: ShouldUpgradeStorage
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -275,9 +278,16 @@ class MailboxViewModel @Inject constructor(
             .onEach { emitNewStateFrom(it) }
             .launchIn(viewModelScope)
 
-
+        shouldUpgradeStorage()
+            .onEach {
+                emitNewStateFrom(
+                    MailboxEvent.UpgradeStorageStatusChanged(
+                        notificationDotVisible = it != ShouldUpgradeStorage.Result.NoUpgrade
+                    )
+                )
+            }
+            .launchIn(viewModelScope)
     }
-
 
     private fun handleSwipeActionPreferences(userId: UserId, currentMailLabel: MailLabel): Flow<MailboxEvent> {
         return observeSwipeActionsPreference(userId)
@@ -1248,6 +1258,7 @@ class MailboxViewModel @Inject constructor(
         val initialState = MailboxState(
             mailboxListState = MailboxListState.Loading,
             topAppBarState = MailboxTopAppBarState.Loading,
+            upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
             onboardingState = OnboardingState.Hidden,
