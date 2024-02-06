@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import me.proton.core.user.domain.entity.UserAddress
 
 object MessageDetailBodyUiModelSample {
 
@@ -74,7 +75,8 @@ object MessageDetailBodyUiModelSample {
         shouldShowEmbeddedImagesBanner: Boolean = false,
         shouldShowRemoteContentBanner: Boolean = false,
         shouldShowOpenInProtonCalendar: Boolean = false,
-        attachments: AttachmentGroupUiModel? = null
+        attachments: AttachmentGroupUiModel? = null,
+        userAddress: UserAddress? = null
     ) = MessageBodyUiModel(
         messageId = messageId,
         messageBody = messageBody,
@@ -86,6 +88,7 @@ object MessageDetailBodyUiModelSample {
         shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
         shouldShowOpenInProtonCalendar = shouldShowOpenInProtonCalendar,
         shouldShowExpandCollapseButton = false,
-        attachments = attachments
+        attachments = attachments,
+        userAddress = userAddress
     )
 }

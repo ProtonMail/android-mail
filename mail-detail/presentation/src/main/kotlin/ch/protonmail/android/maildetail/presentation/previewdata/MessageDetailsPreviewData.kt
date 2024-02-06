@@ -68,7 +68,8 @@ object MessageDetailsPreviewData {
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
-                attachments = null
+                attachments = null,
+                userAddress = null
             ),
             expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),

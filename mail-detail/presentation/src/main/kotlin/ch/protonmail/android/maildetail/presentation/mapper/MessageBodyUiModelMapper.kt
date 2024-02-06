@@ -83,7 +83,8 @@ class MessageBodyUiModelMapper @Inject constructor(
                         attachmentUiModelMapper.toUiModel(it)
                     }
                 )
-            } else null
+            } else null,
+            userAddress = decryptedMessageBody.userAddress
         )
     }
 
@@ -98,7 +99,8 @@ class MessageBodyUiModelMapper @Inject constructor(
         shouldShowRemoteContentBanner = false,
         shouldShowExpandCollapseButton = false,
         shouldShowOpenInProtonCalendar = false,
-        attachments = null
+        attachments = null,
+        userAddress = null
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

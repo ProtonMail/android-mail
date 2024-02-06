@@ -24,6 +24,7 @@ import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiMod
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
+import me.proton.core.user.domain.entity.UserAddress
 
 object MessageBodyUiModelTestData {
 
@@ -37,6 +38,15 @@ object MessageBodyUiModelTestData {
                 AttachmentUiModelSample.document,
                 AttachmentUiModelSample.documentWithMultipleDots,
                 AttachmentUiModelSample.image
+            )
+        )
+    )
+
+    val messageBodyWithIcsAttachmentsUiModel = buildMessageBodyUiModel(
+        attachments = AttachmentGroupUiModel(
+            limit = 3,
+            attachments = listOf(
+                AttachmentUiModelSample.calendar
             )
         )
     )
@@ -109,7 +119,8 @@ object MessageBodyUiModelTestData {
         shouldShowEmbeddedImagesBanner: Boolean = false,
         shouldShowRemoteContentBanner: Boolean = false,
         shouldShowOpenInProtonCalendar: Boolean = false,
-        attachments: AttachmentGroupUiModel? = null
+        attachments: AttachmentGroupUiModel? = null,
+        userAddress: UserAddress? = null
     ): MessageBodyUiModel {
         return MessageBodyUiModel(
             messageBody = messageBody,
@@ -122,7 +133,8 @@ object MessageBodyUiModelTestData {
             shouldShowRemoteContentBanner = shouldShowRemoteContentBanner,
             shouldShowOpenInProtonCalendar = shouldShowOpenInProtonCalendar,
             attachments = attachments,
-            shouldShowExpandCollapseButton = false
+            shouldShowExpandCollapseButton = false,
+            userAddress = userAddress
         )
     }
 }

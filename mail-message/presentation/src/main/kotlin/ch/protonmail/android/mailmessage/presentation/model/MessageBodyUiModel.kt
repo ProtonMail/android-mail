@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.model
 
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import me.proton.core.user.domain.entity.UserAddress
 
 data class MessageBodyUiModel(
     val messageId: MessageId,
@@ -31,7 +32,8 @@ data class MessageBodyUiModel(
     val shouldShowRemoteContentBanner: Boolean,
     val shouldShowExpandCollapseButton: Boolean,
     val shouldShowOpenInProtonCalendar: Boolean,
-    val attachments: AttachmentGroupUiModel?
+    val attachments: AttachmentGroupUiModel?,
+    val userAddress: UserAddress?
 )
 
 enum class MimeTypeUiModel(val value: String) {

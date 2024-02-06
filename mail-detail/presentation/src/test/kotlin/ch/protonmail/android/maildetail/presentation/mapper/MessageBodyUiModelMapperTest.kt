@@ -116,7 +116,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
-            attachments = null
+            attachments = null,
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // When
@@ -158,7 +159,8 @@ class MessageBodyUiModelMapperTest {
                     AttachmentUiModelSample.document,
                     AttachmentUiModelSample.documentWithMultipleDots
                 )
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // When
@@ -196,7 +198,8 @@ class MessageBodyUiModelMapperTest {
                 attachments = listOf(
                     AttachmentUiModelSample.calendar
                 )
-            )
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // When
@@ -233,7 +236,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
-            attachments = null
+            attachments = null,
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // When
@@ -265,7 +269,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
-                attachments = null
+                attachments = null,
+                userAddress = UserAddressSample.PrimaryAddress
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -299,7 +304,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowRemoteContentBanner = true,
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
-                attachments = null
+                attachments = null,
+                userAddress = UserAddressSample.PrimaryAddress
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -333,7 +339,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
-                attachments = null
+                attachments = null,
+                userAddress = UserAddressSample.PrimaryAddress
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
@@ -367,7 +374,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowRemoteContentBanner = false,
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
-                attachments = null
+                attachments = null,
+                userAddress = UserAddressSample.PrimaryAddress
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
@@ -395,7 +403,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
-            attachments = null
+            attachments = null,
+            userAddress = null
         )
 
         // When
@@ -430,7 +439,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowRemoteContentBanner = false,
             shouldShowExpandCollapseButton = true,
             shouldShowOpenInProtonCalendar = false,
-            attachments = null
+            attachments = null,
+            userAddress = UserAddressSample.PrimaryAddress
         )
 
         // When
