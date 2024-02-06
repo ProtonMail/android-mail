@@ -44,6 +44,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
+import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.navigation.model.Destination.Dialog
@@ -276,18 +277,28 @@ fun Home(
                     showRefreshErrorSnackbar = { showRefreshErrorSnackbar() }
                 )
                 addMessageDetail(
-                    navController = navController,
-                    showSnackbar = { message ->
-                        scope.launch {
-                            snackbarHostNormState.showSnackbar(
-                                message = message,
-                                type = ProtonSnackbarType.NORM
-                            )
-                        }
-                    },
-                    openMessageBodyLink = activityActions.openInActivityInNewTask,
-                    openAttachment = activityActions.openIntentChooser,
-                    showFeatureMissingSnackbar = { showFeatureMissingSnackbar() }
+                    actions = MessageDetail.Actions(
+                        onExit = { notifyUserMessage ->
+                            navController.popBackStack()
+                            notifyUserMessage?.let {
+                                scope.launch {
+                                    snackbarHostNormState.showSnackbar(
+                                        message = it,
+                                        type = ProtonSnackbarType.NORM
+                                    )
+                                }
+                            }
+                        },
+                        openMessageBodyLink = activityActions.openInActivityInNewTask,
+                        openAttachment = activityActions.openIntentChooser,
+                        handleProtonCalendarRequest = activityActions.openProtonCalendarIntentValues,
+                        onAddLabel = { navController.navigate(Screen.LabelList.route) },
+                        onAddFolder = { navController.navigate(Screen.FolderList.route) },
+                        showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
+                        onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
+                        onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
+                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) }
+                    )
                 )
                 addComposer(
                     navController,

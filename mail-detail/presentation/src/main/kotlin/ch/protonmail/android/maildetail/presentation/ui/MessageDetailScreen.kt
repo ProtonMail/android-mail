@@ -57,6 +57,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -202,17 +203,14 @@ fun MessageDetailScreen(
                 openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
                 loadEmbeddedImage = { viewModel.loadEmbeddedImage(it) },
-                onExpandCollapseButtonClicked = {
-                    viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody)
-                },
+                onExpandCollapseButtonClicked = { viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody) },
                 onLoadRemoteContent = { viewModel.submit(MessageViewAction.LoadRemoteContent(it)) },
                 onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.ShowEmbeddedImages(it)) },
                 onLoadRemoteAndEmbeddedContent = {
                     viewModel.submit(MessageViewAction.LoadRemoteAndEmbeddedContent(it))
                 },
-                onOpenInProtonCalendar = {
-                    Timber.d("onOpenInProtonCalendar: $it")
-                }
+                onOpenInProtonCalendar = { viewModel.submit(MessageViewAction.OpenInProtonCalendar(it)) },
+                handleProtonCalendarRequest = actions.handleProtonCalendarRequest
             )
         )
     }
@@ -248,6 +246,9 @@ fun MessageDetailScreen(
     }
     ConsumableLaunchedEffect(effect = state.openAttachmentEffect) {
         actions.openAttachment(it)
+    }
+    ConsumableLaunchedEffect(effect = state.openProtonCalendarIntent) {
+        actions.handleProtonCalendarRequest(it)
     }
 
     if (linkConfirmationDialogState.value != null) {
@@ -479,6 +480,7 @@ object MessageDetail {
         val onExit: (message: String?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
         val onAddLabel: () -> Unit,
         val onAddFolder: () -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
@@ -511,6 +513,7 @@ object MessageDetailScreen {
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
+        val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
         val onExpandCollapseButtonClicked: () -> Unit,
@@ -549,7 +552,8 @@ object MessageDetailScreen {
                 onLoadRemoteContent = {},
                 onLoadEmbeddedImages = {},
                 onLoadRemoteAndEmbeddedContent = {},
-                onOpenInProtonCalendar = {}
+                onOpenInProtonCalendar = {},
+                handleProtonCalendarRequest = {}
             )
         }
     }

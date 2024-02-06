@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.navigation.route
 
-import android.net.Uri
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -33,7 +32,6 @@ import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScre
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
-import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
@@ -100,34 +98,9 @@ internal fun NavGraphBuilder.addMailbox(
     }
 }
 
-internal fun NavGraphBuilder.addMessageDetail(
-    navController: NavHostController,
-    showSnackbar: (notifyUserMessage: String) -> Unit,
-    openMessageBodyLink: (uri: Uri) -> Unit,
-    openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
-) {
+internal fun NavGraphBuilder.addMessageDetail(actions: MessageDetail.Actions) {
     composable(route = Destination.Screen.Message.route) {
-        MessageDetailScreen(
-            actions = MessageDetail.Actions(
-                onExit = { notifyUserMessage ->
-                    navController.popBackStack()
-                    notifyUserMessage?.let(showSnackbar)
-                },
-                openMessageBodyLink = openMessageBodyLink,
-                openAttachment = openAttachment,
-                onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
-                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
-                showFeatureMissingSnackbar = showFeatureMissingSnackbar,
-                onReply = { navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Reply(it))) },
-                onReplyAll = {
-                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ReplyAll(it)))
-                },
-                onForward = {
-                    navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.Forward(it)))
-                }
-            )
-        )
+        MessageDetailScreen(actions = actions)
     }
 }
 
