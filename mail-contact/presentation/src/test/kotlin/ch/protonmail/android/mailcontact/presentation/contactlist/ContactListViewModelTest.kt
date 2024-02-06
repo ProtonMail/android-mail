@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactlist
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
@@ -25,13 +27,18 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
+import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupsError
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
+import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -43,6 +50,9 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -50,6 +60,19 @@ import kotlin.test.assertEquals
 
 class ContactListViewModelTest {
 
+    private val defaultTestContactGroupLabel = Label(
+        userId = UserIdTestData.userId,
+        labelId = LabelId("LabelId1"),
+        parentId = null,
+        name = "Label 1",
+        type = LabelType.ContactGroup,
+        path = "",
+        color = Color.Red.getHexStringFromColor(),
+        order = 0,
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null
+    )
     private val defaultTestContact = Contact(
         UserIdTestData.userId,
         ContactId("1"),
@@ -64,7 +87,7 @@ class ContactListViewModelTest {
                 0,
                 ContactId("1"),
                 "firstcontact@protonmail.com",
-                emptyList(),
+                listOf(defaultTestContactGroupLabel.labelId.id),
                 true
             )
         )
@@ -74,16 +97,20 @@ class ContactListViewModelTest {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
     }
     private val observeContacts = mockk<ObserveContacts>()
+    private val observeContactGroups = mockk<ObserveContactGroups>()
 
     private val reducer = ContactListReducer()
 
     private val contactListItemUiModelMapper = ContactListItemUiModelMapper()
+    private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper()
 
     private val contactListViewModel by lazy {
         ContactListViewModel(
             observeContacts,
+            observeContactGroups,
             reducer,
             contactListItemUiModelMapper,
+            contactGroupItemUiModelMapper,
             observePrimaryUserId
         )
     }
@@ -91,6 +118,8 @@ class ContactListViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        mockkStatic(android.graphics.Color::class)
+        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
     }
 
     @AfterTest
@@ -105,6 +134,9 @@ class ContactListViewModelTest {
         coEvery {
             observeContacts(userId = UserIdTestData.userId)
         } returns flowOf(emptyList<Contact>().right())
+        coEvery {
+            observeContactGroups(userId = UserIdTestData.userId)
+        } returns flowOf(emptyList<Label>().right())
 
         // When
         contactListViewModel.state.test {
@@ -119,9 +151,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when init, then emits data state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -130,6 +160,9 @@ class ContactListViewModelTest {
             val expected = ContactListState.ListLoaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 )
             )
 
@@ -143,6 +176,31 @@ class ContactListViewModelTest {
         every {
             observeContacts.invoke(UserIdTestData.userId)
         } returns flowOf(GetContactError.left())
+        coEvery {
+            observeContactGroups(userId = UserIdTestData.userId)
+        } returns flowOf(listOf(defaultTestContactGroupLabel).right())
+
+        // When
+        contactListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactListState.Loading(
+                errorLoading = Effect.of(TextUiModel(R.string.contact_list_loading_error))
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given error on loading contact group list, when init, then emits error state`() = runTest {
+        // Given
+        coEvery {
+            observeContacts(userId = UserIdTestData.userId)
+        } returns flowOf(listOf(defaultTestContact).right())
+        coEvery {
+            observeContactGroups(userId = UserIdTestData.userId)
+        } returns flowOf(GetContactGroupsError.left())
 
         // When
         contactListViewModel.state.test {
@@ -159,9 +217,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when action open bottom sheet, then emits open state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -174,6 +230,9 @@ class ContactListViewModelTest {
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
             )
 
@@ -184,9 +243,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when action dismiss bottom sheet, then emits open state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -199,6 +256,9 @@ class ContactListViewModelTest {
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
             )
 
@@ -209,9 +269,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when action new contact, then emits open contact form state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -224,6 +282,9 @@ class ContactListViewModelTest {
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactForm = Effect.of(Unit)
             )
@@ -235,9 +296,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when action new contact group, then emits open group form state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -250,6 +309,9 @@ class ContactListViewModelTest {
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactGroupForm = Effect.of(Unit)
             )
@@ -261,9 +323,7 @@ class ContactListViewModelTest {
     @Test
     fun `given contact list, when action import contact, then emits open import state`() = runTest {
         // Given
-        coEvery {
-            observeContacts(userId = UserIdTestData.userId)
-        } returns flowOf(listOf(defaultTestContact).right())
+        expectContactsData()
 
         // When
         contactListViewModel.state.test {
@@ -276,11 +336,23 @@ class ContactListViewModelTest {
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openImportContact = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
         }
+    }
+
+    private fun expectContactsData() {
+        coEvery {
+            observeContacts(userId = UserIdTestData.userId)
+        } returns flowOf(listOf(defaultTestContact).right())
+        coEvery {
+            observeContactGroups(userId = UserIdTestData.userId)
+        } returns flowOf(listOf(defaultTestContactGroupLabel).right())
     }
 }
