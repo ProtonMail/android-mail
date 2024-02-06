@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
-import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
@@ -33,10 +32,13 @@ class ObserveContactGroups @Inject constructor(
     private val labelRepository: LabelRepository
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Either<GetContactError, List<Label>>> =
+    operator fun invoke(userId: UserId): Flow<Either<GetContactGroupsError, List<Label>>> =
         labelRepository.observeLabels(userId, LabelType.ContactGroup)
             .mapToEither()
             .mapLatest {
-                it.mapLeft { GetContactError }
+                it.mapLeft { GetContactGroupsError }
             }
 }
+
+object GetContactGroupsError
+
