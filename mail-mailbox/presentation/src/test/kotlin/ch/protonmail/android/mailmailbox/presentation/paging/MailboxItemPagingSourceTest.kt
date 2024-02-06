@@ -166,26 +166,25 @@ class MailboxItemPagingSourceTest {
     }
 
     @Test
-    fun `when appending and local data is empty, then load result page without next key is returned`() =
-        runTest {
-            // Given
-            coEvery {
-                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
-            } returns emptyList<MailboxItem>().right()
+    fun `when appending and local data is empty, then load result page without next key is returned`() = runTest {
+        // Given
+        coEvery {
+            getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+        } returns emptyList<MailboxItem>().right()
 
-            val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
-                data = emptyList(),
-                prevKey = buildMailboxPageKey(prevKey),
-                nextKey = null
-            )
+        val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
+            data = emptyList(),
+            prevKey = buildMailboxPageKey(prevKey),
+            nextKey = null
+        )
 
-            // When
-            val actual =
-                buildPagingSource().load(PagingSource.LoadParams.Append(key = mailboxPageKey, loadSize = 25, false))
+        // When
+        val actual =
+            buildPagingSource().load(PagingSource.LoadParams.Append(key = mailboxPageKey, loadSize = 25, false))
 
-            // Then
-            assertEquals(actual, expected)
-        }
+        // Then
+        assertEquals(actual, expected)
+    }
 
     @Test
     fun `when appending, and local data is not empty, then load result page with next and prev key is returned`() =
@@ -210,26 +209,25 @@ class MailboxItemPagingSourceTest {
         }
 
     @Test
-    fun `when prepending, and local data is empty, then load result page without prev key is returned`() =
-        runTest {
-            // Given
-            coEvery {
-                getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
-            } returns emptyList<MailboxItem>().right()
+    fun `when prepending, and local data is empty, then load result page without prev key is returned`() = runTest {
+        // Given
+        coEvery {
+            getMailboxItems.invoke(type = type, pageKey = mailboxPageKey)
+        } returns emptyList<MailboxItem>().right()
 
-            val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
-                data = emptyList(),
-                prevKey = null,
-                nextKey = buildMailboxPageKey(nextKey)
-            )
+        val expected = PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>(
+            data = emptyList(),
+            prevKey = null,
+            nextKey = buildMailboxPageKey(nextKey)
+        )
 
-            // When
-            val actual =
-                buildPagingSource().load(PagingSource.LoadParams.Prepend(key = mailboxPageKey, loadSize = 25, false))
+        // When
+        val actual =
+            buildPagingSource().load(PagingSource.LoadParams.Prepend(key = mailboxPageKey, loadSize = 25, false))
 
-            // Then
-            assertEquals(actual, expected)
-        }
+        // Then
+        assertEquals(actual, expected)
+    }
 
     @Test
     fun `when prepending, and local data is not empty, then load result page with prev and next key is returned`() =
@@ -485,14 +483,13 @@ class MailboxItemPagingSourceTest {
 
     private fun buildMockPages(
         items: List<MailboxItem> = mailboxItems
-    ): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> =
-        listOf(
-            PagingSource.LoadResult.Page(
-                data = items,
-                prevKey = null,
-                nextKey = null
-            )
+    ): List<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>> = listOf(
+        PagingSource.LoadResult.Page(
+            data = items,
+            prevKey = null,
+            nextKey = null
         )
+    )
 
     private fun buildPageKey(
         readState: ReadStatus = ReadStatus.All,
@@ -500,6 +497,5 @@ class MailboxItemPagingSourceTest {
         filter: PageFilter = PageFilter(labelId = selectedLabelId.labelId, read = readState)
     ) = PageKey(filter = filter)
 
-    private fun buildMailboxPageKey(pageKey: PageKey) =
-        mailboxPageKey.copy(pageKey = pageKey)
+    private fun buildMailboxPageKey(pageKey: PageKey) = mailboxPageKey.copy(pageKey = pageKey)
 }
