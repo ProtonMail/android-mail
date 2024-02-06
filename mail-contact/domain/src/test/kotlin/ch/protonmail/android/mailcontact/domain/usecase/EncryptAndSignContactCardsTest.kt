@@ -21,8 +21,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailcontact.domain.mapper.mapToEncryptedAndSignedContactCard
-import ch.protonmail.android.mailcontact.domain.mapper.mapToSignedContactCard
+import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
@@ -75,11 +74,14 @@ class EncryptAndSignContactCardsTest {
 
     private val decryptContactCardsMock = mockk<DecryptContactCards>()
 
+    private val decryptedContactMapperMock = mockk<DecryptedContactMapper>()
+
     private val sut = EncryptAndSignContactCards(
         userManagerMock,
         cryptoContextMock,
         contactRepositoryMock,
-        decryptContactCardsMock
+        decryptContactCardsMock,
+        decryptedContactMapperMock
     )
 
     @Test
@@ -145,6 +147,10 @@ class EncryptAndSignContactCardsTest {
             ?: expectedEncryptedVCard.first().card.uid
             ?: fallbackUid
 
+        coEvery {
+            decryptedContactMapperMock.mapToClearTextContactCard(fallbackUid, null)
+        } returns null
+
         val cardToSign = expectMapToSignedContactCard(
             fallbackUid,
             ContactSample.Mario.name,
@@ -190,6 +196,10 @@ class EncryptAndSignContactCardsTest {
         every {
             Uid.random()
         } returns fallbackUid
+
+        coEvery {
+            decryptedContactMapperMock.mapToClearTextContactCard(fallbackUid, null)
+        } returns null
 
         val mappedSignedVCard = DecryptedVCard(
             Ezvcard.parse(
@@ -286,11 +296,9 @@ class EncryptAndSignContactCardsTest {
         existingVCard: VCard?,
         mappedVCard: VCard
     ): VCard {
-        mockkStatic(::mapToSignedContactCard) {
-            every {
-                mapToSignedContactCard(fallbackUid, fallbackName, decryptedContact, existingVCard)
-            } returns mappedVCard
-        }
+        coEvery {
+            decryptedContactMapperMock.mapToSignedContactCard(fallbackUid, fallbackName, decryptedContact, existingVCard)
+        } returns mappedVCard
 
         return mappedVCard
     }
@@ -305,11 +313,9 @@ class EncryptAndSignContactCardsTest {
             uid = uid ?: fallbackUid
         }
 
-        mockkStatic(::mapToEncryptedAndSignedContactCard) {
-            every {
-                mapToEncryptedAndSignedContactCard(fallbackUid, decryptedContact, existingVCard)
-            } returns mappedVCard
-        }
+        coEvery {
+            decryptedContactMapperMock.mapToEncryptedAndSignedContactCard(fallbackUid, decryptedContact, existingVCard)
+        } returns mappedVCard
 
         return mappedVCard
     }

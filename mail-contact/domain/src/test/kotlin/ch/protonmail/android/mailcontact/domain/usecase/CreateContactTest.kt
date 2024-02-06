@@ -22,7 +22,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
-import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -82,7 +81,9 @@ class CreateContactTest {
             formattedName = ContactProperty.FormattedName(value = "Mario_ClearText@protonmail.com")
         )
         coEvery { contactRepository.createContact(userId, any()) } returns Unit
-        coEvery { encryptAndSignContactCards(userId, decryptedContact) } returns GetContactError.left()
+        coEvery {
+            encryptAndSignContactCards(userId, decryptedContact)
+        } returns EncryptingContactCardsError.DecryptingContactCardError.left()
 
         // When
         val result = createContact(userId, decryptedContact)
