@@ -42,8 +42,11 @@ import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -319,6 +322,7 @@ class MessageDetailViewModelTest {
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
     private val deleteMessages = mockk<DeleteMessages>()
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
+    private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val networkManager = mockk<NetworkManager>()
 
     private val messageDetailReducer = MessageDetailReducer(
@@ -367,6 +371,7 @@ class MessageDetailViewModelTest {
             updateLinkConfirmationSetting = updateLinkConfirmationSetting,
             resolveParticipantName = resolveParticipantName,
             reportPhishingMessage = reportPhishingMessage,
+            isProtonCalendarInstalled = isProtonCalendarInstalled,
             networkManager = networkManager,
         )
     }
@@ -1599,6 +1604,74 @@ class MessageDetailViewModelTest {
             coVerify(exactly = 1) { reportPhishingMessage(userId, messageId) }
         }
     }
+
+    @Test
+    fun `when user clicks open proton calendar and calendar is install, then open in proton calendar is called`() =
+        runTest {
+            // Given
+            val expectedUri = mockk<Uri>()
+            val expectedMessageBody = decryptedHtmlMessageBody.copy(
+                attachments = listOf(MessageAttachmentSample.calendar),
+                userAddress = UserAddressSample.PrimaryAddress
+            )
+
+            coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
+            coEvery {
+                messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
+            } returns MessageBodyUiModelTestData.messageBodyWithIcsAttachmentsUiModel
+                .copy(userAddress = UserAddressSample.PrimaryAddress)
+            coEvery { isProtonCalendarInstalled() } returns true
+            coEvery { getAttachmentIntentValues(userId, messageId, AttachmentId("calendar")) } returns
+                OpenAttachmentIntentValues("text/calendar", expectedUri).right()
+            coEvery { observeAttachmentWorkerStatus(userId, messageId, any()) } returns flowOf()
+
+            viewModel.state.test {
+                skipItems(4) // skip initial states
+
+                // When
+                viewModel.submit(MessageViewAction.OpenInProtonCalendar(messageId))
+
+                // Then
+                val actual = awaitItem()
+                val calendarIntentValues = actual.openProtonCalendarIntent.consume() as? OpenIcsInProtonCalendar
+                assertNotNull(calendarIntentValues)
+                assertEquals(expectedUri, calendarIntentValues.uriToIcsAttachment)
+                assertEquals(UserAddressSample.PrimaryAddress.email, calendarIntentValues.recipient)
+            }
+        }
+
+    @Test
+    fun `when user clicks open proton calendar and calendar is not installed, then open play store is called`() =
+        runTest {
+            // Given
+            val expectedUri = mockk<Uri>()
+            val expectedMessageBody = decryptedHtmlMessageBody.copy(
+                attachments = listOf(MessageAttachmentSample.calendar),
+                userAddress = UserAddressSample.PrimaryAddress
+            )
+
+            coEvery { getDecryptedMessageBody(userId, any()) } returns expectedMessageBody.right()
+            coEvery {
+                messageBodyUiModelMapper.toUiModel(userId, expectedMessageBody)
+            } returns MessageBodyUiModelTestData.messageBodyWithIcsAttachmentsUiModel
+                .copy(userAddress = UserAddressSample.PrimaryAddress)
+            coEvery { isProtonCalendarInstalled() } returns false
+            coEvery { getAttachmentIntentValues(userId, messageId, AttachmentId("calendar")) } returns
+                OpenAttachmentIntentValues("text/calendar", expectedUri).right()
+            coEvery { observeAttachmentWorkerStatus(userId, messageId, any()) } returns flowOf()
+
+            viewModel.state.test {
+                skipItems(4) // skip initial states
+
+                // When
+                viewModel.submit(MessageViewAction.OpenInProtonCalendar(messageId))
+
+                // Then
+                val actual = awaitItem()
+                val calendarIntentValues = actual.openProtonCalendarIntent.consume() as? OpenProtonCalendarOnPlayStore
+                assertNotNull(calendarIntentValues)
+            }
+        }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())

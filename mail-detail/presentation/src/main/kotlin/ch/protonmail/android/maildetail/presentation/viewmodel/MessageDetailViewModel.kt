@@ -30,8 +30,10 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
+import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsRead
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
@@ -43,8 +45,10 @@ import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailHeaderUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
@@ -100,7 +104,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-@Suppress("LongParameterList", "TooManyFunctions")
+@Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 class MessageDetailViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val observeMessage: ObserveMessage,
@@ -131,6 +135,7 @@ class MessageDetailViewModel @Inject constructor(
     private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting,
     private val resolveParticipantName: ResolveParticipantName,
     private val reportPhishingMessage: ReportPhishingMessage,
+    private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
     private val networkManager: NetworkManager
 ) : ViewModel() {
 
@@ -180,6 +185,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.RequestMoreActionsBottomSheet -> showMoreActionsBottomSheetAndLoadData(action)
             is MessageViewAction.ReportPhishing -> handleReportPhishing(action)
             is MessageViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
+            is MessageViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar()
         }
     }
 
@@ -628,6 +634,45 @@ class MessageDetailViewModel @Inject constructor(
             }
             emitNewStateFrom(action)
         }
+    }
+
+    private fun handleOpenInProtonCalendar() {
+        viewModelScope.launch {
+            val isInstalled = isProtonCalendarInstalled()
+            if (isInstalled) {
+                val metadata = (state.value.messageMetadataState as? MessageMetadataState.Data)?.messageDetailHeader
+                val messageBody = (state.value.messageBodyState as? MessageBodyState.Data)?.messageBodyUiModel
+                if (messageBody != null && metadata != null) {
+                    handleOpenInProtonCalendar(metadata, messageBody)
+                }
+            } else {
+                val intent = OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
+                emitNewStateFrom(MessageDetailEvent.HandleOpenProtonCalendarRequest(intent))
+            }
+        }
+    }
+
+    private suspend fun handleOpenInProtonCalendar(
+        metadata: MessageDetailHeaderUiModel,
+        messageBodyUiModel: MessageBodyUiModel
+    ) {
+        val sender = metadata.sender.participantAddress
+        val recipient = messageBodyUiModel.userAddress?.email ?: return
+        val firstCalendarAttachment = messageBodyUiModel.attachments?.attachments?.firstOrNull {
+            it.mimeType.split(";").any { it == "text/calendar" }
+        } ?: return
+
+        getAttachmentIntentValues(
+            userId = primaryUserId.first(),
+            messageId = messageId,
+            attachmentId = AttachmentId(firstCalendarAttachment.attachmentId)
+        ).fold(
+            ifLeft = { Timber.e("Failed to get attachment intent values: $it") },
+            ifRight = { values ->
+                val intent = OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar(values.uri, sender, recipient)
+                emitNewStateFrom(MessageDetailEvent.HandleOpenProtonCalendarRequest(intent))
+            }
+        )
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

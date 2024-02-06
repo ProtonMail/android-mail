@@ -238,10 +238,11 @@ class MessageDetailReducerTest(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
+            openProtonCalendarIntent = Effect.empty(),
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
         )
 
         private val actions = listOf(

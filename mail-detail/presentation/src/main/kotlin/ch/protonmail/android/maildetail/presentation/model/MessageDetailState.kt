@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 
 data class MessageDetailState(
@@ -37,6 +38,7 @@ data class MessageDetailState(
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<Uri>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,
+    val openProtonCalendarIntent: Effect<OpenProtonCalendarIntentValues>,
     val requestLinkConfirmation: Boolean,
     val requestPhishingLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState,
@@ -56,10 +58,11 @@ data class MessageDetailState(
             error = Effect.empty(),
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
+            openProtonCalendarIntent = Effect.empty(),
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
         )
     }
 }

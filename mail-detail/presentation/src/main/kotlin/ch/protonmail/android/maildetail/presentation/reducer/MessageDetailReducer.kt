@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
+import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
@@ -57,6 +58,7 @@ class MessageDetailReducer @Inject constructor(
             exitScreenWithMessageEffect = currentState.toNewExitWithMessageStateFrom(operation),
             openMessageBodyLinkEffect = currentState.toNewOpenMessageBodyLinkStateFrom(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
+            openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
             deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation),
             requestPhishingLinkConfirmation = currentState.toNewPhishingLinkConfirmationState(operation),
             reportPhishingDialogState = currentState.toNewReportPhishingDialogStateFrom(operation)
@@ -173,6 +175,13 @@ class MessageDetailReducer @Inject constructor(
     ): Effect<OpenAttachmentIntentValues> = when (operation) {
         is MessageDetailEvent.OpenAttachmentEvent -> Effect.of(operation.values)
         else -> openAttachmentEffect
+    }
+
+    private fun MessageDetailState.toNewOpenProtonCalendarIntentFrom(
+        operation: MessageDetailOperation
+    ): Effect<OpenProtonCalendarIntentValues> = when (operation) {
+        is MessageDetailEvent.HandleOpenProtonCalendarRequest -> Effect.of(operation.intent)
+        else -> openProtonCalendarIntent
     }
 
     private fun MessageDetailState.toNewDeleteDialogStateFrom(operation: MessageDetailOperation): DeleteDialogState {
