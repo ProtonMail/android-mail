@@ -58,6 +58,7 @@ import ch.protonmail.android.navigation.route.addCombinedContactsSetting
 import ch.protonmail.android.navigation.route.addComposer
 import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactForm
+import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
@@ -325,7 +326,7 @@ fun Home(
                     navController,
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )
@@ -336,7 +337,7 @@ fun Home(
                     navController,
                     showSuccessSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostSuccessState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.SUCCESS
                             )
@@ -344,7 +345,7 @@ fun Home(
                     },
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )
@@ -355,7 +356,7 @@ fun Home(
                     navController,
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )
@@ -368,7 +369,7 @@ fun Home(
                     navController,
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )
@@ -382,7 +383,7 @@ fun Home(
                     navController,
                     showSuccessSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostSuccessState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.SUCCESS
                             )
@@ -390,7 +391,7 @@ fun Home(
                     },
                     showErrorSnackbar = { message ->
                         scope.launch {
-                            snackbarHostNormState.showSnackbar(
+                            snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
                             )
@@ -417,6 +418,20 @@ fun Home(
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
+                    }
+                )
+                addContactGroupDetails(
+                    navController,
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostErrorState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    },
+                    showFeatureMissingSnackbar = {
+                        showFeatureMissingSnackbar()
                     }
                 )
                 addAlternativeRoutingSetting(navController)
