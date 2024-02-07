@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Seriali
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
+import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
@@ -147,12 +148,15 @@ sealed class Destination(val route: String) {
         }
 
         object Contacts : Destination("contacts")
-        object ContactDetails : Destination("contacts/${ContactDetailsContactIdKey.wrap()}") {
+        object ContactDetails : Destination("contacts/contact/${ContactDetailsContactIdKey.wrap()}") {
             operator fun invoke(contactId: ContactId) = route.replace(ContactDetailsContactIdKey.wrap(), contactId.id)
         }
-        object CreateContact : Destination("contactForm")
-        object EditContact : Destination("contactForm/${ContactFormContactIdKey.wrap()}") {
+        object CreateContact : Destination("contacts/contact/form")
+        object EditContact : Destination("contacts/contact/${ContactFormContactIdKey.wrap()}/form") {
             operator fun invoke(contactId: ContactId) = route.replace(ContactFormContactIdKey.wrap(), contactId.id)
+        }
+        object ContactGroupDetails : Destination("contacts/group/${ContactGroupDetailsLabelIdKey.wrap()}") {
+            operator fun invoke(labelId: LabelId) = route.replace(ContactGroupDetailsLabelIdKey.wrap(), labelId.id)
         }
     }
 
