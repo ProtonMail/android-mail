@@ -37,8 +37,8 @@ class ObserveContactGroup @Inject constructor(
     private val contactRepository: ContactRepository
 ) {
 
-    operator fun invoke(userId: UserId, labelId: LabelId): Flow<Either<ContactGroupByIdError, ContactGroup>> =
-        combine(
+    operator fun invoke(userId: UserId, labelId: LabelId): Flow<Either<ContactGroupByIdError, ContactGroup>> {
+        return combine(
             labelRepository.observeLabels(userId, LabelType.ContactGroup).mapToEither(),
             contactRepository.observeAllContacts(userId).mapToEither()
         ) { labels, contacts ->
@@ -63,6 +63,7 @@ class ObserveContactGroup @Inject constructor(
                 )
             }
         }
+    }
 }
 
 sealed interface ContactGroupByIdError {
