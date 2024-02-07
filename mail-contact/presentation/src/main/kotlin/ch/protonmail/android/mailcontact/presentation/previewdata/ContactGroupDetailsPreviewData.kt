@@ -18,13 +18,25 @@
 
 package ch.protonmail.android.mailcontact.presentation.previewdata
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupMember
 import me.proton.core.label.domain.entity.LabelId
 
 object ContactGroupDetailsPreviewData {
 
     val contactGroupDetailsSampleData = ContactGroupDetailsUiModel(
-        id = LabelId("Id")
+        id = LabelId("Id"),
+        name = "Name",
+        color = Color.Red,
+        memberCount = 1,
+        members = listOf(
+            ContactGroupMember(
+                initials = "JD",
+                name = "John Doe",
+                email = "johndoe@proton.me"
+            )
+        )
     )
 }
 
