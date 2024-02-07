@@ -18,7 +18,14 @@
 
 package ch.protonmail.android.mailcontact.domain.model
 
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
+
 data class ContactGroup(
+    val userId: UserId,
+    val labelId: LabelId,
     val name: String,
-    val color: String
+    val color: String,
+    val members: List<ContactEmail>
 )
