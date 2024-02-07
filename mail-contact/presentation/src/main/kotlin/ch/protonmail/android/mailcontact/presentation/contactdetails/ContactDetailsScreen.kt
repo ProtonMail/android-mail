@@ -296,7 +296,7 @@ private fun ContactGroupRow(modifier: Modifier = Modifier, contactGroups: Contac
                 .padding(start = ProtonDimens.DefaultSpacing)
         ) {
             for (groupLabel in contactGroups.groupLabelList) {
-                ContactGroupLabel(
+                ContactDetailsGroupLabel(
                     value = groupLabel.name,
                     color = groupLabel.color
                 )
@@ -306,7 +306,7 @@ private fun ContactGroupRow(modifier: Modifier = Modifier, contactGroups: Contac
 }
 
 @Composable
-private fun ContactGroupLabel(
+private fun ContactDetailsGroupLabel(
     modifier: Modifier = Modifier,
     value: String,
     color: Color

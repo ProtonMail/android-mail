@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcontact.presentation.model.Avatar
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
-import ch.protonmail.android.mailcontact.presentation.model.ContactGroupLabel
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupLabel
 import me.proton.core.contact.domain.entity.ContactId
 
 object ContactDetailsPreviewData {
@@ -76,15 +76,15 @@ object ContactDetailsPreviewData {
             displayGroupSection = true,
             iconResId = R.drawable.ic_proton_users,
             groupLabelList = listOf(
-                ContactGroupLabel(
+                ContactDetailsGroupLabel(
                     name = "Short",
                     color = Color.Red
                 ),
-                ContactGroupLabel(
+                ContactDetailsGroupLabel(
                     name = "Group very with long name",
                     color = Color.Blue
                 ),
-                ContactGroupLabel(
+                ContactDetailsGroupLabel(
                     name = "Medium length",
                     color = Color.Green
                 )

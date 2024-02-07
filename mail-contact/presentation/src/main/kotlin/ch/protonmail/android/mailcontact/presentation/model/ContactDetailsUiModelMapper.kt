@@ -36,7 +36,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
 ) {
 
     fun toContactDetailsUiModel(decryptedContact: DecryptedContact): ContactDetailsUiModel {
-        val groupLabelList = getGroupLabelList(decryptedContact)
+        val groupLabelList = getDetailsGroupLabelList(decryptedContact)
         val defaultPhoneNumber = decryptedContact.telephones.firstOrNull()?.text ?: ""
         val defaultEmail = decryptedContact.emails.firstOrNull()?.value ?: ""
         val firstName = decryptedContact.structuredName?.given?.takeIfNotEmpty() ?: ""
@@ -82,9 +82,9 @@ class ContactDetailsUiModelMapper @Inject constructor(
         )
     }
 
-    private fun getGroupLabelList(contact: DecryptedContact): List<ContactGroupLabel> {
+    private fun getDetailsGroupLabelList(contact: DecryptedContact): List<ContactDetailsGroupLabel> {
         return contact.contactGroupLabels.map {
-            ContactGroupLabel(it.name, it.color.getColorFromHexString())
+            ContactDetailsGroupLabel(it.name, it.color.getColorFromHexString())
         }
     }
 

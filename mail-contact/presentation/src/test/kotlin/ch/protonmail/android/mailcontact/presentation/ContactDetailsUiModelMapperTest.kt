@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.Avatar
+import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupLabel
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroupsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
@@ -432,7 +433,7 @@ class ContactDetailsUiModelMapperTest {
                 displayGroupSection = true,
                 iconResId = R.drawable.ic_proton_users,
                 groupLabelList = listOf(
-                    ContactGroupLabel(
+                    ContactDetailsGroupLabel(
                         name = "Group 1",
                         color = Color.Red
                     )

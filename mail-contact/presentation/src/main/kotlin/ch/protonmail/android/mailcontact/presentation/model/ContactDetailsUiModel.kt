@@ -71,10 +71,10 @@ sealed interface ContactDetailsItem {
 data class ContactDetailsGroupsItem(
     val displayGroupSection: Boolean,
     val iconResId: Int,
-    val groupLabelList: List<ContactGroupLabel> = emptyList()
+    val groupLabelList: List<ContactDetailsGroupLabel> = emptyList()
 )
 
-data class ContactGroupLabel(
+data class ContactDetailsGroupLabel(
     val name: String,
     val color: Color
 )
