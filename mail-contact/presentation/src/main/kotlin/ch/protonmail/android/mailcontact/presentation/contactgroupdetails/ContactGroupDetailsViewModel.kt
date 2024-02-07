@@ -23,7 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupById
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -44,7 +44,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ContactGroupDetailsViewModel @Inject constructor(
-    private val observeContactGroupById: ObserveContactGroupById,
+    private val observeContactGroup: ObserveContactGroup,
     private val reducer: ContactGroupDetailsReducer,
     private val contactGroupDetailsUiModelMapper: ContactGroupDetailsUiModelMapper,
     private val savedStateHandle: SavedStateHandle,
@@ -83,7 +83,7 @@ class ContactGroupDetailsViewModel @Inject constructor(
     }
 
     private fun flowContactGroupDetailsEvent(userId: UserId, labelId: LabelId): Flow<ContactGroupDetailsEvent> {
-        return observeContactGroupById(userId, labelId).map { contactGroup ->
+        return observeContactGroup(userId, labelId).map { contactGroup ->
             ContactGroupDetailsEvent.ContactGroupLoaded(
                 contactGroupDetailsUiModelMapper.toContactGroupDetailsUiModel(
                     contactGroup.getOrElse {

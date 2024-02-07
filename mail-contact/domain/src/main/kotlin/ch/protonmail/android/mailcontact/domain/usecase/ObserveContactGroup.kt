@@ -32,7 +32,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-class ObserveContactGroupById @Inject constructor(
+class ObserveContactGroup @Inject constructor(
     private val labelRepository: LabelRepository,
     private val contactRepository: ContactRepository
 ) {
