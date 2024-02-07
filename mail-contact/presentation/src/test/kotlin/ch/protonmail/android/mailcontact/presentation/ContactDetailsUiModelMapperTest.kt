@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.Avatar
@@ -34,7 +34,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroups
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
-import ch.protonmail.android.mailcontact.presentation.model.ContactGroupLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
@@ -87,8 +86,8 @@ class ContactDetailsUiModelMapperTest {
         val logoByteArray = ContactImagesSample.Logo
         val decryptedContact = DecryptedContact(
             id = ContactSample.Mario.id,
-            contactGroups = listOf(
-                ContactGroup(
+            contactGroupLabels = listOf(
+                ContactGroupLabel(
                     "Group 1",
                     Color.Red.getHexStringFromColor()
                 )

@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.presentation
 
 import java.time.LocalDate
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
@@ -81,7 +81,7 @@ class ContactFormUiModelMapperTest {
 
         val actual = contactFormUiModelMapper.toDecryptedContact(
             contactFormUiModel,
-            decryptedContact.contactGroups,
+            decryptedContact.contactGroupLabels,
             decryptedContact.photos,
             decryptedContact.logos
         )
@@ -128,8 +128,8 @@ class ContactFormUiModelMapperTest {
     private fun getDecryptedContact(): DecryptedContact {
         return DecryptedContact(
             id = ContactSample.Mario.id,
-            contactGroups = listOf(
-                ContactGroup(
+            contactGroupLabels = listOf(
+                ContactGroupLabel(
                     "Group 1",
                     androidx.compose.ui.graphics.Color.Red.getHexStringFromColor()
                 )

@@ -83,7 +83,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
     }
 
     private fun getGroupLabelList(contact: DecryptedContact): List<ContactGroupLabel> {
-        return contact.contactGroups.map {
+        return contact.contactGroupLabels.map {
             ContactGroupLabel(it.name, it.color.getColorFromHexString())
         }
     }

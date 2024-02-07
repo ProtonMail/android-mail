@@ -278,7 +278,7 @@ class ContactFormViewModel @Inject constructor(
     private suspend fun handleCreateContact(contact: ContactFormUiModel) {
         val decryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
-            contactGroups = listOf(),
+            contactGroupLabels = listOf(),
             photos = listOf(),
             logos = listOf()
         )
@@ -306,7 +306,7 @@ class ContactFormViewModel @Inject constructor(
         }
         val updatedDecryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
-            contactGroups = decryptedContact.contactGroups,
+            contactGroupLabels = decryptedContact.contactGroupLabels,
             photos = decryptedContact.photos,
             logos = decryptedContact.logos
         )

@@ -24,7 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -92,8 +92,8 @@ class ObserveDecryptedContactTest {
     @Test
     fun `returns Contact with injected ContactGroups if there were any`() = runTest {
         // Given
-        val expectedContactGroups = listOf(
-            ContactGroup(
+        val expectedContactGroupLabels = listOf(
+            ContactGroupLabel(
                 LabelSample.GroupCoworkers.name,
                 LabelSample.GroupCoworkers.color
             )
@@ -103,7 +103,7 @@ class ObserveDecryptedContactTest {
         observeDecryptedContact(UserIdTestData.Primary, ContactWithCardsSample.Mario.contact.id).test {
             // Then
             val actual = assertIs<Either.Right<DecryptedContact>>(awaitItem())
-            assertEquals(expectedContactGroups, actual.value.contactGroups)
+            assertEquals(expectedContactGroupLabels, actual.value.contactGroupLabels)
             awaitComplete()
         }
     }
@@ -111,13 +111,13 @@ class ObserveDecryptedContactTest {
     @Test
     fun `returns Contact with no injected ContactGroups if there were none`() = runTest {
         // Given
-        val expectedContactGroups = emptyList<ContactGroup>()
+        val expectedContactGroupLabels = emptyList<ContactGroupLabel>()
 
         // When
         observeDecryptedContact(UserIdTestData.Primary, ContactWithCardsSample.Stefano.contact.id).test {
             // Then
             val actual = assertIs<Either.Right<DecryptedContact>>(awaitItem())
-            assertEquals(expectedContactGroups, actual.value.contactGroups)
+            assertEquals(expectedContactGroupLabels, actual.value.contactGroupLabels)
             awaitComplete()
         }
     }

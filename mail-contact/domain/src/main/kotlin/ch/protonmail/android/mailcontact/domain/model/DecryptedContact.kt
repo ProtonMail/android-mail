@@ -22,7 +22,7 @@ import me.proton.core.contact.domain.entity.ContactId
 
 data class DecryptedContact(
     val id: ContactId?,
-    val contactGroups: List<ContactGroup> = emptyList(),
+    val contactGroupLabels: List<ContactGroupLabel> = emptyList(),
     val structuredName: ContactProperty.StructuredName? = null,
     val formattedName: ContactProperty.FormattedName? = null,
     val emails: List<ContactProperty.Email> = emptyList(),

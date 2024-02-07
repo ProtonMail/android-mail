@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import me.proton.core.util.kotlin.takeIfNotBlank
@@ -127,14 +127,14 @@ class ContactFormUiModelMapper @Inject constructor(
 
     fun toDecryptedContact(
         contact: ContactFormUiModel,
-        contactGroups: List<ContactGroup>,
+        contactGroupLabels: List<ContactGroupLabel>,
         // Remove those fields once they are implemented in form
         photos: List<ContactProperty.Photo>,
         logos: List<ContactProperty.Logo>
     ): DecryptedContact {
         return DecryptedContact(
             id = contact.id,
-            contactGroups = contactGroups,
+            contactGroupLabels = contactGroupLabels,
             structuredName = contact.getStructuredNameContactProperty(),
             formattedName = contact.getFormattedNameContactProperty(),
             emails = contact.getEmailContactPropertyList(),
