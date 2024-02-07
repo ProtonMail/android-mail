@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
+import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -51,6 +52,7 @@ import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 
@@ -354,8 +356,8 @@ internal fun NavGraphBuilder.addContacts(
                 onContactSelected = { contactId ->
                     navController.navigate(Destination.Screen.ContactDetails(ContactId(contactId)))
                 },
-                onContactGroupSelected = { _ ->
-                    showFeatureMissingSnackbar()
+                onContactGroupSelected = { labelId ->
+                    navController.navigate(Destination.Screen.ContactGroupDetails(labelId))
                 },
                 onBackClick = {
                     navController.popBackStack()
@@ -422,5 +424,25 @@ internal fun NavGraphBuilder.addContactForm(
     }
     composable(route = Destination.Screen.EditContact.route) {
         ContactFormScreen(actions)
+    }
+}
+
+internal fun NavGraphBuilder.addContactGroupDetails(
+    navController: NavHostController,
+    showErrorSnackbar: (message: String) -> Unit,
+    showFeatureMissingSnackbar: () -> Unit
+) {
+    val actions = ContactGroupDetailsScreen.Actions.Empty.copy(
+        onBackClick = { navController.popBackStack() },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        },
+        onEditClick = { _ ->
+            showFeatureMissingSnackbar()
+        }
+    )
+    composable(route = Destination.Screen.ContactGroupDetails.route) {
+        ContactGroupDetailsScreen(actions)
     }
 }
