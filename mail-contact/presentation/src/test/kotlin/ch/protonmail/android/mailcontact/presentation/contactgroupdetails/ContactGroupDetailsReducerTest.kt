@@ -45,12 +45,14 @@ class ContactGroupDetailsReducerTest(
     companion object {
 
         private val loadedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
-        private val loadedContactGroupDetailsUiModel2 = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData.copy(
-            name = "Group name 2"
-        )
+        private val loadedContactGroupDetailsUiModel2 = ContactGroupDetailsPreviewData
+            .contactGroupDetailsSampleData
+            .copy(name = "Group name 2")
 
         private val emptyLoadingState = ContactGroupDetailsState.Loading()
-        private val loadedContactGroupState = ContactGroupDetailsState.Data(contactGroup = loadedContactGroupDetailsUiModel)
+        private val loadedContactGroupState = ContactGroupDetailsState.Data(
+            contactGroup = loadedContactGroupDetailsUiModel
+        )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(

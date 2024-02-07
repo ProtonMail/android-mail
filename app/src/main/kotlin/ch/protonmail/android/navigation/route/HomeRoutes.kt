@@ -50,9 +50,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScre
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
-import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 
