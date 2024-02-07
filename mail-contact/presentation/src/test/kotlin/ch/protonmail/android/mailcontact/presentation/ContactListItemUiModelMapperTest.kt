@@ -101,20 +101,20 @@ class ContactListItemUiModelMapperTest {
         val expected = listOf(
             ContactListItemUiModel.Header("F"),
             ContactListItemUiModel.Contact(
-                id = "1",
+                id = ContactId("1"),
                 name = "first contact",
                 emailSubtext = TextUiModel("firstcontact+alias@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FC")
             ),
             ContactListItemUiModel.Contact(
-                id = "1.1",
+                id = ContactId("1.1"),
                 name = "first contact bis",
                 emailSubtext = TextUiModel("firstcontactbis@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FB")
             ),
             ContactListItemUiModel.Header("S"),
             ContactListItemUiModel.Contact(
-                id = "2",
+                id = ContactId("2"),
                 name = "second contact",
                 emailSubtext = TextUiModel("secondcontact@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("SC")

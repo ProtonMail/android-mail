@@ -46,7 +46,7 @@ class ContactListItemUiModelMapper @Inject constructor() {
             }.forEach { contact ->
                 contacts.add(
                     ContactListItemUiModel.Contact(
-                        id = contact.id.id,
+                        id = contact.id,
                         name = contact.name,
                         emailSubtext = getEmailSubtext(contact.contactEmails),
                         avatar = AvatarUiModel.ParticipantInitial(getInitials(contact.name))

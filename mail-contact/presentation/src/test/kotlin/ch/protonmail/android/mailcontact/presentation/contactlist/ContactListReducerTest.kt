@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,13 +52,13 @@ class ContactListReducerTest(
         private val loadedContactListItemUiModels = listOf(
             ContactListItemUiModel.Header("F"),
             ContactListItemUiModel.Contact(
-                id = "1",
+                id = ContactId("1"),
                 name = "first contact",
                 emailSubtext = TextUiModel("firstcontact+alias@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FC")
             ),
             ContactListItemUiModel.Contact(
-                id = "1.1",
+                id = ContactId("1.1"),
                 name = "first contact bis",
                 emailSubtext = TextUiModel("firstcontactbis@protonmail.com"),
                 avatar = AvatarUiModel.ParticipantInitial("FB")

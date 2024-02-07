@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import me.proton.core.contact.domain.entity.ContactId
 
 sealed interface ContactListItemUiModel {
     data class Header(
@@ -27,7 +28,7 @@ sealed interface ContactListItemUiModel {
     ) : ContactListItemUiModel
 
     data class Contact(
-        val id: String,
+        val id: ContactId,
         val name: String,
         val emailSubtext: TextUiModel,
         val avatar: AvatarUiModel

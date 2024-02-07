@@ -354,7 +354,7 @@ internal fun NavGraphBuilder.addContacts(
                     showFeatureMissingSnackbar()
                 },
                 onContactSelected = { contactId ->
-                    navController.navigate(Destination.Screen.ContactDetails(ContactId(contactId)))
+                    navController.navigate(Destination.Screen.ContactDetails(contactId))
                 },
                 onContactGroupSelected = { labelId ->
                     navController.navigate(Destination.Screen.ContactGroupDetails(labelId))

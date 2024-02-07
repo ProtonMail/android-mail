@@ -90,6 +90,8 @@ import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.label.domain.entity.LabelId
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -450,7 +452,7 @@ fun ContactGroupItem(
             .clickable(
                 role = Role.Button,
                 onClick = {
-                    actions.onContactGroupSelected(contact.labelId.id)
+                    actions.onContactGroupSelected(contact.labelId)
                 }
             )
             .padding(start = ProtonDimens.DefaultSpacing),
@@ -605,8 +607,8 @@ object ContactListScreen {
 
     data class Actions(
         val onBackClick: () -> Unit,
-        val onContactSelected: (String) -> Unit,
-        val onContactGroupSelected: (String) -> Unit,
+        val onContactSelected: (ContactId) -> Unit,
+        val onContactGroupSelected: (LabelId) -> Unit,
         val openContactForm: () -> Unit,
         val openContactGroupForm: () -> Unit,
         val openImportContact: () -> Unit,
