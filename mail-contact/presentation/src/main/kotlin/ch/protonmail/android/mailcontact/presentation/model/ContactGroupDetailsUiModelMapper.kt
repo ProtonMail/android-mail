@@ -18,14 +18,26 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
-import me.proton.core.label.domain.entity.Label
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.presentation.utils.getInitials
+import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import javax.inject.Inject
 
 class ContactGroupDetailsUiModelMapper @Inject constructor() {
 
-    fun toContactGroupDetailsUiModel(label: Label): ContactGroupDetailsUiModel {
+    fun toContactGroupDetailsUiModel(contactGroup: ContactGroup): ContactGroupDetailsUiModel {
         return ContactGroupDetailsUiModel(
-            id = label.labelId
+            id = contactGroup.labelId,
+            name = contactGroup.name,
+            color = contactGroup.color.getColorFromHexString(),
+            memberCount = contactGroup.members.size,
+            members = contactGroup.members.map { contactEmail ->
+                ContactGroupMember(
+                    initials = getInitials(contactEmail.name),
+                    name = contactEmail.name,
+                    email = contactEmail.email
+                )
+            }
         )
     }
 }
