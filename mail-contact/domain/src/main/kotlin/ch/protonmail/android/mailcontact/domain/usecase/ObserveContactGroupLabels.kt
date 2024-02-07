@@ -28,17 +28,16 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
-class ObserveContactGroups @Inject constructor(
+class ObserveContactGroupLabels @Inject constructor(
     private val labelRepository: LabelRepository
 ) {
 
-    operator fun invoke(userId: UserId): Flow<Either<GetContactGroupsError, List<Label>>> =
+    operator fun invoke(userId: UserId): Flow<Either<GetContactGroupLabelsError, List<Label>>> =
         labelRepository.observeLabels(userId, LabelType.ContactGroup)
             .mapToEither()
             .mapLatest {
-                it.mapLeft { GetContactGroupsError }
+                it.mapLeft { GetContactGroupLabelsError }
             }
 }
 
-object GetContactGroupsError
-
+object GetContactGroupLabelsError

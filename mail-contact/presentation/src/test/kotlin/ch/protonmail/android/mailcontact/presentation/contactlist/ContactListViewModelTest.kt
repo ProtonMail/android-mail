@@ -27,8 +27,8 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
-import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupsError
-import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroups
+import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupLabelsError
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
@@ -97,7 +97,7 @@ class ContactListViewModelTest {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
     }
     private val observeContacts = mockk<ObserveContacts>()
-    private val observeContactGroups = mockk<ObserveContactGroups>()
+    private val observeContactGroupLabels = mockk<ObserveContactGroupLabels>()
 
     private val reducer = ContactListReducer()
 
@@ -107,7 +107,7 @@ class ContactListViewModelTest {
     private val contactListViewModel by lazy {
         ContactListViewModel(
             observeContacts,
-            observeContactGroups,
+            observeContactGroupLabels,
             reducer,
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
@@ -135,7 +135,7 @@ class ContactListViewModelTest {
             observeContacts(userId = UserIdTestData.userId)
         } returns flowOf(emptyList<Contact>().right())
         coEvery {
-            observeContactGroups(userId = UserIdTestData.userId)
+            observeContactGroupLabels(userId = UserIdTestData.userId)
         } returns flowOf(emptyList<Label>().right())
 
         // When
@@ -177,7 +177,7 @@ class ContactListViewModelTest {
             observeContacts.invoke(UserIdTestData.userId)
         } returns flowOf(GetContactError.left())
         coEvery {
-            observeContactGroups(userId = UserIdTestData.userId)
+            observeContactGroupLabels(userId = UserIdTestData.userId)
         } returns flowOf(listOf(defaultTestContactGroupLabel).right())
 
         // When
@@ -199,8 +199,8 @@ class ContactListViewModelTest {
             observeContacts(userId = UserIdTestData.userId)
         } returns flowOf(listOf(defaultTestContact).right())
         coEvery {
-            observeContactGroups(userId = UserIdTestData.userId)
-        } returns flowOf(GetContactGroupsError.left())
+            observeContactGroupLabels(userId = UserIdTestData.userId)
+        } returns flowOf(GetContactGroupLabelsError.left())
 
         // When
         contactListViewModel.state.test {
@@ -352,7 +352,7 @@ class ContactListViewModelTest {
             observeContacts(userId = UserIdTestData.userId)
         } returns flowOf(listOf(defaultTestContact).right())
         coEvery {
-            observeContactGroups(userId = UserIdTestData.userId)
+            observeContactGroupLabels(userId = UserIdTestData.userId)
         } returns flowOf(listOf(defaultTestContactGroupLabel).right())
     }
 }

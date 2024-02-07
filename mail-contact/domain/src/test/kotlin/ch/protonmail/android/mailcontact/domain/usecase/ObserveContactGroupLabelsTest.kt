@@ -35,7 +35,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
-class ObserveContactGroupsTest {
+class ObserveContactGroupLabelsTest {
 
     private val contactGroupLabels = listOf(
         LabelTestData.buildLabel(
@@ -54,12 +54,12 @@ class ObserveContactGroupsTest {
         )
     }
 
-    private val observeContactGroups = ObserveContactGroups(repository)
+    private val observeContactGroupLabels = ObserveContactGroupLabels(repository)
 
     @Test
     fun `when repository returns labels they are successfully emitted`() = runTest {
         // When
-        observeContactGroups(UserIdTestData.userId).test {
+        observeContactGroupLabels(UserIdTestData.userId).test {
             // Then
             val actual = assertIs<Either.Right<List<Label>>>(awaitItem())
             assertEquals(contactGroupLabels, actual.value)
@@ -74,9 +74,9 @@ class ObserveContactGroupsTest {
             DataResult.Error.Remote(message = "Unauthorised", cause = null, httpCode = 401)
         )
         // When
-        observeContactGroups(UserIdTestData.userId).test {
+        observeContactGroupLabels(UserIdTestData.userId).test {
             // Then
-            assertIs<Either.Left<GetContactGroupsError>>(awaitItem())
+            assertIs<Either.Left<GetContactGroupLabelsError>>(awaitItem())
             awaitComplete()
         }
     }

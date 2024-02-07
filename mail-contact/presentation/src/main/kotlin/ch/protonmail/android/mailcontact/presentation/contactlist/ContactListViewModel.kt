@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroups
+import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
@@ -46,7 +46,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactListViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
-    private val observeContactGroups: ObserveContactGroups,
+    private val observeContactGroupLabels: ObserveContactGroupLabels,
     private val reducer: ContactListReducer,
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
@@ -87,7 +87,7 @@ class ContactListViewModel @Inject constructor(
     private fun flowContactListEvent(userId: UserId): Flow<ContactListEvent> {
         return combine(
             observeContacts(userId),
-            observeContactGroups(userId)
+            observeContactGroupLabels(userId)
         ) { contacts, contactGroups ->
             val contactList = contacts.getOrElse {
                 Timber.e("Error while observing contacts")
