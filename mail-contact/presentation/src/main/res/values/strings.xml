@@ -104,4 +104,6 @@
         <item quantity="other">%1$d members</item>
     </plurals>
     <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
+    <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
+    <string name="edit_contact_group_content_description">Edit contact group</string>
 </resources>
