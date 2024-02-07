@@ -164,7 +164,7 @@ class ContactFormUiModelMapper @Inject constructor(
                 // Formatted name is mandatory in contacts. Fallback to first and last name combo.
                 (this.firstName.takeIfNotEmpty()?.trim() ?: "").plus(
                     this.lastName.takeIfNotEmpty()?.let { " ${it.trim()}" } ?: ""
-                )
+                ).trim()
             }
         )
     }
