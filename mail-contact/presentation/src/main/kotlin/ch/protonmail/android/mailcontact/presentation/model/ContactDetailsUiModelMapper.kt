@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.util.kotlin.takeIfNotBlank
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 class ContactDetailsUiModelMapper @Inject constructor(
@@ -38,8 +39,11 @@ class ContactDetailsUiModelMapper @Inject constructor(
         val groupLabelList = getGroupLabelList(decryptedContact)
         val defaultPhoneNumber = decryptedContact.telephones.firstOrNull()?.text ?: ""
         val defaultEmail = decryptedContact.emails.firstOrNull()?.value ?: ""
-        val formattedStructuredName = (decryptedContact.structuredName?.given?.takeIfNotBlank() ?: "").plus(
-            decryptedContact.structuredName?.family?.takeIfNotBlank()?.let { " $it" } ?: ""
+        val firstName = decryptedContact.structuredName?.given?.takeIfNotEmpty() ?: ""
+        val lastName = decryptedContact.structuredName?.family?.takeIfNotEmpty() ?: ""
+        val formattedStructuredName = firstName.plus(
+            if (firstName.isNotEmpty()) " $lastName"
+            else lastName
         )
         val nameHeader = decryptedContact.formattedName?.value?.takeIfNotBlank() ?: formattedStructuredName
         val nameSubText =
