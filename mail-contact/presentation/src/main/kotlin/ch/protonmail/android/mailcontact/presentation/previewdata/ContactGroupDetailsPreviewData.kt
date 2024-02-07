@@ -27,7 +27,7 @@ object ContactGroupDetailsPreviewData {
 
     val contactGroupDetailsSampleData = ContactGroupDetailsUiModel(
         id = LabelId("Id"),
-        name = "Name",
+        name = "Group name",
         color = Color.Red,
         memberCount = 1,
         members = listOf(
