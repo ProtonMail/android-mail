@@ -127,7 +127,7 @@ class ObserveContactGroupTest {
         // When
         observeContactGroup(UserIdTestData.userId, LabelId("LabelId1")).test {
             // Then
-            assertIs<Either.Left<ContactGroupByIdError.GetLabelsError>>(awaitItem())
+            assertIs<Either.Left<GetContactGroupError.GetLabelsErrorGet>>(awaitItem())
             awaitComplete()
         }
     }
@@ -141,7 +141,7 @@ class ObserveContactGroupTest {
         // When
         observeContactGroup(UserIdTestData.userId, LabelId("LabelId1")).test {
             // Then
-            assertIs<Either.Left<ContactGroupByIdError.GetContactsError>>(awaitItem())
+            assertIs<Either.Left<GetContactGroupError.GetContactsErrorGet>>(awaitItem())
             awaitComplete()
         }
     }

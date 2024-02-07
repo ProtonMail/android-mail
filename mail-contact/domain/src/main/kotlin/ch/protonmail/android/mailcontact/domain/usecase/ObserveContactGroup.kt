@@ -37,7 +37,7 @@ class ObserveContactGroup @Inject constructor(
     private val contactRepository: ContactRepository
 ) {
 
-    operator fun invoke(userId: UserId, labelId: LabelId): Flow<Either<ContactGroupByIdError, ContactGroup>> {
+    operator fun invoke(userId: UserId, labelId: LabelId): Flow<Either<GetContactGroupError, ContactGroup>> {
         return combine(
             labelRepository.observeLabels(userId, LabelType.ContactGroup).mapToEither(),
             contactRepository.observeAllContacts(userId).mapToEither()
@@ -45,14 +45,14 @@ class ObserveContactGroup @Inject constructor(
             either {
                 val label = labels.getOrNull()?.firstOrNull {
                     it.labelId == labelId
-                } ?: raise(ContactGroupByIdError.GetLabelsError)
+                } ?: raise(GetContactGroupError.GetLabelsErrorGet)
 
                 val contactGroupMembers = arrayListOf<ContactEmail>()
                 contacts.getOrNull()?.forEach { contact ->
                     contact.contactEmails.forEach { contactEmail ->
                         if (contactEmail.labelIds.contains(labelId.id)) contactGroupMembers.add(contactEmail)
                     }
-                } ?: raise(ContactGroupByIdError.GetContactsError)
+                } ?: raise(GetContactGroupError.GetContactsErrorGet)
 
                 ContactGroup(
                     userId = label.userId,
@@ -66,7 +66,7 @@ class ObserveContactGroup @Inject constructor(
     }
 }
 
-sealed interface ContactGroupByIdError {
-    object GetLabelsError : ContactGroupByIdError
-    object GetContactsError : ContactGroupByIdError
+sealed interface GetContactGroupError {
+    object GetLabelsErrorGet : GetContactGroupError
+    object GetContactsErrorGet : GetContactGroupError
 }
