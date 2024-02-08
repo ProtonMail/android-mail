@@ -22,7 +22,6 @@ import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorker
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.network.domain.session.SessionId
-import timber.log.Timber
 import javax.inject.Inject
 
 internal class ProcessPushNotificationMessage @Inject constructor(
@@ -31,11 +30,7 @@ internal class ProcessPushNotificationMessage @Inject constructor(
 ) {
 
     suspend operator fun invoke(sessionId: SessionId, encryptedMessage: String) {
-        val userId = sessionManager.getUserId(sessionId)
-        if (userId == null) {
-            Timber.w("No user id found for notification's sessionId $sessionId. Not displaying notification.")
-            return
-        }
+        val userId = sessionManager.getUserId(sessionId) ?: return
 
         enqueuer.enqueue<ProcessPushNotificationDataWorker>(
             userId,
