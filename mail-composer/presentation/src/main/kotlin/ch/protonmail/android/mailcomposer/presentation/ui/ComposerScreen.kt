@@ -110,10 +110,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         imagePicker.launch("*/*")
                     }
                 )
-
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
                     state.senderAddresses,
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
+                )
+                BottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
+                    onDoneClick = { viewModel.submit(ComposerAction.ExpirationTimeSet) }
                 )
             }
         },
@@ -142,7 +144,11 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     senderEmail = SenderEmail(state.fields.sender.email),
                     isMessagePasswordSet = state.isMessagePasswordSet,
                     isExpirationActionVisible = state.isExpirationActionVisible,
-                    onSetMessagePasswordClick = actions.onSetMessagePasswordClick
+                    onSetMessagePasswordClick = actions.onSetMessagePasswordClick,
+                    onSetExpirationTimeClick = {
+                        bottomSheetType.value = BottomSheetType.SetExpirationTime
+                        viewModel.submit(ComposerAction.OnSetExpirationTime)
+                    }
                 )
             },
             snackbarHost = {
@@ -378,7 +384,7 @@ object ComposerScreen {
     }
 }
 
-private enum class BottomSheetType { AddAttachments, ChangeSender }
+private enum class BottomSheetType { AddAttachments, ChangeSender, SetExpirationTime }
 
 @Composable
 @AdaptivePreviews

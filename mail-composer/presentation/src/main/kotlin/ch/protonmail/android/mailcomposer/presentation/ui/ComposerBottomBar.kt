@@ -54,6 +54,7 @@ fun ComposerBottomBar(
     isMessagePasswordSet: Boolean,
     isExpirationActionVisible: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
+    onSetExpirationTimeClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -67,7 +68,7 @@ fun ComposerBottomBar(
         ) {
             AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, onSetMessagePasswordClick)
             if (isExpirationActionVisible) {
-                SetExpirationButton()
+                SetExpirationButton(onSetExpirationTimeClick)
             }
         }
     }
@@ -89,12 +90,12 @@ private fun AddPasswordButton(
 }
 
 @Composable
-private fun SetExpirationButton() {
+private fun SetExpirationButton(onSetExpirationTimeClick: () -> Unit) {
     BottomBarButton(
         iconRes = R.drawable.ic_proton_hourglass,
         contentDescriptionRes = R.string.composer_button_set_expiration,
         shouldShowCheckmark = false,
-        onClick = {}
+        onClick = onSetExpirationTimeClick
     )
 }
 

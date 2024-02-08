@@ -51,6 +51,8 @@ internal sealed interface ComposerAction : ComposerOperation {
     object OnAddAttachments : ComposerAction
     object OnCloseComposer : ComposerAction
     object OnSendMessage : ComposerAction
+    object OnSetExpirationTime : ComposerAction
+    object ExpirationTimeSet : ComposerAction
     object ConfirmSendingWithoutSubject : ComposerAction
     object RejectSendingWithoutSubject : ComposerAction
 }

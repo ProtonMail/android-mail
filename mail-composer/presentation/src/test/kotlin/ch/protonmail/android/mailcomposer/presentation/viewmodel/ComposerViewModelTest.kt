@@ -1965,6 +1965,56 @@ class ComposerViewModelTest {
         assertEquals(viewModel.state.value.fields.to.first(), RecipientUiModel.Valid(expectedRecipient.address))
     }
 
+    @Test
+    fun `should emit state for showing bottom sheet when action for setting expiration time is submitted`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
+        expectNoFileShareVia()
+
+        // When
+        viewModel.submit(ComposerAction.OnSetExpirationTime)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(Effect.of(true), awaitItem().changeBottomSheetVisibility)
+        }
+    }
+
+    @Test
+    fun `should emit state for hiding bottom sheet when action for saving expiration time is submitted`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
+        expectNoFileShareVia()
+
+        // When
+        viewModel.submit(ComposerAction.ExpirationTimeSet)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(Effect.of(false), awaitItem().changeBottomSheetVisibility)
+        }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)

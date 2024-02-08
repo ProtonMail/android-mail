@@ -75,7 +75,8 @@ class ComposerReducer @Inject constructor(
         )
         is ComposerAction.ConfirmSendingWithoutSubject -> updateForConfirmSendWithoutSubject(currentState)
         is ComposerAction.RejectSendingWithoutSubject -> updateForRejectSendWithoutSubject(currentState)
-
+        is ComposerAction.OnSetExpirationTime -> updateStateForSetExpirationTime(currentState)
+        is ComposerAction.ExpirationTimeSet -> updateStateForExpirationTimeSet(currentState)
     }
 
     @Suppress("ComplexMethod", "LongMethod")
@@ -282,6 +283,12 @@ class ComposerReducer @Inject constructor(
 
     private fun updateStateForMessagePassword(currentState: ComposerDraftState, messagePassword: MessagePassword?) =
         currentState.copy(isMessagePasswordSet = messagePassword != null)
+
+    private fun updateStateForSetExpirationTime(currentState: ComposerDraftState) =
+        currentState.copy(changeBottomSheetVisibility = Effect.of(true))
+
+    private fun updateStateForExpirationTimeSet(currentState: ComposerDraftState) =
+        currentState.copy(changeBottomSheetVisibility = Effect.of(false))
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,
