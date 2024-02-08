@@ -24,7 +24,8 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
-import ezvcard.property.Uid
+import ch.protonmail.android.mailcontact.domain.sanitizeAndBuildVCard
+import ezvcard.VCard
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.contact.domain.encryptAndSignContactCard
 import me.proton.core.contact.domain.entity.ContactCard
@@ -46,6 +47,7 @@ class EncryptAndSignContactCards @Inject constructor(
     private val decryptedContactMapper: DecryptedContactMapper
 ) {
 
+    @Suppress("ComplexMethod")
     suspend operator fun invoke(
         userId: UserId,
         decryptedContact: DecryptedContact
@@ -76,8 +78,6 @@ class EncryptAndSignContactCards @Inject constructor(
             it.second.status == VerificationStatus.Success || it.second.status == VerificationStatus.NotSigned
         }
 
-        // find first UID from existing VCards or generate new one
-        val fallbackUid = cardsToDecryptedCards?.find { it.second.card.uid != null }?.second?.card?.uid ?: Uid.random()
         // generate fallback name in an unlikely case the Signed ContactCard doesn't contain it
         //  and it's not provided in our DecryptedContact
         val fallbackName = contactWithCards?.contact?.name
@@ -89,7 +89,11 @@ class EncryptAndSignContactCards @Inject constructor(
         val clearTextContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.ClearText
         }?.second?.card
-        val signedContactCard = cardsToDecryptedCards?.find { it.first is ContactCard.Signed }?.second?.card
+
+        val signedContactCard = cardsToDecryptedCards?.find {
+            it.first is ContactCard.Signed
+        }?.second?.card
+
         val encryptedAndSignedContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.Encrypted
         }?.second?.card
@@ -98,19 +102,16 @@ class EncryptAndSignContactCards @Inject constructor(
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
             listOfNotNull(
                 decryptedContactMapper.mapToClearTextContactCard(
-                    fallbackUid,
-                    clearTextContactCard
+                    (clearTextContactCard ?: VCard()).sanitizeAndBuildVCard()
                 )?.let { ContactCard.ClearText(it.write()) },
                 decryptedContactMapper.mapToSignedContactCard(
-                    fallbackUid,
                     fallbackName,
                     decryptedContact,
-                    signedContactCard
+                    (signedContactCard ?: VCard()).sanitizeAndBuildVCard()
                 ).let { signContactCard(it) },
                 decryptedContactMapper.mapToEncryptedAndSignedContactCard(
-                    fallbackUid,
                     decryptedContact,
-                    encryptedAndSignedContactCard
+                    (encryptedAndSignedContactCard ?: VCard()).sanitizeAndBuildVCard()
                 ).let { encryptAndSignContactCard(it) }
             )
         }

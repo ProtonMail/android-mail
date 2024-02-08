@@ -22,7 +22,6 @@ import java.time.ZoneId
 import java.util.Date
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.VCard
-import ezvcard.VCardVersion
 import ezvcard.parameter.AddressType
 import ezvcard.parameter.EmailType
 import ezvcard.parameter.ImageType
@@ -40,7 +39,6 @@ import ezvcard.property.StructuredName
 import ezvcard.property.Telephone
 import ezvcard.property.Timezone
 import ezvcard.property.Title
-import ezvcard.property.Uid
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
@@ -50,27 +48,18 @@ class DecryptedContactMapper @Inject constructor() {
      * We should not generate ClearText ContactCard if CATEGORIES field is empty.
      *
      * We don't support it on Android so the only way we return non-null here is
-     * if there was ClearText VCard passed as [vCard].
+     * if there was ClearText VCard passed as [vCard], containing CATEGORIES.
      */
-    fun mapToClearTextContactCard(fallbackUid: Uid, vCard: VCard?): VCard? {
-        if (vCard == null) return null
-
-        return vCard.apply {
-            uid = vCard.uid ?: fallbackUid
-            version = vCard.version ?: VCardVersion.V4_0
-        }
-    }
+    fun mapToClearTextContactCard(vCard: VCard): VCard? = if (vCard.categories?.values?.takeIfNotEmpty() != null) {
+        vCard
+    } else null
 
     fun mapToSignedContactCard(
-        fallbackUid: Uid,
         fallbackName: String,
         decryptedContact: DecryptedContact,
-        vCard: VCard?
+        vCard: VCard
     ): VCard {
-        return with(vCard ?: VCard()) {
-            uid = vCard?.uid ?: fallbackUid
-            version = vCard?.version ?: VCardVersion.V4_0
-
+        return with(vCard) {
             decryptedContact.formattedName?.value?.let {
                 setFormattedName(it)
             }
@@ -96,22 +85,12 @@ class DecryptedContactMapper @Inject constructor() {
             }
 
             this
-
-            // pinned-key related fields should also be here but we do not support editing them
-            // so we should just not overwrite them with blanks
         }
     }
 
     @Suppress("LongMethod", "ComplexMethod")
-    fun mapToEncryptedAndSignedContactCard(
-        fallbackUid: Uid,
-        decryptedContact: DecryptedContact,
-        vCard: VCard?
-    ): VCard {
-        return with(vCard ?: VCard()) {
-            uid = vCard?.uid ?: fallbackUid
-            version = vCard?.version ?: VCardVersion.V4_0
-
+    fun mapToEncryptedAndSignedContactCard(decryptedContact: DecryptedContact, vCard: VCard): VCard {
+        return with(vCard) {
             decryptedContact.structuredName?.let {
                 structuredName = StructuredName().apply {
                     family = it.family

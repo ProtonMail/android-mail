@@ -23,7 +23,7 @@ object ContactVCardSample {
     val marioVCardType3 = """
         BEGIN:VCARD
         VERSION:4.0
-        PRODID:ez-vcard 0.11.3
+        PRODID:-//ProtonMail//ProtonMail for Android vCard 1.0.0//EN
         N:Mario Last Name;Mario First Name;;;
         TEL;PREF=1:1231231235
         TEL;TYPE=home;PREF=2:23233232323
@@ -157,7 +157,7 @@ object ContactVCardSample {
     val marioVCardType2 = """
         BEGIN:VCARD
         VERSION:4.0
-        PRODID:ez-vcard 0.11.3
+        PRODID:-//ProtonMail//ProtonMail for Android vCard 1.0.0//EN
         FN;PREF=1:Mario@protonmail.com
         UID:proton-autosave-84a8d5e8-e999-4c3e-960e-eea05fc5fe91
         ITEM1.EMAIL;PREF=1:Mario@protonmail.com

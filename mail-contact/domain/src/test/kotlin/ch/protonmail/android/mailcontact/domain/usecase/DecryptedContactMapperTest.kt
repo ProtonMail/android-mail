@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
 import ezvcard.VCard
 import ezvcard.VCardVersion
-import ezvcard.property.Expertise
 import ezvcard.property.Uid
 import org.junit.Test
 import kotlin.test.assertNull
@@ -43,23 +42,21 @@ class DecryptedContactMapperTest {
     )
 
     private val existingUid = Uid("Fallback-UID")
-    private val existingVersion = VCardVersion.V3_0
+    private val existingVersion = VCardVersion.V4_0
     private val existingVCard = VCard().apply {
         uid = existingUid
         version = existingVersion
     }
 
-    private val fallbackUid = Uid("Fallback-UID")
     private val fallbackName = "Fallback-Name"
 
     @Test
-    fun `ClearText ContactCard is not returned if existing VCard is null`() {
+    fun `ClearText ContactCard is not returned if existing VCard doesnt contain CATEGORIES`() {
         // Given
-        val expectedContactCard = null
+        val expectedContactCard = VCard()
 
         // When
         val actual = sut.mapToClearTextContactCard(
-            fallbackUid,
             expectedContactCard
         )
 
@@ -68,13 +65,14 @@ class DecryptedContactMapperTest {
     }
 
     @Test
-    fun `ClearText ContactCard is returned even if existing VCard doesn't contain CATEGORIES`() {
+    fun `ClearText ContactCard is returned if existing VCard contains CATEGORIES`() {
         // Given
-        val expectedContactCard = existingVCard
+        val expectedContactCard = existingVCard.apply {
+            setCategories("Coworkers", "Friends")
+        }
 
         // When
         val actual = sut.mapToClearTextContactCard(
-            fallbackUid,
             expectedContactCard
         )!!
 
@@ -83,72 +81,15 @@ class DecryptedContactMapperTest {
     }
 
     @Test
-    fun `properties of existing VCard are not cleared when returning ClearText ContactCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            // we don't have expertise in Android Mail so this is good for testing
-            addExpertise(Expertise("ClearText generation skill"))
-        }
-
-        // When
-        val actual = sut.mapToClearTextContactCard(
-            fallbackUid,
-            expectedContactCard
-        )!!
-
-        // Then
-        assertEquals(expectedContactCard.expertise.first().value, actual.expertise.first().value)
-    }
-
-    @Test
-    fun `properties of existing VCard are not cleared when returning Signed ContactCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            // we don't have expertise in Android Mail so this is good for testing
-            addExpertise(Expertise("Signed generation skill"))
-        }
-
-        // When
-        val actual = sut.mapToSignedContactCard(
-            fallbackUid,
-            fallbackName,
-            decryptedContact,
-            expectedContactCard
-        )
-
-        // Then
-        assertEquals(expectedContactCard.expertise.first().value, actual.expertise.first().value)
-    }
-
-    @Test
-    fun `properties of existing VCard are not cleared when returning EncryptedAndSigned ContactCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            // we don't have expertise in Android Mail so this is good for testing
-            addExpertise(Expertise("EncryptedAndSigned generation skill"))
-        }
-
-        // When
-        val actual = sut.mapToEncryptedAndSignedContactCard(
-            fallbackUid,
-            decryptedContact,
-            expectedContactCard
-        )
-
-        // Then
-        assertEquals(expectedContactCard.expertise.first().value, actual.expertise.first().value)
-    }
-
-    @Test
     fun `fallback UID is returned in ClearText ContactCard when it didn't exist in VCard`() {
         // Given
         val expectedContactCard = existingVCard.apply {
             uid.value = null
+            setCategories("Coworkers", "Friends")
         }
 
         // When
         val actual = sut.mapToClearTextContactCard(
-            fallbackUid,
             expectedContactCard
         )!!
 
@@ -165,7 +106,6 @@ class DecryptedContactMapperTest {
 
         // When
         val actual = sut.mapToSignedContactCard(
-            fallbackUid,
             fallbackName,
             decryptedContact,
             expectedContactCard
@@ -184,7 +124,6 @@ class DecryptedContactMapperTest {
 
         // When
         val actual = sut.mapToEncryptedAndSignedContactCard(
-            fallbackUid,
             decryptedContact,
             expectedContactCard
         )
@@ -208,26 +147,22 @@ class DecryptedContactMapperTest {
 
         // When
         val actualClearText = sut.mapToClearTextContactCard(
-            fallbackUid,
             VCard()
-        )!!
+        )
 
         val actualSigned = sut.mapToSignedContactCard(
-            fallbackUid,
             fallbackName,
             expectedDecryptedContact,
             VCard()
         )
 
         val actualEncryptedAndSigned = sut.mapToEncryptedAndSignedContactCard(
-            fallbackUid,
             expectedDecryptedContact,
             VCard()
         )
 
         // Then
-        assertTrue(actualClearText.notes.isEmpty())
-        assertTrue(actualClearText.telephoneNumbers.isEmpty())
+        assertNull(actualClearText)
 
         assertTrue(actualSigned.notes.isEmpty())
         assertTrue(actualSigned.telephoneNumbers.isEmpty())

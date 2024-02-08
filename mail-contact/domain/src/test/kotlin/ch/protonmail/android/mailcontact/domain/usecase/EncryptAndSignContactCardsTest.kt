@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
+import ch.protonmail.android.mailcontact.domain.sanitizeAndBuildVCard
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -148,11 +149,10 @@ class EncryptAndSignContactCardsTest {
             ?: fallbackUid
 
         coEvery {
-            decryptedContactMapperMock.mapToClearTextContactCard(fallbackUid, null)
+            decryptedContactMapperMock.mapToClearTextContactCard(any())
         } returns null
 
         val cardToSign = expectMapToSignedContactCard(
-            fallbackUid,
             ContactSample.Mario.name,
             expectedDecryptedContact,
             expectedSignedVCard.first().card,
@@ -197,8 +197,10 @@ class EncryptAndSignContactCardsTest {
             Uid.random()
         } returns fallbackUid
 
+        val emptySanitizedVCard = VCard().sanitizeAndBuildVCard()
+
         coEvery {
-            decryptedContactMapperMock.mapToClearTextContactCard(fallbackUid, null)
+            decryptedContactMapperMock.mapToClearTextContactCard(emptySanitizedVCard)
         } returns null
 
         val mappedSignedVCard = DecryptedVCard(
@@ -218,10 +220,9 @@ class EncryptAndSignContactCardsTest {
             VerificationStatus.Success
         ).card
         expectMapToSignedContactCard(
-            fallbackUid,
             expectedDecryptedContact.formattedName!!.value,
             expectedDecryptedContact,
-            null,
+            emptySanitizedVCard,
             mappedSignedVCard
         )
 
@@ -242,7 +243,7 @@ class EncryptAndSignContactCardsTest {
         expectMapToEncryptedAndSignedContactCard(
             fallbackUid,
             expectedDecryptedContact,
-            null,
+            emptySanitizedVCard,
             mappedEncryptedVCard
         )
 
@@ -290,14 +291,13 @@ class EncryptAndSignContactCardsTest {
     }
 
     private fun expectMapToSignedContactCard(
-        fallbackUid: Uid,
         fallbackName: String,
         decryptedContact: DecryptedContact,
-        existingVCard: VCard?,
+        existingVCard: VCard,
         mappedVCard: VCard
     ): VCard {
         coEvery {
-            decryptedContactMapperMock.mapToSignedContactCard(fallbackUid, fallbackName, decryptedContact, existingVCard)
+            decryptedContactMapperMock.mapToSignedContactCard(fallbackName, decryptedContact, existingVCard)
         } returns mappedVCard
 
         return mappedVCard
@@ -306,7 +306,7 @@ class EncryptAndSignContactCardsTest {
     private fun expectMapToEncryptedAndSignedContactCard(
         fallbackUid: Uid,
         decryptedContact: DecryptedContact,
-        existingVCard: VCard?,
+        existingVCard: VCard,
         mappedVCard: VCard
     ): VCard {
         mappedVCard.apply {
@@ -314,7 +314,7 @@ class EncryptAndSignContactCardsTest {
         }
 
         coEvery {
-            decryptedContactMapperMock.mapToEncryptedAndSignedContactCard(fallbackUid, decryptedContact, existingVCard)
+            decryptedContactMapperMock.mapToEncryptedAndSignedContactCard(decryptedContact, existingVCard)
         } returns mappedVCard
 
         return mappedVCard

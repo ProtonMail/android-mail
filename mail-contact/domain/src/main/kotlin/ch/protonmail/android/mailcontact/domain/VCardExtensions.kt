@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.domain
 
 import ezvcard.VCard
+import ezvcard.VCardVersion
 import ezvcard.property.Address
 import ezvcard.property.Anniversary
 import ezvcard.property.Birthday
@@ -49,7 +50,7 @@ import me.proton.core.util.kotlin.takeIfNotBlank
  */
 fun VCard.sanitizeAndBuildVCard(): VCard {
 
-    val vCard = VCard().apply {
+    val vCard = VCard(VCardVersion.V4_0).apply {
         productId = ProductId(VCARD_PROD_ID)
     }
 
