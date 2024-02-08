@@ -102,7 +102,7 @@ class ContactFormUiModelMapperTest {
 
         val actual = contactFormUiModelMapper.toDecryptedContact(
             contactFormUiModel,
-            decryptedContact.contactGroups,
+            decryptedContact.contactGroupLabels,
             decryptedContact.photos,
             decryptedContact.logos
         )
