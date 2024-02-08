@@ -47,4 +47,28 @@ internal class DataErrorExtensionsTest {
         // then
         assertFalse(dataError.isOfflineError())
     }
+
+    @Test
+    fun `data error is a message already sent error when type is Remote Proton and contains DraftNotDraftError`() {
+        // given
+        val dataError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
+        // then
+        assertTrue(dataError.isMessageAlreadySentError())
+    }
+
+    @Test
+    fun `is not a message already sent error when type is Remote Proton and does not contain DraftNotDraftError`() {
+        // given
+        val dataError = DataError.Remote.Proton(ProtonError.Banned)
+        // then
+        assertFalse(dataError.isMessageAlreadySentError())
+    }
+
+    @Test
+    fun `is not a message already sent error when type is Local`() {
+        // given
+        val dataError = DataError.Local.NoDataCached
+        // then
+        assertFalse(dataError.isMessageAlreadySentError())
+    }
 }

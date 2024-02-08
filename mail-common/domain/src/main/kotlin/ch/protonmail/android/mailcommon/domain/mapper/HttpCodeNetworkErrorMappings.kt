@@ -26,6 +26,7 @@ fun NetworkError.Companion.fromHttpCode(httpCode: Int): NetworkError = when (htt
     401 -> NetworkError.Unauthorized
     403 -> NetworkError.Forbidden
     404 -> NetworkError.NotFound
+    422 -> NetworkError.UnprocessableEntity
     in 500..599 -> NetworkError.ServerError
     else -> NetworkError.Unknown
 }

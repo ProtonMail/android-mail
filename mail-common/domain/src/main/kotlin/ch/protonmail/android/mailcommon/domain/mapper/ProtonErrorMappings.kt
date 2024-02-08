@@ -32,7 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError.Unknown
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.UploadFailure
 
 @Suppress("MagicNumber")
-fun Companion.fromProtonCode(code: Int): ProtonError = when (code) {
+fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
     2026 -> PermissionDenied
     2027 -> InsufficientScope
     2028 -> Banned

@@ -23,6 +23,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.every
 import io.mockk.mockkStatic
@@ -121,6 +122,25 @@ class ApiResultEitherMappingTest {
 
             // then
             val expected = DataError.Remote.Http(NetworkError.Unreachable, "message - protonError")
+            assertEquals(expected.left(), result)
+        }
+    }
+
+    @Test
+    fun `returns proton error for http 422 http error containing 'Message Draft Not Draft' Proton Error Code`() {
+        // given
+        mockkStatic(NetworkError.Companion::fromHttpCode) {
+            every { NetworkError.fromHttpCode(any()) } returns NetworkError.UnprocessableEntity
+            val protonData = ApiResult.Error.ProtonData(
+                15_034, "Message Already Sent"
+            )
+            val apiResult = ApiResult.Error.Http(422, "none", protonData)
+
+            // when
+            val result = apiResult.toEither()
+
+            // then
+            val expected = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
             assertEquals(expected.left(), result)
         }
     }

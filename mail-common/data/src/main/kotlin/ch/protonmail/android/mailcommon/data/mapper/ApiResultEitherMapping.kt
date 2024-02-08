@@ -23,8 +23,10 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.fromHttpCode
+import ch.protonmail.android.mailcommon.domain.mapper.fromProtonCode
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import me.proton.core.network.domain.ApiResult
 import me.proton.core.network.domain.isRetryable
 import timber.log.Timber
@@ -33,11 +35,14 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
     is ApiResult.Success -> value.right()
 
     is ApiResult.Error.Http -> {
-        DataError.Remote.Http(
-            NetworkError.fromHttpCode(httpCode),
-            this.extractApiErrorInfo(),
-            this.isRetryable()
-        ).left()
+        when {
+            isMessageAlreadySentError() -> DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
+            else -> DataError.Remote.Http(
+                NetworkError.fromHttpCode(httpCode),
+                this.extractApiErrorInfo(),
+                this.isRetryable()
+            ).left()
+        }
     }
 
     is ApiResult.Error.Parse -> {
@@ -49,6 +54,10 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
         DataError.Remote.Http(toNetworkError(this), this.cause.tryExtractError(), this.isRetryable()).left()
     }
 }
+
+private fun ApiResult.Error.Http.isMessageAlreadySentError() =
+    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
+        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageUpdateDraftNotDraft
 
 private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
 

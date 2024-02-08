@@ -61,6 +61,18 @@ internal class HttpCodeNetworkErrorMappingsTest {
     }
 
     @Test
+    fun `does return unprocessable entity for 422 errors`() {
+        // given
+        val expected = NetworkError.UnprocessableEntity
+
+        // when
+        val result = NetworkError.fromHttpCode(422)
+
+        // then
+        assertEquals(expected, result)
+    }
+
+    @Test
     fun `does return server error for 5xx errors`() {
         // given
         val expected = NetworkError.ServerError
@@ -78,7 +90,8 @@ internal class HttpCodeNetworkErrorMappingsTest {
     fun `does return Unknown for unknown errors`() {
         // given
         val unknownCodes = generateRandoms(0..399) +
-            generateRandoms(405..499) +
+            generateRandoms(405..421) +
+            generateRandoms(423..499) +
             generateRandoms(600..999)
         // when
         for (httpCode in unknownCodes) {
