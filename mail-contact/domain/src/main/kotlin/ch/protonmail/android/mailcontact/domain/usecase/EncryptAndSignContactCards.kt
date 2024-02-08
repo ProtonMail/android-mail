@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
+import arrow.core.raise.Raise
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
@@ -29,6 +30,7 @@ import ezvcard.VCard
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.contact.domain.encryptAndSignContactCard
 import me.proton.core.contact.domain.entity.ContactCard
+import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.contact.domain.signContactCard
 import me.proton.core.crypto.common.context.CryptoContext
@@ -47,7 +49,6 @@ class EncryptAndSignContactCards @Inject constructor(
     private val decryptedContactMapper: DecryptedContactMapper
 ) {
 
-    @Suppress("ComplexMethod")
     suspend operator fun invoke(
         userId: UserId,
         decryptedContact: DecryptedContact
@@ -61,30 +62,12 @@ class EncryptAndSignContactCards @Inject constructor(
         }
 
         // decrypt them and check signatures
-        val cardsToDecryptedCards = contactWithCards?.contactCards?.mapNotNull { contactCard ->
-            val decryptedContactCard = decryptContactCards(
-                userId,
-                contactWithCards.copy(
-                    // pass only one ContactCard so we don't lose the relation before- and -after decryption
-                    contactCards = listOf(contactCard)
-                )
-            ).onLeft {
-                raise(EncryptingContactCardsError.DecryptingContactCardError)
-            }.getOrNull()?.firstOrNull()
-
-            decryptedContactCard?.let { contactCard to it }
-        }?.filter {
-            // only take the correctly signed ones
-            it.second.status == VerificationStatus.Success || it.second.status == VerificationStatus.NotSigned
-        }
-
-        // generate fallback name in an unlikely case the Signed ContactCard doesn't contain it
-        //  and it's not provided in our DecryptedContact
-        val fallbackName = contactWithCards?.contact?.name
-            ?: decryptedContact.formattedName?.value?.takeIfNotEmpty()
-            ?: decryptedContact.structuredName?.let {
-                it.given.plus(" ${it.family}")
-            } ?: raise(EncryptingContactCardsError.MissingFormattedName)
+        val cardsToDecryptedCards = decryptContactCardsOneByOne(
+            contactWithCards,
+            this@EncryptAndSignContactCards,
+            userId,
+            this
+        )
 
         val clearTextContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.ClearText
@@ -97,6 +80,8 @@ class EncryptAndSignContactCards @Inject constructor(
         val encryptedAndSignedContactCard = cardsToDecryptedCards?.find {
             it.first is ContactCard.Encrypted
         }?.second?.card
+
+        val fallbackName = getFallbackName(contactWithCards, decryptedContact)
 
         // insert all properties from DecryptedContact where they belong inside the ContactCards, encrypt and sign
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
@@ -117,6 +102,39 @@ class EncryptAndSignContactCards @Inject constructor(
         }
 
         return encryptedAndSignedContactCards.right()
+    }
+
+    // generate fallback name in an unlikely case the Signed ContactCard doesn't contain it
+    //  and it's not provided in our DecryptedContact
+    private fun Raise<EncryptingContactCardsError>.getFallbackName(
+        contactWithCards: ContactWithCards?,
+        decryptedContact: DecryptedContact
+    ) = contactWithCards?.contact?.name
+        ?: decryptedContact.formattedName?.value?.takeIfNotEmpty()
+        ?: decryptedContact.structuredName?.let {
+            it.given.plus(" ${it.family}")
+        } ?: raise(EncryptingContactCardsError.MissingFormattedName)
+
+    private suspend fun decryptContactCardsOneByOne(
+        contactWithCards: ContactWithCards?,
+        encryptAndSignContactCards: EncryptAndSignContactCards,
+        userId: UserId,
+        raise: Raise<EncryptingContactCardsError>
+    ) = contactWithCards?.contactCards?.mapNotNull { contactCard ->
+        val decryptedContactCard = encryptAndSignContactCards.decryptContactCards(
+            userId,
+            contactWithCards.copy(
+                // pass only one ContactCard so we don't lose the relation before- and -after decryption
+                contactCards = listOf(contactCard)
+            )
+        ).onLeft {
+            raise.raise(EncryptingContactCardsError.DecryptingContactCardError)
+        }.getOrNull()?.firstOrNull()
+
+        decryptedContactCard?.let { contactCard to it }
+    }?.filter {
+        // only take the correctly signed ones
+        it.second.status == VerificationStatus.Success || it.second.status == VerificationStatus.NotSigned
     }
 
 }
