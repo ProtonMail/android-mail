@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlin.time.Duration
 
 sealed interface ComposerOperation
 
@@ -41,6 +42,7 @@ internal sealed interface ComposerAction : ComposerOperation {
         val suggestionsField: ContactSuggestionsField
     ) : ComposerAction
     data class ContactSuggestionsDismissed(val suggestionsField: ContactSuggestionsField) : ComposerAction
+    data class ExpirationTimeSet(val duration: Duration) : ComposerAction
 
     data class SubjectChanged(val subject: Subject) : ComposerAction
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
@@ -52,7 +54,6 @@ internal sealed interface ComposerAction : ComposerOperation {
     object OnCloseComposer : ComposerAction
     object OnSendMessage : ComposerAction
     object OnSetExpirationTime : ComposerAction
-    object ExpirationTimeSet : ComposerAction
     object ConfirmSendingWithoutSubject : ComposerAction
     object RejectSendingWithoutSubject : ComposerAction
 }

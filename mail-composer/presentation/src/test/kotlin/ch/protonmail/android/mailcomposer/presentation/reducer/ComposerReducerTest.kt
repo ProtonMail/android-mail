@@ -62,6 +62,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.days
 
 @RunWith(Parameterized::class)
 class ComposerReducerTest(
@@ -813,7 +814,7 @@ class ComposerReducerTest(
         private val EmptyToExpirationTimeSet = TestTransition(
             name = "Should update state to open expiration time bottom sheet",
             currentState = ComposerDraftState.initial(messageId),
-            operation = ComposerAction.ExpirationTimeSet,
+            operation = ComposerAction.ExpirationTimeSet(duration = 1.days),
             expectedState = ComposerDraftState.initial(messageId).copy(changeBottomSheetVisibility = Effect.of(false))
         )
 

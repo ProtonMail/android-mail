@@ -45,9 +45,12 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.defaultStrongUnspecified
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 @Composable
-fun SetExpirationTimeBottomSheetContent(onDoneClick: () -> Unit) {
+fun SetExpirationTimeBottomSheetContent(onDoneClick: (Duration) -> Unit) {
 
     val selectedItem = rememberSaveable { mutableStateOf(ExpirationTime.None) }
 
@@ -62,7 +65,7 @@ fun SetExpirationTimeBottomSheetContent(onDoneClick: () -> Unit) {
             style = ProtonTheme.typography.defaultStrongNorm
         )
         Text(
-            modifier = Modifier.clickable(role = Role.Button) { onDoneClick() },
+            modifier = Modifier.clickable(role = Role.Button) { onDoneClick(selectedItem.value.duration) },
             text = stringResource(id = R.string.composer_expiration_time_bottom_sheet_done),
             style = ProtonTheme.typography.defaultStrongUnspecified,
             color = ProtonTheme.colors.interactionNorm
@@ -104,4 +107,10 @@ fun SetExpirationTimeBottomSheetContent(onDoneClick: () -> Unit) {
     }
 }
 
-enum class ExpirationTime { None, OneHour, OneDay, ThreeDays, OneWeek }
+enum class ExpirationTime(val duration: Duration) {
+    None(Duration.ZERO),
+    OneHour(1.hours),
+    OneDay(1.days),
+    ThreeDays(3.days),
+    OneWeek(7.days)
+}

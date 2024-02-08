@@ -57,6 +57,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveExpirationTimeForDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -146,6 +147,7 @@ class ComposerViewModel @Inject constructor(
     private val observeMailFeature: ObserveMailFeature,
     private val observeMessagePassword: ObserveMessagePassword,
     private val validateSenderAddress: ValidateSenderAddress,
+    private val saveExpirationTimeForDraft: SaveExpirationTimeForDraft,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -394,7 +396,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RejectSendingWithoutSubject -> emitNewStateFor(action)
                     is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
                     is ComposerAction.OnSetExpirationTime -> emitNewStateFor(action)
-                    is ComposerAction.ExpirationTimeSet -> emitNewStateFor(action)
+                    is ComposerAction.ExpirationTimeSet -> onExpirationTimeSet(action)
                 }
                 composerIdlingResource.decrement()
             }
@@ -464,6 +466,13 @@ class ComposerViewModel @Inject constructor(
         viewModelScope.launch {
             deleteAttachment(primaryUserId(), currentSenderEmail(), currentMessageId(), action.attachmentId)
                 .onLeft { Timber.e("Failed to delete attachment: $it") }
+        }
+    }
+
+    private fun onExpirationTimeSet(action: ComposerAction.ExpirationTimeSet) {
+        viewModelScope.launch {
+            saveExpirationTimeForDraft(primaryUserId(), currentMessageId(), currentSenderEmail(), action.duration)
+            emitNewStateFor(action)
         }
     }
 

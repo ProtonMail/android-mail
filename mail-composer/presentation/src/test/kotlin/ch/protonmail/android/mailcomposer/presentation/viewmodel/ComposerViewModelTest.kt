@@ -60,6 +60,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveExpirationTimeForDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -135,6 +136,8 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.days
 
 class ComposerViewModelTest {
 
@@ -193,6 +196,7 @@ class ComposerViewModelTest {
     }
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
     private val validateSenderAddress = mockk<ValidateSenderAddress>()
+    private val saveExpirationTimeForDraft = mockk<SaveExpirationTimeForDraft>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -232,6 +236,7 @@ class ComposerViewModelTest {
             observeMailFeature,
             observeMessagePassword,
             validateSenderAddress,
+            saveExpirationTimeForDraft,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -1996,6 +2001,7 @@ class ComposerViewModelTest {
         val userId = expectedUserId { UserIdSample.Primary }
         val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expirationTime = 1.days
         expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
         expectStartDraftSync(userId, messageId)
         expectNoInputDraftMessageId()
@@ -2005,12 +2011,14 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(userId, messageId)
         expectObserveMessagePassword(userId, messageId)
         expectNoFileShareVia()
+        expectSaveExpirationTimeForDraft(userId, messageId, expectedSenderEmail, expirationTime)
 
         // When
-        viewModel.submit(ComposerAction.ExpirationTimeSet)
+        viewModel.submit(ComposerAction.ExpirationTimeSet(duration = expirationTime))
 
         // Then
         viewModel.state.test {
+            coVerify { saveExpirationTimeForDraft(userId, messageId, expectedSenderEmail, expirationTime) }
             assertEquals(Effect.of(false), awaitItem().changeBottomSheetVisibility)
         }
     }
@@ -2448,6 +2456,15 @@ class ComposerViewModelTest {
 
     private fun expectAddressValidation(address: String, expectedResult: Boolean) {
         every { isValidEmailAddressMock(address) } returns expectedResult
+    }
+
+    private fun expectSaveExpirationTimeForDraft(
+        userId: UserId,
+        messageId: MessageId,
+        senderEmail: SenderEmail,
+        expirationTime: Duration
+    ) {
+        coEvery { saveExpirationTimeForDraft(userId, messageId, senderEmail, expirationTime) } returns Unit.right()
     }
 
     private fun mockParticipantMapper() {
