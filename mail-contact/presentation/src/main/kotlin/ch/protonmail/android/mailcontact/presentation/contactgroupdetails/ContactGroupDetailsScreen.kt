@@ -94,7 +94,10 @@ fun ContactGroupDetailsScreen(
         topBar = {
             ContactGroupDetailsTopBar(
                 state = state,
-                actions = actions
+                actions = actions,
+                onDeleteClick = {
+                    // Call view model submit with delete view action here
+                }
             )
         },
         content = { paddingValues ->
@@ -288,7 +291,11 @@ fun ContactGroupMemberItem(
 }
 
 @Composable
-fun ContactGroupDetailsTopBar(state: ContactGroupDetailsState, actions: ContactGroupDetailsScreen.Actions) {
+fun ContactGroupDetailsTopBar(
+    state: ContactGroupDetailsState,
+    actions: ContactGroupDetailsScreen.Actions,
+    onDeleteClick: () -> Unit
+) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = { },
@@ -308,6 +315,13 @@ fun ContactGroupDetailsTopBar(state: ContactGroupDetailsState, actions: ContactG
                         painter = painterResource(id = R.drawable.ic_proton_pen),
                         tint = ProtonTheme.colors.iconNorm,
                         contentDescription = stringResource(R.string.edit_contact_group_content_description)
+                    )
+                }
+                IconButton(onClick = onDeleteClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_trash),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.delete_contact_group_content_description)
                     )
                 }
             }
@@ -371,6 +385,7 @@ private fun ContactDetailsTopBarPreview() {
             isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData
         ),
-        actions = ContactGroupDetailsScreen.Actions.Empty
+        actions = ContactGroupDetailsScreen.Actions.Empty,
+        onDeleteClick = {}
     )
 }
