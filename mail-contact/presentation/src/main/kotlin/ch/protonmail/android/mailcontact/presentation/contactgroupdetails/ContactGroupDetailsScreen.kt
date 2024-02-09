@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -48,6 +50,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -57,6 +60,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -68,7 +72,9 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
+import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.label.domain.entity.LabelId
 
@@ -171,6 +177,12 @@ fun ContactGroupDetailsContent(
                 }
             }
         }
+        items(state.contactGroup.members) { member ->
+            ContactGroupMemberItem(
+                contactGroupMember = member,
+                actions = actions
+            )
+        }
     }
 }
 
@@ -217,6 +229,61 @@ private fun ContactGroupDetailsSendTextButton(
             text = "Send group message",
             style = ProtonTheme.typography.defaultSmallNorm
         )
+    }
+}
+
+@Composable
+fun ContactGroupMemberItem(
+    modifier: Modifier = Modifier,
+    contactGroupMember: ContactGroupMember,
+    actions: ContactGroupDetailsScreen.Actions
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                role = Role.Button,
+                onClick = {
+                    // On Member selected
+                }
+            )
+            .padding(start = ProtonDimens.DefaultSpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .sizeIn(
+                    minWidth = MailDimens.AvatarMinSize,
+                    minHeight = MailDimens.AvatarMinSize
+                )
+                .background(
+                    color = ProtonTheme.colors.interactionWeakNorm,
+                    shape = ProtonTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                text = contactGroupMember.initials
+            )
+        }
+        Column(
+            modifier = Modifier.padding(
+                start = ProtonDimens.ListItemTextStartPadding,
+                top = ProtonDimens.ListItemTextStartPadding,
+                bottom = ProtonDimens.ListItemTextStartPadding,
+                end = ProtonDimens.DefaultSpacing
+            )
+        ) {
+            Text(
+                text = contactGroupMember.name,
+                style = ProtonTheme.typography.defaultNorm
+            )
+            Text(
+                text = contactGroupMember.email,
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
     }
 }
 
