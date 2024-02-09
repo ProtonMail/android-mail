@@ -223,6 +223,42 @@ class DraftStateRepositoryImplTest {
         assertEquals(Unit.right(), actual)
     }
 
+    @Test
+    fun `update draft message ID returns success when updating existing draft id`() = runTest {
+        // Given
+        val localDraftId = MessageIdSample.EmptyDraft
+        val apiAssignedId = MessageIdSample.RemoteDraft
+        val expected = Unit.right()
+
+        coEvery { draftStateLocalDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId) } returns expected
+
+        // When
+        val actual = repository.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+
+        // Then
+        assertEquals(expected, actual)
+        coVerify(exactly = 1) { draftStateLocalDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId) }
+    }
+
+    @Test
+    fun `update draft message ID returns data error when local data source fails to update`() = runTest {
+        // Given
+        val localDraftId = MessageIdSample.EmptyDraft
+        val apiAssignedId = MessageIdSample.RemoteDraft
+        val expectedError = DataError.Local.Unknown
+
+        coEvery {
+            draftStateLocalDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        } returns expectedError.left()
+
+        // When
+        val actual = repository.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+
+        // Then
+        assertEquals(expectedError.left(), actual)
+        coVerify(exactly = 1) { draftStateLocalDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId) }
+    }
+
     private fun expectDraftStateLocalDataSourceSuccess(
         userId: UserId,
         draftId: MessageId,

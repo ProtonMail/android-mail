@@ -37,6 +37,18 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
 
     private val draftStateDao = draftStateDatabase.draftStateDao()
 
+    override suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    ): Either<DataError, Unit> {
+        return Either.catch {
+            draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        }.mapLeft {
+            DataError.Local.Unknown
+        }
+    }
+
     override fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>> =
         draftStateDao.observeDraftState(userId, messageId).map {
             when (it) {

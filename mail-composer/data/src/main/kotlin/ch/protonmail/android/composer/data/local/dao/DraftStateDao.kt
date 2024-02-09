@@ -46,4 +46,15 @@ abstract class DraftStateDao : BaseDao<DraftStateEntity>() {
         """
     )
     abstract fun observeAllDraftsState(userId: UserId): Flow<List<DraftStateEntity>>
+
+    @Query(
+        """
+            UPDATE DraftStateEntity SET messageId = :apiAssignedId WHERE userId = :userId AND messageId = :localDraftId
+        """
+    )
+    abstract fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    )
 }

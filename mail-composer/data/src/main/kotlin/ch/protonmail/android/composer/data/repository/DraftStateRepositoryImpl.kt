@@ -45,6 +45,13 @@ class DraftStateRepositoryImpl @Inject constructor(
 
     override fun observeAll(userId: UserId): Flow<List<DraftState>> = localDataSource.observeAll(userId)
 
+
+    override suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    ): Either<DataError, Unit> = localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+
     override suspend fun createOrUpdateLocalState(
         userId: UserId,
         messageId: MessageId,

@@ -29,6 +29,13 @@ interface DraftStateLocalDataSource {
 
     fun observe(userId: UserId, messageId: MessageId): Flow<Either<DataError, DraftState>>
     fun observeAll(userId: UserId): Flow<List<DraftState>>
+
+    suspend fun updateDraftMessageId(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiAssignedId: MessageId
+    ): Either<DataError, Unit>
+
     suspend fun save(state: DraftState): Either<DataError, Unit>
     suspend fun delete(state: DraftState)
 }
