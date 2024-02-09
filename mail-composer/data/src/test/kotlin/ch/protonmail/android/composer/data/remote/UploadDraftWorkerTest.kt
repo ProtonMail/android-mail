@@ -30,6 +30,7 @@ import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
@@ -166,6 +167,23 @@ class UploadDraftWorkerTest {
         assertEquals(Result.retry(), actual)
     }
 
+    @Test
+    fun `worker fails and updates draft state passing sending error when failure is Message already sent`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        val sendingError = SendingError.MessageAlreadySent
+        givenInputData(userId, messageId)
+        givenUploadDraftFailsWithMessageAlreadySentError(userId, messageId)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId, sendingError)
+
+        // When
+        uploadDraftWorker.doWork()
+
+        // Then
+        coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, sendingError) }
+    }
+
 
     private fun givenUploadDraftSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadDraft(userId, messageId) } returns Unit.right()
@@ -179,6 +197,12 @@ class UploadDraftWorkerTest {
         coEvery {
             uploadDraft(userId, messageId)
         } returns DataError.Remote.Http(NetworkError.ServerError, isRetryable = true).left()
+    }
+
+    private fun givenUploadDraftFailsWithMessageAlreadySentError(userId: UserId, messageId: MessageId) {
+        coEvery {
+            uploadDraft(userId, messageId)
+        } returns DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
     }
 
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {

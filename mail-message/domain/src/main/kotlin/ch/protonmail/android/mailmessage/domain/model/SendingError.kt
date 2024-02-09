@@ -28,6 +28,9 @@ sealed interface SendingError {
     object Other : SendingError
 
     @Serializable
+    object MessageAlreadySent : SendingError
+
+    @Serializable
     data class SendPreferences(
         val errors: Map<Email, SendPreferencesError>
     ) : SendingError

@@ -24,10 +24,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentError
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -46,7 +48,7 @@ internal class UploadDraftWorker @AssistedInject constructor(
 
         return uploadDraft(userId, messageId).fold(
             ifLeft = {
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, it.toSendingError())
                 return when (it) {
                     is DataError.Remote.Http -> if (it.isRetryable) Result.retry() else Result.failure()
                     else -> Result.failure()
@@ -56,6 +58,11 @@ internal class UploadDraftWorker @AssistedInject constructor(
                 Result.success()
             }
         )
+    }
+
+    private fun DataError.toSendingError() = when {
+        this.isMessageAlreadySentError() -> SendingError.MessageAlreadySent
+        else -> null
     }
 
     companion object {

@@ -149,7 +149,26 @@ class UpdateDraftStateForErrorTest {
 
         // Then
         coVerify { messageRepository.moveMessageBackFromSentToDrafts(userId, apiMessageId) }
+    }
 
+    @Test
+    fun `update draft state to Sent when SendingError is MessageAlreadySent`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.Invoice
+        val newState = DraftSyncState.ErrorUploadDraft
+        val expectedState = DraftSyncState.Sent
+        val sendingError = SendingError.MessageAlreadySent
+        givenExistingDraftState(userId, messageId) { buildDraftState(DraftSyncState.Sending) }
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, expectedState)
+        givenUpdateSendingErrorStateSucceeds(userId, messageId, sendingError)
+        givenMoveMessageBackFromSentToDraftsSucceeds(userId, messageId)
+
+        // When
+        updateDraftStateForError(userId, messageId, newState, sendingError)
+
+        // Then
+        coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, expectedState) }
     }
 
     private fun buildDraftState(syncState: DraftSyncState) = DraftState(

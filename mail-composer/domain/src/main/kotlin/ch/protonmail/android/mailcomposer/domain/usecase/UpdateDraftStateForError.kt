@@ -18,12 +18,12 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailmessage.domain.model.DraftState
-import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
@@ -46,6 +46,11 @@ class UpdateDraftStateForError @Inject constructor(
         sendingError: SendingError? = null
     ) {
         val draftState = draftStateRepository.observe(userId, messageId).firstOrNull()?.getOrNull()
+
+        if (sendingError == SendingError.MessageAlreadySent) {
+            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
+            return
+        }
 
         if (draftState?.state == DraftSyncState.Sending) {
             draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)

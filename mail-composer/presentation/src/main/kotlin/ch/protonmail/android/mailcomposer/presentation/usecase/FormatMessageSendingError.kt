@@ -55,6 +55,7 @@ class FormatMessageSendingError @Inject constructor(
             }
 
             SendingError.Other -> emptyList()
+            SendingError.MessageAlreadySent -> emptyList()
         }
 
         return formattedRecipients.takeIfNotEmpty()?.joinToString(separator = "\n\n")
