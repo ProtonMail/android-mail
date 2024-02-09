@@ -21,8 +21,10 @@ package ch.protonmail.android.composer.data.remote
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
 import ch.protonmail.android.composer.data.remote.resource.UpdateDraftBody
 import ch.protonmail.android.composer.data.remote.response.SaveDraftResponse
+import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import me.proton.core.network.data.protonApi.BaseRetrofitApi
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -34,4 +36,7 @@ interface DraftApi : BaseRetrofitApi {
 
     @PUT("mail/v4/messages/{messageId}")
     suspend fun updateDraft(@Path("messageId") messageId: String, @Body body: UpdateDraftBody): SaveDraftResponse
+
+    @GET("mail/v4/messages/{messageId}")
+    suspend fun getDraft(@Path("messageId") messageId: String): GetMessageResponse
 }

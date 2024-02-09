@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.remote
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import me.proton.core.domain.entity.UserId
 
@@ -33,4 +34,6 @@ interface DraftRemoteDataSource {
     ): Either<DataError.Remote, MessageWithBody>
 
     suspend fun update(userId: UserId, messageWithBody: MessageWithBody): Either<DataError.Remote, MessageWithBody>
+
+    suspend fun draftExists(userId: UserId, messageId: MessageId): Boolean
 }

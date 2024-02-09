@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.RecipientResource
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.data.ApiProvider
@@ -77,6 +78,12 @@ class DraftRemoteDataSourceImpl @Inject constructor(
         return apiProvider.get<DraftApi>(userId).invoke {
             updateDraft(messageId.id, body).message.toMessageWithBody(userId)
         }.toEither()
+    }
+
+    override suspend fun draftExists(userId: UserId, messageId: MessageId): Boolean {
+        return apiProvider.get<DraftApi>(userId).invoke {
+            getDraft(messageId.id)
+        }.isSuccess
     }
 
     private fun MessageWithBody.buildAttachmentKeyPackets(): Map<String, String> =
