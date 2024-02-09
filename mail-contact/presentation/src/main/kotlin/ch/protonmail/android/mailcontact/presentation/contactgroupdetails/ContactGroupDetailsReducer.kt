@@ -42,9 +42,11 @@ class ContactGroupDetailsReducer @Inject constructor() {
     ): ContactGroupDetailsState {
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(
+                isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
                 contactGroup = event.contactGroupDetailsUiModel
             )
             is ContactGroupDetailsState.Loading -> ContactGroupDetailsState.Data(
+                isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
                 contactGroup = event.contactGroupDetailsUiModel
             )
         }

@@ -33,6 +33,7 @@ sealed class ContactGroupDetailsState(
 
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
+        val isSendEnabled: Boolean,
         val contactGroup: ContactGroupDetailsUiModel
     ) : ContactGroupDetailsState(Effect.empty())
 }

@@ -19,11 +19,16 @@
 package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -34,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -41,10 +47,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
@@ -59,6 +68,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionWeak
+import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.label.domain.entity.LabelId
 
@@ -153,8 +163,60 @@ fun ContactGroupDetailsContent(
                         state.contactGroup.memberCount
                     )
                 )
+                ContactGroupDetailsSendTextButton(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    isEnabled = state.isSendEnabled
+                ) {
+                    // Open composer
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun ContactGroupDetailsSendTextButton(
+    modifier: Modifier = Modifier,
+    isEnabled: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .padding(
+                top = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.MediumSpacing
+            )
+            .sizeIn(
+                minWidth = MailDimens.ContactActionSize,
+                minHeight = MailDimens.ContactActionSize
+            )
+            .background(
+                color = if (isEnabled) ProtonTheme.colors.interactionWeakNorm
+                else ProtonTheme.colors.interactionWeakDisabled,
+                shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius)
+            )
+            .clip(shape = RoundedCornerShape(MailDimens.ContactActionCornerRadius))
+            .clickable(
+                enabled = isEnabled,
+                role = Role.Button,
+                onClick = onClick
+            ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = modifier.padding(start = ProtonDimens.DefaultSpacing),
+            painter = painterResource(id = R.drawable.ic_proton_pen_square),
+            tint = if (isEnabled) ProtonTheme.colors.iconNorm else ProtonTheme.colors.iconDisabled,
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+        Text(
+            modifier = Modifier.padding(
+                start = ProtonDimens.SmallSpacing,
+                end = ProtonDimens.DefaultSpacing
+            ),
+            text = "Send group message",
+            style = ProtonTheme.typography.defaultSmallNorm
+        )
     }
 }
 
@@ -212,6 +274,7 @@ object ContactGroupDetailsScreen {
 private fun ContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
+            isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData
         ),
         actions = ContactGroupDetailsScreen.Actions.Empty
@@ -223,6 +286,7 @@ private fun ContactGroupDetailsContentPreview() {
 private fun EmptyContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
+            isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData.copy(
                 memberCount = 0,
                 members = emptyList()
@@ -237,6 +301,7 @@ private fun EmptyContactGroupDetailsContentPreview() {
 private fun ContactDetailsTopBarPreview() {
     ContactGroupDetailsTopBar(
         state = ContactGroupDetailsState.Data(
+            isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData
         ),
         actions = ContactGroupDetailsScreen.Actions.Empty
