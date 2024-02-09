@@ -47,20 +47,24 @@ class UpdateDraftStateForError @Inject constructor(
     ) {
         val draftState = draftStateRepository.observe(userId, messageId).firstOrNull()?.getOrNull()
 
-        if (sendingError == SendingError.MessageAlreadySent) {
-            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
-            return
-        }
+        val isMessageAlreadySent = sendingError == SendingError.MessageAlreadySent
+        val isMessageSending = draftState?.state == DraftSyncState.Sending
 
-        if (draftState?.state == DraftSyncState.Sending) {
-            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
-            draftStateRepository.updateSendingError(userId, messageId, sendingError)
-            draftState.apiMessageId?.let { messageRepository.moveMessageBackFromSentToDrafts(userId, it) }
-                ?: messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
-        } else {
-            draftStateRepository.updateDraftSyncState(userId, messageId, newState)
-            if (newState == DraftSyncState.ErrorSending) {
+        when {
+            isMessageAlreadySent -> {
+                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sent)
+            }
+            isMessageSending -> {
+                draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.ErrorSending)
                 draftStateRepository.updateSendingError(userId, messageId, sendingError)
+                draftState?.apiMessageId?.let { messageRepository.moveMessageBackFromSentToDrafts(userId, it) }
+                    ?: messageRepository.moveMessageBackFromSentToDrafts(userId, messageId)
+            }
+            else -> {
+                draftStateRepository.updateDraftSyncState(userId, messageId, newState)
+                if (newState == DraftSyncState.ErrorSending) {
+                    draftStateRepository.updateSendingError(userId, messageId, sendingError)
+                }
             }
         }
     }
