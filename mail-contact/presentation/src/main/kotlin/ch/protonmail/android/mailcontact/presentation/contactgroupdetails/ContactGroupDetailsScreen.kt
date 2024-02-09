@@ -103,10 +103,7 @@ fun ContactGroupDetailsScreen(
         content = { paddingValues ->
             when (state) {
                 is ContactGroupDetailsState.Data -> {
-                    ContactGroupDetailsContent(
-                        state,
-                        actions
-                    )
+                    ContactGroupDetailsContent(state)
                 }
                 is ContactGroupDetailsState.Loading -> {
                     ProtonCenteredProgress(
@@ -136,11 +133,7 @@ fun ContactGroupDetailsScreen(
 }
 
 @Composable
-fun ContactGroupDetailsContent(
-    state: ContactGroupDetailsState.Data,
-    actions: ContactGroupDetailsScreen.Actions,
-    modifier: Modifier = Modifier
-) {
+fun ContactGroupDetailsContent(state: ContactGroupDetailsState.Data, modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -182,8 +175,7 @@ fun ContactGroupDetailsContent(
         }
         items(state.contactGroup.members) { member ->
             ContactGroupMemberItem(
-                contactGroupMember = member,
-                actions = actions
+                contactGroupMember = member
             )
         }
     }
@@ -236,11 +228,7 @@ private fun ContactGroupDetailsSendTextButton(
 }
 
 @Composable
-fun ContactGroupMemberItem(
-    modifier: Modifier = Modifier,
-    contactGroupMember: ContactGroupMember,
-    actions: ContactGroupDetailsScreen.Actions
-) {
+fun ContactGroupMemberItem(modifier: Modifier = Modifier, contactGroupMember: ContactGroupMember) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -357,8 +345,7 @@ private fun ContactGroupDetailsContentPreview() {
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData
-        ),
-        actions = ContactGroupDetailsScreen.Actions.Empty
+        )
     )
 }
 
@@ -372,8 +359,7 @@ private fun EmptyContactGroupDetailsContentPreview() {
                 memberCount = 0,
                 members = emptyList()
             )
-        ),
-        actions = ContactGroupDetailsScreen.Actions.Empty
+        )
     )
 }
 
