@@ -47,10 +47,11 @@ class ContactGroupDetailsReducerTest(
         private val loadedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
         private val loadedContactGroupDetailsUiModel2 = ContactGroupDetailsPreviewData
             .contactGroupDetailsSampleData
-            .copy(name = "Group name 2")
+            .copy(memberCount = 0, members = emptyList())
 
         private val emptyLoadingState = ContactGroupDetailsState.Loading()
         private val loadedContactGroupState = ContactGroupDetailsState.Data(
+            isSendEnabled = true,
             contactGroup = loadedContactGroupDetailsUiModel
         )
 
@@ -81,6 +82,7 @@ class ContactGroupDetailsReducerTest(
                 currentState = loadedContactGroupState,
                 event = ContactGroupDetailsEvent.ContactGroupLoaded(loadedContactGroupDetailsUiModel2),
                 expectedState = loadedContactGroupState.copy(
+                    isSendEnabled = false,
                     contactGroup = loadedContactGroupDetailsUiModel2
                 )
             ),
