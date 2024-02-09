@@ -80,6 +80,9 @@ class ComposerReducer @Inject constructor(
 
     @Suppress("ComplexMethod", "LongMethod")
     private fun ComposerEvent.newStateForEvent(currentState: ComposerDraftState) = when (this) {
+        is ComposerEvent.DraftSynchronisedWithApi -> currentState.copy(
+            fields = currentState.fields.copy(draftId = this.apiMessageId)
+        )
         is ComposerEvent.DefaultSenderReceived -> updateSenderTo(currentState, this.sender)
         is ComposerEvent.ErrorLoadingDefaultSenderAddress -> updateStateToSenderError(currentState)
         is ComposerEvent.ErrorVerifyingPermissionsToChangeSender -> currentState.copy(

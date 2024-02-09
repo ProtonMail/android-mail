@@ -56,6 +56,7 @@ internal sealed interface ComposerAction : ComposerOperation {
 }
 
 sealed interface ComposerEvent : ComposerOperation {
+    data class DraftSynchronisedWithApi(val apiMessageId: MessageId) : ComposerEvent
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent
     data class OpenExistingDraft(val draftId: MessageId) : ComposerEvent

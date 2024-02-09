@@ -89,9 +89,12 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftState
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.SendingError
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -120,6 +123,7 @@ import io.mockk.verify
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
@@ -127,6 +131,8 @@ import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.featureflag.domain.entity.FeatureId
 import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.NetworkManager
+import me.proton.core.test.kotlin.TestCoroutineScopeProvider
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
 import org.junit.Rule
@@ -143,6 +149,9 @@ class ComposerViewModelTest {
     @get:Rule
     val loggingTestRule = LoggingTestRule()
 
+    private val draftStateRepository = mockk<DraftStateRepository> {
+        coEvery { this@mockk.observe(any(), any()) } returns flowOf()
+    }
     private val storeAttachments = mockk<StoreAttachments>()
     private val storeDraftWithAllFields = mockk<StoreDraftWithAllFields>()
     private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
@@ -195,8 +204,13 @@ class ComposerViewModelTest {
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
 
+    private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
+    private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
+
     private val viewModel by lazy {
         ComposerViewModel(
+            scopeProvider,
+            draftStateRepository,
             appInBackgroundState,
             storeAttachments,
             storeDraftWithBodyMock,
@@ -349,6 +363,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -393,6 +408,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
         expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
@@ -430,6 +446,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -475,6 +492,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -520,6 +538,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -565,6 +584,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -601,6 +621,7 @@ class ComposerViewModelTest {
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -650,6 +671,7 @@ class ComposerViewModelTest {
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -693,6 +715,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -735,6 +758,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -791,6 +815,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -847,6 +872,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -884,6 +910,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.OnCloseComposer)
@@ -910,6 +937,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before closing composer
         expectedViewModelInitialState(
@@ -960,6 +988,7 @@ class ComposerViewModelTest {
             expectObserveMessageSendingError(expectedUserId, expectedMessageId)
             expectObserveMessagePassword(expectedUserId, expectedMessageId)
             expectNoFileShareVia()
+            expectObserveDraftState(expectedUserId, expectedMessageId)
 
             // Change internal state of the View Model to simulate the
             // existence of all fields before closing the composer
@@ -996,6 +1025,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         val actual = viewModel.state.value
@@ -1017,6 +1047,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         val actual = viewModel.state.value
@@ -1042,6 +1073,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1068,6 +1100,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1094,6 +1127,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(ComposerAction.ChangeSenderRequested)
@@ -1125,6 +1159,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1159,6 +1194,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1190,6 +1226,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1222,6 +1259,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1251,6 +1289,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1293,6 +1332,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1332,6 +1372,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1371,6 +1412,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         // When
         viewModel.submit(action)
@@ -1396,6 +1438,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1422,6 +1465,7 @@ class ComposerViewModelTest {
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
             expectObserveMessagePassword(expectedUserId, expectedDraftId)
             expectNoFileShareVia()
+            expectObserveDraftState(expectedUserId, expectedDraftId)
 
             // When
             val actual = viewModel.state.value
@@ -1458,6 +1502,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1513,6 +1558,7 @@ class ComposerViewModelTest {
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
             expectObserveMessagePassword(expectedUserId, expectedDraftId)
             expectNoFileShareVia()
+            expectObserveDraftState(expectedUserId, expectedDraftId)
 
             // When
             val actual = viewModel.state.value
@@ -1546,6 +1592,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, draftId)
         expectObserveMessagePassword(expectedUserId, draftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, draftId)
 
         // When
         val actual = viewModel.state.value
@@ -1567,6 +1614,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         val actual = viewModel.state.value
@@ -1590,6 +1638,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(userId, messageId)
         expectObserveMessagePassword(userId, messageId)
         expectNoFileShareVia()
+        expectObserveDraftState(userId, messageId)
 
         // When
         val actual = viewModel.state.value
@@ -1614,6 +1663,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnAddAttachments)
@@ -1638,6 +1688,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
@@ -1678,6 +1729,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
         expectObserveMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
 
         // When
         viewModel.state.test {
@@ -1776,6 +1828,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(expectedUserId, messageId)
         expectObserveMessagePassword(expectedUserId, messageId)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, messageId)
 
         // When
         viewModel.submit(ComposerAction.AttachmentsAdded(listOf(uri)))
@@ -1804,6 +1857,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(userId, messageId)
         expectObserveMessagePassword(userId, messageId)
         expectNoFileShareVia()
+        expectObserveDraftState(userId, messageId)
 
         // When
         viewModel.state // app is in foreground
@@ -1832,6 +1886,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(userId, messageId)
         expectObserveMessagePassword(userId, messageId)
         expectNoFileShareVia()
+        expectObserveDraftState(userId, messageId)
 
         // When
         viewModel.state // app is in foreground
@@ -1861,6 +1916,7 @@ class ComposerViewModelTest {
         expectObserveMessageSendingError(userId, messageId)
         expectObserveMessagePassword(userId, messageId)
         expectNoFileShareVia()
+        expectObserveDraftState(userId, messageId)
 
         // When
         viewModel.state.test {
@@ -1898,8 +1954,67 @@ class ComposerViewModelTest {
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectAddressValidation(expectedRecipient.address, true)
         expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId)
 
         assertEquals(viewModel.state.value.fields.to.first(), RecipientUiModel.Valid(expectedRecipient.address))
+    }
+
+    @Test
+    fun `should update the local draft id when draft state updated with api message id`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId, MessageIdSample.RemoteDraft)
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        coVerify {
+            draftStateRepository.updateDraftMessageId(expectedUserId, expectedMessageId, MessageIdSample.RemoteDraft)
+        }
+        assertEquals(MessageIdSample.RemoteDraft, actual.fields.draftId)
+    }
+
+    @Test
+    fun `should not update the local draft id when local draft id and api message id are the same`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedMessageId, expectedMessageId)
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        coVerify {
+            draftStateRepository.updateDraftMessageId(
+                expectedUserId,
+                expectedMessageId,
+                MessageIdSample.RemoteDraft
+            ) wasNot Called
+        }
+        assertEquals(expectedMessageId, actual.fields.draftId)
     }
 
     @AfterTest
@@ -2331,6 +2446,28 @@ class ComposerViewModelTest {
     private fun expectObserveMessagePassword(userId: UserId, messageId: MessageId) {
         val messagePassword = MessagePassword(userId, messageId, "password", null)
         coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
+    }
+
+    private fun expectObserveDraftState(
+        userId: UserId,
+        localDraftId: MessageId,
+        apiMessageId: MessageId? = null
+    ) {
+        val draftState = DraftState(
+            userId, localDraftId, apiMessageId, DraftSyncState.Synchronized,
+            DraftAction.Compose, null, false
+        )
+        every {
+            draftStateRepository.observe(
+                userId,
+                localDraftId
+            )
+        } returns if (apiMessageId != null) flowOf(draftState.right()) else flowOf()
+        apiMessageId?.let {
+            coEvery {
+                draftStateRepository.updateDraftMessageId(userId, localDraftId, apiMessageId)
+            } returns Unit.right()
+        }
     }
 
     private fun expectAddressValidation(address: String, expectedResult: Boolean) {
