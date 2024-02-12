@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.toArgb
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModelMapper
-import ch.protonmail.android.mailcontact.presentation.model.ContactGroupMember
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -115,7 +115,7 @@ class ContactGroupDetailsUiModelMapperTest {
             color = Color.Red,
             memberCount = 1,
             members = listOf(
-                ContactGroupMember(
+                ContactGroupDetailsMember(
                     initials = "FE",
                     name = "First name from contact email",
                     email = "test1+alias@protonmail.com"

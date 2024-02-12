@@ -60,7 +60,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.model.ContactGroupMember
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -229,7 +229,7 @@ private fun ContactGroupDetailsSendTextButton(
 }
 
 @Composable
-fun ContactGroupMemberItem(modifier: Modifier = Modifier, contactGroupMember: ContactGroupMember) {
+fun ContactGroupMemberItem(modifier: Modifier = Modifier, contactGroupMember: ContactGroupDetailsMember) {
     Row(
         modifier = modifier
             .fillMaxWidth()

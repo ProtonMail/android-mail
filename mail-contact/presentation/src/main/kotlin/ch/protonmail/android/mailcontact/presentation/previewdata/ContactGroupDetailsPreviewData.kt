@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.previewdata
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModel
-import ch.protonmail.android.mailcontact.presentation.model.ContactGroupMember
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import me.proton.core.label.domain.entity.LabelId
 
 object ContactGroupDetailsPreviewData {
@@ -31,7 +31,7 @@ object ContactGroupDetailsPreviewData {
         color = Color.Red,
         memberCount = 1,
         members = listOf(
-            ContactGroupMember(
+            ContactGroupDetailsMember(
                 initials = "JD",
                 name = "John Doe",
                 email = "johndoe@proton.me"

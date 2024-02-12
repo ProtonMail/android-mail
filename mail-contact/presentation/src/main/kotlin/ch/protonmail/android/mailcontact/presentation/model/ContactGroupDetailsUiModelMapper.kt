@@ -32,7 +32,7 @@ class ContactGroupDetailsUiModelMapper @Inject constructor() {
             color = contactGroup.color.getColorFromHexString(),
             memberCount = contactGroup.members.size,
             members = contactGroup.members.map { contactEmail ->
-                ContactGroupMember(
+                ContactGroupDetailsMember(
                     initials = getInitials(contactEmail.name),
                     name = contactEmail.name,
                     email = contactEmail.email

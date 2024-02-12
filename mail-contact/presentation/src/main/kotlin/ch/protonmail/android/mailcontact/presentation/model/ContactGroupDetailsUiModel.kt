@@ -26,10 +26,10 @@ data class ContactGroupDetailsUiModel(
     val name: String,
     val color: Color,
     val memberCount: Int,
-    val members: List<ContactGroupMember>
+    val members: List<ContactGroupDetailsMember>
 )
 
-data class ContactGroupMember(
+data class ContactGroupDetailsMember(
     val initials: String,
     val name: String,
     val email: String
