@@ -131,7 +131,6 @@ import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.featureflag.domain.entity.FeatureId
 import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.NetworkManager
-import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
@@ -205,11 +204,10 @@ class ComposerViewModelTest {
     private val reducer = ComposerReducer(attachmentUiModelMapper)
 
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
-    private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
     private val viewModel by lazy {
         ComposerViewModel(
-            scopeProvider,
+            dispatcherProvider,
             draftStateRepository,
             appInBackgroundState,
             storeAttachments,

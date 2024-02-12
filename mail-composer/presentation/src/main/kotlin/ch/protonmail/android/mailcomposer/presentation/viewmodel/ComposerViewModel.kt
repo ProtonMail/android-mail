@@ -102,7 +102,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
-import me.proton.core.util.kotlin.CoroutineScopeProvider
+import me.proton.core.util.kotlin.DispatcherProvider
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
@@ -112,7 +112,7 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
-    private val scopeProvider: CoroutineScopeProvider,
+    private val scopeProvider: DispatcherProvider,
     private val draftStateRepository: DraftStateRepository,
     private val appInBackgroundState: AppInBackgroundState,
     private val storeAttachments: StoreAttachments,
@@ -425,7 +425,7 @@ class ComposerViewModel @Inject constructor(
     }
 
     private fun updateDraftStateWithApiMessageId(apiMessageId: MessageId) {
-        scopeProvider.GlobalIOSupervisedScope.launch {
+        viewModelScope.launch(scopeProvider.Io) {
             draftStateRepository.updateDraftMessageId(primaryUserId(), currentMessageId(), apiMessageId).onRight {
                 emitNewStateFor(ComposerEvent.DraftSynchronisedWithApi(apiMessageId))
             }

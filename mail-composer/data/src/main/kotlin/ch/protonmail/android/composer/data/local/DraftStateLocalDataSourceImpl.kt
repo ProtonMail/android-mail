@@ -45,6 +45,7 @@ class DraftStateLocalDataSourceImpl @Inject constructor(
         return Either.catch {
             draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
         }.mapLeft {
+            Timber.e("Unexpected error updating draft message Id. $it")
             DataError.Local.Unknown
         }
     }
