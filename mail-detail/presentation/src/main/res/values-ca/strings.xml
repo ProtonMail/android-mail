@@ -88,7 +88,7 @@
   <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">D\'acord</string>
   <string name="message_report_phishing_dialog_title">Confirma l\'informe de phising</string>
-  <string name="message_report_phishing_dialog_message">Informar un missatge com a intent de pesca us enviarà el missatge, per poder analitzar-lo i millorar-ne els filtres. Això significa que podrem veure el contingut del missatge complet.</string>
+  <string name="message_report_phishing_dialog_message">Informar d\'un missatge com a intent de pesca ens l\'enviarà a nosaltres per a poder analitzar-lo i millorar els nostres filtres. Això significa que podrem veure el contingut complet del missatge.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirma</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancel·la</string>
 </resources>

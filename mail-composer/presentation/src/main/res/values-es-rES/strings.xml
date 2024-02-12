@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se han borrado todos los archivos adjuntos.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
   <string name="composer_button_add_password">Añadir una contraseña</string>
+  <string name="composer_button_set_expiration">Establecer el tiempo de expiración</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Redactar</string>
   <string name="composer_send_without_subject_dialog_text">¿Enviar el mensaje sin asunto?</string>

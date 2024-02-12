@@ -20,8 +20,11 @@
   <string name="contact_list_title">Contactos</string>
   <string name="contact_list_loading_error">Error al cargar los contactos. Inténtalo de nuevo más tarde.</string>
   <string name="no_contacts">No se han encontrado contactos.</string>
+  <string name="no_contact_groups">No se han encontrado grupos de contactos.</string>
   <string name="no_contacts_description">Mejora tu experiencia de correo creando un contacto o importando los existentes.</string>
+  <string name="no_contact_groups_description">Mejora tu experiencia de correo electrónico creando un grupo de contactos.</string>
   <string name="add_contact">Añadir un contacto</string>
+  <string name="add_contact_group">Añadir un grupo de contactos</string>
   <string name="add_contact_content_description">Añadir un contacto</string>
   <string name="all_title">Todo</string>
   <string name="groups_title">Grupos</string>
@@ -92,4 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancelar</string>
   <string name="contact_details_delete_dialog_confirm_button">Aceptar</string>
   <string name="contact_form_save_error">Error al guardar los contactos. Intenta de nuevo más tarde.</string>
+  <string name="all_contacts_tab">Todos</string>
+  <string name="contact_groups_tab">Grupos</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="one">%1$d miembro</item>
+    <item quantity="other">%1$d miembros</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Error al guardar contacto. Contiene una dirección de correo inválida.</string>
 </resources>

@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Neteja la cerca</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Introdueix la cerca</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Neteja la consulta de cerca</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Introduïu la consulta de cerca</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d seleccionat</item>
     <item quantity="other">%d seleccionats</item>
@@ -105,7 +105,7 @@
   <string name="mailbox_action_button_clear_trash">Buida la paperera</string>
   <string name="mailbox_action_button_clear_spam">Buida el correu brossa</string>
   <string name="mailbox_action_clear_trash_dialog_title">Buida la carpeta Paperera</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Buida la carpeta del correu brossa</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Buida la carpeta Correu brossa</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
@@ -115,7 +115,7 @@
   <string name="storage_limit_warning_dialog_title">Advertència</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">No em tornis a recordar</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">No m\'ho tornis a recordar</string>
   <string name="storage_limit_warning_dialog_confirm_button">D\'acord</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advertència</string>

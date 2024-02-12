@@ -32,7 +32,7 @@
   <string name="mail_settings_local_cache_hint">Spazio utilizzato: %s</string>
   <string name="mail_settings_local_cache_clear_button">Cancella la cache</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
-  <string name="mail_settings_combined_contacts_hint">Attiva questa funzionalità per completare automaticamente gli indirizzi email usando i contatti di tutti i tuoi account connessi.</string>
+  <string name="mail_settings_combined_contacts_hint">Abilita questa opzione per completare automaticamente gli indirizzi email con i contatti di tutti i tuoi account connessi.</string>
   <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che può essere utile per evitare firewall o problemi di rete. Consigliamo di mantenere attiva questa impostazione per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_folders">Cartelle</string>
   <string name="mail_settings_conversation_mode">Modalità conversazione</string>
   <string name="mail_settings_not_set">Non impostato</string>
-  <string name="mail_settings_conversation_mode_hint">Raggruppa o visualizza separatamente le email nella stessa conversazione</string>
+  <string name="mail_settings_conversation_mode_hint">Abilita questa opzione per visualizzare raggruppati i messaggi nella stessa conversazione.</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Indirizzo email predefinito</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Indirizzi non attivi</string>
@@ -84,12 +84,12 @@
   <string name="mail_settings_identity_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
   <string name="mail_settings_identity_error_loading">Errore nel caricamento delle impostazioni</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Mostra automaticamente i contenuti remoti</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Mostra automaticamente le immagini incorporate</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Blocca gli screenshot</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Richiedi la conferma dei link</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Caricamento automatico dei contenuti remoti</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Caricamento automatico delle immagini incorporate</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Blocco degli screenshot</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Richiesta di conferma dei link</string>
   <string name="mail_settings_privacy_background_sync">Sincronizzazione in background</string>
-  <string name="mail_settings_privacy_background_sync_description">Se questa opzione è abilitata, l\'app si sincronizzerà con il server in background. Disabilitare questa funzione disabiliterà anche le notifiche push.</string>
+  <string name="mail_settings_privacy_background_sync_description">Abilita questa opzione per sincronizzare l\'app con il server in background. Se questa opzione è disabilitata, sono disabilitate anche le notifiche push.</string>
   <string name="mail_settings_privacy_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
   <string name="mail_settings_privacy_error_loading">Errore nel caricamento delle impostazioni</string>
   <!-- Swipe Actions -->
@@ -98,19 +98,19 @@
   <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
   <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
-  <string name="mail_settings_swipe_action_read_title">Non letto</string>
+  <string name="mail_settings_swipe_action_read_title">Letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Importante</string>
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
   <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
-  <string name="mail_settings_swipe_action_read_description">Segna come letto/non letto</string>
+  <string name="mail_settings_swipe_action_read_description">Letto/non letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
-  <string name="mail_settings_swipe_action_star_description">Segna come importante/non importante</string>
+  <string name="mail_settings_swipe_action_star_description">Importante/non importante</string>
   <string name="mail_settings_swipe_action_trash_description">Sposta nel cestino</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notifiche push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notifiche estese</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Attiva questa funzionalità per vedere i mittenti delle email nelle notifiche push.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Abilita questa opzione per visualizzare i mittenti delle email nelle notifiche push.</string>
   <string name="mail_settings_notifications_notifications_settings">Impostazioni delle notifiche</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Vai alle impostazioni di notifica di sistema</string>
   <string name="mail_settings_notifications_update_error">Errore nell\'aggiornamento delle impostazioni</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_title">Blocco automatico dell\'app</string>
-  <string name="mail_settings_auto_lock_item_description">Attiva questa funzione per bloccare automaticamente l\'app e usare un codice PIN per sbloccarla.</string>
+  <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambia il codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
@@ -160,6 +160,6 @@
   <!-- strings used for biometric enrollment -->
   <string name="no_biometric_data_enrolled">Nessun dato biometrico registrato</string>
   <string name="log_in_using_biometric_credential">Sblocca con le tue credenziali biometriche</string>
-  <string name="unlock_using_biometrics">Sblocca con la biometria</string>
+  <string name="unlock_using_biometrics">Sblocco con la biometria</string>
   <string name="biometric_error_hw_not_available">Hardware biometrico non disponibile.</string>
 </resources>

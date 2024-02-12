@@ -28,10 +28,10 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Wyczyść zapytanie</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Wpisz zapytanie</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d zaznaczona</item>
-    <item quantity="few">%d zaznaczone</item>
-    <item quantity="many">%d zaznaczonych</item>
-    <item quantity="other">%d zaznaczonych</item>
+    <item quantity="one">%d</item>
+    <item quantity="few">%d</item>
+    <item quantity="many">%d</item>
+    <item quantity="other">%d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s nieprzeczytany</item>

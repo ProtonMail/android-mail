@@ -113,12 +113,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"Temizleme işlemi zamanlandı"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Uyarı</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Proton hesabınızın depolaması %80 doldu. Alan açabilirsiniz veya daha fazla depolama için tarifenizi yükseltebilirsiniz.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Proton hesabınızın depolaması %90 doldu. Alan açabilirsiniz veya daha fazla depolama için tarifenizi yükseltebilirsiniz.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Proton hesabınızın depolama alanı %80 oranında dolu. Alan boşaltabilir ya da daha fazla depolama alanı edinmek için tarifenizi yükseltebilirsiniz.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Proton hesabınızın depolama alanı %90 oranında dolu. Alan boşaltabilir ya da daha fazla depolama edinmek için tarifenizi yükseltebilirsiniz.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Bir daha hatırlatma</string>
   <string name="storage_limit_warning_dialog_confirm_button">Tamam</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Uyarı</string>
-  <string name="storage_quota_over_dialog_text">Proton hesabınızın depolaması %100 dolu. Bazı e-postaları tamamen silmedikçe veya daha çok depolama için tarifenizi yükseltmedikçe e-posta alıp gönderemeyeceksiniz.</string>
+  <string name="storage_quota_over_dialog_text">Proton hesabınızın depolama alanı %100 oranında dolu. Bazı e-postaları tümüyle silmedikçe ya da daha çok depolama alanı edinmek için tarifenizi yükseltmedikçe e-posta alıp gönderemezsiniz.</string>
   <string name="storage_quota_over_dialog_confirm_button">Tamam</string>
 </resources>

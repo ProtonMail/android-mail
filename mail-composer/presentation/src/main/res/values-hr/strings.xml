@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
   <string name="composer_send_without_subject_dialog_text">Poslati poruku bez predmeta?</string>

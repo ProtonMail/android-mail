@@ -119,6 +119,6 @@
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Attention</string>
-  <string name="storage_quota_over_dialog_text">Votre compte Proton a dépassé les 100 % d\'espace de stockage disponibles. Vous ne pourrez plus envoyer ou recevoir de messages à moins de supprimer définitivement des messages ou de changer d\'abonnement pour plus d\'espace de stockage.</string>
+  <string name="storage_quota_over_dialog_text">Votre compte Proton a atteint la limite d\'espace de stockage disponible. Vous ne pouvez plus envoyer ou recevoir de messages à moins de supprimer définitivement des messages ou de changer d\'abonnement pour augmenter votre espace de stockage.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

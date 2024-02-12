@@ -33,8 +33,8 @@
   <string name="action_forward_description">転送</string>
   <string name="action_mark_read_description">既読にする</string>
   <string name="action_mark_unread_description">未読にする</string>
-  <string name="action_star_description">Star</string>
-  <string name="action_unstar_description">Unstar</string>
+  <string name="action_star_description">星印を付ける</string>
+  <string name="action_unstar_description">星印を外す</string>
   <string name="action_label_description">Label as</string>
   <string name="action_move_description">Move to</string>
   <string name="action_trash_description">ごみ箱</string>

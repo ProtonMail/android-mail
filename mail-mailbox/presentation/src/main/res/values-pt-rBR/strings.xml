@@ -113,12 +113,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está programada"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Aviso</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">O armazenamento da sua conta Proton está mais de 80% cheio. Libere espaço ou atualize para obter mais armazenamento.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">O armazenamento da sua conta Proton está mais de 90% cheio. Libere espaço ou atualize para obter mais armazenamento.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">O armazenamento da sua conta da Proton está mais de 80% cheio. Libere espaço ou faça upgrade para obter mais armazenamento.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">O armazenamento da sua conta daProton está mais de 90% cheio. Libere espaço ou aça upgrade para obter mais armazenamento.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Não lembrar novamente</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Aviso</string>
-  <string name="storage_quota_over_dialog_text">O armazenamento da sua conta Proton está 100% cheio. Você não poderá enviar ou receber e-mails, a menos que exclua permanentemente alguns e-mails ou atualize para obter mais armazenamento.</string>
+  <string name="storage_quota_over_dialog_text">O armazenamento da sua conta da Proton está 100% cheio. Você não poderá enviar ou receber e-mails, a menos que exclua permanentemente alguns e-mails ou faça upgrade para obter mais armazenamento.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

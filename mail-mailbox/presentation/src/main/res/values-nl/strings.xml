@@ -113,12 +113,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"Optie om op te ruimen is gepland"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Waarschuwing</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Je Proton account opslagruimte is meer dan 80% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Je Proton account opslagruimte is meer dan 90% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Herinner me niet meer</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Uw Proton-account opslagruimte is meer dan 80% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Uw Proton-account opslagruimte is meer dan 90% vol. Maak vrije ruimte of upgrade voor meer ruimte.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Niet opnieuw herinneren</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Waarschuwing</string>
-  <string name="storage_quota_over_dialog_text">De opslagruimte van je Proton account is 100% vol. Je kunt geen e-mails verzenden of ontvangen tenzij je een aantal e-mails permanent verwijdert of een upgrade uitvoert voor meer opslagruimte.</string>
+  <string name="storage_quota_over_dialog_text">Uw Proton account opslag is 100% vol. U kunt niet langer mail versturen of ontvangen tenzij u een aantal mail berichten definitief verwijderd of upgrade voor meer opslagruimte.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

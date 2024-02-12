@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
   <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>
   <string name="composer_button_add_password">Passwort hinzufügen</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Verfassen</string>
   <string name="composer_send_without_subject_dialog_text">Nachricht ohne Betreff senden?</string>

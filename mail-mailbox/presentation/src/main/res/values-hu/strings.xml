@@ -24,9 +24,9 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Kiválasztás módból kilépés</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
   <string name="mailbox_toolbar_search_button_content_description">Keresés</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Kilépés keresés módból</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Kereső kifejezés törlése</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Kereső kifejezés</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d kiválasztva</item>
     <item quantity="other">%d kiválasztva</item>
@@ -41,11 +41,11 @@
   <string name="mailbox_error_message_generic">A postafiók betöltése sikertelen</string>
   <string name="mailbox_error_message_unexpected">Valami váratlanul rosszul történt</string>
   <string name="mailbox_is_empty_title">Nincsenek üzenetek</string>
-  <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_description">Ön naprakész</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Nincsenek olvasatlan üzenetek</string>
   <string name="mailbox_is_empty_folder_description">Ez a mappa üres</string>
   <string name="mailbox_is_empty_spam_description">A kéretlen üzenetek mappája üres</string>
-  <string name="mailbox_is_empty_trash_description">Trash is empty</string>
+  <string name="mailbox_is_empty_trash_description">A lomtár üres</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Üzenet áthelyezve a lomtárba</item>
     <item quantity="other">%d messages moved to Trash</item>
@@ -67,7 +67,7 @@
     <item quantity="other">Are you sure you want to permanently delete these messages?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Message permanently deleted</item>
+    <item quantity="one">Üzenet véglegesen törölve</item>
     <item quantity="other">%d messages permanently deleted</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
@@ -102,23 +102,23 @@
   <string name="mailbox_search_placeholder_text">Üzenetek keresése</string>
   <string name="mailbox_search_no_results_title">Nincs találat</string>
   <string name="mailbox_search_no_results_explanation">Keresés dátum, név, e-mail cím vagy tárgy alapján</string>
-  <string name="mailbox_action_button_clear_trash">Empty Trash</string>
-  <string name="mailbox_action_button_clear_spam">Empty Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
+  <string name="mailbox_action_button_clear_trash">Lomtár ürítése</string>
+  <string name="mailbox_action_button_clear_spam">Levélszemét ürítése</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Lomtár mappa ürítése</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Levélszemét mappa ürítése</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
+  <string name="storage_limit_warning_dialog_title">Figyelmeztetés</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Ne emlékeztessen újra</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
+  <string name="storage_quota_over_dialog_title">Figyelmeztetés</string>
   <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

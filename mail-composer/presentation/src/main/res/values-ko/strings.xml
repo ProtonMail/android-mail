@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">첨부 파일에 대한 복호화 실패. 보안 상의 이유로 전체 첨부 파일이 삭제되었습니다.</string>
   <string name="composer_warning_local_data_shown">이 원고의 가장 최근 버전을 불러오는 데 실패했습니다. 어떤 변경점이 있더라도 그것을 덮어쓰게 됩니다.</string>
   <string name="composer_button_add_password">비밀번호 추가</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">작성</string>
   <string name="composer_send_without_subject_dialog_text">제목없이 메시지를 보낼까요?</string>

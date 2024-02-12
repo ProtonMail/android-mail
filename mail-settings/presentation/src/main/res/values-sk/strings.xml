@@ -133,7 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Ikona zámku</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Bodky PIN kódu</string>
   <string name="mail_settings_pin_insertion_backspace_description">Vymazať</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrické overenie</string>
   <string name="mail_settings_pin_insertion_button_create">Vytvoriť</string>
   <string name="mail_settings_pin_insertion_button_confirm">Potvrdiť</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kódy sa nezhodujú.</string>

@@ -20,8 +20,11 @@
   <string name="contact_list_title">Contatti</string>
   <string name="contact_list_loading_error">Errore nel caricamento dei contatti. Riprova più tardi.</string>
   <string name="no_contacts">Nessun contatto trovato</string>
-  <string name="no_contacts_description">Migliora la tua esperienza con le email creando un nuovo contatto o importando quelli esistenti.</string>
+  <string name="no_contact_groups">Nessun gruppo di contatti trovato</string>
+  <string name="no_contacts_description">Migliora la tua esperienza con le email aggiungendo un nuovo contatto o importando quelli esistenti.</string>
+  <string name="no_contact_groups_description">Migliora la tua esperienza con le email creando un nuovo gruppo di contatti.</string>
   <string name="add_contact">Aggiungi un contatto</string>
+  <string name="add_contact_group">Crea un gruppo di contatti</string>
   <string name="add_contact_content_description">Aggiungi un contatto</string>
   <string name="all_title">Tutto</string>
   <string name="groups_title">Gruppi</string>
@@ -66,7 +69,7 @@
   <string name="contact_form_save_success">Contatto salvato</string>
   <string name="save_contact_content_description">Salva il contatto</string>
   <string name="contact_form_save">Salva</string>
-  <string name="add_new">Aggiungi un contatto</string>
+  <string name="add_new">Aggiungi</string>
   <string name="email_section">Email</string>
   <string name="phone_section">Numero di telefono</string>
   <string name="address_section">Indirizzo</string>
@@ -92,4 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Annulla</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Errore nel salvataggio del contatto. Riprova più tardi.</string>
+  <string name="all_contacts_tab">Tutto</string>
+  <string name="contact_groups_tab">Gruppi</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="one">%1$d membro</item>
+    <item quantity="other">%1$d membri</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Errore nel salvataggio del contatto a causa di un indirizzo email non valido</string>
 </resources>

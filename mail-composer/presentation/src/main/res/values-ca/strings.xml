@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Redacta</string>
   <string name="composer_send_without_subject_dialog_text">Enviar missatge sense assumpte?</string>

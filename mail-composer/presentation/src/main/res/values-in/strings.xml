@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Lampiran gagal dienkripsi ulang. Demi alasan keamanan, seluruh lampiran telah dihapus.</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
   <string name="composer_button_add_password">Tambahkan kata sandi</string>
+  <string name="composer_button_set_expiration">Tentukan waktu kedaluwarsa</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Tulis</string>
   <string name="composer_send_without_subject_dialog_text">Kirim pesan tanpa subjek?</string>

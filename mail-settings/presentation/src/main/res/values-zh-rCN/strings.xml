@@ -118,8 +118,8 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Auto lock</string>
   <string name="mail_settings_auto_lock_item_title">自动锁定程序</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
-  <string name="mail_settings_auto_lock_change_pin_description">更改口令</string>
+  <string name="mail_settings_auto_lock_item_description">开启后程序可自动锁定，需要输入解锁密码才能使用。</string>
+  <string name="mail_settings_auto_lock_change_pin_description">更改解锁密码</string>
   <string name="mail_settings_auto_lock_item_timer_title">自动锁定时间</string>
   <string name="mail_settings_auto_lock_immediately">立刻</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">五分钟无操作</string>
@@ -127,30 +127,30 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">一小时无操作</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
   <string name="mail_settings_auto_lock_update_error">更新设置时出现错误</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
-  <string name="mail_settings_pin_insertion_set_title">设置口令</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
+  <string name="mail_settings_pin_insertion_input_title">输入解锁密码</string>
+  <string name="mail_settings_pin_insertion_set_title">设置解锁密码</string>
+  <string name="mail_settings_pin_insertion_confirm_title">确认解锁密码</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">创建</string>
   <string name="mail_settings_pin_insertion_button_confirm">确定</string>
-  <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
+  <string name="mail_settings_pin_insertion_error_no_match">两次输入的解锁密码不一致。</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="other">剩余 %s 次尝试.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">验证解锁密码失败</string>
   <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">你确定要登出吗？</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
-  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
+  <string name="mail_settings_pin_insertion_created_success">解锁密码创建成功。</string>
+  <string name="mail_settings_pin_insertion_changed_success">解锁密码更改成功。</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">清除本地缓存</string>
   <!-- Error messages -->

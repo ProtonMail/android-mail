@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Rekryptering af vedhæftet fil mislykkedes. Af sikkerhedsgrunde blev alle vedhæftede filer fjernet.</string>
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
   <string name="composer_button_add_password">Tilføj adgangskode</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Skriv</string>
   <string name="composer_send_without_subject_dialog_text">Afsend besked uden emneindhold?</string>

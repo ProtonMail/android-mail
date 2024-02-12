@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
   <string name="composer_button_add_password">Ajouter un mot de passe</string>
+  <string name="composer_button_set_expiration">Définir la date d\'expiration</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Rédiger</string>
   <string name="composer_send_without_subject_dialog_text">Envoyer le message sans objet ?</string>

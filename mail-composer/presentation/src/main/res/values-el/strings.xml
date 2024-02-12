@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Απέτυχε η εκ νέου κρυπτογράφηση του συνημμένου. Για λόγους ασφαλείας, όλα τα συνημμένα καταργήθηκαν.</string>
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>
   <string name="composer_button_add_password">Προσθήκη κωδικού πρόσβασης</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Σύνταξη</string>
   <string name="composer_send_without_subject_dialog_text">Αποστολή μηνύματος χωρίς θέμα;</string>
@@ -61,12 +62,12 @@
   <string name="message_sending_error_dialog_text_reason_address_disabled">Η διεύθυνση δεν υπάρχει: %s</string>
   <string name="set_message_password_title">Κρυπτογράφηση μηνύματος</string>
   <string name="set_message_password_info_message">Ορίστε έναν κωδικό για την κρυπτογράφηση αυτού του μηνύματος για τους χρήστες που δεν χρησιμοποιούν το ProtonMail.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Μάθετε περισσότερα</a></string>
   <string name="set_message_password_label">Κωδικός πρόσβασης μηνύματος</string>
   <string name="set_message_password_label_repeat">Επανάληψη κωδικού</string>
   <string name="set_message_password_label_hint">Υπόδειξη κωδικού πρόσβασης (προαιρετικό)</string>
   <string name="set_message_password_supporting_text">μήκος 4 έως 21 χαρακτήρες</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_error_text">Ο κωδικός πρόσβασης πρέπει να αποτελείται από 4 έως 21 χαρακτήρες</string>
   <string name="set_message_password_supporting_text_repeat">Οι κωδικοί πρόσβασης πρέπει να ταυτίζονται</string>
   <string name="set_message_password_supporting_error_text_repeat">Οι δυο κωδικοί πρόσβασης δεν είναι ταυτόσημοι</string>
   <string name="set_message_password_button_show">Εμφάνιση κωδικού πρόσβασης</string>

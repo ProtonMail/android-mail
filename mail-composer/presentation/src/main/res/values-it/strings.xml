@@ -22,7 +22,7 @@
   <string name="cc_prefix">Cc:</string>
   <string name="bcc_prefix">Ccn:</string>
   <string name="subject_placeholder">Oggetto</string>
-  <string name="compose_message_placeholder">Scrivi un\'email</string>
+  <string name="compose_message_placeholder">Scrivi un messaggio</string>
   <string name="close_composer_content_description">Chiudi il compositore</string>
   <string name="send_message_content_description">Invia il messaggio</string>
   <string name="composer_expand_recipients_button">Mostra gli altri destinatari</string>
@@ -48,8 +48,9 @@
   <string name="composer_attachment_reencryption_failed_message">Nuova crittografia dell\'allegato non riuscita. Per motivi di sicurezza, tutti gli allegati sono stati rimossi.</string>
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione di questa bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>
   <string name="composer_button_add_password">Aggiungi una password</string>
+  <string name="composer_button_set_expiration">Imposta la data e l\'ora di scadenza</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Scrivi</string>
+  <string name="composer_send_without_subject_dialog_title">Invia il messaggio</string>
   <string name="composer_send_without_subject_dialog_text">Vuoi inviare il messaggio senza oggetto?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Sì</string>
   <string name="composer_send_without_subject_dialog_reject_button">No</string>
@@ -68,7 +69,7 @@
   <string name="set_message_password_supporting_text">4 - 21 caratteri</string>
   <string name="set_message_password_supporting_error_text">La password deve essere compresa tra 4 e 21 caratteri</string>
   <string name="set_message_password_supporting_text_repeat">Le password devono corrispondere</string>
-  <string name="set_message_password_supporting_error_text_repeat">Le due password non corrispondono</string>
+  <string name="set_message_password_supporting_error_text_repeat">Le password non corrispondono</string>
   <string name="set_message_password_button_show">Mostra la password</string>
   <string name="set_message_password_button_hide">Nascondi la password</string>
   <string name="set_message_password_button_apply">Applica la password</string>

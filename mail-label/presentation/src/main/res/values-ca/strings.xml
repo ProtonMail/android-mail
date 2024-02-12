@@ -34,12 +34,12 @@
   <string name="label_title_parent_folder">Carpeta principal</string>
   <string name="label_title_labels">Etiquetes</string>
   <string name="label_title_create_folder">Crea una carpeta</string>
-  <string name="label_title_create_label">Crear una etiqueta</string>
+  <string name="label_title_create_label">Crea una etiqueta</string>
   <string name="label_title_label_list">Llista d\'etiquetes</string>
   <string name="label_title_folder_list">Llista de carpetes</string>
   <string name="label_list_no_labels_found">No s\'ha trobat cap etiqueta.</string>
   <string name="label_list_create_label_placeholder_description">Creeu una etiqueta per a millorar la vostra experiència amb el correu electrònic.</string>
-  <string name="create_label_content_description">Crear una etiqueta</string>
+  <string name="create_label_content_description">Crea una etiqueta</string>
   <string name="label_form_create_label">Crear una etiqueta</string>
   <string name="folder_form_create_folder">Crea una carpeta</string>
   <string name="label_form_edit_label">Edita l\'etiqueta</string>

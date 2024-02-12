@@ -20,8 +20,11 @@
   <string name="contact_list_title">Кантакты</string>
   <string name="contact_list_loading_error">Памылка загрузкі кантактаў. Паспрабуйце яшчэ раз пазней</string>
   <string name="no_contacts">Кантакты не знойдзены</string>
+  <string name="no_contact_groups">Групы кантактаў не знойдзены</string>
   <string name="no_contacts_description">Палепшыце працу сваёй электроннай пошты стварыўшы новы кантакт або імпартуйце адзін з існуючых.</string>
+  <string name="no_contact_groups_description">Палепшыце працу сваёй электроннай пошты стварыўшы новыя групы кантактаў.</string>
   <string name="add_contact">Дадаць кантакт</string>
+  <string name="add_contact_group">Дадаць групу кантактаў</string>
   <string name="add_contact_content_description">Дадаць кантакт</string>
   <string name="all_title">Усе</string>
   <string name="groups_title">Групы</string>
@@ -92,4 +95,13 @@
   <string name="contact_details_delete_dialog_cancel_button">Скасаваць</string>
   <string name="contact_details_delete_dialog_confirm_button">Добра</string>
   <string name="contact_form_save_error">Памылка захавання кантакту. Паспрабуйце яшчэ раз пазней</string>
+  <string name="all_contacts_tab">Усе</string>
+  <string name="contact_groups_tab">Групы</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="one">%1$d удзельнік</item>
+    <item quantity="few">%1$d удзельнікі</item>
+    <item quantity="many">%1$d удзельнікаў</item>
+    <item quantity="other">%1$d удзельнікаў</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Памылка захавання кантакту. Ён змяшчае памылковы адрас электроннай пошты</string>
 </resources>

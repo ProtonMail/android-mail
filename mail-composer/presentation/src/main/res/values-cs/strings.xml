@@ -48,11 +48,12 @@
   <string name="composer_attachment_reencryption_failed_message">Opětovné zašifrování přílohy selhalo. Z bezpečnostních důvodů byly všechny přílohy odebrány.</string>
   <string name="composer_warning_local_data_shown">Nejnovější verzi tohoto návrhu se nepodařilo načíst. Jakákoli změna přepíše její obsah.</string>
   <string name="composer_button_add_password">Přidat heslo</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
   <string name="composer_send_without_subject_dialog_text">Odeslat zprávu bez předmětu?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ano</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Ne</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Chyba při odesílání</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavřít</string>
@@ -66,12 +67,12 @@
   <string name="set_message_password_label_repeat">Zopakujte heslo</string>
   <string name="set_message_password_label_hint">Password hint (optional)</string>
   <string name="set_message_password_supporting_text">4 až 21 znaků</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_error_text">Heslo musí mít délku 4 až 21 znaků</string>
   <string name="set_message_password_supporting_text_repeat">Hesla se musí shodovat</string>
   <string name="set_message_password_supporting_error_text_repeat">Tyto 2 hesla nesouhlasí</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
+  <string name="set_message_password_button_show">Zobrazit heslo</string>
+  <string name="set_message_password_button_hide">Skrýt heslo</string>
   <string name="set_message_password_button_apply">Použít heslo</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_save_changes">Uložit změny</string>
   <string name="set_message_password_button_remove_password">Odstranit heslo</string>
 </resources>

@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Збой паўторнага шыфравання. У мэтах бяспекі ўсе далучэнні былі выдалены.</string>
   <string name="composer_warning_local_data_shown">Збой загрузкі апошняй версіі гэтага чарнавіка. Любыя змены перавызначаць яго змесцівам.</string>
   <string name="composer_button_add_password">Дадаць пароль</string>
+  <string name="composer_button_set_expiration">Задаць тэрмін дзеяння</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Напісаць</string>
   <string name="composer_send_without_subject_dialog_text">Адправіць паведамленне без тэмы?</string>

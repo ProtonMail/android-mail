@@ -133,7 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Kilit simgesi</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">PIN noktası</string>
   <string name="mail_settings_pin_insertion_backspace_description">Geriye silme tuşu</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biyometrik Doğrulama</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biyometrik kimlik doğrulama</string>
   <string name="mail_settings_pin_insertion_button_create">Ekle</string>
   <string name="mail_settings_pin_insertion_button_confirm">Onayla</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN kodu ile onayı aynı değil.</string>

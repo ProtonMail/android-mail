@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Recriptarea atașamentului a eșuat. Din motive de securitate, toate atașamentele au fost eliminate.</string>
   <string name="composer_warning_local_data_shown">Nu s-a încărcat ultima versiune a acestei ciorne. Orice modificare va anula conținutul acesteia.</string>
   <string name="composer_button_add_password">Adăugare parolă</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Mesaj nou</string>
   <string name="composer_send_without_subject_dialog_text">Trimiteți mesajul fără subiect?</string>

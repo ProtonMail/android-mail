@@ -20,8 +20,11 @@
   <string name="contact_list_title">Kontakter</string>
   <string name="contact_list_loading_error">Det gick inte att ladda kontakter, försök igen senare</string>
   <string name="no_contacts">Hittade inga kontakter</string>
+  <string name="no_contact_groups">Inga kontaktgrupper hittades</string>
   <string name="no_contacts_description">Förbättra din e-postupplevelse genom att skapa en ny kontakt eller importera befintliga.</string>
+  <string name="no_contact_groups_description">Förbättra din e-postupplevelse genom att skapa en ny kontaktgrupp.</string>
   <string name="add_contact">Lägg till kontakt</string>
+  <string name="add_contact_group">Lägg till kontaktgrupp</string>
   <string name="add_contact_content_description">Lägg till kontakt</string>
   <string name="all_title">Alla</string>
   <string name="groups_title">Grupper</string>
@@ -92,4 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Avbryt</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Kunde inte spara kontakt, försök igen senare</string>
+  <string name="all_contacts_tab">Alla</string>
+  <string name="contact_groups_tab">Grupper</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="one">%1$d member</item>
+    <item quantity="other">%1$d medlemmar</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Fel när kontakten sparades, den innehåller en ogiltig e-postadress</string>
 </resources>

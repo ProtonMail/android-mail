@@ -20,8 +20,11 @@
   <string name="contact_list_title">Kontakty</string>
   <string name="contact_list_loading_error">Wystąpił błąd podczas ładowania kontaktów. Spróbuj ponownie później</string>
   <string name="no_contacts">Nie znaleziono kontaktów</string>
+  <string name="no_contact_groups">Nie znaleziono grup kontaktów</string>
   <string name="no_contacts_description">Usprawnij korzystanie z poczty, tworząc nowy kontakt lub importując istniejące.</string>
+  <string name="no_contact_groups_description">Usprawnij korzystanie z poczty, tworząc nową grupę kontaktów.</string>
   <string name="add_contact">Dodaj kontakt</string>
+  <string name="add_contact_group">Dodaj grupę kontaktów</string>
   <string name="add_contact_content_description">Dodaj kontakt</string>
   <string name="all_title">Wszystkie</string>
   <string name="groups_title">Grupy</string>
@@ -91,5 +94,14 @@
   <string name="contact_details_delete_dialog_text">Czy na pewno chcesz usunąć ten kontakt?</string>
   <string name="contact_details_delete_dialog_cancel_button">Anuluj</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
-  <string name="contact_form_save_error">Error saving contact, please try again later</string>
+  <string name="contact_form_save_error">Wystąpił błąd podczas zapisywania kontaktu. Spróbuj ponownie później</string>
+  <string name="all_contacts_tab">Wszystkie</string>
+  <string name="contact_groups_tab">Grupy</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="one">%1$d członek</item>
+    <item quantity="few">%1$d członków</item>
+    <item quantity="many">%1$d członków</item>
+    <item quantity="other">%1$d członków</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Wystąpił błąd podczas zapisywania kontaktu. Kontakt zawiera nieprawidłowy adres e-mail</string>
 </resources>

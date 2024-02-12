@@ -28,7 +28,7 @@
   <string name="action_reply_all">Odpovedať všetkým</string>
   <string name="action_forward">Preposlať</string>
   <string name="action_reply_description">Odpovedať</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Odpovedať na %s</string>
   <string name="action_reply_all_description">Odpovedať všetkým</string>
   <string name="action_forward_description">Preposlať</string>
   <string name="action_mark_read_description">Označiť ako prečítané</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Uložiť prílohy</string>
   <string name="action_more_description">Viac</string>
   <string name="action_reply_content_description">Odpovedať</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Odpovedať na %s</string>
   <string name="action_reply_all_content_description">Odpovedať všetkým</string>
   <string name="action_forward_content_description">Preposlať</string>
   <string name="action_mark_read_content_description">Označiť ako prečítané</string>

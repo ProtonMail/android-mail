@@ -20,8 +20,11 @@
   <string name="contact_list_title">Contacts</string>
   <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
   <string name="no_contacts">No contacts found</string>
+  <string name="no_contact_groups">No contact groups found</string>
   <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
+  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
   <string name="add_contact">Add contact</string>
+  <string name="add_contact_group">Add contact group</string>
   <string name="add_contact_content_description">Add contact</string>
   <string name="all_title">All</string>
   <string name="groups_title">Groups</string>
@@ -92,4 +95,10 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancel</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
+  <string name="all_contacts_tab">All</string>
+  <string name="contact_groups_tab">Groups</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="other">%1$d members</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>

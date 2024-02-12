@@ -48,6 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Omkryptering av bilaga misslyckades. Av säkerhetsskäl har alla bilagor tagits bort.</string>
   <string name="composer_warning_local_data_shown">Den senaste versionen av detta utkast misslyckades att laddas. Alla ändringar kommer att åsidosätta dess innehåll.</string>
   <string name="composer_button_add_password">Lägg till lösenord</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Skriv</string>
   <string name="composer_send_without_subject_dialog_text">Skicka meddelande utan ämne?</string>

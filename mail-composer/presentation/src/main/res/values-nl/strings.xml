@@ -47,31 +47,32 @@
   <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Herversleuteling van bijlage mislukt. Wegens veiligheidsredenen werden alle bijlagen verwijderd.</string>
   <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Wachtwoord toevoegen</string>
+  <string name="composer_button_set_expiration">Set expiration time</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_title">Opstellen</string>
   <string name="composer_send_without_subject_dialog_text">Bericht versturen zonder onderwerp?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Ja</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Nee</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Sending error</string>
-  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_header">Fout bij verzenden</string>
+  <string name="message_sending_error_dialog_button_dismiss">Sluiten</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bestaat niet: %s</string>
   <string name="set_message_password_title">Bericht versleutelen</string>
   <string name="set_message_password_info_message">Voer een wachtwoord in om dit bericht te versleutelen voor niet-Proton Mailgebruikers.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Meer informatie</a></string>
   <string name="set_message_password_label">Wachtwoord van bericht</string>
   <string name="set_message_password_label_repeat">Wachtwoord herhalen</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_label_hint">Wachtwoordhint (Optioneel)</string>
   <string name="set_message_password_supporting_text">4 tot 21 tekens lang</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_error_text">Het wachtwoord moet tussen de 4 en 21 tekens lang zijn</string>
   <string name="set_message_password_supporting_text_repeat">Wachtwoorden moeten overeenkomen</string>
   <string name="set_message_password_supporting_error_text_repeat">De 2 wachtwoorden komen niet overeen</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_show">Toon wachtwoord</string>
+  <string name="set_message_password_button_hide">Wachtwoord verbergen</string>
+  <string name="set_message_password_button_apply">Wachtwoord toepassen</string>
+  <string name="set_message_password_button_save_changes">Wijzigingen opslaan</string>
   <string name="set_message_password_button_remove_password">Verwijder wachtwoord</string>
 </resources>

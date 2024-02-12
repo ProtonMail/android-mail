@@ -48,11 +48,12 @@
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>
   <string name="composer_button_add_password">Parola ekle</string>
+  <string name="composer_button_set_expiration">Geçerlilik süresi ayarla</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_title">Oluştur</string>
   <string name="composer_send_without_subject_dialog_text">İleti, konu olmadan gönderilsin mi?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Evet</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Hayır</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Gönderme sorunu</string>
   <string name="message_sending_error_dialog_button_dismiss">Kapat</string>
@@ -61,17 +62,17 @@
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bulunamadı: %s</string>
   <string name="set_message_password_title">İletiyi şifrele</string>
   <string name="set_message_password_info_message">Proton Mail kullanmayan kişiler için bu iletiyi şifreleyecek bir parola ayarlayın.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Ayrıntılı bilgi alın</a></string>
   <string name="set_message_password_label">İleti parolası</string>
   <string name="set_message_password_label_repeat">Parola onayı</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_label_hint">Parola ipucu (isteğe bağlı)</string>
   <string name="set_message_password_supporting_text">4 ile 21 karakter uzunluğunda</string>
-  <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
+  <string name="set_message_password_supporting_error_text">Parola uzunluğu 4 ile 21 karakter arasında olmalıdır</string>
   <string name="set_message_password_supporting_text_repeat">Parola ile onayı aynı değil</string>
   <string name="set_message_password_supporting_error_text_repeat">Parola ile onayı aynı değil</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_show">Parolayı görüntüle</string>
+  <string name="set_message_password_button_hide">Parolayı gizle</string>
+  <string name="set_message_password_button_apply">Parolayı uygula</string>
+  <string name="set_message_password_button_save_changes">Değişiklikleri kaydet</string>
   <string name="set_message_password_button_remove_password">Parolayı kaldır</string>
 </resources>

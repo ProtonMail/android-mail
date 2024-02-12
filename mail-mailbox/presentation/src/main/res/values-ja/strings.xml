@@ -54,7 +54,9 @@
     <item quantity="other">%d 件のメッセージを削除</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="other">この会話を完全に削除してよろしいですか？
+
+これらの会話を完全に削除してよろしいですか？</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="other">これらのメッセージを永久に削除してもよろしいですか？</item>
@@ -68,8 +70,8 @@
   <string name="mailbox_action_label_messages_failed">ラベル操作に失敗しました</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">ラベルの取得に失敗しました</string>
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_move_messages_failed">移動できませんでした</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">フォルダーを取得できませんでした</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">新しいアプリへようこそ</string>
   <string name="onboarding_description_ga">新しい Proton Mail アプリは、安定性とパフォーマンスを重視してゼロから完全に再構築されました。</string>
@@ -80,12 +82,12 @@
   <string name="onboarding_easily_up_to_date_headline">最新に保つのは簡単です</string>
   <string name="onboarding_easily_up_to_date_description">会話モードでスレッドのメッセージを読み進めることができます。</string>
   <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+  <string name="onboarding_neat_and_tidy_headline">整列</string>
   <string name="onboarding_neat_and_tidy_description">ファイルやラベルを使ったり、メッセージに色付けをしたりして、自分好みの受信トレイを作りましょう。</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">次へ</string>
   <string name="onboarding_get_started">はじめましょう</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+  <string name="onboarding_illustration_content_description">解説イラスト</string>
   <string name="onboarding_close_content_description">閉じる</string>
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>

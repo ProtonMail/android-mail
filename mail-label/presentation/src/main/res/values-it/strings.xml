@@ -42,8 +42,8 @@
   <string name="create_label_content_description">Crea un\'etichetta</string>
   <string name="label_form_create_label">Crea un\'etichetta</string>
   <string name="folder_form_create_folder">Crea una cartella</string>
-  <string name="label_form_edit_label">Modifica questa etichetta</string>
-  <string name="folder_form_edit_folder">Modifica questa cartella</string>
+  <string name="label_form_edit_label">Modifica l\'etichetta</string>
+  <string name="folder_form_edit_folder">Modifica la cartella</string>
   <string name="label_form_save">Salva</string>
   <string name="label_form_delete">Elimina l\'etichetta</string>
   <string name="folder_form_delete">Elimina la cartella</string>
@@ -67,12 +67,12 @@
   <string name="folder_settings_content_description">Impostazioni delle cartelle</string>
   <string name="folder_settings_title">Impostazioni</string>
   <string name="folder_settings_done_button">Fatto</string>
-  <string name="folder_settings_folder_colors">Usa le cartelle colorate</string>
-  <string name="folder_settings_parent_color">Prendi il colore della cartella principale</string>
+  <string name="folder_settings_folder_colors">Assegnazione di un colore alle cartelle</string>
+  <string name="folder_settings_parent_color">Assegnazione del colore dalla cartella principale</string>
   <string name="folder_list_loading_error">Errore nel caricamento delle cartelle. Riprova più tardi.</string>
   <string name="folder_loading_error">Errore nel caricamento della cartella. Riprova più tardi.</string>
-  <string name="switch_on">Attivo</string>
-  <string name="switch_off">Non attivo</string>
+  <string name="switch_on">Abilitato</string>
+  <string name="switch_off">Disabilitato</string>
   <string name="folder_form_parent">Cartella principale</string>
   <string name="folder_form_no_parent">Nessuna</string>
   <string name="folder_form_notifications">Notifiche</string>

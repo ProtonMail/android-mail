@@ -85,10 +85,10 @@
   <string name="message_body_load_embedded_images_button_text">Gömülü görselleri yükle</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Gömülü uzak içeriği yükle</string>
   <string name="message_report_phishing_dialog_title_offline">Dikkat</string>
-  <string name="message_report_phishing_dialog_message_offline">Bu özellik sadece çevrim içi mevcuttur.</string>
+  <string name="message_report_phishing_dialog_message_offline">Bu özellik yalnızca çevrim içi kullanılabilir.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Tamam</string>
   <string name="message_report_phishing_dialog_title">Kimlik avı girişimi bildirimini onayla</string>
-  <string name="message_report_phishing_dialog_message">Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.</string>
+  <string name="message_report_phishing_dialog_message">Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimiz anlamına gelir.</string>
   <string name="message_report_phishing_dialog_confim_button">Onayla</string>
   <string name="message_report_phishing_dialog_cancel_button">İptal</string>
 </resources>

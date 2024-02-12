@@ -131,9 +131,9 @@
   <string name="mail_settings_pin_insertion_set_title">Установите PIN-код</string>
   <string name="mail_settings_pin_insertion_confirm_title">Подтвердите PIN-код</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Значок блокировки</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Точка PIN-кода</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Биометрическая аутентификация</string>
   <string name="mail_settings_pin_insertion_button_create">Создать</string>
   <string name="mail_settings_pin_insertion_button_confirm">Подтвердить</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коды не совпадают.</string>

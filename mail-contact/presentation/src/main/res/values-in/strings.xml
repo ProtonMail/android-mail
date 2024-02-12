@@ -20,8 +20,11 @@
   <string name="contact_list_title">Kontak</string>
   <string name="contact_list_loading_error">Terdapat kesalahan dalam memuat kontak. Silakan coba lagi nanti</string>
   <string name="no_contacts">Tidak ada kontak yang ditemukan</string>
+  <string name="no_contact_groups">Tidak ada grup kontak yang ditemukan</string>
   <string name="no_contacts_description">Tingkatkan pengalaman berkirim email Anda dengan membuat kontak baru atau mengimpor kontak yang telah ada.</string>
+  <string name="no_contact_groups_description">Tingkatkan pengalaman berkirim email Anda dengan membuat grup kontak baru.</string>
   <string name="add_contact">Tambah kontak</string>
+  <string name="add_contact_group">Tambah grup kontak</string>
   <string name="add_contact_content_description">Tambah kontak</string>
   <string name="all_title">Semua</string>
   <string name="groups_title">Grup</string>
@@ -91,5 +94,11 @@
   <string name="contact_details_delete_dialog_text">Apakah Anda yakin ingin menghapus kontak ini?</string>
   <string name="contact_details_delete_dialog_cancel_button">Batal</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
-  <string name="contact_form_save_error">Error saving contact, please try again later</string>
+  <string name="contact_form_save_error">Terdapat kesalahan dalam menyimpan kontak. Silakan coba lagi nanti</string>
+  <string name="all_contacts_tab">Semua</string>
+  <string name="contact_groups_tab">Grup</string>
+  <plurals name="contact_group_member_count">
+    <item quantity="other">%1$d anggota</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Kontak gagal disimpan karena mengandung alamat email yang tidak valid</string>
 </resources>
