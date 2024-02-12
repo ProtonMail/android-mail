@@ -233,12 +233,6 @@ fun ContactGroupMemberItem(modifier: Modifier = Modifier, contactGroupMember: Co
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                role = Role.Button,
-                onClick = {
-                    // On Member selected
-                }
-            )
             .padding(start = ProtonDimens.DefaultSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
