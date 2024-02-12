@@ -97,6 +97,7 @@ fun ContactGroupDetailsScreen(
                 actions = actions,
                 onDeleteClick = {
                     // Call view model submit with delete view action here
+                    actions.showFeatureMissingSnackbar()
                 }
             )
         },
@@ -324,7 +325,8 @@ object ContactGroupDetailsScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
-        val onEditClick: (LabelId) -> Unit
+        val onEditClick: (LabelId) -> Unit,
+        val showFeatureMissingSnackbar: () -> Unit
     ) {
 
         companion object {
@@ -332,7 +334,8 @@ object ContactGroupDetailsScreen {
             val Empty = Actions(
                 onBackClick = {},
                 exitWithErrorMessage = {},
-                onEditClick = {}
+                onEditClick = {},
+                showFeatureMissingSnackbar = {}
             )
         }
     }

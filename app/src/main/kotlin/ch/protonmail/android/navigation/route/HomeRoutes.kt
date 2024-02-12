@@ -438,7 +438,8 @@ internal fun NavGraphBuilder.addContactGroupDetails(
         },
         onEditClick = { _ ->
             showFeatureMissingSnackbar()
-        }
+        },
+        showFeatureMissingSnackbar = showFeatureMissingSnackbar
     )
     composable(route = Destination.Screen.ContactGroupDetails.route) {
         ContactGroupDetailsScreen(actions)
