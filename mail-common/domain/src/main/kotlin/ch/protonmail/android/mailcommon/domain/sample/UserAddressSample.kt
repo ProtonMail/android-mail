@@ -48,6 +48,13 @@ object UserAddressSample {
         order = 2
     )
 
+    val PmMeAddressAlias = build(
+        addressId = AddressIdSample.PmMeAlias,
+        addressType = AddressType.Alias,
+        email = "myaddress@pm.me",
+        order = 3
+    )
+
     fun build(
         addressId: AddressId = AddressIdSample.Primary,
         email: String = "primary-email@pm.me",

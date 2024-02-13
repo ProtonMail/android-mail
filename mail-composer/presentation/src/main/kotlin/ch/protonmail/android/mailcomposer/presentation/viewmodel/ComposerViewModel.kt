@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -146,6 +147,7 @@ class ComposerViewModel @Inject constructor(
     private val reEncryptAttachments: ReEncryptAttachments,
     private val observeMailFeature: ObserveMailFeature,
     private val observeMessagePassword: ObserveMessagePassword,
+    private val validateSenderAddress: ValidateSenderAddress,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -279,27 +281,31 @@ class ComposerViewModel @Inject constructor(
             getLocalMessageDecrypted(primaryUserId(), parentMessageId).onRight { parentMessage ->
                 Timber.d("Parent message draft data received $parentMessage")
                 parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
-                    Timber.d("Quoted parent body $draftFields")
-                    uploadDraftContinuouslyWhileInForeground(draftAction)
-                    emitNewStateFor(
-                        ComposerEvent.PrefillDraftDataReceived(
-                            draftUiModel = draftFields.toDraftUiModel(),
-                            isDataRefreshed = true
+                    validateSenderAddress(primaryUserId(), draftFields.sender).onRight { validationResult ->
+                        Timber.d("Quoted parent body $draftFields")
+                        uploadDraftContinuouslyWhileInForeground(draftAction)
+                        val validatedSender = validationResult.validAddress
+
+                        emitNewStateFor(
+                            ComposerEvent.PrefillDraftDataReceived(
+                                draftUiModel = draftFields.copy(sender = validatedSender).toDraftUiModel(),
+                                isDataRefreshed = true
+                            )
                         )
-                    )
-                    storeDraftWithParentAttachments.invoke(
-                        primaryUserId(),
-                        currentMessageId(),
-                        parentMessage,
-                        draftFields.sender,
-                        draftAction
-                    )
+                        storeDraftWithParentAttachments.invoke(
+                            primaryUserId(),
+                            currentMessageId(),
+                            parentMessage,
+                            validatedSender,
+                            draftAction
+                        )
 
-                    // User may skip editing Subject line, so we need to store it here.
-                    storeDraftWithSubject(
-                        primaryUserId(), currentMessageId(), draftFields.sender, draftFields.subject
-                    )
+                        // User may skip editing Subject line, so we need to store it here.
+                        storeDraftWithSubject(
+                            primaryUserId(), currentMessageId(), validatedSender, draftFields.subject
+                        )
 
+                    }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
             }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
         }

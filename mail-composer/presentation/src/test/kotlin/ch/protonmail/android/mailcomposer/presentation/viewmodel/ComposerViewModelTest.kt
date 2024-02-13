@@ -70,6 +70,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAtt
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreExternalAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -199,6 +200,7 @@ class ComposerViewModelTest {
         )
     }
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
+    private val validateSenderAddress = mockk<ValidateSenderAddress>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -241,6 +243,7 @@ class ComposerViewModelTest {
             reEncryptAttachments,
             observeMailFeature,
             observeMessagePassword,
+            validateSenderAddress,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -1557,6 +1560,7 @@ class ComposerViewModelTest {
             expectObserveMessagePassword(expectedUserId, expectedDraftId)
             expectNoFileShareVia()
             expectObserveDraftState(expectedUserId, expectedDraftId)
+            expectValidSenderAddress(expectedUserId, expectedDraftFields.sender)
 
             // When
             val actual = viewModel.state.value
@@ -1574,6 +1578,53 @@ class ComposerViewModelTest {
             )
             assertEquals(expectedComposerFields, actual.fields)
         }
+
+    @Test
+    fun `emits state with valid sender when parent draft sender is invalid`() = runTest {
+        // Given
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedParentId = MessageIdSample.Invoice
+        val expectedAction = expectInputDraftAction { DraftAction.Reply(expectedParentId) }
+        val expectedDecryptedParentBody = DecryptedMessageBodyTestData.htmlInvoice
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(expectedUserId, expectedDraftId, expectedAction)
+        expectNoInputDraftMessageId()
+        val expectedMessageDecrypted = expectGetMessageWithDecryptedBodySuccess(expectedUserId, expectedParentId) {
+            MessageWithDecryptedBody(MessageWithBodySample.Invoice, expectedDecryptedParentBody)
+        }
+        val expectedValidEmail = SenderEmail("valid-to-use-instead@proton.me")
+        val expectedDraftFields = expectParentMessageToDraftFieldsSuccess(
+            expectedUserId, expectedMessageDecrypted, expectedAction
+        ) { draftFieldsWithQuotedBody }
+        expectObservedMessageAttachments(expectedUserId, expectedDraftId)
+        expectStyleQuotedHtml(expectedDraftFields.originalHtmlQuote) {
+            StyledHtmlQuote("<styled> ${expectedDraftFields.originalHtmlQuote?.value} </styled>")
+        }
+        expectStoreDraftWithParentAttachmentsSucceeds(
+            expectedUserId,
+            expectedDraftId,
+            expectedMessageDecrypted,
+            expectedValidEmail,
+            expectedAction
+        )
+        expectObserveMessageSendingError(expectedUserId, expectedDraftId)
+        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectNoFileShareVia()
+        expectObserveDraftState(expectedUserId, expectedDraftId)
+        expectInvalidSenderAddress(
+            expectedUserId,
+            expectedDraftFields.sender,
+            expectedValidEmail,
+            ValidateSenderAddress.ValidationError.DisabledAddress
+        )
+
+        // When
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(SenderUiModel(expectedValidEmail.value), actual.fields.sender)
+    }
 
     @Test
     fun `emits state with error loading parent data when getting parent message draft fields fails`() = runTest {
@@ -2094,8 +2145,8 @@ class ComposerViewModelTest {
     private fun expectDraftBodyWithSignature() = DraftBody(
         """
             Email body
-            
-            
+
+
             Signature
         """.trimIndent()
     )
@@ -2497,6 +2548,23 @@ class ComposerViewModelTest {
                 any()
             )
         } returns Recipient(RecipientSample.John.address, RecipientSample.John.name, false)
+    }
+
+    private fun expectValidSenderAddress(userId: UserId, senderEmail: SenderEmail) {
+        coEvery {
+            validateSenderAddress(userId, senderEmail)
+        } returns ValidateSenderAddress.ValidationResult.Valid(senderEmail).right()
+    }
+
+    private fun expectInvalidSenderAddress(
+        userId: UserId,
+        invalid: SenderEmail,
+        useInstead: SenderEmail,
+        reason: ValidateSenderAddress.ValidationError
+    ) {
+        coEvery {
+            validateSenderAddress(userId, invalid)
+        } returns ValidateSenderAddress.ValidationResult.Invalid(useInstead, invalid, reason).right()
     }
 
     companion object TestData {
