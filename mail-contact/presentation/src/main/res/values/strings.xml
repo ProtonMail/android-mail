@@ -107,4 +107,5 @@
     <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
     <string name="edit_contact_group_content_description">Edit contact group</string>
     <string name="delete_contact_group_content_description">Delete contact group</string>
+    <string name="send_group_message">Send group message</string>
 </resources>

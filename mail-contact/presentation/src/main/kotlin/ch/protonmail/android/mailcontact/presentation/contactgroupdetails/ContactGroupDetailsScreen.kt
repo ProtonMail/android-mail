@@ -222,7 +222,7 @@ private fun ContactGroupDetailsSendTextButton(
                 start = ProtonDimens.SmallSpacing,
                 end = ProtonDimens.DefaultSpacing
             ),
-            text = "Send group message",
+            text = stringResource(R.string.send_group_message),
             style = ProtonTheme.typography.defaultSmallNorm
         )
     }
