@@ -20,8 +20,10 @@ package ch.protonmail.android.mailcontact.domain.mapper
 
 import java.time.ZoneId
 import java.util.Date
+import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.VCard
+import ezvcard.VCardVersion
 import ezvcard.parameter.AddressType
 import ezvcard.parameter.EmailType
 import ezvcard.parameter.ImageType
@@ -35,6 +37,7 @@ import ezvcard.property.Logo
 import ezvcard.property.Member
 import ezvcard.property.Organization
 import ezvcard.property.Photo
+import ezvcard.property.ProductId
 import ezvcard.property.StructuredName
 import ezvcard.property.Telephone
 import ezvcard.property.Timezone
@@ -50,9 +53,14 @@ class DecryptedContactMapper @Inject constructor() {
      * We don't support it on Android so the only way we return non-null here is
      * if there was ClearText VCard passed as [vCard], containing CATEGORIES.
      */
-    fun mapToClearTextContactCard(vCard: VCard): VCard? = if (vCard.categories?.values?.takeIfNotEmpty() != null) {
-        vCard
-    } else null
+    fun mapToClearTextContactCard(vCard: VCard): VCard? {
+        return if (vCard.categories?.values?.takeIfNotEmpty() != null) {
+            VCard(VCardVersion.V4_0).apply {
+                productId = ProductId(VCARD_PROD_ID)
+                categories = vCard.categories
+            }
+        } else null
+    }
 
     fun mapToSignedContactCard(
         fallbackName: String,

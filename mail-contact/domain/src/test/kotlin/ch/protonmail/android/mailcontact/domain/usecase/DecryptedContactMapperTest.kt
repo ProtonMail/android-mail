@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
@@ -78,6 +79,33 @@ class DecryptedContactMapperTest {
 
         // Then
         assertNotNull(actual)
+    }
+
+    @Test
+    fun `if ClearText ContactCard is returned, it contains only CATEGORIES, PRODID and VERSION`() {
+        // Given
+        val givenExtendedPropertyName = "Extended Property"
+        val expectedContactCard = existingVCard.apply {
+            setProductId("Not-Proton-Product-Id")
+            setCategories("Coworkers", "Friends")
+            setFormattedName("Formatted Name")
+            setOrganization("Organization")
+            setExtendedProperty(givenExtendedPropertyName, "Extended Property Value")
+        }
+
+        // When
+        val actual = sut.mapToClearTextContactCard(
+            expectedContactCard
+        )!!
+
+        // Then
+        assertTrue(actual.categories.values.size == 2)
+        assertEquals(actual.version.version, VCardVersion.V4_0.version)
+        assertEquals(actual.productId.value, VCARD_PROD_ID)
+
+        assertNull(actual.formattedName)
+        assertNull(actual.organization)
+        assertNull(actual.getExtendedProperty(givenExtendedPropertyName))
     }
 
     @Test
