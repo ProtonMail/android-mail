@@ -54,10 +54,10 @@ fun VCard.sanitizeAndBuildVCard(): VCard {
         productId = ProductId(VCARD_PROD_ID)
     }
 
-    this.properties.forEach { iCalProperty ->
+    this.properties.forEach { vCardProperty ->
         // we ignore (Version, Prod ID) because we set our own values of them
         // but we copy all the supported properties if they were present in the original VCard
-        when (iCalProperty) {
+        when (vCardProperty) {
             is Uid,
             is FormattedName,
             is Email,
@@ -79,7 +79,7 @@ fun VCard.sanitizeAndBuildVCard(): VCard {
             is Gender,
             is Anniversary,
             is Nickname,
-            is Related -> vCard.addProperty(iCalProperty)
+            is Related -> vCard.addProperty(vCardProperty)
         }
 
     }

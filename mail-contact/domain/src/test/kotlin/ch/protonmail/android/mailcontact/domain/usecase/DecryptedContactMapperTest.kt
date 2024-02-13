@@ -148,58 +148,6 @@ class DecryptedContactMapperTest {
     }
 
     @Test
-    fun `fallback UID is returned in ClearText ContactCard when it didn't exist in VCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            uid.value = null
-            setCategories("Coworkers", "Friends")
-        }
-
-        // When
-        val actual = sut.mapToClearTextContactCard(
-            expectedContactCard
-        )!!
-
-        // Then
-        assertEquals(expectedContactCard.uid, actual.uid)
-    }
-
-    @Test
-    fun `fallback UID is returned in Signed ContactCard when it didn't exist in VCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            uid.value = null
-        }
-
-        // When
-        val actual = sut.mapToSignedContactCard(
-            fallbackName,
-            decryptedContact,
-            expectedContactCard
-        )
-
-        // Then
-        assertEquals(expectedContactCard.uid, actual.uid)
-    }
-
-    @Test
-    fun `fallback UID is returned in EncryptedAndSigned ContactCard when it didn't exist in VCard`() {
-        // Given
-        val expectedContactCard = existingVCard.apply {
-            uid.value = null
-        }
-
-        // When
-        val actual = sut.mapToEncryptedAndSignedContactCard(
-            decryptedContact,
-            expectedContactCard
-        )
-
-        // Then
-        assertEquals(expectedContactCard.uid, actual.uid)
-    }
-
-    @Test
     fun `encrypted properties are only returned in encrypted ContactCards`() {
         // Given
         val expectedDecryptedContact = decryptedContact.copy(

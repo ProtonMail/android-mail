@@ -32,7 +32,6 @@ import ezvcard.parameter.TelephoneType
 import ezvcard.property.Address
 import ezvcard.property.Anniversary
 import ezvcard.property.Birthday
-import ezvcard.property.Categories
 import ezvcard.property.Email
 import ezvcard.property.Gender
 import ezvcard.property.Logo

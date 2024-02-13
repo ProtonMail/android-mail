@@ -149,7 +149,7 @@ class EncryptAndSignContactCardsTest {
             ?: fallbackUid
 
         coEvery {
-            decryptedContactMapperMock.mapToClearTextContactCard(any())
+            decryptedContactMapperMock.mapToClearTextContactCard(any(), any())
         } returns null
 
         val cardToSign = expectMapToSignedContactCard(
@@ -200,7 +200,7 @@ class EncryptAndSignContactCardsTest {
         val emptySanitizedVCard = VCard().sanitizeAndBuildVCard()
 
         coEvery {
-            decryptedContactMapperMock.mapToClearTextContactCard(emptySanitizedVCard)
+            decryptedContactMapperMock.mapToClearTextContactCard(emptySanitizedVCard, any())
         } returns null
 
         val mappedSignedVCard = DecryptedVCard(
