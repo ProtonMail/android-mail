@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMe
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
+import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey
@@ -157,6 +158,10 @@ sealed class Destination(val route: String) {
         }
         object ContactGroupDetails : Destination("contacts/group/${ContactGroupDetailsLabelIdKey.wrap()}") {
             operator fun invoke(labelId: LabelId) = route.replace(ContactGroupDetailsLabelIdKey.wrap(), labelId.id)
+        }
+        object CreateContactGroup : Destination("contacts/group/form")
+        object EditContactGroup : Destination("contacts/group/${ContactGroupFormLabelIdKey.wrap()}/form") {
+            operator fun invoke(labelId: LabelId) = route.replace(ContactGroupFormLabelIdKey.wrap(), labelId.id)
         }
     }
 

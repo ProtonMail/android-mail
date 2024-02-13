@@ -59,6 +59,7 @@ import ch.protonmail.android.navigation.route.addComposer
 import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactForm
 import ch.protonmail.android.navigation.route.addContactGroupDetails
+import ch.protonmail.android.navigation.route.addContactGroupForm
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
@@ -432,6 +433,17 @@ fun Home(
                     },
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()
+                    }
+                )
+                addContactGroupForm(
+                    navController,
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostErrorState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
                     }
                 )
                 addAlternativeRoutingSetting(navController)

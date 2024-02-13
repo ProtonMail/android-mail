@@ -29,6 +29,7 @@ import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
+import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
@@ -346,7 +347,7 @@ internal fun NavGraphBuilder.addContacts(
 //                    navController.navigate(Destination.Screen.CreateContact.route)
                 },
                 openContactGroupForm = {
-                    showFeatureMissingSnackbar()
+                    navController.navigate(Destination.Screen.CreateContactGroup.route)
                 },
                 openImportContact = {
                     showFeatureMissingSnackbar()
@@ -436,12 +437,31 @@ internal fun NavGraphBuilder.addContactGroupDetails(
             navController.popBackStack()
             showErrorSnackbar(message)
         },
-        onEditClick = { _ ->
-            showFeatureMissingSnackbar()
+        onEditClick = { labelId ->
+            navController.navigate(Destination.Screen.EditContactGroup(labelId))
         },
         showFeatureMissingSnackbar = showFeatureMissingSnackbar
     )
     composable(route = Destination.Screen.ContactGroupDetails.route) {
         ContactGroupDetailsScreen(actions)
+    }
+}
+
+internal fun NavGraphBuilder.addContactGroupForm(
+    navController: NavHostController,
+    showErrorSnackbar: (message: String) -> Unit
+) {
+    val actions = ContactGroupFormScreen.Actions.Empty.copy(
+        onClose = { navController.popBackStack() },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        }
+    )
+    composable(route = Destination.Screen.CreateContactGroup.route) {
+        ContactGroupFormScreen(actions)
+    }
+    composable(route = Destination.Screen.EditContactGroup.route) {
+        ContactGroupFormScreen(actions)
     }
 }
