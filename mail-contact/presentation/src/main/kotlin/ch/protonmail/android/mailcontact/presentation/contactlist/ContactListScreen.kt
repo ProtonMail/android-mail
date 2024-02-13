@@ -141,9 +141,7 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                     actions = ContactListTopBar.Actions(
                         onBackClick = actions.onBackClick,
                         onAddClick = {
-                            viewModel.submit(ContactListViewAction.OnNewContactClick)
-                            // Uncomment below to enable bottom sheet dialog
-                            // viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
+                            viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
                         }
                     ),
                     isAddButtonVisible = state is ContactListState.ListLoaded.Data
@@ -155,10 +153,10 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                         actions.openContactForm()
                     }
                     ConsumableLaunchedEffect(effect = state.openContactGroupForm) {
-                        actions.openContactGroupForm
+                        actions.openContactGroupForm()
                     }
                     ConsumableLaunchedEffect(effect = state.openImportContact) {
-                        actions.openImportContact
+                        actions.openImportContact()
                     }
                 }
 
@@ -213,12 +211,15 @@ fun ContactBottomSheetContent(modifier: Modifier = Modifier, actions: ContactSet
             iconResId = R.drawable.ic_proton_users_plus,
             onClick = actions.onNewContactGroupClick
         )
-        ContactBottomSheetItem(
-            modifier = Modifier,
-            titleResId = R.string.import_contact,
-            iconResId = R.drawable.ic_proton_mobile_plus,
-            onClick = actions.onImportContactClick
-        )
+        // Remove this condition to enable import contact item in dialog
+        if (false) {
+            ContactBottomSheetItem(
+                modifier = Modifier,
+                titleResId = R.string.import_contact,
+                iconResId = R.drawable.ic_proton_mobile_plus,
+                onClick = actions.onImportContactClick
+            )
+        }
     }
 }
 
@@ -588,15 +589,12 @@ fun ContactListTopBar(
         },
         actions = {
             if (isAddButtonVisible) {
-                // Remove below if to enable contact addition - MAILANDR-1545
-                if (false) {
-                    IconButton(onClick = actions.onAddClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_plus),
-                            tint = ProtonTheme.colors.iconNorm,
-                            contentDescription = stringResource(R.string.add_contact_content_description)
-                        )
-                    }
+                IconButton(onClick = actions.onAddClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_plus),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.add_contact_content_description)
+                    )
                 }
             }
         }
