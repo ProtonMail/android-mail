@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.domain.mapper
 import java.time.ZoneId
 import java.util.Date
 import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.VCard
 import ezvcard.VCardVersion
@@ -31,6 +32,7 @@ import ezvcard.parameter.TelephoneType
 import ezvcard.property.Address
 import ezvcard.property.Anniversary
 import ezvcard.property.Birthday
+import ezvcard.property.Categories
 import ezvcard.property.Email
 import ezvcard.property.Gender
 import ezvcard.property.Logo
@@ -49,15 +51,17 @@ class DecryptedContactMapper @Inject constructor() {
 
     /**
      * We should not generate ClearText ContactCard if CATEGORIES field is empty.
-     *
-     * We don't support it on Android so the only way we return non-null here is
-     * if there was ClearText VCard passed as [vCard], containing CATEGORIES.
      */
-    fun mapToClearTextContactCard(vCard: VCard): VCard? {
-        return if (vCard.categories?.values?.takeIfNotEmpty() != null) {
+    fun mapToClearTextContactCard(vCard: VCard, contactGroups: List<ContactGroup>? = null): VCard? {
+
+        val vCardCategories = contactGroups?.map { it.name }?.toTypedArray()
+
+        return if (vCardCategories?.isNotEmpty() == true || vCard.categories?.values?.takeIfNotEmpty() != null) {
             VCard(VCardVersion.V4_0).apply {
                 productId = ProductId(VCARD_PROD_ID)
-                categories = vCard.categories
+                if (vCardCategories != null) {
+                    setCategories(*vCardCategories)
+                } else setCategories(vCard.categories)
             }
         } else null
     }

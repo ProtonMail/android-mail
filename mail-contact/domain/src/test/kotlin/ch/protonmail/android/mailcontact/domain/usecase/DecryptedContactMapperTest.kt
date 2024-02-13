@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
@@ -79,6 +80,44 @@ class DecryptedContactMapperTest {
 
         // Then
         assertNotNull(actual)
+    }
+
+    @Test
+    fun `ClearText ContactCard is returned if existing VCard contains no CATEGORIES but non-empty list is passed`() {
+        // Given
+        val expectedContactCard = existingVCard
+        val expectedCategories = listOf(
+            ContactGroup("Coworkers", "#"),
+            ContactGroup("Friends", "#")
+        )
+
+        // When
+        val actual = sut.mapToClearTextContactCard(
+            expectedContactCard,
+            expectedCategories
+        )!!
+
+        // Then
+        assertNotNull(actual)
+        assertTrue(actual.categories.values.contains("Coworkers"))
+        assertTrue(actual.categories.values.contains("Friends"))
+    }
+
+    @Test
+    fun `ClearText ContactCard is not returned if existing VCard contains no CATEGORIES and empty list is passed`() {
+        // Given
+        val expectedContactCard = existingVCard
+        val expectedCategories = emptyList<ContactGroup>()
+
+        // When
+        val actual = sut.mapToClearTextContactCard(
+            expectedContactCard,
+            expectedCategories
+        )
+
+        // Then
+        assertNull(actual)
+        assertNull(actual?.categories?.values)
     }
 
     @Test

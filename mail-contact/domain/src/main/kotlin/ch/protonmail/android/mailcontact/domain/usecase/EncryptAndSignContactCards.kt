@@ -87,7 +87,8 @@ class EncryptAndSignContactCards @Inject constructor(
         val encryptedAndSignedContactCards = userManager.getUser(userId).useKeys(cryptoContext) {
             listOfNotNull(
                 decryptedContactMapper.mapToClearTextContactCard(
-                    (clearTextContactCard ?: VCard()).sanitizeAndBuildVCard()
+                    (clearTextContactCard ?: VCard()).sanitizeAndBuildVCard(),
+                    decryptedContact.contactGroups
                 )?.let { ContactCard.ClearText(it.write()) },
                 decryptedContactMapper.mapToSignedContactCard(
                     fallbackName,
