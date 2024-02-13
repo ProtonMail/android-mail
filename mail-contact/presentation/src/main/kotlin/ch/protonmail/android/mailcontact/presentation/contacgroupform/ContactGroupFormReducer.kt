@@ -1,0 +1,57 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailcontact.presentation.contacgroupform
+
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.presentation.R
+import javax.inject.Inject
+
+class ContactGroupFormReducer @Inject constructor() {
+
+    internal fun newStateFrom(
+        currentState: ContactGroupFormState,
+        event: ContactGroupFormEvent
+    ): ContactGroupFormState {
+        return when (event) {
+            is ContactGroupFormEvent.ContactGroupLoaded -> reduceContactGroupLoaded(event)
+            ContactGroupFormEvent.Close -> reduceClose(currentState)
+            ContactGroupFormEvent.LoadError -> reduceLoadError(currentState)
+        }
+    }
+
+    private fun reduceContactGroupLoaded(event: ContactGroupFormEvent.ContactGroupLoaded) =
+        ContactGroupFormState.Data(contactGroup = event.contactGroupFormUiModel)
+
+    private fun reduceLoadError(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState
+            is ContactGroupFormState.Loading -> currentState.copy(
+                errorLoading = Effect.of(TextUiModel(R.string.contact_group_form_loading_error))
+            )
+        }
+    }
+
+    private fun reduceClose(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(close = Effect.of(Unit))
+            is ContactGroupFormState.Loading -> currentState.copy(close = Effect.of(Unit))
+        }
+    }
+}
