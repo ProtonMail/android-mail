@@ -99,13 +99,21 @@
     <string name="contact_form_save_error">Error saving contact, please try again later</string>
     <string name="all_contacts_tab">Contacts</string>
     <string name="contact_groups_tab">Groups</string>
-    <plurals name="contact_group_member_count">
+    <plurals name="contact_group_details_member_count">
         <item quantity="one">%1$d member</item>
         <item quantity="other">%1$d members</item>
     </plurals>
+    <plurals name="contact_group_form_member_count">
+        <item quantity="one">Member (%1$d)</item>
+        <item quantity="other">Members (%1$d)</item>
+    </plurals>
     <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
     <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
+    <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
     <string name="edit_contact_group_content_description">Edit contact group</string>
     <string name="delete_contact_group_content_description">Delete contact group</string>
     <string name="send_group_message">Send group message</string>
+    <string name="contact_group_form_save">Save</string>
+    <string name="contact_group_form_name_hint">Display name</string>
+    <string name="remove_member_content_description">Remove member</string>
 </resources>

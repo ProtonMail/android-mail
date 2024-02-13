@@ -161,7 +161,7 @@ fun ContactGroupDetailsContent(state: ContactGroupDetailsState.Data, modifier: M
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.captionWeak,
                     text = pluralStringResource(
-                        R.plurals.contact_group_member_count,
+                        R.plurals.contact_group_details_member_count,
                         state.contactGroup.memberCount,
                         state.contactGroup.memberCount
                     )

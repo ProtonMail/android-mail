@@ -493,7 +493,7 @@ fun ContactGroupItem(
             )
             Text(
                 text = pluralStringResource(
-                    R.plurals.contact_group_member_count,
+                    R.plurals.contact_group_details_member_count,
                     contact.memberCount,
                     contact.memberCount
                 ),
