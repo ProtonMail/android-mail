@@ -546,17 +546,20 @@ fun EmptyDataScreen(
             style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
         )
-        ProtonSecondaryButton(
-            modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
-            onClick = onAddClick
-        ) {
-            Text(
-                text = buttonText,
-                Modifier.padding(
-                    horizontal = ProtonDimens.SmallSpacing
-                ),
-                style = ProtonTheme.typography.captionNorm
-            )
+        // Remove below if to enable contact addition - MAILANDR-1545
+        if (false) {
+            ProtonSecondaryButton(
+                modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
+                onClick = onAddClick
+            ) {
+                Text(
+                    text = buttonText,
+                    Modifier.padding(
+                        horizontal = ProtonDimens.SmallSpacing
+                    ),
+                    style = ProtonTheme.typography.captionNorm
+                )
+            }
         }
     }
 }
@@ -583,7 +586,7 @@ fun ContactListTopBar(
         },
         actions = {
             if (isAddButtonVisible) {
-                // Remove below if to display add button
+                // Remove below if to enable contact addition - MAILANDR-1545
                 if (false) {
                     IconButton(onClick = actions.onAddClick) {
                         Icon(

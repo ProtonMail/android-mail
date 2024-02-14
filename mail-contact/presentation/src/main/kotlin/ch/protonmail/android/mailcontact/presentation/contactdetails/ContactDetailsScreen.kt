@@ -458,7 +458,7 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
         },
         actions = {
             if (state is ContactDetailsState.Data) {
-                // Remove below if to enable edit contact
+                // Remove below if to enable contact editing - MAILANDR-1545
                 if (false) {
                     IconButton(onClick = { actions.onEditClick(state.contact.id) }) {
                         Icon(
@@ -468,12 +468,15 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
                         )
                     }
                 }
-                IconButton(onClick = actions.onDeleteClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_trash),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.delete_contact_content_description)
-                    )
+                // Remove below if to enable contact deletion - MAILANDR-1545
+                if (false) {
+                    IconButton(onClick = actions.onDeleteClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_trash),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.delete_contact_content_description)
+                        )
+                    }
                 }
             }
         }
