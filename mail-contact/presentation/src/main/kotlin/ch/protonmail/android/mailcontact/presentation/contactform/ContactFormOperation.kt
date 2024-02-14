@@ -62,6 +62,7 @@ sealed interface ContactFormEvent : ContactFormOperation {
     ) : ContactFormEvent
     object LoadContactError : ContactFormEvent
     object SaveContactError : ContactFormEvent
+    object EditContactError : ContactFormEvent
     object CreatingContact : ContactFormEvent
     object ContactCreated : ContactFormEvent
     object ContactUpdated : ContactFormEvent
