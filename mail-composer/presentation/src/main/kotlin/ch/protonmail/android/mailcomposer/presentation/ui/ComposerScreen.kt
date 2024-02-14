@@ -91,6 +91,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val attachmentSizeDialogState = remember { mutableStateOf(false) }
     val sendingErrorDialogState = remember { mutableStateOf<String?>(null) }
+    val senderChangedNoticeDialogState = remember { mutableStateOf<String?>(null) }
     var sendWithoutSubjectDialogState = remember { mutableStateOf(false) }
 
     val imagePicker = rememberLauncherForActivityResult(
@@ -235,6 +236,19 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         )
     }
 
+    senderChangedNoticeDialogState.value?.run {
+        ProtonAlertDialog(
+            onDismissRequest = { senderChangedNoticeDialogState.value = null },
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.composer_sender_changed_dialog_confirm_button) {
+                    senderChangedNoticeDialogState.value = null
+                }
+            },
+            title = stringResource(id = R.string.composer_sender_changed_dialog_title),
+            text = { ProtonAlertDialogText(this) }
+        )
+    }
+
     sendingErrorDialogState.value?.run {
         SendingErrorDialog(
             errorMessage = this,
@@ -296,6 +310,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
 
     ConsumableTextEffect(effect = state.sendingErrorEffect) {
         sendingErrorDialogState.value = it
+    }
+
+    ConsumableTextEffect(effect = state.senderChangedNotice) {
+        senderChangedNoticeDialogState.value = it
     }
 
     ConsumableLaunchedEffect(effect = state.attachmentsFileSizeExceeded) { attachmentSizeDialogState.value = true }

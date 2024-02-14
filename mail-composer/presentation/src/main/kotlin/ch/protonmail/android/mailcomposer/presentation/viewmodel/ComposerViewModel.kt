@@ -66,6 +66,8 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAtt
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreExternalAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.isInvalidDueToDisabledAddress
+import ch.protonmail.android.mailcomposer.domain.usecase.isInvalidDueToPaidAddress
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
@@ -289,7 +291,9 @@ class ComposerViewModel @Inject constructor(
                         emitNewStateFor(
                             ComposerEvent.PrefillDraftDataReceived(
                                 draftUiModel = draftFields.copy(sender = validatedSender).toDraftUiModel(),
-                                isDataRefreshed = true
+                                isDataRefreshed = true,
+                                isBlockedSendingFromPmAddress = validationResult.isInvalidDueToPaidAddress(),
+                                isBlockedSendingFromDisabledAddress = validationResult.isInvalidDueToDisabledAddress()
                             )
                         )
                         storeDraftWithParentAttachments.invoke(
@@ -324,7 +328,9 @@ class ComposerViewModel @Inject constructor(
                     emitNewStateFor(
                         ComposerEvent.PrefillDraftDataReceived(
                             draftUiModel = draftFields.draftFields.toDraftUiModel(),
-                            isDataRefreshed = draftFields is DecryptedDraftFields.Remote
+                            isDataRefreshed = draftFields is DecryptedDraftFields.Remote,
+                            isBlockedSendingFromPmAddress = false,
+                            isBlockedSendingFromDisabledAddress = false
                         )
                     )
                 }

@@ -118,12 +118,17 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.PrefillDraftDataReceived -> updateComposerFieldsState(
             currentState,
             this.draftUiModel,
-            this.isDataRefreshed
+            this.isDataRefreshed,
+            this.isBlockedSendingFromPmAddress,
+            this.isBlockedSendingFromDisabledAddress
         )
 
         is ComposerEvent.PrefillDataReceivedViaShare -> updateComposerFieldsState(
             currentState,
-            this.draftUiModel, true
+            this.draftUiModel,
+            isDataRefreshed = true,
+            blockedSendingFromPmAddress = false,
+            blockedSendingFromDisabledAddress = false
         )
 
         is ComposerEvent.ReplaceDraftBody -> {
@@ -162,7 +167,9 @@ class ComposerReducer @Inject constructor(
     private fun updateComposerFieldsState(
         currentState: ComposerDraftState,
         draftUiModel: DraftUiModel,
-        isDataRefreshed: Boolean
+        isDataRefreshed: Boolean,
+        blockedSendingFromPmAddress: Boolean,
+        blockedSendingFromDisabledAddress: Boolean
     ): ComposerDraftState {
 
         val validToRecipients = draftUiModel.draftFields.recipientsTo.value.map { RecipientUiModel.Valid(it.address) }
@@ -185,6 +192,13 @@ class ComposerReducer @Inject constructor(
                 Effect.of(TextUiModel(R.string.composer_warning_local_data_shown))
             } else {
                 Effect.empty()
+            },
+            senderChangedNotice = when {
+                blockedSendingFromPmAddress ->
+                    Effect.of(TextUiModel(R.string.composer_sender_changed_pm_address_is_a_paid_feature))
+                blockedSendingFromDisabledAddress ->
+                    Effect.of(TextUiModel(R.string.composer_sender_changed_original_address_disabled))
+                else -> Effect.empty()
             }
         )
     }

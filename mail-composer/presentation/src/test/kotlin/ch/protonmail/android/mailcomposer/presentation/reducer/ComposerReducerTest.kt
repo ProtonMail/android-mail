@@ -537,7 +537,12 @@ class ComposerReducerTest(
             name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
                 "empty recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModelWithoutRecipients, isDataRefreshed = true),
+            operation = ComposerEvent.PrefillDraftDataReceived(
+                draftUiModelWithoutRecipients,
+                isDataRefreshed = true,
+                isBlockedSendingFromPmAddress = false,
+                isBlockedSendingFromDisabledAddress = false
+            ),
             expectedState = aNotSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
@@ -556,7 +561,12 @@ class ComposerReducerTest(
             name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
                 "valid recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel, isDataRefreshed = true),
+            operation = ComposerEvent.PrefillDraftDataReceived(
+                draftUiModel,
+                isDataRefreshed = true,
+                isBlockedSendingFromPmAddress = false,
+                isBlockedSendingFromDisabledAddress = false
+            ),
             expectedState = aSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
@@ -574,7 +584,12 @@ class ComposerReducerTest(
             name = "Should stop loading and set the received draft data as composer fields when draft data received, " +
                 "valid recipients",
             currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
-            operation = ComposerEvent.PrefillDraftDataReceived(draftUiModel, isDataRefreshed = false),
+            operation = ComposerEvent.PrefillDraftDataReceived(
+                draftUiModel,
+                isDataRefreshed = false,
+                isBlockedSendingFromPmAddress = false,
+                isBlockedSendingFromDisabledAddress = false
+            ),
             expectedState = aSubmittableState(
                 draftId = messageId,
                 sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
@@ -602,6 +617,32 @@ class ComposerReducerTest(
                 subject = draftFieldsWithoutRecipients.subject,
                 draftBody = draftFieldsWithoutRecipients.body.value,
                 warning = Effect.empty()
+            )
+        )
+
+        @Suppress("VariableMaxLength")
+        private val LoadingToSendingNoticeWhenReceivedDraftDataWithInvalidSender = TestTransition(
+            name = "Should stop loading and show the sending notice when prefilled address in invalid",
+            currentState = ComposerDraftState.initial(messageId).copy(isLoading = true),
+            operation = ComposerEvent.PrefillDraftDataReceived(
+                draftUiModelWithoutRecipients,
+                isDataRefreshed = true,
+                isBlockedSendingFromPmAddress = true,
+                isBlockedSendingFromDisabledAddress = false
+            ),
+            expectedState = aNotSubmittableState(
+                draftId = messageId,
+                sender = SenderUiModel(draftFieldsWithoutRecipients.sender.value),
+                to = draftFieldsWithoutRecipients.recipientsTo.value.map { Valid(it.address) },
+                cc = draftFieldsWithoutRecipients.recipientsCc.value.map { Valid(it.address) },
+                bcc = draftFieldsWithoutRecipients.recipientsBcc.value.map { Valid(it.address) },
+                subject = draftFieldsWithoutRecipients.subject,
+                draftBody = draftFieldsWithoutRecipients.body.value,
+                error = Effect.empty(),
+                isLoading = false,
+                senderChangedNotice = Effect.of(
+                    TextUiModel(R.string.composer_sender_changed_pm_address_is_a_paid_feature)
+                )
             )
         )
 
@@ -814,6 +855,7 @@ class ComposerReducerTest(
             LoadingToFieldsWhenReceivedDraftDataFromLocal,
             LoadingToFieldsWhenReceivedDraftDataFromViaShare,
             LoadingToErrorWhenErrorLoadingDraftData,
+            LoadingToSendingNoticeWhenReceivedDraftDataWithInvalidSender,
             EmptyToBottomSheetOpened,
             EmptyToBottomSheetClosed,
             EmptyToAttachmentsUpdated,
@@ -894,7 +936,8 @@ class ComposerReducerTest(
             attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
             warning: Effect<TextUiModel> = Effect.empty(),
             replaceDraftBody: Effect<TextUiModel> = Effect.empty(),
-            areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap()
+            areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
+            senderChangedNotice: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -925,7 +968,8 @@ class ComposerReducerTest(
             replaceDraftBody = replaceDraftBody,
             areContactSuggestionsExpanded = areContactSuggestionsExpanded,
             isMessagePasswordSet = false,
-            isExpirationActionVisible = false
+            isExpirationActionVisible = false,
+            senderChangedNotice = senderChangedNotice
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

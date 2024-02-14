@@ -89,3 +89,15 @@ class ValidateSenderAddress @Inject constructor(
         private const val PmMeDomain = "@pm.me"
     }
 }
+
+fun ValidateSenderAddress.ValidationResult.isInvalidDueToPaidAddress() = when (this) {
+    is ValidateSenderAddress.ValidationResult.Invalid ->
+        this.reason == ValidateSenderAddress.ValidationError.PaidAddress
+    is ValidateSenderAddress.ValidationResult.Valid -> false
+}
+
+fun ValidateSenderAddress.ValidationResult.isInvalidDueToDisabledAddress() = when (this) {
+    is ValidateSenderAddress.ValidationResult.Invalid ->
+        this.reason == ValidateSenderAddress.ValidationError.DisabledAddress
+    is ValidateSenderAddress.ValidationResult.Valid -> false
+}

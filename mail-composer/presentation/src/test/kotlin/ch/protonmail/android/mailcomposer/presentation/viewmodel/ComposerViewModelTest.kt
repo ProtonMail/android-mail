@@ -1580,7 +1580,7 @@ class ComposerViewModelTest {
         }
 
     @Test
-    fun `emits state with valid sender when parent draft sender is invalid`() = runTest {
+    fun `emits state with valid sender and notice effect when parent draft sender is invalid`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         val expectedDraftId = expectedMessageId { MessageIdSample.EmptyDraft }
@@ -1616,7 +1616,7 @@ class ComposerViewModelTest {
             expectedUserId,
             expectedDraftFields.sender,
             expectedValidEmail,
-            ValidateSenderAddress.ValidationError.DisabledAddress
+            ValidateSenderAddress.ValidationError.PaidAddress
         )
 
         // When
@@ -1624,6 +1624,10 @@ class ComposerViewModelTest {
 
         // Then
         assertEquals(SenderUiModel(expectedValidEmail.value), actual.fields.sender)
+        assertEquals(
+            Effect.of(TextUiModel(R.string.composer_sender_changed_pm_address_is_a_paid_feature)),
+            actual.senderChangedNotice
+        )
     }
 
     @Test
