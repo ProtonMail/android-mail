@@ -1961,25 +1961,32 @@ class ComposerViewModelTest {
     fun `should update the local draft id when draft state updated with api message id`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
-        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val localDraftId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val remoteDraftId = MessageIdSample.RemoteDraft
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectStartDraftSync(expectedUserId, localDraftId)
+        expectObservedMessageAttachments(expectedUserId, localDraftId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
-        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectObserveMessageSendingError(expectedUserId, localDraftId)
+        expectObserveMessagePassword(expectedUserId, localDraftId)
         expectNoFileShareVia()
-        expectObserveDraftState(expectedUserId, expectedMessageId, MessageIdSample.RemoteDraft)
+        expectObserveDraftState(expectedUserId, localDraftId, remoteDraftId)
+        expectDraftUploadSyncing(true)
+        expectStopContinuousDraftUploadSucceeds()
+        expectStartDraftSync(expectedUserId, remoteDraftId)
 
         // When
         val actual = viewModel.state.value
 
         // Then
-        coVerify {
-            draftStateRepository.updateDraftMessageId(expectedUserId, expectedMessageId, MessageIdSample.RemoteDraft)
+        coVerifyOrder {
+            draftStateRepository.updateDraftMessageId(expectedUserId, localDraftId, remoteDraftId)
+
+            draftUploaderMock.stopContinuousUpload()
+            draftUploaderMock.startContinuousUpload(expectedUserId, remoteDraftId, any(), any())
         }
         assertEquals(MessageIdSample.RemoteDraft, actual.fields.draftId)
     }
@@ -2115,6 +2122,10 @@ class ComposerViewModelTest {
 
     private fun expectInputDraftMessageId(draftId: () -> MessageId) = draftId().also {
         every { savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey) } returns it.id
+    }
+
+    private fun expectDraftUploadSyncing(syncing: Boolean) {
+        coEvery { draftUploaderMock.isSyncing() } returns syncing
     }
 
     private fun expectStopContinuousDraftUploadSucceeds() {

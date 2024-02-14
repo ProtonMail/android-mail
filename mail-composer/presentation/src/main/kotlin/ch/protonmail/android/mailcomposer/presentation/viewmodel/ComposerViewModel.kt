@@ -427,7 +427,24 @@ class ComposerViewModel @Inject constructor(
     private fun updateDraftStateWithApiMessageId(apiMessageId: MessageId) {
         viewModelScope.launch(scopeProvider.Io) {
             draftStateRepository.updateDraftMessageId(primaryUserId(), currentMessageId(), apiMessageId).onRight {
-                emitNewStateFor(ComposerEvent.DraftSynchronisedWithApi(apiMessageId))
+                handleDraftSynchronisedWithApi(apiMessageId)
+            }
+        }
+    }
+
+    private fun handleDraftSynchronisedWithApi(apiMessageId: MessageId) {
+        viewModelScope.launch {
+            emitNewStateFor(ComposerEvent.DraftSynchronisedWithApi(apiMessageId))
+
+            // We need to restart continuous upload to be able to use the new id.
+            if (draftUploader.isSyncing()) {
+                draftUploader.stopContinuousUpload()
+                draftUploader.startContinuousUpload(
+                    primaryUserId(),
+                    currentMessageId(),
+                    DraftAction.Compose,
+                    viewModelScope
+                )
             }
         }
     }
