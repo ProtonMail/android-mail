@@ -1618,6 +1618,12 @@ class ComposerViewModelTest {
             expectedValidEmail,
             ValidateSenderAddress.ValidationError.PaidAddress
         )
+        expectReEncryptAttachmentSucceeds(
+            expectedUserId,
+            expectedDraftId,
+            expectedDraftFields.sender,
+            expectedValidEmail
+        )
 
         // When
         val actual = viewModel.state.value
@@ -1628,6 +1634,9 @@ class ComposerViewModelTest {
             Effect.of(TextUiModel(R.string.composer_sender_changed_pm_address_is_a_paid_feature)),
             actual.senderChangedNotice
         )
+        coVerify {
+            reEncryptAttachments(expectedUserId, expectedDraftId, expectedDraftFields.sender, expectedValidEmail)
+        }
     }
 
     @Test

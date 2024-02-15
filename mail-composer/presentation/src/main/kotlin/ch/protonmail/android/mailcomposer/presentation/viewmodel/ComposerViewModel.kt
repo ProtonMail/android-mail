@@ -303,11 +303,23 @@ class ComposerViewModel @Inject constructor(
                             validatedSender,
                             draftAction
                         )
-
                         // User may skip editing Subject line, so we need to store it here.
                         storeDraftWithSubject(
                             primaryUserId(), currentMessageId(), validatedSender, draftFields.subject
                         )
+
+                        if (validationResult is ValidateSenderAddress.ValidationResult.Invalid) {
+                            reEncryptAttachments(
+                                userId = primaryUserId(),
+                                messageId = currentMessageId(),
+                                previousSender = validationResult.invalid,
+                                newSenderEmail = validatedSender
+                            ).onLeft {
+                                Timber.e("Failed to re-encrypt attachments: $it")
+                                handleReEncryptionFailed()
+                            }
+                        }
+
 
                     }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
                 }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
