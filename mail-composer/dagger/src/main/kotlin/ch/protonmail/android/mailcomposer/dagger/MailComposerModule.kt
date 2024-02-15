@@ -22,6 +22,8 @@ import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
+import ch.protonmail.android.composer.data.local.MessageExpirationTimeLocalDataSource
+import ch.protonmail.android.composer.data.local.MessageExpirationTimeLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.MessagePasswordLocalDataSource
 import ch.protonmail.android.composer.data.local.MessagePasswordLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.RoomTransactor
@@ -35,12 +37,14 @@ import ch.protonmail.android.composer.data.repository.AttachmentRepositoryImpl
 import ch.protonmail.android.composer.data.repository.AttachmentStateRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
+import ch.protonmail.android.composer.data.repository.MessageExpirationTimeRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessagePasswordRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessageRepositoryImpl
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
+import ch.protonmail.android.mailcomposer.domain.repository.MessageExpirationTimeRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
@@ -109,4 +113,17 @@ abstract class MailComposerModule {
     @Binds
     @Reusable
     abstract fun bindsMessagePasswordRepository(impl: MessagePasswordRepositoryImpl): MessagePasswordRepository
+
+    @Binds
+    @Reusable
+    @Suppress("FunctionMaxLength")
+    abstract fun bindsMessageExpirationTimeLocalDataSource(
+        impl: MessageExpirationTimeLocalDataSourceImpl
+    ): MessageExpirationTimeLocalDataSource
+
+    @Binds
+    @Reusable
+    abstract fun bindsMessageExpirationTimeRepository(
+        impl: MessageExpirationTimeRepositoryImpl
+    ): MessageExpirationTimeRepository
 }

@@ -42,6 +42,8 @@ sealed interface DataError {
 
         object DeletingFailed : Local
 
+        object DbWriteFailed : Local
+
         /**
          * This object is not meant to be actively used.
          * Its purpose is to notify the logging tool that a case that should be handled
