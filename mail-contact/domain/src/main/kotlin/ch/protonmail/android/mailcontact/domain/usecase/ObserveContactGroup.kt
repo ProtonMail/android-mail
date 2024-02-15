@@ -45,14 +45,14 @@ class ObserveContactGroup @Inject constructor(
             either {
                 val label = labels.getOrNull()?.firstOrNull {
                     it.labelId == labelId
-                } ?: raise(GetContactGroupError.GetLabelsErrorGet)
+                } ?: raise(GetContactGroupError.GetLabelsError)
 
                 val contactGroupMembers = arrayListOf<ContactEmail>()
                 contacts.getOrNull()?.forEach { contact ->
                     contact.contactEmails.forEach { contactEmail ->
                         if (contactEmail.labelIds.contains(labelId.id)) contactGroupMembers.add(contactEmail)
                     }
-                } ?: raise(GetContactGroupError.GetContactsErrorGet)
+                } ?: raise(GetContactGroupError.GetContactsError)
 
                 ContactGroup(
                     userId = label.userId,
@@ -67,6 +67,6 @@ class ObserveContactGroup @Inject constructor(
 }
 
 sealed interface GetContactGroupError {
-    object GetLabelsErrorGet : GetContactGroupError
-    object GetContactsErrorGet : GetContactGroupError
+    object GetLabelsError : GetContactGroupError
+    object GetContactsError : GetContactGroupError
 }

@@ -430,7 +430,7 @@ internal fun NavGraphBuilder.addContactGroupDetails(
     showErrorSnackbar: (message: String) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
-    val actions = ContactGroupDetailsScreen.Actions.Empty.copy(
+    val actions = ContactGroupDetailsScreen.Actions(
         onBackClick = { navController.popBackStack() },
         exitWithErrorMessage = { message ->
             navController.popBackStack()
