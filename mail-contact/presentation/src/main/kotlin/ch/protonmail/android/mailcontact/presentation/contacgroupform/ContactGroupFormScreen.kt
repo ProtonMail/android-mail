@@ -19,30 +19,53 @@
 package ch.protonmail.android.mailcontact.presentation.contacgroupform
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormMember
+import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
+import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
+import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -50,8 +73,13 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallNorm
+import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.contact.domain.entity.ContactEmailId
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -81,7 +109,18 @@ fun ContactGroupFormScreen(
         content = { paddingValues ->
             when (state) {
                 is ContactGroupFormState.Data -> {
-                    // Display content here
+                    ContactGroupFormContent(
+                        modifier = Modifier.padding(paddingValues),
+                        state = state,
+                        actions = ContactGroupFormContent.Actions(
+                            onAddMemberClick = {
+                                // Call view model with add member view action here
+                            },
+                            onChangeColorClick = {
+                                // Call view model with change color view action here
+                            }
+                        )
+                    )
                 }
                 is ContactGroupFormState.Loading -> {
                     ProtonCenteredProgress(
@@ -107,6 +146,187 @@ fun ContactGroupFormScreen(
     ConsumableLaunchedEffect(effect = state.close) {
         dismissKeyboard(context, view, keyboardController)
         actions.onClose()
+    }
+}
+
+@Composable
+fun ContactGroupFormContent(
+    modifier: Modifier = Modifier,
+    state: ContactGroupFormState.Data,
+    actions: ContactGroupFormContent.Actions
+) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        item {
+            Column(modifier.fillMaxWidth()) {
+                IconContactAvatar(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(
+                            top = ProtonDimens.DefaultSpacing,
+                            bottom = ProtonDimens.ExtraSmallSpacing
+                        ),
+                    iconResId = R.drawable.ic_proton_users,
+                    backgroundColor = state.contactGroup.color
+                )
+                ContactGroupFormTextButton(
+                    modifier = Modifier
+                        .padding(
+                            vertical = ProtonDimens.SmallSpacing,
+                            horizontal = ProtonDimens.DefaultSpacing
+                        )
+                        .align(Alignment.CenterHorizontally),
+                    text = stringResource(R.string.change_color),
+                    onClick = actions.onChangeColorClick
+                )
+                FormInputField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(ProtonDimens.DefaultSpacing),
+                    initialValue = state.contactGroup.name,
+                    hint = stringResource(id = R.string.contact_group_form_name_hint),
+                    onTextChange = {
+                        // Call view model with update name view action
+                    }
+                )
+                Row(
+                    modifier = Modifier.padding(
+                        top = ProtonDimens.MediumSpacing,
+                        start = ProtonDimens.DefaultSpacing,
+                        end = ProtonDimens.DefaultSpacing
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        modifier = modifier
+                            .size(ProtonDimens.SmallIconSize),
+                        painter = painterResource(id = R.drawable.ic_proton_users),
+                        tint = ProtonTheme.colors.iconWeak,
+                        contentDescription = NO_CONTENT_DESCRIPTION
+                    )
+                    Text(
+                        modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
+                        style = ProtonTheme.typography.defaultSmallWeak,
+                        text = pluralStringResource(
+                            R.plurals.contact_group_form_member_count,
+                            state.contactGroup.memberCount,
+                            state.contactGroup.memberCount
+                        )
+                    )
+                }
+                Divider(
+                    modifier = Modifier.padding(top = ProtonDimens.SmallSpacing),
+                    color = ProtonTheme.colors.separatorNorm
+                )
+            }
+        }
+        items(state.contactGroup.members) { member ->
+            ContactGroupMemberItem(
+                contactGroupMember = member
+            ) {
+                // Call view model with remove member view action
+            }
+        }
+        item {
+            ContactGroupFormTextButton(
+                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
+                text = stringResource(R.string.add_members),
+                onClick = actions.onAddMemberClick
+            )
+        }
+    }
+}
+
+@Composable
+fun ContactGroupMemberItem(
+    modifier: Modifier = Modifier,
+    contactGroupMember: ContactGroupFormMember,
+    onRemoveItem: (ContactEmailId) -> Unit
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = ProtonDimens.DefaultSpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .sizeIn(
+                    minWidth = MailDimens.AvatarMinSize,
+                    minHeight = MailDimens.AvatarMinSize
+                )
+                .background(
+                    color = ProtonTheme.colors.interactionWeakNorm,
+                    shape = ProtonTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                textAlign = TextAlign.Center,
+                text = contactGroupMember.initials
+            )
+        }
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(
+                    start = ProtonDimens.ListItemTextStartPadding,
+                    top = ProtonDimens.ListItemTextStartPadding,
+                    bottom = ProtonDimens.ListItemTextStartPadding,
+                    end = ProtonDimens.DefaultSpacing
+                )
+        ) {
+            Text(
+                text = contactGroupMember.name,
+                style = ProtonTheme.typography.defaultNorm
+            )
+            Text(
+                text = contactGroupMember.email,
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
+        IconButton(
+            onClick = { onRemoveItem(contactGroupMember.id) }
+        ) {
+            Icon(
+                tint = ProtonTheme.colors.iconWeak,
+                imageVector = Icons.Filled.Close,
+                contentDescription = stringResource(id = R.string.remove_member_content_description)
+            )
+        }
+    }
+}
+
+@Composable
+fun ContactGroupFormTextButton(
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .background(
+                color = ProtonTheme.colors.interactionWeakNorm,
+                shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius)
+            )
+            .clip(shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius))
+            .clickable(
+                role = Role.Button,
+                onClick = onClick
+            )
+    ) {
+        Text(
+            modifier = Modifier.padding(
+                top = ProtonDimens.SmallSpacing,
+                bottom = ProtonDimens.SmallSpacing,
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing
+            ),
+            text = text,
+            style = ProtonTheme.typography.defaultSmallNorm
+        )
     }
 }
 
@@ -156,6 +376,23 @@ object ContactGroupFormScreen {
     }
 }
 
+object ContactGroupFormContent {
+
+    data class Actions(
+        val onAddMemberClick: () -> Unit,
+        val onChangeColorClick: () -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onAddMemberClick = {},
+                onChangeColorClick = {}
+            )
+        }
+    }
+}
+
 object ContactGroupFormTopBar {
     data class Actions(
         val onClose: () -> Unit,
@@ -170,6 +407,31 @@ object ContactGroupFormTopBar {
             )
         }
     }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun ContactGroupFormContentPreview() {
+    ContactGroupFormContent(
+        state = ContactGroupFormState.Data(
+            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData
+        ),
+        actions = ContactGroupFormContent.Actions.Empty
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun EmptyContactGroupFormContentPreview() {
+    ContactGroupFormContent(
+        state = ContactGroupFormState.Data(
+            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData.copy(
+                memberCount = 0,
+                members = emptyList()
+            )
+        ),
+        actions = ContactGroupFormContent.Actions.Empty
+    )
 }
 
 @Composable
