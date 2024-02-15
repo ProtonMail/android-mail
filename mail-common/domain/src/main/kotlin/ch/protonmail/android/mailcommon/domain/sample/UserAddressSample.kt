@@ -50,7 +50,7 @@ object UserAddressSample {
 
     val PmMeAddressAlias = build(
         addressId = AddressIdSample.PmMeAlias,
-        addressType = AddressType.Alias,
+        addressType = AddressType.Premium,
         email = "myaddress@pm.me",
         order = 3
     )

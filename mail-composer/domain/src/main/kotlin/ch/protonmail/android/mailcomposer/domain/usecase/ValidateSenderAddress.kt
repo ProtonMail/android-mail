@@ -44,7 +44,7 @@ class ValidateSenderAddress @Inject constructor(
             ?: return ValidationFailure.CouldNotValidate.left()
 
         val validAddress = userAddresses.filter { it.enabled }.minByOrNull { it.order }
-            ?: return ValidationFailure.NoEnabledAddress.left()
+            ?: return ValidationFailure.AllAddressesDisabled.left()
 
         return when {
             !addressToValidate.enabled -> ValidationResult.Invalid(
@@ -64,7 +64,7 @@ class ValidateSenderAddress @Inject constructor(
 
     sealed interface ValidationFailure {
         object CouldNotValidate : ValidationFailure
-        object NoEnabledAddress : ValidationFailure
+        object AllAddressesDisabled : ValidationFailure
     }
 
     sealed interface ValidationResult {

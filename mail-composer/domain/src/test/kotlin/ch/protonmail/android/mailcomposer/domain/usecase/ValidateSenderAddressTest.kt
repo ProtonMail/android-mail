@@ -80,7 +80,7 @@ class ValidateSenderAddressTest {
         val actual = validateSenderAddress(userId, senderEmail)
 
         // Then
-        assertEquals(ValidateSenderAddress.ValidationFailure.NoEnabledAddress.left(), actual)
+        assertEquals(ValidateSenderAddress.ValidationFailure.AllAddressesDisabled.left(), actual)
     }
 
     @Test
