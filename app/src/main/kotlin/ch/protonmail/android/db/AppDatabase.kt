@@ -24,6 +24,7 @@ import androidx.room.TypeConverters
 import ch.protonmail.android.composer.data.local.DraftStateDatabase
 import ch.protonmail.android.composer.data.local.converters.AttachmentStateConverters
 import ch.protonmail.android.composer.data.local.converters.DraftStateConverters
+import ch.protonmail.android.composer.data.local.entity.MessageExpirationTimeEntity
 import ch.protonmail.android.composer.data.local.entity.MessagePasswordEntity
 import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
@@ -178,6 +179,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         DraftStateEntity::class,
         AttachmentStateEntity::class,
         MessagePasswordEntity::class,
+        MessageExpirationTimeEntity::class,
         // Unread counts
         UnreadMessagesCountEntity::class,
         UnreadConversationsCountEntity::class,
@@ -240,7 +242,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 28
+        const val version = 29
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -269,7 +271,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_24_25,
             AppDatabaseMigrations.MIGRATION_25_26,
             AppDatabaseMigrations.MIGRATION_26_27,
-            AppDatabaseMigrations.MIGRATION_27_28
+            AppDatabaseMigrations.MIGRATION_27_28,
+            AppDatabaseMigrations.MIGRATION_28_29
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
