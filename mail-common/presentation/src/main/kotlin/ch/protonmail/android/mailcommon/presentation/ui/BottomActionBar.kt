@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcommon.presentation.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -68,6 +69,12 @@ fun BottomActionBar(
 
         Row(
             modifier = Modifier
+                .clickable(
+                    enabled = false,
+                    onClick = {
+                        // this is needed otherwise the click event is passed down the view hierarchy
+                    }
+                )
                 .fillMaxWidth()
                 .padding(horizontal = 0.dp, vertical = ProtonDimens.DefaultSpacing),
             horizontalArrangement = Arrangement.SpaceEvenly
