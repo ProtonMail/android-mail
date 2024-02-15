@@ -239,7 +239,7 @@ class ContactGroupFormViewModelTest {
     ) {
         every {
             observeContactGroupMock.invoke(userId, labelId)
-        } returns flowOf(contactGroup?.right() ?: GetContactGroupError.GetLabelsErrorGet.left())
+        } returns flowOf(contactGroup?.right() ?: GetContactGroupError.GetLabelsError.left())
     }
 
     private fun expectContactGroupFormUiModel(
