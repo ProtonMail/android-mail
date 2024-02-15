@@ -77,6 +77,9 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem.C
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactDetailsPreviewData.contactDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactDelete
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactEdit
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactExport
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -267,7 +270,7 @@ private fun ActionItemsRow(
             onClick = { actions.onEmailClick(state.contact.defaultEmail) },
             isEnabled = state.contact.isEmailActionEnabled()
         )
-        if (false) {
+        if (ContactExport.value) {
             ContactDetailsActionItem(
                 modifier = Modifier.padding(start = ProtonDimens.DefaultSpacing),
                 iconResId = R.drawable.ic_proton_arrow_up_from_square,
@@ -458,8 +461,7 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
         },
         actions = {
             if (state is ContactDetailsState.Data) {
-                // Remove below if to enable contact editing - MAILANDR-1545
-                if (false) {
+                if (ContactEdit.value) {
                     IconButton(onClick = { actions.onEditClick(state.contact.id) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_proton_pen),
@@ -468,8 +470,7 @@ fun ContactDetailsTopBar(state: ContactDetailsState, actions: ContactDetailsScre
                         )
                     }
                 }
-                // Remove below if to enable contact deletion - MAILANDR-1545
-                if (false) {
+                if (ContactDelete.value) {
                     IconButton(onClick = actions.onDeleteClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_proton_trash),

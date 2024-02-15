@@ -63,6 +63,9 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDelete
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupEdit
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupSendMessage
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -166,11 +169,13 @@ fun ContactGroupDetailsContent(state: ContactGroupDetailsState.Data, modifier: M
                         state.contactGroup.memberCount
                     )
                 )
-                ContactGroupDetailsSendTextButton(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    isEnabled = state.isSendEnabled
-                ) {
-                    // Open composer
+                if (ContactGroupSendMessage.value) {
+                    ContactGroupDetailsSendTextButton(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        isEnabled = state.isSendEnabled
+                    ) {
+                        // Open composer
+                    }
                 }
             }
         }
@@ -293,19 +298,23 @@ fun ContactGroupDetailsTopBar(
         },
         actions = {
             if (state is ContactGroupDetailsState.Data) {
-                IconButton(onClick = { actions.onEditClick(state.contactGroup.id) }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_pen),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.edit_contact_group_content_description)
-                    )
+                if (ContactGroupEdit.value) {
+                    IconButton(onClick = { actions.onEditClick(state.contactGroup.id) }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_pen),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.edit_contact_group_content_description)
+                        )
+                    }
                 }
-                IconButton(onClick = onDeleteClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_trash),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.delete_contact_group_content_description)
-                    )
+                if (ContactGroupDelete.value) {
+                    IconButton(onClick = onDeleteClick) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_trash),
+                            tint = ProtonTheme.colors.iconNorm,
+                            contentDescription = stringResource(R.string.delete_contact_group_content_description)
+                        )
+                    }
                 }
             }
         }

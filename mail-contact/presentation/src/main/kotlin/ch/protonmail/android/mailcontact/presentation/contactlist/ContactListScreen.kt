@@ -76,6 +76,11 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiMod
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactGroupSampleData
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactSampleData
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.headerSampleData
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactDetails
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupCreate
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDetails
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -175,6 +180,7 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                             title = stringResource(R.string.no_contacts),
                             description = stringResource(R.string.no_contacts_description),
                             buttonText = stringResource(R.string.add_contact),
+                            showAddButton = ContactCreate.value,
                             onAddClick = { viewModel.submit(ContactListViewAction.OnOpenBottomSheet) }
                         )
                     }
@@ -199,20 +205,23 @@ fun ContactBottomSheetContent(modifier: Modifier = Modifier, actions: ContactSet
     Column(
         modifier = modifier.padding(top = ProtonDimens.SmallSpacing)
     ) {
-        ContactBottomSheetItem(
-            modifier = Modifier,
-            titleResId = R.string.new_contact,
-            iconResId = R.drawable.ic_proton_user_plus,
-            onClick = actions.onNewContactClick
-        )
-        ContactBottomSheetItem(
-            modifier = Modifier,
-            titleResId = R.string.new_group,
-            iconResId = R.drawable.ic_proton_users_plus,
-            onClick = actions.onNewContactGroupClick
-        )
-        // Remove this condition to enable import contact item in dialog
-        if (false) {
+        if (ContactCreate.value) {
+            ContactBottomSheetItem(
+                modifier = Modifier,
+                titleResId = R.string.new_contact,
+                iconResId = R.drawable.ic_proton_user_plus,
+                onClick = actions.onNewContactClick
+            )
+        }
+        if (ContactGroupCreate.value) {
+            ContactBottomSheetItem(
+                modifier = Modifier,
+                titleResId = R.string.new_group,
+                iconResId = R.drawable.ic_proton_users_plus,
+                onClick = actions.onNewContactGroupClick
+            )
+        }
+        if (ContactImport.value) {
             ContactBottomSheetItem(
                 modifier = Modifier,
                 titleResId = R.string.import_contact,
@@ -377,6 +386,7 @@ fun ContactListItem(
             .fillMaxWidth()
             .clickable(
                 role = Role.Button,
+                enabled = ContactDetails.value,
                 onClick = {
                     actions.onContactSelected(contact.id)
                 }
@@ -436,6 +446,7 @@ fun ContactGroupsScreenContent(
             title = stringResource(R.string.no_contact_groups),
             description = stringResource(R.string.no_contact_groups_description),
             buttonText = stringResource(R.string.add_contact_group),
+            showAddButton = ContactGroupCreate.value,
             onAddClick = onAddClick
         )
     }
@@ -452,6 +463,7 @@ fun ContactGroupItem(
             .fillMaxWidth()
             .clickable(
                 role = Role.Button,
+                enabled = ContactGroupDetails.value,
                 onClick = {
                     actions.onContactGroupSelected(contact.labelId)
                 }
@@ -511,6 +523,7 @@ fun EmptyDataScreen(
     description: String,
     buttonText: String,
     modifier: Modifier = Modifier,
+    showAddButton: Boolean, // Can be deleted once we get rid of ContactFeatureFlags
     onAddClick: () -> Unit
 ) {
     Column(
@@ -549,8 +562,7 @@ fun EmptyDataScreen(
             style = ProtonTheme.typography.defaultSmallWeak,
             textAlign = TextAlign.Center
         )
-        // Remove below if to enable contact addition - MAILANDR-1545
-        if (false) {
+        if (showAddButton) {
             ProtonSecondaryButton(
                 modifier = Modifier.padding(top = ProtonDimens.LargeSpacing),
                 onClick = onAddClick
@@ -588,7 +600,9 @@ fun ContactListTopBar(
             }
         },
         actions = {
-            if (isAddButtonVisible) {
+            // hasOneCreateOption can be deleted once we get rid of ContactFeatureFlags
+            val hasOneCreateOption = ContactCreate.value || ContactGroupCreate.value || ContactImport.value
+            if (isAddButtonVisible && hasOneCreateOption) {
                 IconButton(onClick = actions.onAddClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_proton_plus),
@@ -693,6 +707,7 @@ private fun EmptyContactListScreenPreview() {
         title = stringResource(R.string.no_contacts),
         description = stringResource(R.string.no_contacts_description),
         buttonText = stringResource(R.string.add_contact),
+        showAddButton = true,
         onAddClick = {}
     )
 }
@@ -705,6 +720,7 @@ private fun EmptyContactGroupsScreenPreview() {
         title = stringResource(R.string.no_contact_groups),
         description = stringResource(R.string.no_contact_groups_description),
         buttonText = stringResource(R.string.add_contact_group),
+        showAddButton = true,
         onAddClick = {}
     )
 }
