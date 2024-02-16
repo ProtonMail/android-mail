@@ -33,6 +33,10 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormEvent.ContactGroupLoaded -> reduceContactGroupLoaded(event)
             ContactGroupFormEvent.Close -> reduceClose(currentState)
             ContactGroupFormEvent.LoadError -> reduceLoadError(currentState)
+            ContactGroupFormEvent.ContactGroupCreated -> reduceContactGroupCreated(currentState)
+            ContactGroupFormEvent.ContactGroupUpdated -> reduceContactGroupUpdated(currentState)
+            ContactGroupFormEvent.SaveContactGroupError -> reduceSaveContactGroupError(currentState)
+            ContactGroupFormEvent.SavingContactGroup -> reduceSavingContactGroup(currentState)
         }
     }
 
@@ -52,6 +56,40 @@ class ContactGroupFormReducer @Inject constructor() {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(close = Effect.of(Unit))
             is ContactGroupFormState.Loading -> currentState.copy(close = Effect.of(Unit))
+        }
+    }
+
+    private fun reduceContactGroupCreated(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success))
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+    private fun reduceContactGroupUpdated(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success))
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+    private fun reduceSaveContactGroupError(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error)),
+                displaySaveLoader = false
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+    private fun reduceSavingContactGroup(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                displaySaveLoader = true
+            )
+            is ContactGroupFormState.Loading -> currentState
         }
     }
 }

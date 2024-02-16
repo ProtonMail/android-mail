@@ -24,6 +24,7 @@ sealed interface ContactGroupFormOperation
 
 sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     object OnCloseClick : ContactGroupFormViewAction
+    object OnSaveClick : ContactGroupFormViewAction
 }
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
@@ -32,4 +33,8 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     ) : ContactGroupFormEvent
     object LoadError : ContactGroupFormEvent
     object Close : ContactGroupFormEvent
+    object SaveContactGroupError : ContactGroupFormEvent
+    object SavingContactGroup : ContactGroupFormEvent
+    object ContactGroupCreated : ContactGroupFormEvent
+    object ContactGroupUpdated : ContactGroupFormEvent
 }

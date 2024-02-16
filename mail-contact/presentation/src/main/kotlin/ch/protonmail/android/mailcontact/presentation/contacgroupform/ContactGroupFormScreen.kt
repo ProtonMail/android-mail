@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -98,9 +99,10 @@ fun ContactGroupFormScreen(
                         viewModel.submit(ContactGroupFormViewAction.OnCloseClick)
                     },
                     onSave = {
-                        // Call view model with save view action here
+                        viewModel.submit(ContactGroupFormViewAction.OnSaveClick)
                     }
-                )
+                ),
+                state = state
             )
         },
         content = { paddingValues ->
@@ -317,7 +319,7 @@ fun ContactGroupMemberItem(
 }
 
 @Composable
-fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions) {
+fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, state: ContactGroupFormState) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = { },
@@ -331,13 +333,23 @@ fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions) {
             }
         },
         actions = {
-            ProtonTextButton(onClick = actions.onSave) {
-                val textColor = ProtonTheme.colors.textAccent
-                Text(
-                    text = stringResource(id = R.string.contact_group_form_save),
-                    color = textColor,
-                    style = ProtonTheme.typography.defaultStrongNorm
+            val displaySaveLoader = state is ContactGroupFormState.Data && state.displaySaveLoader
+            if (displaySaveLoader) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(end = ProtonDimens.DefaultSpacing)
+                        .size(MailDimens.ProgressDefaultSize),
+                    strokeWidth = MailDimens.ProgressStrokeWidth
                 )
+            } else {
+                ProtonTextButton(onClick = actions.onSave) {
+                    val textColor = ProtonTheme.colors.textAccent
+                    Text(
+                        text = stringResource(id = R.string.contact_group_form_save),
+                        color = textColor,
+                        style = ProtonTheme.typography.defaultStrongNorm
+                    )
+                }
             }
         }
     )
@@ -426,6 +438,9 @@ private fun EmptyContactGroupFormContentPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactFormTopBarPreview() {
     ContactGroupFormTopBar(
-        actions = ContactGroupFormTopBar.Actions.Empty
+        actions = ContactGroupFormTopBar.Actions.Empty,
+        state = ContactGroupFormState.Data(
+            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData
+        )
     )
 }

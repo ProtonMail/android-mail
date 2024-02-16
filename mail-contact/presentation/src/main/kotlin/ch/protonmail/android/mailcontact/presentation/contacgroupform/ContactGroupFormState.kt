@@ -34,6 +34,7 @@ sealed interface ContactGroupFormState {
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val contactGroup: ContactGroupFormUiModel,
+        val displaySaveLoader: Boolean = false,
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
     ) : ContactGroupFormState
