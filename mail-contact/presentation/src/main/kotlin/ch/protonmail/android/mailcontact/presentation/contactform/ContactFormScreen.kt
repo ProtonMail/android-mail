@@ -585,10 +585,7 @@ private fun InputFieldWithTrash(
 }
 
 @Composable
-private fun TypePickerField(
-    initialSelectedType: FieldType,
-    onValueSelected: (TextUiModel) -> Unit
-) {
+private fun TypePickerField(initialSelectedType: FieldType, onValueSelected: (TextUiModel) -> Unit) {
     val openDialog = remember { mutableStateOf(false) }
     var selectedType by remember { mutableStateOf(initialSelectedType.localizedValue) }
 
