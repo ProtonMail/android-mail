@@ -118,4 +118,7 @@
     <string name="remove_member_content_description">Remove member</string>
     <string name="add_members">Add members</string>
     <string name="change_color">Change color</string>
+    <string name="contact_group_form_create_success">Contact group created</string>
+    <string name="contact_group_form_update_success">Contact group updated</string>
+    <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
 </resources>

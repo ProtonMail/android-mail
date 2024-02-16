@@ -118,6 +118,16 @@ fun ContactGroupFormScreen(
                             }
                         )
                     )
+
+                    ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
+                        actions.exitWithSuccessMessage(message)
+                    }
+                    ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
+                        snackbarHostErrorState.showSnackbar(
+                            message = message,
+                            type = ProtonSnackbarType.ERROR
+                        )
+                    }
                 }
                 is ContactGroupFormState.Loading -> {
                     ProtonCenteredProgress(
@@ -339,14 +349,16 @@ object ContactGroupFormScreen {
 
     data class Actions(
         val onClose: () -> Unit,
-        val exitWithErrorMessage: (String) -> Unit
+        val exitWithErrorMessage: (String) -> Unit,
+        val exitWithSuccessMessage: (String) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
                 onClose = {},
-                exitWithErrorMessage = {}
+                exitWithErrorMessage = {},
+                exitWithSuccessMessage = {}
             )
         }
     }

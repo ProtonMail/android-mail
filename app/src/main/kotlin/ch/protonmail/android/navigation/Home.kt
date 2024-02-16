@@ -437,6 +437,14 @@ fun Home(
                 )
                 addContactGroupForm(
                     navController,
+                    showSuccessSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostSuccessState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.SUCCESS
+                            )
+                        }
+                    },
                     showErrorSnackbar = { message ->
                         scope.launch {
                             snackbarHostErrorState.showSnackbar(

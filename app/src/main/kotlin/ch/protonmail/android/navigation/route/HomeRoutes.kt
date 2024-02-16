@@ -451,6 +451,7 @@ internal fun NavGraphBuilder.addContactGroupDetails(
 
 internal fun NavGraphBuilder.addContactGroupForm(
     navController: NavHostController,
+    showSuccessSnackbar: (message: String) -> Unit,
     showErrorSnackbar: (message: String) -> Unit
 ) {
     val actions = ContactGroupFormScreen.Actions.Empty.copy(
@@ -458,6 +459,10 @@ internal fun NavGraphBuilder.addContactGroupForm(
         exitWithErrorMessage = { message ->
             navController.popBackStack()
             showErrorSnackbar(message)
+        },
+        exitWithSuccessMessage = { message ->
+            navController.popBackStack()
+            showSuccessSnackbar(message)
         }
     )
     composable(route = Destination.Screen.CreateContactGroup.route) {
