@@ -22,6 +22,7 @@ import android.net.Uri
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -78,6 +79,7 @@ sealed interface ComposerEvent : ComposerOperation {
         val contactSuggestions: List<ContactSuggestionUiModel>,
         val suggestionsField: ContactSuggestionsField
     ) : ComposerEvent
+    data class OnMessageExpirationTimeUpdated(val messageExpirationTime: MessageExpirationTime?) : ComposerEvent
 
     object ErrorLoadingDefaultSenderAddress : ComposerEvent
     object ErrorFreeUserCannotChangeSender : ComposerEvent

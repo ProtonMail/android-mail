@@ -53,6 +53,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
@@ -148,6 +149,7 @@ class ComposerViewModel @Inject constructor(
     private val observeMessagePassword: ObserveMessagePassword,
     private val validateSenderAddress: ValidateSenderAddress,
     private val saveMessageExpirationTime: SaveMessageExpirationTime,
+    private val observeMessageExpirationTime: ObserveMessageExpirationTime,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -205,6 +207,7 @@ class ComposerViewModel @Inject constructor(
         observeMessageAttachments()
         observeSendingError()
         observeMessagePassword()
+        observeMessageExpirationTime()
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
@@ -439,6 +442,13 @@ class ComposerViewModel @Inject constructor(
         primaryUserId
             .flatMapLatest { userId -> observeMessagePassword(userId, currentMessageId()) }
             .onEach { emitNewStateFor(ComposerEvent.OnMessagePasswordUpdated(it)) }
+            .launchIn(viewModelScope)
+    }
+
+    private fun observeMessageExpirationTime() {
+        primaryUserId
+            .flatMapLatest { userId -> observeMessageExpirationTime(userId, currentMessageId()) }
+            .onEach { emitNewStateFor(ComposerEvent.OnMessageExpirationTimeUpdated(it)) }
             .launchIn(viewModelScope)
     }
 

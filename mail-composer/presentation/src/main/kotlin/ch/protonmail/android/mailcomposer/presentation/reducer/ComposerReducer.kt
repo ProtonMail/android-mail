@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -40,6 +41,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMa
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import javax.inject.Inject
+import kotlin.time.Duration
 
 @Suppress("TooManyFunctions")
 class ComposerReducer @Inject constructor(
@@ -159,6 +161,10 @@ class ComposerReducer @Inject constructor(
         )
         is ComposerEvent.ErrorSettingExpirationTime -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_setting_expiration_time))
+        )
+        is ComposerEvent.OnMessageExpirationTimeUpdated -> updateStateForMessageExpirationTime(
+            currentState,
+            this.messageExpirationTime
         )
     }
 
@@ -292,6 +298,11 @@ class ComposerReducer @Inject constructor(
 
     private fun updateStateForExpirationTimeSet(currentState: ComposerDraftState) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(false))
+
+    private fun updateStateForMessageExpirationTime(
+        currentState: ComposerDraftState,
+        messageExpirationTime: MessageExpirationTime?
+    ) = currentState.copy(messageExpiresIn = messageExpirationTime?.expiresIn ?: Duration.ZERO)
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,

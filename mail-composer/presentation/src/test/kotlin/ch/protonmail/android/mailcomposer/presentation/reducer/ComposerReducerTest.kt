@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
+import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
@@ -62,6 +63,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 
 @RunWith(Parameterized::class)
@@ -827,6 +829,15 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToMessageExpirationTimeUpdated = TestTransition(
+            name = "Should update state with message expiration time",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnMessageExpirationTimeUpdated(
+                MessageExpirationTime(UserIdTestData.userId, messageId, 1.days)
+            ),
+            expectedState = ComposerDraftState.initial(messageId).copy(messageExpiresIn = 1.days)
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -880,7 +891,8 @@ class ComposerReducerTest(
             SubmittableToRejectEmptySubject,
             EmptyToSetExpirationTimeRequested,
             EmptyToExpirationTimeSet,
-            EmptyToErrorSettingExpirationTime
+            EmptyToErrorSettingExpirationTime,
+            EmptyToMessageExpirationTimeUpdated
         )
 
         private fun aSubmittableState(
@@ -928,7 +940,8 @@ class ComposerReducerTest(
             warning = warning,
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
-            isExpirationActionVisible = false
+            isExpirationActionVisible = false,
+            messageExpiresIn = Duration.ZERO
         )
 
         private fun aNotSubmittableState(
@@ -983,7 +996,8 @@ class ComposerReducerTest(
             areContactSuggestionsExpanded = areContactSuggestionsExpanded,
             isMessagePasswordSet = false,
             isExpirationActionVisible = false,
-            senderChangedNotice = senderChangedNotice
+            senderChangedNotice = senderChangedNotice,
+            messageExpiresIn = Duration.ZERO
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

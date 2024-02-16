@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
+import kotlin.time.Duration
 
 data class ComposerDraftState(
     val fields: ComposerFields,
@@ -49,7 +50,8 @@ data class ComposerDraftState(
     val contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>> = emptyMap(),
     val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
     val isExpirationActionVisible: Boolean,
-    val senderChangedNotice: Effect<TextUiModel> = Effect.empty()
+    val senderChangedNotice: Effect<TextUiModel> = Effect.empty(),
+    val messageExpiresIn: Duration
 ) {
 
     companion object {
@@ -92,7 +94,8 @@ data class ComposerDraftState(
             sendingErrorEffect = Effect.empty(),
             isMessagePasswordSet = false,
             isExpirationActionVisible = false,
-            senderChangedNotice = Effect.empty()
+            senderChangedNotice = Effect.empty(),
+            messageExpiresIn = Duration.ZERO
         )
     }
 }
