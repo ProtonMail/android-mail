@@ -395,7 +395,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.ConfirmSendingWithoutSubject -> emitNewStateFor(onSendMessage(action))
                     is ComposerAction.RejectSendingWithoutSubject -> emitNewStateFor(action)
                     is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
-                    is ComposerAction.OnSetExpirationTime -> emitNewStateFor(action)
+                    is ComposerAction.OnSetExpirationTimeRequested -> emitNewStateFor(action)
                     is ComposerAction.ExpirationTimeSet -> onExpirationTimeSet(action)
                 }
                 composerIdlingResource.decrement()

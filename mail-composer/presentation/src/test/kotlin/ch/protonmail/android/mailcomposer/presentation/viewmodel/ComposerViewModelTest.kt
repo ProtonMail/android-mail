@@ -1987,7 +1987,7 @@ class ComposerViewModelTest {
         expectNoFileShareVia()
 
         // When
-        viewModel.submit(ComposerAction.OnSetExpirationTime)
+        viewModel.submit(ComposerAction.OnSetExpirationTimeRequested)
 
         // Then
         viewModel.state.test {

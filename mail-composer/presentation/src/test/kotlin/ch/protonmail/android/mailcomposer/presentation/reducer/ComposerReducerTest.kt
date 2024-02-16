@@ -804,10 +804,10 @@ class ComposerReducerTest(
             )
         )
 
-        private val EmptyToSetExpirationTime = TestTransition(
+        private val EmptyToSetExpirationTimeRequested = TestTransition(
             name = "Should update state to open expiration time bottom sheet",
             currentState = ComposerDraftState.initial(messageId),
-            operation = ComposerAction.OnSetExpirationTime,
+            operation = ComposerAction.OnSetExpirationTimeRequested,
             expectedState = ComposerDraftState.initial(messageId).copy(changeBottomSheetVisibility = Effect.of(true))
         )
 
@@ -869,7 +869,7 @@ class ComposerReducerTest(
             SubmittableToRequestConfirmEmptySubject,
             SubmittableToConfirmEmptySubject,
             SubmittableToRejectEmptySubject,
-            EmptyToSetExpirationTime,
+            EmptyToSetExpirationTimeRequested,
             EmptyToExpirationTimeSet
         )
 

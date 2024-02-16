@@ -147,7 +147,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     onSetMessagePasswordClick = actions.onSetMessagePasswordClick,
                     onSetExpirationTimeClick = {
                         bottomSheetType.value = BottomSheetType.SetExpirationTime
-                        viewModel.submit(ComposerAction.OnSetExpirationTime)
+                        viewModel.submit(ComposerAction.OnSetExpirationTimeRequested)
                     }
                 )
             },
