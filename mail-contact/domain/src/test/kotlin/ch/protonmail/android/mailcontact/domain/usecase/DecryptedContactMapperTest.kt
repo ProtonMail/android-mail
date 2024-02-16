@@ -76,7 +76,7 @@ class DecryptedContactMapperTest {
         // When
         val actual = sut.mapToClearTextContactCard(
             expectedContactCard
-        )!!
+        )
 
         // Then
         assertNotNull(actual)
@@ -95,7 +95,7 @@ class DecryptedContactMapperTest {
         val actual = sut.mapToClearTextContactCard(
             expectedContactCard,
             expectedCategories
-        )!!
+        )
 
         // Then
         assertNotNull(actual)
@@ -135,9 +135,11 @@ class DecryptedContactMapperTest {
         // When
         val actual = sut.mapToClearTextContactCard(
             expectedContactCard
-        )!!
+        )
 
         // Then
+        assertNotNull(actual)
+
         assertTrue(actual.categories.values.size == 2)
         assertEquals(actual.version.version, VCardVersion.V4_0.version)
         assertEquals(actual.productId.value, VCARD_PROD_ID)

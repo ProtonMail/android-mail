@@ -53,13 +53,13 @@ class DecryptedContactMapper @Inject constructor() {
      */
     fun mapToClearTextContactCard(vCard: VCard, contactGroups: List<ContactGroup>? = null): VCard? {
 
-        val vCardCategories = contactGroups?.map { it.name }?.toTypedArray()
+        val contactGroupNames = contactGroups?.map { it.name }?.toTypedArray()
 
-        return if (vCardCategories?.isNotEmpty() == true || vCard.categories?.values?.takeIfNotEmpty() != null) {
+        return if (contactGroupNames?.isNotEmpty() == true || vCard.categories?.values?.takeIfNotEmpty() != null) {
             VCard(VCardVersion.V4_0).apply {
                 productId = ProductId(VCARD_PROD_ID)
-                if (vCardCategories != null) {
-                    setCategories(*vCardCategories)
+                if (contactGroupNames != null) {
+                    setCategories(*contactGroupNames)
                 } else setCategories(vCard.categories)
             }
         } else null
