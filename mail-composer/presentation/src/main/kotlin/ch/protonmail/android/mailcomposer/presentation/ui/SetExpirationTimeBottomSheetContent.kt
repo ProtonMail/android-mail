@@ -50,9 +50,9 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
 @Composable
-fun SetExpirationTimeBottomSheetContent(onDoneClick: (Duration) -> Unit) {
+fun SetExpirationTimeBottomSheetContent(expirationTime: Duration, onDoneClick: (Duration) -> Unit) {
 
-    val selectedItem = rememberSaveable { mutableStateOf(ExpirationTime.None) }
+    val selectedItem = rememberSaveable { mutableStateOf(ExpirationTime.from(expirationTime)) }
 
     Row(
         modifier = Modifier
@@ -112,5 +112,9 @@ enum class ExpirationTime(val duration: Duration) {
     OneHour(1.hours),
     OneDay(1.days),
     ThreeDays(3.days),
-    OneWeek(7.days)
+    OneWeek(7.days);
+
+    companion object {
+        fun from(duration: Duration) = values().find { it.duration == duration } ?: None
+    }
 }

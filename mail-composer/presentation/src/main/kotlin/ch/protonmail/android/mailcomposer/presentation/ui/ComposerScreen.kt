@@ -73,6 +73,7 @@ import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
 import timber.log.Timber
+import kotlin.time.Duration
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Suppress("UseComposableActions")
@@ -115,6 +116,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
                 )
                 BottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
+                    expirationTime = state.messageExpiresIn,
                     onDoneClick = { viewModel.submit(ComposerAction.ExpirationTimeSet(it)) }
                 )
             }
@@ -143,6 +145,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     draftId = state.fields.draftId,
                     senderEmail = SenderEmail(state.fields.sender.email),
                     isMessagePasswordSet = state.isMessagePasswordSet,
+                    isMessageExpirationTimeSet = state.messageExpiresIn != Duration.ZERO,
                     isExpirationActionVisible = state.isExpirationActionVisible,
                     onSetMessagePasswordClick = actions.onSetMessagePasswordClick,
                     onSetExpirationTimeClick = {
