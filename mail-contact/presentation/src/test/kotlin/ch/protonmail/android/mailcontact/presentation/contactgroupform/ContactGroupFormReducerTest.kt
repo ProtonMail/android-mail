@@ -18,12 +18,14 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormEvent
 import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormReducer
 import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormState
+import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,7 +55,10 @@ class ContactGroupFormReducerTest(
             .copy(memberCount = 0, members = emptyList())
 
         private val emptyLoadingState = ContactGroupFormState.Loading()
-        private val loadedContactGroupState = ContactGroupFormState.Data(
+        private val loadedCreateContactGroupState = ContactGroupFormState.Data(
+            contactGroup = emptyContactGroupFormUiModel(listOf(Color.Red))
+        )
+        private val loadedUpdateContactGroupState = ContactGroupFormState.Data(
             contactGroup = loadedContactGroupFormUiModel
         )
 
@@ -61,7 +66,7 @@ class ContactGroupFormReducerTest(
             TestInput(
                 currentState = emptyLoadingState,
                 event = ContactGroupFormEvent.ContactGroupLoaded(loadedContactGroupFormUiModel),
-                expectedState = loadedContactGroupState
+                expectedState = loadedUpdateContactGroupState
             ),
             TestInput(
                 currentState = emptyLoadingState,
@@ -81,22 +86,50 @@ class ContactGroupFormReducerTest(
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = loadedContactGroupState,
+                currentState = loadedUpdateContactGroupState,
                 event = ContactGroupFormEvent.ContactGroupLoaded(loadedContactGroupFormUiModel2),
-                expectedState = loadedContactGroupState.copy(
+                expectedState = loadedUpdateContactGroupState.copy(
                     contactGroup = loadedContactGroupFormUiModel2
                 )
             ),
             TestInput(
-                currentState = loadedContactGroupState,
+                currentState = loadedUpdateContactGroupState,
                 event = ContactGroupFormEvent.LoadError,
-                expectedState = loadedContactGroupState
+                expectedState = loadedUpdateContactGroupState
             ),
             TestInput(
-                currentState = loadedContactGroupState,
+                currentState = loadedUpdateContactGroupState,
                 event = ContactGroupFormEvent.Close,
-                expectedState = loadedContactGroupState.copy(
+                expectedState = loadedUpdateContactGroupState.copy(
                     close = Effect.of(Unit)
+                )
+            ),
+            TestInput(
+                currentState = loadedCreateContactGroupState,
+                event = ContactGroupFormEvent.ContactGroupCreated,
+                expectedState = loadedCreateContactGroupState.copy(
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.ContactGroupUpdated,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.SaveContactGroupError,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.SavingContactGroup,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    displaySaveLoader = true
                 )
             )
         )

@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiMo
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
