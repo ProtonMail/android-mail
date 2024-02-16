@@ -360,8 +360,7 @@ class ContactFormViewModelTest {
 
         // When
         contactFormViewModel.state.test {
-            // Then
-            val actual = awaitItem()
+            skipItems(1)
 
             val index = 0
             val newValue = InputField.SingleTyped(
@@ -376,15 +375,18 @@ class ContactFormViewModelTest {
                 )
             )
 
+            // Then
             val mutableEmails = contactFormUiModel.emails.apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
                     emails = mutableEmails
-                )
+                ),
+                isSaveEnabled = true
             )
 
+            val actual = awaitItem()
             assertEquals(expected, actual)
         }
     }
@@ -396,8 +398,7 @@ class ContactFormViewModelTest {
 
         // When
         contactFormViewModel.state.test {
-            // Then
-            val actual = awaitItem()
+            skipItems(1)
 
             val index = 0
             val newValue = InputField.SingleTyped(
@@ -412,15 +413,18 @@ class ContactFormViewModelTest {
                 )
             )
 
+            // Then
             val mutableTelephones = contactFormUiModel.telephones.apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
                     telephones = mutableTelephones
-                )
+                ),
+                isSaveEnabled = true
             )
 
+            val actual = awaitItem()
             assertEquals(expected, actual)
         }
     }
@@ -432,8 +436,7 @@ class ContactFormViewModelTest {
 
         // When
         contactFormViewModel.state.test {
-            // Then
-            val actual = awaitItem()
+            skipItems(1)
 
             val index = 0
             val newValue = InputField.Address(
@@ -452,15 +455,18 @@ class ContactFormViewModelTest {
                 )
             )
 
+            // Then
             val mutableAddresses = contactFormUiModel.addresses.apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
                     addresses = mutableAddresses
-                )
+                ),
+                isSaveEnabled = true
             )
 
+            val actual = awaitItem()
             assertEquals(expected, actual)
         }
     }
@@ -472,8 +478,7 @@ class ContactFormViewModelTest {
 
         // When
         contactFormViewModel.state.test {
-            // Then
-            val actual = awaitItem()
+            skipItems(1)
 
             val index = 0
             val newValue = InputField.Note(
@@ -487,15 +492,18 @@ class ContactFormViewModelTest {
                 )
             )
 
+            // Then
             val mutableNotes = contactFormUiModel.notes.apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
                     notes = mutableNotes
-                )
+                ),
+                isSaveEnabled = true
             )
 
+            val actual = awaitItem()
             assertEquals(expected, actual)
         }
     }
@@ -507,8 +515,7 @@ class ContactFormViewModelTest {
 
         // When
         contactFormViewModel.state.test {
-            // Then
-            val actual = awaitItem()
+            skipItems(1)
 
             val index = 0
             val newValue = InputField.SingleTyped(
@@ -523,15 +530,18 @@ class ContactFormViewModelTest {
                 )
             )
 
+            // Then
             val mutableOthers = contactFormUiModel.others.apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
                     others = mutableOthers
-                )
+                ),
+                isSaveEnabled = true
             )
 
+            val actual = awaitItem()
             assertEquals(expected, actual)
         }
     }
