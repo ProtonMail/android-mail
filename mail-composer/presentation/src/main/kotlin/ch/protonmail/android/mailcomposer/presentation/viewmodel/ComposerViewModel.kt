@@ -280,50 +280,58 @@ class ComposerViewModel @Inject constructor(
         emitNewStateFor(ComposerEvent.OpenWithMessageAction(currentMessageId(), draftAction))
 
         viewModelScope.launch {
-            getLocalMessageDecrypted(primaryUserId(), parentMessageId).onRight { parentMessage ->
-                Timber.d("Parent message draft data received $parentMessage")
-                parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction).onRight { draftFields ->
-                    validateSenderAddress(primaryUserId(), draftFields.sender).onRight { validationResult ->
-                        Timber.d("Quoted parent body $draftFields")
-                        uploadDraftContinuouslyWhileInForeground(draftAction)
-                        val validatedSender = validationResult.validAddress
+            val parentMessage = getLocalMessageDecrypted(primaryUserId(), parentMessageId)
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+                .getOrNull()
+                ?: return@launch
 
-                        emitNewStateFor(
-                            ComposerEvent.PrefillDraftDataReceived(
-                                draftUiModel = draftFields.copy(sender = validatedSender).toDraftUiModel(),
-                                isDataRefreshed = true,
-                                isBlockedSendingFromPmAddress = validationResult.isInvalidDueToPaidAddress(),
-                                isBlockedSendingFromDisabledAddress = validationResult.isInvalidDueToDisabledAddress()
-                            )
-                        )
-                        storeDraftWithParentAttachments.invoke(
-                            primaryUserId(),
-                            currentMessageId(),
-                            parentMessage,
-                            validatedSender,
-                            draftAction
-                        )
-                        // User may skip editing Subject line, so we need to store it here.
-                        storeDraftWithSubject(
-                            primaryUserId(), currentMessageId(), validatedSender, draftFields.subject
-                        )
+            Timber.d("Parent message draft data received $parentMessage")
+            val draftFields = parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction)
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+                .getOrNull()
+                ?: return@launch
 
-                        if (validationResult is ValidateSenderAddress.ValidationResult.Invalid) {
-                            reEncryptAttachments(
-                                userId = primaryUserId(),
-                                messageId = currentMessageId(),
-                                previousSender = validationResult.invalid,
-                                newSenderEmail = validatedSender
-                            ).onLeft {
-                                Timber.e("Failed to re-encrypt attachments: $it")
-                                handleReEncryptionFailed()
-                            }
-                        }
+            val senderValidationResult = validateSenderAddress(primaryUserId(), draftFields.sender)
+                .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+                .getOrNull()
+                ?: return@launch
 
+            Timber.d("Quoted parent body $draftFields")
+            uploadDraftContinuouslyWhileInForeground(draftAction)
+            val validatedSender = senderValidationResult.validAddress
 
-                    }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
-                }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
-            }.onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
+            emitNewStateFor(
+                ComposerEvent.PrefillDraftDataReceived(
+                    draftUiModel = draftFields.copy(sender = validatedSender).toDraftUiModel(),
+                    isDataRefreshed = true,
+                    isBlockedSendingFromPmAddress = senderValidationResult.isInvalidDueToPaidAddress(),
+                    isBlockedSendingFromDisabledAddress = senderValidationResult.isInvalidDueToDisabledAddress()
+                )
+            )
+            storeDraftWithParentAttachments.invoke(
+                primaryUserId(),
+                currentMessageId(),
+                parentMessage,
+                validatedSender,
+                draftAction
+            )
+
+            // User may skip editing Subject line, so we need to store it here.
+            storeDraftWithSubject(
+                primaryUserId(), currentMessageId(), validatedSender, draftFields.subject
+            )
+
+            if (senderValidationResult is ValidateSenderAddress.ValidationResult.Invalid) {
+                reEncryptAttachments(
+                    userId = primaryUserId(),
+                    messageId = currentMessageId(),
+                    previousSender = senderValidationResult.invalid,
+                    newSenderEmail = validatedSender
+                ).onLeft {
+                    Timber.e("Failed to re-encrypt attachments: $it")
+                    handleReEncryptionFailed()
+                }
+            }
         }
     }
 

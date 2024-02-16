@@ -60,7 +60,7 @@ class ValidateSenderAddress @Inject constructor(
     }
 
     private suspend fun isFreeUserUsingPmMeAddress(userId: UserId, address: UserAddress) =
-        !isPaidUser(userId).getOrElse { false } && address.email.endsWith(PmMeDomain)
+        !isPaidUser(userId).getOrElse { false } && address.email.endsWith(PmMeDomain, true)
 
     sealed interface ValidationFailure {
         object CouldNotValidate : ValidationFailure
