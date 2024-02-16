@@ -226,6 +226,59 @@ class ContactGroupFormViewModelTest {
         }
     }
 
+    @Test
+    fun `when create and on save action is submitted, then created event is emitted`() = runTest {
+        // Given
+        expectSavedStateLabelId(null)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = emptyContactGroupFormUiModel(testColors),
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success)),
+                displaySaveLoader = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when update and on save action is submitted, then updated event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testEmptyContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel,
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success)),
+                displaySaveLoader = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateLabelId(labelId: LabelId?) {
         every {
             savedStateHandleMock.get<String>(ContactGroupFormScreen.ContactGroupFormLabelIdKey)
