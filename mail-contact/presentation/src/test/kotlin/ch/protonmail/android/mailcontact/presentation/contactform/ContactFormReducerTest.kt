@@ -50,18 +50,18 @@ class ContactFormReducerTest(
         private val loadedContactFormUiModel = ContactFormPreviewData.contactFormSampleData()
 
         private val emptyLoadingState = ContactFormState.Loading()
-        private val loadedCreateContactState = ContactFormState.Data.Create(contact = emptyContactFormUiModel())
-        private val loadedUpdateContactState = ContactFormState.Data.Update(contact = loadedContactFormUiModel)
+        private val loadedCreateContactState = ContactFormState.Data(contact = emptyContactFormUiModel())
+        private val loadedUpdateContactState = ContactFormState.Data(contact = loadedContactFormUiModel)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactFormEvent.NewContact(emptyContactFormUiModel()),
+                event = ContactFormEvent.ContactLoaded(emptyContactFormUiModel()),
                 expectedState = loadedCreateContactState
             ),
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactFormEvent.EditContact(loadedContactFormUiModel),
+                event = ContactFormEvent.ContactLoaded(loadedContactFormUiModel),
                 expectedState = loadedUpdateContactState
             ),
             TestInput(
@@ -111,7 +111,8 @@ class ContactFormReducerTest(
                     contact = emptyContactFormUiModel().copy(displayName = "Updated displayName")
                 ),
                 expectedState = loadedUpdateContactState.copy(
-                    contact = emptyContactFormUiModel().copy(displayName = "Updated displayName")
+                    contact = emptyContactFormUiModel().copy(displayName = "Updated displayName"),
+                    isSaveEnabled = true
                 )
             ),
             TestInput(
@@ -147,23 +148,23 @@ class ContactFormReducerTest(
             ),
             TestInput(
                 currentState = loadedCreateContactState,
-                event = ContactFormEvent.CreatingContact,
+                event = ContactFormEvent.SavingContact,
                 expectedState = loadedCreateContactState.copy(
-                    displayCreateLoader = true
+                    displaySaveLoader = true
                 )
             ),
             TestInput(
                 currentState = loadedCreateContactState,
                 event = ContactFormEvent.ContactCreated,
                 expectedState = loadedCreateContactState.copy(
-                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_create_success))
                 )
             ),
             TestInput(
                 currentState = loadedUpdateContactState,
                 event = ContactFormEvent.ContactUpdated,
                 expectedState = loadedUpdateContactState.copy(
-                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_save_success))
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_update_success))
                 )
             ),
             TestInput(
