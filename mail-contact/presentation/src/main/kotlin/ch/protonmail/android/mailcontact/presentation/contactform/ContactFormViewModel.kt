@@ -78,14 +78,14 @@ class ContactFormViewModel @Inject constructor(
                     return@launch emitNewStateFor(ContactFormEvent.LoadContactError)
                 }
                 emitNewStateFor(
-                    ContactFormEvent.EditContact(
+                    ContactFormEvent.ContactLoaded(
                         contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
                     )
                 )
             }
         } ?: run {
             emitNewStateFor(
-                ContactFormEvent.NewContact(emptyContactFormUiModel())
+                ContactFormEvent.ContactLoaded(emptyContactFormUiModel())
             )
         }
     }
@@ -263,19 +263,19 @@ class ContactFormViewModel @Inject constructor(
     private suspend fun handleSave() {
         val stateValue = state.value
         if (stateValue !is ContactFormState.Data) return
+
         val containsInvalidEmail = stateValue.contact.emails.any {
             validateEmail(it.value).not()
         }
         if (containsInvalidEmail) return emitNewStateFor(ContactFormEvent.InvalidEmailError)
-        when (stateValue) {
-            is ContactFormState.Data.Create -> handleCreateContact(stateValue.contact)
-            is ContactFormState.Data.Update -> handleUpdateContact(stateValue.contact)
-        }
+
+        emitNewStateFor(ContactFormEvent.SavingContact)
+
+        if (stateValue.contact.id != null) handleUpdateContact(stateValue.contact)
+        else handleCreateContact(stateValue.contact)
     }
 
     private suspend fun handleCreateContact(contact: ContactFormUiModel) {
-        emitNewStateFor(ContactFormEvent.CreatingContact)
-
         val decryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
             contactGroups = listOf(),

@@ -67,6 +67,8 @@
     <string name="contact_property_time_zone">Time zone</string>
     <string name="contact_form_loading_error">Error loading contact, please try again later</string>
     <string name="contact_form_save_success">Contact saved</string>
+    <string name="contact_form_create_success">Contact created</string>
+    <string name="contact_form_update_success">Contact updated</string>
     <string name="save_contact_content_description">Save contact</string>
     <string name="contact_form_save">Save</string>
     <string name="add_new">Add new</string>

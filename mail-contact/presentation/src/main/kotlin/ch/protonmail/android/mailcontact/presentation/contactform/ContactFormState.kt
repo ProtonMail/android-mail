@@ -33,28 +33,12 @@ sealed interface ContactFormState {
         val errorLoading: Effect<TextUiModel> = Effect.empty()
     ) : ContactFormState
 
-    sealed interface Data : ContactFormState {
-
-        val contact: ContactFormUiModel
-        val closeWithSuccess: Effect<TextUiModel>
-        val showErrorSnackbar: Effect<TextUiModel>
-
-        data class Create(
-            override val close: Effect<Unit> = Effect.empty(),
-            override val isSaveEnabled: Boolean = false,
-            override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
-            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
-            override val contact: ContactFormUiModel,
-            val displayCreateLoader: Boolean = false
-        ) : Data
-
-        data class Update(
-            override val close: Effect<Unit> = Effect.empty(),
-            override val isSaveEnabled: Boolean = true,
-            override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
-            override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
-            override val contact: ContactFormUiModel
-        ) : Data
-    }
+    data class Data(
+        override val close: Effect<Unit> = Effect.empty(),
+        override val isSaveEnabled: Boolean = false,
+        val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
+        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+        val contact: ContactFormUiModel,
+        val displaySaveLoader: Boolean = false
+    ) : ContactFormState
 }
-

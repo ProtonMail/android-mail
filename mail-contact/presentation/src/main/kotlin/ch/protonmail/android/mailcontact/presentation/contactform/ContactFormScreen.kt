@@ -677,8 +677,8 @@ fun ContactFormTopBar(
             }
         },
         actions = {
-            val displayCreateLoader = state is ContactFormState.Data.Create && state.displayCreateLoader
-            if (displayCreateLoader) {
+            val displaySaveLoader = state is ContactFormState.Data && state.displaySaveLoader
+            if (displaySaveLoader) {
                 CircularProgressIndicator(
                     modifier = Modifier
                         .padding(end = ProtonDimens.DefaultSpacing)
@@ -754,7 +754,7 @@ object ContactFormContent {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun CreateContactFormScreenPreview() {
     ContactFormContent(
-        state = ContactFormState.Data.Create(contact = contactFormSampleData()),
+        state = ContactFormState.Data(contact = contactFormSampleData()),
         actions = ContactFormContent.Actions.Empty
     )
 }
@@ -763,7 +763,7 @@ private fun CreateContactFormScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun UpdateContactFormScreenPreview() {
     ContactFormContent(
-        state = ContactFormState.Data.Update(contact = contactFormSampleData()),
+        state = ContactFormState.Data(contact = contactFormSampleData()),
         actions = ContactFormContent.Actions.Empty
     )
 }
@@ -772,7 +772,7 @@ private fun UpdateContactFormScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactFormTopBarPreview() {
     ContactFormTopBar(
-        state = ContactFormState.Data.Update(contact = contactFormSampleData()),
+        state = ContactFormState.Data(contact = contactFormSampleData()),
         onCloseContactFormClick = {},
         onSaveContactClick = {}
     )
