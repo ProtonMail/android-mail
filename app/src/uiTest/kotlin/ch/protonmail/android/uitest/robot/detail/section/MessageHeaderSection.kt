@@ -40,6 +40,10 @@ internal class MessageHeaderSection : ComposeSectionRobot() {
         headerModel.click()
     }
 
+    fun tapReplyButton() = apply {
+        headerModel.tapReplyButton()
+    }
+
     // The `expanded` subsection is an exception, but necessary to split the header checks reasonably.
     fun expanded(block: MessageExpandedHeaderSection.() -> Unit) = MessageExpandedHeaderSection().apply(block)
 

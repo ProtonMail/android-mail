@@ -111,6 +111,10 @@ internal class MessageHeaderEntryModel(
         rootItem.performClick()
     }
 
+    fun tapReplyButton() = apply {
+        replyButton.performClick()
+    }
+
     fun collapseMessage() = apply {
         collapseAnchor.performClick()
     }

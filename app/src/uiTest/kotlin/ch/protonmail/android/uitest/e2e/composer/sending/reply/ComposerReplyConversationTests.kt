@@ -48,9 +48,9 @@ import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackb
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
-import ch.protonmail.android.uitest.robot.detail.section.actionsSection
 import ch.protonmail.android.uitest.robot.detail.section.bannerSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
+import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -129,7 +129,7 @@ internal class ComposerReplyConversationTests :
             messageBodySection { verifyEmbeddedImageLoaded(expectedState = true) }
             bannerSection { verify { hasBlockedContentBannerNotDisplayed() } }
 
-            actionsSection { tapReplyButton() }
+            messageHeaderSection { tapReplyButton() }
         }
 
         composerRobot {
