@@ -19,12 +19,18 @@
 package ch.protonmail.android.testdata.maildetail
 
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
 
 object MessageBannersUiModelTestData {
 
-    val messageBannersUiModel = build(shouldShowPhishingBanner = true)
+    val messageBannersUiModel = build(
+        shouldShowPhishingBanner = true,
+        expirationBannerDuration = 666.hours
+    )
 
-    fun build(shouldShowPhishingBanner: Boolean) = MessageBannersUiModel(
-        shouldShowPhishingBanner = shouldShowPhishingBanner
+    fun build(shouldShowPhishingBanner: Boolean, expirationBannerDuration: Duration) = MessageBannersUiModel(
+        shouldShowPhishingBanner = shouldShowPhishingBanner,
+        expirationBannerDuration = expirationBannerDuration
     )
 }

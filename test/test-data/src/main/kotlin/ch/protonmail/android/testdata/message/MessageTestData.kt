@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.testdata.message
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -192,6 +194,11 @@ object MessageTestData {
     )
 
     val autoPhishingMessage = buildMessage(id = "message", flags = Message.FLAG_PHISHING_AUTO)
+
+    val expiringMessage = buildMessage(
+        id = "message",
+        expirationTime = Instant.now().plus(1, ChronoUnit.HOURS).epochSecond
+    )
 
     fun buildMessage(
         userId: UserId = UserIdTestData.userId,

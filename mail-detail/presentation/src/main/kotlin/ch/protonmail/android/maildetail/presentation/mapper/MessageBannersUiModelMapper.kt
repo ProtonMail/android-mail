@@ -18,13 +18,20 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import java.time.Duration
+import java.time.Instant
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import ch.protonmail.android.mailmessage.domain.model.Message
 import javax.inject.Inject
+import kotlin.time.toKotlinDuration
 
 class MessageBannersUiModelMapper @Inject constructor() {
 
     fun createMessageBannersUiModel(message: Message) = MessageBannersUiModel(
-        shouldShowPhishingBanner = message.isPhishing()
+        shouldShowPhishingBanner = message.isPhishing(),
+        expirationBannerDuration = Duration.between(
+            Instant.now(),
+            Instant.ofEpochSecond(message.expirationTime)
+        ).toKotlinDuration()
     )
 }

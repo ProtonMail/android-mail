@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.model
 
+import kotlin.time.Duration
+
 data class MessageBannersUiModel(
-    val shouldShowPhishingBanner: Boolean
+    val shouldShowPhishingBanner: Boolean,
+    val expirationBannerDuration: Duration
 )

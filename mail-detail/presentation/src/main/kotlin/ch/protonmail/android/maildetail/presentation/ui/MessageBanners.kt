@@ -1,11 +1,13 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -25,18 +28,43 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallInverted
+import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
-    if (messageBannersUiModel.shouldShowPhishingBanner) {
-        MessageBanner(
-            icon = R.drawable.ic_proton_hook,
-            iconTint = ProtonTheme.colors.iconInverted,
-            text = TextUiModel.TextRes(R.string.message_phishing_banner_text),
-            textStyle = ProtonTheme.typography.defaultSmallInverted,
-            backgroundColor = ProtonTheme.colors.notificationError,
-            borderColorIsBackgroundColor = true
-        )
+    Column {
+        if (messageBannersUiModel.shouldShowPhishingBanner) {
+            MessageBanner(
+                icon = R.drawable.ic_proton_hook,
+                iconTint = ProtonTheme.colors.iconInverted,
+                text = TextUiModel.TextRes(R.string.message_phishing_banner_text),
+                textStyle = ProtonTheme.typography.defaultSmallInverted,
+                backgroundColor = ProtonTheme.colors.notificationError,
+                borderColorIsBackgroundColor = true
+            )
+        }
+
+        if (
+            messageBannersUiModel.shouldShowPhishingBanner &&
+            messageBannersUiModel.expirationBannerDuration.isPositive()
+        ) {
+            Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
+        }
+
+        if (messageBannersUiModel.expirationBannerDuration.isPositive()) {
+            MessageBanner(
+                modifier = Modifier.fillMaxWidth(),
+                icon = R.drawable.ic_proton_hourglass,
+                iconTint = ProtonTheme.colors.iconInverted,
+                text = TextUiModel.TextResWithArgs(
+                    R.string.message_expiration_banner_text,
+                    listOf("${messageBannersUiModel.expirationBannerDuration}")
+                ),
+                textStyle = ProtonTheme.typography.defaultSmallInverted,
+                backgroundColor = ProtonTheme.colors.notificationError,
+                borderColorIsBackgroundColor = true
+            )
+        }
     }
 }
 
@@ -83,5 +111,22 @@ fun MessageBanner(
         }
 
         content()
+    }
+}
+
+@Preview(
+    name = "Main settings screen light mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun PreviewMessageBanners() {
+    ProtonTheme {
+        MessageBanners(
+            MessageBannersUiModel(
+                shouldShowPhishingBanner = true,
+                expirationBannerDuration = 666.hours
+            )
+        )
     }
 }

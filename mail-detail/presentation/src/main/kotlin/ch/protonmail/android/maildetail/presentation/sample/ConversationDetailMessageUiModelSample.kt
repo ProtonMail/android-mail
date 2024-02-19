@@ -38,6 +38,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlin.time.Duration.Companion.hours
 
 object ConversationDetailMessageUiModelSample {
 
@@ -239,7 +240,10 @@ object ConversationDetailMessageUiModelSample {
             bccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
             labels = persistentListOf()
         ),
-        messageBannersUiModel = MessageBannersUiModel(shouldShowPhishingBanner = true),
+        messageBannersUiModel = MessageBannersUiModel(
+            shouldShowPhishingBanner = true,
+            expirationBannerDuration = 666.hours
+        ),
         messageBodyUiModel = messageBodyUiModel,
         requestPhishingLinkConfirmation = false,
         expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed,

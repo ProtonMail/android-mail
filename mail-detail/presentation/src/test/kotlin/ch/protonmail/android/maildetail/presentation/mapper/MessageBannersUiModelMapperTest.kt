@@ -48,4 +48,26 @@ class MessageBannersUiModelMapperTest {
         // Then
         assertFalse(result.shouldShowPhishingBanner)
     }
+
+    @Test
+    fun `should map to ui model with positive expiration duration if expiration is in the future`() {
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.expiringMessage
+        )
+
+        // Then
+        assertTrue(result.expirationBannerDuration.isPositive())
+    }
+
+    @Test
+    fun `should map to ui model with negative expiration duration if expiration is in the past`() {
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.message
+        )
+
+        // Then
+        assertTrue(result.expirationBannerDuration.isNegative())
+    }
 }
