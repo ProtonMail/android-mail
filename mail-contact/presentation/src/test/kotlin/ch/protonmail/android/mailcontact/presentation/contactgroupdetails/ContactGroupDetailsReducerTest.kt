@@ -97,6 +97,17 @@ class ContactGroupDetailsReducerTest(
                 expectedState = loadedContactGroupState.copy(
                     close = Effect.of(Unit)
                 )
+            ),
+            TestInput(
+                currentState = loadedContactGroupState,
+                event = ContactGroupDetailsEvent.ComposeEmail(
+                    loadedContactGroupState.contactGroup.members.map { it.email }
+                ),
+                expectedState = loadedContactGroupState.copy(
+                    openComposer = Effect.of(
+                        loadedContactGroupState.contactGroup.members.map { it.email }
+                    )
+                )
             )
         )
 
