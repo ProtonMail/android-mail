@@ -190,7 +190,7 @@ class ParentMessageToDraftFields @Inject constructor(
         val allRecipients = when (action) {
             is DraftAction.PrefillForShare,
             is DraftAction.Compose,
-            is DraftAction.ComposeToAddress, // will be handled via VM
+            is DraftAction.ComposeToAddresses, // will be handled via VM
             is DraftAction.Forward -> emptyList()
 
             is DraftAction.Reply -> listOf(messageWithBody.messageBody.replyTo)
@@ -202,7 +202,7 @@ class ParentMessageToDraftFields @Inject constructor(
     private fun ccRecipientsForAction(action: DraftAction, message: Message) = when (action) {
         is DraftAction.PrefillForShare,
         is DraftAction.Compose,
-        is DraftAction.ComposeToAddress,
+        is DraftAction.ComposeToAddresses,
         is DraftAction.Forward,
         is DraftAction.Reply -> emptyList()
 
@@ -212,7 +212,7 @@ class ParentMessageToDraftFields @Inject constructor(
     private fun subjectPrefixForAction(action: DraftAction) = when (action) {
         is DraftAction.Compose,
         is DraftAction.PrefillForShare,
-        is DraftAction.ComposeToAddress -> ""
+        is DraftAction.ComposeToAddresses -> ""
         is DraftAction.Forward -> "Fw:"
         is DraftAction.Reply,
         is DraftAction.ReplyAll -> "Re:"

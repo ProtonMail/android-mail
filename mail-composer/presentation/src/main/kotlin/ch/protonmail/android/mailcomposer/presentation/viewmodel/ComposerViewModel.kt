@@ -211,7 +211,7 @@ class ComposerViewModel @Inject constructor(
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
-        inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeToAddress)
+        inputDraftId == null && (draftAction == null || draftAction is DraftAction.ComposeToAddresses)
 
     private fun prefillForShareDraftAction(shareDraftAction: DraftAction.PrefillForShare) {
         val fileShareInfo = shareDraftAction.intentShareInfo.decode()
@@ -771,13 +771,14 @@ class ComposerViewModel @Inject constructor(
 
     private fun SavedStateHandle.extractRecipient(): List<RecipientUiModel>? {
         return get<String>(ComposerScreen.SerializedDraftActionKey)?.deserialize<DraftAction>()
-            .let { it as? DraftAction.ComposeToAddress }
+            .let { it as? DraftAction.ComposeToAddresses }
             ?.let {
-                val recipientUiModel = when {
-                    validateEmailAddress(it.recipient) -> RecipientUiModel.Valid(it.recipient)
-                    else -> RecipientUiModel.Invalid(it.recipient)
+                it.recipients.map { recipient ->
+                    when {
+                        validateEmailAddress(recipient) -> RecipientUiModel.Valid(recipient)
+                        else -> RecipientUiModel.Invalid(recipient)
+                    }
                 }
-                listOf(recipientUiModel)
             }
     }
 }

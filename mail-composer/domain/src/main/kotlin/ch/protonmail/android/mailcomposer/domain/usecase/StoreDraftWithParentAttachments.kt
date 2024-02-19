@@ -94,7 +94,7 @@ class StoreDraftWithParentAttachments @Inject constructor(
         is DraftAction.ReplyAll -> parentMessageAttachments.filter { it.disposition == "inline" }
 
         is DraftAction.Compose,
-        is DraftAction.ComposeToAddress -> {
+        is DraftAction.ComposeToAddresses -> {
             Timber.w("Store Draft with parent attachments for a Compose action. This shouldn't happen.")
             raise(Error.ActionWithNoParent)
         }

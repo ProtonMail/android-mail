@@ -390,7 +390,7 @@ internal fun NavGraphBuilder.addContactDetails(
         },
         showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
         navigateToComposer = {
-            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeToAddress(it)))
+            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeToAddresses(listOf(it))))
         }
     )
     composable(route = Destination.Screen.ContactDetails.route) {

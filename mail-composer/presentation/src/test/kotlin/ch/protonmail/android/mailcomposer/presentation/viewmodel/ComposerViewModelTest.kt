@@ -2003,7 +2003,7 @@ class ComposerViewModelTest {
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
         expectContacts()
         mockParticipantMapper()
-        expectInputDraftAction { DraftAction.ComposeToAddress(expectedRecipient.address) }
+        expectInputDraftAction { DraftAction.ComposeToAddresses(listOf(expectedRecipient.address)) }
         expectStoreDraftRecipientsSucceeds(
             expectedMessageId,
             expectedSenderEmail,

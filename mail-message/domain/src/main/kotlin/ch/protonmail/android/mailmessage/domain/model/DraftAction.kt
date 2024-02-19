@@ -37,14 +37,14 @@ sealed interface DraftAction {
     data class Forward(val parentId: MessageId) : DraftAction
 
     @Serializable
-    data class ComposeToAddress(val recipient: String) : DraftAction
+    data class ComposeToAddresses(val recipients: List<String>) : DraftAction
 
     @Serializable
     data class PrefillForShare(val intentShareInfo: IntentShareInfo) : DraftAction
 
     fun getParentMessageId(): MessageId? = when (this) {
         is Compose,
-        is ComposeToAddress -> null
+        is ComposeToAddresses -> null
         is PrefillForShare -> null
         is Forward -> this.parentId
         is Reply -> this.parentId
