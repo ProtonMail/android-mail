@@ -21,7 +21,7 @@ package ch.protonmail.android.mailcontact.domain.mapper
 import java.time.ZoneId
 import java.util.Date
 import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ezvcard.VCard
 import ezvcard.VCardVersion
@@ -51,7 +51,7 @@ class DecryptedContactMapper @Inject constructor() {
     /**
      * We should not generate ClearText ContactCard if CATEGORIES field is empty.
      */
-    fun mapToClearTextContactCard(vCard: VCard, contactGroups: List<ContactGroup>? = null): VCard? {
+    fun mapToClearTextContactCard(vCard: VCard, contactGroups: List<ContactGroupLabel>? = null): VCard? {
 
         val contactGroupNames = contactGroups?.map { it.name }?.toTypedArray()
 

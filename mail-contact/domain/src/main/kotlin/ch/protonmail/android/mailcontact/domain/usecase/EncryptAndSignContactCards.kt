@@ -88,7 +88,7 @@ class EncryptAndSignContactCards @Inject constructor(
             listOfNotNull(
                 decryptedContactMapper.mapToClearTextContactCard(
                     (clearTextContactCard ?: VCard()).sanitizeAndBuildVCard(),
-                    decryptedContact.contactGroups
+                    decryptedContact.contactGroupLabels
                 )?.let { ContactCard.ClearText(it.write()) },
                 decryptedContactMapper.mapToSignedContactCard(
                     fallbackName,
