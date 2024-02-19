@@ -37,7 +37,7 @@ class EditContact @Inject constructor(
         decryptedContact: DecryptedContact,
         contactId: ContactId
     ): Either<EditContactErrors, Unit> {
-        val contactCards = encryptAndSignContactCards.invoke(
+        val contactCards = encryptAndSignContactCards(
             userId,
             decryptedContact.takeIf { it.id != null } ?: decryptedContact.copy(
                 id = contactId
