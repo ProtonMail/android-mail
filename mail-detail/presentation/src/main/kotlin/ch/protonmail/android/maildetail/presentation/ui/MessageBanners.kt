@@ -1,7 +1,6 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -16,10 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import me.proton.core.compose.theme.ProtonDimens
@@ -32,7 +32,7 @@ fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
         MessageBanner(
             icon = R.drawable.ic_proton_hook,
             iconTint = ProtonTheme.colors.iconInverted,
-            text = R.string.message_phishing_banner_text,
+            text = TextUiModel.TextRes(R.string.message_phishing_banner_text),
             textStyle = ProtonTheme.typography.defaultSmallInverted,
             backgroundColor = ProtonTheme.colors.notificationError,
             borderColorIsBackgroundColor = true
@@ -45,7 +45,7 @@ fun MessageBanner(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
     iconTint: Color,
-    @StringRes text: Int,
+    text: TextUiModel,
     textStyle: TextStyle,
     backgroundColor: Color,
     borderColorIsBackgroundColor: Boolean = false,
@@ -77,7 +77,7 @@ fun MessageBanner(
             Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
             Text(
                 modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
-                text = stringResource(id = text),
+                text = text.string(),
                 style = textStyle
             )
         }

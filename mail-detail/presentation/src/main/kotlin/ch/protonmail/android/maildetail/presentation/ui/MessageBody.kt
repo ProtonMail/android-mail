@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
@@ -268,7 +269,7 @@ fun MessageBodyButtonBanner(
     MessageBanner(
         icon = R.drawable.ic_proton_image,
         iconTint = ProtonTheme.colors.iconWeak,
-        text = bannerText,
+        text = TextUiModel.TextRes(bannerText),
         textStyle = ProtonTheme.typography.defaultSmallWeak,
         backgroundColor = ProtonTheme.colors.backgroundSecondary
     ) {
