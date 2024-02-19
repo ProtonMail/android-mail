@@ -70,7 +70,11 @@ fun InitialsContactAvatar(modifier: Modifier = Modifier, initials: String) {
 }
 
 @Composable
-fun IconContactAvatar(modifier: Modifier = Modifier, iconResId: Int, backgroundColor: Color) {
+fun IconContactAvatar(
+    modifier: Modifier = Modifier,
+    iconResId: Int,
+    backgroundColor: Color
+) {
     Box(
         modifier = modifier
             .sizeIn(
