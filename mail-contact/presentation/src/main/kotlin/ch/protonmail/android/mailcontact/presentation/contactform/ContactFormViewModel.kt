@@ -301,7 +301,7 @@ class ContactFormViewModel @Inject constructor(
             userId = primaryUserId(),
             contactId = contactId
         ).first().getOrElse {
-            Timber.e("Error while getting contact in handleSave")
+            Timber.e("Error while getting contact in handleUpdateContact")
             return emitNewStateFor(ContactFormEvent.SaveContactError)
         }
         val updatedDecryptedContact = contactFormUiModelMapper.toDecryptedContact(
@@ -316,7 +316,7 @@ class ContactFormViewModel @Inject constructor(
             decryptedContact = updatedDecryptedContact,
             contactId = contactId
         ).getOrElse {
-            return emitNewStateFor(ContactFormEvent.EditContactError)
+            return emitNewStateFor(ContactFormEvent.SaveContactError)
         }
 
         emitNewStateFor(ContactFormEvent.ContactUpdated)

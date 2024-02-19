@@ -146,13 +146,6 @@ class ContactFormReducerTest(
                 )
             ),
             TestInput(
-                currentState = loadedUpdateContactState,
-                event = ContactFormEvent.EditContactError,
-                expectedState = loadedUpdateContactState.copy(
-                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error))
-                )
-            ),
-            TestInput(
                 currentState = loadedCreateContactState,
                 event = ContactFormEvent.CreatingContact,
                 expectedState = loadedCreateContactState.copy(
