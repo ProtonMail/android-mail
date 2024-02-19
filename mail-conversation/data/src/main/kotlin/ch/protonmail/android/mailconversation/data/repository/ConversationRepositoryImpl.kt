@@ -33,6 +33,7 @@ import ch.protonmail.android.maillabel.domain.extension.isSpam
 import ch.protonmail.android.maillabel.domain.extension.isTrash
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import com.dropbox.android.external.store4.Fetcher
 import com.dropbox.android.external.store4.SourceOfTruth
@@ -58,7 +59,8 @@ class ConversationRepositoryImpl @Inject constructor(
     private val conversationLocalDataSource: ConversationLocalDataSource,
     private val conversationRemoteDataSource: ConversationRemoteDataSource,
     coroutineScopeProvider: CoroutineScopeProvider,
-    private val messageLocalDataSource: MessageLocalDataSource
+    private val messageLocalDataSource: MessageLocalDataSource,
+    private val excludeDraftMessagesAlreadyInOutbox: ExcludeDraftMessagesAlreadyInOutbox
 ) : ConversationRepository {
 
     private data class ConversationKey(val userId: UserId, val conversationId: ConversationId)
@@ -73,7 +75,11 @@ class ConversationRepositoryImpl @Inject constructor(
             },
             writer = { key, (conversation, messages) ->
                 conversationLocalDataSource.upsertConversation(key.userId, conversation)
-                messageLocalDataSource.upsertMessages(messages)
+
+                // Message can be in the outbox for sending, we should not overwrite them
+                val filteredMessages = excludeDraftMessagesAlreadyInOutbox(key.userId, messages)
+                messageLocalDataSource.upsertMessages(filteredMessages)
+
             }
         )
     ).buildProtonStore(coroutineScopeProvider)

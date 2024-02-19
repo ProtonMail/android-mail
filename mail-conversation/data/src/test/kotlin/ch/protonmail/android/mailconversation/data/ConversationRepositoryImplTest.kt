@@ -38,6 +38,7 @@ import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -98,11 +99,16 @@ class ConversationRepositoryImplTest {
         coEvery { this@mockk.upsertMessage(any()) } returns Unit.right()
     }
 
+    private val excludeDraftMessagesAlreadyInOutbox = mockk<ExcludeDraftMessagesAlreadyInOutbox> {
+        coEvery { this@mockk(userId, any()) } returns emptyList()
+    }
+
     private val conversationRepository = ConversationRepositoryImpl(
         conversationLocalDataSource = conversationLocalDataSource,
         conversationRemoteDataSource = conversationRemoteDataSource,
         coroutineScopeProvider = coroutineScopeProvider,
-        messageLocalDataSource = messageLocalDataSource
+        messageLocalDataSource = messageLocalDataSource,
+        excludeDraftMessagesAlreadyInOutbox = excludeDraftMessagesAlreadyInOutbox
     )
 
     @Test
@@ -257,6 +263,38 @@ class ConversationRepositoryImplTest {
             cancelAndConsumeRemainingEvents()
         }
     }
+
+    @Test
+    fun `observe conversation filters out outbox messages and updates others with the conversation from remote`() =
+        runTest {
+            // Given
+            val conversationId = ConversationId("conversationId")
+            val conversation = getConversation(userId, conversationId.id)
+            val updatedConversation = conversation.copy(numUnread = 5)
+            val allMessages = listOf(
+                MessageSample.AugWeatherForecast, MessageSample.SepWeatherForecast,
+                MessageSample.OctWeatherForecast
+            )
+            val nonOutboxMessages = listOf(MessageSample.AugWeatherForecast, MessageSample.SepWeatherForecast)
+            coEvery {
+                conversationLocalDataSource.observeConversation(userId, conversationId)
+            } returns flowOf(conversation)
+            coEvery {
+                conversationRemoteDataSource.getConversationWithMessages(
+                    userId,
+                    conversationId
+                )
+            } returns ConversationWithMessages(conversation = updatedConversation, messages = allMessages)
+            coEvery { excludeDraftMessagesAlreadyInOutbox(userId, allMessages) } returns nonOutboxMessages
+
+            // When
+            conversationRepository.observeConversation(userId, conversationId, refreshData = true).test {
+                // Then
+                coVerify { conversationLocalDataSource.upsertConversation(userId, updatedConversation) }
+                coVerify { messageLocalDataSource.upsertMessages(nonOutboxMessages) }
+                cancelAndConsumeRemainingEvents()
+            }
+        }
 
     @Test
     fun `observe conversations return local cached conversations`() = runTest {
