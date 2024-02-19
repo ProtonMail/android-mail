@@ -69,11 +69,11 @@
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Peringatan: situs web ini terindikasi palsu</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">Demi keamanan Anda, jangan lanjutkan tindakan ini.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Demi keamanan Anda, jangan lanjutkan ke situs web ini.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Kembali (disarankan)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Abaikan peringatan dan lanjut</string>
   <string name="message_delete_dialog_title">Hapus pesan</string>
-  <string name="message_delete_dialog_message">Yakin ingin menghapus pesan ini secara permanen?</string>
+  <string name="message_delete_dialog_message">Apakah Anda yakin ingin menghapus pesan ini secara permanen?</string>
   <string name="message_deleted">Pesan dihapus</string>
   <string name="error_delete_message_failed">Pesan gagal dihapus</string>
   <string name="error_delete_message_failed_wrong_folder">Pesan tidak terletak pada lokasi yang memungkinkan pesan untuk dihapus</string>
@@ -90,4 +90,6 @@
   <string name="message_report_phishing_dialog_message">Dengan melaporkan pesan sebagai upaya phishing, pesan tersebut akan dikirimkan kepada kami agar kami dapat menganalisanya dan meningkatkan filter kami. Hal ini berarti bahwa kami akan dapat melihat isi pesan tersebut secara utuh.</string>
   <string name="message_report_phishing_dialog_confim_button">Konfirmasi</string>
   <string name="message_report_phishing_dialog_cancel_button">Batal</string>
+  <string name="open_on_protoncalendar_banner_title">Buka di Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Kalender terenkripsi yang aman</string>
 </resources>

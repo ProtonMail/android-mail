@@ -95,11 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancel</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">All</string>
+  <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Groups</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d tag</item>
+    <item quantity="other">%1$d tag</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>

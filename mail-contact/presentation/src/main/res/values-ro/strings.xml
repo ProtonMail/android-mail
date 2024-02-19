@@ -20,11 +20,11 @@
   <string name="contact_list_title">Contacte</string>
   <string name="contact_list_loading_error">Eroare la încărcarea contactelor. Reîncercați mai târziu.</string>
   <string name="no_contacts">Nu s-au găsit contacte</string>
-  <string name="no_contact_groups">No contact groups found</string>
+  <string name="no_contact_groups">Nu există grupuri de contacte</string>
   <string name="no_contacts_description">Îmbunătățiți-vă experiența de comunicare creând o nouă persoană de contact sau importând din cele existente.</string>
-  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
+  <string name="no_contact_groups_description">Îmbunătățiți-vă experiența prin e-mail prin crearea unui grup de contacte.</string>
   <string name="add_contact">Adăugare contact</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">Adăugare grup contacte</string>
   <string name="add_contact_content_description">Adăugare contact</string>
   <string name="all_title">Toate</string>
   <string name="groups_title">Grupuri</string>
@@ -95,12 +95,12 @@
   <string name="contact_details_delete_dialog_cancel_button">Anulare</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Eroare la salvarea contactului. Reîncercați mai târziu.</string>
-  <string name="all_contacts_tab">All</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">Contacts</string>
+  <string name="contact_groups_tab">Grupuri</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="few">%1$d members</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d membru</item>
+    <item quantity="few">%1$d membri</item>
+    <item quantity="other">%1$d de membri</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
+  <string name="contact_form_invalid_email_error">Eroare salvare contact. Conține o adresă de e-mail nevalidă.</string>
 </resources>

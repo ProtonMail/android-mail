@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.</string>
   <string name="message_report_phishing_dialog_confim_button">Bestätigen</string>
   <string name="message_report_phishing_dialog_cancel_button">Abbrechen</string>
+  <string name="open_on_protoncalendar_banner_title">In Proton Calendar öffnen</string>
+  <string name="open_on_protoncalendar_banner_description">Sicherer und verschlüsselter Kalender</string>
 </resources>

@@ -20,11 +20,11 @@
   <string name="contact_list_title">Contactes</string>
   <string name="contact_list_loading_error">S\'ha produït un error en carregar els contactes. Proveu de nou més tard.</string>
   <string name="no_contacts">No s\'han trobat contactes.</string>
-  <string name="no_contact_groups">No contact groups found</string>
+  <string name="no_contact_groups">No s\'han trobat grups de contactes.</string>
   <string name="no_contacts_description">Milloreu la vostra experiència de correu electrònic creant un contacte nou o important-ne els existents.</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
   <string name="add_contact">Afegeix un contacte</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">Afegeix un grup de contactes</string>
   <string name="add_contact_content_description">Afegeix un contacte</string>
   <string name="all_title">Tots</string>
   <string name="groups_title">Grups</string>
@@ -66,7 +66,7 @@
   <string name="contact_property_language">Idioma</string>
   <string name="contact_property_time_zone">Zona horària</string>
   <string name="contact_form_loading_error">Error loading contact, please try again later</string>
-  <string name="contact_form_save_success">Contact saved</string>
+  <string name="contact_form_save_success">S\'ha desat el contacte.</string>
   <string name="save_contact_content_description">Desa el contacte</string>
   <string name="contact_form_save">Desa</string>
   <string name="add_new">Afegeix</string>
@@ -82,7 +82,7 @@
   <string name="email_address">Adreça de correu electrònic</string>
   <string name="phone_number">Número de telèfon</string>
   <string name="additional_info">Informació addicional</string>
-  <string name="remove_contact_property">Remove contact property</string>
+  <string name="remove_contact_property">Esborra la propietat del contacte</string>
   <string name="property_type">Tipus de propietat</string>
   <string name="property_label">Etiqueta</string>
   <string name="address_street">Carrer</string>
@@ -95,11 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancel·la</string>
   <string name="contact_details_delete_dialog_confirm_button">D\'acord</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">All</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">Contactes</string>
+  <string name="contact_groups_tab">Grups</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d membre</item>
+    <item quantity="other">%1$d membres</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>

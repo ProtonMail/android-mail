@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Hvis du rapporterer en melding som et forsøk på nettfisking, sendes meldingen til oss, slik at vi kan analysere den og forbedre filtrene våre. Dette betyr at vi vil kunne se innholdet i meldingen i sin helhet.</string>
   <string name="message_report_phishing_dialog_confim_button">Bekreft</string>
   <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
+  <string name="open_on_protoncalendar_banner_title">Åpne i Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Sikker kryptert kalender</string>
 </resources>

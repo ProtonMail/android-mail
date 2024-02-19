@@ -90,4 +90,6 @@
   <string name="message_report_phishing_dialog_message">檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。</string>
   <string name="message_report_phishing_dialog_confim_button">確認</string>
   <string name="message_report_phishing_dialog_cancel_button">取消</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

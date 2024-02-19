@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.</string>
   <string name="message_report_phishing_dialog_confim_button">Bevestigen</string>
   <string name="message_report_phishing_dialog_cancel_button">Annuleren</string>
+  <string name="open_on_protoncalendar_banner_title">Openen in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Veilig versleutelde agenda</string>
 </resources>

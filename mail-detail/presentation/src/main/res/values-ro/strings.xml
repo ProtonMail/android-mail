@@ -92,4 +92,6 @@
   <string name="message_report_phishing_dialog_message">Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și a îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmare</string>
   <string name="message_report_phishing_dialog_cancel_button">Anulare</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

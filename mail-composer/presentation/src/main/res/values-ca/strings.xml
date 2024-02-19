@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">Definir el temps d\'expiració</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Redacta</string>
   <string name="composer_send_without_subject_dialog_text">Enviar missatge sense assumpte?</string>
@@ -65,7 +65,7 @@
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Més informació</a></string>
   <string name="set_message_password_label">Contrasenya del missatge</string>
   <string name="set_message_password_label_repeat">Repeteix la contrasenya</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_label_hint">Pista de contrasenya (opcional)</string>
   <string name="set_message_password_supporting_text">Longitud de 4 a 21 caràcters</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">Les contrasenyes han de coincidir</string>

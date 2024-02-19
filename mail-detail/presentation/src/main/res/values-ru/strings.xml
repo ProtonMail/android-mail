@@ -93,4 +93,6 @@
   <string name="message_report_phishing_dialog_message">Сообщение о попытке фишинга отправит сообщение нам, чтобы мы смогли проанализировать его и улучшить наши фильтры. Это означает, что мы будем способны увидеть содержимое сообщения полностью.</string>
   <string name="message_report_phishing_dialog_confim_button">Подтвердить</string>
   <string name="message_report_phishing_dialog_cancel_button">Отменить</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

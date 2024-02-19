@@ -95,11 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">İptal</string>
   <string name="contact_details_delete_dialog_confirm_button">Tamam</string>
   <string name="contact_form_save_error">Kişi kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
-  <string name="all_contacts_tab">Tümü</string>
+  <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Gruplar</string>
   <plurals name="contact_group_member_count">
     <item quantity="one">%1$d üye</item>
     <item quantity="other">%1$d üye</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Kişi kaydedilirken sorun çıktı, geçersiz bir e-posta adresi içeriyor</string>
+  <string name="contact_form_invalid_email_error">Kişi kaydedilirken sorun çıktı. Belirtilen e-posta adresi geçersiz</string>
 </resources>

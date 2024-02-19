@@ -22,9 +22,9 @@
   <string name="no_contacts">Nenhum contato encontrado</string>
   <string name="no_contact_groups">No contact groups found</string>
   <string name="no_contacts_description">Melhore a sua experiência de e-mail criando um novo contato ou importando os existentes.</string>
-  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
+  <string name="no_contact_groups_description">Melhore a sua experiência de e-mail criando um grupo de contatos</string>
   <string name="add_contact">Adicionar contato</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">Adicionar grupo de contatos</string>
   <string name="add_contact_content_description">Adicionar contato</string>
   <string name="all_title">Todos</string>
   <string name="groups_title">Grupos</string>
@@ -95,11 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancelar</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Erro ao salvar o contato. Tente novamente mais tarde</string>
-  <string name="all_contacts_tab">All</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">Contatos</string>
+  <string name="contact_groups_tab">Grupos</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d membro</item>
+    <item quantity="other">%1$d membros</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>

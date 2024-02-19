@@ -90,4 +90,6 @@
   <string name="message_report_phishing_dialog_message">您举报的邮件会被上传，以便我们分析并改进过滤机制。这意味着我们将得知此邮件的所有内容。</string>
   <string name="message_report_phishing_dialog_confim_button">Confirm</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

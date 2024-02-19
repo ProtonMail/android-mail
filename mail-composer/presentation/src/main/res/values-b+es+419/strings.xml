@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Añadir una contraseña</string>
   <string name="composer_button_set_expiration">Establecer tiempo de expiración</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Redactar</string>
+  <string name="composer_send_without_subject_dialog_title">Enviar</string>
   <string name="composer_send_without_subject_dialog_text">¿Enviar el mensaje sin asunto?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Sí</string>
   <string name="composer_send_without_subject_dialog_reject_button">No</string>

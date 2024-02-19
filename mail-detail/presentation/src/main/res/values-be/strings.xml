@@ -93,4 +93,6 @@
   <string name="message_report_phishing_dialog_message">Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.</string>
   <string name="message_report_phishing_dialog_confim_button">Пацвердзіць</string>
   <string name="message_report_phishing_dialog_cancel_button">Скасаваць</string>
+  <string name="open_on_protoncalendar_banner_title">Адкрыць у Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Бяспечны зашыфраваны каляндар</string>
 </resources>

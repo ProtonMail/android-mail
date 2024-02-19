@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">მიმაგრებული ფაილის თავიდან დაშიფვრა ჩავარდა. უსაფრთხოების მიზნით, ყველა მიმაგრებული ფაილი წაიშალა.</string>
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
   <string name="composer_button_add_password">პაროლის დამატება</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">ვადის დაყენება</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">შედგენა</string>
   <string name="composer_send_without_subject_dialog_text">გავაგზავნო შეტყობინება საგნის გარეშე?</string>

@@ -138,7 +138,7 @@
   <string name="mail_settings_pin_insertion_button_confirm">Bevestigen</string>
   <string name="mail_settings_pin_insertion_error_no_match">Pincodes komen niet overeen.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="one">%s poging over.</item>
     <item quantity="other">%s pogingen over.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">

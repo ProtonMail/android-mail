@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Повторное шифрование вложений не удалось. В целях безопасности все вложения были удалены.</string>
   <string name="composer_warning_local_data_shown">Последняя версия этого черновика не загрузилась. Любые изменения заменят его содержимое.</string>
   <string name="composer_button_add_password">Добавить пароль</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">Установите срок действия</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
   <string name="composer_send_without_subject_dialog_text">Отправить сообщение без темы?</string>

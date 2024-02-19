@@ -87,10 +87,12 @@
   <string name="message_body_load_embedded_images_button_text">Załaduj osadzone obrazy</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Załaduj zawartość zdalną i osadzone obrazy</string>
   <string name="message_report_phishing_dialog_title_offline">Uwaga</string>
-  <string name="message_report_phishing_dialog_message_offline">Te funkcje są dostępne tylko online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Funkcja jest dostępna tylko online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Potwierdź próbę wyłudzenia informacji</string>
   <string name="message_report_phishing_dialog_message">Zgłoszenie wiadomości jako próby wyłudzenia informacji spowoduje wysłanie jej do nas w celu analizy i ulepszania filtrów antyspamowych. Oznacza to, że będziemy mogli zobaczyć pełną treść wiadomości.</string>
   <string name="message_report_phishing_dialog_confim_button">Potwierdź</string>
   <string name="message_report_phishing_dialog_cancel_button">Anuluj</string>
+  <string name="open_on_protoncalendar_banner_title">Otwórz w Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Bezpieczny szyfrowany kalendarz</string>
 </resources>

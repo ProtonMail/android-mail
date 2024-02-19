@@ -131,8 +131,8 @@
   <string name="mailbox_action_clear_operation_scheduled">"Operácia vyčistenia je naplánovaná"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Upozornenie</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložisko vášho účtu Proton je zaplnené z viac ako 80%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložisko vášho účtu Proton je zaplnené z viac ako 90%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložisko vášho Proton účtu je zaplnené na viac ako 80%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložisko vášho Proton účtu je zaplnené na viac ako 90%. Uvoľnite miesto alebo upgradujte a získajte viac úložného priestoru.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Už nepripomínať</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->

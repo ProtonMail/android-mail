@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Η αναφορά ενός μηνύματος ως προσπάθεια ηλεκτρονικού \"ψαρέματος\" (phising) θα το αποστείλει σε εμάς, ώστε να το αναλύσουμε και να βελτιώσουμε τα φίλτρα μας. Αυτό σημαίνει ότι θα μπορέσουμε να δούμε το περιεχόμενο ολόκληρου του μηνύματος.</string>
   <string name="message_report_phishing_dialog_confim_button">Επιβεβαίωση</string>
   <string name="message_report_phishing_dialog_cancel_button">Ακύρωση</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

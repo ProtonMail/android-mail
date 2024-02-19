@@ -23,7 +23,7 @@
   <string name="no_contact_groups">No contact groups found</string>
   <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
-  <string name="add_contact">Add contact</string>
+  <string name="add_contact">Додати контакт</string>
   <string name="add_contact_group">Add contact group</string>
   <string name="add_contact_content_description">Add contact</string>
   <string name="all_title">Всі</string>
@@ -44,17 +44,17 @@
   <string name="contact_type_email">Е-пошта</string>
   <string name="contact_type_phone">Телефон</string>
   <string name="contact_type_home">Home</string>
-  <string name="contact_type_work">Work</string>
+  <string name="contact_type_work">Робоча</string>
   <string name="contact_type_other">Інше</string>
   <string name="contact_type_mobile">Mobile</string>
   <string name="contact_type_main">Main</string>
   <string name="contact_type_fax">Факс</string>
   <string name="contact_type_pager">Пейджер</string>
-  <string name="contact_type_address">Address</string>
+  <string name="contact_type_address">Адреса</string>
   <string name="contact_property_birthday">Birthday</string>
-  <string name="contact_property_note">Note</string>
+  <string name="contact_property_note">Нотатка</string>
   <string name="contact_property_photo">Фото</string>
-  <string name="contact_property_logo">Logo</string>
+  <string name="contact_property_logo">Логотип</string>
   <string name="contact_property_geo">Геолокація</string>
   <string name="contact_property_organization">Organization</string>
   <string name="contact_property_anniversary">Anniversary</string>
@@ -68,7 +68,7 @@
   <string name="contact_form_loading_error">Error loading contact, please try again later</string>
   <string name="contact_form_save_success">Contact saved</string>
   <string name="save_contact_content_description">Save contact</string>
-  <string name="contact_form_save">Save</string>
+  <string name="contact_form_save">Зберегти</string>
   <string name="add_new">Add new</string>
   <string name="email_section">Е-пошта</string>
   <string name="phone_section">Phone number</string>
@@ -77,7 +77,7 @@
   <string name="birthday_section">Birthday</string>
   <string name="other_section">Additional information</string>
   <string name="display_name">Ім\'я</string>
-  <string name="first_name">First name</string>
+  <string name="first_name">Ім\'я</string>
   <string name="last_name">Last name</string>
   <string name="email_address">Email address</string>
   <string name="phone_number">Phone number</string>
@@ -95,13 +95,13 @@
   <string name="contact_details_delete_dialog_cancel_button">Скасувати</string>
   <string name="contact_details_delete_dialog_confirm_button">Гаразд</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">All</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">Contacts</string>
+  <string name="contact_groups_tab">Групи</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="few">%1$d members</item>
-    <item quantity="many">%1$d members</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d учасник</item>
+    <item quantity="few">%1$d учасники</item>
+    <item quantity="many">%1$d учасники</item>
+    <item quantity="other">%1$d учасники</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
 </resources>

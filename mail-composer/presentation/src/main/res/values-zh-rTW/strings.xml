@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">新增密碼</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">設定到期時間</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">撰寫郵件</string>
   <string name="composer_send_without_subject_dialog_text">確定要傳送沒有主旨的郵件嗎？</string>

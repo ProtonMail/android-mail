@@ -20,11 +20,11 @@
   <string name="contact_list_title">კონტაქტები</string>
   <string name="contact_list_loading_error">კონტაქტების ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="no_contacts">კონტაქტები არ მოიძებნა</string>
-  <string name="no_contact_groups">No contact groups found</string>
+  <string name="no_contact_groups">კონტაქტის ჯგუფები ვერ ვიპოვე</string>
   <string name="no_contacts_description">გააუმჯობესეთ თქვენი ელფოსტის გამოცდილება ახალი კონტაქტის შექმნის ან არსებულების შემოტანით.</string>
-  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
+  <string name="no_contact_groups_description">გააუმჯობესეთ თქვენი ელფოსტის გამოცდილება ახალი კონტაქტის ჯგუფის შექმნით.</string>
   <string name="add_contact">კონტაქტის დამატება</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">კონტაქტების ჯგუფის დამატება</string>
   <string name="add_contact_content_description">კონტაქტის დამატება</string>
   <string name="all_title">ყველა</string>
   <string name="groups_title">ჯგუფები</string>
@@ -95,11 +95,11 @@
   <string name="contact_details_delete_dialog_cancel_button">გაუქმება</string>
   <string name="contact_details_delete_dialog_confirm_button">დიახ</string>
   <string name="contact_form_save_error">კონტაქტის შენახვის შეცდომა. მოგვიანებით სცადეთ</string>
-  <string name="all_contacts_tab">All</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">Contacts</string>
+  <string name="contact_groups_tab">ჯგუფები</string>
   <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d წევრი</item>
+    <item quantity="other">%1$d წევრი</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
+  <string name="contact_form_invalid_email_error">კონტაქტის შენახვის შეცდომა. ის არასწორი ელფოსტის მისამართს შეიცავს</string>
 </resources>

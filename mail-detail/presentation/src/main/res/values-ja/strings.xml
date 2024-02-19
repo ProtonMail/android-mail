@@ -90,4 +90,6 @@
   <string name="message_report_phishing_dialog_message">フィッシング詐欺としてこのメッセージを報告すると、私たちにこのメッセージが送信され、私たちはこのメッセージを分析してフィルターを改善することができます。メッセージを報告すると、このメッセージのすべての内容を私たちが閲覧可能になるため、フィッシング詐欺以外のメッセージを報告しないようご注意ください。</string>
   <string name="message_report_phishing_dialog_confim_button">確認</string>
   <string name="message_report_phishing_dialog_cancel_button">キャンセル</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

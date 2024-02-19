@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Herversleuteling van bijlage mislukt. Wegens veiligheidsredenen werden alle bijlagen verwijderd.</string>
   <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>
   <string name="composer_button_add_password">Wachtwoord toevoegen</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">Stel vervaltijd in</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Opstellen</string>
   <string name="composer_send_without_subject_dialog_text">Bericht versturen zonder onderwerp?</string>

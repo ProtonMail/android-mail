@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Al reportar un mensaje como suplantación de identidad, enviarás una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmar</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
+  <string name="open_on_protoncalendar_banner_title">Abrir en Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Calendario seguro y cifrado</string>
 </resources>

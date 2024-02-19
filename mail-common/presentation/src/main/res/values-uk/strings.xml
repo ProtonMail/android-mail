@@ -28,7 +28,7 @@
   <string name="action_reply_all">Відповісти всім</string>
   <string name="action_forward">Переслати</string>
   <string name="action_reply_description">Відповісти</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">Відповісти %s</string>
   <string name="action_reply_all_description">Відповісти всім</string>
   <string name="action_forward_description">Переслати</string>
   <string name="action_mark_read_description">Позначити прочитаним</string>
@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">Зберегти вкладення</string>
   <string name="action_more_description">Більше</string>
   <string name="action_reply_content_description">Відповісти</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">Відповісти %s</string>
   <string name="action_reply_all_content_description">Відповісти всім</string>
   <string name="action_forward_content_description">Переслати</string>
   <string name="action_mark_read_content_description">Позначити прочитаним</string>

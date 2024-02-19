@@ -95,7 +95,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Скасаваць</string>
   <string name="contact_details_delete_dialog_confirm_button">Добра</string>
   <string name="contact_form_save_error">Памылка захавання кантакту. Паспрабуйце яшчэ раз пазней</string>
-  <string name="all_contacts_tab">Усе</string>
+  <string name="all_contacts_tab">Кантакты</string>
   <string name="contact_groups_tab">Групы</string>
   <plurals name="contact_group_member_count">
     <item quantity="one">%1$d удзельнік</item>
@@ -103,5 +103,5 @@
     <item quantity="many">%1$d удзельнікаў</item>
     <item quantity="other">%1$d удзельнікаў</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Памылка захавання кантакту. Ён змяшчае памылковы адрас электроннай пошты</string>
+  <string name="contact_form_invalid_email_error">Памылка захавання кантакту. Кантакт змяшчае памылковы адрас электроннай пошты</string>
 </resources>

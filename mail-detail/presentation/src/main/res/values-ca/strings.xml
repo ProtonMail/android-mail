@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Informar d\'un missatge com a intent de pesca ens l\'enviarà a nosaltres per a poder analitzar-lo i millorar els nostres filtres. Això significa que podrem veure el contingut complet del missatge.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirma</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancel·la</string>
+  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
 </resources>

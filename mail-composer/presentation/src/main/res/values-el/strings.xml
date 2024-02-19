@@ -48,7 +48,7 @@
   <string name="composer_attachment_reencryption_failed_message">Απέτυχε η εκ νέου κρυπτογράφηση του συνημμένου. Για λόγους ασφαλείας, όλα τα συνημμένα καταργήθηκαν.</string>
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>
   <string name="composer_button_add_password">Προσθήκη κωδικού πρόσβασης</string>
-  <string name="composer_button_set_expiration">Set expiration time</string>
+  <string name="composer_button_set_expiration">Ορισμός χρόνου λήξης</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Σύνταξη</string>
   <string name="composer_send_without_subject_dialog_text">Αποστολή μηνύματος χωρίς θέμα;</string>

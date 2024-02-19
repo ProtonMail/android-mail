@@ -91,4 +91,6 @@
   <string name="message_report_phishing_dialog_message">Signaler un message comme une tentative de phishing/hameçonnage nous enverra le message afin que nous puissions l\'analyser et améliorer nos filtres. Cela signifie que nous serons en mesure de voir le contenu du message dans son intégralité.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirmer</string>
   <string name="message_report_phishing_dialog_cancel_button">Annuler</string>
+  <string name="open_on_protoncalendar_banner_title">Ouvrir dans Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Calendrier chiffré et sécurisé</string>
 </resources>
