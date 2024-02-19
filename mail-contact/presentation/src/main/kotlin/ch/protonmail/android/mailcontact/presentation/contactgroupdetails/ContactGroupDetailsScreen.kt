@@ -107,7 +107,14 @@ fun ContactGroupDetailsScreen(
         content = { paddingValues ->
             when (state) {
                 is ContactGroupDetailsState.Data -> {
-                    ContactGroupDetailsContent(state)
+                    ContactGroupDetailsContent(
+                        state = state,
+                        onSendClick = {
+                            viewModel.submit(ContactGroupDetailsViewAction.OnEmailClick)
+                        }
+                    )
+
+                    ConsumableLaunchedEffect(effect = state.openComposer) { actions.navigateToComposer(it) }
                 }
                 is ContactGroupDetailsState.Loading -> {
                     ProtonCenteredProgress(
@@ -137,7 +144,11 @@ fun ContactGroupDetailsScreen(
 }
 
 @Composable
-fun ContactGroupDetailsContent(state: ContactGroupDetailsState.Data, modifier: Modifier = Modifier) {
+fun ContactGroupDetailsContent(
+    state: ContactGroupDetailsState.Data,
+    modifier: Modifier = Modifier,
+    onSendClick: () -> Unit
+) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -172,10 +183,9 @@ fun ContactGroupDetailsContent(state: ContactGroupDetailsState.Data, modifier: M
                 if (ContactGroupSendMessage.value) {
                     ContactGroupDetailsSendTextButton(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
-                        isEnabled = state.isSendEnabled
-                    ) {
-                        // Open composer
-                    }
+                        isEnabled = state.isSendEnabled,
+                        onClick = onSendClick
+                    )
                 }
             }
         }
@@ -329,6 +339,7 @@ object ContactGroupDetailsScreen {
         val onBackClick: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
         val onEditClick: (LabelId) -> Unit,
+        val navigateToComposer: (List<String>) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit
     ) {
 
@@ -338,6 +349,7 @@ object ContactGroupDetailsScreen {
                 onBackClick = {},
                 exitWithErrorMessage = {},
                 onEditClick = {},
+                navigateToComposer = {},
                 showFeatureMissingSnackbar = {}
             )
         }
@@ -351,7 +363,8 @@ private fun ContactGroupDetailsContentPreview() {
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
             contactGroup = contactGroupDetailsSampleData
-        )
+        ),
+        onSendClick = {}
     )
 }
 
@@ -365,7 +378,8 @@ private fun EmptyContactGroupDetailsContentPreview() {
                 memberCount = 0,
                 members = emptyList()
             )
-        )
+        ),
+        onSendClick = {}
     )
 }
 

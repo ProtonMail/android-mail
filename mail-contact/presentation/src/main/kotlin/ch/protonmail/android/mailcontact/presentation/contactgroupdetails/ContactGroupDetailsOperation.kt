@@ -24,6 +24,7 @@ sealed interface ContactGroupDetailsOperation
 
 internal sealed interface ContactGroupDetailsViewAction : ContactGroupDetailsOperation {
     object OnCloseClick : ContactGroupDetailsViewAction
+    object OnEmailClick : ContactGroupDetailsViewAction
 }
 
 sealed interface ContactGroupDetailsEvent : ContactGroupDetailsOperation {
@@ -32,4 +33,7 @@ sealed interface ContactGroupDetailsEvent : ContactGroupDetailsOperation {
     ) : ContactGroupDetailsEvent
     object LoadContactGroupError : ContactGroupDetailsEvent
     object CloseContactGroupDetails : ContactGroupDetailsEvent
+    data class ComposeEmail(
+        val emails: List<String>
+    ) : ContactGroupDetailsEvent
 }

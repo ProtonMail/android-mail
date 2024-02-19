@@ -439,6 +439,9 @@ internal fun NavGraphBuilder.addContactGroupDetails(
         onEditClick = { labelId ->
             navController.navigate(Destination.Screen.EditContactGroup(labelId))
         },
+        navigateToComposer = { emails ->
+            navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeToAddresses(emails)))
+        },
         showFeatureMissingSnackbar = showFeatureMissingSnackbar
     )
     composable(route = Destination.Screen.ContactGroupDetails.route) {

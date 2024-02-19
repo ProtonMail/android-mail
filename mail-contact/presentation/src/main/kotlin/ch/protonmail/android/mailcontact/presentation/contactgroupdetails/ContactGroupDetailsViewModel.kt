@@ -77,9 +77,20 @@ class ContactGroupDetailsViewModel @Inject constructor(
                     ContactGroupDetailsViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupDetailsEvent.CloseContactGroupDetails
                     )
+                    ContactGroupDetailsViewAction.OnEmailClick -> handleOnEmailClick()
                 }
             }
         }
+    }
+
+    private fun handleOnEmailClick() {
+        val currentState = state.value
+        if (currentState !is ContactGroupDetailsState.Data) return
+        emitNewStateFor(
+            ContactGroupDetailsEvent.ComposeEmail(
+                currentState.contactGroup.members.map { it.email }
+            )
+        )
     }
 
     private fun flowContactGroupDetailsEvent(userId: UserId, labelId: LabelId): Flow<ContactGroupDetailsEvent> {

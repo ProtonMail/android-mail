@@ -33,6 +33,7 @@ class ContactGroupDetailsReducer @Inject constructor() {
             is ContactGroupDetailsEvent.ContactGroupLoaded -> reduceContactGroupLoaded(currentState, event)
             is ContactGroupDetailsEvent.LoadContactGroupError -> reduceLoadContactGroupError(currentState)
             is ContactGroupDetailsEvent.CloseContactGroupDetails -> reduceCloseContactGroupDetails(currentState)
+            is ContactGroupDetailsEvent.ComposeEmail -> reduceComposeEmail(currentState, event)
         }
     }
 
@@ -65,6 +66,16 @@ class ContactGroupDetailsReducer @Inject constructor() {
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(close = Effect.of(Unit))
             is ContactGroupDetailsState.Loading -> currentState.copy(close = Effect.of(Unit))
+        }
+    }
+
+    private fun reduceComposeEmail(
+        currentState: ContactGroupDetailsState,
+        event: ContactGroupDetailsEvent.ComposeEmail
+    ): ContactGroupDetailsState {
+        return when (currentState) {
+            is ContactGroupDetailsState.Data -> currentState.copy(openComposer = Effect.of(event.emails))
+            is ContactGroupDetailsState.Loading -> currentState
         }
     }
 }
