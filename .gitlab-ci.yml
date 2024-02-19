@@ -250,6 +250,25 @@ deploy_to_firebase_alpha:
     - !reference [ .firebase_deploy_job, rules ]
     - if: $INTERNAL_ALPHA_RELEASE == "true"
 
+distribute:debug:
+  stage: deploy
+  image: $CI_REGISTRY/tpe/test-scripts
+  dependencies:
+    - build_dev_debug
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      allow_failure: true
+  script:
+    - pip install httpx
+    - upload_to_nexus.py
+      --path app/build/outputs/apk/dev/debug/app-dev-debug.apk
+      --repository "TestData/builds/Mail/Android/LatestDevDebug/"
+      --filename "latest-mail-dev-debug.apk"
+    - upload_to_nexus.py
+      --path app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+      --repository "TestData/builds/Mail/Android/LatestTestDevDebug"
+      --filename "latest-mail-test-dev-debug.apk"
+
 include:
   - project: 'translations/generator'
     ref: master
