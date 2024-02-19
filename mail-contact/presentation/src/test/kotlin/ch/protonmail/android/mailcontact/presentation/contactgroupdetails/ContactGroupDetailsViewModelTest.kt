@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsU
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -44,6 +45,8 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
@@ -60,7 +63,20 @@ class ContactGroupDetailsViewModelTest {
         testLabelId,
         "Group name",
         Color.Red.getHexStringFromColor(),
-        emptyList()
+        listOf(
+            ContactEmail(
+                UserIdTestData.userId,
+                ContactEmailId("contact email id 1"),
+                "First name from contact email",
+                "test1+alias@protonmail.com",
+                0,
+                0,
+                ContactIdTestData.contactId1,
+                "test1@protonmail.com",
+                listOf("LabelId1"),
+                true
+            )
+        )
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -187,6 +203,37 @@ class ContactGroupDetailsViewModelTest {
                 isSendEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 close = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when on email click action is submitted, then compose email event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testEmptyContactGroup
+        val expectedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupDetailsUiModel(expectedContactGroup, expectedContactGroupDetailsUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupDetailsViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupDetailsViewModel.submit(ContactGroupDetailsViewAction.OnEmailClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupDetailsState.Data(
+                isSendEnabled = true,
+                contactGroup = expectedContactGroupDetailsUiModel,
+                openComposer = Effect.of(
+                    expectedContactGroupDetailsUiModel.members.map { it.email }
+                )
             )
 
             assertEquals(expected, actual)
