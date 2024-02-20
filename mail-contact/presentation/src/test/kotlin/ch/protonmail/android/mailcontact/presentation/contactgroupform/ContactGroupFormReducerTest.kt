@@ -128,6 +128,22 @@ class ContactGroupFormReducerTest(
                 expectedState = loadedUpdateContactGroupState.copy(
                     displaySaveLoader = true
                 )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.UpdateMembersError,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.add_members_error))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.OpenManageMembers(
+                    selectedContactEmailIds = listOf("ContactEmailId")
+                ),
+                expectedState = loadedUpdateContactGroupState.copy(
+                    openManageMembers = Effect.of(listOf("ContactEmailId"))
+                )
             )
         )
 
