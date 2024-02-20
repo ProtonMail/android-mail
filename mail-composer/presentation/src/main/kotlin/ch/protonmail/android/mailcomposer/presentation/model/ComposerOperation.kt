@@ -92,5 +92,6 @@ sealed interface ComposerEvent : ComposerOperation {
     object ErrorLoadingParentMessageData : ComposerEvent
     object ErrorAttachmentsExceedSizeLimit : ComposerEvent
     object ErrorAttachmentsReEncryption : ComposerEvent
+    object ErrorSettingExpirationTime : ComposerEvent
     object ConfirmEmptySubject : ComposerEvent
 }

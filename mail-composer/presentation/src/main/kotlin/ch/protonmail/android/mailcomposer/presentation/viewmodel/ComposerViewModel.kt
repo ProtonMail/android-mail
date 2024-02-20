@@ -471,8 +471,10 @@ class ComposerViewModel @Inject constructor(
 
     private fun onExpirationTimeSet(action: ComposerAction.ExpirationTimeSet) {
         viewModelScope.launch {
-            saveExpirationTimeForDraft(primaryUserId(), currentMessageId(), currentSenderEmail(), action.duration)
-            emitNewStateFor(action)
+            saveExpirationTimeForDraft(primaryUserId(), currentMessageId(), currentSenderEmail(), action.duration).fold(
+                ifLeft = { emitNewStateFor(ComposerEvent.ErrorSettingExpirationTime) },
+                ifRight = { emitNewStateFor(action) }
+            )
         }
     }
 

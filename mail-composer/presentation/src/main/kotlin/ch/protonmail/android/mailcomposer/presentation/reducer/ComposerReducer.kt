@@ -157,6 +157,9 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.ConfirmEmptySubject -> currentState.copy(
             confirmSendingWithoutSubject = Effect.of(Unit)
         )
+        is ComposerEvent.ErrorSettingExpirationTime -> currentState.copy(
+            error = Effect.of(TextUiModel(R.string.composer_error_setting_expiration_time))
+        )
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =

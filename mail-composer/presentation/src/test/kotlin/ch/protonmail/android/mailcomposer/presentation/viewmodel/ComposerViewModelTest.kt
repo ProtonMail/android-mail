@@ -2023,6 +2023,36 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit state for showing an error when saving expiration time has failed`() = runTest {
+        // Given
+        val userId = expectedUserId { UserIdSample.Primary }
+        val messageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expirationTime = 1.days
+        expectedPrimaryAddress(userId) { UserAddressSample.PrimaryAddress }
+        expectStartDraftSync(userId, messageId)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectObservedMessageAttachments(userId, messageId)
+        expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(userId, messageId)
+        expectObserveMessagePassword(userId, messageId)
+        expectNoFileShareVia()
+        coEvery {
+            saveMessageExpirationTime(userId, messageId, expectedSenderEmail, 1.days)
+        } returns DataError.Local.DbWriteFailed.left()
+
+        // When
+        viewModel.submit(ComposerAction.ExpirationTimeSet(duration = expirationTime))
+
+        // Then
+        viewModel.state.test {
+            coVerify { saveMessageExpirationTime(userId, messageId, expectedSenderEmail, expirationTime) }
+            assertEquals(Effect.of(TextUiModel(R.string.composer_error_setting_expiration_time)), awaitItem().error)
+        }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)

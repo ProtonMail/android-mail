@@ -818,6 +818,15 @@ class ComposerReducerTest(
             expectedState = ComposerDraftState.initial(messageId).copy(changeBottomSheetVisibility = Effect.of(false))
         )
 
+        private val EmptyToErrorSettingExpirationTime = TestTransition(
+            name = "Should update state to an error when setting expiration time failed",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.ErrorSettingExpirationTime,
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                error = Effect.of(TextUiModel(R.string.composer_error_setting_expiration_time))
+            )
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -870,7 +879,8 @@ class ComposerReducerTest(
             SubmittableToConfirmEmptySubject,
             SubmittableToRejectEmptySubject,
             EmptyToSetExpirationTimeRequested,
-            EmptyToExpirationTimeSet
+            EmptyToExpirationTimeSet,
+            EmptyToErrorSettingExpirationTime
         )
 
         private fun aSubmittableState(
