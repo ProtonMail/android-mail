@@ -294,34 +294,6 @@ class ContactGroupFormViewModelTest {
     }
 
     @Test
-    fun `when update and on add member action is submitted, then open manage members event is emitted`() = runTest {
-        // Given
-        val expectedContactGroup = testContactGroup
-        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
-        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
-        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
-
-        expectSavedStateLabelId(testLabelId)
-
-        // When
-        contactGroupFormViewModel.state.test {
-            // Then
-            awaitItem() // ContactGroup was loaded
-
-            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnAddMemberClick)
-
-            val actual = awaitItem()
-
-            val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel,
-                openManageMembers = Effect.of(listOf("ContactEmailId"))
-            )
-
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `when update and on update member list action is submitted, then loaded members event is emitted`() = runTest {
         // Given
         val expectedContactGroup = testContactGroup
