@@ -19,9 +19,18 @@
 package ch.protonmail.android.mailcontact.presentation.managemembers
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -30,20 +39,29 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
+import ch.protonmail.android.mailcontact.presentation.previewdata.ManageMembersPreviewData
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -51,7 +69,10 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
+import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.contact.domain.entity.ContactEmailId
 
@@ -85,7 +106,7 @@ fun ManageMembersScreen(
         content = { paddingValues ->
             when (state) {
                 is ManageMembersState.Data -> {
-                    // Display content here
+                    ManageMembersContent(state)
                     ConsumableLaunchedEffect(effect = state.onDone) { selectedContactEmailIds ->
                         actions.onDone(selectedContactEmailIds)
                     }
@@ -118,7 +139,99 @@ fun ManageMembersScreen(
 }
 
 @Composable
-private fun ManageMembersTopBar(
+fun ManageMembersContent(state: ManageMembersState.Data, modifier: Modifier = Modifier) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize()
+    ) {
+        item {
+            Column(modifier.fillMaxWidth()) {
+                // TODO Search field
+            }
+        }
+        items(state.members) { member ->
+            ManageMemberItem(
+                member = member
+            )
+        }
+    }
+}
+
+@Composable
+fun ManageMemberItem(modifier: Modifier = Modifier, member: ManageMembersUiModel) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(
+                role = Role.Button,
+                onClick = {
+                    // TODO Handle select action
+                }
+            )
+            .padding(start = ProtonDimens.DefaultSpacing),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .sizeIn(
+                    minWidth = MailDimens.AvatarMinSize,
+                    minHeight = MailDimens.AvatarMinSize
+                )
+                .background(
+                    color = if (member.isSelected) ProtonTheme.colors.iconAccent
+                    else ProtonTheme.colors.interactionWeakNorm,
+                    shape = ProtonTheme.shapes.medium
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            if (member.isSelected) {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                    painter = painterResource(id = R.drawable.ic_proton_users_filled),
+                    tint = Color.White,
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            } else {
+                Text(
+                    textAlign = TextAlign.Center,
+                    text = member.initials
+                )
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(
+                    start = ProtonDimens.ListItemTextStartPadding,
+                    top = ProtonDimens.ListItemTextStartPadding,
+                    bottom = ProtonDimens.ListItemTextStartPadding,
+                    end = ProtonDimens.DefaultSpacing
+                )
+                .weight(1f)
+        ) {
+            Text(
+                text = member.name,
+                style = ProtonTheme.typography.defaultNorm
+            )
+            Text(
+                text = member.email,
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
+        if (member.isSelected) {
+            Icon(
+                modifier = Modifier.padding(
+                    start = ProtonDimens.SmallSpacing,
+                    end = ProtonDimens.DefaultSpacing
+                ),
+                painter = painterResource(id = R.drawable.ic_proton_checkmark),
+                tint = ProtonTheme.colors.iconAccent,
+                contentDescription = NO_CONTENT_DESCRIPTION
+            )
+        }
+    }
+}
+
+@Composable
+fun ManageMembersTopBar(
     actions: ManageMembersScreen.Actions,
     isDoneEnabled: Boolean,
     onDoneClick: () -> Unit
@@ -173,7 +286,27 @@ object ManageMembersScreen {
 
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun ContactDetailsTopBarPreview() {
+private fun ManageMembersContentPreview() {
+    ManageMembersContent(
+        state = ManageMembersState.Data(
+            members = ManageMembersPreviewData.manageMembersSampleData()
+        )
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun EmptyManageMembersContentPreview() {
+    ManageMembersContent(
+        state = ManageMembersState.Data(
+            members = emptyList()
+        )
+    )
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+private fun ManageMembersTopBarPreview() {
     ManageMembersTopBar(
         actions = ManageMembersScreen.Actions.Empty,
         isDoneEnabled = true,
