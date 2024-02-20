@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.managemembers
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
@@ -45,6 +46,7 @@ class ManageMembersViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
     private val reducer: ManageMembersReducer,
     private val manageMembersUiModelMapper: ManageMembersUiModelMapper,
+    private val savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -56,9 +58,10 @@ class ManageMembersViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            flowManageMembersEvent(userId = primaryUserId())
-                .onEach { manageMembersEvent -> emitNewStateFor(manageMembersEvent) }
-                .launchIn(viewModelScope)
+            flowManageMembersEvent(
+                userId = primaryUserId(),
+                selectedContactEmailIds = extractSelectedContactEmailIds() ?: emptyList()
+            ).onEach { manageMembersEvent -> emitNewStateFor(manageMembersEvent) }.launchIn(viewModelScope)
         }
     }
 
@@ -72,21 +75,28 @@ class ManageMembersViewModel @Inject constructor(
         }
     }
 
-    private fun flowManageMembersEvent(userId: UserId): Flow<ManageMembersEvent> {
+    private fun flowManageMembersEvent(
+        userId: UserId,
+        selectedContactEmailIds: List<String>
+    ): Flow<ManageMembersEvent> {
         return observeContacts(userId).map { contacts ->
             ManageMembersEvent.MembersLoaded(
                 manageMembersUiModelMapper.toManageMembersUiModelList(
-                    contacts.getOrElse {
+                    contacts = contacts.getOrElse {
                         Timber.e("Error while observing contacts")
                         return@map ManageMembersEvent.LoadMembersError
                     },
-                    emptyList() // Replace with list of selected member IDs
+                    selectedContactEmailIds = selectedContactEmailIds
                 )
             )
         }
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
+
+    private fun extractSelectedContactEmailIds() = savedStateHandle.get<List<String>>(
+        ManageMembersScreen.ManageMembersSelectedContactEmailIdsKey
+    )
 
     private fun emitNewStateFor(event: ManageMembersEvent) {
         val currentState = state.value
