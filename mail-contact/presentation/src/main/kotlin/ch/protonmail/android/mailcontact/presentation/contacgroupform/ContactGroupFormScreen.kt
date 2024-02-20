@@ -102,7 +102,7 @@ fun ContactGroupFormScreen(
                         viewModel.submit(ContactGroupFormViewAction.OnSaveClick)
                     }
                 ),
-                state = state
+                displaySaveLoader = state is ContactGroupFormState.Data && state.displaySaveLoader
             )
         },
         content = { paddingValues ->
@@ -319,7 +319,7 @@ fun ContactGroupMemberItem(
 }
 
 @Composable
-fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, state: ContactGroupFormState) {
+fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, displaySaveLoader: Boolean) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = { },
@@ -333,7 +333,6 @@ fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, state: Conta
             }
         },
         actions = {
-            val displaySaveLoader = state is ContactGroupFormState.Data && state.displaySaveLoader
             if (displaySaveLoader) {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -439,8 +438,6 @@ private fun EmptyContactGroupFormContentPreview() {
 private fun ContactFormTopBarPreview() {
     ContactGroupFormTopBar(
         actions = ContactGroupFormTopBar.Actions.Empty,
-        state = ContactGroupFormState.Data(
-            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData
-        )
+        displaySaveLoader = false
     )
 }
