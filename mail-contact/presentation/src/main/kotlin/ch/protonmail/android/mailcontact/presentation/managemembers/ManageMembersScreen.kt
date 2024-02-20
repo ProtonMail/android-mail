@@ -125,7 +125,9 @@ private fun ManageMembersTopBar(
 ) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
-        title = { },
+        title = {
+            Text(text = stringResource(id = R.string.manage_members_title))
+        },
         navigationIcon = {
             IconButton(onClick = actions.onClose) {
                 Icon(
