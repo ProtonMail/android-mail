@@ -119,7 +119,7 @@ fun ContactGroupFormScreen(
                         state = state,
                         actions = ContactGroupFormContent.Actions(
                             onAddMemberClick = {
-                                viewModel.submit(ContactGroupFormViewAction.OnAddMemberClick)
+                                actions.manageMembers(state.contactGroup.members.map { it.id.id })
                             },
                             onChangeColorClick = {
                                 // Call view model with change color view action here
@@ -135,9 +135,6 @@ fun ContactGroupFormScreen(
                             message = message,
                             type = ProtonSnackbarType.ERROR
                         )
-                    }
-                    ConsumableLaunchedEffect(effect = state.openManageMembers) { selectedContactEmailIds ->
-                        actions.manageMembers(selectedContactEmailIds)
                     }
                 }
                 is ContactGroupFormState.Loading -> {

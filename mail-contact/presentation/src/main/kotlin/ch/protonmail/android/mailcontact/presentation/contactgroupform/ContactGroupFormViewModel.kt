@@ -89,7 +89,6 @@ class ContactGroupFormViewModel @Inject constructor(
                         ContactGroupFormEvent.Close
                     )
                     ContactGroupFormViewAction.OnSaveClick -> handleSave()
-                    ContactGroupFormViewAction.OnAddMemberClick -> handleOnAddMemberClick()
                 }
             }
         }
@@ -132,17 +131,6 @@ class ContactGroupFormViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun handleOnAddMemberClick() {
-        val stateValue = state.value
-        if (stateValue !is ContactGroupFormState.Data) return
-
-        emitNewStateFor(
-            ContactGroupFormEvent.OpenManageMembers(
-                selectedContactEmailIds = stateValue.contactGroup.members.map { it.id.id }
-            )
-        )
     }
 
     private fun handleSave() {
