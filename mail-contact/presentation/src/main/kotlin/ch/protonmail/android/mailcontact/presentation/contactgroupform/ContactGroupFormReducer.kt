@@ -38,6 +38,7 @@ class ContactGroupFormReducer @Inject constructor() {
             ContactGroupFormEvent.ContactGroupUpdated -> reduceContactGroupUpdated(currentState)
             ContactGroupFormEvent.SaveContactGroupError -> reduceSaveContactGroupError(currentState)
             ContactGroupFormEvent.SavingContactGroup -> reduceSavingContactGroup(currentState)
+            ContactGroupFormEvent.UpdateMembersError -> reduceUpdateMembersError(currentState)
         }
     }
 
@@ -112,6 +113,14 @@ class ContactGroupFormReducer @Inject constructor() {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
                 displaySaveLoader = true
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+    private fun reduceUpdateMembersError(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.add_members_error))
             )
             is ContactGroupFormState.Loading -> currentState
         }

@@ -93,7 +93,9 @@ fun ContactGroupFormScreen(
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactGroupFormViewModel.initialState).value
 
-    // TODO Use selectedContactEmailsIds when not null to updated the current member list
+    selectedContactEmailsIds?.value?.let {
+        viewModel.submit(ContactGroupFormViewAction.OnUpdateMemberList(it))
+    }
 
     Scaffold(
         topBar = {

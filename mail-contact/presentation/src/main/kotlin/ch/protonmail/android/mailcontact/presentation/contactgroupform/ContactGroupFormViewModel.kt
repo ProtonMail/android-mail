@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
@@ -46,6 +47,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ContactGroupFormViewModel @Inject constructor(
     private val observeContactGroup: ObserveContactGroup,
+    private val getContactEmailsById: GetContactEmailsById,
     private val reducer: ContactGroupFormReducer,
     private val contactGroupFormUiModelMapper: ContactGroupFormUiModelMapper,
     private val savedStateHandle: SavedStateHandle,
@@ -82,12 +84,52 @@ class ContactGroupFormViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
+                    is ContactGroupFormViewAction.OnUpdateMemberList -> handleOnUpdateMemberList(action)
                     ContactGroupFormViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupFormEvent.Close
                     )
                     ContactGroupFormViewAction.OnSaveClick -> handleSave()
                     ContactGroupFormViewAction.OnAddMemberClick -> handleOnAddMemberClick()
                 }
+            }
+        }
+    }
+
+    private fun handleOnUpdateMemberList(action: ContactGroupFormViewAction.OnUpdateMemberList) {
+        val stateValue = state.value
+        if (stateValue !is ContactGroupFormState.Data) return
+
+        if (action.selectedContactEmailIds.isEmpty()) {
+            emitNewStateFor(
+                ContactGroupFormEvent.ContactGroupLoaded(
+                    contactGroupFormUiModel = stateValue.contactGroup.copy(memberCount = 0, members = emptyList())
+                )
+            )
+        } else {
+            viewModelScope.launch {
+                val newContactEmailIds = action.selectedContactEmailIds.mapNotNull { contactEmailId ->
+                    contactEmailId.takeIf {
+                        stateValue.contactGroup.members.none { it.id.id == contactEmailId }
+                    }
+                }
+                val newContactEmails = getContactEmailsById(primaryUserId(), newContactEmailIds).getOrElse {
+                    Timber.e("Failed to get contact emails by id")
+                    return@launch emitNewStateFor(ContactGroupFormEvent.UpdateMembersError)
+                }
+                val newContactMembers = contactGroupFormUiModelMapper.toContactGroupFormMemberList(newContactEmails)
+
+                val updatedGroupMemberList = stateValue.contactGroup.members.mapNotNull { member ->
+                    member.takeIf { action.selectedContactEmailIds.contains(it.id.id) }
+                }.plus(newContactMembers)
+
+                emitNewStateFor(
+                    ContactGroupFormEvent.ContactGroupLoaded(
+                        contactGroupFormUiModel = stateValue.contactGroup.copy(
+                            memberCount = updatedGroupMemberList.size,
+                            members = updatedGroupMemberList
+                        )
+                    )
+                )
             }
         }
     }

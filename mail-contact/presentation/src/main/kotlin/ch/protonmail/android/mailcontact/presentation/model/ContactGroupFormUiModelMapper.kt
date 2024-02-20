@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import me.proton.core.contact.domain.entity.ContactEmail
 import javax.inject.Inject
 
 class ContactGroupFormUiModelMapper @Inject constructor() {
@@ -42,5 +43,16 @@ class ContactGroupFormUiModelMapper @Inject constructor() {
                 )
             }
         )
+    }
+
+    fun toContactGroupFormMemberList(contactEmails: List<ContactEmail>): List<ContactGroupFormMember> {
+        return contactEmails.map { contactEmail ->
+            ContactGroupFormMember(
+                id = contactEmail.id,
+                initials = getInitials(contactEmail.name),
+                name = contactEmail.name,
+                email = contactEmail.email
+            )
+        }
     }
 }

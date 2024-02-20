@@ -23,6 +23,9 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiMo
 sealed interface ContactGroupFormOperation
 
 sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
+    data class OnUpdateMemberList(
+        val selectedContactEmailIds: List<String>
+    ) : ContactGroupFormViewAction
     object OnCloseClick : ContactGroupFormViewAction
     object OnSaveClick : ContactGroupFormViewAction
     object OnAddMemberClick : ContactGroupFormViewAction
@@ -38,6 +41,7 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     object SavingContactGroup : ContactGroupFormEvent
     object ContactGroupCreated : ContactGroupFormEvent
     object ContactGroupUpdated : ContactGroupFormEvent
+    object UpdateMembersError : ContactGroupFormEvent
     data class OpenManageMembers(
         val selectedContactEmailIds: List<String>
     ) : ContactGroupFormEvent
