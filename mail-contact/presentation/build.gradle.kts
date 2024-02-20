@@ -57,6 +57,7 @@ android {
 }
 
 dependencies {
+    testImplementation(project(":test:utils"))
     kapt(Dependencies.appAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 
