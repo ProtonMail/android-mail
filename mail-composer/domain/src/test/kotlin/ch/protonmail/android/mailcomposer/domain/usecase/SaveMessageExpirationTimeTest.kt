@@ -18,7 +18,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.days
 
-class SaveExpirationTimeForDraftTest {
+class SaveMessageExpirationTimeTest {
 
     private val userId = UserIdTestData.userId
     private val messageId = MessageIdSample.NewDraftWithSubjectAndBody
@@ -31,7 +31,7 @@ class SaveExpirationTimeForDraftTest {
     private val saveDraft = mockk<SaveDraft>()
     private val transactor = FakeTransactor()
 
-    private val saveExpirationTimeForDraft = SaveExpirationTimeForDraft(
+    private val saveMessageExpirationTime = SaveMessageExpirationTime(
         getLocalDraft, messageExpirationTimeRepository, messageRepository, saveDraft, transactor
     )
 
@@ -50,7 +50,7 @@ class SaveExpirationTimeForDraftTest {
         } returns Unit.right()
 
         // When
-        val actual = saveExpirationTimeForDraft(userId, messageId, senderEmail, expiresIn)
+        val actual = saveMessageExpirationTime(userId, messageId, senderEmail, expiresIn)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -72,7 +72,7 @@ class SaveExpirationTimeForDraftTest {
         } returns Unit.right()
 
         // When
-        val actual = saveExpirationTimeForDraft(userId, messageId, senderEmail, expiresIn)
+        val actual = saveMessageExpirationTime(userId, messageId, senderEmail, expiresIn)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -86,7 +86,7 @@ class SaveExpirationTimeForDraftTest {
         } returns GetLocalDraft.Error.ResolveUserAddressError.left()
 
         // When
-        val actual = saveExpirationTimeForDraft(userId, messageId, senderEmail, expiresIn)
+        val actual = saveMessageExpirationTime(userId, messageId, senderEmail, expiresIn)
 
         // Then
         assertEquals(DataError.Local.NoDataCached.left(), actual)
@@ -99,7 +99,7 @@ class SaveExpirationTimeForDraftTest {
         coEvery { saveDraft(MessageWithBodySample.EmptyDraft, userId) } returns false
 
         // When
-        val actual = saveExpirationTimeForDraft(userId, messageId, senderEmail, expiresIn)
+        val actual = saveMessageExpirationTime(userId, messageId, senderEmail, expiresIn)
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)
@@ -120,7 +120,7 @@ class SaveExpirationTimeForDraftTest {
         } returns DataError.Local.Unknown.left()
 
         // When
-        val actual = saveExpirationTimeForDraft(userId, messageId, senderEmail, expiresIn)
+        val actual = saveMessageExpirationTime(userId, messageId, senderEmail, expiresIn)
 
         // Then
         assertEquals(DataError.Local.Unknown.left(), actual)

@@ -60,7 +60,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
-import ch.protonmail.android.mailcomposer.domain.usecase.SaveExpirationTimeForDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -196,7 +196,7 @@ class ComposerViewModelTest {
     }
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
     private val validateSenderAddress = mockk<ValidateSenderAddress>()
-    private val saveExpirationTimeForDraft = mockk<SaveExpirationTimeForDraft>()
+    private val saveMessageExpirationTime = mockk<SaveMessageExpirationTime>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -236,7 +236,7 @@ class ComposerViewModelTest {
             observeMailFeature,
             observeMessagePassword,
             validateSenderAddress,
-            saveExpirationTimeForDraft,
+            saveMessageExpirationTime,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -2018,7 +2018,7 @@ class ComposerViewModelTest {
 
         // Then
         viewModel.state.test {
-            coVerify { saveExpirationTimeForDraft(userId, messageId, expectedSenderEmail, expirationTime) }
+            coVerify { saveMessageExpirationTime(userId, messageId, expectedSenderEmail, expirationTime) }
             assertEquals(Effect.of(false), awaitItem().changeBottomSheetVisibility)
         }
     }
@@ -2494,7 +2494,7 @@ class ComposerViewModelTest {
         senderEmail: SenderEmail,
         expirationTime: Duration
     ) {
-        coEvery { saveExpirationTimeForDraft(userId, messageId, senderEmail, expirationTime) } returns Unit.right()
+        coEvery { saveMessageExpirationTime(userId, messageId, senderEmail, expirationTime) } returns Unit.right()
     }
 
     private fun mockParticipantMapper() {

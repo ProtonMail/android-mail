@@ -32,7 +32,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import kotlin.time.Duration
 
-class SaveExpirationTimeForDraft @Inject constructor(
+class SaveMessageExpirationTime @Inject constructor(
     private val getLocalDraft: GetLocalDraft,
     private val messageExpirationTimeRepository: MessageExpirationTimeRepository,
     private val messageRepository: MessageRepository,

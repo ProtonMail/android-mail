@@ -57,7 +57,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageSendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.ProvideNewDraftId
 import ch.protonmail.android.mailcomposer.domain.usecase.ReEncryptAttachments
-import ch.protonmail.android.mailcomposer.domain.usecase.SaveExpirationTimeForDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.SaveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.SendMessage
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAllFields
@@ -147,7 +147,7 @@ class ComposerViewModel @Inject constructor(
     private val observeMailFeature: ObserveMailFeature,
     private val observeMessagePassword: ObserveMessagePassword,
     private val validateSenderAddress: ValidateSenderAddress,
-    private val saveExpirationTimeForDraft: SaveExpirationTimeForDraft,
+    private val saveMessageExpirationTime: SaveMessageExpirationTime,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -471,7 +471,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun onExpirationTimeSet(action: ComposerAction.ExpirationTimeSet) {
         viewModelScope.launch {
-            saveExpirationTimeForDraft(primaryUserId(), currentMessageId(), currentSenderEmail(), action.duration).fold(
+            saveMessageExpirationTime(primaryUserId(), currentMessageId(), currentSenderEmail(), action.duration).fold(
                 ifLeft = { emitNewStateFor(ComposerEvent.ErrorSettingExpirationTime) },
                 ifRight = { emitNewStateFor(action) }
             )
