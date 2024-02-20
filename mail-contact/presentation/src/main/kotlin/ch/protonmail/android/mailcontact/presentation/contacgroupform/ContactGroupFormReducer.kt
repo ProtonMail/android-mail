@@ -30,7 +30,7 @@ class ContactGroupFormReducer @Inject constructor() {
         event: ContactGroupFormEvent
     ): ContactGroupFormState {
         return when (event) {
-            is ContactGroupFormEvent.ContactGroupLoaded -> reduceContactGroupLoaded(event)
+            is ContactGroupFormEvent.ContactGroupLoaded -> reduceContactGroupLoaded(currentState, event)
             ContactGroupFormEvent.Close -> reduceClose(currentState)
             ContactGroupFormEvent.LoadError -> reduceLoadError(currentState)
             ContactGroupFormEvent.ContactGroupCreated -> reduceContactGroupCreated(currentState)
@@ -40,8 +40,19 @@ class ContactGroupFormReducer @Inject constructor() {
         }
     }
 
-    private fun reduceContactGroupLoaded(event: ContactGroupFormEvent.ContactGroupLoaded) =
-        ContactGroupFormState.Data(contactGroup = event.contactGroupFormUiModel)
+    private fun reduceContactGroupLoaded(
+        currentState: ContactGroupFormState,
+        event: ContactGroupFormEvent.ContactGroupLoaded
+    ): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                contactGroup = event.contactGroupFormUiModel
+            )
+            is ContactGroupFormState.Loading -> ContactGroupFormState.Data(
+                contactGroup = event.contactGroupFormUiModel
+            )
+        }
+    }
 
     private fun reduceLoadError(currentState: ContactGroupFormState): ContactGroupFormState {
         return when (currentState) {
