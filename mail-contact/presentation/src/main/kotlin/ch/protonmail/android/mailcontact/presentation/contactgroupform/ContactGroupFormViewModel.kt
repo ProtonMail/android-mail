@@ -31,14 +31,10 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFor
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -69,9 +65,9 @@ class ContactGroupFormViewModel @Inject constructor(
         }
         extractLabelId()?.let { labelId ->
             viewModelScope.launch {
-                flowContactGroupFormEvent(userId = primaryUserId(), labelId = LabelId(labelId), colors = colors)
-                    .onEach { contactGroupFormEvent -> emitNewStateFor(contactGroupFormEvent) }
-                    .launchIn(viewModelScope)
+                emitNewStateFor(
+                    getContactGroupFormEvent(userId = primaryUserId(), labelId = LabelId(labelId), colors = colors)
+                )
             }
         } ?: run {
             emitNewStateFor(
@@ -152,22 +148,21 @@ class ContactGroupFormViewModel @Inject constructor(
         emitNewStateFor(ContactGroupFormEvent.ContactGroupUpdated)
     }
 
-    private fun flowContactGroupFormEvent(
+    private suspend fun getContactGroupFormEvent(
         userId: UserId,
         labelId: LabelId,
         colors: List<Color>
-    ): Flow<ContactGroupFormEvent> {
-        return observeContactGroup(userId, labelId).map { contactGroup ->
-            ContactGroupFormEvent.ContactGroupLoaded(
-                contactGroupFormUiModelMapper.toContactGroupFormUiModel(
-                    contactGroup = contactGroup.getOrElse {
-                        Timber.e("Error while observing contact group by id")
-                        return@map ContactGroupFormEvent.LoadError
-                    },
-                    colors = colors
-                )
-            )
+    ): ContactGroupFormEvent {
+        val contactGroup = observeContactGroup(userId, labelId).first().getOrElse {
+            Timber.e("Error while observing contact group by id")
+            return ContactGroupFormEvent.LoadError
         }
+        return ContactGroupFormEvent.ContactGroupLoaded(
+            contactGroupFormUiModelMapper.toContactGroupFormUiModel(
+                contactGroup = contactGroup,
+                colors = colors
+            )
+        )
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()
