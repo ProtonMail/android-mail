@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -52,15 +53,24 @@ import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongNorm
+import me.proton.core.contact.domain.entity.ContactEmailId
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ManageMembersScreen(actions: ManageMembersScreen.Actions, viewModel: ManageMembersViewModel = hiltViewModel()) {
+fun ManageMembersScreen(
+    actions: ManageMembersScreen.Actions,
+    selectedContactEmailsIds: State<List<String>?>?,
+    viewModel: ManageMembersViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ManageMembersViewModel.initialState).value
+
+    viewModel.initViewModelWithData(
+        selectedContactEmailsIds?.value?.map { ContactEmailId(it) } ?: emptyList()
+    )
 
     Scaffold(
         topBar = {
@@ -68,7 +78,7 @@ fun ManageMembersScreen(actions: ManageMembersScreen.Actions, viewModel: ManageM
                 actions = actions,
                 isDoneEnabled = state is ManageMembersState.Data,
                 onDoneClick = {
-                    // Call VM with done view action here
+                    viewModel.submit(ManageMembersViewAction.OnDoneClick)
                 }
             )
         },
@@ -76,6 +86,9 @@ fun ManageMembersScreen(actions: ManageMembersScreen.Actions, viewModel: ManageM
             when (state) {
                 is ManageMembersState.Data -> {
                     // Display content here
+                    ConsumableLaunchedEffect(effect = state.onDone) { selectedContactEmailIds ->
+                        actions.onDone(selectedContactEmailIds)
+                    }
                 }
                 is ManageMembersState.Loading -> {
                     ProtonCenteredProgress(
@@ -138,8 +151,6 @@ private fun ManageMembersTopBar(
 }
 
 object ManageMembersScreen {
-
-    const val ManageMembersSelectedContactEmailIdsKey = "manage_members_selected_contact_email_ids_key"
 
     data class Actions(
         val onDone: (List<String>) -> Unit,

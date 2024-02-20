@@ -36,6 +36,7 @@ sealed interface ContactGroupFormState {
         val contactGroup: ContactGroupFormUiModel,
         val displaySaveLoader: Boolean = false,
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
-        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
+        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+        val openManageMembers: Effect<List<String>> = Effect.empty()
     ) : ContactGroupFormState
 }

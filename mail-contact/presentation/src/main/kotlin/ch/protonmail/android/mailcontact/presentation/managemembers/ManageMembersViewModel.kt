@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcontact.presentation.managemembers
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
@@ -47,7 +46,6 @@ class ManageMembersViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
     private val reducer: ManageMembersReducer,
     private val manageMembersUiModelMapper: ManageMembersUiModelMapper,
-    private val savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -57,11 +55,11 @@ class ManageMembersViewModel @Inject constructor(
 
     val state: StateFlow<ManageMembersState> = mutableState
 
-    init {
+    fun initViewModelWithData(selectedContactEmailIds: List<ContactEmailId>) {
         viewModelScope.launch {
             flowManageMembersEvent(
                 userId = primaryUserId(),
-                selectedContactEmailIds = extractSelectedContactEmailIds() ?: emptyList()
+                selectedContactEmailIds = selectedContactEmailIds
             ).onEach { manageMembersEvent -> emitNewStateFor(manageMembersEvent) }.launchIn(viewModelScope)
         }
     }
@@ -71,6 +69,7 @@ class ManageMembersViewModel @Inject constructor(
             actionMutex.withLock {
                 when (action) {
                     ManageMembersViewAction.OnCloseClick -> emitNewStateFor(ManageMembersEvent.Close)
+                    ManageMembersViewAction.OnDoneClick -> handleOnDoneClick()
                 }
             }
         }
@@ -93,11 +92,18 @@ class ManageMembersViewModel @Inject constructor(
         }
     }
 
-    private suspend fun primaryUserId() = primaryUserId.first()
+    private fun handleOnDoneClick() {
+        val stateValue = state.value
+        if (stateValue !is ManageMembersState.Data) return
 
-    private fun extractSelectedContactEmailIds() = savedStateHandle.get<List<String>>(
-        ManageMembersScreen.ManageMembersSelectedContactEmailIdsKey
-    )?.map { ContactEmailId(it) }
+        emitNewStateFor(
+            ManageMembersEvent.OnDone(
+                selectedContactEmailIds = stateValue.members.mapNotNull { it.takeIf { it.isSelected }?.id?.id }
+            )
+        )
+    }
+
+    private suspend fun primaryUserId() = primaryUserId.first()
 
     private fun emitNewStateFor(event: ManageMembersEvent) {
         val currentState = state.value

@@ -25,6 +25,7 @@ sealed interface ContactGroupFormOperation
 sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     object OnCloseClick : ContactGroupFormViewAction
     object OnSaveClick : ContactGroupFormViewAction
+    object OnAddMemberClick : ContactGroupFormViewAction
 }
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
@@ -37,4 +38,7 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     object SavingContactGroup : ContactGroupFormEvent
     object ContactGroupCreated : ContactGroupFormEvent
     object ContactGroupUpdated : ContactGroupFormEvent
+    data class OpenManageMembers(
+        val selectedContactEmailIds: List<String>
+    ) : ContactGroupFormEvent
 }

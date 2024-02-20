@@ -21,8 +21,8 @@ package ch.protonmail.android.navigation.model
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
-import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
@@ -163,6 +163,7 @@ sealed class Destination(val route: String) {
         object EditContactGroup : Destination("contacts/group/${ContactGroupFormLabelIdKey.wrap()}/form") {
             operator fun invoke(labelId: LabelId) = route.replace(ContactGroupFormLabelIdKey.wrap(), labelId.id)
         }
+        object ManageMembers : Destination("contacts/group/manageMembers")
     }
 
     object Dialog {

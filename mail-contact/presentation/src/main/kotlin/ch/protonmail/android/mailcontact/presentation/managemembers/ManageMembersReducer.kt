@@ -28,6 +28,7 @@ class ManageMembersReducer @Inject constructor() {
     internal fun newStateFrom(currentState: ManageMembersState, event: ManageMembersEvent): ManageMembersState {
         return when (event) {
             is ManageMembersEvent.MembersLoaded -> reduceMembersLoaded(currentState, event)
+            is ManageMembersEvent.OnDone -> reduceOnDone(currentState, event)
             ManageMembersEvent.LoadMembersError -> reduceLoadMembersError(currentState)
             ManageMembersEvent.Close -> reduceClose(currentState)
         }
@@ -40,6 +41,13 @@ class ManageMembersReducer @Inject constructor() {
         return when (currentState) {
             is ManageMembersState.Data -> currentState.copy(members = event.members)
             is ManageMembersState.Loading -> ManageMembersState.Data(members = event.members)
+        }
+    }
+
+    private fun reduceOnDone(currentState: ManageMembersState, event: ManageMembersEvent.OnDone): ManageMembersState {
+        return when (currentState) {
+            is ManageMembersState.Data -> currentState.copy(onDone = Effect.of(event.selectedContactEmailIds))
+            is ManageMembersState.Loading -> currentState
         }
     }
 

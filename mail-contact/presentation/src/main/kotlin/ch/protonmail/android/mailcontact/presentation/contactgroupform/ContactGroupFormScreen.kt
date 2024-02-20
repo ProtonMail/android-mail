@@ -39,6 +39,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -83,6 +84,7 @@ import me.proton.core.contact.domain.entity.ContactEmailId
 @Composable
 fun ContactGroupFormScreen(
     actions: ContactGroupFormScreen.Actions,
+    selectedContactEmailsIds: State<List<String>?>?,
     viewModel: ContactGroupFormViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -90,6 +92,8 @@ fun ContactGroupFormScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactGroupFormViewModel.initialState).value
+
+    // TODO Use selectedContactEmailsIds when not null to updated the current member list
 
     Scaffold(
         topBar = {
@@ -113,7 +117,7 @@ fun ContactGroupFormScreen(
                         state = state,
                         actions = ContactGroupFormContent.Actions(
                             onAddMemberClick = {
-                                // Call view model with add member view action here
+                                viewModel.submit(ContactGroupFormViewAction.OnAddMemberClick)
                             },
                             onChangeColorClick = {
                                 // Call view model with change color view action here
@@ -129,6 +133,9 @@ fun ContactGroupFormScreen(
                             message = message,
                             type = ProtonSnackbarType.ERROR
                         )
+                    }
+                    ConsumableLaunchedEffect(effect = state.openManageMembers) { selectedContactEmailIds ->
+                        actions.manageMembers(selectedContactEmailIds)
                     }
                 }
                 is ContactGroupFormState.Loading -> {
@@ -361,7 +368,8 @@ object ContactGroupFormScreen {
     data class Actions(
         val onClose: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
-        val exitWithSuccessMessage: (String) -> Unit
+        val exitWithSuccessMessage: (String) -> Unit,
+        val manageMembers: (List<String>) -> Unit
     ) {
 
         companion object {
@@ -369,7 +377,8 @@ object ContactGroupFormScreen {
             val Empty = Actions(
                 onClose = {},
                 exitWithErrorMessage = {},
-                exitWithSuccessMessage = {}
+                exitWithSuccessMessage = {},
+                manageMembers = {}
             )
         }
     }

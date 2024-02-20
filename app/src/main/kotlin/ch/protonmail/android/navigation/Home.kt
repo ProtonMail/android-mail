@@ -73,6 +73,7 @@ import ch.protonmail.android.navigation.route.addLabelForm
 import ch.protonmail.android.navigation.route.addLabelList
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
+import ch.protonmail.android.navigation.route.addManageMembers
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
@@ -445,6 +446,17 @@ fun Home(
                             )
                         }
                     },
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostErrorState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    }
+                )
+                addManageMembers(
+                    navController,
                     showErrorSnackbar = { message ->
                         scope.launch {
                             snackbarHostErrorState.showSnackbar(

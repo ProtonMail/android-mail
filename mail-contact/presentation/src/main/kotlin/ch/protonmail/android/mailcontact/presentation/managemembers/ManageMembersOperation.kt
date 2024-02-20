@@ -24,6 +24,7 @@ sealed interface ManageMembersOperation
 
 sealed interface ManageMembersViewAction : ManageMembersOperation {
     object OnCloseClick : ManageMembersViewAction
+    object OnDoneClick : ManageMembersViewAction
 }
 
 sealed interface ManageMembersEvent : ManageMembersOperation {
@@ -32,4 +33,7 @@ sealed interface ManageMembersEvent : ManageMembersOperation {
     ) : ManageMembersEvent
     object LoadMembersError : ManageMembersEvent
     object Close : ManageMembersEvent
+    data class OnDone(
+        val selectedContactEmailIds: List<String>
+    ) : ManageMembersEvent
 }

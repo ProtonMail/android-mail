@@ -31,6 +31,7 @@ class ContactGroupFormReducer @Inject constructor() {
     ): ContactGroupFormState {
         return when (event) {
             is ContactGroupFormEvent.ContactGroupLoaded -> reduceContactGroupLoaded(currentState, event)
+            is ContactGroupFormEvent.OpenManageMembers -> reduceOpenManageMembers(currentState, event)
             ContactGroupFormEvent.Close -> reduceClose(currentState)
             ContactGroupFormEvent.LoadError -> reduceLoadError(currentState)
             ContactGroupFormEvent.ContactGroupCreated -> reduceContactGroupCreated(currentState)
@@ -51,6 +52,18 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Loading -> ContactGroupFormState.Data(
                 contactGroup = event.contactGroupFormUiModel
             )
+        }
+    }
+
+    private fun reduceOpenManageMembers(
+        currentState: ContactGroupFormState,
+        event: ContactGroupFormEvent.OpenManageMembers
+    ): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                openManageMembers = Effect.of(event.selectedContactEmailIds)
+            )
+            is ContactGroupFormState.Loading -> currentState
         }
     }
 

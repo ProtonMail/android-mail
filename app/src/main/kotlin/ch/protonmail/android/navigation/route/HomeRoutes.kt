@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDeta
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
+import ch.protonmail.android.mailcontact.presentation.managemembers.ManageMembersScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
@@ -454,7 +455,7 @@ internal fun NavGraphBuilder.addContactGroupForm(
     showSuccessSnackbar: (message: String) -> Unit,
     showErrorSnackbar: (message: String) -> Unit
 ) {
-    val actions = ContactGroupFormScreen.Actions.Empty.copy(
+    val actions = ContactGroupFormScreen.Actions(
         onClose = { navController.popBackStack() },
         exitWithErrorMessage = { message ->
             navController.popBackStack()
@@ -463,12 +464,59 @@ internal fun NavGraphBuilder.addContactGroupForm(
         exitWithSuccessMessage = { message ->
             navController.popBackStack()
             showSuccessSnackbar(message)
+        },
+        manageMembers = { selectedContactEmailsIds ->
+            navController.currentBackStackEntry?.savedStateHandle?.set(
+                SavedStateKey.SelectedContactEmailIds.key,
+                selectedContactEmailsIds
+            )
+            navController.navigate(Destination.Screen.ManageMembers.route)
         }
     )
     composable(route = Destination.Screen.CreateContactGroup.route) {
-        ContactGroupFormScreen(actions)
+        ContactGroupFormScreen(
+            actions,
+            selectedContactEmailsIds = navController.currentBackStackEntry?.savedStateHandle?.getLiveData<List<String>>(
+                SavedStateKey.SelectedContactEmailIds.key
+            )?.observeAsState()
+        )
     }
     composable(route = Destination.Screen.EditContactGroup.route) {
-        ContactGroupFormScreen(actions)
+        ContactGroupFormScreen(
+            actions,
+            selectedContactEmailsIds = navController.currentBackStackEntry?.savedStateHandle?.getLiveData<List<String>>(
+                SavedStateKey.SelectedContactEmailIds.key
+            )?.observeAsState()
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addManageMembers(
+    navController: NavHostController,
+    showErrorSnackbar: (message: String) -> Unit
+) {
+    val actions = ManageMembersScreen.Actions(
+        onDone = { selectedContactEmailsIds ->
+            navController.previousBackStackEntry?.savedStateHandle?.set(
+                SavedStateKey.SelectedContactEmailIds.key,
+                selectedContactEmailsIds
+            )
+            navController.popBackStack()
+        },
+        onClose = { navController.popBackStack() },
+        exitWithErrorMessage = { message ->
+            navController.popBackStack()
+            showErrorSnackbar(message)
+        }
+    )
+    composable(route = Destination.Screen.ManageMembers.route) {
+        ManageMembersScreen(
+            actions,
+            selectedContactEmailsIds = navController
+                .previousBackStackEntry
+                ?.savedStateHandle
+                ?.getLiveData<List<String>>(SavedStateKey.SelectedContactEmailIds.key)
+                ?.observeAsState()
+        )
     }
 }
