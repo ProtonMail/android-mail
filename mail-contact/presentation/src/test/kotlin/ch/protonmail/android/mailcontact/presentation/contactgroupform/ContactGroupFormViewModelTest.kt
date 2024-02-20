@@ -31,11 +31,6 @@ import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormReducer
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormScreen
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormState
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormViewAction
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormViewModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel

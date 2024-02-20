@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.contacgroupform
+package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

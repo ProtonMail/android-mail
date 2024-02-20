@@ -22,9 +22,6 @@ import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormEvent
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormReducer
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormState
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
 import org.junit.Test

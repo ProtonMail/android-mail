@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMe
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.SerializedDraftActionKey
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
+import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey

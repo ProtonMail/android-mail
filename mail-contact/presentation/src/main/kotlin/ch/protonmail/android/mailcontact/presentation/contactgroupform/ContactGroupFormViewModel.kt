@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.contacgroupform
+package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle

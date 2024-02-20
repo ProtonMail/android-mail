@@ -29,7 +29,7 @@ import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
-import ch.protonmail.android.mailcontact.presentation.contacgroupform.ContactGroupFormScreen
+import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
