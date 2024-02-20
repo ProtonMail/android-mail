@@ -98,6 +98,13 @@ class ManageMembersReducerTest(
                 expectedState = loadedManageMembersState.copy(
                     close = Effect.of(Unit)
                 )
+            ),
+            TestInput(
+                currentState = loadedManageMembersState,
+                event = ManageMembersEvent.OnDone(listOf()),
+                expectedState = loadedManageMembersState.copy(
+                    onDone = Effect.of(emptyList())
+                )
             )
         )
 
