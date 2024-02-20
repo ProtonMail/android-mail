@@ -1525,14 +1525,6 @@ class ComposerViewModelTest {
             expectedDraftId, expectedSenderEmail,
             expectedUserId, expectedDraftFields.subject
         )
-        expectStoreDraftRecipientsSucceeds(
-            expectedDraftId,
-            expectedDraftFields.sender,
-            expectedUserId,
-            expectedDraftFields.recipientsTo.value,
-            expectedDraftFields.recipientsCc.value,
-            expectedDraftFields.recipientsBcc.value
-        )
     }
 
     @Test
@@ -1563,14 +1555,6 @@ class ComposerViewModelTest {
                 expectedMessageDecrypted,
                 expectedDraftFields.sender,
                 expectedAction
-            )
-            expectStoreDraftRecipientsSucceeds(
-                expectedDraftId,
-                expectedDraftFields.sender,
-                expectedUserId,
-                expectedDraftFields.recipientsTo.value,
-                expectedDraftFields.recipientsCc.value,
-                expectedDraftFields.recipientsBcc.value
             )
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
             expectObserveMessagePassword(expectedUserId, expectedDraftId)
