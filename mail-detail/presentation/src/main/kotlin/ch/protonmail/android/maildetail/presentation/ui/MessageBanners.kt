@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
+import ch.protonmail.android.maildetail.presentation.util.toExpirationTextUiModels
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallInverted
@@ -44,21 +45,28 @@ fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
             )
         }
 
+        val expirationTextUiModels = messageBannersUiModel.expirationBannerDuration.toExpirationTextUiModels()
+
         if (
             messageBannersUiModel.shouldShowPhishingBanner &&
-            messageBannersUiModel.expirationBannerDuration.isPositive()
+            expirationTextUiModels?.isNotEmpty() == true
         ) {
             Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
         }
 
-        if (messageBannersUiModel.expirationBannerDuration.isPositive()) {
+        if (expirationTextUiModels?.isNotEmpty() == true) {
+
+            val expirationTextArguments = listOf(
+                expirationTextUiModels.map { it.string() }.joinToString(separator = ", ")
+            )
+
             MessageBanner(
                 modifier = Modifier.fillMaxWidth(),
                 icon = R.drawable.ic_proton_hourglass,
                 iconTint = ProtonTheme.colors.iconInverted,
                 text = TextUiModel.TextResWithArgs(
                     R.string.message_expiration_banner_text,
-                    listOf("${messageBannersUiModel.expirationBannerDuration}")
+                    expirationTextArguments
                 ),
                 textStyle = ProtonTheme.typography.defaultSmallInverted,
                 backgroundColor = ProtonTheme.colors.notificationError,
