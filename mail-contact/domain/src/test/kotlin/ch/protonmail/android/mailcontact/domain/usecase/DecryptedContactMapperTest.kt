@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import ch.protonmail.android.mailcontact.domain.VCARD_PROD_ID
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
-import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
@@ -28,9 +28,9 @@ import ezvcard.VCard
 import ezvcard.VCardVersion
 import ezvcard.property.Uid
 import org.junit.Test
-import kotlin.test.assertNull
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DecryptedContactMapperTest {
@@ -87,8 +87,8 @@ class DecryptedContactMapperTest {
         // Given
         val expectedContactCard = existingVCard
         val expectedCategories = listOf(
-            ContactGroup("Coworkers", "#"),
-            ContactGroup("Friends", "#")
+            ContactGroupLabel("Coworkers", "#"),
+            ContactGroupLabel("Friends", "#")
         )
 
         // When
@@ -107,7 +107,7 @@ class DecryptedContactMapperTest {
     fun `ClearText ContactCard is not returned if existing VCard contains no CATEGORIES and empty list is passed`() {
         // Given
         val expectedContactCard = existingVCard
-        val expectedCategories = emptyList<ContactGroup>()
+        val expectedCategories = emptyList<ContactGroupLabel>()
 
         // When
         val actual = sut.mapToClearTextContactCard(
