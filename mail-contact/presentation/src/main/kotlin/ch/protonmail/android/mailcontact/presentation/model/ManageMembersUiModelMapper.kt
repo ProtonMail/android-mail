@@ -26,7 +26,7 @@ class ManageMembersUiModelMapper @Inject constructor() {
 
     fun toManageMembersUiModelList(
         contacts: List<Contact>,
-        selectedContactIds: List<String>
+        selectedContactEmailIds: List<String>
     ): List<ManageMembersUiModel> {
         return contacts.flatMap { contact ->
             contact.contactEmails.map { contactEmail ->
@@ -35,7 +35,7 @@ class ManageMembersUiModelMapper @Inject constructor() {
                     name = contactEmail.name,
                     email = contactEmail.email,
                     initials = getInitials(contactEmail.name),
-                    isSelected = selectedContactIds.any { it == contactEmail.id.id }
+                    isSelected = selectedContactEmailIds.any { it == contactEmail.id.id }
                 )
             }
         }
