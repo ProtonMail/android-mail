@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.R
@@ -37,6 +38,7 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFor
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -48,6 +50,8 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
@@ -61,12 +65,25 @@ class ContactGroupFormViewModelTest {
     private val testLabelId = ContactGroupFormPreviewData.contactGroupFormSampleData.id!!
     private val testColors = listOf(Color.Red)
     private val testColorStrings = listOf(Color.Red.getHexStringFromColor())
-    private val testEmptyContactGroup = ContactGroup(
+    private val testContactGroup = ContactGroup(
         testUserId,
         testLabelId,
         "Group name",
         Color.Red.getHexStringFromColor(),
-        emptyList()
+        listOf(
+            ContactEmail(
+                UserIdTestData.userId,
+                ContactEmailId("ContactEmailId"),
+                "John Doe",
+                "johndoe@protonmail.com",
+                0,
+                0,
+                ContactIdTestData.contactId1,
+                "johndoe@protonmail.com",
+                listOf("LabelId1"),
+                true
+            )
+        )
     )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
@@ -75,6 +92,7 @@ class ContactGroupFormViewModelTest {
 
     private val contactGroupFormUiModelMapperMock = mockk<ContactGroupFormUiModelMapper>()
     private val observeContactGroupMock = mockk<ObserveContactGroup>()
+    private val getContactEmailsByIdMock = mockk<GetContactEmailsById>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
 
     private val getLabelColors = mockk<GetLabelColors> {
@@ -86,6 +104,7 @@ class ContactGroupFormViewModelTest {
     private val contactGroupFormViewModel by lazy {
         ContactGroupFormViewModel(
             observeContactGroupMock,
+            getContactEmailsByIdMock,
             reducer,
             contactGroupFormUiModelMapperMock,
             savedStateHandleMock,
@@ -127,7 +146,7 @@ class ContactGroupFormViewModelTest {
     @Test
     fun `given Label ID, when init and observe empty contact group, then emits loaded contact group state`() = runTest {
         // Given
-        val expectedContactGroup = testEmptyContactGroup.copy(
+        val expectedContactGroup = testContactGroup.copy(
             members = emptyList()
         )
         val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData.copy(
@@ -155,7 +174,7 @@ class ContactGroupFormViewModelTest {
     fun `given Label ID in SavedState, when init and observe contact group, then emits loaded contact group state`() =
         runTest {
             // Given
-            val expectedContactGroup = testEmptyContactGroup
+            val expectedContactGroup = testContactGroup
             val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
             expectContactGroup(testUserId, testLabelId, expectedContactGroup)
             expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
@@ -196,7 +215,7 @@ class ContactGroupFormViewModelTest {
     @Test
     fun `when on close action is submitted, then close event is emitted`() = runTest {
         // Given
-        val expectedContactGroup = testEmptyContactGroup
+        val expectedContactGroup = testContactGroup
         val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
         expectContactGroup(testUserId, testLabelId, expectedContactGroup)
         expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
@@ -248,7 +267,7 @@ class ContactGroupFormViewModelTest {
     @Test
     fun `when update and on save action is submitted, then updated event is emitted`() = runTest {
         // Given
-        val expectedContactGroup = testEmptyContactGroup
+        val expectedContactGroup = testContactGroup
         val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
         expectContactGroup(testUserId, testLabelId, expectedContactGroup)
         expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
@@ -268,6 +287,61 @@ class ContactGroupFormViewModelTest {
                 contactGroup = expectedContactGroupFormUiModel,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success)),
                 displaySaveLoader = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when update and on add member action is submitted, then open manage members event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnAddMemberClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel,
+                openManageMembers = Effect.of(listOf("ContactEmailId"))
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when update and on update member list action is submitted, then loaded members event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnUpdateMemberList(listOf()))
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList())
             )
 
             assertEquals(expected, actual)
