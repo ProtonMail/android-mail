@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcontact.presentation.contacgroupform
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +30,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -43,7 +41,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -51,7 +48,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -67,6 +63,7 @@ import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFo
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSecondaryButton
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -171,16 +168,21 @@ fun ContactGroupFormContent(
                     iconResId = R.drawable.ic_proton_users,
                     backgroundColor = state.contactGroup.color
                 )
-                ContactGroupFormTextButton(
-                    modifier = Modifier
+                ProtonSecondaryButton(
+                    modifier = modifier
                         .padding(
                             vertical = ProtonDimens.SmallSpacing,
                             horizontal = ProtonDimens.DefaultSpacing
                         )
                         .align(Alignment.CenterHorizontally),
-                    text = stringResource(R.string.change_color),
                     onClick = actions.onChangeColorClick
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.change_color),
+                        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+                        style = ProtonTheme.typography.defaultSmallNorm
+                    )
+                }
                 FormInputField(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -230,11 +232,16 @@ fun ContactGroupFormContent(
             }
         }
         item {
-            ContactGroupFormTextButton(
+            ProtonSecondaryButton(
                 modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                text = stringResource(R.string.add_members),
                 onClick = actions.onAddMemberClick
-            )
+            ) {
+                Text(
+                    text = stringResource(R.string.add_members),
+                    modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+                    style = ProtonTheme.typography.defaultSmallNorm
+                )
+            }
         }
     }
 }
@@ -296,37 +303,6 @@ fun ContactGroupMemberItem(
                 contentDescription = stringResource(id = R.string.remove_member_content_description)
             )
         }
-    }
-}
-
-@Composable
-fun ContactGroupFormTextButton(
-    modifier: Modifier = Modifier,
-    text: String,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .background(
-                color = ProtonTheme.colors.interactionWeakNorm,
-                shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius)
-            )
-            .clip(shape = RoundedCornerShape(ProtonDimens.LargeCornerRadius))
-            .clickable(
-                role = Role.Button,
-                onClick = onClick
-            )
-    ) {
-        Text(
-            modifier = Modifier.padding(
-                top = ProtonDimens.SmallSpacing,
-                bottom = ProtonDimens.SmallSpacing,
-                start = ProtonDimens.DefaultSpacing,
-                end = ProtonDimens.DefaultSpacing
-            ),
-            text = text,
-            style = ProtonTheme.typography.defaultSmallNorm
-        )
     }
 }
 
