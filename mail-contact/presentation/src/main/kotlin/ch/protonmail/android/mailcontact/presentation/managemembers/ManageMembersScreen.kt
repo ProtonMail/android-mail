@@ -68,7 +68,7 @@ fun ManageMembersScreen(actions: ManageMembersScreen.Actions, viewModel: ManageM
                 actions = actions,
                 isDoneEnabled = state is ManageMembersState.Data,
                 onDoneClick = {
-                    // TODO Call VM with OnDoneClick view action here
+                    // Call VM with done view action here
                 }
             )
         },
