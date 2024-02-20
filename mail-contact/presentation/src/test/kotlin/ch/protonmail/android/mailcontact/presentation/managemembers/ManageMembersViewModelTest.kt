@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.managemembers
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModelMapper
@@ -121,14 +122,42 @@ class ManageMembersViewModelTest {
 
         // When
         manageMembersViewModel.state.test {
-            manageMembersViewModel.initViewModelWithData(defaultTestSelectedContactEmailIds)
+            awaitItem()
 
-            skipItems(1)
+            manageMembersViewModel.initViewModelWithData(defaultTestSelectedContactEmailIds)
 
             // Then
             val actual = awaitItem()
             val expected = ManageMembersState.Data(
                 members = defaultTestManageMembersUiModel
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given contact list, when on done click, then emits on done state`() = runTest {
+        // Given
+        val contacts = listOf(defaultTestContact)
+        expectContactsData(contacts)
+        expectUiModelMapper(contacts, defaultTestSelectedContactEmailIds, defaultTestManageMembersUiModel)
+
+        // When
+        manageMembersViewModel.state.test {
+            awaitItem()
+
+            manageMembersViewModel.initViewModelWithData(defaultTestSelectedContactEmailIds)
+
+            awaitItem()
+
+            manageMembersViewModel.submit(ManageMembersViewAction.OnDoneClick)
+
+            // Then
+            val actual = awaitItem()
+            val expected = ManageMembersState.Data(
+                members = defaultTestManageMembersUiModel,
+                onDone = Effect.of(listOf("ContactEmailId2"))
             )
 
             assertEquals(expected, actual)
