@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcontact.presentation.managemembers
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
@@ -101,7 +100,6 @@ class ManageMembersViewModelTest {
 
     private val manageMembersUiModelMapperMock = mockk<ManageMembersUiModelMapper>()
     private val observeContactsMock = mockk<ObserveContacts>()
-    private val savedStateHandleMock = mockk<SavedStateHandle>()
 
     private val reducer = ManageMembersReducer()
 
@@ -110,7 +108,6 @@ class ManageMembersViewModelTest {
             observeContactsMock,
             reducer,
             manageMembersUiModelMapperMock,
-            savedStateHandleMock,
             observePrimaryUserId
         )
     }
@@ -121,10 +118,11 @@ class ManageMembersViewModelTest {
         val contacts = listOf(defaultTestContact)
         expectContactsData(contacts)
         expectUiModelMapper(contacts, defaultTestSelectedContactEmailIds, defaultTestManageMembersUiModel)
-        expectSavedState(defaultTestSelectedContactEmailIds)
 
         // When
         manageMembersViewModel.state.test {
+            manageMembersViewModel.initViewModelWithData(defaultTestSelectedContactEmailIds)
+
             skipItems(1)
 
             // Then
@@ -154,11 +152,5 @@ class ManageMembersViewModelTest {
                 selectedContactEmailIds = selectedContactEmailIds
             )
         } returns manageMembersUiModel
-    }
-
-    private fun expectSavedState(selectedContactEmailIds: List<ContactEmailId>) {
-        every {
-            savedStateHandleMock.get<List<String>>(ManageMembersScreen.ManageMembersSelectedContactEmailIdsKey)
-        } returns selectedContactEmailIds.map { it.id }
     }
 }
