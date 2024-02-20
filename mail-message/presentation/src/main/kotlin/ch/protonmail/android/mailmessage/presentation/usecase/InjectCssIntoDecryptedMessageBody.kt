@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
+import java.io.IOException
 import android.content.Context
 import android.content.res.Resources.NotFoundException
 import androidx.annotation.RawRes
@@ -27,7 +28,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 import timber.log.Timber
-import java.io.IOException
 import javax.inject.Inject
 
 class InjectCssIntoDecryptedMessageBody @Inject constructor(
@@ -42,6 +42,7 @@ class InjectCssIntoDecryptedMessageBody @Inject constructor(
             val messageBodyDocument = Jsoup.parse(messageBody)
             val messageBodyHead = messageBodyDocument.head()
 
+            messageBodyHead.injectMetaViewport()
             messageBodyHead.injectCss(R.raw.css_reset_with_media_scheme_plus_custom_props)
 
             messageBodyDocument.toString()
@@ -59,5 +60,9 @@ class InjectCssIntoDecryptedMessageBody @Inject constructor(
         } catch (ioException: IOException) {
             Timber.e(ioException, "Failed to read raw css resource")
         }
+    }
+
+    private fun Element.injectMetaViewport() {
+        prepend("<meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\">")
     }
 }

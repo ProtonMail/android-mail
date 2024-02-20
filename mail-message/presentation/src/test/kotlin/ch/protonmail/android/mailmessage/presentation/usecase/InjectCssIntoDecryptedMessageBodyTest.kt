@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
+import java.io.InputStream
 import android.content.Context
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
@@ -25,7 +26,6 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
-import java.io.InputStream
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -71,6 +71,7 @@ class InjectCssIntoDecryptedMessageBodyTest {
         val expected = """
             <html>
              <head>
+              <meta name="viewport" content="width=device-width, user-scalable=yes">
               <style>${TestData.css}</style>
              </head>
              <body>

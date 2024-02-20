@@ -65,6 +65,7 @@ import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel.Html
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
@@ -151,6 +152,8 @@ fun MessageBodyWebView(
                     it.settings.safeBrowsingEnabled = true
                     it.settings.allowContentAccess = false
                     it.settings.allowFileAccess = false
+                    it.settings.loadWithOverviewMode = messageBodyUiModel.mimeType == Html
+                    it.settings.useWideViewPort = messageBodyUiModel.mimeType == Html
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         it.settings.isAlgorithmicDarkeningAllowed = true
                     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
