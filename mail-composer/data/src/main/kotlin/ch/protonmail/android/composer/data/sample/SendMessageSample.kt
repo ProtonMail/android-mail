@@ -20,6 +20,7 @@ package ch.protonmail.android.composer.data.sample
 
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.usecase.GenerateSendMessagePackages
+import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.auth.domain.entity.Modulus
@@ -38,6 +39,7 @@ import me.proton.core.mailsettings.domain.entity.PackageType
 import me.proton.core.network.domain.session.SessionId
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.time.Duration.Companion.days
 
 @OptIn(ExperimentalEncodingApi::class)
 object SendMessageSample {
@@ -117,6 +119,8 @@ object SendMessageSample {
     const val EncryptedToken = "encryptedToken"
 
     val SessionId = SessionId("sessionId")
+
+    val MessageExpirationTime = MessageExpirationTime(UserId("userId"), MessageId("messageId"), 1.days)
 
     object SendPreferences {
 

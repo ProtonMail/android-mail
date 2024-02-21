@@ -27,6 +27,7 @@ import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
@@ -55,7 +56,8 @@ class SendMessage @Inject constructor(
     private val obtainSendPreferences: ObtainSendPreferences,
     private val observeMailSettings: ObserveMailSettings,
     private val getAttachmentFiles: GetAttachmentFiles,
-    private val observeMessagePassword: ObserveMessagePassword
+    private val observeMessagePassword: ObserveMessagePassword,
+    private val observeMessageExpirationTime: ObserveMessageExpirationTime
 ) {
 
     /**
@@ -101,10 +103,13 @@ class SendMessage @Inject constructor(
             .mapLeft { Error.GeneratingPackages }
             .bind()
 
+        val expiresInSeconds = observeMessageExpirationTime(userId, messageId).first()?.expiresIn?.inWholeSeconds ?: 0
+
         val response = messageRemoteDataSource.send(
             userId,
             localDraft.message.messageId.id,
             SendMessageBody(
+                expiresIn = expiresInSeconds,
                 autoSaveContacts = autoSaveContacts.toInt(),
                 packages = messagePackages
             )

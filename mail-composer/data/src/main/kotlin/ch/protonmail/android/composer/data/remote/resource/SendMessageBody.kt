@@ -24,6 +24,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class SendMessageBody(
 
+    @SerialName("ExpiresIn")
+    val expiresIn: Long,
+
     @SerialName("AutoSaveContacts")
     val autoSaveContacts: Int,
 

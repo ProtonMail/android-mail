@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
+import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
@@ -75,6 +76,7 @@ class SendMessageTest {
     private val observeMailSettings = mockk<ObserveMailSettings>()
     private val getAttachmentFiles = mockk<GetAttachmentFiles>()
     private val observeMessagePassword = mockk<ObserveMessagePassword>()
+    private val observeMessageExpirationTime = mockk<ObserveMessageExpirationTime>()
 
     private val sendMessage = SendMessage(
         accountRepository,
@@ -86,7 +88,8 @@ class SendMessageTest {
         obtainSendPreferences,
         observeMailSettings,
         getAttachmentFiles,
-        observeMessagePassword
+        observeMessagePassword,
+        observeMessageExpirationTime
     )
 
     private val userId = UserAddressSample.PrimaryAddress.userId
@@ -190,6 +193,7 @@ class SendMessageTest {
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
         expectSendOperationSucceeds(messagePackages)
         expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -213,6 +217,7 @@ class SendMessageTest {
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences, attachments)
         expectSendOperationSucceeds(messagePackages)
         expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -233,6 +238,7 @@ class SendMessageTest {
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         expectSendOperationSucceeds(messagePackages)
         expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeDoesNotExist()
 
         // When
         sendMessage(userId, messageId)
@@ -280,6 +286,7 @@ class SendMessageTest {
         expectResolveUserAddressSucceeds()
         expectObserveMailSettingsReturnsNull()
         expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeDoesNotExist()
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         coEvery {
             messageRemoteDataSource.send(
@@ -306,6 +313,7 @@ class SendMessageTest {
         val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
         expectSendOperationSucceeds(messagePackages)
         expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeDoesNotExist()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -333,6 +341,7 @@ class SendMessageTest {
             )
             expectSendOperationSucceeds(messagePackages)
             expectMessagePasswordDoesNotExist()
+            expectMessageExpirationTimeDoesNotExist()
 
             // When
             val result = sendMessage(userId, messageId)
@@ -361,6 +370,7 @@ class SendMessageTest {
             )
             expectSendOperationSucceeds(messagePackages)
             expectMessagePasswordDoesNotExist()
+            expectMessageExpirationTimeDoesNotExist()
 
             // When
             val result = sendMessage(userId, messageId)
@@ -396,6 +406,7 @@ class SendMessageTest {
         expectMessagePasswordExists()
         expectGetSessionIdSucceeds()
         expectGetRandomModulusSucceeds()
+        expectMessageExpirationTimeDoesNotExist()
 
         // When
         val result = sendMessage(userId, messageId)
@@ -406,6 +417,28 @@ class SendMessageTest {
             accountRepository.getSessionIdOrNull(userId)
             authRepository.randomModulus(SendMessageSample.SessionId)
         }
+    }
+
+    @Test
+    fun `when message expiration time is set, include it in the send message request body`() = runTest {
+        // Given
+        val messageExpiresInSeconds = SendMessageSample.MessageExpirationTime.expiresIn.inWholeSeconds
+        val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
+        expectFindLocalDraftSucceeds()
+        expectResolveUserAddressSucceeds()
+        expectObserveMailSettingsReturnsNull()
+        val messagePackages = expectGenerateMessagePackagesSucceeds(sendPreferences)
+        expectSendOperationSucceeds(messagePackages, messageExpiresInSeconds)
+        expectMessagePasswordDoesNotExist()
+        expectMessageExpirationTimeExists()
+
+        // When
+        val result = sendMessage(userId, messageId)
+
+        // Then
+        val sendMessageBody = generateSendMessageBody(messagePackages, messageExpiresInSeconds)
+        coVerify { messageRemoteDataSource.send(userId, messageId.id, sendMessageBody) }
+        assertEquals(Unit.right(), result)
     }
 
     private fun expectFindLocalDraftSucceeds(expected: () -> MessageWithBody = { sampleMessage }) = expected().also {
@@ -464,12 +497,12 @@ class SendMessageTest {
         } returns messagePackages.right()
     }
 
-    private fun expectSendOperationSucceeds(messagePackages: List<SendMessagePackage>) {
+    private fun expectSendOperationSucceeds(messagePackages: List<SendMessagePackage>, expiresIn: Long = 0) {
         coEvery {
             messageRemoteDataSource.send(
                 userId,
                 messageId.id,
-                generateSendMessageBody(messagePackages)
+                generateSendMessageBody(messagePackages, expiresIn)
             )
         } returns SendMessageResponse(200, mockk()).right()
     }
@@ -480,6 +513,16 @@ class SendMessageTest {
 
     private fun expectMessagePasswordDoesNotExist() {
         coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
+    }
+
+    private fun expectMessageExpirationTimeExists() {
+        coEvery {
+            observeMessageExpirationTime(userId, messageId)
+        } returns flowOf(SendMessageSample.MessageExpirationTime)
+    }
+
+    private fun expectMessageExpirationTimeDoesNotExist() {
+        coEvery { observeMessageExpirationTime(userId, messageId) } returns flowOf(null)
     }
 
     private fun expectGetSessionIdSucceeds() {
@@ -542,5 +585,9 @@ class SendMessageTest {
         )
     }
 
-    private fun generateSendMessageBody(packages: List<SendMessagePackage>) = SendMessageBody(false.toInt(), packages)
+    private fun generateSendMessageBody(packages: List<SendMessagePackage>, expiresIn: Long = 0) = SendMessageBody(
+        expiresIn = expiresIn,
+        autoSaveContacts = false.toInt(),
+        packages = packages
+    )
 }
