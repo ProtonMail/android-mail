@@ -60,6 +60,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -209,19 +210,29 @@ fun ContactDetailsContent(
                 }
                 Text(
                     modifier = Modifier
-                        .padding(top = ProtonDimens.MediumSpacing)
+                        .padding(
+                            top = ProtonDimens.MediumSpacing,
+                            start = ProtonDimens.MediumSpacing,
+                            end = ProtonDimens.MediumSpacing
+                        )
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.headlineNorm,
-                    text = state.contact.nameHeader
+                    text = state.contact.nameHeader,
+                    textAlign = TextAlign.Center
                 )
                 if (state.contact.nameSubText.isNotBlank()) {
                     Text(
                         modifier = Modifier
-                            .padding(top = ProtonDimens.ExtraSmallSpacing)
+                            .padding(
+                                top = ProtonDimens.ExtraSmallSpacing,
+                                start = ProtonDimens.MediumSpacing,
+                                end = ProtonDimens.MediumSpacing
+                            )
                             .align(Alignment.CenterHorizontally),
                         style = ProtonTheme.typography.defaultNorm,
                         color = ProtonTheme.colors.textWeak,
-                        text = state.contact.nameSubText
+                        text = state.contact.nameSubText,
+                        textAlign = TextAlign.Center
                     )
                 }
                 ActionItemsRow(

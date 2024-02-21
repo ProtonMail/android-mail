@@ -164,21 +164,31 @@ fun ContactGroupDetailsContent(
                 )
                 Text(
                     modifier = Modifier
-                        .padding(top = ProtonDimens.MediumSpacing)
+                        .padding(
+                            top = ProtonDimens.MediumSpacing,
+                            start = ProtonDimens.MediumSpacing,
+                            end = ProtonDimens.MediumSpacing
+                        )
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.headlineNorm,
-                    text = state.contactGroup.name
+                    text = state.contactGroup.name,
+                    textAlign = TextAlign.Center
                 )
                 Text(
                     modifier = Modifier
-                        .padding(top = ProtonDimens.ExtraSmallSpacing)
+                        .padding(
+                            top = ProtonDimens.ExtraSmallSpacing,
+                            start = ProtonDimens.MediumSpacing,
+                            end = ProtonDimens.MediumSpacing
+                        )
                         .align(Alignment.CenterHorizontally),
                     style = ProtonTheme.typography.captionWeak,
                     text = pluralStringResource(
                         R.plurals.contact_group_details_member_count,
                         state.contactGroup.memberCount,
                         state.contactGroup.memberCount
-                    )
+                    ),
+                    textAlign = TextAlign.Center
                 )
                 if (ContactGroupSendMessage.value) {
                     ContactGroupDetailsSendTextButton(
