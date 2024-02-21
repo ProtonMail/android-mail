@@ -90,9 +90,11 @@ fun ManageMembersScreen(
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ManageMembersViewModel.initialState).value
 
-    viewModel.initViewModelWithData(
-        selectedContactEmailsIds?.value?.map { ContactEmailId(it) } ?: emptyList()
-    )
+    if (state !is ManageMembersState.Data) {
+        viewModel.initViewModelWithData(
+            selectedContactEmailsIds?.value?.map { ContactEmailId(it) } ?: emptyList()
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -111,13 +113,20 @@ fun ManageMembersScreen(
                         state = state,
                         actions = ManageMembersContent.Actions(
                             onMemberClick = {
-                                // TODO Submit to VM
+                                viewModel.submit(ManageMembersViewAction.OnMemberClick(it))
                             },
                             onSearchValueChange = {
                                 // TODO Submit to VM
                             }
                         )
                     )
+
+                    ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
+                        snackbarHostErrorState.showSnackbar(
+                            message = message,
+                            type = ProtonSnackbarType.ERROR
+                        )
+                    }
                     ConsumableLaunchedEffect(effect = state.onDone) { selectedContactEmailIds ->
                         actions.onDone(selectedContactEmailIds)
                     }

@@ -126,4 +126,5 @@
     <string name="add_members_error">Error adding members, please try again later</string>
     <string name="manage_members_title">Manage members</string>
     <string name="search_contact">Search for contact</string>
+    <string name="member_update_error">Error updating member, please try again later</string>
 </resources>

@@ -31,6 +31,7 @@ class ManageMembersReducer @Inject constructor() {
             is ManageMembersEvent.OnDone -> reduceOnDone(currentState, event)
             ManageMembersEvent.LoadMembersError -> reduceLoadMembersError(currentState)
             ManageMembersEvent.Close -> reduceClose(currentState)
+            ManageMembersEvent.ErrorUpdatingMember -> reduceErrorUpdatingMember(currentState)
         }
     }
 
@@ -57,6 +58,15 @@ class ManageMembersReducer @Inject constructor() {
             is ManageMembersState.Loading -> currentState.copy(
                 errorLoading = Effect.of(TextUiModel(R.string.members_loading_error))
             )
+        }
+    }
+
+    private fun reduceErrorUpdatingMember(currentState: ManageMembersState): ManageMembersState {
+        return when (currentState) {
+            is ManageMembersState.Data -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.member_update_error))
+            )
+            is ManageMembersState.Loading -> currentState
         }
     }
 

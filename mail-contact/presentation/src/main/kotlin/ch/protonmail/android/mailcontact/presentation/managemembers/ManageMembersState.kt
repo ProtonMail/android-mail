@@ -35,6 +35,7 @@ sealed interface ManageMembersState {
         override val close: Effect<Unit> = Effect.empty(),
         val members: List<ManageMembersUiModel>,
         val searchValue: String = "",
+        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
         val onDone: Effect<List<String>> = Effect.empty()
     ) : ManageMembersState
 }

@@ -19,12 +19,16 @@
 package ch.protonmail.android.mailcontact.presentation.managemembers
 
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
+import me.proton.core.contact.domain.entity.ContactEmailId
 
 sealed interface ManageMembersOperation
 
 sealed interface ManageMembersViewAction : ManageMembersOperation {
     object OnCloseClick : ManageMembersViewAction
     object OnDoneClick : ManageMembersViewAction
+    data class OnMemberClick(
+        val contactEmailId: ContactEmailId
+    ) : ManageMembersViewAction
 }
 
 sealed interface ManageMembersEvent : ManageMembersOperation {
@@ -32,6 +36,7 @@ sealed interface ManageMembersEvent : ManageMembersOperation {
         val members: List<ManageMembersUiModel>
     ) : ManageMembersEvent
     object LoadMembersError : ManageMembersEvent
+    object ErrorUpdatingMember : ManageMembersEvent
     object Close : ManageMembersEvent
     data class OnDone(
         val selectedContactEmailIds: List<String>
