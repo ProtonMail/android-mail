@@ -88,7 +88,8 @@ fun FormInputField(
                             contentDescription = stringResource(R.string.input_field_clear_content_description),
                             tint = ProtonTheme.colors.iconNorm
                         )
-                    }, onClick = {
+                    },
+                    onClick = {
                         textFieldValue = TextFieldValue("")
                         onTextChange("")
                     }
