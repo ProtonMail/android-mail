@@ -179,39 +179,51 @@ class ContactFormUiModelMapper @Inject constructor(
     }
 
     private fun ContactFormUiModel.getEmailContactPropertyList(): List<ContactProperty.Email> {
-        return this.emails.map { email ->
-            ContactProperty.Email(
-                type = ContactProperty.Email.Type.valueOf(
-                    (email.selectedType as FieldType.EmailType).name
-                ),
-                value = email.value
-            )
+        return this.emails.mapNotNull { email ->
+            if (email.value.isNotBlank()) {
+                ContactProperty.Email(
+                    type = ContactProperty.Email.Type.valueOf(
+                        (email.selectedType as FieldType.EmailType).name
+                    ),
+                    value = email.value
+                )
+            } else null
         }
     }
 
     private fun ContactFormUiModel.getTelephoneContactPropertyList(): List<ContactProperty.Telephone> {
-        return this.telephones.map { telephone ->
-            ContactProperty.Telephone(
-                type = ContactProperty.Telephone.Type.valueOf(
-                    (telephone.selectedType as FieldType.TelephoneType).name
-                ),
-                text = telephone.value
-            )
+        return this.telephones.mapNotNull { telephone ->
+            if (telephone.value.isNotBlank()) {
+                ContactProperty.Telephone(
+                    type = ContactProperty.Telephone.Type.valueOf(
+                        (telephone.selectedType as FieldType.TelephoneType).name
+                    ),
+                    text = telephone.value
+                )
+            } else null
         }
     }
 
+    @SuppressWarnings("ComplexCondition")
     private fun ContactFormUiModel.getAddressContactPropertyList(): List<ContactProperty.Address> {
-        return this.addresses.map { address ->
-            ContactProperty.Address(
-                type = ContactProperty.Address.Type.valueOf(
-                    (address.selectedType as FieldType.AddressType).name
-                ),
-                streetAddress = address.streetAddress,
-                locality = address.city,
-                region = address.region,
-                postalCode = address.postalCode,
-                country = address.country
-            )
+        return this.addresses.mapNotNull { address ->
+            if (address.streetAddress.isNotBlank() ||
+                address.city.isNotBlank() ||
+                address.region.isNotBlank() ||
+                address.postalCode.isNotBlank() ||
+                address.country.isNotBlank()
+            ) {
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.valueOf(
+                        (address.selectedType as FieldType.AddressType).name
+                    ),
+                    streetAddress = address.streetAddress,
+                    locality = address.city,
+                    region = address.region,
+                    postalCode = address.postalCode,
+                    country = address.country
+                )
+            } else null
         }
     }
 
@@ -224,16 +236,21 @@ class ContactFormUiModelMapper @Inject constructor(
     }
 
     private fun ContactFormUiModel.getNoteContactPropertyList(): List<ContactProperty.Note> {
-        return this.notes.map { note ->
-            ContactProperty.Note(
-                value = note.value
-            )
+        return this.notes.mapNotNull { note ->
+            if (note.value.isNotBlank()) {
+                ContactProperty.Note(
+                    value = note.value
+                )
+            } else null
         }
     }
 
     private fun ContactFormUiModel.getOrganizationContactPropertyList(): List<ContactProperty.Organization> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Organization) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Organization &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Organization(
                     value = other.value
                 )
@@ -243,7 +260,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getTitleContactPropertyList(): List<ContactProperty.Title> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Title) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Title &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Title(
                     value = other.value
                 )
@@ -253,7 +273,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getRoleContactPropertyList(): List<ContactProperty.Role> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Role) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Role &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Role(
                     value = other.value
                 )
@@ -263,7 +286,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getTimezoneContactPropertyList(): List<ContactProperty.Timezone> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.TimeZone) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.TimeZone &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Timezone(
                     text = other.value
                 )
@@ -273,7 +299,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getMemberContactPropertyList(): List<ContactProperty.Member> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Member) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Member &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Member(
                     value = other.value
                 )
@@ -283,7 +312,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getLanguageContactPropertyList(): List<ContactProperty.Language> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Language) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Language &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Language(
                     value = other.value
                 )
@@ -293,7 +325,10 @@ class ContactFormUiModelMapper @Inject constructor(
 
     private fun ContactFormUiModel.getUrlContactPropertyList(): List<ContactProperty.Url> {
         return this.others.mapNotNull { other ->
-            if (other is InputField.SingleTyped && other.selectedType == FieldType.OtherType.Url) {
+            if (other is InputField.SingleTyped &&
+                other.selectedType == FieldType.OtherType.Url &&
+                other.value.isNotBlank()
+            ) {
                 ContactProperty.Url(
                     value = other.value
                 )
@@ -305,7 +340,9 @@ class ContactFormUiModelMapper @Inject constructor(
         val genderInputField = this.others.find {
             it is InputField.SingleTyped && it.selectedType == FieldType.OtherType.Gender
         }
-        return genderInputField?.let {
+        return genderInputField?.takeIf {
+            (genderInputField as InputField.SingleTyped).value.isNotBlank()
+        }?.let {
             ContactProperty.Gender(
                 gender = (genderInputField as InputField.SingleTyped).value
             )

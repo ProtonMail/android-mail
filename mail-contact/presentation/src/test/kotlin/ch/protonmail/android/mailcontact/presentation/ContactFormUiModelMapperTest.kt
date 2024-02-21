@@ -78,9 +78,60 @@ class ContactFormUiModelMapperTest {
     fun `maps ContactFormUiModel to DecryptedContact`() {
         val decryptedContact = getDecryptedContact()
         val contactFormUiModel = getContactFormUiModel()
+        val contactFormUiModelWithBlankValues = contactFormUiModel.copy(
+            emails = contactFormUiModel.emails.apply {
+                this.add(
+                    InputField.SingleTyped(
+                        value = " ",
+                        selectedType = FieldType.EmailType.Other
+                    )
+                )
+            },
+            telephones = contactFormUiModel.telephones.apply {
+                this.add(
+                    InputField.SingleTyped(
+                        value = " ",
+                        selectedType = FieldType.TelephoneType.Pager
+                    )
+                )
+            },
+            addresses = contactFormUiModel.addresses.apply {
+                this.add(
+                    InputField.Address(
+                        streetAddress = " ",
+                        city = " ",
+                        region = " ",
+                        postalCode = " ",
+                        country = " ",
+                        selectedType = FieldType.AddressType.Work
+                    )
+                )
+            },
+            notes = contactFormUiModel.notes.apply {
+                this.add(
+                    InputField.Note(
+                        value = " "
+                    )
+                )
+            },
+            others = contactFormUiModel.others.apply {
+                this.add(
+                    InputField.SingleTyped(
+                        value = " ",
+                        selectedType = FieldType.OtherType.Url
+                    )
+                )
+                this.add(
+                    InputField.SingleTyped(
+                        value = " ",
+                        selectedType = FieldType.OtherType.Gender
+                    )
+                )
+            }
+        )
 
         val actual = contactFormUiModelMapper.toDecryptedContact(
-            contactFormUiModel,
+            contactFormUiModelWithBlankValues,
             decryptedContact.contactGroupLabels,
             decryptedContact.photos,
             decryptedContact.logos

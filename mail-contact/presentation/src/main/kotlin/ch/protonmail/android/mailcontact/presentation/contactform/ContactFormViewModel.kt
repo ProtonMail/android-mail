@@ -265,7 +265,7 @@ class ContactFormViewModel @Inject constructor(
         if (stateValue !is ContactFormState.Data) return
 
         val containsInvalidEmail = stateValue.contact.emails.any {
-            validateEmail(it.value).not()
+            it.value.isNotBlank() && validateEmail(it.value).not()
         }
         if (containsInvalidEmail) return emitNewStateFor(ContactFormEvent.InvalidEmailError)
 
