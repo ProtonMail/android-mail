@@ -107,7 +107,17 @@ fun ManageMembersScreen(
         content = { paddingValues ->
             when (state) {
                 is ManageMembersState.Data -> {
-                    ManageMembersContent(state)
+                    ManageMembersContent(
+                        state = state,
+                        actions = ManageMembersContent.Actions(
+                            onMemberClick = {
+                                // TODO Submit to VM
+                            },
+                            onSearchValueChange = {
+                                // TODO Submit to VM
+                            }
+                        )
+                    )
                     ConsumableLaunchedEffect(effect = state.onDone) { selectedContactEmailIds ->
                         actions.onDone(selectedContactEmailIds)
                     }
@@ -140,7 +150,11 @@ fun ManageMembersScreen(
 }
 
 @Composable
-fun ManageMembersContent(state: ManageMembersState.Data, modifier: Modifier = Modifier) {
+fun ManageMembersContent(
+    modifier: Modifier = Modifier,
+    state: ManageMembersState.Data,
+    actions: ManageMembersContent.Actions
+) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
@@ -153,27 +167,32 @@ fun ManageMembersContent(state: ManageMembersState.Data, modifier: Modifier = Mo
                 hint = stringResource(R.string.search_contact),
                 showClearTextIcon = true,
                 onTextChange = {
-                    // Submit value to view model
+                    actions.onSearchValueChange(it)
                 }
             )
         }
         items(state.members) { member ->
-            ManageMemberItem(
-                member = member
+            ManageMembersItem(
+                member = member,
+                actions = actions
             )
         }
     }
 }
 
 @Composable
-fun ManageMemberItem(modifier: Modifier = Modifier, member: ManageMembersUiModel) {
+fun ManageMembersItem(
+    modifier: Modifier = Modifier,
+    actions: ManageMembersContent.Actions,
+    member: ManageMembersUiModel
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable(
                 role = Role.Button,
                 onClick = {
-                    // Handle select member action
+                    actions.onMemberClick(member.id)
                 }
             )
             .padding(start = ProtonDimens.DefaultSpacing),
@@ -293,13 +312,31 @@ object ManageMembersScreen {
     }
 }
 
+object ManageMembersContent {
+
+    data class Actions(
+        val onMemberClick: (ContactEmailId) -> Unit,
+        val onSearchValueChange: (String) -> Unit
+    ) {
+
+        companion object {
+
+            val Empty = Actions(
+                onMemberClick = {},
+                onSearchValueChange = {}
+            )
+        }
+    }
+}
+
 @Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ManageMembersContentPreview() {
     ManageMembersContent(
         state = ManageMembersState.Data(
             members = ManageMembersPreviewData.manageMembersSampleData()
-        )
+        ),
+        actions = ManageMembersContent.Actions.Empty
     )
 }
 
@@ -309,7 +346,8 @@ private fun EmptyManageMembersContentPreview() {
     ManageMembersContent(
         state = ManageMembersState.Data(
             members = emptyList()
-        )
+        ),
+        actions = ManageMembersContent.Actions.Empty
     )
 }
 
