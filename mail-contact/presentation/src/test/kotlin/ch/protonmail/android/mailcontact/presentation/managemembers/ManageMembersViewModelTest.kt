@@ -115,7 +115,6 @@ class ManageMembersViewModelTest {
         )
     }
 
-
     @Test
     fun `given contact list, when init, then emits data state`() = runTest {
         // Given

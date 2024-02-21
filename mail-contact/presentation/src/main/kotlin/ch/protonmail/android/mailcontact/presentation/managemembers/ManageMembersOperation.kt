@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 
 sealed interface ManageMembersOperation
 
-internal sealed interface ManageMembersViewAction : ManageMembersOperation {
+sealed interface ManageMembersViewAction : ManageMembersOperation {
     object OnCloseClick : ManageMembersViewAction
 }
 

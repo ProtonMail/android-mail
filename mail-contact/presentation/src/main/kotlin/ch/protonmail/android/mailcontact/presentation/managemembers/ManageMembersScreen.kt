@@ -105,7 +105,7 @@ fun ManageMembersScreen(actions: ManageMembersScreen.Actions, viewModel: ManageM
 }
 
 @Composable
-fun ManageMembersTopBar(
+private fun ManageMembersTopBar(
     actions: ManageMembersScreen.Actions,
     isDoneEnabled: Boolean,
     onDoneClick: () -> Unit
@@ -127,10 +127,9 @@ fun ManageMembersTopBar(
                 onClick = onDoneClick,
                 enabled = isDoneEnabled
             ) {
-                val textColor = ProtonTheme.colors.textAccent
                 Text(
                     text = stringResource(id = R.string.members_done),
-                    color = textColor,
+                    color = ProtonTheme.colors.textAccent,
                     style = ProtonTheme.typography.defaultStrongNorm
                 )
             }

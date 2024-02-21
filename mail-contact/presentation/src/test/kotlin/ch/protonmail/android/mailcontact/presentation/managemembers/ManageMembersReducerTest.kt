@@ -45,7 +45,7 @@ class ManageMembersReducerTest(
     companion object {
 
         private val loadedManageMembersUiModelList = ManageMembersPreviewData.manageMembersSampleData()
-        private val loadedManageMembersUiModelList2 = ArrayList(
+        private val loadedManageMembersUiModelUpdatedList = ArrayList(
             ManageMembersPreviewData.manageMembersSampleData()
         ).apply {
             this[0] = this[0].copy(isSelected = true)
@@ -82,9 +82,9 @@ class ManageMembersReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = loadedManageMembersState,
-                event = ManageMembersEvent.MembersLoaded(loadedManageMembersUiModelList2),
+                event = ManageMembersEvent.MembersLoaded(loadedManageMembersUiModelUpdatedList),
                 expectedState = loadedManageMembersState.copy(
-                    members = loadedManageMembersUiModelList2
+                    members = loadedManageMembersUiModelUpdatedList
                 )
             ),
             TestInput(
