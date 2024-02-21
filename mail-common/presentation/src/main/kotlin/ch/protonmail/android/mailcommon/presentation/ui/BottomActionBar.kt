@@ -61,14 +61,13 @@ fun BottomActionBar(
 ) {
     if (state is BottomBarState.Data.Hidden) return
     Column(
-        modifier = modifier
-            .testTag(BottomActionBarTestTags.RootItem)
-            .background(ProtonTheme.colors.backgroundNorm)
+        modifier = modifier.background(ProtonTheme.colors.backgroundNorm)
     ) {
         Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
 
         Row(
             modifier = Modifier
+                .testTag(BottomActionBarTestTags.RootItem)
                 .clickable(
                     enabled = false,
                     onClick = {

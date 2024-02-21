@@ -62,7 +62,7 @@ internal class BottomActionBarRobot : ComposeRobot() {
 
         private fun onErrorMessageNode() = composeTestRule.onNodeWithText(R.string.common_error_loading_actions)
 
-        private fun onLoaderNode() = composeTestRule.onNodeWithTag(PROTON_PROGRESS_TEST_TAG)
+        private fun onLoaderNode() = composeTestRule.onNodeWithTag(PROTON_PROGRESS_TEST_TAG, useUnmergedTree = true)
     }
 }
 
