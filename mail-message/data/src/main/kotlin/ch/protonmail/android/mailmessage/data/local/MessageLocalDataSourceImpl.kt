@@ -352,12 +352,13 @@ class MessageLocalDataSourceImpl @Inject constructor(
         return message.unread.not().right()
     }
 
-    override suspend fun updateDraftMessageId(
+    override suspend fun updateDraftRemoteIds(
         userId: UserId,
         localDraftId: MessageId,
-        apiAssignedId: MessageId
+        apiAssignedId: MessageId,
+        conversationId: ConversationId
     ) {
-        messageDao.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        messageDao.updateDraftRemoteIds(userId, localDraftId, apiAssignedId, conversationId)
         attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId, apiAssignedId)
     }
 

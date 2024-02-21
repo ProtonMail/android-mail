@@ -81,7 +81,7 @@ internal class UploadDraft @Inject constructor(
         messageId: MessageId
     ) = draftRemoteDataSource.create(userId, message, draftState.action).onRight {
         transactor.performTransaction {
-            messageRepository.updateDraftMessageId(userId, messageId, it.message.messageId)
+            messageRepository.updateDraftRemoteIds(userId, messageId, it.message.messageId, it.message.conversationId)
             draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, it.message.messageId)
             updateAttachmentsData(message, it)
         }

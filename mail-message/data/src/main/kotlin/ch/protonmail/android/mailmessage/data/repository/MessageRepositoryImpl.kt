@@ -270,12 +270,13 @@ class MessageRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateDraftMessageId(
+    override suspend fun updateDraftRemoteIds(
         userId: UserId,
         localDraftId: MessageId,
-        apiAssignedId: MessageId
+        apiAssignedId: MessageId,
+        conversationId: ConversationId
     ) {
-        localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
+        localDataSource.updateDraftRemoteIds(userId, localDraftId, apiAssignedId, conversationId)
     }
 
     override suspend fun deleteMessages(

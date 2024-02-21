@@ -238,10 +238,11 @@ interface MessageLocalDataSource {
 
     suspend fun isMessageRead(userId: UserId, messageId: MessageId): Either<DataError.Local, Boolean>
 
-    suspend fun updateDraftMessageId(
+    suspend fun updateDraftRemoteIds(
         userId: UserId,
         localDraftId: MessageId,
-        apiAssignedId: MessageId
+        apiAssignedId: MessageId,
+        conversationId: ConversationId
     )
 
     fun observeCachedMessagesTotalSize(): Flow<Long>

@@ -21,6 +21,7 @@ package ch.protonmail.android.composer.data.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.DraftRemoteDataSource
+import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
@@ -92,11 +93,12 @@ class UploadDraftTest {
         val expectedResponse = MessageWithBodySample.EmptyDraft
         val expectedDraftState = DraftStateSample.NewDraftState
         val apiAssignedMessageId = expectedResponse.message.messageId
+        val apiAssignedConversationId = expectedResponse.message.conversationId
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
-        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
         expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
@@ -116,11 +118,12 @@ class UploadDraftTest {
         val expectedAction = DraftAction.Compose
         val expectedResponse = MessageWithBodySample.RemoteDraft
         val expectedDraftState = DraftStateSample.NewDraftState
+        val apiAssignedConversationId = expectedResponse.message.conversationId
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
         expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedResponse)
         expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
-        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
         expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
@@ -128,7 +131,14 @@ class UploadDraftTest {
 
         // Then
         assertEquals(Unit.right(), actual)
-        coVerify { messageRepository.updateDraftMessageId(userId, messageId, apiAssignedMessageId) }
+        coVerify {
+            messageRepository.updateDraftRemoteIds(
+                userId,
+                messageId,
+                apiAssignedMessageId,
+                apiAssignedConversationId
+            )
+        }
         coVerify { draftStateRepository.updateApiMessageIdAndSetSyncedState(userId, messageId, apiAssignedMessageId) }
     }
 
@@ -267,6 +277,7 @@ class UploadDraftTest {
             messageBody = expectedDraft.messageBody.copy(attachments = listOf(expectedUpdatedAttachment))
         )
         val apiAssignedMessageId = expectedResponse.message.messageId
+        val apiAssignedConversationId = expectedResponse.message.conversationId
         val expectedDraftState = DraftStateSample.LocalDraftWithForwardAction
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
@@ -274,7 +285,7 @@ class UploadDraftTest {
         expectStoreSyncedStateSuccess(userId, messageId, messageId)
         expectIsDraftKnownToApi(expectedDraftState, false)
         expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
-        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
         expectAttachmentUpdateSuccess(
             userId, apiAssignedMessageId, expectedLocalAttachment.attachmentId, expectedUpdatedAttachment
         )
@@ -320,9 +331,12 @@ class UploadDraftTest {
     private fun expectMessageUpdateSuccess(
         userId: UserId,
         messageId: MessageId,
-        remoteMessageId: MessageId
+        remoteMessageId: MessageId,
+        remoteConversationId: ConversationId
     ) {
-        coEvery { messageRepository.updateDraftMessageId(userId, messageId, remoteMessageId) } returns Unit
+        coEvery {
+            messageRepository.updateDraftRemoteIds(userId, messageId, remoteMessageId, remoteConversationId)
+        } returns Unit
     }
 
     private fun expectStoreSyncedStateSuccess(

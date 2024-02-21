@@ -1140,13 +1140,14 @@ class MessageLocalDataSourceImplTest {
         // Given
         val oldMessageId = MessageIdSample.Invoice
         val newMessageId = MessageId(oldMessageId.id + "_new")
+        val newConversationId = ConversationIdSample.build()
 
         // When
-        messageLocalDataSource.updateDraftMessageId(userId1, oldMessageId, newMessageId)
+        messageLocalDataSource.updateDraftRemoteIds(userId1, oldMessageId, newMessageId, newConversationId)
 
         // Then
         coVerifyOrder {
-            messageDao.updateDraftMessageId(userId1, oldMessageId, newMessageId)
+            messageDao.updateDraftRemoteIds(userId1, oldMessageId, newMessageId, newConversationId)
             attachmentFileStorage.updateParentFolderForAttachments(userId1, oldMessageId, newMessageId)
         }
     }

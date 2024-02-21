@@ -187,10 +187,11 @@ interface MessageRepository {
         labelsToBeAdded: List<LabelId> = emptyList()
     ): Either<DataError.Local, List<Message>>
 
-    suspend fun updateDraftMessageId(
+    suspend fun updateDraftRemoteIds(
         userId: UserId,
         localDraftId: MessageId,
-        apiAssignedId: MessageId
+        apiAssignedId: MessageId,
+        conversationId: ConversationId
     )
 
     /**

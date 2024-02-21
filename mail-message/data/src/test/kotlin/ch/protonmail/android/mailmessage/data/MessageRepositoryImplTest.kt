@@ -1125,7 +1125,7 @@ class MessageRepositoryImplTest {
         coEvery { remoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, expectedLabel) } returns expectedFlow
 
         // When
-        val actual = messageRepository.observeClearLabelOperation(userId, expectedLabel).test {
+        messageRepository.observeClearLabelOperation(userId, expectedLabel).test {
             // Then
             assertTrue { awaitItem() }
         }

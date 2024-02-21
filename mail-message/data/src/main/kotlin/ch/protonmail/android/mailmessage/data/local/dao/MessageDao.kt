@@ -268,7 +268,7 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         AND SearchResultEntity.keyword = :keyword
         AND SearchResultEntity.messageId = MessageEntity.messageId
         WHERE MessageEntity.userId = :userId
-       AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
+        AND (MessageEntity.time > :minValue OR (MessageEntity.time = :minValue AND MessageEntity.`order` >= :minOrder))
         AND (MessageEntity.time < :maxValue OR (MessageEntity.time = :maxValue AND MessageEntity.`order` <= :maxOrder))
         GROUP BY MessageEntity.messageId
         ORDER BY MessageEntity.time DESC, MessageEntity.`order` DESC
@@ -306,11 +306,18 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
         conversationIds: List<ConversationId>
     ): Flow<List<MessageWithLabelIds>>
 
-    @Query("UPDATE MessageEntity SET messageId = :apiAssignedId WHERE userId = :userId AND messageId = :localDraftId")
-    abstract suspend fun updateDraftMessageId(
+    @Query(
+        """
+        UPDATE MessageEntity
+        SET messageId = :apiAssignedId, conversationId = :conversationId
+        WHERE userId = :userId AND messageId = :localDraftId
+        """
+    )
+    abstract suspend fun updateDraftRemoteIds(
         userId: UserId,
         localDraftId: MessageId,
-        apiAssignedId: MessageId
+        apiAssignedId: MessageId,
+        conversationId: ConversationId
     )
 
     private companion object {
