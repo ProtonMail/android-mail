@@ -401,7 +401,7 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
                 singleLine = false,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     capitalization = KeyboardCapitalization.Sentences,
-                    imeAction = ImeAction.Default
+                    imeAction = ImeAction.Next
                 ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Notes, index) }
             ) {
