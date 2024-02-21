@@ -94,14 +94,16 @@ class ManageMembersUiModelMapperTest {
                 name = "First name from contact email",
                 email = "test1+alias@protonmail.com",
                 initials = "FE",
-                isSelected = true
+                isSelected = true,
+                isDisplayed = true
             ),
             ManageMembersUiModel(
                 id = ContactEmailId("contact email id 2"),
                 name = "First name from contact email",
                 email = "test2+alias@protonmail.com",
                 initials = "FE",
-                isSelected = false
+                isSelected = false,
+                isDisplayed = true
             )
         )
 

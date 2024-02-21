@@ -84,14 +84,16 @@ class ManageMembersViewModelTest {
             name = "John Doe",
             email = "johndoe+alias@protonmail.com",
             initials = "JD",
-            isSelected = false
+            isSelected = false,
+            isDisplayed = true
         ),
         ManageMembersUiModel(
             id = ContactEmailId("ContactEmailId2"),
             name = "Jane Doe",
             email = "janedoe@protonmail.com",
             initials = "JD",
-            isSelected = true
+            isSelected = true,
+            isDisplayed = true
         )
     )
 
@@ -185,6 +187,36 @@ class ManageMembersViewModelTest {
             val actual = awaitItem()
             val updatedMembers = defaultTestManageMembersUiModel.toMutableList().apply {
                 this[0] = this[0].copy(isSelected = true)
+            }
+            val expected = ManageMembersState.Data(
+                members = updatedMembers
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given contact list, when on search value change, then emits updated state`() = runTest {
+        // Given
+        val contacts = listOf(defaultTestContact)
+        expectContactsData(contacts)
+        expectUiModelMapper(contacts, defaultTestSelectedContactEmailIds, defaultTestManageMembersUiModel)
+
+        // When
+        manageMembersViewModel.state.test {
+            awaitItem()
+
+            manageMembersViewModel.initViewModelWithData(defaultTestSelectedContactEmailIds)
+
+            awaitItem()
+
+            manageMembersViewModel.submit(ManageMembersViewAction.OnSearchValueChanged("John"))
+
+            // Then
+            val actual = awaitItem()
+            val updatedMembers = defaultTestManageMembersUiModel.toMutableList().apply {
+                this[1] = this[1].copy(isDisplayed = false)
             }
             val expected = ManageMembersState.Data(
                 members = updatedMembers
