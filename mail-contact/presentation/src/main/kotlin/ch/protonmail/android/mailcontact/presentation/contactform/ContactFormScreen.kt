@@ -614,6 +614,7 @@ private fun InputFieldWithTrash(
         FormInputField(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.CenterVertically)
                 .weight(1f)
                 .padding(
                     start = ProtonDimens.DefaultSpacing,
@@ -630,8 +631,11 @@ private fun InputFieldWithTrash(
             painter = painterResource(id = R.drawable.ic_proton_trash),
             tint = ProtonTheme.colors.iconNorm,
             modifier = Modifier
-                .padding(end = ProtonDimens.DefaultSpacing)
                 .align(Alignment.CenterVertically)
+                .padding(
+                    top = ProtonDimens.DefaultSpacing,
+                    end = ProtonDimens.DefaultSpacing
+                )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = rememberRipple(bounded = false),
