@@ -33,6 +33,7 @@ import ezvcard.property.Address
 import ezvcard.property.Anniversary
 import ezvcard.property.Birthday
 import ezvcard.property.Email
+import ezvcard.property.FormattedName
 import ezvcard.property.Gender
 import ezvcard.property.Logo
 import ezvcard.property.Member
@@ -43,6 +44,7 @@ import ezvcard.property.StructuredName
 import ezvcard.property.Telephone
 import ezvcard.property.Timezone
 import ezvcard.property.Title
+import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
@@ -71,17 +73,13 @@ class DecryptedContactMapper @Inject constructor() {
         vCard: VCard
     ): VCard {
         return with(vCard) {
-            decryptedContact.formattedName?.value?.let {
-                setFormattedName(it)
-            }
 
-            // API requires every Contact to have FN field
-            if (formattedName?.value == null) {
-                setFormattedName(fallbackName)
-            }
+            formattedName = decryptedContact.formattedName?.value?.takeIfNotBlank()?.let {
+                FormattedName(it)
+            } ?: FormattedName(fallbackName) // API requires every Contact to have FN field
 
-            decryptedContact.emails.takeIfNotEmpty()?.let {
-                emails.clear()
+            decryptedContact.emails.let {
+                emails?.clear()
                 it.forEachIndexed { index, email ->
                     addEmail(
                         Email(email.value).apply {
@@ -102,15 +100,15 @@ class DecryptedContactMapper @Inject constructor() {
     @Suppress("LongMethod", "ComplexMethod")
     fun mapToEncryptedAndSignedContactCard(decryptedContact: DecryptedContact, vCard: VCard): VCard {
         return with(vCard) {
-            decryptedContact.structuredName?.let {
-                structuredName = StructuredName().apply {
+            structuredName = decryptedContact.structuredName?.let {
+                StructuredName().apply {
                     family = it.family
                     given = it.given
                 }
             }
 
-            decryptedContact.telephones.takeIfNotEmpty()?.let {
-                telephoneNumbers.clear()
+            decryptedContact.telephones.let {
+                telephoneNumbers?.clear()
                 it.forEachIndexed { index, telephone ->
                     addTelephoneNumber(
                         Telephone(telephone.text).apply {
@@ -123,8 +121,8 @@ class DecryptedContactMapper @Inject constructor() {
                 }
             }
 
-            decryptedContact.addresses.takeIfNotEmpty()?.let {
-                addresses.clear()
+            decryptedContact.addresses.let {
+                addresses?.clear()
                 it.forEachIndexed { index, address ->
                     addAddress(
                         Address().apply {
@@ -142,19 +140,19 @@ class DecryptedContactMapper @Inject constructor() {
                 }
             }
 
-            decryptedContact.birthday?.let {
-                birthday = Birthday(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+            birthday = decryptedContact.birthday?.let {
+                Birthday(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
             }
 
-            decryptedContact.notes.takeIfNotEmpty()?.let {
-                notes.clear()
+            decryptedContact.notes.let {
+                notes?.clear()
                 it.forEach { note ->
                     addNote(note.value)
                 }
             }
 
-            decryptedContact.photos.takeIfNotEmpty()?.let {
-                photos.clear()
+            decryptedContact.photos.let {
+                photos?.clear()
                 it.forEachIndexed { index, photo ->
                     addPhoto(
                         Photo(
@@ -167,8 +165,8 @@ class DecryptedContactMapper @Inject constructor() {
                 }
             }
 
-            decryptedContact.organizations.takeIfNotEmpty()?.let {
-                organizations.clear()
+            decryptedContact.organizations.let {
+                organizations?.clear()
                 it.forEach { organization ->
                     addOrganization(
                         Organization().apply {
@@ -178,29 +176,29 @@ class DecryptedContactMapper @Inject constructor() {
                 }
             }
 
-            decryptedContact.titles.takeIfNotEmpty()?.let {
-                titles.clear()
+            decryptedContact.titles.let {
+                titles?.clear()
                 it.forEach { title ->
                     addTitle(Title(title.value))
                 }
             }
 
-            decryptedContact.roles.takeIfNotEmpty()?.let {
-                roles.clear()
+            decryptedContact.roles.let {
+                roles?.clear()
                 it.forEach { role ->
                     addRole(role.value)
                 }
             }
 
-            decryptedContact.timezones.takeIfNotEmpty()?.let {
-                timezones.clear()
+            decryptedContact.timezones.let {
+                timezones?.clear()
                 it.forEach { timezone ->
                     addTimezone(Timezone(timezone.text))
                 }
             }
 
-            decryptedContact.logos.takeIfNotEmpty()?.let {
-                logos.clear()
+            decryptedContact.logos.let {
+                logos?.clear()
                 it.forEach { logo ->
                     addLogo(
                         Logo(
@@ -211,30 +209,30 @@ class DecryptedContactMapper @Inject constructor() {
                 }
             }
 
-            decryptedContact.members.takeIfNotEmpty()?.let {
-                members.clear()
+            decryptedContact.members.let {
+                members?.clear()
                 it.forEach { member ->
                     addMember(Member(member.value))
                 }
             }
 
-            decryptedContact.languages.takeIfNotEmpty()?.let {
-                languages.clear()
+            decryptedContact.languages.let {
+                languages?.clear()
                 it.forEach { language ->
                     addLanguage(language.value)
                 }
             }
 
-            decryptedContact.gender?.let {
-                gender = Gender(it.gender)
+            gender = decryptedContact.gender?.let {
+                Gender(it.gender)
             }
 
-            decryptedContact.anniversary?.let {
-                anniversary = Anniversary(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
+            anniversary = decryptedContact.anniversary?.let {
+                Anniversary(Date.from(it.date.atStartOfDay(ZoneId.systemDefault()).toInstant()))
             }
 
-            decryptedContact.urls.takeIfNotEmpty()?.let {
-                urls.clear()
+            decryptedContact.urls.let {
+                urls?.clear()
                 it.forEach { url ->
                     addUrl(url.value)
                 }

@@ -23,7 +23,9 @@ import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.testdata.contact.ContactVCardSample
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
+import ezvcard.Ezvcard
 import ezvcard.VCard
 import ezvcard.VCardVersion
 import ezvcard.property.Uid
@@ -186,6 +188,53 @@ class DecryptedContactMapperTest {
 
         assertTrue(actualEncryptedAndSigned.notes.size == 2)
         assertTrue(actualEncryptedAndSigned.telephoneNumbers.size == 1)
+    }
+
+    @Test
+    fun `mapToSignedContactCard clears existing data in VCard if DecryptedContact doesn't have them`() {
+        // Given
+        val expectedDecryptedContact = decryptedContact // empty DecryptedContact
+
+        // When
+        val actualSigned = sut.mapToSignedContactCard(
+            fallbackName,
+            expectedDecryptedContact,
+            Ezvcard.parse(ContactVCardSample.marioVCardType2).first(),
+        )
+
+        // Then
+        assertEquals(fallbackName, actualSigned.formattedName.value)
+        assertTrue(actualSigned.emails.isEmpty())
+    }
+
+    @Test
+    fun `mapToEncryptedAndSignedContactCard clears existing data in VCard if DecryptedContact doesn't have them`() {
+        // Given
+        val expectedDecryptedContact = decryptedContact // empty DecryptedContact
+
+        // When
+        val actualEncryptedAndSigned = sut.mapToEncryptedAndSignedContactCard(
+            expectedDecryptedContact,
+            Ezvcard.parse(ContactVCardSample.marioVCardType3).first()
+        )
+
+        // Then
+        assertNull(actualEncryptedAndSigned.structuredName)
+        assertTrue(actualEncryptedAndSigned.telephoneNumbers.isEmpty())
+        assertTrue(actualEncryptedAndSigned.addresses.isEmpty())
+        assertNull(actualEncryptedAndSigned.birthday)
+        assertTrue(actualEncryptedAndSigned.notes.isEmpty())
+        assertTrue(actualEncryptedAndSigned.organizations.isEmpty())
+        assertTrue(actualEncryptedAndSigned.titles.isEmpty())
+        assertTrue(actualEncryptedAndSigned.logos.isEmpty())
+        assertTrue(actualEncryptedAndSigned.photos.isEmpty())
+        assertTrue(actualEncryptedAndSigned.roles.isEmpty())
+        assertTrue(actualEncryptedAndSigned.timezones.isEmpty())
+        assertTrue(actualEncryptedAndSigned.members.isEmpty())
+        assertTrue(actualEncryptedAndSigned.languages.isEmpty())
+        assertTrue(actualEncryptedAndSigned.urls.isEmpty())
+        assertNull(actualEncryptedAndSigned.gender)
+        assertTrue(actualEncryptedAndSigned.anniversaries.isEmpty())
     }
 
 }
