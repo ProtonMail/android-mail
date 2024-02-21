@@ -32,7 +32,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -84,36 +83,6 @@ class DraftStateLocalDataSourceImplTest {
 
         assertEquals(Unit.right(), actual)
         coVerify { draftStateDao.insertOrUpdate(draftStateEntity) }
-    }
-
-    @Test
-    fun `update draft message ID returns success when updating existing draft id`() = runTest {
-        val userId = UserIdSample.Primary
-        val localDraftId = MessageIdSample.EmptyDraft
-        val apiAssignedId = MessageIdSample.RemoteDraft
-        val expected = Unit.right()
-
-        every { draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId) } returns Unit
-
-        val actual = localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
-
-        assertEquals(expected, actual)
-        verify(exactly = 1) { draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId) }
-    }
-
-    @Test
-    fun `update draft message ID returns local unknown error when exception occurs`() = runTest {
-        val userId = UserIdSample.Primary
-        val localDraftId = MessageIdSample.EmptyDraft
-        val apiAssignedId = MessageIdSample.RemoteDraft
-        val expectedError = DataError.Local.Unknown
-
-        every { draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId) } throws Exception()
-
-        val actual = localDataSource.updateDraftMessageId(userId, localDraftId, apiAssignedId)
-
-        assertEquals(expectedError.left(), actual)
-        verify(exactly = 1) { draftStateDao.updateDraftMessageId(userId, localDraftId, apiAssignedId) }
     }
 
     private fun expectDraftStateDaoUpsertSuccess(draftStateEntity: DraftStateEntity) {

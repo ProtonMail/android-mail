@@ -34,14 +34,6 @@ interface DraftStateRepository {
 
     fun observeAll(userId: UserId): Flow<List<DraftState>>
 
-    /**
-     * Updates the local draft id (messageId) in [DraftState] with the API assigned id [apiAssignedId].
-     */
-    suspend fun updateDraftMessageId(
-        userId: UserId,
-        localDraftId: MessageId,
-        apiAssignedId: MessageId
-    ): Either<DataError, Unit>
 
     /**
      * Reads an existing [DraftState], updates it by setting its state to [DraftSyncState.Syncronized]
