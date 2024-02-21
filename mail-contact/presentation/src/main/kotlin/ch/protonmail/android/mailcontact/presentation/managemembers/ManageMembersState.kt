@@ -34,6 +34,7 @@ sealed interface ManageMembersState {
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val members: List<ManageMembersUiModel>,
+        val searchValue: String = "",
         val onDone: Effect<List<String>> = Effect.empty()
     ) : ManageMembersState
 }

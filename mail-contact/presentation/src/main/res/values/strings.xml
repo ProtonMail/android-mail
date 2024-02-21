@@ -125,4 +125,5 @@
     <string name="members_done">Done</string>
     <string name="add_members_error">Error adding members, please try again later</string>
     <string name="manage_members_title">Manage members</string>
+    <string name="search_contact">Search for contact</string>
 </resources>

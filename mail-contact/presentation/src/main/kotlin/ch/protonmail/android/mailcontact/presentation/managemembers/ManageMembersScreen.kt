@@ -62,6 +62,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ManageMembersPreviewData
+import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -144,9 +145,22 @@ fun ManageMembersContent(state: ManageMembersState.Data, modifier: Modifier = Mo
         modifier = modifier.fillMaxSize()
     ) {
         item {
-            Column(modifier.fillMaxWidth()) {
-                // TODO Search field
-            }
+            FormInputField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = ProtonDimens.DefaultSpacing,
+                        start = ProtonDimens.DefaultSpacing,
+                        end = ProtonDimens.DefaultSpacing,
+                        bottom = ProtonDimens.DefaultSpacing
+                    ),
+                initialValue = state.searchValue,
+                hint = stringResource(R.string.search_contact),
+                showClearTextIcon = true,
+                onTextChange = {
+                    // Submit value to view model
+                }
+            )
         }
         items(state.members) { member ->
             ManageMemberItem(
@@ -164,7 +178,7 @@ fun ManageMemberItem(modifier: Modifier = Modifier, member: ManageMembersUiModel
             .clickable(
                 role = Role.Button,
                 onClick = {
-                    // TODO Handle select action
+                    // Handle select member action
                 }
             )
             .padding(start = ProtonDimens.DefaultSpacing),

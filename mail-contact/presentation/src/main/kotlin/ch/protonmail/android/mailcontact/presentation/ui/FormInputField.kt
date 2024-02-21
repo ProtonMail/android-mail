@@ -19,8 +19,11 @@
 package ch.protonmail.android.mailcontact.presentation.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +32,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import ch.protonmail.android.maillabel.presentation.R
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -43,6 +49,7 @@ fun FormInputField(
     singleLine: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxCharacters: Int? = null,
+    showClearTextIcon: Boolean = false,
     onTextChange: (String) -> Unit
 ) {
     var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
@@ -70,7 +77,24 @@ fun FormInputField(
         colors = formTextFieldColors(),
         singleLine = singleLine,
         textStyle = ProtonTheme.typography.defaultNorm,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        trailingIcon = {
+            if (showClearTextIcon && textFieldValue.text.isNotBlank()) {
+                IconButton(
+                    modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+                    content = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_proton_cross),
+                            contentDescription = stringResource(R.string.input_field_clear_content_description),
+                            tint = ProtonTheme.colors.iconNorm
+                        )
+                    }, onClick = {
+                        textFieldValue = TextFieldValue("")
+                        onTextChange("")
+                    }
+                )
+            }
+        }
     )
 }
 
