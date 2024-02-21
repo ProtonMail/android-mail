@@ -29,14 +29,16 @@ object ManageMembersPreviewData {
             name = "John Doe",
             email = "johndoe@proton.me",
             initials = "JD",
-            isSelected = false
+            isSelected = false,
+            isDisplayed = true
         ),
         ManageMembersUiModel(
             id = ContactEmailId("Id2"),
             name = "Jane Doe",
             email = "janedoe@proton.me",
             initials = "JD",
-            isSelected = true
+            isSelected = true,
+            isDisplayed = true
         )
     )
 }

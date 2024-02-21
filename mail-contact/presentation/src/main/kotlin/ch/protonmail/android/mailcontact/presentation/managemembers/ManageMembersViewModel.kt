@@ -69,6 +69,7 @@ class ManageMembersViewModel @Inject constructor(
                     ManageMembersViewAction.OnCloseClick -> emitNewStateFor(ManageMembersEvent.Close)
                     ManageMembersViewAction.OnDoneClick -> handleOnDoneClick()
                     is ManageMembersViewAction.OnMemberClick -> handleOnMemberClick(action)
+                    is ManageMembersViewAction.OnSearchValueChanged -> handleOnSearchValueChanged(action)
                 }
             }
         }
@@ -86,6 +87,24 @@ class ManageMembersViewModel @Inject constructor(
         val newMembers = stateValue.members.toMutableList()
         val currentMember = newMembers[memberIndex]
         newMembers[memberIndex] = currentMember.copy(isSelected = !currentMember.isSelected)
+        emitNewStateFor(
+            ManageMembersEvent.MembersLoaded(
+                members = newMembers
+            )
+        )
+    }
+
+    private fun handleOnSearchValueChanged(action: ManageMembersViewAction.OnSearchValueChanged) {
+        val stateValue = state.value
+        if (stateValue !is ManageMembersState.Data) return
+
+        val newMembers = stateValue.members.toMutableList()
+        newMembers.forEachIndexed { index, member ->
+            newMembers[index] = member.copy(
+                isDisplayed = member.name.contains(action.searchValue, ignoreCase = true) ||
+                    member.email.contains(action.searchValue, ignoreCase = true)
+            )
+        }
         emitNewStateFor(
             ManageMembersEvent.MembersLoaded(
                 members = newMembers

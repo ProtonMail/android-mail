@@ -25,5 +25,6 @@ data class ManageMembersUiModel(
     val name: String,
     val email: String,
     val initials: String,
-    val isSelected: Boolean
+    val isSelected: Boolean,
+    val isDisplayed: Boolean
 )

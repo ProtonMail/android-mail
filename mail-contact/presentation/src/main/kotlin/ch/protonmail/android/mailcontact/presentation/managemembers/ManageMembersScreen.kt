@@ -116,7 +116,7 @@ fun ManageMembersScreen(
                                 viewModel.submit(ManageMembersViewAction.OnMemberClick(it))
                             },
                             onSearchValueChange = {
-                                // TODO Submit to VM
+                                viewModel.submit(ManageMembersViewAction.OnSearchValueChanged(it))
                             }
                         )
                     )
@@ -181,10 +181,12 @@ fun ManageMembersContent(
             )
         }
         items(state.members) { member ->
-            ManageMembersItem(
-                member = member,
-                actions = actions
-            )
+            if (member.isDisplayed) {
+                ManageMembersItem(
+                    member = member,
+                    actions = actions
+                )
+            }
         }
     }
 }

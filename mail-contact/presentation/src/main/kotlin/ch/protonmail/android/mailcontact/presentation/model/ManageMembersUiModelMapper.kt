@@ -36,7 +36,8 @@ class ManageMembersUiModelMapper @Inject constructor() {
                     name = contactEmail.name,
                     email = contactEmail.email,
                     initials = getInitials(contactEmail.name),
-                    isSelected = selectedContactEmailIds.any { it == contactEmail.id }
+                    isSelected = selectedContactEmailIds.any { it == contactEmail.id },
+                    isDisplayed = true
                 )
             }
         }

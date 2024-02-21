@@ -29,6 +29,9 @@ sealed interface ManageMembersViewAction : ManageMembersOperation {
     data class OnMemberClick(
         val contactEmailId: ContactEmailId
     ) : ManageMembersViewAction
+    data class OnSearchValueChanged(
+        val searchValue: String
+    ) : ManageMembersViewAction
 }
 
 sealed interface ManageMembersEvent : ManageMembersOperation {
