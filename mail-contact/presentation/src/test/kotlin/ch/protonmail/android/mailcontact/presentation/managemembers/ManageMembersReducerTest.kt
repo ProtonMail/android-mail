@@ -105,6 +105,13 @@ class ManageMembersReducerTest(
                 expectedState = loadedManageMembersState.copy(
                     onDone = Effect.of(emptyList())
                 )
+            ),
+            TestInput(
+                currentState = loadedManageMembersState,
+                event = ManageMembersEvent.ErrorUpdatingMember,
+                expectedState = loadedManageMembersState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.member_update_error))
+                )
             )
         )
 
