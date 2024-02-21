@@ -71,7 +71,7 @@ class UploadDraftTest {
     private val updatedAttachmentStates = mockk<CreateOrUpdateParentAttachmentStates>()
     private val draftUploadTracker = mockk<DraftUploadTracker>()
 
-    private val uploadDraft = UploadDraft(
+    private val draftRepository = UploadDraft(
         fakeTransactor,
         messageRepository,
         findLocalDraft,
@@ -100,7 +100,7 @@ class UploadDraftTest {
         expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -124,7 +124,7 @@ class UploadDraftTest {
         expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -147,7 +147,7 @@ class UploadDraftTest {
         expectDraftUploadTrackerNotified(messageId, expectedDraft)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -164,7 +164,7 @@ class UploadDraftTest {
         expectGetLocalMessageFails(userId, messageId)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(expectedError.left(), actual)
@@ -181,7 +181,7 @@ class UploadDraftTest {
         expectGetDraftStateFails(userId, messageId, expectedError)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(expectedError.left(), actual)
@@ -197,11 +197,11 @@ class UploadDraftTest {
         val expectedDraftState = DraftStateSample.NewDraftState
         expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
         expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
-        expectRemoteDataSourceCreateFailure(userId, expectedDraft, expectedAction, expectedError)
+        expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
         expectIsDraftKnownToApi(expectedDraftState, false)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         loggingRule.assertWarningLogged("Sync draft failure $messageId: Create API call error $expectedError")
@@ -219,11 +219,11 @@ class UploadDraftTest {
             val expectedDraftState = DraftStateSample.NewDraftState
             expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
             expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
-            expectRemoteDataSourceCreateFailure(userId, expectedDraft, expectedAction, expectedError)
+            expectRemoteDataSourceFailure(userId, expectedDraft, expectedAction, expectedError)
             expectIsDraftKnownToApi(expectedDraftState, false)
 
             // When
-            val actual = uploadDraft(userId, messageId)
+            val actual = draftRepository(userId, messageId)
 
             // Then
             assertEquals(expectedError.left(), actual)
@@ -245,7 +245,7 @@ class UploadDraftTest {
         expectDraftUploadTrackerNotified(messageId, expectedDraft)
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -283,7 +283,7 @@ class UploadDraftTest {
         )
 
         // When
-        val actual = uploadDraft(userId, messageId)
+        val actual = draftRepository(userId, messageId)
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -300,32 +300,6 @@ class UploadDraftTest {
                 listOf(expectedUpdatedAttachment.attachmentId)
             )
         }
-    }
-
-
-    @Test
-    fun `should create new draft when remote draft update fails and draft does not exist on remote`() = runTest {
-        // Given
-        val messageId = MessageIdSample.LocalDraft
-        val expectedDraft = MessageWithBodySample.Invoice
-        val expectedAction = DraftAction.Compose
-        val expectedError = DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft)
-        val expectedDraftState = DraftStateSample.NewDraftState
-        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
-        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
-        expectRemoteDataSourceUpdateFailure(userId, expectedDraft, expectedError)
-        expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedAction, expectedDraft)
-        expectMessageUpdateSuccess(userId, messageId, expectedDraft.message.messageId)
-        expectStoreSyncedStateSuccess(userId, messageId, expectedDraft.message.messageId)
-        expectDraftExistsOnRemoteDataSource(userId, messageId, false)
-        expectIsDraftKnownToApi(expectedDraftState, true)
-
-        // When
-        val actual = uploadDraft(userId, messageId)
-
-        // Then
-        assertEquals(Unit.right(), actual)
-        coVerify { draftRemoteDataSource.create(userId, expectedDraft, expectedAction) }
     }
 
     private fun expectAttachmentUpdateSuccess(
@@ -378,29 +352,14 @@ class UploadDraftTest {
         coEvery { draftRemoteDataSource.update(userId, messageWithBody) } returns response.right()
     }
 
-    private fun expectRemoteDataSourceUpdateFailure(
-        userId: UserId,
-        messageWithBody: MessageWithBody,
-        error: DataError.Remote
-    ) {
-        coEvery { draftRemoteDataSource.update(userId, messageWithBody) } returns error.left()
-    }
 
-    private fun expectRemoteDataSourceCreateFailure(
+    private fun expectRemoteDataSourceFailure(
         userId: UserId,
         messageWithBody: MessageWithBody,
         action: DraftAction,
         error: DataError.Remote
     ) {
         coEvery { draftRemoteDataSource.create(userId, messageWithBody, action) } returns error.left()
-    }
-
-    private fun expectDraftExistsOnRemoteDataSource(
-        userId: UserId,
-        messageId: MessageId,
-        draftExists: Boolean
-    ) {
-        coEvery { draftRemoteDataSource.draftExists(userId, messageId) } returns draftExists
     }
 
     private fun expectGetLocalMessageSucceeds(

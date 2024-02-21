@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.composer.data.remote
 
-import java.net.UnknownHostException
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.resource.CreateDraftBody
@@ -32,7 +31,6 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.data.remote.resource.AttachmentResource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageWithBodyResource
-import ch.protonmail.android.mailmessage.data.remote.response.GetMessageResponse
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -42,8 +40,6 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import junit.framework.TestCase.assertFalse
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.test.runTest
 import me.proton.core.network.data.ApiManagerFactory
 import me.proton.core.network.data.ApiProvider
@@ -168,43 +164,6 @@ class DraftRemoteDataSourceTest {
             )
         )
         assertEquals(expected.right(), actual)
-    }
-
-    @Test
-    fun `draftExists should return true when draft api returns remote draft as a response`() = runTest {
-        // Given
-        val remoteDraft = MessageWithBodyResourceSample.RemoteDraft
-        val messageId = MessageIdSample.RemoteDraft
-        expectGetDraftApiSuccess(messageId, remoteDraft)
-
-        // When
-        val actual = remoteDataSource.draftExists(userId, messageId)
-
-        // Then
-        assertTrue(actual)
-    }
-
-    @Test
-    fun `draftExists should return false when draft api does not return a draft message`() = runTest {
-        // Given
-        val messageId = MessageId("non-existing-message-id")
-        expectGetDraftApiFailure(messageId)
-
-        // When
-        val actual = remoteDataSource.draftExists(userId, messageId)
-
-        // Then
-        assertFalse(actual)
-    }
-
-    private fun expectGetDraftApiSuccess(messageId: MessageId, messageWithBodyResource: MessageWithBodyResource) {
-        coEvery {
-            draftApi.getDraft(messageId.id)
-        } returns GetMessageResponse(code = ResponseCodes.OK, message = messageWithBodyResource)
-    }
-
-    private fun expectGetDraftApiFailure(messageId: MessageId) {
-        coEvery { draftApi.getDraft(messageId.id) } throws UnknownHostException()
     }
 
     private fun expectCreateDraftApiSucceeds(body: CreateDraftBody, expected: MessageWithBodyResource) {

@@ -67,14 +67,7 @@ internal class UploadDraft @Inject constructor(
         }.bind()
 
         if (isDraftKnownToApi(draftState)) {
-            handleUpdateDraft(userId, message, messageId).onLeft {
-                if (!draftRemoteDataSource.draftExists(userId, messageId)) {
-                    Timber.w("handleUpdateDraft failure: Draft not found on server. Try creating it")
-                    handleCreateDraft(userId, message, draftState, messageId).bind()
-                } else {
-                    raise(it)
-                }
-            }
+            handleUpdateDraft(userId, message, messageId).bind()
         } else {
             handleCreateDraft(userId, message, draftState, messageId).bind()
 
