@@ -88,7 +88,6 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -105,7 +104,6 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
-import me.proton.core.util.kotlin.DispatcherProvider
 import me.proton.core.util.kotlin.deserialize
 import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
@@ -115,8 +113,6 @@ import javax.inject.Inject
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
-    private val scopeProvider: DispatcherProvider,
-    private val draftStateRepository: DraftStateRepository,
     private val appInBackgroundState: AppInBackgroundState,
     private val storeAttachments: StoreAttachments,
     private val storeDraftWithBody: StoreDraftWithBody,
@@ -207,7 +203,6 @@ class ComposerViewModel @Inject constructor(
         observeMessageAttachments()
         observeSendingError()
         observeMessagePassword()
-        observeDraftState()
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
@@ -441,44 +436,6 @@ class ComposerViewModel @Inject constructor(
             .flatMapLatest { userId -> observeMessagePassword(userId, currentMessageId()) }
             .onEach { emitNewStateFor(ComposerEvent.OnMessagePasswordUpdated(it)) }
             .launchIn(viewModelScope)
-    }
-
-    private fun observeDraftState() {
-        primaryUserId
-            .flatMapLatest { userId -> draftStateRepository.observe(userId, currentMessageId()) }
-            .onEach { draftState ->
-                draftState.getOrNull()?.apiMessageId?.let { apiMessageId ->
-                    if (apiMessageId.id != currentMessageId().id) {
-                        updateDraftStateWithApiMessageId(apiMessageId)
-                    }
-                }
-            }
-            .launchIn(viewModelScope)
-    }
-
-    private fun updateDraftStateWithApiMessageId(apiMessageId: MessageId) {
-        viewModelScope.launch(scopeProvider.Io) {
-            draftStateRepository.updateDraftMessageId(primaryUserId(), currentMessageId(), apiMessageId).onRight {
-                handleDraftSynchronisedWithApi(apiMessageId)
-            }
-        }
-    }
-
-    private fun handleDraftSynchronisedWithApi(apiMessageId: MessageId) {
-        viewModelScope.launch {
-            emitNewStateFor(ComposerEvent.DraftSynchronisedWithApi(apiMessageId))
-
-            // We need to restart continuous upload to be able to use the new id.
-            if (draftUploader.isSyncing()) {
-                draftUploader.stopContinuousUpload()
-                draftUploader.startContinuousUpload(
-                    primaryUserId(),
-                    currentMessageId(),
-                    DraftAction.Compose,
-                    viewModelScope
-                )
-            }
-        }
     }
 
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)

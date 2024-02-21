@@ -84,7 +84,6 @@ class ComposerReducerTest(
     companion object {
 
         private val messageId = MessageId(UUID.randomUUID().toString())
-        private val apiMessageId = MessageId(UUID.randomUUID().toString())
         private val addresses = listOf(UserAddressSample.PrimaryAddress, UserAddressSample.AliasAddress)
 
         private val draftFields = DraftFields(
@@ -804,19 +803,7 @@ class ComposerReducerTest(
             )
         )
 
-        private val UpdateLocalDraftIdToApiAssignedDraftId = TestTransition(
-            name = "Should update the local draft id with the API assigned draft id when synchronising with the API",
-            currentState = aSubmittableState(
-                messageId
-            ),
-            operation = ComposerEvent.DraftSynchronisedWithApi(apiMessageId),
-            expectedState = aSubmittableState(
-                apiMessageId
-            )
-        )
-
         private val transitions = listOf(
-            UpdateLocalDraftIdToApiAssignedDraftId,
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
             SubmittableToNotSubmittableEmptyToField,
