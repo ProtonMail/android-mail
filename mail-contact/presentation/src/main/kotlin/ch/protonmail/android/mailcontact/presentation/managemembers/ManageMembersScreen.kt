@@ -148,12 +148,7 @@ fun ManageMembersContent(state: ManageMembersState.Data, modifier: Modifier = Mo
             FormInputField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        top = ProtonDimens.DefaultSpacing,
-                        start = ProtonDimens.DefaultSpacing,
-                        end = ProtonDimens.DefaultSpacing,
-                        bottom = ProtonDimens.DefaultSpacing
-                    ),
+                    .padding(ProtonDimens.DefaultSpacing),
                 initialValue = state.searchValue,
                 hint = stringResource(R.string.search_contact),
                 showClearTextIcon = true,
