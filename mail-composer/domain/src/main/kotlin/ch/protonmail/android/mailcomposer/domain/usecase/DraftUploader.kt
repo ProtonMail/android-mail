@@ -70,8 +70,6 @@ class DraftUploader @Inject constructor(
         syncJob?.cancel()
     }
 
-    fun isSyncing(): Boolean = syncJob?.isActive ?: false
-
     companion object {
         val SyncInterval = 1.seconds
     }
