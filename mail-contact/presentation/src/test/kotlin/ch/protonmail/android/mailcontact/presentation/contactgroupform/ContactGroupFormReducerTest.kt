@@ -53,16 +53,20 @@ class ContactGroupFormReducerTest(
 
         private val emptyLoadingState = ContactGroupFormState.Loading()
         private val loadedCreateContactGroupState = ContactGroupFormState.Data(
-            contactGroup = emptyContactGroupFormUiModel(listOf(Color.Red))
+            contactGroup = emptyContactGroupFormUiModel(Color.Red),
+            colors = emptyList()
         )
         private val loadedUpdateContactGroupState = ContactGroupFormState.Data(
-            contactGroup = loadedContactGroupFormUiModel
+            contactGroup = loadedContactGroupFormUiModel,
+            colors = emptyList()
         )
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = emptyLoadingState,
-                event = ContactGroupFormEvent.ContactGroupLoaded(loadedContactGroupFormUiModel),
+                event = ContactGroupFormEvent.ContactGroupLoaded(
+                    loadedContactGroupFormUiModel, emptyList()
+                ),
                 expectedState = loadedUpdateContactGroupState
             ),
             TestInput(
@@ -84,7 +88,9 @@ class ContactGroupFormReducerTest(
         private val transitionsFromDataState = listOf(
             TestInput(
                 currentState = loadedUpdateContactGroupState,
-                event = ContactGroupFormEvent.ContactGroupLoaded(loadedContactGroupFormUiModel2),
+                event = ContactGroupFormEvent.ContactGroupLoaded(
+                    loadedContactGroupFormUiModel2, emptyList()
+                ),
                 expectedState = loadedUpdateContactGroupState.copy(
                     contactGroup = loadedContactGroupFormUiModel2
                 )

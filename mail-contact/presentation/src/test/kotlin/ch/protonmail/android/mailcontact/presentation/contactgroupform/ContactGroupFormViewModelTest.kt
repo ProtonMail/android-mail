@@ -26,7 +26,9 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
@@ -36,7 +38,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiMo
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
-import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -63,8 +64,7 @@ class ContactGroupFormViewModelTest {
 
     private val testUserId = UserIdTestData.userId
     private val testLabelId = ContactGroupFormPreviewData.contactGroupFormSampleData.id!!
-    private val testColors = listOf(Color.Red)
-    private val testColorStrings = listOf(Color.Red.getHexStringFromColor())
+    private val testColors = listOf(ColorHexWithName(TextUiModel("Red"), Color.Red.getHexStringFromColor()))
     private val testContactGroup = ContactGroup(
         testUserId,
         testLabelId,
@@ -95,8 +95,8 @@ class ContactGroupFormViewModelTest {
     private val getContactEmailsByIdMock = mockk<GetContactEmailsById>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
 
-    private val getLabelColors = mockk<GetLabelColors> {
-        every { this@mockk.invoke() } returns testColorStrings
+    private val getColorHexWithNameList = mockk<GetColorHexWithNameList> {
+        every { this@mockk.invoke() } returns testColors
     }
 
     private val reducer = ContactGroupFormReducer()
@@ -108,7 +108,7 @@ class ContactGroupFormViewModelTest {
             reducer,
             contactGroupFormUiModelMapperMock,
             savedStateHandleMock,
-            getLabelColors,
+            getColorHexWithNameList,
             observePrimaryUserId
         )
     }
@@ -137,7 +137,8 @@ class ContactGroupFormViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactGroupFormState.Data(
-                contactGroup = emptyContactGroupFormUiModel(testColors)
+                contactGroup = emptyContactGroupFormUiModel(Color.Red),
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -164,7 +165,8 @@ class ContactGroupFormViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel
+                contactGroup = expectedContactGroupFormUiModel,
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -187,7 +189,8 @@ class ContactGroupFormViewModelTest {
                 // Then
                 val actual = awaitItem()
                 val expected = ContactGroupFormState.Data(
-                    contactGroup = expectedContactGroupFormUiModel
+                    contactGroup = expectedContactGroupFormUiModel,
+                    colors = testColors
                 )
 
                 assertEquals(expected, actual)
@@ -234,6 +237,7 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel,
+                colors = testColors,
                 close = Effect.of(Unit)
             )
 
@@ -256,7 +260,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = emptyContactGroupFormUiModel(testColors),
+                contactGroup = emptyContactGroupFormUiModel(Color.Red),
+                colors = testColors,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success)),
                 displaySaveLoader = true
             )
@@ -286,6 +291,7 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel,
+                colors = testColors,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success)),
                 displaySaveLoader = true
             )
@@ -314,7 +320,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList())
+                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList()),
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -346,7 +353,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList())
+                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList()),
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -375,7 +383,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel.copy(name = "NewName")
+                contactGroup = expectedContactGroupFormUiModel.copy(name = "NewName"),
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -404,7 +413,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroupFormUiModel.copy(color = Color.Blue)
+                contactGroup = expectedContactGroupFormUiModel.copy(color = Color.Blue),
+                colors = testColors
             )
 
             assertEquals(expected, actual)
@@ -432,7 +442,7 @@ class ContactGroupFormViewModelTest {
         expectedContactGroupFormUiModel: ContactGroupFormUiModel
     ) {
         every {
-            contactGroupFormUiModelMapperMock.toContactGroupFormUiModel(contactGroup, testColors)
+            contactGroupFormUiModelMapperMock.toContactGroupFormUiModel(contactGroup)
         } returns expectedContactGroupFormUiModel
     }
 }
