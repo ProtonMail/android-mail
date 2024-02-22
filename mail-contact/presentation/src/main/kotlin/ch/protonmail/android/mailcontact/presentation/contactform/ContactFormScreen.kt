@@ -235,7 +235,6 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
     }
     items(state.contact.emails) { email ->
         key(email.fieldId) {
-            val mutableEmail = remember { mutableStateOf(email) }
             InputFieldWithTrash(
                 value = email.value,
                 hint = stringResource(id = R.string.email_address),
@@ -246,19 +245,15 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
                 ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Emails, email.fieldId) }
             ) {
-                mutableEmail.value = mutableEmail.value.copy(value = it)
-                actions.onUpdateItem(Section.Emails, email.fieldId, mutableEmail.value)
+                actions.onUpdateItem(Section.Emails, email.fieldId, email.copy(value = it))
             }
             TypePickerField(
                 initialSelectedType = email.selectedType
             ) { selectedValue ->
-                mutableEmail.value = mutableEmail.value.copy(
-                    selectedType = getEmailTypeByValue(selectedValue)
-                )
                 actions.onUpdateItem(
                     Section.Emails,
                     email.fieldId,
-                    mutableEmail.value
+                    email.copy(selectedType = getEmailTypeByValue(selectedValue))
                 )
             }
         }
@@ -277,7 +272,6 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
     }
     items(state.contact.telephones) { telephone ->
         key(telephone.fieldId) {
-            val mutableTelephone = remember { mutableStateOf(telephone) }
             InputFieldWithTrash(
                 value = telephone.value,
                 hint = stringResource(id = R.string.phone_number),
@@ -288,19 +282,15 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
                 ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, telephone.fieldId) }
             ) {
-                mutableTelephone.value = mutableTelephone.value.copy(value = it)
-                actions.onUpdateItem(Section.Telephones, telephone.fieldId, mutableTelephone.value)
+                actions.onUpdateItem(Section.Telephones, telephone.fieldId, telephone.copy(value = it))
             }
             TypePickerField(
                 initialSelectedType = telephone.selectedType
             ) { selectedValue ->
-                mutableTelephone.value = mutableTelephone.value.copy(
-                    selectedType = getTelephoneTypeByValue(selectedValue)
-                )
                 actions.onUpdateItem(
                     Section.Telephones,
                     telephone.fieldId,
-                    mutableTelephone.value
+                    telephone.copy(selectedType = getTelephoneTypeByValue(selectedValue))
                 )
             }
         }
@@ -320,7 +310,6 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
     }
     items(state.contact.addresses) { address ->
         key(address.fieldId) {
-            val mutableAddress = remember { mutableStateOf(address) }
             val keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
                 imeAction = ImeAction.Next
@@ -331,51 +320,43 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 keyboardOptions = keyboardOptions,
                 onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, address.fieldId) }
             ) {
-                mutableAddress.value = mutableAddress.value.copy(streetAddress = it)
-                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(streetAddress = it))
             }
             InputField(
                 value = address.postalCode,
                 hint = stringResource(R.string.address_postal_code),
                 keyboardOptions = keyboardOptions
             ) {
-                mutableAddress.value = mutableAddress.value.copy(postalCode = it)
-                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(postalCode = it))
             }
             InputField(
                 value = address.city,
                 hint = stringResource(R.string.address_city),
                 keyboardOptions = keyboardOptions
             ) {
-                mutableAddress.value = mutableAddress.value.copy(city = it)
-                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(city = it))
             }
             InputField(
                 value = address.region,
                 hint = stringResource(R.string.address_region),
                 keyboardOptions = keyboardOptions
             ) {
-                mutableAddress.value = mutableAddress.value.copy(region = it)
-                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(city = it))
             }
             InputField(
                 value = address.country,
                 hint = stringResource(R.string.address_country),
                 keyboardOptions = keyboardOptions
             ) {
-                mutableAddress.value = mutableAddress.value.copy(country = it)
-                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(country = it))
             }
             TypePickerField(
                 initialSelectedType = address.selectedType
             ) { selectedValue ->
-                mutableAddress.value = mutableAddress.value.copy(
-                    selectedType = getAddressTypeByValue(selectedValue)
-                )
                 actions.onUpdateItem(
                     Section.Addresses,
                     address.fieldId,
-                    mutableAddress.value
+                    address.copy(selectedType = getAddressTypeByValue(selectedValue))
                 )
             }
         }
@@ -394,7 +375,6 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
     }
     items(state.contact.notes) { note ->
         key(note.fieldId) {
-            val mutableNote = remember { mutableStateOf(note) }
             InputFieldWithTrash(
                 value = note.value,
                 hint = stringResource(id = R.string.note_section),
@@ -405,8 +385,7 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
                 ),
                 onDeleteClick = { actions.onRemoveItemClick(Section.Notes, note.fieldId) }
             ) {
-                mutableNote.value = mutableNote.value.copy(value = it)
-                actions.onUpdateItem(Section.Notes, note.fieldId, mutableNote.value)
+                actions.onUpdateItem(Section.Notes, note.fieldId, note.copy(value = it))
             }
         }
     }
@@ -432,7 +411,6 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                     // Add image picker / image display field for photos and logos here
                 }
                 is InputField.SingleTyped -> {
-                    val mutableOther = remember { mutableStateOf(other) }
                     InputFieldWithTrash(
                         value = other.value,
                         hint = stringResource(id = R.string.additional_info),
@@ -442,19 +420,15 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                         ),
                         onDeleteClick = { actions.onRemoveItemClick(Section.Others, other.fieldId) }
                     ) {
-                        mutableOther.value = mutableOther.value.copy(value = it)
-                        actions.onUpdateItem(Section.Others, other.fieldId, mutableOther.value)
+                        actions.onUpdateItem(Section.Others, other.fieldId, other.copy(value = it))
                     }
                     TypePickerField(
                         initialSelectedType = other.selectedType
                     ) { selectedValue ->
-                        mutableOther.value = mutableOther.value.copy(
-                            selectedType = getOtherTypeByValue(selectedValue)
-                        )
                         actions.onUpdateItem(
                             Section.Others,
                             other.fieldId,
-                            mutableOther.value
+                            other.copy(selectedType = getOtherTypeByValue(selectedValue))
                         )
                     }
                 }
