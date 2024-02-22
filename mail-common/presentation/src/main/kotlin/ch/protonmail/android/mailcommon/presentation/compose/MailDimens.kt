@@ -105,4 +105,11 @@ object MailDimens {
     val NotificationDotSize = 8.dp
 
     val ProtonCalendarIconSize = 40.dp
+
+    object ColoredRadioButton {
+        val CircleSize = 15.dp
+        val SelectedCircleSize = 24.dp
+        val SelectedCircleBorderSize = 2.dp
+        val SelectedCircleInternalMargin = 4.dp
+    }
 }
