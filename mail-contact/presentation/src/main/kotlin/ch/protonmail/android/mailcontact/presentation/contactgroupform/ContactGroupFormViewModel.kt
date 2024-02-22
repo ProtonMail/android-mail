@@ -86,6 +86,7 @@ class ContactGroupFormViewModel @Inject constructor(
                 when (action) {
                     is ContactGroupFormViewAction.OnUpdateMemberList -> handleOnUpdateMemberList(action)
                     is ContactGroupFormViewAction.OnRemoveMemberClick -> handleOnRemoveMemberClick(action)
+                    is ContactGroupFormViewAction.OnUpdateName -> handleOnUpdateName(action)
                     ContactGroupFormViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupFormEvent.Close
                     )
@@ -146,6 +147,19 @@ class ContactGroupFormViewModel @Inject constructor(
                 contactGroupFormUiModel = stateValue.contactGroup.copy(
                     memberCount = newMembers.size,
                     members = newMembers
+                )
+            )
+        )
+    }
+
+    private fun handleOnUpdateName(action: ContactGroupFormViewAction.OnUpdateName) {
+        val stateValue = state.value
+        if (stateValue !is ContactGroupFormState.Data) return
+
+        emitNewStateFor(
+            ContactGroupFormEvent.ContactGroupLoaded(
+                contactGroupFormUiModel = stateValue.contactGroup.copy(
+                    name = action.name
                 )
             )
         )

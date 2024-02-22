@@ -32,6 +32,9 @@ sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     data class OnRemoveMemberClick(
         val contactEmailId: ContactEmailId
     ) : ContactGroupFormViewAction
+    data class OnUpdateName(
+        val name: String
+    ) : ContactGroupFormViewAction
 }
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {

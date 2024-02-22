@@ -126,6 +126,9 @@ fun ContactGroupFormScreen(
                             onRemoveMemberClick = {
                                 viewModel.submit(ContactGroupFormViewAction.OnRemoveMemberClick(it))
                             },
+                            onUpdateName = {
+                                viewModel.submit(ContactGroupFormViewAction.OnUpdateName(it))
+                            },
                             onChangeColorClick = {
                                 // Call view model with change color view action here
                             }
@@ -212,9 +215,7 @@ fun ContactGroupFormContent(
                         .padding(ProtonDimens.DefaultSpacing),
                     initialValue = state.contactGroup.name,
                     hint = stringResource(id = R.string.contact_group_form_name_hint),
-                    onTextChange = {
-                        // Call view model with update name view action
-                    }
+                    onTextChange = actions.onUpdateName
                 )
                 Row(
                     modifier = Modifier.padding(
@@ -392,6 +393,7 @@ object ContactGroupFormContent {
     data class Actions(
         val onAddMemberClick: () -> Unit,
         val onRemoveMemberClick: (ContactEmailId) -> Unit,
+        val onUpdateName: (String) -> Unit,
         val onChangeColorClick: () -> Unit
     ) {
 
@@ -400,6 +402,7 @@ object ContactGroupFormContent {
             val Empty = Actions(
                 onAddMemberClick = {},
                 onRemoveMemberClick = {},
+                onUpdateName = {},
                 onChangeColorClick = {}
             )
         }
