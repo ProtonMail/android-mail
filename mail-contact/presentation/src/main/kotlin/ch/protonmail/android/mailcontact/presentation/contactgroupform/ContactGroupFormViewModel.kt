@@ -85,6 +85,7 @@ class ContactGroupFormViewModel @Inject constructor(
             actionMutex.withLock {
                 when (action) {
                     is ContactGroupFormViewAction.OnUpdateMemberList -> handleOnUpdateMemberList(action)
+                    is ContactGroupFormViewAction.OnRemoveMemberClick -> handleOnRemoveMemberClick(action)
                     ContactGroupFormViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupFormEvent.Close
                     )
@@ -131,6 +132,23 @@ class ContactGroupFormViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun handleOnRemoveMemberClick(action: ContactGroupFormViewAction.OnRemoveMemberClick) {
+        val stateValue = state.value
+        if (stateValue !is ContactGroupFormState.Data) return
+
+        val newMembers = stateValue.contactGroup.members.toMutableList().apply {
+            this.removeIf { it.id == action.contactEmailId }
+        }
+        emitNewStateFor(
+            ContactGroupFormEvent.ContactGroupLoaded(
+                contactGroupFormUiModel = stateValue.contactGroup.copy(
+                    memberCount = newMembers.size,
+                    members = newMembers
+                )
+            )
+        )
     }
 
     private fun handleSave() {

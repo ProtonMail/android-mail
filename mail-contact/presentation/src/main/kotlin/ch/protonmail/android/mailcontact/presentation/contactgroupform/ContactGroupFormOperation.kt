@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
+import me.proton.core.contact.domain.entity.ContactEmailId
 
 sealed interface ContactGroupFormOperation
 
@@ -28,6 +29,9 @@ sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     ) : ContactGroupFormViewAction
     object OnCloseClick : ContactGroupFormViewAction
     object OnSaveClick : ContactGroupFormViewAction
+    data class OnRemoveMemberClick(
+        val contactEmailId: ContactEmailId
+    ) : ContactGroupFormViewAction
 }
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {

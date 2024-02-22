@@ -93,8 +93,10 @@ fun ContactGroupFormScreen(
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactGroupFormViewModel.initialState).value
 
-    selectedContactEmailsIds?.value?.let {
-        viewModel.submit(ContactGroupFormViewAction.OnUpdateMemberList(it))
+    if (state !is ContactGroupFormState.Data) {
+        selectedContactEmailsIds?.value?.let {
+            viewModel.submit(ContactGroupFormViewAction.OnUpdateMemberList(it))
+        }
     }
 
     Scaffold(
@@ -120,6 +122,9 @@ fun ContactGroupFormScreen(
                         actions = ContactGroupFormContent.Actions(
                             onAddMemberClick = {
                                 actions.manageMembers(state.contactGroup.members.map { it.id.id })
+                            },
+                            onRemoveMemberClick = {
+                                viewModel.submit(ContactGroupFormViewAction.OnRemoveMemberClick(it))
                             },
                             onChangeColorClick = {
                                 // Call view model with change color view action here
@@ -244,10 +249,9 @@ fun ContactGroupFormContent(
         }
         items(state.contactGroup.members) { member ->
             ContactGroupMemberItem(
-                contactGroupMember = member
-            ) {
-                // Call view model with remove member view action
-            }
+                contactGroupMember = member,
+                actions = actions
+            )
         }
         item {
             ProtonSecondaryButton(
@@ -268,7 +272,7 @@ fun ContactGroupFormContent(
 fun ContactGroupMemberItem(
     modifier: Modifier = Modifier,
     contactGroupMember: ContactGroupFormMember,
-    onRemoveItem: (ContactEmailId) -> Unit
+    actions: ContactGroupFormContent.Actions
 ) {
     Row(
         modifier = modifier
@@ -313,7 +317,7 @@ fun ContactGroupMemberItem(
             )
         }
         IconButton(
-            onClick = { onRemoveItem(contactGroupMember.id) }
+            onClick = { actions.onRemoveMemberClick(contactGroupMember.id) }
         ) {
             Icon(
                 tint = ProtonTheme.colors.iconWeak,
@@ -387,6 +391,7 @@ object ContactGroupFormContent {
 
     data class Actions(
         val onAddMemberClick: () -> Unit,
+        val onRemoveMemberClick: (ContactEmailId) -> Unit,
         val onChangeColorClick: () -> Unit
     ) {
 
@@ -394,6 +399,7 @@ object ContactGroupFormContent {
 
             val Empty = Actions(
                 onAddMemberClick = {},
+                onRemoveMemberClick = {},
                 onChangeColorClick = {}
             )
         }
