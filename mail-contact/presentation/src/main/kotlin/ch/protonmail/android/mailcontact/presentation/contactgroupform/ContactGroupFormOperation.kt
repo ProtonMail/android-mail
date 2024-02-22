@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import me.proton.core.contact.domain.entity.ContactEmailId
 
@@ -43,6 +44,10 @@ sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     data class ContactGroupLoaded(
+        val contactGroupFormUiModel: ContactGroupFormUiModel,
+        val colors: List<ColorHexWithName>
+    ) : ContactGroupFormEvent
+    data class UpdateContactGroupFormUiModel(
         val contactGroupFormUiModel: ContactGroupFormUiModel
     ) : ContactGroupFormEvent
     object LoadError : ContactGroupFormEvent

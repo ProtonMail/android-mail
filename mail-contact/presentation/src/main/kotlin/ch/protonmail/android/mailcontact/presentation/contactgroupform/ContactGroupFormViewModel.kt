@@ -18,18 +18,18 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
+import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
-import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -51,7 +51,7 @@ class ContactGroupFormViewModel @Inject constructor(
     private val reducer: ContactGroupFormReducer,
     private val contactGroupFormUiModelMapper: ContactGroupFormUiModelMapper,
     private val savedStateHandle: SavedStateHandle,
-    getLabelColors: GetLabelColors,
+    getColorHexWithNameList: GetColorHexWithNameList,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -62,9 +62,7 @@ class ContactGroupFormViewModel @Inject constructor(
     val state: StateFlow<ContactGroupFormState> = mutableState
 
     init {
-        val colors = getLabelColors().map {
-            it.getColorFromHexString()
-        }
+        val colors = getColorHexWithNameList()
         extractLabelId()?.let { labelId ->
             viewModelScope.launch {
                 emitNewStateFor(
@@ -74,7 +72,10 @@ class ContactGroupFormViewModel @Inject constructor(
         } ?: run {
             emitNewStateFor(
                 ContactGroupFormEvent.ContactGroupLoaded(
-                    contactGroupFormUiModel = emptyContactGroupFormUiModel(colors)
+                    contactGroupFormUiModel = emptyContactGroupFormUiModel(
+                        randomColor = colors.random().colorHex.getColorFromHexString()
+                    ),
+                    colors = colors
                 )
             )
         }
@@ -103,7 +104,7 @@ class ContactGroupFormViewModel @Inject constructor(
 
         if (action.selectedContactEmailIds.isEmpty()) {
             emitNewStateFor(
-                ContactGroupFormEvent.ContactGroupLoaded(
+                ContactGroupFormEvent.UpdateContactGroupFormUiModel(
                     contactGroupFormUiModel = stateValue.contactGroup.copy(memberCount = 0, members = emptyList())
                 )
             )
@@ -125,7 +126,7 @@ class ContactGroupFormViewModel @Inject constructor(
                 }.plus(newContactMembers)
 
                 emitNewStateFor(
-                    ContactGroupFormEvent.ContactGroupLoaded(
+                    ContactGroupFormEvent.UpdateContactGroupFormUiModel(
                         contactGroupFormUiModel = stateValue.contactGroup.copy(
                             memberCount = updatedGroupMemberList.size,
                             members = updatedGroupMemberList
@@ -144,7 +145,7 @@ class ContactGroupFormViewModel @Inject constructor(
             this.removeIf { it.id == action.contactEmailId }
         }
         emitNewStateFor(
-            ContactGroupFormEvent.ContactGroupLoaded(
+            ContactGroupFormEvent.UpdateContactGroupFormUiModel(
                 contactGroupFormUiModel = stateValue.contactGroup.copy(
                     memberCount = newMembers.size,
                     members = newMembers
@@ -158,7 +159,7 @@ class ContactGroupFormViewModel @Inject constructor(
         if (stateValue !is ContactGroupFormState.Data) return
 
         emitNewStateFor(
-            ContactGroupFormEvent.ContactGroupLoaded(
+            ContactGroupFormEvent.UpdateContactGroupFormUiModel(
                 contactGroupFormUiModel = stateValue.contactGroup.copy(
                     name = action.name
                 )
@@ -171,7 +172,7 @@ class ContactGroupFormViewModel @Inject constructor(
         if (stateValue !is ContactGroupFormState.Data) return
 
         emitNewStateFor(
-            ContactGroupFormEvent.ContactGroupLoaded(
+            ContactGroupFormEvent.UpdateContactGroupFormUiModel(
                 contactGroupFormUiModel = stateValue.contactGroup.copy(
                     color = action.color
                 )
@@ -227,7 +228,7 @@ class ContactGroupFormViewModel @Inject constructor(
     private suspend fun getContactGroupFormEvent(
         userId: UserId,
         labelId: LabelId,
-        colors: List<Color>
+        colors: List<ColorHexWithName>
     ): ContactGroupFormEvent {
         val contactGroup = observeContactGroup(userId, labelId).first().getOrElse {
             Timber.e("Error while observing contact group by id")
@@ -235,9 +236,9 @@ class ContactGroupFormViewModel @Inject constructor(
         }
         return ContactGroupFormEvent.ContactGroupLoaded(
             contactGroupFormUiModelMapper.toContactGroupFormUiModel(
-                contactGroup = contactGroup,
-                colors = colors
-            )
+                contactGroup = contactGroup
+            ),
+            colors = colors
         )
     }
 

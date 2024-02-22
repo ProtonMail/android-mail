@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 
@@ -34,6 +35,7 @@ sealed interface ContactGroupFormState {
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val contactGroup: ContactGroupFormUiModel,
+        val colors: List<ColorHexWithName>,
         val displaySaveLoader: Boolean = false,
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
