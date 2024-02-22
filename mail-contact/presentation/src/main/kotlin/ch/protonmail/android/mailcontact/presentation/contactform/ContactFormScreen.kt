@@ -30,7 +30,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Scaffold
@@ -134,11 +134,11 @@ fun ContactFormScreen(actions: ContactFormScreen.Actions, viewModel: ContactForm
                             onUpdateDisplayName = { viewModel.submit(ContactFormViewAction.OnUpdateDisplayName(it)) },
                             onUpdateFirstName = { viewModel.submit(ContactFormViewAction.OnUpdateFirstName(it)) },
                             onUpdateLastName = { viewModel.submit(ContactFormViewAction.OnUpdateLastName(it)) },
-                            onRemoveItemClick = { section, index ->
-                                viewModel.submit(ContactFormViewAction.OnRemoveItemClick(section, index))
+                            onRemoveItemClick = { section, fieldId ->
+                                viewModel.submit(ContactFormViewAction.OnRemoveItemClick(section, fieldId))
                             },
-                            onUpdateItem = { section, index, newValue ->
-                                viewModel.submit(ContactFormViewAction.OnUpdateItem(section, index, newValue))
+                            onUpdateItem = { section, fieldId, newValue ->
+                                viewModel.submit(ContactFormViewAction.OnUpdateItem(section, fieldId, newValue))
                             }
                         )
                     )
@@ -233,8 +233,8 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
             title = stringResource(id = R.string.email_section)
         )
     }
-    itemsIndexed(state.contact.emails) { index, email ->
-        key(email) {
+    items(state.contact.emails) { email ->
+        key(email.fieldId) {
             val mutableEmail = remember { mutableStateOf(email) }
             InputFieldWithTrash(
                 value = email.value,
@@ -244,10 +244,10 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
                     keyboardType = KeyboardType.Email,
                     imeAction = ImeAction.Next
                 ),
-                onDeleteClick = { actions.onRemoveItemClick(Section.Emails, index) }
+                onDeleteClick = { actions.onRemoveItemClick(Section.Emails, email.fieldId) }
             ) {
                 mutableEmail.value = mutableEmail.value.copy(value = it)
-                actions.onUpdateItem(Section.Emails, index, mutableEmail.value)
+                actions.onUpdateItem(Section.Emails, email.fieldId, mutableEmail.value)
             }
             TypePickerField(
                 initialSelectedType = email.selectedType
@@ -257,7 +257,7 @@ private fun LazyListScope.emailSection(state: ContactFormState.Data, actions: Co
                 )
                 actions.onUpdateItem(
                     Section.Emails,
-                    index,
+                    email.fieldId,
                     mutableEmail.value
                 )
             }
@@ -275,8 +275,8 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
             title = stringResource(id = R.string.phone_section)
         )
     }
-    itemsIndexed(state.contact.telephones) { index, telephone ->
-        key(telephone) {
+    items(state.contact.telephones) { telephone ->
+        key(telephone.fieldId) {
             val mutableTelephone = remember { mutableStateOf(telephone) }
             InputFieldWithTrash(
                 value = telephone.value,
@@ -286,10 +286,10 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
                     keyboardType = KeyboardType.Phone,
                     imeAction = ImeAction.Next
                 ),
-                onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, index) }
+                onDeleteClick = { actions.onRemoveItemClick(Section.Telephones, telephone.fieldId) }
             ) {
                 mutableTelephone.value = mutableTelephone.value.copy(value = it)
-                actions.onUpdateItem(Section.Telephones, index, mutableTelephone.value)
+                actions.onUpdateItem(Section.Telephones, telephone.fieldId, mutableTelephone.value)
             }
             TypePickerField(
                 initialSelectedType = telephone.selectedType
@@ -299,7 +299,7 @@ private fun LazyListScope.telephoneSection(state: ContactFormState.Data, actions
                 )
                 actions.onUpdateItem(
                     Section.Telephones,
-                    index,
+                    telephone.fieldId,
                     mutableTelephone.value
                 )
             }
@@ -318,8 +318,8 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
             title = stringResource(id = R.string.address_section)
         )
     }
-    itemsIndexed(state.contact.addresses) { index, address ->
-        key(address) {
+    items(state.contact.addresses) { address ->
+        key(address.fieldId) {
             val mutableAddress = remember { mutableStateOf(address) }
             val keyboardOptions = KeyboardOptions.Default.copy(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -329,10 +329,10 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 value = address.streetAddress,
                 hint = stringResource(R.string.address_street),
                 keyboardOptions = keyboardOptions,
-                onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, index) }
+                onDeleteClick = { actions.onRemoveItemClick(Section.Addresses, address.fieldId) }
             ) {
                 mutableAddress.value = mutableAddress.value.copy(streetAddress = it)
-                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
             }
             InputField(
                 value = address.postalCode,
@@ -340,7 +340,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 keyboardOptions = keyboardOptions
             ) {
                 mutableAddress.value = mutableAddress.value.copy(postalCode = it)
-                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
             }
             InputField(
                 value = address.city,
@@ -348,7 +348,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 keyboardOptions = keyboardOptions
             ) {
                 mutableAddress.value = mutableAddress.value.copy(city = it)
-                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
             }
             InputField(
                 value = address.region,
@@ -356,7 +356,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 keyboardOptions = keyboardOptions
             ) {
                 mutableAddress.value = mutableAddress.value.copy(region = it)
-                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
             }
             InputField(
                 value = address.country,
@@ -364,7 +364,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 keyboardOptions = keyboardOptions
             ) {
                 mutableAddress.value = mutableAddress.value.copy(country = it)
-                actions.onUpdateItem(Section.Addresses, index, mutableAddress.value)
+                actions.onUpdateItem(Section.Addresses, address.fieldId, mutableAddress.value)
             }
             TypePickerField(
                 initialSelectedType = address.selectedType
@@ -374,7 +374,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 )
                 actions.onUpdateItem(
                     Section.Addresses,
-                    index,
+                    address.fieldId,
                     mutableAddress.value
                 )
             }
@@ -392,8 +392,8 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
             title = stringResource(id = R.string.note_section)
         )
     }
-    itemsIndexed(state.contact.notes) { index, note ->
-        key(note) {
+    items(state.contact.notes) { note ->
+        key(note.fieldId) {
             val mutableNote = remember { mutableStateOf(note) }
             InputFieldWithTrash(
                 value = note.value,
@@ -403,10 +403,10 @@ private fun LazyListScope.noteSection(state: ContactFormState.Data, actions: Con
                     capitalization = KeyboardCapitalization.Sentences,
                     imeAction = ImeAction.Next
                 ),
-                onDeleteClick = { actions.onRemoveItemClick(Section.Notes, index) }
+                onDeleteClick = { actions.onRemoveItemClick(Section.Notes, note.fieldId) }
             ) {
                 mutableNote.value = mutableNote.value.copy(value = it)
-                actions.onUpdateItem(Section.Notes, index, mutableNote.value)
+                actions.onUpdateItem(Section.Notes, note.fieldId, mutableNote.value)
             }
         }
     }
@@ -422,8 +422,8 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
             title = stringResource(id = R.string.other_section)
         )
     }
-    itemsIndexed(state.contact.others) { index, other ->
-        key(other) {
+    items(state.contact.others) { other ->
+        key(other.fieldId) {
             when (other) {
                 is InputField.DateTyped -> {
                     // Add date field for anniversary here
@@ -440,10 +440,10 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                             capitalization = KeyboardCapitalization.Sentences,
                             imeAction = ImeAction.Next
                         ),
-                        onDeleteClick = { actions.onRemoveItemClick(Section.Others, index) }
+                        onDeleteClick = { actions.onRemoveItemClick(Section.Others, other.fieldId) }
                     ) {
                         mutableOther.value = mutableOther.value.copy(value = it)
-                        actions.onUpdateItem(Section.Others, index, mutableOther.value)
+                        actions.onUpdateItem(Section.Others, other.fieldId, mutableOther.value)
                     }
                     TypePickerField(
                         initialSelectedType = other.selectedType
@@ -453,7 +453,7 @@ private fun LazyListScope.otherSection(state: ContactFormState.Data, actions: Co
                         )
                         actions.onUpdateItem(
                             Section.Others,
-                            index,
+                            other.fieldId,
                             mutableOther.value
                         )
                     }
@@ -793,8 +793,8 @@ object ContactFormContent {
         val onUpdateDisplayName: (String) -> Unit,
         val onUpdateFirstName: (String) -> Unit,
         val onUpdateLastName: (String) -> Unit,
-        val onRemoveItemClick: (Section, Int) -> Unit,
-        val onUpdateItem: (Section, Int, InputField) -> Unit
+        val onRemoveItemClick: (Section, String) -> Unit,
+        val onUpdateItem: (Section, String, InputField) -> Unit
     ) {
 
         companion object {

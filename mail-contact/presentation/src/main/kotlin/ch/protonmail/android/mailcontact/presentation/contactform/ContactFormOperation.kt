@@ -41,11 +41,11 @@ sealed interface ContactFormViewAction : ContactFormOperation {
     ) : ContactFormViewAction
     data class OnRemoveItemClick(
         val section: Section,
-        val index: Int
+        val fieldId: String
     ) : ContactFormViewAction
     data class OnUpdateItem(
         val section: Section,
-        val index: Int,
+        val fieldId: String,
         val newValue: InputField
     ) : ContactFormViewAction
 }
