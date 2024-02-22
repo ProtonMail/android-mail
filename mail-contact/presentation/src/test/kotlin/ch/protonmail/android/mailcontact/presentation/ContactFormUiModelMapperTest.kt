@@ -79,25 +79,28 @@ class ContactFormUiModelMapperTest {
         val decryptedContact = getDecryptedContact()
         val contactFormUiModel = getContactFormUiModel()
         val contactFormUiModelWithBlankValues = contactFormUiModel.copy(
-            emails = contactFormUiModel.emails.apply {
+            emails = contactFormUiModel.emails.toMutableList().apply {
                 this.add(
                     InputField.SingleTyped(
+                        fieldId = "NotUsedInThisContext",
                         value = " ",
                         selectedType = FieldType.EmailType.Other
                     )
                 )
             },
-            telephones = contactFormUiModel.telephones.apply {
+            telephones = contactFormUiModel.telephones.toMutableList().apply {
                 this.add(
                     InputField.SingleTyped(
+                        fieldId = "NotUsedInThisContext",
                         value = " ",
                         selectedType = FieldType.TelephoneType.Pager
                     )
                 )
             },
-            addresses = contactFormUiModel.addresses.apply {
+            addresses = contactFormUiModel.addresses.toMutableList().apply {
                 this.add(
                     InputField.Address(
+                        fieldId = "NotUsedInThisContext",
                         streetAddress = " ",
                         city = " ",
                         region = " ",
@@ -107,22 +110,25 @@ class ContactFormUiModelMapperTest {
                     )
                 )
             },
-            notes = contactFormUiModel.notes.apply {
+            notes = contactFormUiModel.notes.toMutableList().apply {
                 this.add(
                     InputField.Note(
+                        fieldId = "NotUsedInThisContext",
                         value = " "
                     )
                 )
             },
-            others = contactFormUiModel.others.apply {
+            others = contactFormUiModel.others.toMutableList().apply {
                 this.add(
                     InputField.SingleTyped(
+                        fieldId = "NotUsedInThisContext",
                         value = " ",
                         selectedType = FieldType.OtherType.Url
                     )
                 )
                 this.add(
                     InputField.SingleTyped(
+                        fieldId = "NotUsedInThisContext",
                         value = " ",
                         selectedType = FieldType.OtherType.Gender
                     )
@@ -293,7 +299,9 @@ class ContactFormUiModelMapperTest {
         )
     }
 
+    @SuppressWarnings("ComplexMethod")
     private fun getContactFormUiModel(): ContactFormUiModel {
+        var incrementalFieldId = 0
         return ContactFormUiModel(
             id = ContactSample.Mario.id,
             avatar = ContactFormAvatar.Photo(bitmap = decodeByteArray(ContactImagesSample.Photo)!!),
@@ -302,58 +310,71 @@ class ContactFormUiModelMapperTest {
             lastName = "Mario Last Name",
             emails = mutableListOf(
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Mario@protonmail.com",
                     selectedType = FieldType.EmailType.Email
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "home_email@Mario.protonmail.com",
                     selectedType = FieldType.EmailType.Home
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "work_email@Mario.protonmail.com",
                     selectedType = FieldType.EmailType.Work
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "other_email@Mario.protonmail.com",
                     selectedType = FieldType.EmailType.Other
                 )
             ),
             telephones = mutableListOf(
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "1231231235",
                     selectedType = FieldType.TelephoneType.Telephone
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "23233232323",
                     selectedType = FieldType.TelephoneType.Home
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "45454545",
                     selectedType = FieldType.TelephoneType.Work
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "565656",
                     selectedType = FieldType.TelephoneType.Other
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "676767",
                     selectedType = FieldType.TelephoneType.Mobile
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "787887",
                     selectedType = FieldType.TelephoneType.Main
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "898989",
                     selectedType = FieldType.TelephoneType.Fax
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "90909090",
                     selectedType = FieldType.TelephoneType.Pager
                 )
             ),
             addresses = mutableListOf(
                 InputField.Address(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     streetAddress = "Address Street1",
                     city = "City",
                     region = "Region",
@@ -362,6 +383,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.AddressType.Address
                 ),
                 InputField.Address(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     streetAddress = "Address Other1",
                     city = "City",
                     region = "Region",
@@ -370,6 +392,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.AddressType.Other
                 ),
                 InputField.Address(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     streetAddress = "Home address the rest is empty",
                     city = "",
                     region = "",
@@ -378,6 +401,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.AddressType.Home
                 ),
                 InputField.Address(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     streetAddress = "City the rest is empty",
                     city = "",
                     region = "",
@@ -387,63 +411,78 @@ class ContactFormUiModelMapperTest {
                 )
             ),
             birthday = InputField.Birthday(
+                fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                 value = LocalDate.of(2023, 12, 14)
             ),
             notes = mutableListOf(
                 InputField.Note(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Note1"
                 ),
                 InputField.Note(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Note2"
                 )
             ),
             others = mutableListOf(
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Organization1",
                     selectedType = FieldType.OtherType.Organization
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Organization2",
                     selectedType = FieldType.OtherType.Organization
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Title",
                     selectedType = FieldType.OtherType.Title
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Role",
                     selectedType = FieldType.OtherType.Role
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Europe/Paris",
                     selectedType = FieldType.OtherType.TimeZone
                 ),
                 InputField.ImageTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = decodeByteArray(ContactImagesSample.Logo)!!,
                     selectedType = FieldType.OtherType.Logo
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Member",
                     selectedType = FieldType.OtherType.Member
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "English",
                     selectedType = FieldType.OtherType.Language
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "http://proton.me",
                     selectedType = FieldType.OtherType.Url
                 ),
                 InputField.SingleTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = "Gender",
                     selectedType = FieldType.OtherType.Gender
                 ),
                 InputField.DateTyped(
+                    fieldId = incrementalFieldId.toString().also { incrementalFieldId++ },
                     value = LocalDate.of(2023, 12, 6),
                     selectedType = FieldType.OtherType.Anniversary
                 )
             ),
-            otherTypes = FieldType.OtherType.values().toList()
+            otherTypes = FieldType.OtherType.values().toList(),
+            incrementalUniqueFieldId = incrementalFieldId
         )
     }
 }
