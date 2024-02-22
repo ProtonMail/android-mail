@@ -30,7 +30,6 @@ object ContactGroupFormPreviewData {
         id = LabelId("Id"),
         name = "Group name",
         color = Color.Red,
-        colors = listOf(Color.Red),
         memberCount = 1,
         members = listOf(
             ContactGroupFormMember(

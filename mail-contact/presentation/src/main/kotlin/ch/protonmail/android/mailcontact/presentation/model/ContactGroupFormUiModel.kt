@@ -26,7 +26,6 @@ data class ContactGroupFormUiModel(
     val id: LabelId?,
     val name: String,
     val color: Color,
-    val colors: List<Color>,
     val memberCount: Int,
     val members: List<ContactGroupFormMember>
 )
@@ -38,11 +37,10 @@ data class ContactGroupFormMember(
     val email: String
 )
 
-fun emptyContactGroupFormUiModel(colors: List<Color>) = ContactGroupFormUiModel(
+fun emptyContactGroupFormUiModel(randomColor: Color) = ContactGroupFormUiModel(
     id = null,
     name = "",
-    color = colors.random(),
-    colors = colors,
+    color = randomColor,
     memberCount = 0,
     members = emptyList()
 )

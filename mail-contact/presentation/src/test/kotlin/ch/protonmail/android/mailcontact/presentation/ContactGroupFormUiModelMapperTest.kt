@@ -107,14 +107,12 @@ class ContactGroupFormUiModelMapperTest {
             listOf(contact.contactEmails[0])
         )
 
-        val colors = listOf(Color.Red)
-        val actual = contactGroupFormUiModelMapper.toContactGroupFormUiModel(contactGroup, colors)
+        val actual = contactGroupFormUiModelMapper.toContactGroupFormUiModel(contactGroup)
 
         val expected = ContactGroupFormUiModel(
             id = LabelId("LabelId1"),
             name = "Label 1",
             color = Color.Red,
-            colors = colors,
             memberCount = 1,
             members = listOf(
                 ContactGroupFormMember(
@@ -146,14 +144,12 @@ class ContactGroupFormUiModelMapperTest {
             emptyList()
         )
 
-        val colors = listOf(Color.Red)
-        val actual = contactGroupFormUiModelMapper.toContactGroupFormUiModel(contactGroup, colors)
+        val actual = contactGroupFormUiModelMapper.toContactGroupFormUiModel(contactGroup)
 
         val expected = ContactGroupFormUiModel(
             id = LabelId("LabelId1"),
             name = "Label 1",
             color = Color.Red,
-            colors = colors,
             memberCount = 0,
             members = emptyList()
         )
