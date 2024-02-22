@@ -320,6 +320,38 @@ class ContactGroupFormViewModelTest {
         }
     }
 
+    @Test
+    fun `when update and on remove member action is submitted, then loaded members event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            val index = 0
+            contactGroupFormViewModel.submit(
+                ContactGroupFormViewAction.OnRemoveMemberClick(
+                    expectedContactGroupFormUiModel.members[index].id
+                )
+            )
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList())
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateLabelId(labelId: LabelId?) {
         every {
             savedStateHandleMock.get<String>(ContactGroupFormScreen.ContactGroupFormLabelIdKey)
