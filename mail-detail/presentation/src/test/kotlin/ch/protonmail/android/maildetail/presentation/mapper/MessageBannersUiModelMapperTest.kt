@@ -18,14 +18,25 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import android.content.Context
+import android.content.res.Resources
 import ch.protonmail.android.testdata.message.MessageTestData
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class MessageBannersUiModelMapperTest {
 
-    private val messageBannersUiModelMapper = MessageBannersUiModelMapper()
+    private val resourcesMock = mockk<Resources>()
+    private val contextMock = mockk<Context> {
+        every { resources } returns resourcesMock
+    }
+
+    private val messageBannersUiModelMapper = MessageBannersUiModelMapper(contextMock)
 
     @Test
     fun `should map to ui model that allows showing a phishing banner when message is auto marked as phishing`() {
@@ -50,24 +61,28 @@ class MessageBannersUiModelMapperTest {
     }
 
     @Test
-    fun `should map to ui model with positive expiration duration if expiration is in the future`() {
+    fun `should map to ui model with expiration banner if expiration is in the future`() {
+        // Given
+        every { resourcesMock.getQuantityString(any(), any(), any()) } returns "formatted duration"
+        every { resourcesMock.getString(any(), any()) } returns "message expires in"
+
         // When
         val result = messageBannersUiModelMapper.createMessageBannersUiModel(
             MessageTestData.expiringMessage
         )
 
         // Then
-        assertTrue(result.expirationBannerDuration.isPositive())
+        assertNotNull(result.expirationBannerText)
     }
 
     @Test
-    fun `should map to ui model with negative expiration duration if expiration is in the past`() {
+    fun `should map to ui model with no expiration banner if expiration is in the past`() {
         // When
         val result = messageBannersUiModelMapper.createMessageBannersUiModel(
             MessageTestData.message
         )
 
         // Then
-        assertTrue(result.expirationBannerDuration.isNegative())
+        assertNull(result.expirationBannerText)
     }
 }

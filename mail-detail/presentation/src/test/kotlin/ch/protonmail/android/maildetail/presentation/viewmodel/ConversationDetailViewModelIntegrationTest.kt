@@ -326,7 +326,7 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
-        messageBannersUiModelMapper = MessageBannersUiModelMapper(),
+        messageBannersUiModelMapper = MessageBannersUiModelMapper(context),
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
             attachmentUiModelMapper = attachmentUiModelMapper,
             doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,

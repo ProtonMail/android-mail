@@ -20,18 +20,36 @@ package ch.protonmail.android.maildetail.presentation.mapper
 
 import java.time.Duration
 import java.time.Instant
+import android.content.Context
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
+import ch.protonmail.android.maildetail.presentation.util.toFormattedDurationParts
 import ch.protonmail.android.mailmessage.domain.model.Message
+import dagger.hilt.android.qualifiers.ApplicationContext
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 import kotlin.time.toKotlinDuration
 
-class MessageBannersUiModelMapper @Inject constructor() {
+class MessageBannersUiModelMapper @Inject constructor(@ApplicationContext val context: Context) {
 
     fun createMessageBannersUiModel(message: Message) = MessageBannersUiModel(
         shouldShowPhishingBanner = message.isPhishing(),
-        expirationBannerDuration = Duration.between(
+        expirationBannerText = formatExpirationTime(message)
+    )
+
+    private fun formatExpirationTime(message: Message): TextUiModel? {
+
+        val duration = Duration.between(
             Instant.now(),
             Instant.ofEpochSecond(message.expirationTime)
         ).toKotlinDuration()
-    )
+
+        val formattedExpiration = duration.toFormattedDurationParts(context.resources).joinToString(separator = ", ")
+
+        return formattedExpiration.takeIfNotEmpty()?.let {
+            TextUiModel(context.resources.getString(R.string.message_expiration_banner_text, it))
+        }
+
+    }
 }

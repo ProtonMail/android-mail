@@ -19,24 +19,42 @@
 package ch.protonmail.android.maildetail.presentation
 
 import java.time.Duration
-import ch.protonmail.android.mailcommon.presentation.R
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maildetail.presentation.util.toExpirationTextUiModels
+import android.content.res.Resources
+import androidx.annotation.PluralsRes
+import ch.protonmail.android.maildetail.presentation.util.toFormattedDurationParts
+import io.mockk.every
+import io.mockk.mockk
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toKotlinDuration
 
 class DurationUtilsTest {
 
+    val resourcesMock = mockk<Resources>()
+
     @Test
-    fun `return null for non-positive Duration`() {
+    fun `return empty list for non-positive Duration`() {
         // Given
         val duration = 0.minutes
-        val expected = null
+        val expected = emptyList<String>()
 
         // When
-        val actual = duration.toExpirationTextUiModels()
+        val actual = duration.toFormattedDurationParts(resourcesMock)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `return empty list for Duration under 1 minute`() {
+        // Given
+        val duration = 59.seconds
+        val expected = emptyList<String>()
+
+        // When
+        val actual = duration.toFormattedDurationParts(resourcesMock)
 
         // Then
         assertEquals(expected, actual)
@@ -47,11 +65,15 @@ class DurationUtilsTest {
         // Given
         val duration = 59.minutes
         val expected = listOf(
-            TextUiModel(R.plurals.expiration_minutes_full_word, 59)
+            expectPlurals(
+                R.plurals.expiration_minutes_full_word,
+                59,
+                "59 minutes"
+            )
         )
 
         // When
-        val actual = duration.toExpirationTextUiModels()
+        val actual = duration.toFormattedDurationParts(resourcesMock)
 
         // Then
         assertEquals(expected, actual)
@@ -62,12 +84,20 @@ class DurationUtilsTest {
         // Given
         val duration = Duration.ofHours(1).plusMinutes(5).toKotlinDuration()
         val expected = listOf(
-            TextUiModel(R.plurals.expiration_hours_full_word, 1),
-            TextUiModel(R.plurals.expiration_minutes_full_word, 5)
+            expectPlurals(
+                R.plurals.expiration_hours_full_word,
+                1,
+                "1 hour"
+            ),
+            expectPlurals(
+                R.plurals.expiration_minutes_full_word,
+                5,
+                "5 minutes"
+            )
         )
 
         // When
-        val actual = duration.toExpirationTextUiModels()
+        val actual = duration.toFormattedDurationParts(resourcesMock)
 
         // Then
         assertEquals(expected, actual)
@@ -78,16 +108,37 @@ class DurationUtilsTest {
         // Given
         val duration = Duration.ofDays(2).plusHours(3).plusMinutes(4).toKotlinDuration()
         val expected = listOf(
-            TextUiModel(R.plurals.expiration_days_full_word, 2),
-            TextUiModel(R.plurals.expiration_hours_full_word, 3),
-            TextUiModel(R.plurals.expiration_minutes_full_word, 4)
+            expectPlurals(
+                R.plurals.expiration_days_full_word,
+                2,
+                "2 days"
+            ),
+            expectPlurals(
+                R.plurals.expiration_hours_full_word,
+                3,
+                "3 hours"
+            ),
+            expectPlurals(
+                R.plurals.expiration_minutes_full_word,
+                4,
+                "4 minutes"
+            )
         )
 
         // When
-        val actual = duration.toExpirationTextUiModels()
+        val actual = duration.toFormattedDurationParts(resourcesMock)
 
         // Then
         assertEquals(expected, actual)
     }
 
+    private fun expectPlurals(
+        @PluralsRes resourceId: Int,
+        count: Int,
+        expected: String
+    ): String {
+        every { resourcesMock.getQuantityString(resourceId, count, count) } returns expected
+
+        return expected
+    }
 }

@@ -43,7 +43,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlin.time.Duration.Companion.hours
 
 object MessageDetailsPreviewData {
 
@@ -55,7 +54,7 @@ object MessageDetailsPreviewData {
         messageBannersState = MessageBannersState.Data(
             messageBannersUiModel = MessageBannersUiModel(
                 shouldShowPhishingBanner = false,
-                expirationBannerDuration = 666.hours
+                expirationBannerText = null
             )
         ),
         messageBodyState = MessageBodyState.Data(

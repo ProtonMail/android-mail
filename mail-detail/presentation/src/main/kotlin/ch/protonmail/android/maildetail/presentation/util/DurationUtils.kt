@@ -18,58 +18,61 @@
 
 package ch.protonmail.android.maildetail.presentation.util
 
+import android.content.res.Resources
 import ch.protonmail.android.mailcommon.presentation.R
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import kotlin.time.Duration
 
 private const val MINUTES_IN_HOUR: Int = 60
 private const val HOURS_IN_DAY: Int = 24
 
 /**
- * Returns formatted duration as an array of maximum 3 TextUiModels or null.
+ * Returns formatted duration as an array of maximum 3 Strings or empty list.
  *
  * Example: [X days, Y hours, Z minutes]
  */
-fun Duration.toExpirationTextUiModels(): List<TextUiModel>? {
+fun Duration.toFormattedDurationParts(resources: Resources): List<String> {
 
-    return if (this.isPositive()) {
+    return if (this.isPositive() && this.inWholeMinutes >= 1) {
 
         if (this.inWholeMinutes < MINUTES_IN_HOUR) {
             listOf(
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_minutes_full_word,
+                    this.inWholeMinutes.toInt(),
                     this.inWholeMinutes.toInt()
                 )
             )
         } else if (this.inWholeHours < HOURS_IN_DAY) {
             listOf(
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_hours_full_word,
+                    this.inWholeHours.toInt(),
                     this.inWholeHours.toInt()
                 ),
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_minutes_full_word,
+                    (this.inWholeMinutes - this.inWholeHours * MINUTES_IN_HOUR).toInt(),
                     (this.inWholeMinutes - this.inWholeHours * MINUTES_IN_HOUR).toInt()
                 )
             )
         } else {
             listOf(
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_days_full_word,
+                    this.inWholeDays.toInt(),
                     this.inWholeDays.toInt()
                 ),
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_hours_full_word,
+                    (this.inWholeHours - this.inWholeDays * HOURS_IN_DAY).toInt(),
                     (this.inWholeHours - this.inWholeDays * HOURS_IN_DAY).toInt()
                 ),
-                TextUiModel.PluralisedText(
+                resources.getQuantityString(
                     R.plurals.expiration_minutes_full_word,
+                    (this.inWholeMinutes - this.inWholeHours * MINUTES_IN_HOUR).toInt(),
                     (this.inWholeMinutes - this.inWholeHours * MINUTES_IN_HOUR).toInt()
                 )
             )
         }
-
-    } else null
+    } else emptyList()
 }
-
-

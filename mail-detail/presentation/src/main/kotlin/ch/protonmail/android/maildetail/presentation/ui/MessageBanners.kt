@@ -25,11 +25,9 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
-import ch.protonmail.android.maildetail.presentation.util.toExpirationTextUiModels
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallInverted
-import kotlin.time.Duration.Companion.hours
 
 @Composable
 fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
@@ -44,30 +42,12 @@ fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
                 borderColorIsBackgroundColor = true
             )
         }
-
-        val expirationTextUiModels = messageBannersUiModel.expirationBannerDuration.toExpirationTextUiModels()
-
-        if (
-            messageBannersUiModel.shouldShowPhishingBanner &&
-            expirationTextUiModels?.isNotEmpty() == true
-        ) {
-            Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-        }
-
-        if (expirationTextUiModels?.isNotEmpty() == true) {
-
-            val expirationTextArguments = listOf(
-                expirationTextUiModels.map { it.string() }.joinToString(separator = ", ")
-            )
-
+        if (messageBannersUiModel.expirationBannerText != null) {
             MessageBanner(
                 modifier = Modifier.fillMaxWidth(),
                 icon = R.drawable.ic_proton_hourglass,
                 iconTint = ProtonTheme.colors.iconInverted,
-                text = TextUiModel.TextResWithArgs(
-                    R.string.message_expiration_banner_text,
-                    expirationTextArguments
-                ),
+                text = messageBannersUiModel.expirationBannerText,
                 textStyle = ProtonTheme.typography.defaultSmallInverted,
                 backgroundColor = ProtonTheme.colors.notificationError,
                 borderColorIsBackgroundColor = true
@@ -133,7 +113,7 @@ fun PreviewMessageBanners() {
         MessageBanners(
             MessageBannersUiModel(
                 shouldShowPhishingBanner = true,
-                expirationBannerDuration = 666.hours
+                expirationBannerText = TextUiModel("This message will expire in 1 day, 2 hours, 3 minutes")
             )
         )
     }
