@@ -29,90 +29,180 @@ class ContactFormUiModelMapper @Inject constructor(
     private val decodeByteArray: DecodeByteArray
 ) {
 
+    private var incrementalUniqueFieldId = 0
+
     fun toContactFormUiModel(decryptedContact: DecryptedContact): ContactFormUiModel {
+        incrementalUniqueFieldId = 0 // Make sure to reset the field ID
+        val emails = decryptedContact.emails.map {
+            InputField.SingleTyped(
+                fieldId = getIncrementalUniqueFieldId(),
+                value = it.value,
+                selectedType = FieldType.EmailType.valueOf(it.type.name)
+            )
+        }
+        val telephones = decryptedContact.telephones.map {
+            InputField.SingleTyped(
+                fieldId = getIncrementalUniqueFieldId(),
+                value = it.text,
+                selectedType = FieldType.TelephoneType.valueOf(it.type.name)
+            )
+        }
+        val addresses = decryptedContact.addresses.map {
+            InputField.Address(
+                fieldId = getIncrementalUniqueFieldId(),
+                streetAddress = it.streetAddress,
+                postalCode = it.postalCode,
+                city = it.locality,
+                region = it.region,
+                country = it.country,
+                selectedType = FieldType.AddressType.valueOf(it.type.name)
+            )
+        }
+        val birthday = decryptedContact.birthday?.let {
+            InputField.Birthday(
+                fieldId = getIncrementalUniqueFieldId(),
+                value = it.date
+            )
+        }
+        val notes = decryptedContact.notes.map {
+            InputField.Note(
+                fieldId = getIncrementalUniqueFieldId(),
+                value = it.value
+            )
+        }
+        val others = buildOthers(decryptedContact)
         return ContactFormUiModel(
             id = decryptedContact.id,
             avatar = getAvatar(decryptedContact),
             displayName = decryptedContact.formattedName?.value ?: "",
             firstName = decryptedContact.structuredName?.given ?: "",
             lastName = decryptedContact.structuredName?.family ?: "",
-            emails = decryptedContact.emails.map {
-                InputField.SingleTyped(
-                    value = it.value,
-                    selectedType = FieldType.EmailType.valueOf(it.type.name)
-                )
-            }.toMutableList(),
-            telephones = decryptedContact.telephones.map {
-                InputField.SingleTyped(
-                    value = it.text,
-                    selectedType = FieldType.TelephoneType.valueOf(it.type.name)
-                )
-            }.toMutableList(),
-            addresses = decryptedContact.addresses.map {
-                InputField.Address(
-                    streetAddress = it.streetAddress,
-                    postalCode = it.postalCode,
-                    city = it.locality,
-                    region = it.region,
-                    country = it.country,
-                    selectedType = FieldType.AddressType.valueOf(it.type.name)
-                )
-            }.toMutableList(),
-            birthday = decryptedContact.birthday?.let {
-                InputField.Birthday(value = it.date)
-            },
-            notes = decryptedContact.notes.map {
-                InputField.Note(
-                    value = it.value
-                )
-            }.toMutableList(),
-            others = buildOthers(decryptedContact),
-            otherTypes = FieldType.OtherType.values().toList()
+            emails = emails,
+            telephones = telephones,
+            addresses = addresses,
+            birthday = birthday,
+            notes = notes,
+            others = others,
+            otherTypes = FieldType.OtherType.values().toList(),
+            incrementalUniqueFieldId = incrementalUniqueFieldId
         )
     }
 
+    @SuppressWarnings("LongMethod")
     private fun buildOthers(decryptedContact: DecryptedContact): MutableList<InputField> {
         val others = arrayListOf<InputField>()
         decryptedContact.photos.forEachIndexed { index, photo ->
             // Skip first index as we use it for avatar already
             if (index == 0) return@forEachIndexed
             decodeByteArray(photo.data)?.let { bitmap ->
-                others.add(InputField.ImageTyped(bitmap, FieldType.OtherType.Photo))
+                others.add(
+                    InputField.ImageTyped(
+                        fieldId = getIncrementalUniqueFieldId(),
+                        value = bitmap,
+                        selectedType = FieldType.OtherType.Photo
+                    )
+                )
             }
         }
         decryptedContact.organizations.forEach { organization ->
-            others.add(InputField.SingleTyped(organization.value, FieldType.OtherType.Organization))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = organization.value,
+                    selectedType = FieldType.OtherType.Organization
+                )
+            )
         }
         decryptedContact.titles.forEach { title ->
-            others.add(InputField.SingleTyped(title.value, FieldType.OtherType.Title))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = title.value,
+                    selectedType = FieldType.OtherType.Title
+                )
+            )
         }
         decryptedContact.roles.forEach { role ->
-            others.add(InputField.SingleTyped(role.value, FieldType.OtherType.Role))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = role.value,
+                    selectedType = FieldType.OtherType.Role
+                )
+            )
         }
         decryptedContact.timezones.forEach { timeZone ->
-            others.add(InputField.SingleTyped(timeZone.text, FieldType.OtherType.TimeZone))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = timeZone.text,
+                    selectedType = FieldType.OtherType.TimeZone
+                )
+            )
         }
         decryptedContact.logos.forEach { logo ->
             decodeByteArray(logo.data)?.let { bitmap ->
-                others.add(InputField.ImageTyped(bitmap, FieldType.OtherType.Logo))
+                others.add(
+                    InputField.ImageTyped(
+                        fieldId = getIncrementalUniqueFieldId(),
+                        value = bitmap,
+                        selectedType = FieldType.OtherType.Logo
+                    )
+                )
             }
         }
         decryptedContact.members.forEach { member ->
-            others.add(InputField.SingleTyped(member.value, FieldType.OtherType.Member))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = member.value,
+                    selectedType = FieldType.OtherType.Member
+                )
+            )
         }
         decryptedContact.languages.forEach { language ->
-            others.add(InputField.SingleTyped(language.value, FieldType.OtherType.Language))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = language.value,
+                    selectedType = FieldType.OtherType.Language
+                )
+            )
         }
         decryptedContact.urls.forEach { url ->
-            others.add(InputField.SingleTyped(url.value, FieldType.OtherType.Url))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = url.value,
+                    selectedType = FieldType.OtherType.Url
+                )
+            )
         }
         decryptedContact.gender?.let { gender ->
-            others.add(InputField.SingleTyped(gender.gender, FieldType.OtherType.Gender))
+            others.add(
+                InputField.SingleTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = gender.gender,
+                    selectedType = FieldType.OtherType.Gender
+                )
+            )
         }
         decryptedContact.anniversary?.let { anniversary ->
-            others.add(InputField.DateTyped(anniversary.date, FieldType.OtherType.Anniversary))
+            others.add(
+                InputField.DateTyped(
+                    fieldId = getIncrementalUniqueFieldId(),
+                    value = anniversary.date,
+                    selectedType = FieldType.OtherType.Anniversary
+                )
+            )
         }
         return others
+    }
+
+    private fun getIncrementalUniqueFieldId(): String {
+        val fieldId = incrementalUniqueFieldId.toString()
+        incrementalUniqueFieldId++
+        return fieldId
     }
 
     private fun getAvatar(decryptedContact: DecryptedContact): ContactFormAvatar {

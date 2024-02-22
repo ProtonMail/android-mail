@@ -35,24 +35,28 @@ data class ContactFormUiModel(
     val displayName: String,
     val firstName: String,
     val lastName: String,
-    // Using `MutableList` so that the items content can be updated without recomposing the instantiated list items.
-    val emails: MutableList<InputField.SingleTyped>,
-    val telephones: MutableList<InputField.SingleTyped>,
-    val addresses: MutableList<InputField.Address>,
+    val incrementalUniqueFieldId: Int,
+    val emails: List<InputField.SingleTyped>,
+    val telephones: List<InputField.SingleTyped>,
+    val addresses: List<InputField.Address>,
     val birthday: InputField.Birthday?,
-    val notes: MutableList<InputField.Note>,
-    val others: MutableList<InputField>,
+    val notes: List<InputField.Note>,
+    val others: List<InputField>,
     val otherTypes: List<FieldType.OtherType>
 )
 
 sealed interface InputField {
 
+    val fieldId: String
+
     data class SingleTyped(
+        override val fieldId: String,
         val value: String,
         val selectedType: FieldType
     ) : InputField
 
     data class Address(
+        override val fieldId: String,
         val streetAddress: String,
         val postalCode: String,
         val city: String,
@@ -62,20 +66,24 @@ sealed interface InputField {
     ) : InputField
 
     data class ImageTyped(
+        override val fieldId: String,
         val value: Bitmap,
         val selectedType: FieldType
     ) : InputField
 
     data class DateTyped(
+        override val fieldId: String,
         val value: LocalDate,
         val selectedType: FieldType
     ) : InputField
 
     data class Birthday(
+        override val fieldId: String,
         val value: LocalDate
     ) : InputField
 
     data class Note(
+        override val fieldId: String,
         val value: String
     ) : InputField
 }
@@ -165,17 +173,21 @@ fun emptyContactFormUiModel() = ContactFormUiModel(
     birthday = null,
     notes = mutableListOf(),
     others = mutableListOf(),
-    otherTypes = FieldType.OtherType.values().toList()
+    otherTypes = FieldType.OtherType.values().toList(),
+    incrementalUniqueFieldId = 0
 )
-fun emptyEmailField() = InputField.SingleTyped(
+fun emptyEmailField(fieldId: String) = InputField.SingleTyped(
+    fieldId = fieldId,
     value = "",
     selectedType = FieldType.EmailType.Email
 )
-fun emptyTelephoneField() = InputField.SingleTyped(
+fun emptyTelephoneField(fieldId: String) = InputField.SingleTyped(
+    fieldId = fieldId,
     value = "",
     selectedType = FieldType.TelephoneType.Telephone
 )
-fun emptyAddressField() = InputField.Address(
+fun emptyAddressField(fieldId: String) = InputField.Address(
+    fieldId = fieldId,
     streetAddress = "",
     postalCode = "",
     city = "",
@@ -183,10 +195,12 @@ fun emptyAddressField() = InputField.Address(
     country = "",
     selectedType = FieldType.AddressType.Address
 )
-fun emptyNoteField() = InputField.Note(
+fun emptyNoteField(fieldId: String) = InputField.Note(
+    fieldId = fieldId,
     value = ""
 )
-fun emptyRandomOtherField() = InputField.SingleTyped(
+fun emptyRandomOtherField(fieldId: String) = InputField.SingleTyped(
+    fieldId = fieldId,
     value = "",
     selectedType = listOf(
         FieldType.OtherType.Organization,
