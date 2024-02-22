@@ -87,6 +87,7 @@ class ContactGroupFormViewModel @Inject constructor(
                     is ContactGroupFormViewAction.OnUpdateMemberList -> handleOnUpdateMemberList(action)
                     is ContactGroupFormViewAction.OnRemoveMemberClick -> handleOnRemoveMemberClick(action)
                     is ContactGroupFormViewAction.OnUpdateName -> handleOnUpdateName(action)
+                    is ContactGroupFormViewAction.OnUpdateColor -> handleOnUpdateColor(action)
                     ContactGroupFormViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupFormEvent.Close
                     )
@@ -160,6 +161,19 @@ class ContactGroupFormViewModel @Inject constructor(
             ContactGroupFormEvent.ContactGroupLoaded(
                 contactGroupFormUiModel = stateValue.contactGroup.copy(
                     name = action.name
+                )
+            )
+        )
+    }
+
+    private fun handleOnUpdateColor(action: ContactGroupFormViewAction.OnUpdateColor) {
+        val stateValue = state.value
+        if (stateValue !is ContactGroupFormState.Data) return
+
+        emitNewStateFor(
+            ContactGroupFormEvent.ContactGroupLoaded(
+                contactGroupFormUiModel = stateValue.contactGroup.copy(
+                    color = action.color
                 )
             )
         )

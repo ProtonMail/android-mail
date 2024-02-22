@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
+import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import me.proton.core.contact.domain.entity.ContactEmailId
 
@@ -34,6 +35,9 @@ sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     ) : ContactGroupFormViewAction
     data class OnUpdateName(
         val name: String
+    ) : ContactGroupFormViewAction
+    data class OnUpdateColor(
+        val color: Color
     ) : ContactGroupFormViewAction
 }
 
