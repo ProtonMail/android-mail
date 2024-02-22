@@ -46,7 +46,9 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.unmockkAll
+import io.mockk.unmockkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -56,6 +58,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
 import org.junit.Test
+import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
@@ -248,7 +251,7 @@ class ContactFormViewModelTest {
         val expectedDecryptedContact = DecryptedContact(testContactId)
         val expectedContactFormUiModel = contactFormSampleData().copy(
             emails = mutableListOf(
-                InputField.SingleTyped("invalidEmail", FieldType.EmailType.Email)
+                InputField.SingleTyped("1", "invalidEmail", FieldType.EmailType.Email)
             )
         )
         expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
@@ -363,20 +366,22 @@ class ContactFormViewModelTest {
             skipItems(1)
 
             val index = 0
+            val fieldId = contactFormUiModel.emails[index].fieldId
             val newValue = InputField.SingleTyped(
+                fieldId = fieldId,
                 value = "Updated",
                 selectedType = FieldType.EmailType.Work
             )
             contactFormViewModel.submit(
                 ContactFormViewAction.OnUpdateItem(
                     section = Section.Emails,
-                    index = index,
+                    fieldId = fieldId,
                     newValue = newValue
                 )
             )
 
             // Then
-            val mutableEmails = contactFormUiModel.emails.apply {
+            val mutableEmails = contactFormUiModel.emails.toMutableList().apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
@@ -401,20 +406,22 @@ class ContactFormViewModelTest {
             skipItems(1)
 
             val index = 0
+            val fieldId = contactFormUiModel.telephones[index].fieldId
             val newValue = InputField.SingleTyped(
+                fieldId = fieldId,
                 value = "Updated",
                 selectedType = FieldType.TelephoneType.Work
             )
             contactFormViewModel.submit(
                 ContactFormViewAction.OnUpdateItem(
                     section = Section.Telephones,
-                    index = index,
+                    fieldId = fieldId,
                     newValue = newValue
                 )
             )
 
             // Then
-            val mutableTelephones = contactFormUiModel.telephones.apply {
+            val mutableTelephones = contactFormUiModel.telephones.toMutableList().apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
@@ -439,7 +446,9 @@ class ContactFormViewModelTest {
             skipItems(1)
 
             val index = 0
+            val fieldId = contactFormUiModel.addresses[index].fieldId
             val newValue = InputField.Address(
+                fieldId = fieldId,
                 streetAddress = "Updated",
                 postalCode = "Updated",
                 city = "Updated",
@@ -450,13 +459,13 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(
                 ContactFormViewAction.OnUpdateItem(
                     section = Section.Addresses,
-                    index = index,
+                    fieldId = fieldId,
                     newValue = newValue
                 )
             )
 
             // Then
-            val mutableAddresses = contactFormUiModel.addresses.apply {
+            val mutableAddresses = contactFormUiModel.addresses.toMutableList().apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
@@ -481,19 +490,21 @@ class ContactFormViewModelTest {
             skipItems(1)
 
             val index = 0
+            val fieldId = contactFormUiModel.notes[index].fieldId
             val newValue = InputField.Note(
+                fieldId = fieldId,
                 value = "Updated"
             )
             contactFormViewModel.submit(
                 ContactFormViewAction.OnUpdateItem(
                     section = Section.Notes,
-                    index = index,
+                    fieldId = fieldId,
                     newValue = newValue
                 )
             )
 
             // Then
-            val mutableNotes = contactFormUiModel.notes.apply {
+            val mutableNotes = contactFormUiModel.notes.toMutableList().apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
@@ -518,20 +529,22 @@ class ContactFormViewModelTest {
             skipItems(1)
 
             val index = 0
+            val fieldId = contactFormUiModel.others[index].fieldId
             val newValue = InputField.SingleTyped(
+                fieldId = fieldId,
                 value = "Updated",
                 selectedType = FieldType.OtherType.Role
             )
             contactFormViewModel.submit(
                 ContactFormViewAction.OnUpdateItem(
                     section = Section.Others,
-                    index = index,
+                    fieldId = fieldId,
                     newValue = newValue
                 )
             )
 
             // Then
-            val mutableOthers = contactFormUiModel.others.apply {
+            val mutableOthers = contactFormUiModel.others.toMutableList().apply {
                 this[index] = newValue
             }
             val expected = ContactFormState.Data(
@@ -561,9 +574,10 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = emptyContactFormUiModel().copy(
-                    emails = emptyContactFormUiModel().emails.apply {
-                        this.add(emptyEmailField())
-                    }
+                    emails = emptyContactFormUiModel().emails.toMutableList().apply {
+                        this.add(emptyEmailField("0"))
+                    },
+                    incrementalUniqueFieldId = 1
                 )
             )
 
@@ -586,9 +600,10 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = emptyContactFormUiModel().copy(
-                    telephones = emptyContactFormUiModel().telephones.apply {
-                        this.add(emptyTelephoneField())
-                    }
+                    telephones = emptyContactFormUiModel().telephones.toMutableList().apply {
+                        this.add(emptyTelephoneField("0"))
+                    },
+                    incrementalUniqueFieldId = 1
                 )
             )
 
@@ -611,9 +626,10 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = emptyContactFormUiModel().copy(
-                    addresses = emptyContactFormUiModel().addresses.apply {
-                        this.add(emptyAddressField())
-                    }
+                    addresses = emptyContactFormUiModel().addresses.toMutableList().apply {
+                        this.add(emptyAddressField("0"))
+                    },
+                    incrementalUniqueFieldId = 1
                 )
             )
 
@@ -636,9 +652,10 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = emptyContactFormUiModel().copy(
-                    notes = emptyContactFormUiModel().notes.apply {
-                        this.add(emptyNoteField())
-                    }
+                    notes = emptyContactFormUiModel().notes.toMutableList().apply {
+                        this.add(emptyNoteField("0"))
+                    },
+                    incrementalUniqueFieldId = 1
                 )
             )
 
@@ -651,6 +668,11 @@ class ContactFormViewModelTest {
         // Given
         expectSavedStateContactId(null)
 
+        val supportedOtherFieldsCount = 8 // Size of the type list in ContactFormUiMode.emptyRandomOtherField
+        // When adding others field the type is selected randomly. Mock random so that we know what type is ued.
+        mockkObject(Random)
+        every { Random.nextInt(supportedOtherFieldsCount) } returns 0
+
         // When
         contactFormViewModel.state.test {
             // Then
@@ -661,16 +683,23 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = emptyContactFormUiModel().copy(
-                    others = emptyContactFormUiModel().others.apply {
+                    others = emptyContactFormUiModel().others.toMutableList().apply {
                         this.add(
-                            (contactFormViewModel.state.value as ContactFormState.Data).contact.others.last()
+                            InputField.SingleTyped(
+                                fieldId = "0",
+                                value = "",
+                                selectedType = FieldType.OtherType.Organization
+                            )
                         )
-                    }
+                    },
+                    incrementalUniqueFieldId = 1
                 )
             )
 
             assertEquals(expected, actual)
         }
+
+        unmockkObject(Random)
     }
 
     @Test
@@ -683,14 +712,16 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
+            val index = 0
+            val fieldId = contactFormUiModel.emails[index].fieldId
             contactFormViewModel.submit(
-                ContactFormViewAction.OnRemoveItemClick(Section.Emails, 0)
+                ContactFormViewAction.OnRemoveItemClick(Section.Emails, fieldId)
             )
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
-                    emails = contactFormUiModel.emails.apply { this.removeAt(0) }
+                    emails = contactFormUiModel.emails.toMutableList().apply { this.removeAt(index) }
                 ),
                 isSaveEnabled = true
             )
@@ -709,14 +740,16 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
+            val index = 0
+            val fieldId = contactFormUiModel.telephones[index].fieldId
             contactFormViewModel.submit(
-                ContactFormViewAction.OnRemoveItemClick(Section.Telephones, 0)
+                ContactFormViewAction.OnRemoveItemClick(Section.Telephones, fieldId)
             )
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
-                    telephones = contactFormUiModel.telephones.apply { this.removeAt(0) }
+                    telephones = contactFormUiModel.telephones.toMutableList().apply { this.removeAt(index) }
                 ),
                 isSaveEnabled = true
             )
@@ -735,14 +768,16 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
+            val index = 0
+            val fieldId = contactFormUiModel.addresses[index].fieldId
             contactFormViewModel.submit(
-                ContactFormViewAction.OnRemoveItemClick(Section.Addresses, 0)
+                ContactFormViewAction.OnRemoveItemClick(Section.Addresses, fieldId)
             )
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
-                    addresses = contactFormUiModel.addresses.apply { this.removeAt(0) }
+                    addresses = contactFormUiModel.addresses.toMutableList().apply { this.removeAt(index) }
                 ),
                 isSaveEnabled = true
             )
@@ -761,14 +796,16 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
+            val index = 0
+            val fieldId = contactFormUiModel.notes[index].fieldId
             contactFormViewModel.submit(
-                ContactFormViewAction.OnRemoveItemClick(Section.Notes, 0)
+                ContactFormViewAction.OnRemoveItemClick(Section.Notes, fieldId)
             )
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
-                    notes = contactFormUiModel.notes.apply { this.removeAt(0) }
+                    notes = contactFormUiModel.notes.toMutableList().apply { this.removeAt(index) }
                 ),
                 isSaveEnabled = true
             )
@@ -787,14 +824,16 @@ class ContactFormViewModelTest {
             // Then
             awaitItem()
 
+            val index = 0
+            val fieldId = contactFormUiModel.others[index].fieldId
             contactFormViewModel.submit(
-                ContactFormViewAction.OnRemoveItemClick(Section.Others, 0)
+                ContactFormViewAction.OnRemoveItemClick(Section.Others, fieldId)
             )
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = contactFormUiModel.copy(
-                    others = contactFormUiModel.others.apply { this.removeAt(0) }
+                    others = contactFormUiModel.others.toMutableList().apply { this.removeAt(index) }
                 ),
                 isSaveEnabled = true
             )
