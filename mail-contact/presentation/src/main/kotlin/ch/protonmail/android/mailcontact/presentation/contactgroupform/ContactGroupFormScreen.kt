@@ -40,9 +40,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -62,6 +67,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
+import ch.protonmail.android.mailcontact.presentation.ui.ColorPickerDialog
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -129,8 +135,8 @@ fun ContactGroupFormScreen(
                             onUpdateName = {
                                 viewModel.submit(ContactGroupFormViewAction.OnUpdateName(it))
                             },
-                            onChangeColorClick = {
-                                // Call view model with change color view action here
+                            onUpdateColor = {
+                                viewModel.submit(ContactGroupFormViewAction.OnUpdateColor(it))
                             }
                         )
                     )
@@ -194,6 +200,23 @@ fun ContactGroupFormContent(
                     iconResId = R.drawable.ic_proton_users,
                     backgroundColor = state.contactGroup.color
                 )
+                val openDialog = remember { mutableStateOf(false) }
+                var selectedColor by remember { mutableStateOf(state.contactGroup.color) }
+                when {
+                    openDialog.value -> {
+                        ColorPickerDialog(
+                            title = stringResource(R.string.contact_group_color),
+                            selectedValue = selectedColor,
+                            values = state.colors,
+                            onDismissRequest = { openDialog.value = false },
+                            onValueSelected = { selectedValue ->
+                                openDialog.value = false
+                                selectedColor = selectedValue
+                                actions.onUpdateColor(selectedValue)
+                            }
+                        )
+                    }
+                }
                 ProtonSecondaryButton(
                     modifier = modifier
                         .padding(
@@ -201,7 +224,7 @@ fun ContactGroupFormContent(
                             horizontal = ProtonDimens.DefaultSpacing
                         )
                         .align(Alignment.CenterHorizontally),
-                    onClick = actions.onChangeColorClick
+                    onClick = { openDialog.value = true }
                 ) {
                     Text(
                         text = stringResource(R.string.change_color),
@@ -394,7 +417,7 @@ object ContactGroupFormContent {
         val onAddMemberClick: () -> Unit,
         val onRemoveMemberClick: (ContactEmailId) -> Unit,
         val onUpdateName: (String) -> Unit,
-        val onChangeColorClick: () -> Unit
+        val onUpdateColor: (Color) -> Unit
     ) {
 
         companion object {
@@ -403,7 +426,7 @@ object ContactGroupFormContent {
                 onAddMemberClick = {},
                 onRemoveMemberClick = {},
                 onUpdateName = {},
-                onChangeColorClick = {}
+                onUpdateColor = {}
             )
         }
     }
@@ -430,7 +453,8 @@ object ContactGroupFormTopBar {
 private fun ContactGroupFormContentPreview() {
     ContactGroupFormContent(
         state = ContactGroupFormState.Data(
-            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData
+            contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData,
+            colors = emptyList()
         ),
         actions = ContactGroupFormContent.Actions.Empty
     )
@@ -444,7 +468,8 @@ private fun EmptyContactGroupFormContentPreview() {
             contactGroup = ContactGroupFormPreviewData.contactGroupFormSampleData.copy(
                 memberCount = 0,
                 members = emptyList()
-            )
+            ),
+            colors = emptyList()
         ),
         actions = ContactGroupFormContent.Actions.Empty
     )
