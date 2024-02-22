@@ -206,12 +206,22 @@ class MailboxListReducer @Inject constructor() {
                         null
                     }
 
-                OpenMailboxItemRequest(
-                    itemId = MailboxItemId(operation.item.conversationId.id),
-                    itemType = MailboxItemType.Conversation,
-                    shouldOpenInComposer = false,
-                    subItemId = searchedItemId
-                )
+                val isSentMessageWithNoAssignedConvId = operation.item.conversationId.id.isEmpty()
+                if (isSentMessageWithNoAssignedConvId) {
+                    OpenMailboxItemRequest(
+                        itemId = MailboxItemId(operation.item.id),
+                        itemType = MailboxItemType.Message,
+                        shouldOpenInComposer = false,
+                        subItemId = searchedItemId
+                    )
+                } else {
+                    OpenMailboxItemRequest(
+                        itemId = MailboxItemId(operation.item.conversationId.id),
+                        itemType = MailboxItemType.Conversation,
+                        shouldOpenInComposer = false,
+                        subItemId = searchedItemId
+                    )
+                }
             }
 
             ViewMode.NoConversationGrouping -> {
