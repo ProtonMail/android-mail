@@ -79,7 +79,7 @@ class ContactFormViewModel @Inject constructor(
                 }
                 emitNewStateFor(
                     ContactFormEvent.ContactLoaded(
-                        contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
+                        contactFormUiModel = contactFormUiModelMapper.toContactFormUiModel(decryptedContact)
                     )
                 )
             }
@@ -114,32 +114,36 @@ class ContactFormViewModel @Inject constructor(
         emitNewStateFor(
             ContactFormEvent.UpdateContactForm(
                 when (action.section) {
-                    Section.Emails -> {
-                        // We need to make a new list here through `toMutableList` so that it triggers recomposition
-                        val newEmails = contact.emails.toMutableList()
-                        newEmails.add(emptyEmailField())
-                        contact.copy(emails = newEmails)
-                    }
-                    Section.Telephones -> {
-                        val newTelephones = contact.telephones.toMutableList()
-                        newTelephones.add(emptyTelephoneField())
-                        contact.copy(telephones = newTelephones)
-                    }
-                    Section.Addresses -> {
-                        val newAddresses = contact.addresses.toMutableList()
-                        newAddresses.add(emptyAddressField())
-                        contact.copy(addresses = newAddresses)
-                    }
-                    Section.Notes -> {
-                        val newNotes = contact.notes.toMutableList()
-                        newNotes.add(emptyNoteField())
-                        contact.copy(notes = newNotes)
-                    }
-                    Section.Others -> {
-                        val newOthers = contact.others.toMutableList()
-                        newOthers.add(emptyRandomOtherField())
-                        contact.copy(others = newOthers)
-                    }
+                    Section.Emails -> contact.copy(
+                        emails = contact.emails.toMutableList().apply {
+                            this.add(emptyEmailField(contact.incrementalUniqueFieldId.toString()))
+                        },
+                        incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
+                    )
+                    Section.Telephones -> contact.copy(
+                        telephones = contact.telephones.toMutableList().apply {
+                            this.add(emptyTelephoneField(contact.incrementalUniqueFieldId.toString()))
+                        },
+                        incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
+                    )
+                    Section.Addresses -> contact.copy(
+                        addresses = contact.addresses.toMutableList().apply {
+                            this.add(emptyAddressField(contact.incrementalUniqueFieldId.toString()))
+                        },
+                        incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
+                    )
+                    Section.Notes -> contact.copy(
+                        notes = contact.notes.toMutableList().apply {
+                            this.add(emptyNoteField(contact.incrementalUniqueFieldId.toString()))
+                        },
+                        incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
+                    )
+                    Section.Others -> contact.copy(
+                        others = contact.others.toMutableList().apply {
+                            this.add(emptyRandomOtherField(contact.incrementalUniqueFieldId.toString()))
+                        },
+                        incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
+                    )
                 }
             )
         )
@@ -152,32 +156,31 @@ class ContactFormViewModel @Inject constructor(
         emitNewStateFor(
             ContactFormEvent.UpdateContactForm(
                 when (action.section) {
-                    Section.Emails -> {
-                        // We need to make a new list here through `toMutableList` so that it triggers recomposition
-                        val newEmails = contact.emails.toMutableList()
-                        newEmails.removeAt(action.index)
-                        contact.copy(emails = newEmails)
-                    }
-                    Section.Telephones -> {
-                        val newTelephones = contact.telephones.toMutableList()
-                        newTelephones.removeAt(action.index)
-                        contact.copy(telephones = newTelephones)
-                    }
-                    Section.Addresses -> {
-                        val newAddresses = contact.addresses.toMutableList()
-                        newAddresses.removeAt(action.index)
-                        contact.copy(addresses = newAddresses)
-                    }
-                    Section.Notes -> {
-                        val newNotes = contact.notes.toMutableList()
-                        newNotes.removeAt(action.index)
-                        contact.copy(notes = newNotes)
-                    }
-                    Section.Others -> {
-                        val newOthers = contact.others.toMutableList()
-                        newOthers.removeAt(action.index)
-                        contact.copy(others = newOthers)
-                    }
+                    Section.Emails -> contact.copy(
+                        emails = contact.emails.toMutableList().apply {
+                            this.removeIf { it.fieldId == action.fieldId }
+                        }
+                    )
+                    Section.Telephones -> contact.copy(
+                        telephones = contact.telephones.toMutableList().apply {
+                            this.removeIf { it.fieldId == action.fieldId }
+                        }
+                    )
+                    Section.Addresses -> contact.copy(
+                        addresses = contact.addresses.toMutableList().apply {
+                            this.removeIf { it.fieldId == action.fieldId }
+                        }
+                    )
+                    Section.Notes -> contact.copy(
+                        notes = contact.notes.toMutableList().apply {
+                            this.removeIf { it.fieldId == action.fieldId }
+                        }
+                    )
+                    Section.Others -> contact.copy(
+                        others = contact.others.toMutableList().apply {
+                            this.removeIf { it.fieldId == action.fieldId }
+                        }
+                    )
                 }
             )
         )
@@ -190,41 +193,73 @@ class ContactFormViewModel @Inject constructor(
         emitNewStateFor(
             ContactFormEvent.UpdateContactForm(
                 when (action.section) {
-                    Section.Emails -> {
-                        // We don't want to trigger recomposition here so we just update the item at specified index
-                        //  without making a new list.
-                        val mutableEmails = contact.emails.apply {
-                            this[action.index] = action.newValue as InputField.SingleTyped
-                        }
-                        contact.copy(emails = mutableEmails)
-                    }
-                    Section.Telephones -> {
-                        val mutableTelephones = contact.telephones.apply {
-                            this[action.index] = action.newValue as InputField.SingleTyped
-                        }
-                        contact.copy(telephones = mutableTelephones)
-                    }
-                    Section.Addresses -> {
-                        val mutableAddresses = contact.addresses.apply {
-                            this[action.index] = action.newValue as InputField.Address
-                        }
-                        contact.copy(addresses = mutableAddresses)
-                    }
-                    Section.Notes -> {
-                        val mutableNotes = contact.notes.apply {
-                            this[action.index] = action.newValue as InputField.Note
-                        }
-                        contact.copy(notes = mutableNotes)
-                    }
-                    Section.Others -> {
-                        val mutableOthers = contact.others.apply {
-                            this[action.index] = action.newValue
-                        }
-                        contact.copy(others = mutableOthers)
-                    }
+                    Section.Emails -> contact.copy(
+                        emails = updateEmail(contact.emails, action.newValue as InputField.SingleTyped)
+                    )
+                    Section.Telephones -> contact.copy(
+                        telephones = updateTelephone(contact.telephones, action.newValue as InputField.SingleTyped)
+                    )
+                    Section.Addresses -> contact.copy(
+                        addresses = updateAddress(contact.addresses, action.newValue as InputField.Address)
+                    )
+                    Section.Notes -> contact.copy(
+                        notes = updateNote(contact.notes, action.newValue as InputField.Note)
+                    )
+                    Section.Others -> contact.copy(
+                        others = updateOther(contact.others, action.newValue)
+                    )
                 }
             )
         )
+    }
+
+    private fun updateEmail(
+        emails: List<InputField.SingleTyped>,
+        newValue: InputField.SingleTyped
+    ): List<InputField.SingleTyped> {
+        val index = emails.indexOfFirst { it.fieldId == newValue.fieldId }
+        if (index == -1) return emails // This happens when the item is removed
+        return emails.toMutableList().apply {
+            this[index] = newValue
+        }
+    }
+
+    private fun updateTelephone(
+        telephones: List<InputField.SingleTyped>,
+        newValue: InputField.SingleTyped
+    ): List<InputField.SingleTyped> {
+        val index = telephones.indexOfFirst { it.fieldId == newValue.fieldId }
+        if (index == -1) return telephones // This happens when the item is removed
+        return telephones.toMutableList().apply {
+            this[index] = newValue
+        }
+    }
+
+    private fun updateAddress(
+        addresses: List<InputField.Address>,
+        newValue: InputField.Address
+    ): List<InputField.Address> {
+        val index = addresses.indexOfFirst { it.fieldId == newValue.fieldId }
+        if (index == -1) return addresses // This happens when the item is removed
+        return addresses.toMutableList().apply {
+            this[index] = newValue
+        }
+    }
+
+    private fun updateNote(notes: List<InputField.Note>, newValue: InputField.Note): List<InputField.Note> {
+        val index = notes.indexOfFirst { it.fieldId == newValue.fieldId }
+        if (index == -1) return notes // This happens when the item is removed
+        return notes.toMutableList().apply {
+            this[index] = newValue
+        }
+    }
+
+    private fun updateOther(others: List<InputField>, newValue: InputField): List<InputField> {
+        val index = others.indexOfFirst { it.fieldId == newValue.fieldId }
+        if (index == -1) return others // This happens when the item is removed
+        return others.toMutableList().apply {
+            this[index] = newValue
+        }
     }
 
     private fun handleDisplayName(action: ContactFormViewAction.OnUpdateDisplayName) {
