@@ -119,8 +119,9 @@ class ContactFormReducerTest(
                 currentState = loadedCreateContactState,
                 event = ContactFormEvent.UpdateContactForm(
                     contact = loadedContactFormUiModel.copy(
-                        emails = loadedContactFormUiModel.emails.apply {
+                        emails = loadedContactFormUiModel.emails.toMutableList().apply {
                             this[0] = InputField.SingleTyped(
+                                fieldId = loadedContactFormUiModel.emails[0].fieldId,
                                 value = "Updated",
                                 selectedType = FieldType.EmailType.Work
                             )
@@ -129,8 +130,9 @@ class ContactFormReducerTest(
                 ),
                 expectedState = loadedCreateContactState.copy(
                     contact = loadedContactFormUiModel.copy(
-                        emails = loadedContactFormUiModel.emails.apply {
+                        emails = loadedContactFormUiModel.emails.toMutableList().apply {
                             this[0] = InputField.SingleTyped(
+                                fieldId = loadedContactFormUiModel.emails[0].fieldId,
                                 value = "Updated",
                                 selectedType = FieldType.EmailType.Work
                             )
