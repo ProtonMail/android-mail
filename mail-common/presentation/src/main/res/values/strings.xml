@@ -97,4 +97,25 @@
     <string name="mailbox_action_delete_dialog_button_delete">Delete</string>
 
     <string name="picker_dialog_cancel">Cancel</string>
+
+    <string name="purple">Purple</string>
+    <string name="enzian">Enzian</string>
+    <string name="pink">Pink</string>
+    <string name="plum">Plum</string>
+    <string name="strawberry">Strawberry</string>
+    <string name="cerise">Cerise</string>
+    <string name="carrot">Carrot</string>
+    <string name="copper">Copper</string>
+    <string name="sahara">Sahara</string>
+    <string name="soil">Soil</string>
+    <string name="slate_blue">Slate blue</string>
+    <string name="cobalt">Cobalt</string>
+    <string name="pacific">Pacific</string>
+    <string name="ocean">Ocean</string>
+    <string name="reef">Reef</string>
+    <string name="pine">Pine</string>
+    <string name="fern">Fern</string>
+    <string name="forest">Forest</string>
+    <string name="olive">Olive</string>
+    <string name="pickle">Pickle</string>
 </resources>
