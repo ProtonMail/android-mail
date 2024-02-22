@@ -118,6 +118,7 @@ class ContactGroupFormViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         mockkStatic(android.graphics.Color::class)
         every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
+        every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
     }
 
     @AfterTest
@@ -375,6 +376,35 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel.copy(name = "NewName")
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when update and on update color action is submitted, then loaded members event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(
+                ContactGroupFormViewAction.OnUpdateColor(Color.Blue)
+            )
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel.copy(color = Color.Blue)
             )
 
             assertEquals(expected, actual)
