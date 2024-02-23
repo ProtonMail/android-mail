@@ -107,7 +107,7 @@ class ManageMembersUiModelMapperTest {
 
         val actual = manageMembersUiModelMapper.toManageMembersUiModelList(
             listOf(contact),
-            listOf("contact email id 1")
+            listOf(ContactEmailId("contact email id 1"))
         )
 
         assertEquals(expected, actual)

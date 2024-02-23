@@ -77,7 +77,7 @@ class ManageMembersViewModelTest {
             )
         )
     )
-    private val defaultTestSelectedContactEmailIds = listOf("ContactEmailId2")
+    private val defaultTestSelectedContactEmailIds = listOf(ContactEmailId("ContactEmailId2"))
     private val defaultTestManageMembersUiModel = listOf(
         ManageMembersUiModel(
             id = ContactEmailId("ContactEmailId1"),
@@ -145,7 +145,7 @@ class ManageMembersViewModelTest {
 
     private fun expectUiModelMapper(
         contacts: List<Contact>,
-        selectedContactEmailIds: List<String>,
+        selectedContactEmailIds: List<ContactEmailId>,
         manageMembersUiModel: List<ManageMembersUiModel>
     ) {
         every {
@@ -156,9 +156,9 @@ class ManageMembersViewModelTest {
         } returns manageMembersUiModel
     }
 
-    private fun expectSavedState(selectedContactEmailIds: List<String>) {
+    private fun expectSavedState(selectedContactEmailIds: List<ContactEmailId>) {
         every {
             savedStateHandleMock.get<List<String>>(ManageMembersScreen.ManageMembersSelectedContactEmailIdsKey)
-        } returns selectedContactEmailIds
+        } returns selectedContactEmailIds.map { it.id }
     }
 }

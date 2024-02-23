@@ -20,13 +20,14 @@ package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.contact.domain.entity.ContactEmailId
 import javax.inject.Inject
 
 class ManageMembersUiModelMapper @Inject constructor() {
 
     fun toManageMembersUiModelList(
         contacts: List<Contact>,
-        selectedContactEmailIds: List<String>
+        selectedContactEmailIds: List<ContactEmailId>
     ): List<ManageMembersUiModel> {
         return contacts.flatMap { contact ->
             contact.contactEmails.map { contactEmail ->
@@ -35,7 +36,7 @@ class ManageMembersUiModelMapper @Inject constructor() {
                     name = contactEmail.name,
                     email = contactEmail.email,
                     initials = getInitials(contactEmail.name),
-                    isSelected = selectedContactEmailIds.any { it == contactEmail.id.id }
+                    isSelected = selectedContactEmailIds.any { it == contactEmail.id }
                 )
             }
         }

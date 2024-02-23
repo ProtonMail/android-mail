@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -77,7 +78,7 @@ class ManageMembersViewModel @Inject constructor(
 
     private fun flowManageMembersEvent(
         userId: UserId,
-        selectedContactEmailIds: List<String>
+        selectedContactEmailIds: List<ContactEmailId>
     ): Flow<ManageMembersEvent> {
         return observeContacts(userId).map { contacts ->
             ManageMembersEvent.MembersLoaded(
@@ -96,7 +97,7 @@ class ManageMembersViewModel @Inject constructor(
 
     private fun extractSelectedContactEmailIds() = savedStateHandle.get<List<String>>(
         ManageMembersScreen.ManageMembersSelectedContactEmailIdsKey
-    )
+    )?.map { ContactEmailId(it) }
 
     private fun emitNewStateFor(event: ManageMembersEvent) {
         val currentState = state.value
