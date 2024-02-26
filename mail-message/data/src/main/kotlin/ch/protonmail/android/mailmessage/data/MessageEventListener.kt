@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.data
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.resource.MessageResource
 import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
+import ch.protonmail.android.mailmessage.data.usecase.ExcludeMessagesInDraftState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -58,7 +59,8 @@ open class MessageEventListener @Inject constructor(
     private val db: LabelDatabase,
     private val localDataSource: MessageLocalDataSource,
     private val repository: MessageRepository,
-    private val excludeDraftMessagesAlreadyInOutbox: ExcludeDraftMessagesAlreadyInOutbox
+    private val excludeDraftMessagesAlreadyInOutbox: ExcludeDraftMessagesAlreadyInOutbox,
+    private val excludeMessagesInDraftState: ExcludeMessagesInDraftState
 ) : EventListener<String, MessageResource>() {
 
     override val type = Type.Core
@@ -92,7 +94,10 @@ open class MessageEventListener @Inject constructor(
     }
 
     override suspend fun onResetAll(config: EventManagerConfig) {
-        localDataSource.deleteAllMessages(config.userId)
+        // We should not delete the messages in draft state. That can cause sending failure
+        // since the local data will be lost
+        val draftMessagesToExclude = excludeMessagesInDraftState(config.userId)
+        localDataSource.deleteAllMessagesExcept(config.userId, draftMessagesToExclude)
         repository.getRemoteMessages(config.userId, PageKey())
     }
 
