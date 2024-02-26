@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Tijdzone</string>
   <string name="contact_form_loading_error">Fout bij het laden van de contactpersonen, probeer het later nog een keer</string>
   <string name="contact_form_save_success">Contactpersoon opgeslagen</string>
+  <string name="contact_form_create_success">Contact created</string>
+  <string name="contact_form_update_success">Contact updated</string>
   <string name="save_contact_content_description">Contactpersoon opslaan</string>
   <string name="contact_form_save">Opslaan</string>
   <string name="add_new">Nieuwe toevoegen</string>
@@ -97,9 +99,26 @@
   <string name="contact_form_save_error">Fout bij het laden van de contactpersonen, probeer het later nog een keer</string>
   <string name="all_contacts_tab">Contacten</string>
   <string name="contact_groups_tab">Groepen</string>
-  <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d lid</item>
-    <item quantity="other">%1$d leden</item>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d member</item>
+    <item quantity="other">%1$d members</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Member (%1$d)</item>
+    <item quantity="other">Members (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
+  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="edit_contact_group_content_description">Contactgroep bewerken</string>
+  <string name="delete_contact_group_content_description">Contactgroep verwijderen</string>
+  <string name="send_group_message">Groepsbericht verzenden</string>
+  <string name="contact_group_form_save">Save</string>
+  <string name="contact_group_form_name_hint">Display name</string>
+  <string name="remove_member_content_description">Remove member</string>
+  <string name="add_members">Add members</string>
+  <string name="change_color">Change color</string>
+  <string name="contact_group_form_create_success">Contactgroep aangemaakt</string>
+  <string name="contact_group_form_update_success">Contactgroep bijgewerkt</string>
+  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
 </resources>

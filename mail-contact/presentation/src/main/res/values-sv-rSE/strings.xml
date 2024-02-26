@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Tidszon</string>
   <string name="contact_form_loading_error">Fel vid laddning av kontakt, försök igen senare</string>
   <string name="contact_form_save_success">Kontakt sparad</string>
+  <string name="contact_form_create_success">Kontakt skapad</string>
+  <string name="contact_form_update_success">Kontakt uppdaterad</string>
   <string name="save_contact_content_description">Spara kontakt</string>
   <string name="contact_form_save">Spara</string>
   <string name="add_new">Lägg till ny</string>
@@ -97,9 +99,26 @@
   <string name="contact_form_save_error">Kunde inte spara kontakt, försök igen senare</string>
   <string name="all_contacts_tab">Kontakter</string>
   <string name="contact_groups_tab">Grupper</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d medlem</item>
     <item quantity="other">%1$d medlemmar</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Medlem (%1$d)</item>
+    <item quantity="other">Medlemmar (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Fel när kontakten sparades, den innehåller en ogiltig e-postadress</string>
+  <string name="contact_group_details_loading_error">Fel vid laddning av kontaktgrupp, försök igen senare</string>
+  <string name="contact_group_form_loading_error">Fel vid laddning av kontaktgrupp, försök igen senare</string>
+  <string name="edit_contact_group_content_description">Redigera kontaktgrupp</string>
+  <string name="delete_contact_group_content_description">Ta bort kontaktgrupp</string>
+  <string name="send_group_message">Skicka gruppmeddelande</string>
+  <string name="contact_group_form_save">Spara</string>
+  <string name="contact_group_form_name_hint">Display name</string>
+  <string name="remove_member_content_description">Ta bort medlem</string>
+  <string name="add_members">Lägg till medlemmar</string>
+  <string name="change_color">Ändra färg</string>
+  <string name="contact_group_form_create_success">Kontaktgrupp skapad</string>
+  <string name="contact_group_form_update_success">Kontaktgrupp uppdaterad</string>
+  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
 </resources>

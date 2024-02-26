@@ -86,7 +86,7 @@
   <string name="onboarding_privacy_for_all_headline">Privacitat per a tothom</string>
   <string name="onboarding_privacy_for_all_description">Convideu els altres a Proton Mail perquè tots pugueu beneficiar-vos del xifratge d\'extrem a extrem.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Fàcil actualització</string>
+  <string name="onboarding_easily_up_to_date_headline">Actualitzat fàcilment</string>
   <string name="onboarding_easily_up_to_date_description">Navegueu ràpidament a través dels missatges encadenats en el mode de conversa.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Net i ordenat</string>

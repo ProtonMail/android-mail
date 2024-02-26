@@ -91,6 +91,6 @@
   <string name="message_report_phishing_dialog_message">შეტყობინების ფიშინგად მონიშვნა გამოიწვევს ამ შეტყობინების ჩვენთვის გადმოგზავნას. ჩვენ გავაანალიზებთ მას და გავაუმჯობესებთ ჩვენს ფილტრებს. ეს ასევე ნიშნავს, რომ ჩვენ წვდომა გვექნება შეტყობინების სრულ შინაარსთან.</string>
   <string name="message_report_phishing_dialog_confim_button">დასტური</string>
   <string name="message_report_phishing_dialog_cancel_button">გაუქმება</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Proton Calendar-ში გახსნა</string>
+  <string name="open_on_protoncalendar_banner_description">დაშიფრული კალენდრის დაცვა</string>
 </resources>

@@ -91,6 +91,6 @@
   <string name="message_report_phishing_dialog_message">Ma temmeleḍ izen d aneɛruḍ n ukellex ad yettwazen	yizen-nni ɣur-nneɣ, swakka ad nizmir ad t-nesleḍ yerna ad nwenneɛ tistayin-nneɣ. Ayag yebɣa ad d-yinin belli ad nizmir ad nwali akk agbur n yizen.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirm</string>
   <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Ldi di Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Awitay awgelhan aɣelsan</string>
 </resources>

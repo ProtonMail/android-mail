@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Zeitzone</string>
   <string name="contact_form_loading_error">Fehler beim Laden des Kontakts. Bitte versuche es später erneut.</string>
   <string name="contact_form_save_success">Kontakt gespeichert</string>
+  <string name="contact_form_create_success">Kontakt erstellt</string>
+  <string name="contact_form_update_success">Kontakt aktualisiert</string>
   <string name="save_contact_content_description">Kontakt speichern</string>
   <string name="contact_form_save">Speichern</string>
   <string name="add_new">Neuen Kontakt hinzufügen</string>
@@ -97,9 +99,26 @@
   <string name="contact_form_save_error">Fehler beim Speichern des Kontakts, bitte versuche es später noch einmal</string>
   <string name="all_contacts_tab">Kontakte</string>
   <string name="contact_groups_tab">Gruppen</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d Mitglied</item>
     <item quantity="other">%1$d Mitglieder</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Mitglied (%1$d)</item>
+    <item quantity="other">Mitglieder (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Fehler beim Speichern des Kontakts, er enthält eine ungültige E-Mail-Adresse.</string>
+  <string name="contact_group_details_loading_error">Fehler beim Laden der Kontaktgruppe. Bitte versuche es später erneut.</string>
+  <string name="contact_group_form_loading_error">Fehler beim Laden der Kontaktgruppe. Bitte versuche es später erneut.</string>
+  <string name="edit_contact_group_content_description">Kontaktgruppe bearbeiten</string>
+  <string name="delete_contact_group_content_description">Kontaktgruppe löschen</string>
+  <string name="send_group_message">Gruppennachricht senden</string>
+  <string name="contact_group_form_save">Speichern</string>
+  <string name="contact_group_form_name_hint">Anzeigename</string>
+  <string name="remove_member_content_description">Mitglied entfernen</string>
+  <string name="add_members">Mitglieder hinzufügen</string>
+  <string name="change_color">Farbe ändern</string>
+  <string name="contact_group_form_create_success">Kontaktgruppe erstellt</string>
+  <string name="contact_group_form_update_success">Kontaktgruppe aktualisiert</string>
+  <string name="contact_group_form_save_error">Fehler beim Speichern der Kontaktgruppe. Bitte versuche es später erneut.</string>
 </resources>

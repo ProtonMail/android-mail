@@ -47,13 +47,25 @@
   <string name="composer_attachment_size_exceeded_dialog_message">添付ファイルのサイズ制限は%1$sです。</string>
   <string name="composer_attachment_reencryption_failed_message">添付ファイルの再暗号化に失敗しました。セキュリティ上の理由により、すべての添付ファイルは削除されました。</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">パスワードを追加</string>
   <string name="composer_button_set_expiration">有効期限を設定</string>
+  <string name="composer_expiration_time_bottom_sheet_title">有効期限</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
+  <string name="composer_bottom_bar_expiration_time_none">None</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
+  <string name="composer_sender_changed_dialog_title">Sending notice</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Compose</string>
   <string name="composer_send_without_subject_dialog_text">件名なしでメッセージを送信しますか?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">はい</string>
+  <string name="composer_send_without_subject_dialog_reject_button">いいえ</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Close</string>
@@ -70,9 +82,9 @@
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">確認のためパスワードを再度入力してください</string>
   <string name="set_message_password_supporting_error_text_repeat">2 つのパスワードが一致しません</string>
-  <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_show">パスワードを表示</string>
+  <string name="set_message_password_button_hide">パスワードを非表示</string>
+  <string name="set_message_password_button_apply">パスワードを適用</string>
+  <string name="set_message_password_button_save_changes">変更を保存</string>
   <string name="set_message_password_button_remove_password">パスワードを削除</string>
 </resources>

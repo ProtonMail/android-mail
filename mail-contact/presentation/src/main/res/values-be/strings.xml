@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Часавы пояс</string>
   <string name="contact_form_loading_error">Памылка загрузкі кантакту. Паспрабуйце яшчэ раз пазней</string>
   <string name="contact_form_save_success">Кантакт захаваны</string>
+  <string name="contact_form_create_success">Кантакт створаны</string>
+  <string name="contact_form_update_success">Кантакт абноўлены</string>
   <string name="save_contact_content_description">Захаваць кантакт</string>
   <string name="contact_form_save">Захаваць</string>
   <string name="add_new">Дадаць новы</string>
@@ -97,11 +99,30 @@
   <string name="contact_form_save_error">Памылка захавання кантакту. Паспрабуйце яшчэ раз пазней</string>
   <string name="all_contacts_tab">Кантакты</string>
   <string name="contact_groups_tab">Групы</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d удзельнік</item>
     <item quantity="few">%1$d удзельнікі</item>
     <item quantity="many">%1$d удзельнікаў</item>
     <item quantity="other">%1$d удзельнікаў</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Удзельнік (%1$d)</item>
+    <item quantity="few">Удзельнікаў (%1$d)</item>
+    <item quantity="many">Удзельнікаў (%1$d)</item>
+    <item quantity="other">Удзельнікаў (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Памылка захавання кантакту. Кантакт змяшчае памылковы адрас электроннай пошты</string>
+  <string name="contact_group_details_loading_error">Памылка загрузкі групы. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_group_form_loading_error">Памылка загрузкі групы. Паспрабуйце яшчэ раз пазней</string>
+  <string name="edit_contact_group_content_description">Рэдагаваць групу кантактаў</string>
+  <string name="delete_contact_group_content_description">Выдаліць групу кантактаў</string>
+  <string name="send_group_message">Адправіць групавое паведамленне</string>
+  <string name="contact_group_form_save">Захаваць</string>
+  <string name="contact_group_form_name_hint">Бачнае імя</string>
+  <string name="remove_member_content_description">Выдаліць удзельніка</string>
+  <string name="add_members">Дадаць удзельнікаў</string>
+  <string name="change_color">Змяніць колер</string>
+  <string name="contact_group_form_create_success">Група кантактаў створана</string>
+  <string name="contact_group_form_update_success">Група кантактаў абноўлена</string>
+  <string name="contact_group_form_save_error">Памылка захавання групы кантактаў. Паспрабуйце яшчэ раз пазней</string>
 </resources>

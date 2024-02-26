@@ -49,6 +49,18 @@
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">新增密碼</string>
   <string name="composer_button_set_expiration">設定到期時間</string>
+  <string name="composer_expiration_time_bottom_sheet_title">到期日</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
+  <string name="composer_bottom_bar_expiration_time_none">None</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
+  <string name="composer_sender_changed_dialog_title">Sending notice</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">撰寫郵件</string>
   <string name="composer_send_without_subject_dialog_text">確定要傳送沒有主旨的郵件嗎？</string>

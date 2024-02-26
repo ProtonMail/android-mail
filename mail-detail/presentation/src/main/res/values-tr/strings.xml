@@ -91,6 +91,6 @@
   <string name="message_report_phishing_dialog_message">Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimiz anlamına gelir.</string>
   <string name="message_report_phishing_dialog_confim_button">Onayla</string>
   <string name="message_report_phishing_dialog_cancel_button">İptal</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Proton Calendar ile aç</string>
+  <string name="open_on_protoncalendar_banner_description">Güvenli şifrelenmiş takvim</string>
 </resources>

@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Strefa czasowa</string>
   <string name="contact_form_loading_error">Wystąpił błąd podczas ładowania kontaktu. Spróbuj ponownie później</string>
   <string name="contact_form_save_success">Kontakt został zapisany</string>
+  <string name="contact_form_create_success">Kontakt został utworzony</string>
+  <string name="contact_form_update_success">Kontakt został zaktualizowany</string>
   <string name="save_contact_content_description">Zapisz kontakt</string>
   <string name="contact_form_save">Zapisz</string>
   <string name="add_new">Dodaj nowy</string>
@@ -97,11 +99,30 @@
   <string name="contact_form_save_error">Wystąpił błąd podczas zapisywania kontaktu. Spróbuj ponownie później</string>
   <string name="all_contacts_tab">Kontakty</string>
   <string name="contact_groups_tab">Grupy</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d członek</item>
+    <item quantity="few">%1$d członków</item>
+    <item quantity="many">%1$d członków</item>
+    <item quantity="other">%1$d członków</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
     <item quantity="one">%1$d członek</item>
     <item quantity="few">%1$d członków</item>
     <item quantity="many">%1$d członków</item>
     <item quantity="other">%1$d członków</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Wystąpił błąd podczas zapisywania kontaktu. Kontakt zawiera nieprawidłowy adres e-mail</string>
+  <string name="contact_group_details_loading_error">Wystąpił błąd podczas ładowania grupy kontaktów. Spróbuj ponownie później</string>
+  <string name="contact_group_form_loading_error">Wystąpił błąd podczas ładowania grupy kontaktów. Spróbuj ponownie później</string>
+  <string name="edit_contact_group_content_description">Edytuj grupę kontaktów</string>
+  <string name="delete_contact_group_content_description">Usuń grupę kontaktów</string>
+  <string name="send_group_message">Wyślij wiadomość grupową</string>
+  <string name="contact_group_form_save">Zapisz</string>
+  <string name="contact_group_form_name_hint">Nazwa wyświetlana</string>
+  <string name="remove_member_content_description">Usuń użytkownika</string>
+  <string name="add_members">Dodaj członków</string>
+  <string name="change_color">Zmień kolor</string>
+  <string name="contact_group_form_create_success">Grupa kontaktów została utworzona</string>
+  <string name="contact_group_form_update_success">Grupa kontaktów została zaktualizowana</string>
+  <string name="contact_group_form_save_error">Wystąpił błąd podczas zapisywania grupy kontaktów. Spróbuj ponownie później</string>
 </resources>

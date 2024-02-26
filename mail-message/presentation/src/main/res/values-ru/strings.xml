@@ -24,11 +24,11 @@
     <item quantity="other">%d файлов</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d больше</string>
-  <string name="attachment_permission_dialog_title">Необходимо разрешение</string>
-  <string name="attachment_permission_dialog_message">Необходимо разрешение от Proton Mail для доступа в Ваше хранилище для загрузки вложения.</string>
+  <string name="attachment_permission_dialog_title">Требуется разрешение</string>
+  <string name="attachment_permission_dialog_message">Чтобы загрузить вложение, Proton Mail необходимо получить разрешение на доступ к вашему хранилищу.</string>
   <string name="attachment_permission_dialog_dismiss_button">Да</string>
   <string name="attachment_permission_dialog_action_button">Настройки</string>
-  <string name="attachment_type_description">файл %1$s</string>
+  <string name="attachment_type_description">%1$s файл</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Архив</string>
   <string name="attachment_type_image">Изображение</string>

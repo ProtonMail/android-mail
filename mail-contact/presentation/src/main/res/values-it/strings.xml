@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Fuso orario</string>
   <string name="contact_form_loading_error">Errore nel caricamento del contatto. Riprova più tardi.</string>
   <string name="contact_form_save_success">Contatto salvato</string>
+  <string name="contact_form_create_success">Contatto creato</string>
+  <string name="contact_form_update_success">Contatto aggiornato</string>
   <string name="save_contact_content_description">Salva il contatto</string>
   <string name="contact_form_save">Salva</string>
   <string name="add_new">Aggiungi</string>
@@ -93,13 +95,30 @@
   <string name="contact_details_delete_dialog_title">Elimina il contatto</string>
   <string name="contact_details_delete_dialog_text">Sei sicuro di voler eliminare questo contatto?</string>
   <string name="contact_details_delete_dialog_cancel_button">Annulla</string>
-  <string name="contact_details_delete_dialog_confirm_button">OK</string>
+  <string name="contact_details_delete_dialog_confirm_button">Elimina</string>
   <string name="contact_form_save_error">Errore nel salvataggio del contatto. Riprova più tardi.</string>
   <string name="all_contacts_tab">Contatti</string>
   <string name="contact_groups_tab">Gruppi</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d membro</item>
     <item quantity="other">%1$d membri</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Membro (%1$d)</item>
+    <item quantity="other">Membri (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Errore nel salvataggio del contatto a causa di un indirizzo email non valido</string>
+  <string name="contact_group_details_loading_error">Errore nel caricamento del gruppo di contatti. Riprova più tardi.</string>
+  <string name="contact_group_form_loading_error">Errore nel caricamento del gruppo di contatti. Riprova più tardi.</string>
+  <string name="edit_contact_group_content_description">Modifica il gruppo di contatti</string>
+  <string name="delete_contact_group_content_description">Elimina il gruppo di contatti</string>
+  <string name="send_group_message">Invia un messaggio al gruppo</string>
+  <string name="contact_group_form_save">Salva</string>
+  <string name="contact_group_form_name_hint">Nome visualizzato</string>
+  <string name="remove_member_content_description">Rimuovi il membro</string>
+  <string name="add_members">Aggiungi dei membri</string>
+  <string name="change_color">Cambia il colore</string>
+  <string name="contact_group_form_create_success">Gruppo di contatti creato</string>
+  <string name="contact_group_form_update_success">Gruppo di contatti aggiornato</string>
+  <string name="contact_group_form_save_error">Errore nel salvataggio del gruppo di contatti. Riprova più tardi.</string>
 </resources>

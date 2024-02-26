@@ -49,6 +49,18 @@
   <string name="composer_warning_local_data_shown">이 원고의 가장 최근 버전을 불러오는 데 실패했습니다. 어떤 변경점이 있더라도 그것을 덮어쓰게 됩니다.</string>
   <string name="composer_button_add_password">비밀번호 추가</string>
   <string name="composer_button_set_expiration">만료 시간 설정</string>
+  <string name="composer_expiration_time_bottom_sheet_title">만료 시기</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
+  <string name="composer_bottom_bar_expiration_time_none">None</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
+  <string name="composer_sender_changed_dialog_title">Sending notice</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">작성</string>
   <string name="composer_send_without_subject_dialog_text">제목없이 메시지를 보낼까요?</string>

@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Zona waktu</string>
   <string name="contact_form_loading_error">Terdapat kesalahan dalam memuat kontak. Silakan coba lagi nanti</string>
   <string name="contact_form_save_success">Kontak disimpan</string>
+  <string name="contact_form_create_success">Kontak dibuat</string>
+  <string name="contact_form_update_success">Kontak diperbarui</string>
   <string name="save_contact_content_description">Simpan kontak</string>
   <string name="contact_form_save">Simpan</string>
   <string name="add_new">Tambah</string>
@@ -97,8 +99,24 @@
   <string name="contact_form_save_error">Terdapat kesalahan dalam menyimpan kontak. Silakan coba lagi nanti</string>
   <string name="all_contacts_tab">Kontak</string>
   <string name="contact_groups_tab">Grup</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="other">%1$d anggota</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="other">Anggota (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Kontak gagal disimpan karena mengandung alamat email yang tidak valid</string>
+  <string name="contact_group_details_loading_error">Terdapat kesalahan dalam memuat grup kontak. Silakan coba lagi nanti</string>
+  <string name="contact_group_form_loading_error">Terdapat kesalahan dalam memuat grup kontak. Silakan coba lagi nanti</string>
+  <string name="edit_contact_group_content_description">Sunting grup kontak</string>
+  <string name="delete_contact_group_content_description">Hapus grup kontak</string>
+  <string name="send_group_message">Kirim pesan grup</string>
+  <string name="contact_group_form_save">Simpan</string>
+  <string name="contact_group_form_name_hint">Nama tampilan</string>
+  <string name="remove_member_content_description">Hapus anggota</string>
+  <string name="add_members">Tambah anggota</string>
+  <string name="change_color">Ubah warna</string>
+  <string name="contact_group_form_create_success">Grup kontak dibuat</string>
+  <string name="contact_group_form_update_success">Grup kontak diperbarui</string>
+  <string name="contact_group_form_save_error">Terdapat kesalahan dalam menyimpan grup kontak. Silakan coba lagi nanti</string>
 </resources>

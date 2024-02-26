@@ -48,7 +48,19 @@
   <string name="composer_attachment_reencryption_failed_message">A recriptografia do anexo falhou. Por motivos de segurança, todos os anexos foram removidos.</string>
   <string name="composer_warning_local_data_shown">A versão mais recente deste rascunho não foi carregada. Qualquer alteração substituirá seu conteúdo.</string>
   <string name="composer_button_add_password">Adicionar senha</string>
-  <string name="composer_button_set_expiration">Definir a data de vencimento</string>
+  <string name="composer_button_set_expiration">Definir a data de expiração</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Data de expiração</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Concluído</string>
+  <string name="composer_bottom_bar_expiration_time_none">Nenhuma</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 hora</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 dia</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 dias</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 semana</string>
+  <string name="composer_error_setting_expiration_time">O ajuste da data de expiração falhou</string>
+  <string name="composer_sender_changed_dialog_title">Aviso de envio</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">O envio de mensagens do @pm.me é um recurso pago. A sua mensagem será enviada do seu endereço padrão.</string>
+  <string name="composer_sender_changed_original_address_disabled">O endereço de remetente selecionado está desativado. Sua mensagem será enviada do seu endereço padrão.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Escrever</string>
   <string name="composer_send_without_subject_dialog_text">Enviar mensagem sem assunto?</string>

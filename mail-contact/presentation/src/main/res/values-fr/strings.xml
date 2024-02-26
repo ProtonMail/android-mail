@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Fuseau horaire</string>
   <string name="contact_form_loading_error">Une erreur s\'est produite lors du chargement du contact. Réessayez plus tard.</string>
   <string name="contact_form_save_success">Contact enregistré</string>
+  <string name="contact_form_create_success">Le contact a été créé.</string>
+  <string name="contact_form_update_success">Le contact a été mis à jour.</string>
   <string name="save_contact_content_description">Enregistrer le contact</string>
   <string name="contact_form_save">Enregistrer</string>
   <string name="add_new">Ajouter un contact</string>
@@ -97,9 +99,26 @@
   <string name="contact_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Merci de réessayer plus tard</string>
   <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Groupes</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d membre</item>
     <item quantity="other">%1$d membres</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Membre (%1$d)</item>
+    <item quantity="other">Membres (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Il contient une adresse e-mail non valide.</string>
+  <string name="contact_group_details_loading_error">Une erreur s\'est produite lors du chargement du contact. Veuillez réessayer plus tard.</string>
+  <string name="contact_group_form_loading_error">Une erreur s\'est produite lors du chargement du groupe de contacts. Veuillez réessayer plus tard.</string>
+  <string name="edit_contact_group_content_description">Modifier le groupe de contacts</string>
+  <string name="delete_contact_group_content_description">Supprimer le groupe de contacts</string>
+  <string name="send_group_message">Envoyer un message de groupe</string>
+  <string name="contact_group_form_save">Enregistrer</string>
+  <string name="contact_group_form_name_hint">Nom d\'affichage</string>
+  <string name="remove_member_content_description">Retirer le membre</string>
+  <string name="add_members">Ajouter des membres</string>
+  <string name="change_color">Changer la couleur</string>
+  <string name="contact_group_form_create_success">Le groupe de contacts a été créé.</string>
+  <string name="contact_group_form_update_success">Le groupe de contacts a été mis à jour.</string>
+  <string name="contact_group_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Veuillez réessayer plus tard.</string>
 </resources>

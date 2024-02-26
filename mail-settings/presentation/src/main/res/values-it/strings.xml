@@ -26,7 +26,7 @@
   <string name="mail_settings_push_notifications">Notifiche push</string>
   <string name="mail_settings_auto_lock">Blocco automatico</string>
   <string name="mail_settings_alternative_routing">Percorso alternativo</string>
-  <string name="mail_settings_app_language">Lingua dell\'applicazione</string>
+  <string name="mail_settings_app_language">Lingua dell\'interfaccia</string>
   <string name="mail_settings_combined_contacts">Contatti combinati</string>
   <string name="mail_settings_local_cache">Cache locale</string>
   <string name="mail_settings_local_cache_hint">Spazio utilizzato: %s</string>
@@ -46,11 +46,11 @@
   <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
   <string name="mail_settings_app_information">Informazioni sull\'applicazione</string>
-  <string name="mail_settings_app_version">Versione dell\'applicazione</string>
+  <string name="mail_settings_app_version">Versione</string>
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
-  <string name="mail_settings_password_management">Gestione delle password</string>
+  <string name="mail_settings_password_management">Gestisci le password</string>
   <string name="mail_settings_recovery_email">Email di recupero</string>
   <string name="mail_settings_mailbox_size">Spazio della casella di posta</string>
   <string name="mail_settings_addresses">Indirizzi</string>
@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_title">Blocco automatico dell\'app</string>
-  <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
+  <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app dopo un determinato periodo di tempo. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambia il codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
@@ -147,10 +147,10 @@
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Errore nella verifica del codice PIN</string>
   <string name="mail_settings_pin_insertion_signout_text">Disconnetti</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Disconnetti</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Disconnetti l\'account</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler disconnettere l\'account?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sì</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Disconnetti</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Annulla</string>
   <string name="mail_settings_pin_insertion_created_success">Codice PIN creato</string>
   <string name="mail_settings_pin_insertion_changed_success">Codice PIN cambiato</string>
   <!-- Local storage -->

@@ -93,6 +93,6 @@
   <string name="message_report_phishing_dialog_message">Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirm</string>
   <string name="message_report_phishing_dialog_cancel_button">Скасувати</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Відкрити у Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Захищений шифруванням календар</string>
 </resources>

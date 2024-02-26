@@ -91,6 +91,6 @@
   <string name="message_report_phishing_dialog_message">Rapporteres en besked som et phishing-forsøg videresendes beskeden til os, så vi kan analysere den og forbedre vores filtre. Det betyder, at vi vil kunne se hele beskedindholdet.</string>
   <string name="message_report_phishing_dialog_confim_button">Bekræft</string>
   <string name="message_report_phishing_dialog_cancel_button">Annullér</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Åbn i Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Sikker krypteret kalender</string>
 </resources>

@@ -59,8 +59,8 @@
   <string name="folder_limit_reached_error">Досягнуто обмеження тек</string>
   <string name="delete_label_error">Не вдалося видалити мітку</string>
   <string name="input_field_clear_content_description">Очистити</string>
-  <string name="label_list_item_content_description">Label list item</string>
-  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="label_list_item_content_description">Елемент списку міток</string>
+  <string name="folder_list_item_content_description">Елемент списку тек</string>
   <string name="folder_list_no_folders_found">Тек не знайдено.</string>
   <string name="folder_list_create_folder_placeholder_description">Створіть теку, щоб покращити свою роботу з електронною поштою.</string>
   <string name="create_folder_content_description">Додати теку</string>
@@ -68,15 +68,15 @@
   <string name="folder_settings_title">Налаштування</string>
   <string name="folder_settings_done_button">Виконано</string>
   <string name="folder_settings_folder_colors">Використати кольори тек</string>
-  <string name="folder_settings_parent_color">Inherit parent folder color</string>
-  <string name="folder_list_loading_error">Error loading folders, please try again later</string>
-  <string name="folder_loading_error">Error loading folder, please try again later</string>
-  <string name="switch_on">On</string>
-  <string name="switch_off">Off</string>
+  <string name="folder_settings_parent_color">Успадкувати колір батьківської теки</string>
+  <string name="folder_list_loading_error">Помилка завантаження тек, спробуйте пізніше</string>
+  <string name="folder_loading_error">Помилка завантаження теки, спробуйте пізніше</string>
+  <string name="switch_on">Ввімк.</string>
+  <string name="switch_off">Вимк.</string>
   <string name="folder_form_parent">Тека вищого рівня</string>
-  <string name="folder_form_no_parent">None</string>
+  <string name="folder_form_no_parent">Немає</string>
   <string name="folder_form_notifications">Сповіщення</string>
-  <string name="folder_saved">Folder saved</string>
+  <string name="folder_saved">Теку збережено</string>
   <string name="folder_deleted">Теку видалено</string>
-  <string name="parent_folder_none">None</string>
+  <string name="parent_folder_none">Немає</string>
 </resources>

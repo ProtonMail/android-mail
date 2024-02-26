@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Time zone</string>
   <string name="contact_form_loading_error">Error loading contact, please try again later</string>
   <string name="contact_form_save_success">Contact saved</string>
+  <string name="contact_form_create_success">Contact created</string>
+  <string name="contact_form_update_success">Contact updated</string>
   <string name="save_contact_content_description">Save contact</string>
   <string name="contact_form_save">Зберегти</string>
   <string name="add_new">Add new</string>
@@ -97,11 +99,30 @@
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
   <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Групи</string>
-  <plurals name="contact_group_member_count">
-    <item quantity="one">%1$d учасник</item>
-    <item quantity="few">%1$d учасники</item>
-    <item quantity="many">%1$d учасники</item>
-    <item quantity="other">%1$d учасники</item>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d member</item>
+    <item quantity="few">%1$d members</item>
+    <item quantity="many">%1$d members</item>
+    <item quantity="other">%1$d members</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Member (%1$d)</item>
+    <item quantity="few">Members (%1$d)</item>
+    <item quantity="many">Members (%1$d)</item>
+    <item quantity="other">Members (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
+  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="edit_contact_group_content_description">Редагувати групу контактів</string>
+  <string name="delete_contact_group_content_description">Видалити групу контактів</string>
+  <string name="send_group_message">Надіслати групове повідомлення</string>
+  <string name="contact_group_form_save">Save</string>
+  <string name="contact_group_form_name_hint">Display name</string>
+  <string name="remove_member_content_description">Remove member</string>
+  <string name="add_members">Add members</string>
+  <string name="change_color">Change color</string>
+  <string name="contact_group_form_create_success">Групу контактів створено</string>
+  <string name="contact_group_form_update_success">Групу контактів оновлено</string>
+  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
 </resources>

@@ -67,6 +67,8 @@
   <string name="contact_property_time_zone">Zona horaria</string>
   <string name="contact_form_loading_error">Error al cargar los contactos, intente de nuevo más tarde.</string>
   <string name="contact_form_save_success">Contacto guardado</string>
+  <string name="contact_form_create_success">Contacto creado</string>
+  <string name="contact_form_update_success">Contacto actualizado</string>
   <string name="save_contact_content_description">Guardar contacto</string>
   <string name="contact_form_save">Guardar</string>
   <string name="add_new">Añadir contacto</string>
@@ -97,9 +99,26 @@
   <string name="contact_form_save_error">Error al guardar el contacto, intente de nuevo más tarde.</string>
   <string name="all_contacts_tab">Contactos</string>
   <string name="contact_groups_tab">Grupos</string>
-  <plurals name="contact_group_member_count">
+  <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d miembro</item>
     <item quantity="other">%1$d miembros</item>
   </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Miembro (%1$d)</item>
+    <item quantity="other">Miembros (%1$d)</item>
+  </plurals>
   <string name="contact_form_invalid_email_error">Error al guardar contacto, contiene una dirección de correo inválida.</string>
+  <string name="contact_group_details_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
+  <string name="contact_group_form_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
+  <string name="edit_contact_group_content_description">Editar grupo de contactos</string>
+  <string name="delete_contact_group_content_description">Eliminar grupo de contactos</string>
+  <string name="send_group_message">Enviar mensaje grupal</string>
+  <string name="contact_group_form_save">Guardar</string>
+  <string name="contact_group_form_name_hint">Nombre a mostrar</string>
+  <string name="remove_member_content_description">Borrar miembro</string>
+  <string name="add_members">Añadir miembros</string>
+  <string name="change_color">Cambiar color</string>
+  <string name="contact_group_form_create_success">Grupo de contactos creado</string>
+  <string name="contact_group_form_update_success">Grupo de contactos actualizado</string>
+  <string name="contact_group_form_save_error">Error al guardar el grupo de contactos. Intente de nuevo más tarde.</string>
 </resources>

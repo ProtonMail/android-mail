@@ -131,12 +131,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"Operace vyčištění je naplánována"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Varování</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 80 %. Uvolněte místo nebo upgradujte a získejte více úložného prostoru.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 90 %. Uvolněte místo nebo upgradujte a získejte více úložného prostoru.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 80 %. Uvolněte místo nebo navyšte na tarif s větším úložištěm.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Úložiště vašeho účtu Proton je zaplněno z více než 90 %. Uvolněte místo nebo navyšte na tarif s větším úložištěm.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Znovu nepřípomínat</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Varování</string>
-  <string name="storage_quota_over_dialog_text">Úložiště vašeho účtu Proton je na 100 % zaplněno. Nebudete moci odesílat ani přijímat e-maily, pokud trvale neodstraníte některé e-maily nebo neprovedete upgrade na větší úložiště.</string>
+  <string name="storage_quota_over_dialog_text">Úložiště vašeho účtu Proton je na 100 % zaplněno. Nebudete moci odesílat ani přijímat e-maily, dokud trvale nesmažete některé e-maily nebo neprovedete navýšení na tarif s větším úložištěm.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

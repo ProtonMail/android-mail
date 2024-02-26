@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">Définir le code PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmez le code PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icône de verrouillage</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN sous forme de points</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Code PIN contenant 4 chiffres</string>
   <string name="mail_settings_pin_insertion_backspace_description">Retour arrière</string>
   <string name="mail_settings_pin_insertion_biometric_description">Authentification biométrique</string>
   <string name="mail_settings_pin_insertion_button_create">Créer</string>

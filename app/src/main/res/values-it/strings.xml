@@ -17,10 +17,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">Disconnetti</string>
+  <string name="dialog_sign_out_account_title">Disconnetti l\'account</string>
   <string name="dialog_sign_out_account_description">Sei sicuro di voler disconnettere l\'account?</string>
-  <string name="dialog_sign_out_account_confirm">Sì</string>
-  <string name="dialog_sign_out_account_cancel">No</string>
+  <string name="dialog_sign_out_account_confirm">Disconnetti</string>
+  <string name="dialog_sign_out_account_cancel">Annulla</string>
   <string name="dialog_remove_account_title">Rimuovi l\'account</string>
   <string name="dialog_remove_account_description">Stai per disconnettere questo account e rimuovere tutte le informazioni associate a esso.</string>
   <string name="dialog_remove_account_confirm">Rimuovi</string>

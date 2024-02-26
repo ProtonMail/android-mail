@@ -93,6 +93,6 @@
   <string name="message_report_phishing_dialog_message">Nahlásenie tejto správy ako pokusu o phishing odošle túto správu Nám, aby sme ju mohli analyzovať a zlepšiť tým Naše filtre. To znamená, že uvidíme kompletne celý obsah tejto správy.</string>
   <string name="message_report_phishing_dialog_confim_button">Potvrdiť</string>
   <string name="message_report_phishing_dialog_cancel_button">Zrušiť</string>
-  <string name="open_on_protoncalendar_banner_title">Open in Proton Calendar</string>
-  <string name="open_on_protoncalendar_banner_description">Secure encrypted calendar</string>
+  <string name="open_on_protoncalendar_banner_title">Otvoriť v Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný kalendár</string>
 </resources>

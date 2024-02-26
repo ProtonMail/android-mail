@@ -81,11 +81,11 @@
   <string name="yesterday">Ieri</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Allegati</string>
-  <string name="attachment_download_notification_channel_description">Notifiche per lo scaricamento di allegati</string>
-  <string name="email_notification_channel_name">Email</string>
+  <string name="attachment_download_notification_channel_description">Stato dello scaricamento degli allegati</string>
+  <string name="email_notification_channel_name">Messaggi</string>
   <string name="login_notification_channel_name">Avvisi di accesso</string>
-  <string name="email_notification_channel_description">Notifiche per le email in arrivo</string>
-  <string name="login_notification_channel_description">Notifiche per i nuovi accessi</string>
+  <string name="email_notification_channel_description">Nuovi messaggi nelle caselle di posta</string>
+  <string name="login_notification_channel_description">Nuovi accessi agli account</string>
   <string name="auth_badge_official">Ufficiale</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nessuna applicazione trovata per gestire questa azione</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>

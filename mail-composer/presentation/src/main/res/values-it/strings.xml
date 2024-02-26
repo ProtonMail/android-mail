@@ -48,12 +48,24 @@
   <string name="composer_attachment_reencryption_failed_message">Nuova crittografia dell\'allegato non riuscita. Per motivi di sicurezza, tutti gli allegati sono stati rimossi.</string>
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione di questa bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>
   <string name="composer_button_add_password">Aggiungi una password</string>
-  <string name="composer_button_set_expiration">Imposta la data e l\'ora di scadenza</string>
+  <string name="composer_button_set_expiration">Imposta la scadenza</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Scadenza del messaggio</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Fatto</string>
+  <string name="composer_bottom_bar_expiration_time_none">Nessuna</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 giorni</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 settimana</string>
+  <string name="composer_error_setting_expiration_time">Impostazione della scadenza non riuscita</string>
+  <string name="composer_sender_changed_dialog_title">Invia dall\'indirizzo email predefinito</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">L\'invio dei messaggi dall\'indirizzo @pm.me è una funzionalità a pagamento. Il messaggio verrà inviato dall\'indirizzo email predefinito.</string>
+  <string name="composer_sender_changed_original_address_disabled">L\'indirizzo mittente selezionato non è attivo. Il messaggio verrà inviato dall\'indirizzo email predefinito.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">Invia</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Invia</string>
+  <string name="composer_send_without_subject_dialog_title">Invia il messaggio</string>
   <string name="composer_send_without_subject_dialog_text">Vuoi inviare il messaggio senza oggetto?</string>
-  <string name="composer_send_without_subject_dialog_confirm_button">Sì</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Invia</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Annulla</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Errore nell\'invio del messaggio</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
