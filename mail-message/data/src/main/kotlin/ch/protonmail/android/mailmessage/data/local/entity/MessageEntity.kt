@@ -27,7 +27,6 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import me.proton.core.domain.entity.UserId
-import me.proton.core.user.data.entity.AddressEntity
 import me.proton.core.user.data.entity.UserEntity
 import me.proton.core.user.domain.entity.AddressId
 
@@ -35,20 +34,13 @@ import me.proton.core.user.domain.entity.AddressId
     primaryKeys = ["userId", "messageId"],
     indices = [
         Index("userId"),
-        Index("messageId"),
-        Index("addressId")
+        Index("messageId")
     ],
     foreignKeys = [
         ForeignKey(
             entity = UserEntity::class,
             parentColumns = ["userId"],
             childColumns = ["userId"],
-            onDelete = ForeignKey.CASCADE
-        ),
-        ForeignKey(
-            entity = AddressEntity::class,
-            parentColumns = ["addressId"],
-            childColumns = ["addressId"],
             onDelete = ForeignKey.CASCADE
         )
     ]

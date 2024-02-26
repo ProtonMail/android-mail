@@ -254,5 +254,25 @@ interface MessageDatabase : Database, PageIntervalDatabase {
             }
         }
 
+        val MIGRATION_7 = object : DatabaseMigration {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create a MessageEntity_copy table with the new schema
+                database.execSQL("CREATE TABLE IF NOT EXISTS `MessageEntity_copy` (`userId` TEXT NOT NULL, `messageId` TEXT NOT NULL, `conversationId` TEXT NOT NULL, `order` INTEGER NOT NULL, `subject` TEXT NOT NULL, `unread` INTEGER NOT NULL, `toList` TEXT NOT NULL, `ccList` TEXT NOT NULL, `bccList` TEXT NOT NULL, `time` INTEGER NOT NULL, `size` INTEGER NOT NULL, `expirationTime` INTEGER NOT NULL, `isReplied` INTEGER NOT NULL, `isRepliedAll` INTEGER NOT NULL, `isForwarded` INTEGER NOT NULL, `addressId` TEXT NOT NULL, `externalId` TEXT, `numAttachments` INTEGER NOT NULL, `flags` INTEGER NOT NULL, `attachmentCount` TEXT NOT NULL, `sender_address` TEXT NOT NULL, `sender_name` TEXT NOT NULL, `sender_isProton` INTEGER NOT NULL, `sender_group` TEXT, PRIMARY KEY(`userId`, `messageId`), FOREIGN KEY(`userId`) REFERENCES `UserEntity`(`userId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                // Copy data from old table to new one
+                database.execSQL(
+                    """
+                        INSERT INTO `MessageEntity_copy` (`userId`, `messageId`, `conversationId`, `order`, `subject`, `unread`, `toList`, `ccList`, `bccList`, `time`, `size`, `expirationTime`, `isReplied`, `isRepliedAll`, `isForwarded`, `addressId`, `externalId`, `numAttachments`, `flags`, `attachmentCount`, `sender_address`, `sender_name`, `sender_isProton`, `sender_group` )
+                        SELECT `userId`, `messageId`, `conversationId`, `order`, `subject`, `unread`, `toList`, `ccList`, `bccList`, `time`, `size`, `expirationTime`, `isReplied`, `isRepliedAll`, `isForwarded`, `addressId`, `externalId`, `numAttachments`, `flags`, `attachmentCount`, `sender_address`, `sender_name`, `sender_isProton`, `sender_group` FROM `MessageEntity`
+                    """.trimIndent()
+                )
+                // Delete the old table
+                database.execSQL("DROP TABLE `MessageEntity`")
+                // Rename new table
+                database.execSQL("ALTER TABLE `MessageEntity_copy` RENAME TO `MessageEntity` ")
+                // Create indices
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageEntity_userId` ON `MessageEntity` (`userId`)")
+                database.execSQL("CREATE INDEX IF NOT EXISTS `index_MessageEntity_messageId` ON `MessageEntity` (`messageId`)")
+            }
+        }
     }
 }
