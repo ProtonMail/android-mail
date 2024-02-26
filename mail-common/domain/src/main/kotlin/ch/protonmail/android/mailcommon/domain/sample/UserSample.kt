@@ -24,6 +24,7 @@ import me.proton.core.key.domain.entity.key.KeyId
 import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.user.domain.entity.Delinquent
 import me.proton.core.user.domain.entity.Role
+import me.proton.core.user.domain.entity.Type
 import me.proton.core.user.domain.entity.User
 import me.proton.core.user.domain.entity.UserKey
 
@@ -47,12 +48,13 @@ object UserSample {
     )
 
     fun build(
-        name: String = AccountSample.build().username,
+        name: String = AccountSample.build().username ?: "name",
         displayName: String = name,
         email: String = AccountSample.build().email ?: "email",
         role: Role = Role.NoOrganization,
         userId: UserId = UserIdSample.Primary
     ) = User(
+        type = Type.Proton,
         credit = 1,
         createdAtUtc = 0,
         currency = "CHF",

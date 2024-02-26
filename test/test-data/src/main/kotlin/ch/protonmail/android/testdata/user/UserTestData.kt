@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.user
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.domain.entity.Delinquent
 import me.proton.core.user.domain.entity.Role
+import me.proton.core.user.domain.entity.Type
 import me.proton.core.user.domain.entity.User
 
 object UserTestData {
@@ -60,6 +61,7 @@ object UserTestData {
         subscribed: Int = 1
     ) = User(
         createdAtUtc = 0,
+        type = Type.Proton,
         credit = 1,
         currency = "CHF",
         delinquent = Delinquent.None,

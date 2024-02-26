@@ -41,193 +41,200 @@ import me.proton.core.usersettings.data.db.UserSettingsDatabase
 object AppDatabaseMigrations {
 
     val MIGRATION_1_2 = object : Migration(1, 2) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_0.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_0.migrate(db)
         }
     }
 
     val MIGRATION_2_3 = object : Migration(2, 3) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            OrganizationDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            OrganizationDatabase.MIGRATION_2.migrate(db)
         }
     }
     val MIGRATION_3_4 = object : Migration(3, 4) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            AddressDatabase.MIGRATION_4.migrate(database)
-            PublicAddressDatabase.MIGRATION_2.migrate(database)
-            KeyTransparencyDatabase.MIGRATION_0.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            AddressDatabase.MIGRATION_4.migrate(db)
+            PublicAddressDatabase.MIGRATION_2.migrate(db)
+            KeyTransparencyDatabase.MIGRATION_0.migrate(db)
         }
     }
 
     val MIGRATION_4_5 = object : Migration(4, 5) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_1.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_1.migrate(db)
         }
 
     }
 
     val MIGRATION_5_6 = object : Migration(5, 6) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            UserDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserDatabase.MIGRATION_2.migrate(db)
         }
     }
 
     val MIGRATION_6_7 = object : Migration(6, 7) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            NotificationDatabase.MIGRATION_0.migrate(database)
-            NotificationDatabase.MIGRATION_1.migrate(database)
-            PushDatabase.MIGRATION_0.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            NotificationDatabase.MIGRATION_0.migrate(db)
+            NotificationDatabase.MIGRATION_1.migrate(db)
+            PushDatabase.MIGRATION_0.migrate(db)
         }
     }
 
     val MIGRATION_7_8 = object : Migration(7, 8) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            UserSettingsDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserSettingsDatabase.MIGRATION_2.migrate(db)
         }
     }
 
     val MIGRATION_8_9 = object : Migration(8, 9) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_2.migrate(db)
         }
     }
 
     val MIGRATION_9_10 = object : Migration(9, 10) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_3.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_3.migrate(db)
         }
     }
 
     val MIGRATION_10_11 = object : Migration(10, 11) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_0.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_0.migrate(db)
         }
     }
 
     val MIGRATION_11_12 = object : Migration(11, 12) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            ContactDatabase.MIGRATION_1.migrate(database)
-            EventMetadataDatabase.MIGRATION_1.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            ContactDatabase.MIGRATION_1.migrate(db)
+            EventMetadataDatabase.MIGRATION_1.migrate(db)
         }
     }
 
     val MIGRATION_12_13 = object : Migration(12, 13) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_4.migrate(database)
-            DraftStateDatabase.MIGRATION_1.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_4.migrate(db)
+            DraftStateDatabase.MIGRATION_1.migrate(db)
         }
     }
 
     val MIGRATION_13_14 = object : Migration(13, 14) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            UserDatabase.MIGRATION_3.migrate(database)
-            AccountDatabase.MIGRATION_6.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserDatabase.MIGRATION_3.migrate(db)
+            AccountDatabase.MIGRATION_6.migrate(db)
         }
     }
 
     val MIGRATION_14_15 = object : Migration(14, 15) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            TelemetryDatabase.MIGRATION_0.migrate(database)
-            UserSettingsDatabase.MIGRATION_3.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            TelemetryDatabase.MIGRATION_0.migrate(db)
+            UserSettingsDatabase.MIGRATION_3.migrate(db)
         }
     }
 
     val MIGRATION_15_16 = object : Migration(15, 16) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_2.migrate(db)
         }
     }
 
     val MIGRATION_16_17 = object : Migration(16, 17) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_3.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_3.migrate(db)
         }
     }
 
     val MIGRATION_17_18 = object : Migration(17, 18) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_5.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_5.migrate(db)
         }
 
     }
 
     val MIGRATION_18_19 = object : Migration(18, 19) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            EventMetadataDatabase.MIGRATION_2.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            EventMetadataDatabase.MIGRATION_2.migrate(db)
         }
     }
 
     val MIGRATION_19_20 = object : Migration(19, 20) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            UserSettingsDatabase.MIGRATION_4.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserSettingsDatabase.MIGRATION_4.migrate(db)
         }
     }
 
     val MIGRATION_20_21 = object : Migration(20, 21) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_4.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_4.migrate(db)
         }
     }
 
     val MIGRATION_21_22 = object : Migration(21, 22) {
-        override fun migrate(database: SupportSQLiteDatabase) {
+        override fun migrate(db: SupportSQLiteDatabase) {
             // Empty migration as UnreadCountDatabase was deleted
             // when tables were distributed to message and conversation DBs (migration 23->24)
         }
     }
 
     val MIGRATION_22_23 = object : Migration(22, 23) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_5.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_5.migrate(db)
         }
     }
 
     val MIGRATION_23_24 = object : Migration(23, 24) {
-        override fun migrate(database: SupportSQLiteDatabase) {
+        override fun migrate(db: SupportSQLiteDatabase) {
             // Add UnreadMessageCount Table
-            MessageDatabase.MIGRATION_6.migrate(database)
+            MessageDatabase.MIGRATION_6.migrate(db)
             // Add UnreadConversationsCount Table
-            ConversationDatabase.MIGRATION_0.migrate(database)
+            ConversationDatabase.MIGRATION_0.migrate(db)
         }
     }
 
 
     val MIGRATION_24_25 = object : Migration(24, 25) {
-        override fun migrate(database: SupportSQLiteDatabase) {
+        override fun migrate(db: SupportSQLiteDatabase) {
             // Create SearchResults Table
-            SearchResultsDatabase.MIGRATION_0.migrate(database)
+            SearchResultsDatabase.MIGRATION_0.migrate(db)
         }
     }
 
     val MIGRATION_25_26 = object : Migration(25, 26) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_6.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_6.migrate(db)
         }
     }
 
     val MIGRATION_26_27 = object : Migration(26, 27) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_7.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_7.migrate(db)
         }
     }
 
     val MIGRATION_27_28 = object : Migration(27, 28) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            UserSettingsDatabase.MIGRATION_5.migrate(database)
-            UserKeyDatabase.MIGRATION_0.migrate(database)
-            UserDatabase.MIGRATION_4.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserSettingsDatabase.MIGRATION_5.migrate(db)
+            UserKeyDatabase.MIGRATION_0.migrate(db)
+            UserDatabase.MIGRATION_4.migrate(db)
         }
     }
 
     val MIGRATION_28_29 = object : Migration(28, 29) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            DraftStateDatabase.MIGRATION_8.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            DraftStateDatabase.MIGRATION_8.migrate(db)
         }
     }
 
     val MIGRATION_29_30 = object : Migration(29, 30) {
-        override fun migrate(database: SupportSQLiteDatabase) {
-            MessageDatabase.MIGRATION_7.migrate(database)
+        override fun migrate(db: SupportSQLiteDatabase) {
+            MessageDatabase.MIGRATION_7.migrate(db)
+        }
+    }
+
+    val MIGRATION_30_31 = object : Migration(30, 31) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            UserDatabase.MIGRATION_5.migrate(db)
+            AccountDatabase.MIGRATION_7.migrate(db)
         }
     }
 }

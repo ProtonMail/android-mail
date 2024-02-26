@@ -27,6 +27,7 @@ object UserEntitySample {
     val Primary = build(UserSample.Primary)
 
     fun build(user: User = UserSample.build()) = UserEntity(
+        type = 0,
         credit = user.credit,
         createdAtUtc = user.createdAtUtc,
         currency = user.currency,
