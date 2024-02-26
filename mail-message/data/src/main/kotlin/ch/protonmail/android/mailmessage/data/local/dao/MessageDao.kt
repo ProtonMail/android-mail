@@ -44,6 +44,9 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
     @Query("DELETE FROM MessageEntity WHERE userId = :userId")
     abstract suspend fun deleteAll(userId: UserId)
 
+    @Query("DELETE FROM MessageEntity WHERE userId = :userId AND messageId NOT IN (:messageIdsToExclude)")
+    abstract suspend fun deleteAllExcept(userId: UserId, messageIdsToExclude: List<MessageId>)
+
     @Query("SELECT * FROM MessageEntity WHERE userId = :userId AND messageId = :messageId")
     @Transaction
     abstract fun observe(userId: UserId, messageId: MessageId): Flow<MessageWithLabelIds?>

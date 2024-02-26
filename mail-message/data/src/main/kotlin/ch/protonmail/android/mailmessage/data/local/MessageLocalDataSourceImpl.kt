@@ -71,6 +71,13 @@ class MessageLocalDataSourceImpl @Inject constructor(
         pageIntervalDao.deleteAll(userId, PageItemType.Message)
     }
 
+    override suspend fun deleteAllMessagesExcept(userId: UserId, messageIdsToExclude: List<MessageId>) =
+        db.inTransaction {
+            messageBodyFileStorage.deleteAllMessageBodies(userId)
+            messageDao.deleteAllExcept(userId, messageIdsToExclude)
+            pageIntervalDao.deleteAll(userId, PageItemType.Message)
+        }
+
     override suspend fun deleteMessages(userId: UserId, ids: List<MessageId>) {
         messageDao.delete(userId, ids.map { it.id })
         ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }

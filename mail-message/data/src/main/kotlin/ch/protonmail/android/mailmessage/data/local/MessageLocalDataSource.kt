@@ -35,6 +35,11 @@ import me.proton.core.label.domain.entity.LabelId
 interface MessageLocalDataSource {
 
     /**
+     * Delete all messages for [userId] except [messageIdsToExclude].
+     */
+    suspend fun deleteAllMessagesExcept(userId: UserId, messageIdsToExclude: List<MessageId>)
+
+    /**
      * Delete all messages for [userId].
      */
     suspend fun deleteAllMessages(userId: UserId)

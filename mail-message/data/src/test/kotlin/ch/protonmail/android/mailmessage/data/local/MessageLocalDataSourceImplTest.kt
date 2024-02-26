@@ -301,6 +301,22 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should delete all messages except draft ones from the db and message body files`() = runTest {
+        // Given
+        val draftMessages = listOf(MessageIdSample.LocalDraft, MessageIdSample.EmptyDraft)
+        coEvery { messageBodyFileStorage.deleteAllMessageBodies(userId1) } returns true
+
+        // When
+        messageLocalDataSource.deleteAllMessagesExcept(userId1, draftMessages)
+
+        // Then
+        coVerify(exactly = 1) { db.inTransaction(any()) }
+        coVerify(exactly = 1) { messageDao.deleteAllExcept(userId1, draftMessages) }
+        coVerify(exactly = 1) { pageIntervalDao.deleteAll(userId1, PageItemType.Message) }
+        coVerify(exactly = 1) { messageBodyFileStorage.deleteAllMessageBodies(userId1) }
+    }
+
+    @Test
     fun `should delete messages from the db and corresponding message body files`() = runTest {
         // Given
         val deletedIds = listOf(
