@@ -30,6 +30,8 @@ import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.EditContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
@@ -41,7 +43,10 @@ import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFo
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Runs
+import io.mockk.coEvery
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
@@ -94,6 +99,8 @@ class ContactGroupFormViewModelTest {
     private val observeContactGroupMock = mockk<ObserveContactGroup>()
     private val getContactEmailsByIdMock = mockk<GetContactEmailsById>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
+    private val createContactGroupMock = mockk<CreateContactGroup>()
+    private val editContactGroupMock = mockk<EditContactGroup>()
 
     private val getColorHexWithNameList = mockk<GetColorHexWithNameList> {
         every { this@mockk.invoke() } returns testColors
@@ -108,6 +115,8 @@ class ContactGroupFormViewModelTest {
             reducer,
             contactGroupFormUiModelMapperMock,
             savedStateHandleMock,
+            createContactGroupMock,
+            editContactGroupMock,
             getColorHexWithNameList,
             observePrimaryUserId
         )
@@ -248,7 +257,13 @@ class ContactGroupFormViewModelTest {
     @Test
     fun `when create and on save action is submitted, then created event is emitted`() = runTest {
         // Given
+        val expectedContactGroup = emptyContactGroupFormUiModel(Color.Red)
         expectSavedStateLabelId(null)
+        expectCreateContactGroup(
+            testUserId,
+            expectedContactGroup.name,
+            expectedContactGroup.color.getHexStringFromColor()
+        )
 
         // When
         contactGroupFormViewModel.state.test {
@@ -260,7 +275,7 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
 
             val expected = ContactGroupFormState.Data(
-                contactGroup = emptyContactGroupFormUiModel(Color.Red),
+                contactGroup = expectedContactGroup,
                 colors = testColors,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success)),
                 displaySaveLoader = true
@@ -277,6 +292,12 @@ class ContactGroupFormViewModelTest {
         val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
         expectContactGroup(testUserId, testLabelId, expectedContactGroup)
         expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+        expectEditContactGroup(
+            testUserId,
+            expectedContactGroup.labelId,
+            expectedContactGroup.name,
+            expectedContactGroup.color
+        )
 
         expectSavedStateLabelId(testLabelId)
 
@@ -444,5 +465,26 @@ class ContactGroupFormViewModelTest {
         every {
             contactGroupFormUiModelMapperMock.toContactGroupFormUiModel(contactGroup)
         } returns expectedContactGroupFormUiModel
+    }
+
+    private fun expectCreateContactGroup(
+        userId: UserId,
+        name: String,
+        color: String
+    ) {
+        coEvery {
+            createContactGroupMock.invoke(userId, name, color)
+        } just Runs
+    }
+
+    private fun expectEditContactGroup(
+        userId: UserId,
+        labelId: LabelId,
+        name: String,
+        color: String
+    ) {
+        coEvery {
+            editContactGroupMock.invoke(userId, labelId, name, color)
+        } just Runs
     }
 }

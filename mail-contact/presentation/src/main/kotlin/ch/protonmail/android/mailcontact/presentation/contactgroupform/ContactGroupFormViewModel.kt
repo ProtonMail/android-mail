@@ -25,12 +25,15 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
+import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.EditContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +54,8 @@ class ContactGroupFormViewModel @Inject constructor(
     private val reducer: ContactGroupFormReducer,
     private val contactGroupFormUiModelMapper: ContactGroupFormUiModelMapper,
     private val savedStateHandle: SavedStateHandle,
+    private val createContactGroup: CreateContactGroup,
+    private val editContactGroup: EditContactGroup,
     getColorHexWithNameList: GetColorHexWithNameList,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
@@ -184,43 +189,35 @@ class ContactGroupFormViewModel @Inject constructor(
         val stateValue = state.value
         if (stateValue !is ContactGroupFormState.Data) return
 
-        if (stateValue.contactGroup.id != null) handleUpdateContactGroup(stateValue.contactGroup)
-        else handleCreateContactGroup(stateValue.contactGroup)
+        viewModelScope.launch {
+            if (stateValue.contactGroup.id != null) handleUpdateContactGroup(stateValue.contactGroup)
+            else handleCreateContactGroup(stateValue.contactGroup)
+        }
     }
 
-    private fun handleCreateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
+    private suspend fun handleCreateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
         emitNewStateFor(ContactGroupFormEvent.SavingContactGroup)
 
-        // Call CREATE UC here
-        // createContactGroup(
-        //     userId = primaryUserId(),
-        //     name = contactGroupFormUiModel.name,
-        //     color = contactGroupFormUiModel.color.getHexStringFromColor(),
-        //     contactEmailIdList = contactGroupFormUiModel.members.map { it.id }
-        // ).getOrElse {
-        //     return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
-        // }
-
-        contactGroupFormUiModel.id // This is to prevent detekt error, remove once UC is implement.
+        createContactGroup(
+            userId = primaryUserId(),
+            name = contactGroupFormUiModel.name,
+            color = contactGroupFormUiModel.color.getHexStringFromColor()
+        )
 
         emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)
     }
 
-    private fun handleUpdateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
+    private suspend fun handleUpdateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
         emitNewStateFor(ContactGroupFormEvent.SavingContactGroup)
 
-        // Call UPDATE UC here
-        // updateContactGroup(
-        //     userId = primaryUserId(),
-        //     labelId = contactGroupFormUiModel.id,
-        //     name = contactGroupFormUiModel.name,
-        //     color = contactGroupFormUiModel.color.getHexStringFromColor(),
-        //     contactEmailIdList = contactGroupFormUiModel.members.map { it.id }
-        // ).getOrElse {
-        //     return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
-        // }
+        if (contactGroupFormUiModel.id == null) return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
 
-        contactGroupFormUiModel.id // This is to prevent detekt error, remove once UC is implement.
+        editContactGroup(
+            userId = primaryUserId(),
+            labelId = contactGroupFormUiModel.id,
+            name = contactGroupFormUiModel.name,
+            color = contactGroupFormUiModel.color.getHexStringFromColor()
+        )
 
         emitNewStateFor(ContactGroupFormEvent.ContactGroupUpdated)
     }
