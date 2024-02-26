@@ -468,7 +468,7 @@ internal fun NavGraphBuilder.addContactGroupForm(
         manageMembers = { selectedContactEmailsIds ->
             navController.currentBackStackEntry?.savedStateHandle?.set(
                 SavedStateKey.SelectedContactEmailIds.key,
-                selectedContactEmailsIds
+                selectedContactEmailsIds.map { it.id }
             )
             navController.navigate(Destination.Screen.ManageMembers.route)
         }
@@ -499,7 +499,7 @@ internal fun NavGraphBuilder.addManageMembers(
         onDone = { selectedContactEmailsIds ->
             navController.previousBackStackEntry?.savedStateHandle?.set(
                 SavedStateKey.SelectedContactEmailIds.key,
-                selectedContactEmailsIds
+                selectedContactEmailsIds.map { it.id }
             )
             navController.popBackStack()
         },

@@ -134,7 +134,7 @@ class ManageMembersViewModel @Inject constructor(
 
         emitNewStateFor(
             ManageMembersEvent.OnDone(
-                selectedContactEmailIds = stateValue.members.mapNotNull { it.takeIf { it.isSelected }?.id?.id }
+                selectedContactEmailIds = stateValue.members.mapNotNull { it.takeIf { it.isSelected }?.id }
             )
         )
     }

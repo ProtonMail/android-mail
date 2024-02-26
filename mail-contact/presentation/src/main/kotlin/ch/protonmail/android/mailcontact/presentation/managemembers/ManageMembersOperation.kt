@@ -42,6 +42,6 @@ sealed interface ManageMembersEvent : ManageMembersOperation {
     object ErrorUpdatingMember : ManageMembersEvent
     object Close : ManageMembersEvent
     data class OnDone(
-        val selectedContactEmailIds: List<String>
+        val selectedContactEmailIds: List<ContactEmailId>
     ) : ManageMembersEvent
 }

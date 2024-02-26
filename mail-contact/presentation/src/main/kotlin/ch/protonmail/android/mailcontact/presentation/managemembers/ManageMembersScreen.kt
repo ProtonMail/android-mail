@@ -307,7 +307,7 @@ fun ManageMembersTopBar(
 object ManageMembersScreen {
 
     data class Actions(
-        val onDone: (List<String>) -> Unit,
+        val onDone: (List<ContactEmailId>) -> Unit,
         val onClose: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit
     ) {

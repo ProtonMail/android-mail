@@ -159,7 +159,7 @@ class ManageMembersViewModelTest {
             val actual = awaitItem()
             val expected = ManageMembersState.Data(
                 members = defaultTestManageMembersUiModel,
-                onDone = Effect.of(listOf("ContactEmailId2"))
+                onDone = Effect.of(listOf(ContactEmailId("ContactEmailId2")))
             )
 
             assertEquals(expected, actual)

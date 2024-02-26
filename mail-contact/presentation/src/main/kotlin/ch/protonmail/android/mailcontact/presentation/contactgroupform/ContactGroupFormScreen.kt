@@ -127,7 +127,7 @@ fun ContactGroupFormScreen(
                         state = state,
                         actions = ContactGroupFormContent.Actions(
                             onAddMemberClick = {
-                                actions.manageMembers(state.contactGroup.members.map { it.id.id })
+                                actions.manageMembers(state.contactGroup.members.map { it.id })
                             },
                             onRemoveMemberClick = {
                                 viewModel.submit(ContactGroupFormViewAction.OnRemoveMemberClick(it))
@@ -394,7 +394,7 @@ object ContactGroupFormScreen {
         val onClose: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
-        val manageMembers: (List<String>) -> Unit
+        val manageMembers: (List<ContactEmailId>) -> Unit
     ) {
 
         companion object {

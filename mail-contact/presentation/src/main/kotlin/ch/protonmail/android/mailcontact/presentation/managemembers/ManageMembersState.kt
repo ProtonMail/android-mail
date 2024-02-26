@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.managemembers
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
+import me.proton.core.contact.domain.entity.ContactEmailId
 
 sealed interface ManageMembersState {
 
@@ -36,7 +37,7 @@ sealed interface ManageMembersState {
         val members: List<ManageMembersUiModel>,
         val searchValue: String = "",
         val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
-        val onDone: Effect<List<String>> = Effect.empty()
+        val onDone: Effect<List<ContactEmailId>> = Effect.empty()
     ) : ManageMembersState
 }
 
