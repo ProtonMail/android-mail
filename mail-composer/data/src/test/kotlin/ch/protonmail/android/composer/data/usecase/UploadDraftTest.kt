@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.test.utils.FakeTransactor
@@ -309,6 +310,92 @@ class UploadDraftTest {
                 userId,
                 apiAssignedMessageId,
                 listOf(expectedUpdatedAttachment.attachmentId)
+            )
+        }
+    }
+
+    @Test
+    fun `Should match local and remote attachments by keyPackets, name and size when updating local ids`() = runTest {
+        // Given
+        val messageId = MessageIdSample.LocalDraft
+        val expectedLocalAttachments = listOf(
+            MessageAttachmentSample.embeddedImageAttachment.copy(
+                keyPackets = "keyPackets"
+            ),
+            MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
+                keyPackets = "keyPackets"
+            ),
+            MessageAttachmentSample.image.copy(
+                keyPackets = "keyPackets"
+            )
+        )
+        val expectedDraft = MessageWithBodySample.MessageWithInvoiceAttachment.copy(
+            messageBody = MessageWithBodySample.MessageWithInvoiceAttachment.messageBody.copy(
+                attachments = expectedLocalAttachments
+            )
+        )
+
+        val expectedUpdatedAttachments = listOf(
+            MessageAttachmentSample.embeddedImageAttachment.copy(
+                attachmentId = AttachmentId("Api-defined-id-1"),
+                keyPackets = "keyPackets"
+            ),
+            MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
+                attachmentId = AttachmentId("Api-defined-id-2"),
+                keyPackets = "keyPackets"
+            ),
+            MessageAttachmentSample.image.copy(
+                attachmentId = AttachmentId("Api-defined-id-3"),
+                keyPackets = "keyPackets"
+            )
+        )
+
+        val expectedResponse = expectedDraft.copy(
+            messageBody = expectedDraft.messageBody.copy(attachments = expectedUpdatedAttachments)
+        )
+        val apiAssignedMessageId = expectedResponse.message.messageId
+        val apiAssignedConversationId = expectedResponse.message.conversationId
+        val expectedDraftState = DraftStateSample.LocalDraftWithForwardAction
+        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+        expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedDraftState.action, expectedResponse)
+        expectStoreSyncedStateSuccess(userId, messageId, messageId)
+        expectIsDraftKnownToApi(expectedDraftState, false)
+        expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
+        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
+        for (i in expectedLocalAttachments.indices) {
+            expectAttachmentUpdateSuccess(
+                userId,
+                apiAssignedMessageId,
+                expectedLocalAttachments[i].attachmentId,
+                expectedUpdatedAttachments[i]
+            )
+        }
+        expectStoreParentAttachmentSucceeds(
+            userId, apiAssignedMessageId, expectedUpdatedAttachments.map { it.attachmentId }
+        )
+
+        // When
+        val actual = draftRepository(userId, messageId)
+
+        // Then
+        assertEquals(Unit.right(), actual)
+        for (i in expectedLocalAttachments.indices) {
+            coVerify {
+                attachmentRepository.updateMessageAttachment(
+                    userId,
+                    apiAssignedMessageId,
+                    expectedLocalAttachments[i].attachmentId,
+                    expectedUpdatedAttachments[i]
+                )
+            }
+        }
+
+        coVerify {
+            updatedAttachmentStates(
+                userId,
+                apiAssignedMessageId,
+                expectedUpdatedAttachments.map { it.attachmentId }
             )
         }
     }

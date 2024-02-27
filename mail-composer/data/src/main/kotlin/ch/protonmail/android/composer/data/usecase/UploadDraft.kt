@@ -106,7 +106,7 @@ internal class UploadDraft @Inject constructor(
     }
 
     /*
-     * Matches local attachments with remote ones by name and size and updates their ID and keyPackets.
+     * Matches local attachments with remote ones by keyPackets, name and size and updates their ID.
      * This is needed to refresh the data of "parent attachments", which to support offline mode are copied for
      * this message and only receive their "real" id when contacting API to create the draft.
      */
@@ -115,14 +115,17 @@ internal class UploadDraft @Inject constructor(
         val remoteAttachments = apiMessage.messageBody.attachments
 
         remoteAttachments.forEach { attachment ->
-            localAttachments.find { it.keyPackets == attachment.keyPackets }?.let { localAttachment ->
+            localAttachments.find {
+                it.keyPackets == attachment.keyPackets &&
+                    it.name == attachment.name && it.size == attachment.size
+            }?.let { localAttachment ->
                 attachmentRepository.updateMessageAttachment(
                     apiMessage.message.userId,
                     apiMessage.message.messageId,
                     localAttachment.attachmentId,
                     attachment
                 )
-            }
+            } ?: Timber.w("Attachment not found in local message: $attachment")
         }
         if (remoteAttachments.isNotEmpty()) {
             updateParentAttachments(
