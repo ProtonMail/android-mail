@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -73,7 +74,7 @@ class ContactFormViewModel @Inject constructor(
                 val decryptedContact = observeDecryptedContact(
                     userId = primaryUserId(),
                     contactId = ContactId(contactId)
-                ).first().getOrElse {
+                ).firstOrNull()?.getOrNull() ?: run {
                     Timber.e("Error while getting contact in init")
                     return@launch emitNewStateFor(ContactFormEvent.LoadContactError)
                 }
@@ -335,7 +336,7 @@ class ContactFormViewModel @Inject constructor(
         val decryptedContact = observeDecryptedContact(
             userId = primaryUserId(),
             contactId = contactId
-        ).first().getOrElse {
+        ).firstOrNull()?.getOrNull() ?: run {
             Timber.e("Error while getting contact in handleUpdateContact")
             return emitNewStateFor(ContactFormEvent.SaveContactError)
         }

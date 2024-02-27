@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcontact.presentation.managemembers
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModelMapper
@@ -29,6 +28,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -116,7 +116,7 @@ class ManageMembersViewModel @Inject constructor(
         userId: UserId,
         selectedContactEmailIds: List<ContactEmailId>
     ): ManageMembersEvent {
-        val contacts = observeContacts(userId).first().getOrElse {
+        val contacts = observeContacts(userId).firstOrNull()?.getOrNull() ?: run {
             Timber.e("Error while observing contacts")
             return ManageMembersEvent.LoadMembersError
         }

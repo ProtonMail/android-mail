@@ -39,6 +39,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -228,7 +229,7 @@ class ContactGroupFormViewModel @Inject constructor(
         labelId: LabelId,
         colors: List<ColorHexWithName>
     ): ContactGroupFormEvent {
-        val contactGroup = observeContactGroup(userId, labelId).first().getOrElse {
+        val contactGroup = observeContactGroup(userId, labelId).firstOrNull()?.getOrNull() ?: run {
             Timber.e("Error while observing contact group by id")
             return ContactGroupFormEvent.LoadError
         }
