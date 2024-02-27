@@ -27,26 +27,26 @@ class GetColorHexWithNameList @Inject constructor() {
 
     operator fun invoke(): List<ColorHexWithName> {
         return listOf(
-            ColorHexWithName(TextUiModel(R.string.purple), Colors.PurpleBase),
-            ColorHexWithName(TextUiModel(R.string.enzian), Colors.EnzianBase),
-            ColorHexWithName(TextUiModel(R.string.pink), Colors.PinkBase),
-            ColorHexWithName(TextUiModel(R.string.plum), Colors.PlumBase),
-            ColorHexWithName(TextUiModel(R.string.strawberry), Colors.StrawberryBase),
-            ColorHexWithName(TextUiModel(R.string.cerise), Colors.CeriseBase),
-            ColorHexWithName(TextUiModel(R.string.carrot), Colors.CarrotBase),
-            ColorHexWithName(TextUiModel(R.string.copper), Colors.CopperBase),
-            ColorHexWithName(TextUiModel(R.string.sahara), Colors.SaharaBase),
-            ColorHexWithName(TextUiModel(R.string.soil), Colors.SoilBase),
-            ColorHexWithName(TextUiModel(R.string.slate_blue), Colors.SlateBlueBase),
-            ColorHexWithName(TextUiModel(R.string.cobalt), Colors.CobaltBase),
-            ColorHexWithName(TextUiModel(R.string.pacific), Colors.PacificBase),
-            ColorHexWithName(TextUiModel(R.string.ocean), Colors.OceanBase),
-            ColorHexWithName(TextUiModel(R.string.reef), Colors.ReefBase),
-            ColorHexWithName(TextUiModel(R.string.pine), Colors.PineBase),
-            ColorHexWithName(TextUiModel(R.string.fern), Colors.FernBase),
-            ColorHexWithName(TextUiModel(R.string.forest), Colors.ForestBase),
-            ColorHexWithName(TextUiModel(R.string.olive), Colors.OliveBase),
-            ColorHexWithName(TextUiModel(R.string.pickle), Colors.PickleBase)
+            ColorHexWithName(TextUiModel(R.string.color_purple), Colors.PurpleBase),
+            ColorHexWithName(TextUiModel(R.string.color_enzian), Colors.EnzianBase),
+            ColorHexWithName(TextUiModel(R.string.color_pink), Colors.PinkBase),
+            ColorHexWithName(TextUiModel(R.string.color_plum), Colors.PlumBase),
+            ColorHexWithName(TextUiModel(R.string.color_strawberry), Colors.StrawberryBase),
+            ColorHexWithName(TextUiModel(R.string.color_cerise), Colors.CeriseBase),
+            ColorHexWithName(TextUiModel(R.string.color_carrot), Colors.CarrotBase),
+            ColorHexWithName(TextUiModel(R.string.color_copper), Colors.CopperBase),
+            ColorHexWithName(TextUiModel(R.string.color_sahara), Colors.SaharaBase),
+            ColorHexWithName(TextUiModel(R.string.color_soil), Colors.SoilBase),
+            ColorHexWithName(TextUiModel(R.string.color_slate_blue), Colors.SlateBlueBase),
+            ColorHexWithName(TextUiModel(R.string.color_cobalt), Colors.CobaltBase),
+            ColorHexWithName(TextUiModel(R.string.color_pacific), Colors.PacificBase),
+            ColorHexWithName(TextUiModel(R.string.color_ocean), Colors.OceanBase),
+            ColorHexWithName(TextUiModel(R.string.color_reef), Colors.ReefBase),
+            ColorHexWithName(TextUiModel(R.string.color_pine), Colors.PineBase),
+            ColorHexWithName(TextUiModel(R.string.color_fern), Colors.FernBase),
+            ColorHexWithName(TextUiModel(R.string.color_forest), Colors.ForestBase),
+            ColorHexWithName(TextUiModel(R.string.color_olive), Colors.OliveBase),
+            ColorHexWithName(TextUiModel(R.string.color_pickle), Colors.PickleBase)
         )
     }
 

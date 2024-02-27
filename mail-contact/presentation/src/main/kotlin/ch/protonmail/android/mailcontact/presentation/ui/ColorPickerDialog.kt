@@ -196,11 +196,11 @@ private fun ColorPickerDialogPreview() {
         title = "Color picker dialog",
         selectedValue = Color.Red,
         values = listOf(
-            ColorHexWithName(TextUiModel(R.string.purple), GetColorHexWithNameList.Colors.PurpleBase),
-            ColorHexWithName(TextUiModel(R.string.enzian), GetColorHexWithNameList.Colors.EnzianBase),
-            ColorHexWithName(TextUiModel(R.string.pink), GetColorHexWithNameList.Colors.PinkBase),
-            ColorHexWithName(TextUiModel(R.string.plum), GetColorHexWithNameList.Colors.PlumBase),
-            ColorHexWithName(TextUiModel(R.string.strawberry), GetColorHexWithNameList.Colors.StrawberryBase)
+            ColorHexWithName(TextUiModel(R.string.color_purple), GetColorHexWithNameList.Colors.PurpleBase),
+            ColorHexWithName(TextUiModel(R.string.color_enzian), GetColorHexWithNameList.Colors.EnzianBase),
+            ColorHexWithName(TextUiModel(R.string.color_pink), GetColorHexWithNameList.Colors.PinkBase),
+            ColorHexWithName(TextUiModel(R.string.color_plum), GetColorHexWithNameList.Colors.PlumBase),
+            ColorHexWithName(TextUiModel(R.string.color_strawberry), GetColorHexWithNameList.Colors.StrawberryBase)
         ),
         onDismissRequest = { },
         onValueSelected = { }
