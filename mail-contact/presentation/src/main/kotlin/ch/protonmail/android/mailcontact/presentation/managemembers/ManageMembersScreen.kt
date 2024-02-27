@@ -209,33 +209,8 @@ fun ManageMembersItem(
             .padding(start = ProtonDimens.DefaultSpacing),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .sizeIn(
-                    minWidth = MailDimens.AvatarMinSize,
-                    minHeight = MailDimens.AvatarMinSize
-                )
-                .background(
-                    color = if (member.isSelected) ProtonTheme.colors.iconAccent
-                    else ProtonTheme.colors.interactionWeakNorm,
-                    shape = ProtonTheme.shapes.medium
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            if (member.isSelected) {
-                Icon(
-                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                    painter = painterResource(id = R.drawable.ic_proton_users_filled),
-                    tint = Color.White,
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-            } else {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = member.initials
-                )
-            }
-        }
+        ManageMembersAvatar(member)
+
         Column(
             modifier = Modifier
                 .padding(
@@ -255,6 +230,7 @@ fun ManageMembersItem(
                 style = ProtonTheme.typography.defaultSmallWeak
             )
         }
+
         if (member.isSelected) {
             Icon(
                 modifier = Modifier.padding(
@@ -264,6 +240,37 @@ fun ManageMembersItem(
                 painter = painterResource(id = R.drawable.ic_proton_checkmark),
                 tint = ProtonTheme.colors.iconAccent,
                 contentDescription = NO_CONTENT_DESCRIPTION
+            )
+        }
+    }
+}
+
+@Composable
+private fun ManageMembersAvatar(member: ManageMembersUiModel) {
+    Box(
+        modifier = Modifier
+            .sizeIn(
+                minWidth = MailDimens.AvatarMinSize,
+                minHeight = MailDimens.AvatarMinSize
+            )
+            .background(
+                color = if (member.isSelected) ProtonTheme.colors.iconAccent
+                else ProtonTheme.colors.interactionWeakNorm,
+                shape = ProtonTheme.shapes.medium
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        if (member.isSelected) {
+            Icon(
+                modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                painter = painterResource(id = R.drawable.ic_proton_users_filled),
+                tint = Color.White,
+                contentDescription = NO_CONTENT_DESCRIPTION
+            )
+        } else {
+            Text(
+                textAlign = TextAlign.Center,
+                text = member.initials
             )
         }
     }
