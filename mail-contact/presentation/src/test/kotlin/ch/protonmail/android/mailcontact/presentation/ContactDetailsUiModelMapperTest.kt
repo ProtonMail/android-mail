@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
@@ -62,10 +63,12 @@ class ContactDetailsUiModelMapperTest {
     private val decodeByteArray = mockk<DecodeByteArray> {
         every { this@mockk.invoke(any()) } returns mockk()
     }
+    private val getInitials = GetInitials()
 
     private val contactDetailsUiModelMapper = ContactDetailsUiModelMapper(
         formatLocalDate = formatLocalDate,
-        decodeByteArray = decodeByteArray
+        decodeByteArray = decodeByteArray,
+        getInitials = getInitials
     )
 
     @BeforeTest

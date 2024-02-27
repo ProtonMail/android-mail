@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormMember
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
@@ -47,7 +48,8 @@ import kotlin.test.assertEquals
 
 class ContactGroupFormUiModelMapperTest {
 
-    private val contactGroupFormUiModelMapper = ContactGroupFormUiModelMapper()
+    private val getInitials = GetInitials()
+    private val contactGroupFormUiModelMapper = ContactGroupFormUiModelMapper(getInitials)
 
     @BeforeTest
     fun setUp() {

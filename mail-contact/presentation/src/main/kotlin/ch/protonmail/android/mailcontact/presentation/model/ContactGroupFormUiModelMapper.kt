@@ -18,13 +18,15 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
-import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.contact.domain.entity.ContactEmail
 import javax.inject.Inject
 
-class ContactGroupFormUiModelMapper @Inject constructor() {
+class ContactGroupFormUiModelMapper @Inject constructor(
+    private val getInitials: GetInitials
+) {
 
     fun toContactGroupFormUiModel(contactGroup: ContactGroup): ContactGroupFormUiModel {
         return ContactGroupFormUiModel(

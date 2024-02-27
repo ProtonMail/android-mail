@@ -20,14 +20,16 @@ package ch.protonmail.android.mailcontact.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
-class ContactListItemUiModelMapper @Inject constructor() {
+class ContactListItemUiModelMapper @Inject constructor(
+    private val getInitials: GetInitials
+) {
 
     fun toContactListItemUiModel(contactList: List<Contact>): List<ContactListItemUiModel> {
         val contacts = arrayListOf<ContactListItemUiModel>()

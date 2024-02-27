@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
@@ -42,7 +43,8 @@ import kotlin.test.assertEquals
 
 class ManageMembersUiModelMapperTest {
 
-    private val manageMembersUiModelMapper = ManageMembersUiModelMapper()
+    private val getInitials = GetInitials()
+    private val manageMembersUiModelMapper = ManageMembersUiModelMapper(getInitials)
 
     @BeforeTest
     fun setUp() {

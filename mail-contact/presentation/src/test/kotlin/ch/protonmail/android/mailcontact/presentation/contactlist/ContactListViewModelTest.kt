@@ -26,6 +26,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupLabelsError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
@@ -101,7 +102,8 @@ class ContactListViewModelTest {
 
     private val reducer = ContactListReducer()
 
-    private val contactListItemUiModelMapper = ContactListItemUiModelMapper()
+    private val getInitials = GetInitials()
+    private val contactListItemUiModelMapper = ContactListItemUiModelMapper(getInitials)
     private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper()
 
     private val contactListViewModel by lazy {

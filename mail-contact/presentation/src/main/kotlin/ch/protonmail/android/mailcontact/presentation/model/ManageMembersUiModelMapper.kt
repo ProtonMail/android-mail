@@ -18,12 +18,14 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
-import ch.protonmail.android.mailcontact.presentation.utils.getInitials
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmailId
 import javax.inject.Inject
 
-class ManageMembersUiModelMapper @Inject constructor() {
+class ManageMembersUiModelMapper @Inject constructor(
+    private val getInitials: GetInitials
+) {
 
     fun toManageMembersUiModelList(
         contacts: List<Contact>,

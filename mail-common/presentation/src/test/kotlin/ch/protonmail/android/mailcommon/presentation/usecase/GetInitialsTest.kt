@@ -16,12 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.utils
+package ch.protonmail.android.mailcommon.presentation.usecase
 
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class GetInitialsTest {
+
+    private val getInitials = GetInitials()
 
     @Test
     fun `get initials for empty string`() {
@@ -30,20 +32,7 @@ class GetInitialsTest {
         val expectedInitials = ""
 
         // When
-        val actual = getInitials(name, takeFirstOnly = false)
-
-        // Then
-        assertEquals(actual, expectedInitials)
-    }
-
-    @Test
-    fun `get initials for empty string, first character only`() {
-        // Given
-        val name = ""
-        val expectedInitials = ""
-
-        // When
-        val actual = getInitials(name, takeFirstOnly = true)
+        val actual = getInitials(name)
 
         // Then
         assertEquals(actual, expectedInitials)
@@ -56,20 +45,7 @@ class GetInitialsTest {
         val expectedInitials = "A"
 
         // When
-        val actual = getInitials(name, takeFirstOnly = false)
-
-        // Then
-        assertEquals(actual, expectedInitials)
-    }
-
-    @Test
-    fun `get initials for one word lowercase name, first character only`() {
-        // Given
-        val name = "aaa"
-        val expectedInitials = "A"
-
-        // When
-        val actual = getInitials(name, takeFirstOnly = true)
+        val actual = getInitials(name)
 
         // Then
         assertEquals(actual, expectedInitials)
@@ -82,23 +58,9 @@ class GetInitialsTest {
         val expectedInitials = "AD"
 
         // When
-        val actual = getInitials(name, takeFirstOnly = false)
+        val actual = getInitials(name)
 
         // Then
         assertEquals(actual, expectedInitials)
     }
-
-    @Test
-    fun `get initials for multiple word lowercase name, first character only`() {
-        // Given
-        val name = "aaa bbb ccc ddd"
-        val expectedInitials = "A"
-
-        // When
-        val actual = getInitials(name, takeFirstOnly = true)
-
-        // Then
-        assertEquals(actual, expectedInitials)
-    }
-
 }

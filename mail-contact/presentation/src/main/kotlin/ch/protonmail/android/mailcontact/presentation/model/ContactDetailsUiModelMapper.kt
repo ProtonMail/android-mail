@@ -21,10 +21,10 @@ package ch.protonmail.android.mailcontact.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.utils.getInitials
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
@@ -32,7 +32,8 @@ import javax.inject.Inject
 
 class ContactDetailsUiModelMapper @Inject constructor(
     private val formatLocalDate: FormatLocalDate,
-    private val decodeByteArray: DecodeByteArray
+    private val decodeByteArray: DecodeByteArray,
+    private val getInitials: GetInitials
 ) {
 
     fun toContactDetailsUiModel(decryptedContact: DecryptedContact): ContactDetailsUiModel {

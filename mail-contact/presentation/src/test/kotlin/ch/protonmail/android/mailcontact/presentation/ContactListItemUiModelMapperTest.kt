@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation
 
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -32,7 +33,8 @@ import kotlin.test.assertEquals
 
 class ContactListItemUiModelMapperTest {
 
-    private val contactListItemUiModelMapper = ContactListItemUiModelMapper()
+    private val getInitials = GetInitials()
+    private val contactListItemUiModelMapper = ContactListItemUiModelMapper(getInitials)
 
     @Test
     fun `return correct contacts`() {
