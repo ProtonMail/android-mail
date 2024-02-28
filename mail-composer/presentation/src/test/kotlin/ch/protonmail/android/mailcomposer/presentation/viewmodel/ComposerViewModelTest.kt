@@ -54,6 +54,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
+import ch.protonmail.android.mailcomposer.domain.usecase.GetExternalRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
@@ -200,6 +201,7 @@ class ComposerViewModelTest {
     private val validateSenderAddress = mockk<ValidateSenderAddress>()
     private val saveMessageExpirationTime = mockk<SaveMessageExpirationTime>()
     private val observeMessageExpirationTime = mockk<ObserveMessageExpirationTime>()
+    private val getExternalRecipients = mockk<GetExternalRecipients>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -241,6 +243,7 @@ class ComposerViewModelTest {
             validateSenderAddress,
             saveMessageExpirationTime,
             observeMessageExpirationTime,
+            getExternalRecipients,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -816,6 +819,7 @@ class ComposerViewModelTest {
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        expectNoExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -831,6 +835,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerifyOrder {
+            getExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
             draftUploaderMock.stopContinuousUpload()
             storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
             sendMessageMock(expectedUserId, expectedMessageId)
@@ -873,6 +878,7 @@ class ComposerViewModelTest {
         expectObserveMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        expectNoExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -888,6 +894,7 @@ class ComposerViewModelTest {
 
         // Then
         coVerifyOrder {
+            getExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
             draftUploaderMock.stopContinuousUpload()
             storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
             sendMessageMock(expectedUserId, expectedMessageId)
@@ -2130,6 +2137,61 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit event for confirming sending an expiring message when there are external recipients`() = runTest {
+        // Given
+        val expectedSubject = Subject("Subject for the message")
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedDraftBody = DraftBody("I am plaintext")
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val expectedFields = DraftFields(
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            recipientsTo,
+            recipientsCc,
+            recipientsBcc,
+            null
+        )
+        mockParticipantMapper()
+        expectNetworkManagerIsDisconnected()
+        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectStopContinuousDraftUploadSucceeds()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        val externalRecipients = expectExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
+
+        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
+        expectedViewModelInitialState(
+            expectedMessageId,
+            expectedSenderEmail,
+            expectedSubject,
+            expectedDraftBody,
+            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        )
+
+        // When
+        viewModel.submit(ComposerAction.OnSendMessage)
+
+        // Then
+        viewModel.state.test {
+            assertEquals(Effect.of(externalRecipients), awaitItem().confirmSendExpiringMessage)
+        }
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
@@ -2301,7 +2363,8 @@ class ComposerViewModelTest {
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
             isExpirationActionVisible = false,
-            messageExpiresIn = Duration.ZERO
+            messageExpiresIn = Duration.ZERO,
+            confirmSendExpiringMessage = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)
@@ -2611,6 +2674,24 @@ class ComposerViewModelTest {
         coEvery {
             validateSenderAddress(userId, invalid)
         } returns ValidateSenderAddress.ValidationResult.Invalid(useInstead, invalid, reason).right()
+    }
+
+    private fun expectExternalRecipients(
+        userId: UserId,
+        recipientsTo: RecipientsTo,
+        recipientsCc: RecipientsCc,
+        recipientsBcc: RecipientsBcc
+    ) = listOf(RecipientSample.ExternalEncrypted).also {
+        coEvery { getExternalRecipients(userId, recipientsTo, recipientsCc, recipientsBcc) } returns it
+    }
+
+    private fun expectNoExternalRecipients(
+        userId: UserId,
+        recipientsTo: RecipientsTo,
+        recipientsCc: RecipientsCc,
+        recipientsBcc: RecipientsBcc
+    ) {
+        coEvery { getExternalRecipients(userId, recipientsTo, recipientsCc, recipientsBcc) } returns emptyList()
     }
 
     companion object TestData {

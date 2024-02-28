@@ -51,6 +51,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddres
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
+import ch.protonmail.android.mailcomposer.domain.usecase.GetExternalRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
@@ -111,6 +112,7 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.time.Duration
 
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
 @HiltViewModel
@@ -150,6 +152,7 @@ class ComposerViewModel @Inject constructor(
     private val validateSenderAddress: ValidateSenderAddress,
     private val saveMessageExpirationTime: SaveMessageExpirationTime,
     private val observeMessageExpirationTime: ObserveMessageExpirationTime,
+    private val getExternalRecipients: GetExternalRecipients,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -512,6 +515,15 @@ class ComposerViewModel @Inject constructor(
         val draftFields = buildDraftFields()
         return if (draftFields.haveBlankSubject()) {
             ComposerEvent.ConfirmEmptySubject
+        } else if (state.value.messageExpiresIn != Duration.ZERO) {
+            val externalRecipients = draftFields.let {
+                getExternalRecipients(primaryUserId(), it.recipientsTo, it.recipientsCc, it.recipientsBcc)
+            }
+            if (externalRecipients.isNotEmpty()) {
+                ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients(externalRecipients)
+            } else {
+                onSendMessage(action)
+            }
         } else {
             onSendMessage(action)
         }

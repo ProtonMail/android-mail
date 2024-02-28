@@ -166,6 +166,9 @@ class ComposerReducer @Inject constructor(
             currentState,
             this.messageExpirationTime
         )
+        is ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients -> currentState.copy(
+            confirmSendExpiringMessage = Effect.of(this.externalRecipients)
+        )
     }
 
     private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
