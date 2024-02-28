@@ -217,7 +217,9 @@ class ContactGroupFormViewModel @Inject constructor(
             labelId = contactGroupFormUiModel.id,
             name = contactGroupFormUiModel.name,
             color = contactGroupFormUiModel.color.getHexStringFromColor()
-        )
+        ).getOrElse {
+            return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+        }
 
         emitNewStateFor(ContactGroupFormEvent.ContactGroupUpdated)
     }

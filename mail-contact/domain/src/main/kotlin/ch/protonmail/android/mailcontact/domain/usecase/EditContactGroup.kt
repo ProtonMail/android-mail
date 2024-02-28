@@ -18,8 +18,10 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import arrow.core.Either
+import arrow.core.raise.either
+import arrow.core.right
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
@@ -34,23 +36,26 @@ class EditContactGroup @Inject constructor(
         labelId: LabelId,
         name: String,
         color: String
-    ) {
+    ): Either<EditContactGroupError, Unit> = either {
 
-        val label = Label(
-            userId = userId,
-            labelId = labelId,
-            name = name,
-            color = color,
-            isNotified = null,
-            isExpanded = null,
-            isSticky = null,
-            parentId = null,
-            type = LabelType.ContactGroup,
-            path = "",
-            order = 0
+        val contactGroupLabel = labelRepository.getLabel(userId, LabelType.ContactGroup, labelId) ?: raise(
+            EditContactGroupError.LabelNotFound
         )
 
-        labelRepository.updateLabel(userId, label)
+        labelRepository.updateLabel(
+            userId,
+            contactGroupLabel.copy(
+                name = name,
+                color = color
+            )
+        )
+
+        return Unit.right()
     }
 
 }
+
+sealed class EditContactGroupError {
+    object LabelNotFound : EditContactGroupError()
+}
+

@@ -485,6 +485,6 @@ class ContactGroupFormViewModelTest {
     ) {
         coEvery {
             editContactGroupMock.invoke(userId, labelId, name, color)
-        } just Runs
+        } returns Unit.right()
     }
 }

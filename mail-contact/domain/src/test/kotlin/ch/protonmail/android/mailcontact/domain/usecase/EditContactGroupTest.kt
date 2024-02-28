@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import arrow.core.left
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -30,6 +31,7 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class EditContactGroupTest {
 
@@ -44,7 +46,7 @@ class EditContactGroupTest {
     @Test
     fun `should call LabelRepository with correct argument`() = runTest {
         // Given
-        val expectedLabel = Label(
+        val existingLabel = Label(
             userId = userId,
             labelId = contactGroupLabelId,
             name = contactGroupName,
@@ -55,9 +57,14 @@ class EditContactGroupTest {
             parentId = null,
             type = LabelType.ContactGroup,
             path = "",
-            order = 0
+            order = 666
+        )
+        val expectedLabel = existingLabel.copy(
+            name = contactGroupName,
+            color = contactGroupColor
         )
         coEvery { labelRepositoryMock.updateLabel(userId, expectedLabel) } just Runs
+        expectGetLabel(expectedLabel.labelId, expectedLabel)
 
         // When
         editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor)
@@ -66,6 +73,22 @@ class EditContactGroupTest {
         coVerify {
             labelRepositoryMock.updateLabel(userId, expectedLabel)
         }
+    }
+
+    @Test
+    fun `should return error when getting label from repository fails`() = runTest {
+        // Given
+        expectGetLabel(contactGroupLabelId, null)
+
+        // When
+        val actual = editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor)
+
+        // Then
+        assertEquals(EditContactGroupError.LabelNotFound.left(), actual)
+    }
+
+    private fun expectGetLabel(labelId: LabelId, expectedLabel: Label?) {
+        coEvery { labelRepositoryMock.getLabel(userId, LabelType.ContactGroup, labelId) } returns expectedLabel
     }
 
 }
