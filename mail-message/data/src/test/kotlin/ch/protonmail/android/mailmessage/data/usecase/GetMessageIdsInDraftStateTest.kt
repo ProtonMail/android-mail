@@ -33,7 +33,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class ExcludeMessagesInDraftStateTest {
+class GetMessageIdsInDraftStateTest {
 
     private val userId = UserIdSample.Primary
     private val draftStateList = listOf(
@@ -68,7 +68,7 @@ class ExcludeMessagesInDraftStateTest {
 
     private val draftStateRepository = mockk<DraftStateRepository>()
 
-    private val excludeMessagesInDraftState = ExcludeMessagesInDraftState(draftStateRepository)
+    private val getMessageIdsInDraftState = GetMessageIdsInDraftState(draftStateRepository)
 
     @Test
     fun `should return empty list when there are no draft states`() = runTest {
@@ -76,7 +76,7 @@ class ExcludeMessagesInDraftStateTest {
         coEvery { draftStateRepository.observeAll(userId) } returns flowOf(emptyList())
 
         // When
-        val result = excludeMessagesInDraftState(userId)
+        val result = getMessageIdsInDraftState(userId)
 
         // Then
         assertEquals(emptyList(), result)
@@ -86,13 +86,29 @@ class ExcludeMessagesInDraftStateTest {
     @Test
     fun `should return list of draft message ids`() = runTest {
         // Given
+        val expectedIdList = draftStateList.map { it.apiMessageId ?: it.messageId }
         coEvery { draftStateRepository.observeAll(userId) } returns flowOf(draftStateList)
 
         // When
-        val result = excludeMessagesInDraftState(userId)
+        val result = getMessageIdsInDraftState(userId)
 
         // Then
-        assertEquals(draftStateList.map { it.apiMessageId ?: it.messageId }, result)
+        assertEquals(expectedIdList, result)
+        coVerify(exactly = 1) { draftStateRepository.observeAll(userId) }
+    }
+
+    @Test
+    fun `should return message ids when api message ids are not available`() = runTest {
+        // Given
+        val draftStatesWithoutApiMessageId = draftStateList.map { it.copy(apiMessageId = null) }
+        val expectedIdList = draftStatesWithoutApiMessageId.map { it.messageId }
+        coEvery { draftStateRepository.observeAll(userId) } returns flowOf(draftStatesWithoutApiMessageId)
+
+        // When
+        val result = getMessageIdsInDraftState(userId)
+
+        // Then
+        assertEquals(expectedIdList, result)
         coVerify(exactly = 1) { draftStateRepository.observeAll(userId) }
     }
 }

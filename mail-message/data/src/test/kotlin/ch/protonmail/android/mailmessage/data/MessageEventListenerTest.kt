@@ -21,7 +21,7 @@ package ch.protonmail.android.mailmessage.data
 import arrow.core.right
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
-import ch.protonmail.android.mailmessage.data.usecase.ExcludeMessagesInDraftState
+import ch.protonmail.android.mailmessage.data.usecase.GetMessageIdsInDraftState
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -50,7 +50,7 @@ class MessageEventListenerTest {
     private val localDataSource = mockk<MessageLocalDataSource>()
     private val repository = mockk<MessageRepository>()
     private val excludeDraftMessagesAlreadyInOutbox = mockk<ExcludeDraftMessagesAlreadyInOutbox>()
-    private val excludeMessagesInDraftState = mockk<ExcludeMessagesInDraftState>()
+    private val getMessageIdsInDraftState = mockk<GetMessageIdsInDraftState>()
     private val config = mockk<EventManagerConfig>()
 
     private val messageEventListener = MessageEventListener(
@@ -58,7 +58,7 @@ class MessageEventListenerTest {
         localDataSource,
         repository,
         excludeDraftMessagesAlreadyInOutbox,
-        excludeMessagesInDraftState
+        getMessageIdsInDraftState
     )
 
     private val messagesWithoutDrafts =
@@ -142,7 +142,7 @@ class MessageEventListenerTest {
     fun `should exclude draft state messages when reset all invokes`() = runTest {
         // Given
         val messagesExceptDrafts = listOf(MessageIdSample.AugWeatherForecast, MessageIdSample.SepWeatherForecast)
-        coEvery { excludeMessagesInDraftState.invoke(any()) } returns messagesExceptDrafts
+        coEvery { getMessageIdsInDraftState.invoke(any()) } returns messagesExceptDrafts
         every { config.userId } returns userId
         coEvery { localDataSource.deleteAllMessagesExcept(userId, messagesExceptDrafts) } returns Unit
         coEvery { repository.getRemoteMessages(userId, any()) } returns listOf(MessageSample.Invoice).right()
@@ -151,7 +151,7 @@ class MessageEventListenerTest {
         messageEventListener.onResetAll(config)
 
         // Then
-        coVerify(exactly = 1) { excludeMessagesInDraftState.invoke(userId) }
+        coVerify(exactly = 1) { getMessageIdsInDraftState.invoke(userId) }
         coVerify(exactly = 1) { localDataSource.deleteAllMessagesExcept(userId, messagesExceptDrafts) }
         coVerify(exactly = 1) { repository.getRemoteMessages(userId, any()) }
     }

@@ -21,14 +21,13 @@ package ch.protonmail.android.mailmessage.data.usecase
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 /**
  * List of Message Ids in draft state
  */
-class ExcludeMessagesInDraftState @Inject constructor(
+class GetMessageIdsInDraftState @Inject constructor(
     private val draftStateRepository: DraftStateRepository
 ) {
 
