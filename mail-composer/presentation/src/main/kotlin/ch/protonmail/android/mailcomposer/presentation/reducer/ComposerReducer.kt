@@ -79,6 +79,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.RejectSendingWithoutSubject -> updateForRejectSendWithoutSubject(currentState)
         is ComposerAction.OnSetExpirationTimeRequested -> updateStateForSetExpirationTimeRequested(currentState)
         is ComposerAction.ExpirationTimeSet -> updateStateForExpirationTimeSet(currentState)
+        is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> currentState
     }
 
     @Suppress("ComplexMethod", "LongMethod")

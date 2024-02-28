@@ -58,6 +58,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     object OnSetExpirationTimeRequested : ComposerAction
     object ConfirmSendingWithoutSubject : ComposerAction
     object RejectSendingWithoutSubject : ComposerAction
+    object SendExpiringMessageToExternalRecipientsConfirmed : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {

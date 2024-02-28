@@ -403,6 +403,9 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
                     is ComposerAction.OnSetExpirationTimeRequested -> emitNewStateFor(action)
                     is ComposerAction.ExpirationTimeSet -> onExpirationTimeSet(action)
+                    is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
+                        onSendMessage(action)
+                    )
                 }
                 composerIdlingResource.decrement()
             }

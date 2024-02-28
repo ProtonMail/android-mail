@@ -231,6 +231,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         SendExpiringMessageDialog(
             externalRecipients = sendExpiringMessageDialogState.value.externalParticipants,
             onConfirmClicked = {
+                viewModel.submit(ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed)
                 sendExpiringMessageDialogState.value = sendExpiringMessageDialogState.value.copy(isVisible = false)
             },
             onDismissClicked = {
