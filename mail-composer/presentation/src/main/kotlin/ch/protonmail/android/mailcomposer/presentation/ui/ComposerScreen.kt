@@ -62,6 +62,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
@@ -93,7 +94,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val attachmentSizeDialogState = remember { mutableStateOf(false) }
     val sendingErrorDialogState = remember { mutableStateOf<String?>(null) }
     val senderChangedNoticeDialogState = remember { mutableStateOf<String?>(null) }
-    var sendWithoutSubjectDialogState = remember { mutableStateOf(false) }
+    val sendWithoutSubjectDialogState = remember { mutableStateOf(false) }
+    val sendExpiringMessageDialogState = remember {
+        mutableStateOf(SendExpiringMessageDialogState(false, emptyList()))
+    }
 
     val imagePicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents(),
@@ -222,6 +226,19 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
             }
         )
     }
+
+    if (sendExpiringMessageDialogState.value.isVisible) {
+        SendExpiringMessageDialog(
+            externalRecipients = sendExpiringMessageDialogState.value.externalParticipants,
+            onConfirmClicked = {
+                sendExpiringMessageDialogState.value = sendExpiringMessageDialogState.value.copy(isVisible = false)
+            },
+            onDismissClicked = {
+                sendExpiringMessageDialogState.value = sendExpiringMessageDialogState.value.copy(isVisible = false)
+            }
+        )
+    }
+
     if (attachmentSizeDialogState.value) {
         ProtonAlertDialog(
             onDismissRequest = { attachmentSizeDialogState.value = false },
@@ -331,6 +348,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         sendWithoutSubjectDialogState.value = true
     }
 
+    ConsumableLaunchedEffect(effect = state.confirmSendExpiringMessage) {
+        sendExpiringMessageDialogState.value = SendExpiringMessageDialogState(
+            isVisible = true, externalParticipants = it
+        )
+    }
+
     BackHandler(true) {
         viewModel.submit(ComposerAction.OnCloseComposer)
     }
@@ -388,6 +411,11 @@ object ComposerScreen {
 }
 
 private enum class BottomSheetType { AddAttachments, ChangeSender, SetExpirationTime }
+
+private data class SendExpiringMessageDialogState(
+    val isVisible: Boolean,
+    val externalParticipants: List<Participant>
+)
 
 @Composable
 @AdaptivePreviews
