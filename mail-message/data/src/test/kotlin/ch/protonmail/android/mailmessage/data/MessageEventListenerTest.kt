@@ -25,9 +25,9 @@ import ch.protonmail.android.mailmessage.data.usecase.GetMessageIdsInDraftState
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import ch.protonmail.android.mailpagination.domain.model.PageKey
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -45,13 +45,14 @@ class MessageEventListenerTest {
             getMessageResource(MessageSample.OctWeatherForecast.id)
         )
     private val userId = UserId("userId")
+    private val messageList = messageResourceList.map { it.toMessage(userId) }
 
     private val db = mockk<LabelDatabase>()
     private val localDataSource = mockk<MessageLocalDataSource>()
     private val repository = mockk<MessageRepository>()
     private val excludeDraftMessagesAlreadyInOutbox = mockk<ExcludeDraftMessagesAlreadyInOutbox>()
     private val getMessageIdsInDraftState = mockk<GetMessageIdsInDraftState>()
-    private val config = mockk<EventManagerConfig>()
+    private val config = EventManagerConfig.Core(userId)
 
     private val messageEventListener = MessageEventListener(
         db,
@@ -67,60 +68,56 @@ class MessageEventListenerTest {
     @Test
     fun `should exclude drafts from outbox and upsert messages on create`() = runTest {
         // Given
-        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) } returns messagesWithoutDrafts
-        coEvery { localDataSource.upsertMessages(any()) } returns Unit.right()
-        every { config.userId } returns userId
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) } returns messagesWithoutDrafts
+        coEvery { localDataSource.upsertMessages(messagesWithoutDrafts) } returns Unit.right()
 
         // When
         messageEventListener.onCreate(config, messageResourceList)
 
         // Then
-        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) }
+        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) }
         coVerify(exactly = 1) { localDataSource.upsertMessages(messagesWithoutDrafts) }
     }
 
     @Test
     fun `should not call upsert when all messages are draft and excluded`() = runTest {
         // Given
-        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) } returns emptyList()
-        coEvery { localDataSource.upsertMessages(any()) } returns Unit.right()
-        every { config.userId } returns userId
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) } returns emptyList()
+        coEvery { localDataSource.upsertMessages(messagesWithoutDrafts) } returns Unit.right()
 
         // When
         messageEventListener.onCreate(config, messageResourceList)
 
         // Then
-        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) }
+        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) }
         coVerify(exactly = 0) { localDataSource.upsertMessages(messagesWithoutDrafts) }
     }
 
     @Test
     fun `should exclude drafts from outbox and upsert messages on update`() = runTest {
         // Given
-        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) } returns messagesWithoutDrafts
-        coEvery { localDataSource.upsertMessages(any()) } returns Unit.right()
-        every { config.userId } returns userId
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) } returns messagesWithoutDrafts
+        coEvery { localDataSource.upsertMessages(messagesWithoutDrafts) } returns Unit.right()
 
         // When
         messageEventListener.onUpdate(config, messageResourceList)
 
         // Then
-        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) }
+        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) }
         coVerify(exactly = 1) { localDataSource.upsertMessages(messagesWithoutDrafts) }
     }
 
     @Test
     fun `should exclude drafts from outbox and upsert messages on partial update`() = runTest {
         // Given
-        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) } returns messagesWithoutDrafts
-        coEvery { localDataSource.upsertMessages(any()) } returns Unit.right()
-        every { config.userId } returns userId
+        coEvery { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) } returns messagesWithoutDrafts
+        coEvery { localDataSource.upsertMessages(messagesWithoutDrafts) } returns Unit.right()
 
         // When
         messageEventListener.onPartial(config, messageResourceList)
 
         // Then
-        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, any()) }
+        coVerify(exactly = 1) { excludeDraftMessagesAlreadyInOutbox.invoke(userId, messageList) }
         coVerify(exactly = 1) { localDataSource.upsertMessages(messagesWithoutDrafts) }
     }
 
@@ -128,8 +125,7 @@ class MessageEventListenerTest {
     fun `should delete messages`() = runTest {
         // Given
         val messagesToDelete = listOf(MessageIdSample.AugWeatherForecast, MessageIdSample.SepWeatherForecast)
-        every { config.userId } returns userId
-        coEvery { localDataSource.deleteMessages(userId, any()) } returns Unit
+        coEvery { localDataSource.deleteMessages(userId, messagesToDelete) } returns Unit
 
         // When
         messageEventListener.onDelete(config, messagesToDelete.map { it.id })
@@ -141,11 +137,11 @@ class MessageEventListenerTest {
     @Test
     fun `should exclude draft state messages when reset all invokes`() = runTest {
         // Given
+        val pageKey = PageKey()
         val messagesExceptDrafts = listOf(MessageIdSample.AugWeatherForecast, MessageIdSample.SepWeatherForecast)
-        coEvery { getMessageIdsInDraftState.invoke(any()) } returns messagesExceptDrafts
-        every { config.userId } returns userId
+        coEvery { getMessageIdsInDraftState.invoke(userId) } returns messagesExceptDrafts
         coEvery { localDataSource.deleteAllMessagesExcept(userId, messagesExceptDrafts) } returns Unit
-        coEvery { repository.getRemoteMessages(userId, any()) } returns listOf(MessageSample.Invoice).right()
+        coEvery { repository.getRemoteMessages(userId, pageKey) } returns listOf(MessageSample.Invoice).right()
 
         // When
         messageEventListener.onResetAll(config)
@@ -153,6 +149,6 @@ class MessageEventListenerTest {
         // Then
         coVerify(exactly = 1) { getMessageIdsInDraftState.invoke(userId) }
         coVerify(exactly = 1) { localDataSource.deleteAllMessagesExcept(userId, messagesExceptDrafts) }
-        coVerify(exactly = 1) { repository.getRemoteMessages(userId, any()) }
+        coVerify(exactly = 1) { repository.getRemoteMessages(userId, pageKey) }
     }
 }
