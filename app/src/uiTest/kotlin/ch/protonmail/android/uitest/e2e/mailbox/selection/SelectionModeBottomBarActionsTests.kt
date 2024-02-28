@@ -183,7 +183,7 @@ internal class SelectionModeBottomBarActionsTests : MockedNetworkTest(
 }
 
 private fun MailboxRobot.clickAndMatchSelectionModeBottomBarActions(expectedActions: Array<BottomBarActionEntry>) {
-    listSection { selectItemAtPosition(0) }
+    listSection { selectItemsAt(0) }
 
     bottomBarSection {
         verify { hasActions(*expectedActions) }

@@ -46,7 +46,7 @@ import ch.protonmail.android.test.R as testR
 internal class MenuRobot : ComposeRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(SidebarMenuTestTags.Root)
-    private val hamburgerMenuButton = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.HamburgerMenu)
+    private val hamburgerMenuButton = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.NavigationButton)
 
     fun openSidebarMenu(): MenuRobot = apply {
         hamburgerMenuButton.awaitDisplayed().performClick()
@@ -92,16 +92,6 @@ internal class MenuRobot : ComposeRobot() {
         rootItem.onChild()
             .apply { performScrollToNode(hasText(value)) }
             .child { hasText(value) }
-            .performClick()
-
-        composeTestRule.waitForIdle()
-    }
-
-    @Suppress("SameParameterValue")
-    private fun tapSidebarMenuItemWithTag(value: String) {
-        rootItem.onChild()
-            .apply { performScrollToNode(hasTestTag(value)) }
-            .child { hasTestTag(value) }
             .performClick()
 
         composeTestRule.waitForIdle()

@@ -41,12 +41,16 @@ internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
         messagesList.performTouchInput { swipeDown() }
     }
 
-    fun selectItemAtPosition(position: Int) = onListItemEntryModel(position) {
-        selectEntry()
+    fun longPressItemAtPosition(position: Int) = onListItemEntryModel(position) {
+        longClick()
     }
 
-    fun unselectItemAtPosition(position: Int) = onListItemEntryModel(position) {
-        unselectEntry()
+    fun selectItemsAt(vararg positions: Int) = positions.forEach {
+        onListItemEntryModel(it) { selectEntry() }
+    }
+
+    fun unselectItemsAtPosition(vararg positions: Int) = positions.forEach {
+        onListItemEntryModel(it) { unselectEntry() }
     }
 
     fun clickMessageByPosition(position: Int) = onListItemEntryModel(position) {
@@ -81,6 +85,14 @@ internal class MailboxListSection : ComposeSectionRobot(), RefreshableSection {
                     entry.count?.let { hasCount(it) } ?: hasNoCount()
                 }
             }
+        }
+
+        fun selectedItemAtPosition(position: Int) {
+            onListItemEntryModel(position) { isSelected() }
+        }
+
+        fun unSelectedItemAtPosition(position: Int) {
+            onListItemEntryModel(position) { isNotSelected() }
         }
 
         fun unreadItemAtPosition(position: Int) = onListItemEntryModel(position) {

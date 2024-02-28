@@ -39,7 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.HamburgerMenu
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.NavigationButton
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
@@ -187,7 +187,7 @@ private fun TopAppBarInSearchMode(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) {
     IconButton(
-        modifier = Modifier.testTag(HamburgerMenu),
+        modifier = Modifier.testTag(NavigationButton),
         onClick = onNavigationIconClick
     ) {
         BadgedBox(
@@ -265,7 +265,7 @@ fun LoadingMailboxTopAppBarPreview() {
 object MailboxTopAppBarTestTags {
 
     const val RootItem = "TopAppBarRootItem"
-    const val HamburgerMenu = "HamburgerMenu"
+    const val NavigationButton = "NavigationButton"
     const val LocationLabel = "LocationLabel"
     const val SearchButton = "SearchButton"
     const val ComposerButton = "ComposerButton"

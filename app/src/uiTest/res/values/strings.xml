@@ -17,6 +17,12 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
+    <!-- App top bar -->
+    <string name="test_mailbox_toolbar_exit_selection_mode_button_content_description">Exit selection mode</string>
+    <string name="test_mailbox_toolbar_menu_button_content_description">Menu</string>
+    <string name="test_mailbox_toolbar_search_button_content_description">Search</string>
+    <string name="test_mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
+
     <!-- Mailbox -->
     <string name="test_label_title_inbox">Inbox</string>
     <string name="test_label_title_drafts">Drafts</string>

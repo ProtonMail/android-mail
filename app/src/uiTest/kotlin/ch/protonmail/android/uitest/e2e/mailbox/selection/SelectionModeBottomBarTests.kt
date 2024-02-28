@@ -72,7 +72,7 @@ internal class SelectionModeBottomBarTests : MockedNetworkTest(
         navigator { navigateTo(Destination.Inbox) }
 
         mailboxRobot {
-            listSection { selectItemAtPosition(0) }
+            listSection { selectItemsAt(0) }
             bottomBarSection { verify { isShown() } }
         }
     }
@@ -94,7 +94,7 @@ internal class SelectionModeBottomBarTests : MockedNetworkTest(
         navigator { navigateTo(Destination.Inbox) }
 
         mailboxRobot {
-            listSection { selectItemAtPosition(0) }
+            listSection { selectItemsAt(0) }
             bottomBarSection { verify { isShown() } }
         }
     }
@@ -116,7 +116,7 @@ internal class SelectionModeBottomBarTests : MockedNetworkTest(
         navigator { navigateTo(Destination.Inbox) }
 
         mailboxRobot {
-            listSection { selectItemAtPosition(0) }
+            listSection { selectItemsAt(0) }
             bottomBarSection {
                 verify { isShown() }
             }
@@ -148,12 +148,12 @@ internal class SelectionModeBottomBarTests : MockedNetworkTest(
         navigator { navigateTo(Destination.Inbox) }
 
         mailboxRobot {
-            listSection { selectItemAtPosition(0) }
+            listSection { selectItemsAt(0) }
             bottomBarSection {
                 verify { isShown() }
             }
 
-            listSection { unselectItemAtPosition(0) }
+            listSection { unselectItemsAtPosition(0) }
             bottomBarSection {
                 verify { isNotShown() }
             }

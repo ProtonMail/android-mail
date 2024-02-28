@@ -19,10 +19,12 @@
 package ch.protonmail.android.uitest.robot.mailbox.section
 
 import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
+import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.NavigationButton
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.mailbox.MailboxType
@@ -30,11 +32,29 @@ import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.mailbox.MailboxRobot
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.child
+import ch.protonmail.android.uitest.util.getTestString
+import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [MailboxRobot::class], identifier = "topAppBarSection")
 internal class MailboxTopBarSection : ComposeSectionRobot() {
 
     private val rootItem = composeTestRule.onNodeWithTag(MailboxTopAppBarTestTags.RootItem, useUnmergedTree = true)
+
+    private val navigationButton = rootItem.child {
+        hasTestTag(NavigationButton)
+    }
+
+    private val hamburgerMenuButton = navigationButton.child {
+        hasContentDescription(
+            getTestString(testR.string.test_mailbox_toolbar_menu_button_content_description)
+        )
+    }
+
+    private val exitSelectionButton = navigationButton.child {
+        hasContentDescription(
+            getTestString(testR.string.test_mailbox_toolbar_exit_selection_mode_button_content_description)
+        )
+    }
 
     private val locationLabel = rootItem.child {
         hasTestTag(MailboxTopAppBarTestTags.LocationLabel)
@@ -46,6 +66,10 @@ internal class MailboxTopBarSection : ComposeSectionRobot() {
 
     fun tapComposerIcon() {
         composerButton.awaitDisplayed().performClick()
+    }
+
+    fun tapExitSelectionMode() {
+        exitSelectionButton.performClick()
     }
 
     @VerifiesOuter
@@ -66,6 +90,17 @@ internal class MailboxTopBarSection : ComposeSectionRobot() {
             composeTestRule.waitUntil(timeoutMillis = timeout) {
                 runCatching { locationLabel.assertTextEquals(type.name) }.isSuccess
             }
+
+            hamburgerMenuButton.awaitDisplayed()
+        }
+
+        fun isInSelectionMode(numSelected: Int, timeout: Long = 2_000) {
+            composeTestRule.waitUntil(timeoutMillis = timeout) {
+                runCatching { locationLabel.assertTextEquals("$numSelected Selected") }.isSuccess
+            }
+
+            hamburgerMenuButton.assertDoesNotExist()
+            exitSelectionButton.awaitDisplayed()
         }
     }
 }
