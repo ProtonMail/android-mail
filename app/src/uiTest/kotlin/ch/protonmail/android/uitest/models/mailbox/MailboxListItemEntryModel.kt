@@ -22,13 +22,17 @@ import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onChildAt
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTouchInput
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
@@ -102,8 +106,13 @@ internal class MailboxListItemEntryModel(
         item.performClick()
     }
 
+    fun longClick() = apply {
+        item.performTouchInput { longClick() }
+    }
+
     fun selectEntry() = apply {
-        avatar.performClick()
+        val semanticsNode = if (avatarSelected.peekIsDisplayed()) avatarSelected else avatar
+        semanticsNode.performClick()
     }
 
     fun unselectEntry() = apply {
@@ -112,6 +121,20 @@ internal class MailboxListItemEntryModel(
     // endregion
 
     // region verification
+    fun isSelected() = apply {
+        avatarSelected.assertIsDisplayed().assertIsSelected()
+    }
+
+    fun isNotSelected() = apply {
+        if (avatarSelected.peekIsDisplayed()) {
+            avatarSelected.assertIsNotSelected()
+            avatar.assertDoesNotExist()
+        } else {
+            avatarSelected.assertDoesNotExist()
+            avatar.assertIsDisplayed()
+        }
+    }
+
     fun hasAvatar(initial: AvatarInitial) = apply {
         when (initial) {
             is AvatarInitial.WithText -> avatar.assertTextEquals(initial.text)
@@ -188,5 +211,7 @@ internal class MailboxListItemEntryModel(
             .awaitDisplayed(timeout = 30.seconds)
             .performScrollToNode(itemMatcher)
     }
+
+    private fun SemanticsNodeInteraction.peekIsDisplayed() = runCatching { assertIsDisplayed() }.isSuccess
     // endregion
 }

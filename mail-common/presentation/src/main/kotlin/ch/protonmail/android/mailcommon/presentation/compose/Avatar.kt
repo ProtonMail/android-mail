@@ -34,6 +34,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.R
@@ -117,7 +119,8 @@ fun Avatar(
                             },
                             shape = ProtonTheme.shapes.medium
                         )
-                        .testTag(AvatarTestTags.AvatarSelectionMode),
+                        .testTag(AvatarTestTags.AvatarSelectionMode)
+                        .semantics { selected = avatarUiModel.selected },
                     contentAlignment = Alignment.Center
                 ) {
                     if (avatarUiModel.selected) {
