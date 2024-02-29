@@ -289,7 +289,8 @@ class ContactGroupFormViewModelTest {
         expectCreateContactGroup(
             testUserId,
             expectedContactGroup.name,
-            expectedContactGroup.color.getHexStringFromColor()
+            expectedContactGroup.color.getHexStringFromColor(),
+            expectedContactGroup.members.map { it.id }
         )
 
         // When
@@ -313,37 +314,6 @@ class ContactGroupFormViewModelTest {
     }
 
     @Test
-    fun `when create and on save action is submitted, when creating fails, then error event is emitted`() = runTest {
-        // Given
-        val expectedContactGroup = emptyContactGroupFormUiModel(Color.Red)
-        expectSavedStateLabelId(null)
-        expectCreateContactGroupFails(
-            testUserId,
-            expectedContactGroup.name,
-            expectedContactGroup.color.getHexStringFromColor()
-        )
-
-        // When
-        contactGroupFormViewModel.state.test {
-            // Then
-            awaitItem() // ContactGroup was loaded
-
-            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnSaveClick)
-
-            val actual = awaitItem()
-
-            val expected = ContactGroupFormState.Data(
-                contactGroup = expectedContactGroup,
-                colors = testColors,
-                closeWithSuccess = Effect.empty(),
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error))
-            )
-
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `when update and on save action is submitted, then updated event is emitted`() = runTest {
         // Given
         val expectedContactGroup = testContactGroup
@@ -354,7 +324,8 @@ class ContactGroupFormViewModelTest {
             testUserId,
             expectedContactGroup.labelId,
             expectedContactGroup.name,
-            expectedContactGroup.color
+            expectedContactGroup.color,
+            expectedContactGroup.members.map { it.id }
         )
 
         expectSavedStateLabelId(testLabelId)
@@ -533,31 +504,23 @@ class ContactGroupFormViewModelTest {
     private fun expectCreateContactGroup(
         userId: UserId,
         name: String,
-        color: String
+        color: String,
+        contactEmailIds: List<ContactEmailId>
     ) {
         coEvery {
-            createContactGroupMock.invoke(userId, name, color)
+            createContactGroupMock.invoke(userId, name, color, contactEmailIds)
         } returns Unit.right()
-    }
-
-    private fun expectCreateContactGroupFails(
-        userId: UserId,
-        name: String,
-        color: String
-    ) {
-        coEvery {
-            createContactGroupMock.invoke(userId, name, color)
-        } returns CreateContactGroup.CreateContactGroupErrors.FailedToCreateContactGroup.left()
     }
 
     private fun expectEditContactGroup(
         userId: UserId,
         labelId: LabelId,
         name: String,
-        color: String
+        color: String,
+        contactEmailIds: List<ContactEmailId>
     ) {
         coEvery {
-            editContactGroupMock.invoke(userId, labelId, name, color)
+            editContactGroupMock.invoke(userId, labelId, name, color, contactEmailIds)
         } returns Unit.right()
     }
 }

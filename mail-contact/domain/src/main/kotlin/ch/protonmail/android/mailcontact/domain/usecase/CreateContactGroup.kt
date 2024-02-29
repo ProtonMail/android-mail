@@ -19,24 +19,27 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
-import arrow.core.left
-import arrow.core.right
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
-import me.proton.core.label.domain.repository.LabelRepository
-import timber.log.Timber
+import arrow.core.raise.either
+import me.proton.core.contact.domain.entity.ContactEmailId
+import me.proton.core.label.domain.repository.LabelLocalDataSource
+import me.proton.core.label.domain.repository.LabelRemoteDataSource
 import javax.inject.Inject
 
 class CreateContactGroup @Inject constructor(
-    private val labelRepository: LabelRepository
+    private val labelRemoteDataSource: LabelRemoteDataSource,
+    private val labelLocalDataSource: LabelLocalDataSource,
+    private val editContactGroupMembers: EditContactGroupMembers
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         name: String,
-        color: String
-    ): Either<CreateContactGroupErrors, Unit> {
+        color: String,
+        contactEmailIds: List<ContactEmailId>
+    ): Either<CreateContactGroupError, Unit> = either {
 
         val label = NewLabel(
             name = name,
@@ -48,21 +51,23 @@ class CreateContactGroup @Inject constructor(
             type = LabelType.ContactGroup
         )
 
-        return kotlin.runCatching {
-            labelRepository.createLabel(userId, label)
-        }.fold(
-            onSuccess = {
-                Unit.right()
-            },
-            onFailure = {
-                Timber.e("CreateContactGroup failed: ${it.message}")
-                CreateContactGroupErrors.FailedToCreateContactGroup.left()
-            }
-        )
-    }
+        val createdLabel = Either.catch {
+            val createdLabel = labelRemoteDataSource.createLabel(userId, label)
+            labelLocalDataSource.upsertLabel(listOf(createdLabel))
+            createdLabel
+        }.getOrNull() ?: raise(CreateContactGroupError.CreatingLabelError)
 
-    sealed interface CreateContactGroupErrors {
-        object FailedToCreateContactGroup : CreateContactGroupErrors
+        return editContactGroupMembers(
+            userId,
+            createdLabel.labelId,
+            contactEmailIds.toSet()
+        ).mapLeft {
+            CreateContactGroupError.EditingMembersError
+        }
     }
+}
 
+sealed class CreateContactGroupError {
+    object CreatingLabelError : CreateContactGroupError()
+    object EditingMembersError : CreateContactGroupError()
 }

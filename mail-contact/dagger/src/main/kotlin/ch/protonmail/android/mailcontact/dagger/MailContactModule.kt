@@ -19,11 +19,13 @@
 package ch.protonmail.android.mailcontact.dagger
 
 import ch.protonmail.android.mailcontact.data.ContactDetailRepositoryImpl
+import ch.protonmail.android.mailcontact.data.ContactGroupRepositoryImpl
 import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSource
 import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSourceImpl
 import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSource
 import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSourceImpl
 import ch.protonmail.android.mailcontact.domain.repository.ContactDetailRepository
+import ch.protonmail.android.mailcontact.domain.repository.ContactGroupRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Reusable
@@ -47,5 +49,9 @@ abstract class MailContactModule {
     @Binds
     @Reusable
     abstract fun bindContactDetailRepository(impl: ContactDetailRepositoryImpl): ContactDetailRepository
+
+    @Binds
+    @Reusable
+    abstract fun bindContactGroupRepository(impl: ContactGroupRepositoryImpl): ContactGroupRepository
 
 }

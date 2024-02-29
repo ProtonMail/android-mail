@@ -19,12 +19,14 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.left
+import arrow.core.right
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -40,38 +42,49 @@ class EditContactGroupTest {
     private val contactGroupColor = "#AABBCC"
     private val contactGroupLabelId = LabelId("Contact Group Label Id")
 
+    private val expectedContactEmailIds = listOf(
+        ContactEmailId("contact email ID 1"),
+        ContactEmailId("contact email ID 2"),
+        ContactEmailId("contact email ID 3")
+    )
+
+    private val existingLabel = Label(
+        userId = userId,
+        labelId = contactGroupLabelId,
+        name = contactGroupName,
+        color = contactGroupColor,
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null,
+        parentId = null,
+        type = LabelType.ContactGroup,
+        path = "",
+        order = 666
+    )
+
+    private val expectedLabel = existingLabel.copy(
+        name = contactGroupName,
+        color = contactGroupColor
+    )
+
     private val labelRepositoryMock = mockk<LabelRepository>()
-    val editContactGroup = EditContactGroup(labelRepositoryMock)
+    private val editContactGroupMembersMock = mockk<EditContactGroupMembers>()
+    val editContactGroup = EditContactGroup(labelRepositoryMock, editContactGroupMembersMock)
 
     @Test
-    fun `should call LabelRepository with correct argument`() = runTest {
+    fun `should call LabelRepository and EditContactGroupMembers with correct arguments`() = runTest {
         // Given
-        val existingLabel = Label(
-            userId = userId,
-            labelId = contactGroupLabelId,
-            name = contactGroupName,
-            color = contactGroupColor,
-            isNotified = null,
-            isExpanded = null,
-            isSticky = null,
-            parentId = null,
-            type = LabelType.ContactGroup,
-            path = "",
-            order = 666
-        )
-        val expectedLabel = existingLabel.copy(
-            name = contactGroupName,
-            color = contactGroupColor
-        )
         coEvery { labelRepositoryMock.updateLabel(userId, expectedLabel) } just Runs
         expectGetLabel(expectedLabel.labelId, expectedLabel)
+        expectEditContactGroupMembersSuccess(expectedContactEmailIds)
 
         // When
-        editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor)
+        editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor, expectedContactEmailIds)
 
         // Then
         coVerify {
             labelRepositoryMock.updateLabel(userId, expectedLabel)
+            editContactGroupMembersMock(userId, contactGroupLabelId, expectedContactEmailIds.toSet())
         }
     }
 
@@ -81,14 +94,60 @@ class EditContactGroupTest {
         expectGetLabel(contactGroupLabelId, null)
 
         // When
-        val actual = editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor)
+        val actual = editContactGroup(
+            userId,
+            contactGroupLabelId,
+            contactGroupName,
+            contactGroupColor,
+            expectedContactEmailIds
+        )
 
         // Then
         assertEquals(EditContactGroupError.LabelNotFound.left(), actual)
     }
 
+    @Test
+    fun `should return error when when editing ContactGroup Members fails`() = runTest {
+        // Given
+        coEvery { labelRepositoryMock.updateLabel(userId, expectedLabel) } just Runs
+        expectGetLabel(expectedLabel.labelId, expectedLabel)
+        expectEditContactGroupMembersFail(expectedContactEmailIds)
+
+        // When
+        val actual = editContactGroup(
+            userId,
+            contactGroupLabelId,
+            contactGroupName,
+            contactGroupColor,
+            expectedContactEmailIds
+        )
+
+        // Then
+        assertEquals(EditContactGroupError.EditingMembersError.left(), actual)
+    }
+
     private fun expectGetLabel(labelId: LabelId, expectedLabel: Label?) {
         coEvery { labelRepositoryMock.getLabel(userId, LabelType.ContactGroup, labelId) } returns expectedLabel
+    }
+
+    private fun expectEditContactGroupMembersSuccess(expectedContactEmailIds: List<ContactEmailId>) {
+        coEvery {
+            editContactGroupMembersMock(
+                userId,
+                contactGroupLabelId,
+                expectedContactEmailIds.toSet()
+            )
+        } returns Unit.right()
+    }
+
+    private fun expectEditContactGroupMembersFail(expectedContactEmailIds: List<ContactEmailId>) {
+        coEvery {
+            editContactGroupMembersMock(
+                userId,
+                contactGroupLabelId,
+                expectedContactEmailIds.toSet()
+            )
+        } returns EditContactGroupMembers.EditContactGroupMembersError.ObservingContactGroup.left()
     }
 
 }

@@ -19,16 +19,20 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.left
+import arrow.core.right
 import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
-import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.label.domain.repository.LabelLocalDataSource
+import me.proton.core.label.domain.repository.LabelRemoteDataSource
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -37,47 +41,118 @@ class CreateContactGroupTest {
     private val userId = UserId("userId")
     private val contactGroupName = "Contact Group Name"
     private val contactGroupColor = "#AABBCC"
+    private val contactGroupLabelId = LabelId("Contact Group Label ID")
 
-    private val labelRepositoryMock = mockk<LabelRepository>()
-    val createContactGroup = CreateContactGroup(labelRepositoryMock)
+    private val expectedNewLabel = NewLabel(
+        name = contactGroupName,
+        color = contactGroupColor,
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null,
+        parentId = null,
+        type = LabelType.ContactGroup
+    )
+
+    private val expectedCreatedLabel = Label(
+        userId = userId,
+        labelId = contactGroupLabelId,
+        parentId = null,
+        name = contactGroupName,
+        type = LabelType.ContactGroup,
+        path = contactGroupName,
+        color = contactGroupColor,
+        order = 32,
+        isNotified = false,
+        isExpanded = false,
+        isSticky = false
+    )
+
+    private val expectedContactEmailIds = listOf(
+        ContactEmailId("contact email ID 1"),
+        ContactEmailId("contact email ID 2"),
+        ContactEmailId("contact email ID 3")
+    )
+
+    private val labelRemoteDataSourceMock = mockk<LabelRemoteDataSource>()
+    private val labelLocalDataSourceMock = mockk<LabelLocalDataSource>()
+    private val editContactGroupMembersMock = mockk<EditContactGroupMembers>()
+
+    val createContactGroup = CreateContactGroup(
+        labelRemoteDataSourceMock,
+        labelLocalDataSourceMock,
+        editContactGroupMembersMock
+    )
 
     @Test
-    fun `should call LabelRepository with correct argument`() = runTest {
+    fun `should call data sources and use case with correct arguments`() = runTest {
         // Given
-        val expectedNewLabel = NewLabel(
-            name = contactGroupName,
-            color = contactGroupColor,
-            isNotified = null,
-            isExpanded = null,
-            isSticky = null,
-            parentId = null,
-            type = LabelType.ContactGroup
-        )
-        coEvery { labelRepositoryMock.createLabel(userId, expectedNewLabel) } just Runs
+        expectCreateLabelSuccess(expectedNewLabel, expectedCreatedLabel)
+        expectUpsertLabelSuccess(expectedCreatedLabel)
+        expectEditContactGroupMembersSuccess(expectedContactEmailIds)
 
         // When
-        createContactGroup(userId, contactGroupName, contactGroupColor)
+        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
 
         // Then
-        coVerify {
-            labelRepositoryMock.createLabel(userId, expectedNewLabel)
-        }
+        assertEquals(Unit.right(), actual)
     }
 
     @Test
-    fun `should return error when LabelRepository throws an exception`() = runTest {
+    fun `should return error when creating ContactGroup throws exception`() = runTest {
         // Given
-        expectLabelRepositoryFailure()
+        expectCreateLabelThrows(expectedNewLabel)
 
         // When
-        val actual = createContactGroup(userId, contactGroupName, contactGroupColor)
+        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
 
         // Then
-        assertEquals(CreateContactGroup.CreateContactGroupErrors.FailedToCreateContactGroup.left(), actual)
+        assertEquals(CreateContactGroupError.CreatingLabelError.left(), actual)
     }
 
-    private fun expectLabelRepositoryFailure() {
-        coEvery { labelRepositoryMock.createLabel(userId, any()) } throws Exception("")
+    @Test
+    fun `should return error when editing ContactGroup Members fails`() = runTest {
+        // Given
+        expectCreateLabelSuccess(expectedNewLabel, expectedCreatedLabel)
+        expectUpsertLabelSuccess(expectedCreatedLabel)
+        expectEditContactGroupMembersFail(expectedContactEmailIds)
+
+        // When
+        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
+
+        // Then
+        assertEquals(CreateContactGroupError.EditingMembersError.left(), actual)
+    }
+
+    private fun expectEditContactGroupMembersSuccess(expectedContactEmailIds: List<ContactEmailId>) {
+        coEvery {
+            editContactGroupMembersMock(
+                userId,
+                contactGroupLabelId,
+                expectedContactEmailIds.toSet()
+            )
+        } returns Unit.right()
+    }
+
+    private fun expectEditContactGroupMembersFail(expectedContactEmailIds: List<ContactEmailId>) {
+        coEvery {
+            editContactGroupMembersMock(
+                userId,
+                contactGroupLabelId,
+                expectedContactEmailIds.toSet()
+            )
+        } returns EditContactGroupMembers.EditContactGroupMembersError.ObservingContactGroup.left()
+    }
+
+    private fun expectUpsertLabelSuccess(expectedCreatedLabel: Label) {
+        coEvery { labelLocalDataSourceMock.upsertLabel(listOf(expectedCreatedLabel)) } just Runs
+    }
+
+    private fun expectCreateLabelSuccess(expectedNewLabel: NewLabel, expectedCreatedLabel: Label) {
+        coEvery { labelRemoteDataSourceMock.createLabel(userId, expectedNewLabel) } returns expectedCreatedLabel
+    }
+
+    private fun expectCreateLabelThrows(expectedNewLabel: NewLabel) {
+        coEvery { labelRemoteDataSourceMock.createLabel(userId, expectedNewLabel) } throws Exception("")
     }
 
 }

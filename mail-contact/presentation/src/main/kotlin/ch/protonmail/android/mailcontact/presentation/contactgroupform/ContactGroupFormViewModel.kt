@@ -203,7 +203,8 @@ class ContactGroupFormViewModel @Inject constructor(
         createContactGroup(
             userId = primaryUserId(),
             name = contactGroupFormUiModel.name,
-            color = contactGroupFormUiModel.color.getHexStringFromColor()
+            color = contactGroupFormUiModel.color.getHexStringFromColor(),
+            contactEmailIds = contactGroupFormUiModel.members.map { it.id }
         ).getOrElse {
             return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
         }
@@ -218,7 +219,8 @@ class ContactGroupFormViewModel @Inject constructor(
             userId = primaryUserId(),
             labelId = labelId,
             name = contactGroupFormUiModel.name,
-            color = contactGroupFormUiModel.color.getHexStringFromColor()
+            color = contactGroupFormUiModel.color.getHexStringFromColor(),
+            contactEmailIds = contactGroupFormUiModel.members.map { it.id }
         ).getOrElse {
             return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
         }
