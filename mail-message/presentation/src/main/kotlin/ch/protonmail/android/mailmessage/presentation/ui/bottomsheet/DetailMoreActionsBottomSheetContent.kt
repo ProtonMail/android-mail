@@ -124,17 +124,16 @@ fun DetailMoreActionsBottomSheetContent(
 private fun callbackForAction(
     action: Action,
     actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
-): (MessageId) -> Unit =
-    when (action) {
-        Action.Reply -> actionCallbacks.onReply
-        Action.ReplyAll -> actionCallbacks.onReplyAll
-        Action.Forward -> actionCallbacks.onForward
-        Action.ReportPhishing -> actionCallbacks.onReportPhishing
+): (MessageId) -> Unit = when (action) {
+    Action.Reply -> actionCallbacks.onReply
+    Action.ReplyAll -> actionCallbacks.onReplyAll
+    Action.Forward -> actionCallbacks.onForward
+    Action.ReportPhishing -> actionCallbacks.onReportPhishing
 
-        else -> {
-            { Timber.d("Action not handled $action.") }
-        }
+    else -> {
+        { Timber.d("Action not handled $action.") }
     }
+}
 
 
 object DetailMoreActionsBottomSheetContent {

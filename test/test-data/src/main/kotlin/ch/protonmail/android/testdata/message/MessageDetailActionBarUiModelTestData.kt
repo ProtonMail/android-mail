@@ -29,10 +29,7 @@ object MessageDetailActionBarUiModelTestData {
         RAW_SUBJECT
     )
 
-    fun buildMessageDetailActionBarUiModel(
-        subject: String,
-        isStarred: Boolean = false
-    ) = MessageDetailActionBarUiModel(
+    fun buildMessageDetailActionBarUiModel(subject: String, isStarred: Boolean = false) = MessageDetailActionBarUiModel(
         subject = subject,
         isStarred = isStarred
     )

@@ -26,9 +26,7 @@ import javax.inject.Inject
 
 class OnboardingReducer @Inject constructor() {
 
-    internal fun newStateFrom(
-        operation: MailboxOperation.AffectingOnboarding
-    ): OnboardingState {
+    internal fun newStateFrom(operation: MailboxOperation.AffectingOnboarding): OnboardingState {
         return when (operation) {
             is MailboxEvent.ShowOnboarding -> OnboardingState.Shown
             is MailboxViewAction.CloseOnboarding -> OnboardingState.Hidden

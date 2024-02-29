@@ -26,7 +26,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.data.MailSettingsDataStoreProvider
-import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEnabledEncryptedValue
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedAttemptPendingStatus
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedInterval
@@ -34,6 +33,7 @@ import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncrypte
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedPin
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockEncryptedRemainingAttempts
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockLastForegroundTimestamp
+import ch.protonmail.android.mailsettings.domain.model.autolock.biometric.AutoLockBiometricsEncryptedValue
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
@@ -51,8 +51,8 @@ class AutoLockLocalDataSourceImpl @Inject constructor(
     private val pinKey = stringPreferencesKey("pinCodePrefKey")
     private val autoLockBiometricsKey = stringPreferencesKey("autoLockBiometricsKey")
 
-    override suspend fun getAutoLockBiometricEncryptedValue():
-        Either<PreferencesError, AutoLockBiometricsEncryptedValue> =
+    @Suppress("MaxLineLength")
+    override suspend fun getAutoLockBiometricEncryptedValue(): Either<PreferencesError, AutoLockBiometricsEncryptedValue> =
         dataStoreProvider.autoLockDataStore.data.first().let {
             val encryptedValue = it[autoLockBiometricsKey] ?: return@let PreferencesError.left()
             AutoLockBiometricsEncryptedValue(encryptedValue).right()

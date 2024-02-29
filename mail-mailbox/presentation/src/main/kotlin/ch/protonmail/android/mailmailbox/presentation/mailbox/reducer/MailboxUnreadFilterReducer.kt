@@ -38,21 +38,17 @@ class MailboxUnreadFilterReducer @Inject constructor() {
         }
     }
 
-    private fun UnreadFilterState.toNewStateForFilterEnabled() =
-        when (this) {
-            is UnreadFilterState.Loading -> this
-            is UnreadFilterState.Data -> copy(isFilterEnabled = true)
-        }
+    private fun UnreadFilterState.toNewStateForFilterEnabled() = when (this) {
+        is UnreadFilterState.Loading -> this
+        is UnreadFilterState.Data -> copy(isFilterEnabled = true)
+    }
 
-    private fun UnreadFilterState.toNewStateForFilterDisabled() =
-        when (this) {
-            is UnreadFilterState.Loading -> this
-            is UnreadFilterState.Data -> copy(isFilterEnabled = false)
-        }
+    private fun UnreadFilterState.toNewStateForFilterDisabled() = when (this) {
+        is UnreadFilterState.Loading -> this
+        is UnreadFilterState.Data -> copy(isFilterEnabled = false)
+    }
 
-    private fun UnreadFilterState.toNewStateForLabelSelected(
-        operation: MailboxEvent.NewLabelSelected
-    ) = when (this) {
+    private fun UnreadFilterState.toNewStateForLabelSelected(operation: MailboxEvent.NewLabelSelected) = when (this) {
         is UnreadFilterState.Loading -> UnreadFilterState.Data(
             numUnread = operation.selectedLabelCount ?: 0,
             isFilterEnabled = false

@@ -126,7 +126,7 @@ internal class MockNetworkDispatcherTests {
 
         mockWebServer.dispatcher = mockNetworkDispatcher {
             addMockRequests(
-                get("api/v1/test") respondWith "/api/v1/test_2.json" withStatusCode 409,
+                get("api/v1/test") respondWith "/api/v1/test_2.json" withStatusCode 409
             )
         }
 
@@ -426,7 +426,11 @@ internal class MockNetworkDispatcherTests {
     private fun mockNetworkDispatcher(func: MockNetworkDispatcher.() -> Unit) =
         MockNetworkDispatcher(assetsRootPath = "assets/mock").apply(func)
 
-    private fun buildRequest(path: String, method: String = "GET", body: String? = null) = Request.Builder()
+    private fun buildRequest(
+        path: String,
+        method: String = "GET",
+        body: String? = null
+    ) = Request.Builder()
         .method(method, body = body?.toRequestBody())
         .url("${url}$path")
         .build()

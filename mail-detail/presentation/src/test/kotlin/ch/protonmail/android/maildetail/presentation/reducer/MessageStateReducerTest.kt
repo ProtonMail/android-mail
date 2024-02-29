@@ -21,8 +21,8 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
+import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -110,10 +110,9 @@ class MessageStateReducerTest(
         fun data() = (transitionsFromLoadingState + transitionsFromDataState + transitionsFromErrorState)
             .map { testInput ->
                 val testName = """
-                        Current state: ${testInput.currentState}
-                        Operation: ${testInput.operation}
-                        Next state: ${testInput.expectedState}
-                        
+                    Current state: ${testInput.currentState}
+                    Operation: ${testInput.operation}
+                    Next state: ${testInput.expectedState}    
                 """.trimIndent()
                 arrayOf(testName, testInput)
             }

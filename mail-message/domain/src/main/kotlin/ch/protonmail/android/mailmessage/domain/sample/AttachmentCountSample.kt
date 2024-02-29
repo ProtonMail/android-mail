@@ -24,9 +24,7 @@ object AttachmentCountSample {
 
     val CalendarInvite = AttachmentCount(calendar = 1)
 
-    fun build(
-        calendar: Int = 0
-    ) = AttachmentCount(
+    fun build(calendar: Int = 0) = AttachmentCount(
         calendar = calendar
     )
 }

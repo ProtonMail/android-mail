@@ -58,13 +58,12 @@ class LanguageSettingsViewModel @Inject constructor(
         languageRepository.clear()
     }
 
-    private fun getAppLanguageUiModels(selectedAppLanguage: AppLanguage?) =
-        AppLanguage.values().map {
-            LanguageUiModel(
-                language = it,
-                isSelected = it == selectedAppLanguage,
-                name = it.langName
-            )
-        }
+    private fun getAppLanguageUiModels(selectedAppLanguage: AppLanguage?) = AppLanguage.values().map {
+        LanguageUiModel(
+            language = it,
+            isSelected = it == selectedAppLanguage,
+            name = it.langName
+        )
+    }
 
 }

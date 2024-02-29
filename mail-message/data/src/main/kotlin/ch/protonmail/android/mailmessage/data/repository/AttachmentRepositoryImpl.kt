@@ -92,8 +92,7 @@ class AttachmentRepositoryImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ): Either<DataError, Uri> =
-        localDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
+    ): Either<DataError, Uri> = localDataSource.saveMimeAttachmentToPublicStorage(userId, messageId, attachmentId)
 
     override suspend fun getEmbeddedImage(
         userId: UserId,

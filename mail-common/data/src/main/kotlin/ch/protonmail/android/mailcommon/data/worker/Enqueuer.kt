@@ -94,7 +94,11 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
         )
     }
 
-    fun enqueue(userId: UserId, worker: Class<out ListenableWorker>, params: Map<String, Any>) {
+    fun enqueue(
+        userId: UserId,
+        worker: Class<out ListenableWorker>,
+        params: Map<String, Any>
+    ) {
         workManager.enqueue(createRequest(userId, worker, params, buildDefaultConstraints()))
     }
 

@@ -109,7 +109,7 @@ object MailboxStateSampleData {
             clearState = MailboxListState.Data.ClearState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
-            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text(),
+            currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
         ),
         upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Data(

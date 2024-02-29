@@ -26,6 +26,5 @@ object UnreadCountValueMapper {
     /**
      * Returns the current value as String if the [count] is less than 9999, "9999+" otherwise.
      */
-    fun toCappedValue(count: Int): String =
-        if (count <= CountThreshold) count.toString() else CountExceededCappedValue
+    fun toCappedValue(count: Int): String = if (count <= CountThreshold) count.toString() else CountExceededCappedValue
 }

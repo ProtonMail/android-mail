@@ -216,8 +216,5 @@ interface MessageRepository {
     /**
      * Report a message as phishing
      */
-    suspend fun reportPhishing(
-        userId: UserId,
-        decryptedMessageBody: DecryptedMessageBody
-    ): Either<DataError, Unit>
+    suspend fun reportPhishing(userId: UserId, decryptedMessageBody: DecryptedMessageBody): Either<DataError, Unit>
 }

@@ -113,10 +113,7 @@ fun EditSwipeActionPreferenceContent(
 }
 
 @Composable
-private fun ListItem(
-    item: EditSwipeActionPreferenceItemUiModel,
-    onSwipeActionSelect: (SwipeAction) -> Unit
-) {
+private fun ListItem(item: EditSwipeActionPreferenceItemUiModel, onSwipeActionSelect: (SwipeAction) -> Unit) {
 
     Row(
         modifier = Modifier

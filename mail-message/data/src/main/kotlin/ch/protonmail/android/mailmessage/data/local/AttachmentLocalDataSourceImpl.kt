@@ -360,13 +360,12 @@ class AttachmentLocalDataSourceImpl @Inject constructor(
         userId: UserId,
         messageId: MessageId,
         attachmentId: AttachmentId
-    ): Either<DataError.Local, Unit> =
-        Either.catch {
-            attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
-        }.mapLeft {
-            Timber.e(it, "Failed to delete message attachment")
-            DataError.Local.Unknown
-        }
+    ): Either<DataError.Local, Unit> = Either.catch {
+        attachmentDao.deleteMessageAttachment(userId, messageId, attachmentId)
+    }.mapLeft {
+        Timber.e(it, "Failed to delete message attachment")
+        DataError.Local.Unknown
+    }
 
     override suspend fun copyMimeAttachmentsToMessage(
         userId: UserId,

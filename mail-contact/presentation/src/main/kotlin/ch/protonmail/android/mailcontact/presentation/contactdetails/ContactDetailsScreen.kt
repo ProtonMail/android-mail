@@ -111,7 +111,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val customActions = actions.copy(
         onDeleteClick = { viewModel.submit(ContactDetailsViewAction.DeleteRequested) },
         onCallClick = { phoneNumber -> viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber)) },
-        onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) },
+        onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) }
     )
 
     Scaffold(

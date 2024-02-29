@@ -62,7 +62,7 @@ data class MessageDetailState(
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden
         )
     }
 }

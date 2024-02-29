@@ -149,27 +149,26 @@ class SettingsViewModelTest {
     }
 
     @Test
-    fun `state has app settings info when get app settings use case returns valid data`() =
-        runTest {
-            viewModel.state.test {
-                // Given
-                initialStateEmitted()
-                userFlow.emit(UserTestData.Primary)
+    fun `state has app settings info when get app settings use case returns valid data`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userFlow.emit(UserTestData.Primary)
 
-                // When
-                appSettingsFlow.emit(AppSettingsTestData.appSettings)
+            // When
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
 
-                // Then
-                val actual = awaitItem() as Data
-                val expected = AppSettings(
-                    hasAutoLock = false,
-                    hasAlternativeRouting = true,
-                    customAppLanguage = null,
-                    hasCombinedContacts = true
-                )
-                assertEquals(expected, actual.appSettings)
-            }
+            // Then
+            val actual = awaitItem() as Data
+            val expected = AppSettings(
+                hasAutoLock = false,
+                hasAlternativeRouting = true,
+                customAppLanguage = null,
+                hasCombinedContacts = true
+            )
+            assertEquals(expected, actual.appSettings)
         }
+    }
 
     @Test
     fun `state has local storage usage info when observe local storage usage succeeds`() = runTest {

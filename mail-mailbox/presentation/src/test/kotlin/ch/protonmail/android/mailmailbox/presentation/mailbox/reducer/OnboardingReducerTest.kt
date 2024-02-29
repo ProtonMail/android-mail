@@ -75,10 +75,9 @@ internal class OnboardingReducerTest(
         fun data(): Collection<Array<Any>> = (transitionsFromHiddenState + transitionsFromShownState)
             .map { testInput ->
                 val testName = """
-                        Current state: ${testInput.currentState}
-                        Operation: ${testInput.operation}
-                        Next state: ${testInput.expectedState}
-                        
+                    Current state: ${testInput.currentState}
+                    Operation: ${testInput.operation}
+                    Next state: ${testInput.expectedState}
                 """.trimIndent()
                 arrayOf(testName, testInput)
             }

@@ -207,12 +207,12 @@ class EncryptAndSignContactCardsTest {
             Ezvcard.parse(
                 ContactCard.Signed(
                     """
-                    BEGIN:VCARD
-                    VERSION:4.0
-                    FN;PREF=1:Mario@protonmail.com
-                    UID:Fallback-Uid
-                    ITEM1.EMAIL;TYPE=home;PREF=1:mario_secret_email@proton.me
-                    END:VCARD
+                        BEGIN:VCARD
+                        VERSION:4.0
+                        FN;PREF=1:Mario@protonmail.com
+                        UID:Fallback-Uid
+                        ITEM1.EMAIL;TYPE=home;PREF=1:mario_secret_email@proton.me
+                        END:VCARD
                     """.trimIndent(),
                     "signature"
                 ).data
@@ -230,10 +230,10 @@ class EncryptAndSignContactCardsTest {
             Ezvcard.parse(
                 ContactCard.Encrypted(
                     """
-                    BEGIN:VCARD
-                    VERSION:4.0
-                    UID:Fallback-Uid
-                    END:VCARD
+                        BEGIN:VCARD
+                        VERSION:4.0
+                        UID:Fallback-Uid
+                        END:VCARD
                     """.trimIndent(),
                     "signature"
                 ).data

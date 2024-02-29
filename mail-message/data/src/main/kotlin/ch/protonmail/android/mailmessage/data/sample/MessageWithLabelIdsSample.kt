@@ -40,11 +40,9 @@ object MessageWithLabelIdsSample {
         labelIds = listOf(LabelIdSample.Archive)
     )
 
-    fun build(
-        message: MessageEntity = MessageEntitySample.build(),
-        labelIds: List<LabelId> = emptyList()
-    ) = MessageWithLabelIds(
-        message = message,
-        labelIds = labelIds
-    )
+    fun build(message: MessageEntity = MessageEntitySample.build(), labelIds: List<LabelId> = emptyList()) =
+        MessageWithLabelIds(
+            message = message,
+            labelIds = labelIds
+        )
 }

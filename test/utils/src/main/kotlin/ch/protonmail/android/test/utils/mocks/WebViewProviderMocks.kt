@@ -25,10 +25,7 @@ import io.mockk.every
 
 object WebViewProviderMocks {
 
-    fun mockWebViewAvailabilityOnDevice(
-        isPackagePresent: Boolean,
-        isPackageEnabled: Boolean = false
-    ) {
+    fun mockWebViewAvailabilityOnDevice(isPackagePresent: Boolean, isPackageEnabled: Boolean = false) {
         val packageInfo = PackageInfo().apply {
             applicationInfo = ApplicationInfo()
             applicationInfo.enabled = isPackageEnabled

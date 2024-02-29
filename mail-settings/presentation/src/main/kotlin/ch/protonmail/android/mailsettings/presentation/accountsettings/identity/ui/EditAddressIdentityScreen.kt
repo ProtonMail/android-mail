@@ -53,7 +53,7 @@ fun EditAddressIdentityScreen(
         onSignatureValueChanged = { viewModel.submit(EditAddressIdentityViewAction.Signature.UpdateValue(it)) },
         onSignatureToggled = { viewModel.submit(EditAddressIdentityViewAction.Signature.ToggleState(it)) },
         onMobileFooterValueChanged = { viewModel.submit(EditAddressIdentityViewAction.MobileFooter.UpdateValue(it)) },
-        onMobileFooterToggled = { viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(it)) },
+        onMobileFooterToggled = { viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(it)) }
     )
 
     EditAddressIdentityScreen(

@@ -26,7 +26,7 @@ sealed class MessageBodyState {
     data class Data(
         val messageBodyUiModel: MessageBodyUiModel,
         val expandCollapseMode: MessageBodyExpandCollapseMode
-        = MessageBodyExpandCollapseMode.NotApplicable // expand / collapse with quote descriptors
+            = MessageBodyExpandCollapseMode.NotApplicable // expand / collapse with quote descriptors
     ) : MessageBodyState()
 
     object Loading : MessageBodyState()

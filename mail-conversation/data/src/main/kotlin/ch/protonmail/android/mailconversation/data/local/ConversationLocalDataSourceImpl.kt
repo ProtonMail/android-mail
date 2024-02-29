@@ -52,22 +52,18 @@ class ConversationLocalDataSourceImpl @Inject constructor(
     private val conversationLabelDao = db.conversationLabelDao()
     private val pageIntervalDao = db.pageIntervalDao()
 
-    override fun observeConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): Flow<List<ConversationWithContext>> = conversationDao
-        .observeAll(userId, pageKey)
-        .mapLatest { list -> list.map { it.toConversationWithContext(pageKey.filter.labelId) } }
+    override fun observeConversations(userId: UserId, pageKey: PageKey): Flow<List<ConversationWithContext>> =
+        conversationDao
+            .observeAll(userId, pageKey)
+            .mapLatest { list -> list.map { it.toConversationWithContext(pageKey.filter.labelId) } }
 
     override fun observeCachedConversations(userId: UserId, ids: List<ConversationId>) =
         conversationDao.observe(userId, ids)
             .mapLatest { list -> list.map { it.toConversation() } }
 
 
-    override suspend fun getConversations(
-        userId: UserId,
-        pageKey: PageKey
-    ): List<ConversationWithContext> = observeConversations(userId, pageKey).first()
+    override suspend fun getConversations(userId: UserId, pageKey: PageKey): List<ConversationWithContext> =
+        observeConversations(userId, pageKey).first()
 
     override suspend fun upsertConversations(
         userId: UserId,
@@ -79,18 +75,14 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun upsertConversations(
-        items: List<Conversation>
-    ) = db.inTransaction {
+    override suspend fun upsertConversations(items: List<Conversation>) = db.inTransaction {
         conversationDao.upsertOrError(*items.map { it.toEntity() }.toTypedArray()).onRight {
             updateLabels(items)
         }
     }
 
-    override suspend fun deleteConversation(
-        userId: UserId,
-        ids: List<ConversationId>
-    ) = conversationDao.delete(userId, ids.map { it.id })
+    override suspend fun deleteConversation(userId: UserId, ids: List<ConversationId>) =
+        conversationDao.delete(userId, ids.map { it.id })
 
     override suspend fun deleteConversations(userId: UserId, ids: List<ConversationId>): Either<DataError, Unit> {
         runCatching {
@@ -102,9 +94,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return Unit.right()
     }
 
-    override suspend fun deleteAllConversations(
-        userId: UserId
-    ) = db.inTransaction {
+    override suspend fun deleteAllConversations(userId: UserId) = db.inTransaction {
         conversationDao.deleteAll(userId)
         pageIntervalDao.deleteAll(userId, PageItemType.Conversation)
     }
@@ -119,10 +109,8 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         return Unit.right()
     }
 
-    override suspend fun markAsStale(
-        userId: UserId,
-        labelId: LabelId
-    ) = pageIntervalDao.deleteAll(userId, PageItemType.Conversation, labelId)
+    override suspend fun markAsStale(userId: UserId, labelId: LabelId) =
+        pageIntervalDao.deleteAll(userId, PageItemType.Conversation, labelId)
 
     override suspend fun isLocalPageValid(
         userId: UserId,
@@ -130,22 +118,19 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         items: List<ConversationWithContext>
     ): Boolean = pageIntervalDao.isLocalPageValid(userId, PageItemType.Conversation, pageKey, items)
 
-    override suspend fun getClippedPageKey(
-        userId: UserId,
-        pageKey: PageKey
-    ): PageKey? = pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
+    override suspend fun getClippedPageKey(userId: UserId, pageKey: PageKey): PageKey? =
+        pageIntervalDao.getClippedPageKey(userId, PageItemType.Conversation, pageKey)
 
     override fun observeConversation(userId: UserId, conversationId: ConversationId): Flow<Conversation?> =
         conversationDao
             .observe(userId, conversationId)
             .mapLatest { it?.toConversation() }
 
-    override suspend fun upsertConversation(userId: UserId, conversation: Conversation) =
-        db.inTransaction {
-            conversationDao.upsertOrError(conversation.toEntity()).onRight {
-                updateLabels(listOf(conversation))
-            }
+    override suspend fun upsertConversation(userId: UserId, conversation: Conversation) = db.inTransaction {
+        conversationDao.upsertOrError(conversation.toEntity()).onRight {
+            updateLabels(listOf(conversation))
         }
+    }
 
     override suspend fun addLabel(
         userId: UserId,
@@ -281,9 +266,7 @@ class ConversationLocalDataSourceImpl @Inject constructor(
         items: List<ConversationWithContext>
     ) = pageIntervalDao.upsertPageInterval(userId, PageItemType.Conversation, pageKey, items)
 
-    private suspend fun updateLabels(
-        items: List<Conversation>
-    ) = with(groupByUserId(items)) {
+    private suspend fun updateLabels(items: List<Conversation>) = with(groupByUserId(items)) {
         deleteLabels()
         insertLabels()
     }

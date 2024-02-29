@@ -199,7 +199,7 @@ class DecryptedContactMapperTest {
         val actualSigned = sut.mapToSignedContactCard(
             fallbackName,
             expectedDecryptedContact,
-            Ezvcard.parse(ContactVCardSample.marioVCardType2).first(),
+            Ezvcard.parse(ContactVCardSample.marioVCardType2).first()
         )
 
         // Then

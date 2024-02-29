@@ -36,6 +36,5 @@ class AlternativeRoutingRepositoryImpl @Inject constructor(
 
     override suspend fun save(
         alternativeRoutingPreference: AlternativeRoutingPreference
-    ): Either<PreferencesError, Unit> =
-        alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
+    ): Either<PreferencesError, Unit> = alternativeRoutingLocalDataSource.save(alternativeRoutingPreference)
 }

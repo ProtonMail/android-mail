@@ -128,33 +128,32 @@ class ContactGroupDetailsViewModelTest {
     }
 
     @Test
-    fun `given Label ID, when init and observe empty contact group, then emits loaded contact group state`() =
-        runTest {
-            // Given
-            val expectedContactGroup = testEmptyContactGroup.copy(
-                members = emptyList()
+    fun `given Label ID, when init and observe empty contact group, then emits loaded contact group state`() = runTest {
+        // Given
+        val expectedContactGroup = testEmptyContactGroup.copy(
+            members = emptyList()
+        )
+        val expectedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData.copy(
+            memberCount = 0,
+            members = emptyList()
+        )
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupDetailsUiModel(expectedContactGroup, expectedContactGroupDetailsUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupDetailsViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactGroupDetailsState.Data(
+                isSendEnabled = false,
+                contactGroup = expectedContactGroupDetailsUiModel
             )
-            val expectedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData.copy(
-                memberCount = 0,
-                members = emptyList()
-            )
-            expectContactGroup(testUserId, testLabelId, expectedContactGroup)
-            expectContactGroupDetailsUiModel(expectedContactGroup, expectedContactGroupDetailsUiModel)
 
-            expectSavedStateLabelId(testLabelId)
-
-            // When
-            contactGroupDetailsViewModel.state.test {
-                // Then
-                val actual = awaitItem()
-                val expected = ContactGroupDetailsState.Data(
-                    isSendEnabled = false,
-                    contactGroup = expectedContactGroupDetailsUiModel
-                )
-
-                assertEquals(expected, actual)
-            }
+            assertEquals(expected, actual)
         }
+    }
 
     @Test
     fun `given Label ID in SavedState, when init and observe contact group, then emits loaded contact group state`() =

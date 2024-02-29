@@ -72,7 +72,6 @@ class AccountSettingsViewModel @Inject constructor(
         Loading
     )
 
-    private fun getRecoveryEmail(userSettings: UserSettings?) =
-        userSettings?.email?.value?.takeIfNotBlank()
+    private fun getRecoveryEmail(userSettings: UserSettings?) = userSettings?.email?.value?.takeIfNotBlank()
 
 }

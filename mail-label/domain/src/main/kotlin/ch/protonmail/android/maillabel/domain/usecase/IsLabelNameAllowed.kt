@@ -72,8 +72,7 @@ class IsLabelNameAllowed @Inject constructor(
         }
     }
 
-    private fun noSystemFolderWithSameName(name: String) =
-        FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) }
+    private fun noSystemFolderWithSameName(name: String) = FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) }
 
     private suspend fun noLabelWithSameName(userId: UserId, name: String) =
         labelRepository.getLabels(userId, LabelType.MessageLabel).none { it.name.equalsNoCase(name) }

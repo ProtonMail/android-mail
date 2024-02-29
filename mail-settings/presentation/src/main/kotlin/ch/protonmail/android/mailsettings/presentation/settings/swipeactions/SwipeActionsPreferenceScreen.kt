@@ -216,10 +216,7 @@ private fun SwipeActionPreviewItem(model: SwipeActionPreferenceUiModel, actionDi
 }
 
 @Composable
-private fun SwipeActionIcon(
-    model: SwipeActionPreferenceUiModel,
-    actionDirection: SwipeActionDirection
-) {
+private fun SwipeActionIcon(model: SwipeActionPreferenceUiModel, actionDirection: SwipeActionDirection) {
     val noCorner = CornerSize(0)
     val shape = ProtonTheme.shapes.medium.let {
         when (actionDirection) {

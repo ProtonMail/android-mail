@@ -78,20 +78,19 @@ class EditSwipeActionPreferenceViewModel @Inject constructor(
         updateSwipeActionPreference(userId, direction, swipeAction)
     }
 
-    private fun observeState(): Flow<EditSwipeActionPreferenceState> =
-        observePrimaryUserId().flatMapLatest { userId ->
-            if (userId == null) {
-                return@flatMapLatest flowOf(EditSwipeActionPreferenceState.NotLoggedIn)
-            }
-
-            observeSwipeActionsPreference(userId).map { preferences ->
-                val uiModels = editSwipeActionPreferenceUiModelMapper.toUiModels(
-                    swipeActionsPreference = preferences,
-                    swipeActionDirection = swipeActionDirection
-                )
-                EditSwipeActionPreferenceState.Data(uiModels)
-            }
+    private fun observeState(): Flow<EditSwipeActionPreferenceState> = observePrimaryUserId().flatMapLatest { userId ->
+        if (userId == null) {
+            return@flatMapLatest flowOf(EditSwipeActionPreferenceState.NotLoggedIn)
         }
+
+        observeSwipeActionsPreference(userId).map { preferences ->
+            val uiModels = editSwipeActionPreferenceUiModelMapper.toUiModels(
+                swipeActionsPreference = preferences,
+                swipeActionDirection = swipeActionDirection
+            )
+            EditSwipeActionPreferenceState.Data(uiModels)
+        }
+    }
 
     sealed interface Action {
 

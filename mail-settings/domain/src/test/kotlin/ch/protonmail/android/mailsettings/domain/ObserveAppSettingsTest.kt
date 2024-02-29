@@ -86,27 +86,26 @@ class ObserveAppSettingsTest {
     }
 
     @Test
-    fun `has alternative routing value is returned from alternative routing repository`() =
-        runTest {
-            // Given
-            every { alternativeRoutingRepository.observe() } returns flowOf(
-                AlternativeRoutingPreference(false).right()
+    fun `has alternative routing value is returned from alternative routing repository`() = runTest {
+        // Given
+        every { alternativeRoutingRepository.observe() } returns flowOf(
+            AlternativeRoutingPreference(false).right()
+        )
+
+        // When
+        observeAppSettings().test {
+            // Then
+            val expected = AppSettings(
+                hasAutoLock = false,
+                hasAlternativeRouting = false,
+                customAppLanguage = null,
+                hasCombinedContacts = true
             )
+            assertEquals(expected, awaitItem())
 
-            // When
-            observeAppSettings().test {
-                // Then
-                val expected = AppSettings(
-                    hasAutoLock = false,
-                    hasAlternativeRouting = false,
-                    customAppLanguage = null,
-                    hasCombinedContacts = true
-                )
-                assertEquals(expected, awaitItem())
-
-                awaitComplete()
-            }
+            awaitComplete()
         }
+    }
 
     @Test
     fun `language name is returned in appSettings when app language repository returns a preferred language`() =
@@ -130,25 +129,24 @@ class ObserveAppSettingsTest {
         }
 
     @Test
-    fun `null app language is returned in appSettings when app language repository is empty`() =
-        runTest {
-            // Given
-            every { appLanguageRepository.observe() } returns flowOf(null)
+    fun `null app language is returned in appSettings when app language repository is empty`() = runTest {
+        // Given
+        every { appLanguageRepository.observe() } returns flowOf(null)
 
-            // When
-            observeAppSettings().test {
-                // Then
-                val expected = AppSettings(
-                    hasAutoLock = false,
-                    hasAlternativeRouting = true,
-                    customAppLanguage = null,
-                    hasCombinedContacts = true
-                )
-                assertEquals(expected, awaitItem())
+        // When
+        observeAppSettings().test {
+            // Then
+            val expected = AppSettings(
+                hasAutoLock = false,
+                hasAlternativeRouting = true,
+                customAppLanguage = null,
+                hasCombinedContacts = true
+            )
+            assertEquals(expected, awaitItem())
 
-                awaitComplete()
-            }
+            awaitComplete()
         }
+    }
 
     @Test
     fun `has combined contacts is returned from combined contacts repository`() = runTest {

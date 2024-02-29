@@ -62,44 +62,42 @@ class ThemeSettingsViewModelTest {
     }
 
     @Test
-    fun `state returns themes with Default selected when saved theme preference is SYSTEM_DEFAULT`() =
-        runTest {
-            viewModel.state.test {
-                // Given
-                initialStateEmitted()
+    fun `state returns themes with Default selected when saved theme preference is SYSTEM_DEFAULT`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
 
-                // When
-                themePreferenceFlow.emit(SYSTEM_DEFAULT)
+            // When
+            themePreferenceFlow.emit(SYSTEM_DEFAULT)
 
-                // Then
-                val expectedThemes = listOf(
-                    systemDefaultTheme(true),
-                    lightTheme(),
-                    darkTheme()
-                )
-                assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
-            }
+            // Then
+            val expectedThemes = listOf(
+                systemDefaultTheme(true),
+                lightTheme(),
+                darkTheme()
+            )
+            assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
         }
+    }
 
     @Test
-    fun `state returns themes with Light selected when saved theme preference is LIGHT`() =
-        runTest {
-            viewModel.state.test {
-                // Given
-                initialStateEmitted()
+    fun `state returns themes with Light selected when saved theme preference is LIGHT`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
 
-                // When
-                themePreferenceFlow.emit(LIGHT)
+            // When
+            themePreferenceFlow.emit(LIGHT)
 
-                // Then
-                val expectedThemes = listOf(
-                    systemDefaultTheme(),
-                    lightTheme(true),
-                    darkTheme()
-                )
-                assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
-            }
+            // Then
+            val expectedThemes = listOf(
+                systemDefaultTheme(),
+                lightTheme(true),
+                darkTheme()
+            )
+            assertEquals(ThemeSettingsState.Data(expectedThemes), awaitItem())
         }
+    }
 
     @Test
     fun `state returns themes with Dark selected when saved theme preference is DARK`() = runTest {

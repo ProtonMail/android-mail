@@ -325,7 +325,7 @@ private fun LabelListTopBarPreview() {
     LabelListTopBar(
         actions = LabelListScreen.Actions.Empty,
         onAddLabelClick = {},
-        isAddLabelButtonVisible = true,
+        isAddLabelButtonVisible = true
     )
 }
 

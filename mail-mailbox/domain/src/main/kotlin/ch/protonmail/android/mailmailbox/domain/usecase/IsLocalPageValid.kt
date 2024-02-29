@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 class IsLocalPageValid @Inject constructor(
     private val messageRepository: MessageRepository,
-    private val conversationRepository: ConversationRepository,
+    private val conversationRepository: ConversationRepository
 ) {
 
     suspend operator fun invoke(

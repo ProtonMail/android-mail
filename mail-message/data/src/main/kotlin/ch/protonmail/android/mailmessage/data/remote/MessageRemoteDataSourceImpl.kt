@@ -160,16 +160,15 @@ class MessageRemoteDataSourceImpl @Inject constructor(
     override suspend fun reportPhishing(
         userId: UserId,
         decryptedMessageBody: DecryptedMessageBody
-    ): Either<DataError.Remote, Unit> =
-        apiProvider.get<MessageApi>(userId).invoke {
-            reportPhishing(
-                MessagePhishingReportBody(
-                    messageId = decryptedMessageBody.messageId.id,
-                    mimeType = decryptedMessageBody.mimeType.value,
-                    body = decryptedMessageBody.value
-                )
+    ): Either<DataError.Remote, Unit> = apiProvider.get<MessageApi>(userId).invoke {
+        reportPhishing(
+            MessagePhishingReportBody(
+                messageId = decryptedMessageBody.messageId.id,
+                mimeType = decryptedMessageBody.mimeType.value,
+                body = decryptedMessageBody.value
             )
-        }.toEither().map { }
+        )
+    }.toEither().map { }
 
     companion object {
 

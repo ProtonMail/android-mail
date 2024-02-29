@@ -79,19 +79,18 @@ class ThemeRepositoryImplTest {
     }
 
     @Test
-    fun `fallback to System Default when saved preference cannot be mapped to a Theme enum constant`() =
-        runTest {
-            // Given
-            coEvery {
-                preferences[stringPreferencesKey("themeEnumNamePrefKey")]
-            } returns "InvalidThemeName"
-            // When
-            themeRepository.observe().test {
-                // Then
-                assertEquals(Theme.SYSTEM_DEFAULT, awaitItem())
-                awaitComplete()
-            }
+    fun `fallback to System Default when saved preference cannot be mapped to a Theme enum constant`() = runTest {
+        // Given
+        coEvery {
+            preferences[stringPreferencesKey("themeEnumNamePrefKey")]
+        } returns "InvalidThemeName"
+        // When
+        themeRepository.observe().test {
+            // Then
+            assertEquals(Theme.SYSTEM_DEFAULT, awaitItem())
+            awaitComplete()
         }
+    }
 
     @Test
     fun `update value stored in data store when update is called`() = runTest {

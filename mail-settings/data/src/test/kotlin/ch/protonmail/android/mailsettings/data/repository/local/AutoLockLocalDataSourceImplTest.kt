@@ -167,18 +167,17 @@ internal class AutoLockLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return locally stored value for last foreground millis when available`() =
-        runTest {
-            // Given
-            val expectedValue = AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
-            expectForegroundTimestamp(expectedValue)
+    fun `should return locally stored value for last foreground millis when available`() = runTest {
+        // Given
+        val expectedValue = AutoLockEncryptedLastForegroundMillis(StringPlaceholder)
+        expectForegroundTimestamp(expectedValue)
 
-            // When
-            val result = autoLockLocalDataSource.observeLastEncryptedForegroundMillis().first()
+        // When
+        val result = autoLockLocalDataSource.observeLastEncryptedForegroundMillis().first()
 
-            // Then
-            assertEquals(expectedValue.right(), result)
-        }
+        // Then
+        assertEquals(expectedValue.right(), result)
+    }
 
     @Test
     fun `should return an error when no encrypted auto lock last foreground millis is stored locally`() = runTest {
@@ -193,16 +192,15 @@ internal class AutoLockLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return locally stored preference from data store for pin value when available`() =
-        runTest {
-            // Given
-            expectValidPreference(PinKey)
+    fun `should return locally stored preference from data store for pin value when available`() = runTest {
+        // Given
+        expectValidPreference(PinKey)
 
-            // When + Then
-            autoLockLocalDataSource
-                .observeAutoLockEncryptedPin()
-                .assertValue(AutoLockEncryptedPin(StringPlaceholder))
-        }
+        // When + Then
+        autoLockLocalDataSource
+            .observeAutoLockEncryptedPin()
+            .assertValue(AutoLockEncryptedPin(StringPlaceholder))
+    }
 
     @Test
     fun `should return an error when no encrypted auto lock last pin value is stored locally`() = runTest {
@@ -289,16 +287,15 @@ internal class AutoLockLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return locally stored preference from data store for pending attempt value when available`() =
-        runTest {
-            // Given
-            expectValidPreference(PendingAutoLockAttemptKey)
+    fun `should return locally stored preference from data store for pending attempt value when available`() = runTest {
+        // Given
+        expectValidPreference(PendingAutoLockAttemptKey)
 
-            // When + Then
-            autoLockLocalDataSource
-                .observeAutoLockEncryptedPendingAttempt()
-                .assertValue(AutoLockEncryptedAttemptPendingStatus(StringPlaceholder))
-        }
+        // When + Then
+        autoLockLocalDataSource
+            .observeAutoLockEncryptedPendingAttempt()
+            .assertValue(AutoLockEncryptedAttemptPendingStatus(StringPlaceholder))
+    }
 
     @Test
     fun `should return an error when no encrypted pending attempt value is stored locally`() = runTest {

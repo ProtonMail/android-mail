@@ -71,7 +71,7 @@ data class PageFilter(
  */
 enum class OrderBy {
     /** Order by [PageItem.time] and if equal then by [PageItem.order].*/
-    Time,
+    Time
     // Size is not supported, BE need to add BeginSize/EndSize parameters.
 }
 

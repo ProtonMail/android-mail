@@ -25,9 +25,7 @@ import javax.inject.Inject
 
 class UpgradeStorageReducer @Inject constructor() {
 
-    internal fun newStateFrom(
-        operation: MailboxOperation.AffectingUpgradeStorage
-    ): UpgradeStorageState {
+    internal fun newStateFrom(operation: MailboxOperation.AffectingUpgradeStorage): UpgradeStorageState {
         return when (operation) {
             is MailboxEvent.UpgradeStorageStatusChanged -> UpgradeStorageState(operation.notificationDotVisible)
         }

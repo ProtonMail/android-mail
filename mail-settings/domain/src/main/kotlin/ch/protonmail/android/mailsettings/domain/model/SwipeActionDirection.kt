@@ -26,7 +26,6 @@ enum class SwipeActionDirection {
 
     companion object {
 
-        operator fun invoke(name: String): SwipeActionDirection =
-            values().first { it.name equalsNoCase name }
+        operator fun invoke(name: String): SwipeActionDirection = entries.first { it.name equalsNoCase name }
     }
 }

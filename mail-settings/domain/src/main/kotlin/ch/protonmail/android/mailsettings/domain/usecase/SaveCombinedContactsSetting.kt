@@ -28,8 +28,6 @@ class SaveCombinedContactsSetting @Inject constructor(
     private val combinedContactsRepository: CombinedContactsRepository
 ) {
 
-    suspend operator fun invoke(
-        shouldCombineContacts: Boolean
-    ): Either<PreferencesError, Unit> =
+    suspend operator fun invoke(shouldCombineContacts: Boolean): Either<PreferencesError, Unit> =
         combinedContactsRepository.save(CombinedContactsPreference(shouldCombineContacts))
 }

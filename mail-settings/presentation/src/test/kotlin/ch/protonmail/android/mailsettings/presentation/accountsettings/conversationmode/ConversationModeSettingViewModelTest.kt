@@ -116,17 +116,16 @@ class ConversationModeSettingViewModelTest {
     }
 
     @Test
-    fun `conversation mode preference is updated on mailSettings when onConversationToggled`() =
-        runTest {
-            viewModel.onConversationToggled(false)
+    fun `conversation mode preference is updated on mailSettings when onConversationToggled`() = runTest {
+        viewModel.onConversationToggled(false)
 
-            coVerify {
-                mailSettingsRepository.updateViewMode(
-                    userId,
-                    NoConversationGrouping
-                )
-            }
+        coVerify {
+            mailSettingsRepository.updateViewMode(
+                userId,
+                NoConversationGrouping
+            )
         }
+    }
 
     private fun givenNoLoggedInUser() {
         every { accountManager.getPrimaryUserId() } returns flowOf(null)

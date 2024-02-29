@@ -49,9 +49,7 @@ class ObserveExclusiveDestinationMailLabels @Inject constructor(
 
     private fun observeSystemLabelIds() = flowOf(SystemLabelId.exclusiveDestinationList)
 
-    private fun observeMessageFolders(
-        userId: UserId
-    ) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
+    private fun observeMessageFolders(userId: UserId) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
         .mapSuccessValueOrNull()
         .mapLatest { list -> list.orEmpty().sortedBy { it.order } }
 

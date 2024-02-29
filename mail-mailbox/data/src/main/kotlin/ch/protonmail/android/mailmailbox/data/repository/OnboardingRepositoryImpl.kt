@@ -30,8 +30,7 @@ class OnboardingRepositoryImpl @Inject constructor(
     private val onboardingLocalDataSource: OnboardingLocalDataSource
 ) : OnboardingRepository {
 
-    override fun observe(): Flow<Either<PreferencesError, OnboardingPreference>> =
-        onboardingLocalDataSource.observe()
+    override fun observe(): Flow<Either<PreferencesError, OnboardingPreference>> = onboardingLocalDataSource.observe()
 
     override suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit> =
         onboardingLocalDataSource.save(onboardingPreference)

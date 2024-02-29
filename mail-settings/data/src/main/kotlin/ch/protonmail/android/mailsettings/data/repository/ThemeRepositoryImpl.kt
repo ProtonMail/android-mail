@@ -33,10 +33,9 @@ class ThemeRepositoryImpl @Inject constructor(
 
     private val themePreferenceKey = stringPreferencesKey("themeEnumNamePrefKey")
 
-    override fun observe(): Flow<Theme> =
-        dataStoreProvider.themeDataStore.data.map { pref ->
-            Theme.enumOf(pref[themePreferenceKey])
-        }
+    override fun observe(): Flow<Theme> = dataStoreProvider.themeDataStore.data.map { pref ->
+        Theme.enumOf(pref[themePreferenceKey])
+    }
 
     override suspend fun update(theme: Theme) {
         dataStoreProvider.themeDataStore.edit { mutablePrefs ->

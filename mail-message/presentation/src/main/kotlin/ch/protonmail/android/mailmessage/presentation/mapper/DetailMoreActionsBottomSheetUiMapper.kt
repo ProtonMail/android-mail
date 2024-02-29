@@ -33,12 +33,11 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
         messageSender: String,
         messageSubject: String,
         messageId: String
-    ) =
-        DetailMoreActionsBottomSheetState.MessageDataUiModel(
-            TextUiModel.Text(messageSubject),
-            TextUiModel.TextResWithArgs(R.string.bottom_sheet_more_header_message_from, listOf(messageSender)),
-            messageId
-        )
+    ) = DetailMoreActionsBottomSheetState.MessageDataUiModel(
+        TextUiModel.Text(messageSubject),
+        TextUiModel.TextResWithArgs(R.string.bottom_sheet_more_header_message_from, listOf(messageSender)),
+        messageId
+    )
 
     fun mapMoreActionUiModels(senderName: String, recipientsCount: Int): ImmutableList<ActionUiModel> {
         return mutableListOf<ActionUiModel>().apply {

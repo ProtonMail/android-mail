@@ -91,8 +91,5 @@ abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
         AND PageIntervalEntity.type = :type 
         """
     )
-    abstract suspend fun deleteAll(
-        userId: UserId,
-        type: PageItemType
-    )
+    abstract suspend fun deleteAll(userId: UserId, type: PageItemType)
 }

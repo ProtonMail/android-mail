@@ -37,10 +37,8 @@ import javax.inject.Inject
 class GetMultiUserMailboxItems @Inject constructor(
     private val getMailboxItems: GetMailboxItems
 ) {
-    suspend operator fun invoke(
-        type: MailboxItemType,
-        pageKey: MailboxPageKey
-    ): Either<DataError, List<MailboxItem>> {
+
+    suspend operator fun invoke(type: MailboxItemType, pageKey: MailboxPageKey): Either<DataError, List<MailboxItem>> {
         return pageKey.userIds
             .mapAsync { getMailboxItems(userId = it, type = type, pageKey = pageKey.pageKey) }
             .sequence()

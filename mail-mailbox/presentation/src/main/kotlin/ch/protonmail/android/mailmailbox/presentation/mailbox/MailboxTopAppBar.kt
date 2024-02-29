@@ -204,7 +204,7 @@ private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) 
         ) {
             Icon(
                 painter = painterResource(id = uiModel.navigationIconRes),
-                contentDescription = uiModel.navigationIconContentDescription,
+                contentDescription = uiModel.navigationIconContentDescription
             )
         }
     }

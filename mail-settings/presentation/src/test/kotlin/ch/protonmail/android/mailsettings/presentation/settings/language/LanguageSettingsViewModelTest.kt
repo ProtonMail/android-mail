@@ -71,46 +71,43 @@ class LanguageSettingsViewModelTest {
         }
 
     @Test
-    fun `state has languages list with preferred language selected when a preference is saved`() =
-        runTest {
-            viewModel.state.test {
-                // Given
-                initialStateEmitted()
-
-                // When
-                languagePreferenceFlow.emit(AppLanguage.CATALAN)
-
-                // Then
-                val expected = allAppLanguagesWithSelected(AppLanguage.CATALAN)
-                assertEquals(LanguageSettingsState.Data(false, expected), awaitItem())
-            }
-        }
-
-    @Test
-    fun `onLanguageSelected saves selected lang in repository`() =
-        runTest {
+    fun `state has languages list with preferred language selected when a preference is saved`() = runTest {
+        viewModel.state.test {
             // Given
-            justRun { languageRepository.save(AppLanguage.DANISH) }
+            initialStateEmitted()
 
             // When
-            viewModel.onLanguageSelected(AppLanguage.DANISH)
+            languagePreferenceFlow.emit(AppLanguage.CATALAN)
 
             // Then
-            verify { languageRepository.save(AppLanguage.DANISH) }
+            val expected = allAppLanguagesWithSelected(AppLanguage.CATALAN)
+            assertEquals(LanguageSettingsState.Data(false, expected), awaitItem())
         }
+    }
 
     @Test
-    fun `onDefaultSelected deletes previous language preference from repository`() =
-        runTest {
-            // Given
-            justRun { languageRepository.clear() }
+    fun `onLanguageSelected saves selected lang in repository`() = runTest {
+        // Given
+        justRun { languageRepository.save(AppLanguage.DANISH) }
 
-            // When
-            viewModel.onSystemDefaultSelected()
+        // When
+        viewModel.onLanguageSelected(AppLanguage.DANISH)
 
-            // Then
-            verify { languageRepository.clear() }
-        }
+        // Then
+        verify { languageRepository.save(AppLanguage.DANISH) }
+    }
+
+    @Test
+    fun `onDefaultSelected deletes previous language preference from repository`() = runTest {
+        // Given
+        justRun { languageRepository.clear() }
+
+        // When
+        viewModel.onSystemDefaultSelected()
+
+        // Then
+        verify { languageRepository.clear() }
+    }
 
     private fun allAppLanguagesWithSelected(selectedLang: AppLanguage?) =
         appLanguagesSortedByLangNameAlphabetically().map { language ->

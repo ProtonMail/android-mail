@@ -372,7 +372,7 @@ class MessageDetailViewModelTest {
             resolveParticipantName = resolveParticipantName,
             reportPhishingMessage = reportPhishingMessage,
             isProtonCalendarInstalled = isProtonCalendarInstalled,
-            networkManager = networkManager,
+            networkManager = networkManager
         )
     }
 

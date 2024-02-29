@@ -139,7 +139,7 @@ private fun ConversationDetailExpandedItem(
                 onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                 onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                 onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
-                onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
+                onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )
@@ -165,7 +165,7 @@ object ConversationDetailItem {
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
-        val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onOpenInProtonCalendar: (MessageId) -> Unit
     )
 }
 

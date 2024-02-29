@@ -679,7 +679,7 @@ private fun ClearBanner() {
         Text(
             color = ProtonTheme.colors.textWeak,
             fontWeight = FontWeight.Normal,
-            text = stringResource(id = R.string.mailbox_action_clear_operation_scheduled),
+            text = stringResource(id = R.string.mailbox_action_clear_operation_scheduled)
         )
     }
 }

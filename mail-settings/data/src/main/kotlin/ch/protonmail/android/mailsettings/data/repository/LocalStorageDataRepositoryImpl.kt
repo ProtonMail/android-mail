@@ -35,8 +35,7 @@ class LocalStorageDataRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : LocalStorageDataRepository {
 
-    override fun observeMessageDataTotalRawSize(): Flow<Long> =
-        messageLocalDataSource.observeCachedMessagesTotalSize()
+    override fun observeMessageDataTotalRawSize(): Flow<Long> = messageLocalDataSource.observeCachedMessagesTotalSize()
 
     override suspend fun getAttachmentDataSizeForUserId(userId: UserId): Long {
         val folder = attachmentLocalDataSource.getAttachmentFolderForUserId(userId) ?: return 0

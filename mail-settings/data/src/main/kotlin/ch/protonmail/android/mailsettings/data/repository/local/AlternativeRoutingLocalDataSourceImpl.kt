@@ -47,8 +47,7 @@ class AlternativeRoutingLocalDataSourceImpl @Inject constructor(
 
     override suspend fun save(
         alternativeRoutingPreference: AlternativeRoutingPreference
-    ): Either<PreferencesError, Unit> =
-        dataStoreProvider.alternativeRoutingDataStore.safeEdit { mutablePreferences ->
-            mutablePreferences[hasAlternativeRoutingKey] = alternativeRoutingPreference.isEnabled
-        }.void()
+    ): Either<PreferencesError, Unit> = dataStoreProvider.alternativeRoutingDataStore.safeEdit { mutablePreferences ->
+        mutablePreferences[hasAlternativeRoutingKey] = alternativeRoutingPreference.isEnabled
+    }.void()
 }

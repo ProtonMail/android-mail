@@ -1614,7 +1614,7 @@ class ConversationDetailViewModelIntegrationTest {
         getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
         ioDispatcher: CoroutineDispatcher = testDispatcher!!,
         networkMgmt: NetworkManager = networkManager,
-        protonCalendarInstalled: IsProtonCalendarInstalled = isProtonCalendarInstalled,
+        protonCalendarInstalled: IsProtonCalendarInstalled = isProtonCalendarInstalled
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
         messageIdUiModelMapper = messageIdUiModelMapper,

@@ -26,8 +26,6 @@ class IsMultiUserLocalPageValid @Inject constructor(
     private val isLocalPageValid: IsLocalPageValid
 ) {
 
-    suspend operator fun invoke(
-        type: MailboxItemType,
-        pageKey: MailboxPageKey
-    ): Boolean = pageKey.userIds.all { isLocalPageValid(it, type, pageKey.pageKey) }
+    suspend operator fun invoke(type: MailboxItemType, pageKey: MailboxPageKey): Boolean =
+        pageKey.userIds.all { isLocalPageValid(it, type, pageKey.pageKey) }
 }

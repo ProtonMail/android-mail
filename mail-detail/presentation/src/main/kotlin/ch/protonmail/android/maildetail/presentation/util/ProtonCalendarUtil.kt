@@ -43,9 +43,8 @@ object ProtonCalendarUtil {
         putExtra(EXTRA_RECIPIENT, recipient)
     }
 
-    fun getIntentToProtonCalendarOnPlayStore() =
-        Intent(Intent.ACTION_VIEW).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            data = Uri.parse("market://details?id=$PROTON_CALENDAR_PACKAGE_NAME")
-        }
+    fun getIntentToProtonCalendarOnPlayStore() = Intent(Intent.ACTION_VIEW).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        data = Uri.parse("market://details?id=$PROTON_CALENDAR_PACKAGE_NAME")
+    }
 }
