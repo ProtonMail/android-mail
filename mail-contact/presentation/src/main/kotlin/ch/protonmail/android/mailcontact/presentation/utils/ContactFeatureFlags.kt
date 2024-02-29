@@ -24,9 +24,9 @@ enum class ContactFeatureFlags(val value: Boolean) {
 
     // Contacts
     ContactDetails(true),
-    ContactCreate(BuildConfig.DEBUG),
-    ContactEdit(BuildConfig.DEBUG),
-    ContactDelete(BuildConfig.DEBUG),
+    ContactCreate(true),
+    ContactEdit(true),
+    ContactDelete(true),
 
     // Contact groups
     ContactGroupDetails(true),
