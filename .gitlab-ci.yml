@@ -68,7 +68,7 @@ danger-review:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
 
-localise-sync-crowdin:
+i18n-send-crowdin:
   stage: localise
   extends: .i18n-sync-crowdin-shared
   tags:
@@ -80,7 +80,7 @@ localise-sync-crowdin:
   only:
     - master
 
-localise-commit-locales:
+i18n-commit-locales:
   stage: localise
   extends: .i18n-commit-locales-shared
   tags:
