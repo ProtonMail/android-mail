@@ -150,7 +150,6 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     senderEmail = SenderEmail(state.fields.sender.email),
                     isMessagePasswordSet = state.isMessagePasswordSet,
                     isMessageExpirationTimeSet = state.messageExpiresIn != Duration.ZERO,
-                    isExpirationActionVisible = state.isExpirationActionVisible,
                     onSetMessagePasswordClick = actions.onSetMessagePasswordClick,
                     onSetExpirationTimeClick = {
                         bottomSheetType.value = BottomSheetType.SetExpirationTime

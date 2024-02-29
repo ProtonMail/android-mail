@@ -953,7 +953,6 @@ class ComposerReducerTest(
             warning = warning,
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
-            isExpirationActionVisible = false,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty()
         )
@@ -1009,7 +1008,6 @@ class ComposerReducerTest(
             replaceDraftBody = replaceDraftBody,
             areContactSuggestionsExpanded = areContactSuggestionsExpanded,
             isMessagePasswordSet = false,
-            isExpirationActionVisible = false,
             senderChangedNotice = senderChangedNotice,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty()

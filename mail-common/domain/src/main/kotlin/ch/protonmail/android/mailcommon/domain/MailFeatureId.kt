@@ -26,9 +26,5 @@ import me.proton.core.featureflag.domain.entity.FeatureId
 enum class MailFeatureId(val id: FeatureId) {
 
     // Remote flags
-    ConversationMode(FeatureId("ThreadingAndroid")),
-
-    // Local only flag (unknown to remote API)
-    PasswordMessages(FeatureId("PasswordMessages")),
-    ExpiringMessages(FeatureId("ExpiringMessages"))
+    ConversationMode(FeatureId("ThreadingAndroid"))
 }

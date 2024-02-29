@@ -53,7 +53,6 @@ fun ComposerBottomBar(
     senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
     isMessageExpirationTimeSet: Boolean,
-    isExpirationActionVisible: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
     onSetExpirationTimeClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -68,9 +67,7 @@ fun ComposerBottomBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, onSetMessagePasswordClick)
-            if (isExpirationActionVisible) {
-                SetExpirationButton(isMessageExpirationTimeSet, onSetExpirationTimeClick)
-            }
+            SetExpirationButton(isMessageExpirationTimeSet, onSetExpirationTimeClick)
         }
     }
 }

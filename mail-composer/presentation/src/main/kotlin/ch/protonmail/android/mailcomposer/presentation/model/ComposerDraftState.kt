@@ -50,7 +50,6 @@ data class ComposerDraftState(
     val sendingErrorEffect: Effect<TextUiModel> = Effect.empty(),
     val contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>> = emptyMap(),
     val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
-    val isExpirationActionVisible: Boolean,
     val senderChangedNotice: Effect<TextUiModel> = Effect.empty(),
     val messageExpiresIn: Duration,
     val confirmSendExpiringMessage: Effect<List<Participant>>
@@ -95,7 +94,6 @@ data class ComposerDraftState(
             replaceDraftBody = Effect.empty(),
             sendingErrorEffect = Effect.empty(),
             isMessagePasswordSet = false,
-            isExpirationActionVisible = false,
             senderChangedNotice = Effect.empty(),
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty()
