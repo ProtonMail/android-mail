@@ -9,6 +9,7 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
+opt_out_usage
 
 default_platform(:android)
 
@@ -51,8 +52,9 @@ platform :android do
     gradle(tasks: ["testDevDebugUnitTest", "testDebugUnitTest", "testUtilsUnitTest"])
   end
 
-  desc "Setup UI Tests mocked network assets"
+  desc "Setup UI Tests assets"
     lane :setupUiTestsAssets do
+    sh("../scripts/uitests/setup-core-assets.sh")
     sh("../scripts/uitests/setup-mock-network-assets.sh setup-remote")
   end
 

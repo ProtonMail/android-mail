@@ -4,9 +4,19 @@ cache: &cache
     - ${CI_PROJECT_DIR}
   untracked: true
 
+.ruby-cache: &ruby-cache
+  key:
+    prefix: ruby-cache
+    files:
+      - Gemfile.lock
+  paths:
+    - ${BUNDLE_GEM_PATH}
+  policy: pull-push
+
 .base_job:
   cache:
-    *cache
+    - *cache
+    - *ruby-cache
 
 .build_job:
   stage: build
@@ -19,25 +29,25 @@ cache: &cache
 
 .firebase_test_job:
   stage: test
+  extends: .base_job
   dependencies:
     - build_dev_debug
   tags:
     - shared-small
   before_script:
-    - bundle install
     - ./scripts/setup_firebase_gcloud.sh
   cache:
     *cache
 
 .firebase_deploy_job:
-  interruptible: false
   stage: deploy
+  extends: .base_job
+  interruptible: false
   dependencies:
     - build_alpha_release
   tags:
     - shared-small
   before_script:
-    - bundle install
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - ./scripts/release/generate_git_release_notes.sh /tmp/release_notes.txt
   rules:

@@ -1,11 +1,15 @@
 default:
-  image: $CI_REGISTRY/android/shared/docker-android:v1.2.0
+  image: ${CI_REGISTRY}/android/shared/docker-android/oci:v2.0.1
   interruptible: true
   tags:
     - shared-small
 
 before_script:
-  - export JAVA_TOOL_OPTIONS="-Dhttp.proxyHost=$( echo ${http_proxy##http://} | cut -d':' -f1 ) -Dhttp.proxyPort=$( echo ${http_proxy##http://} | cut -d':' -f2 ) -Dhttps.proxyHost=$( echo ${https_proxy##http://} | cut -d':' -f1 ) -Dhttps.proxyPort=$( echo ${https_proxy##http://} | cut -d':' -f2 ) -Dhttp.nonProxyHosts=\"$( echo $no_proxy | tr ',' '|' )\""
+  - if [[ -f /load-env.sh ]]; then source /load-env.sh; fi
+  - bundle config set path ${BUNDLE_GEM_PATH}
+  - bundle config set without 'production'
+  - bundle install
+
 variables:
   # Use fastzip to improve cache times
   FF_USE_FASTZIP: "true"
@@ -15,6 +19,8 @@ variables:
   ARTIFACT_COMPRESSION_LEVEL: "fastest"
   # Use low compression for caches
   CACHE_COMPRESSION_LEVEL: "fast"
+  # Gem path
+  BUNDLE_GEM_PATH: 'vendor/ruby'
 
 # Makes sure we do not create separate merge request and branch pipelines.
 # See https://docs.gitlab.com/ee/ci/yaml/workflow.html#switch-between-branch-pipelines-and-merge-request-pipelines
@@ -26,7 +32,6 @@ workflow:
     - if: $CI_COMMIT_BRANCH == "master"
 
 stages:
-  - setup
   - analyse
   - danger-review
   - localise
@@ -36,21 +41,6 @@ stages:
   - tag
   - deploy
   - stopReview
-
-setup:
-  stage: setup
-  extends: .base_job
-  tags:
-    - shared-small
-  before_script:
-    - !reference [ .ruby, before_script ]
-  script:
-    - mkdir app/src/uiTest/assets -p
-    - mkdir keystore -p
-    - base64 -d - < "$TEST_USERS_CREDENTIALS_FILE" > app/src/uiTest/assets/users.json
-    - base64 -d - < "$INTERNAL_API_FILE" > app/src/uiTest/assets/internal_api.json
-    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
-    - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
 
 analyse:
   stage: analyse
@@ -103,7 +93,7 @@ localise-commit-locales:
 build_dev_debug:
   extends: .build_job
   script:
-    - echo PROXY_TOKEN="$(curl -o - https://proxy.proton.black/token/get)" >> private.properties
+    - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane setupUiTestsAssets
     - bundle exec fastlane assembleDevDebug
     - bundle exec fastlane assembleDevDebugAndroidTest
@@ -111,8 +101,10 @@ build_dev_debug:
 build_alpha_release:
   extends: .build_job
   script:
+    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
+    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
-    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
+    - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleAlphaRelease
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
@@ -124,8 +116,10 @@ build_alpha_release:
 build_prod_release:
   extends: .build_job
   script:
+    - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
+    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
     - base64 -d - < "$PROTON_RELEASE_KEYSTORE_BASE64" > keystore/ProtonMail.keystore
-    - base64 -d - < "$SENTRY_PROPERTIES_FILE" > "sentry.properties"
+    - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleProdRelease
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
@@ -168,6 +162,7 @@ run_unit_test:
   dependencies:
     - build_dev_debug
   script:
+    - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane unitTest
     - bundle exec fastlane coverageReport
   coverage: /Total.*?(\d{1,3}\.\d{0,2})%/
@@ -282,5 +277,4 @@ include:
     ref: main
     file: '/ci/templates-shared/appetize-integration.yml'
 
-  - local: '/ci/templates/ruby.gitlab-ci.yml'
   - local: '/ci/templates/base-jobs.gitlab-ci.yml'
