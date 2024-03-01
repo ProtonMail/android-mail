@@ -1,1 +1,1 @@
--keep class me.proton.core.configuration.EnvironmentConfigurationDefaults { *; }
+-keep class me.proton.core.** { *; }
