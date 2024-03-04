@@ -112,4 +112,6 @@ object MailDimens {
         val SelectedCircleBorderSize = 2.dp
         val SelectedCircleInternalMargin = 4.dp
     }
+
+    val DialogCardRadius = 16.dp
 }

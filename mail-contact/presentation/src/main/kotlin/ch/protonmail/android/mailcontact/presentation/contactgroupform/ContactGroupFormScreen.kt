@@ -202,20 +202,18 @@ fun ContactGroupFormContent(
                 )
                 val openDialog = remember { mutableStateOf(false) }
                 var selectedColor by remember { mutableStateOf(state.contactGroup.color) }
-                when {
-                    openDialog.value -> {
-                        ColorPickerDialog(
-                            title = stringResource(R.string.contact_group_color),
-                            selectedValue = selectedColor,
-                            values = state.colors,
-                            onDismissRequest = { openDialog.value = false },
-                            onValueSelected = { selectedValue ->
-                                openDialog.value = false
-                                selectedColor = selectedValue
-                                actions.onUpdateColor(selectedValue)
-                            }
-                        )
-                    }
+                if (openDialog.value) {
+                    ColorPickerDialog(
+                        title = stringResource(R.string.contact_group_color),
+                        selectedValue = selectedColor,
+                        values = state.colors,
+                        onDismissRequest = { openDialog.value = false },
+                        onValueSelected = { selectedValue ->
+                            openDialog.value = false
+                            selectedColor = selectedValue
+                            actions.onUpdateColor(selectedValue)
+                        }
+                    )
                 }
                 ProtonSecondaryButton(
                     modifier = modifier
