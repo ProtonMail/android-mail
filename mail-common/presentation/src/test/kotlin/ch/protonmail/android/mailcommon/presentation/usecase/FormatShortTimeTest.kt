@@ -38,7 +38,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 class FormatShortTimeTest {
@@ -207,20 +206,6 @@ class FormatShortTimeTest {
         verify { Calendar.getInstance(capture(slot)) }
         assertTrue(slot.isNotEmpty())
         assertTrue(slot.all { it == Locale.TAIWAN })
-    }
-
-    @Test
-    fun test() {
-        val today = Calendar.getInstance()
-        val sameWeekOneYearAgo = Calendar.getInstance().apply {
-            set(Calendar.YEAR, 2021)
-            set(Calendar.MONTH, Calendar.SEPTEMBER)
-            set(Calendar.DAY_OF_MONTH, 18)
-        }
-        every { getLocalisedCalendar() } returns today
-        every { getAppLocale() } returns Locale.getDefault()
-
-        println(formatter(sameWeekOneYearAgo.timeInMillis.milliseconds))
     }
 
     private fun givenCurrentTimeAndLocale(currentTime: Duration, locale: Locale) {
