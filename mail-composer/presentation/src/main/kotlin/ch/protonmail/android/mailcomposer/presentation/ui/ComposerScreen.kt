@@ -120,6 +120,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
                 )
                 BottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
+                    isCustomExpirationTimeVisible = state.isCustomExpirationTimeVisible,
                     expirationTime = state.messageExpiresIn,
                     onDoneClick = { viewModel.submit(ComposerAction.ExpirationTimeSet(it)) }
                 )
