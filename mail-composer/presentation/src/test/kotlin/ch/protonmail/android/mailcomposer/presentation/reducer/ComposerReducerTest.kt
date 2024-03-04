@@ -954,7 +954,8 @@ class ComposerReducerTest(
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isCustomExpirationTimeVisible = false
         )
 
         private fun aNotSubmittableState(
@@ -1010,7 +1011,8 @@ class ComposerReducerTest(
             isMessagePasswordSet = false,
             senderChangedNotice = senderChangedNotice,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isCustomExpirationTimeVisible = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

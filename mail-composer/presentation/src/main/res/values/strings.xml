@@ -56,6 +56,7 @@
     <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
     <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
     <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+    <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
     <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
     <!-- Send expiring message to external recipients dialog -->
     <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Expiration not supported</string>
