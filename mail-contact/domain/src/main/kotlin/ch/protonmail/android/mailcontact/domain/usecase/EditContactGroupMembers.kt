@@ -46,25 +46,30 @@ class EditContactGroupMembers @Inject constructor(
         }
 
         val groupContactEmailIds = contactGroup.members.map { it.id }.toSet()
+        val contactEmailIdsToAdd = contactEmailIds.subtract(groupContactEmailIds)
+        val contactEmailIdsToRemove = groupContactEmailIds.subtract(contactEmailIds)
 
-        contactGroupRepository.addContactEmailIdsToContactGroup(
-            userId,
-            labelId,
-            contactEmailIds.subtract(groupContactEmailIds)
-        ).onLeft {
-            Timber.e("Error while adding Members in EditContactGroupMembers")
-            raise(EditContactGroupMembersError.AddingContactsToGroup)
+        if (contactEmailIdsToAdd.isNotEmpty()) {
+            contactGroupRepository.addContactEmailIdsToContactGroup(
+                userId,
+                labelId,
+                contactEmailIdsToAdd
+            ).onLeft {
+                Timber.e("Error while adding Members in EditContactGroupMembers")
+                raise(EditContactGroupMembersError.AddingContactsToGroup)
+            }
         }
 
-        contactGroupRepository.removeContactEmailIdsFromContactGroup(
-            userId,
-            labelId,
-            groupContactEmailIds.subtract(contactEmailIds)
-        ).onLeft {
-            Timber.e("Error while removing Members in EditContactGroupMembers")
-            raise(EditContactGroupMembersError.RemovingContactsFromGroup)
+        if (contactEmailIdsToRemove.isNotEmpty()) {
+            contactGroupRepository.removeContactEmailIdsFromContactGroup(
+                userId,
+                labelId,
+                contactEmailIdsToRemove
+            ).onLeft {
+                Timber.e("Error while removing Members in EditContactGroupMembers")
+                raise(EditContactGroupMembersError.RemovingContactsFromGroup)
+            }
         }
-
     }
 
     sealed interface EditContactGroupMembersError {
@@ -72,6 +77,5 @@ class EditContactGroupMembers @Inject constructor(
         object AddingContactsToGroup : EditContactGroupMembersError
         object RemovingContactsFromGroup : EditContactGroupMembersError
     }
-
 
 }

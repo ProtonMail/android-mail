@@ -16,63 +16,47 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.data
+package ch.protonmail.android.mailcontact.data.remote
 
-import arrow.core.Either
-import arrow.core.right
-import ch.protonmail.android.mailcontact.data.local.ContactGroupLocalDataSource
-import ch.protonmail.android.mailcontact.data.remote.ContactGroupRemoteDataSource
-import ch.protonmail.android.mailcontact.domain.repository.ContactGroupRepository
+import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
-class ContactGroupRepositoryImpl @Inject constructor(
-    private val contactGroupLocalDataSource: ContactGroupLocalDataSource,
-    private val contactGroupRemoteDataSource: ContactGroupRemoteDataSource
-) : ContactGroupRepository {
+class ContactGroupRemoteDataSourceImpl @Inject constructor(
+    private val enqueuer: Enqueuer
+) : ContactGroupRemoteDataSource {
 
     override suspend fun addContactEmailIdsToContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
-    ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
-
-        contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
+    ) {
+        enqueuer.enqueue<EditMembersOfContactGroupWorker>(
             userId,
-            labelId,
-            contactEmailIds
+            EditMembersOfContactGroupWorker.params(
+                userId = userId,
+                labelId = labelId,
+                labelContactEmailIds = contactEmailIds,
+                unlabelContactEmailIds = emptySet()
+            )
         )
-
-        contactGroupRemoteDataSource.addContactEmailIdsToContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
-
-        return Unit.right()
     }
 
     override suspend fun removeContactEmailIdsFromContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
-    ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
-
-        contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
+    ) {
+        enqueuer.enqueue<EditMembersOfContactGroupWorker>(
             userId,
-            labelId,
-            contactEmailIds
+            EditMembersOfContactGroupWorker.params(
+                userId = userId,
+                labelId = labelId,
+                labelContactEmailIds = emptySet(),
+                unlabelContactEmailIds = contactEmailIds
+            )
         )
-
-        contactGroupRemoteDataSource.removeContactEmailIdsFromContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
-
-        return Unit.right()
     }
-
 }
