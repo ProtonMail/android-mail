@@ -111,6 +111,18 @@ class FormatShortTimeTest {
     }
 
     @Test
+    fun `when the message is of a previous year and same week-of-year as current week show full date`() {
+        // Given
+        givenCurrentTimeAndLocale(1_709_557_304.seconds, Locale.UK) // Mon Mar 04 14:01:44 CET 2024 (week 10)
+        val itemTime = 1_678_107_704 // Mon Mar 06 14:01:44 CET 2023 (week 10)
+        // When
+        val actual = formatter.invoke(itemTime.seconds)
+        // Then
+        assertIs<TextUiModel.Text>(actual, actual.toString())
+        assertEquals(TextUiModel.Text("6 Mar 2023"), actual)
+    }
+
+    @Test
     fun `when the year changed and message is from the current week and older than yesterday show week day`() {
         // Given
         givenCurrentTimeAndLocale(1_640_995_200.seconds, Locale.UK) // Sat Jan 01 2022 01:00:00 CEST

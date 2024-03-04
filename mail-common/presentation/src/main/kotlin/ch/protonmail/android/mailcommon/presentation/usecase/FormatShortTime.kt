@@ -47,6 +47,9 @@ class FormatShortTime @Inject constructor(
         if (itemTime.isThisWeek()) {
             return TextUiModel.Text(itemTime.toWeekDay())
         }
+        if (itemTime.isThisWeekAcrossNewYear()) {
+            return TextUiModel.Text(itemTime.toWeekDay())
+        }
         if (itemTime.isThisYear()) {
             return TextUiModel.Text(itemTime.toFullDate())
         }
@@ -69,7 +72,10 @@ class FormatShortTime @Inject constructor(
     private fun isToday(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
         currentTime.get(Calendar.DAY_OF_YEAR) == itemCalendar.get(Calendar.DAY_OF_YEAR)
 
-    private fun isCurrentWeek(itemCalendar: Calendar) =
+    private fun isCurrentWeek(itemCalendar: Calendar) = isCurrentYear(itemCalendar) &&
+        currentTime.get(Calendar.WEEK_OF_YEAR) == itemCalendar.get(Calendar.WEEK_OF_YEAR)
+
+    private fun isCurrentWeekAcrossNewYear(itemCalendar: Calendar) = isLastWeekOfTheYear(itemCalendar) &&
         currentTime.get(Calendar.WEEK_OF_YEAR) == itemCalendar.get(Calendar.WEEK_OF_YEAR)
 
     private fun isCurrentYear(itemCalendar: Calendar) =
@@ -81,9 +87,14 @@ class FormatShortTime @Inject constructor(
     private fun isPreviousYear(itemCalendar: Calendar) =
         currentTime.get(Calendar.YEAR) - itemCalendar.get(Calendar.YEAR) == 1
 
+    private fun isLastWeekOfTheYear(itemCalendar: Calendar) =
+        itemCalendar.weeksInWeekYear == currentTime.get(Calendar.WEEK_OF_YEAR)
+
+
     private fun Duration.isToday() = isToday(toCalendar())
     private fun Duration.isYesterday() = isYesterday(toCalendar())
     private fun Duration.isThisWeek() = isCurrentWeek(toCalendar())
+    private fun Duration.isThisWeekAcrossNewYear() = isCurrentWeekAcrossNewYear(toCalendar())
     private fun Duration.isThisYear() = isCurrentYear(toCalendar())
 
     private fun Duration.toCalendar(): Calendar {
