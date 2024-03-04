@@ -42,6 +42,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.NavigationButton
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
+import ch.protonmail.android.mailmailbox.presentation.upselling.UpsellingMailButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -123,6 +124,7 @@ fun MailboxTopAppBar(
                 actions = {
 
                     if (uiModel.shouldShowActions) {
+                        UpsellingMailButton()
                         IconButton(
                             modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
                             onClick = actions.onEnterSearchMode
