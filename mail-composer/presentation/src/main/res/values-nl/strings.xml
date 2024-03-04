@@ -50,16 +50,22 @@
   <string name="composer_button_add_password">Wachtwoord toevoegen</string>
   <string name="composer_button_set_expiration">Stel vervaltijd in</string>
   <string name="composer_expiration_time_bottom_sheet_title">Verloopdatum</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
-  <string name="composer_bottom_bar_expiration_time_none">None</string>
-  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
-  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Klaar</string>
+  <string name="composer_bottom_bar_expiration_time_none">Geen</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 uur</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 dag</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 dagen</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
-  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
-  <string name="composer_sender_changed_dialog_title">Sending notice</string>
-  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
-  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_error_setting_expiration_time">Vervaltijd instellen mislukt</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Vervaldatum niet ondersteund</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Wij raden aan een wachtwoord in te stellen voor de volgende ontvangers:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Annuleren</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Toch verzenden</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Melding versturen</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Berichten versturen vanaf een @pm.me-adres is enkel beschikbaar voor betalende gebruikers. Uw bericht wordt verzonden vanaf.</string>
+  <string name="composer_sender_changed_original_address_disabled">Het geselecteerde afzenderadres is uitgeschakeld. Uw bericht wordt vanaf uw standaard adres verzonden.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Opstellen</string>
@@ -69,8 +75,8 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Fout bij verzenden</string>
   <string name="message_sending_error_dialog_button_dismiss">Sluiten</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_error">Uw e-mail kan niet worden verzonden naar het e-mailadres om de volgende reden:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Er zijn geen vertrouwde sleutels: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bestaat niet: %s</string>
   <string name="set_message_password_title">Bericht versleutelen</string>
   <string name="set_message_password_info_message">Voer een wachtwoord in om dit bericht te versleutelen voor niet-Proton Mailgebruikers.</string>

@@ -25,8 +25,8 @@
     <item quantity="one">%d mensagem</item>
     <item quantity="other">%d mensagens</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Responder</string>
+  <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Mais</string>
   <string name="to">Para:</string>
   <string name="cc">CC:</string>
@@ -62,18 +62,19 @@
   <string name="message_body_remote_content_banner_text">O carregamento automático de conteúdo remoto está desativado. Isto pode ser alterado nas definições.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">O carregamento automático de imagens incorporadas e conteúdo remoto está desativado. Estas propriedades podem ser alteradas nas definições.</string>
   <string name="message_phishing_banner_text">O nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Por favor, verifique se é legítima.</string>
+  <string name="message_expiration_banner_text">Esta mensagem expirará em %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Não perguntar novamente</string>
-  <string name="external_link_confirmation_dialog_cancel_button">Cancel</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
+  <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Aviso: suspeita de website falso</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Esta hiperligação leva a um website que pode tentar roubar a sua informação, como palavras-passe e números de cartão de crédito.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Retroceder (recomendado)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Ignorar aviso e continuar</string>
-  <string name="message_delete_dialog_title">Delete message</string>
+  <string name="message_delete_dialog_title">Eliminar a mensagem</string>
   <string name="message_delete_dialog_message">Tem a certeza de que pretende eliminar permanentemente esta mensagem?</string>
   <string name="message_deleted">Mensagem eliminada</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
@@ -84,13 +85,13 @@
   <string name="message_body_load_remote_content_button_text">Carregar o conteúdo remoto</string>
   <string name="message_body_load_embedded_images_button_text">Carregar as imagens incorporadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
-  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_title_offline">Atenção</string>
   <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
-  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">Aceitar</string>
   <string name="message_report_phishing_dialog_title">Confirmar relatório de phishing</string>
   <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing, enviará a mensagem para nós, para que possamos analisá-la e melhorar os nossos filtros. Isto significa que poderemos ver o conteúdo da mensagem na íntegra.</string>
-  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
-  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="message_report_phishing_dialog_confim_button">Confirmar</string>
+  <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
   <string name="open_on_protoncalendar_banner_title">Abrir no Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendário seguro e encriptado</string>
 </resources>

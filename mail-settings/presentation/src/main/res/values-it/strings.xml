@@ -32,7 +32,7 @@
   <string name="mail_settings_local_cache_hint">Spazio utilizzato: %s</string>
   <string name="mail_settings_local_cache_clear_button">Cancella la cache</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
-  <string name="mail_settings_combined_contacts_hint">Abilita questa opzione per completare automaticamente gli indirizzi email con i contatti di tutti i tuoi account connessi.</string>
+  <string name="mail_settings_combined_contacts_hint">Abilita questa opzione per completare automaticamente gli indirizzi email con i contatti di tutti gli account connessi.</string>
   <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che può essere utile per evitare firewall o problemi di rete. Consigliamo di mantenere attiva questa impostazione per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
-  <string name="mail_settings_password_management">Gestisci le password</string>
+  <string name="mail_settings_password_management">Password</string>
   <string name="mail_settings_recovery_email">Email di recupero</string>
   <string name="mail_settings_mailbox_size">Spazio della casella di posta</string>
   <string name="mail_settings_addresses">Indirizzi</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_folders">Cartelle</string>
   <string name="mail_settings_conversation_mode">Modalità conversazione</string>
   <string name="mail_settings_not_set">Non impostato</string>
-  <string name="mail_settings_conversation_mode_hint">Abilita questa opzione per visualizzare raggruppati i messaggi nella stessa conversazione.</string>
+  <string name="mail_settings_conversation_mode_hint">Abilita questa opzione per visualizzare raggruppati i messaggi appartenenti alla stessa conversazione.</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Indirizzo email predefinito</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Indirizzi non attivi</string>
@@ -119,7 +119,7 @@
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_title">Blocco automatico dell\'app</string>
   <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app dopo un determinato periodo di tempo. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
-  <string name="mail_settings_auto_lock_change_pin_description">Cambia il codice PIN</string>
+  <string name="mail_settings_auto_lock_change_pin_description">Cambio del codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuti</string>
@@ -131,10 +131,10 @@
   <string name="mail_settings_pin_insertion_set_title">Imposta il codice PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Conferma il codice PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icona del lucchetto</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Puntino del PIN</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Cifra del PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Cancella</string>
   <string name="mail_settings_pin_insertion_biometric_description">Autenticazione biometrica</string>
-  <string name="mail_settings_pin_insertion_button_create">Crea</string>
+  <string name="mail_settings_pin_insertion_button_create">Applica</string>
   <string name="mail_settings_pin_insertion_button_confirm">Conferma</string>
   <string name="mail_settings_pin_insertion_error_no_match">I codici PIN non corrispondono</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
@@ -151,7 +151,7 @@
   <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler disconnettere l\'account?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Disconnetti</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Annulla</string>
-  <string name="mail_settings_pin_insertion_created_success">Codice PIN creato</string>
+  <string name="mail_settings_pin_insertion_created_success">Codice PIN applicato</string>
   <string name="mail_settings_pin_insertion_changed_success">Codice PIN cambiato</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Cancellazione della cache locale in corso</string>

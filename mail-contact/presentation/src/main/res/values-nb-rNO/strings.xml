@@ -100,25 +100,31 @@
   <string name="all_contacts_tab">Kontakter</string>
   <string name="contact_groups_tab">Grupper</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d medlem</item>
+    <item quantity="other">%1$d medlemmer</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="one">Member (%1$d)</item>
-    <item quantity="other">Members (%1$d)</item>
+    <item quantity="one">Medlem (%1$d)</item>
+    <item quantity="other">Medlemmer (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Feil under lagring av kontakt, den inneholder en ugyldig e-postadresse.</string>
-  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
-  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_details_loading_error">Kunne ikke laste inn kontaktgruppe. Prøv på nytt senere</string>
+  <string name="contact_group_form_loading_error">Kunne ikke laste inn kontaktgruppe. Prøv på nytt senere</string>
   <string name="edit_contact_group_content_description">Rediger kontaktgruppe</string>
   <string name="delete_contact_group_content_description">Slett kontaktgruppe</string>
   <string name="send_group_message">Send gruppemelding</string>
-  <string name="contact_group_form_save">Save</string>
-  <string name="contact_group_form_name_hint">Display name</string>
-  <string name="remove_member_content_description">Remove member</string>
-  <string name="add_members">Add members</string>
-  <string name="change_color">Change color</string>
+  <string name="contact_group_form_save">Lagre</string>
+  <string name="contact_group_form_name_hint">Visningsnavn</string>
+  <string name="remove_member_content_description">Fjern medlem</string>
+  <string name="add_members">Legg til medlemmer</string>
+  <string name="change_color">Endre farge</string>
   <string name="contact_group_form_create_success">Kontaktgruppe opprettet</string>
   <string name="contact_group_form_update_success">Kontaktgruppe oppdatert</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">Kunne ikke lagre kontaktgruppe. Prøv på nytt senere</string>
+  <string name="members_loading_error">Feil ved lasting av medlemmer. Vennligst prøv igjen senere.</string>
+  <string name="members_done">Ferdig</string>
+  <string name="add_members_error">Feil ved å legge til medlemmer, prøv igjen senere</string>
+  <string name="manage_members_title">Administrer medlemmer</string>
+  <string name="search_contact">Søk etter kontakt</string>
+  <string name="member_update_error">Feil ved oppdatering av medlem, vennligst prøv igjen senere</string>
 </resources>

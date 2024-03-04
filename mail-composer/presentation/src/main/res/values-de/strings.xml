@@ -56,10 +56,16 @@
   <string name="composer_bottom_bar_expiration_time_one_day">1 Tag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 Tage</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 Woche</string>
-  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
-  <string name="composer_sender_changed_dialog_title">Sending notice</string>
-  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
-  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_error_setting_expiration_time">Fehler beim Festlegen der Ablaufzeit.</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Ablaufdatum nicht unterstützt</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Wir empfehlen, stattdessen für die folgenden Empfänger ein Passwort einzurichten:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Mitteilung wird gesendet</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Das Senden von Nachrichten von einer @pm.me-Adresse ist eine kostenpflichtige Funktion. Deine Nachricht wird von deiner Standardadresse gesendet</string>
+  <string name="composer_sender_changed_original_address_disabled">Die ausgewählte Absenderadresse ist deaktiviert. Deine Nachricht wird von deiner Standardadresse aus gesendet.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Verfassen</string>

@@ -22,7 +22,7 @@
   <string name="dialog_sign_out_account_confirm">Disconnetti</string>
   <string name="dialog_sign_out_account_cancel">Annulla</string>
   <string name="dialog_remove_account_title">Rimuovi l\'account</string>
-  <string name="dialog_remove_account_description">Stai per disconnettere questo account e rimuovere tutte le informazioni associate a esso.</string>
+  <string name="dialog_remove_account_description">Sei sicuro di voler disconnettere questo account e rimuovere tutte le informazioni associate a esso?</string>
   <string name="dialog_remove_account_confirm">Rimuovi</string>
   <string name="dialog_remove_account_cancel">Annulla</string>
   <string name="user_select_other_account_content_description">Seleziona un altro account</string>
@@ -35,7 +35,7 @@
   <string name="mailbox_message_sending_error">Errore nell\'invio del messaggio</string>
   <string name="mailbox_message_sending_error_action">Vai alle bozze</string>
   <string name="mailbox_attachment_uploading_error">Errore nel caricamento dell\'allegato</string>
-  <string name="notification_switched_account">Passato all\'account %s</string>
+  <string name="notification_switched_account">Account attuale: %s</string>
   <string name="label_saved">Etichetta salvata</string>
   <string name="label_deleted">Etichetta eliminata</string>
   <string name="label_list_loading_error">Errore nel caricamento dell\'etichetta. Riprova più tardi.</string>

@@ -57,6 +57,12 @@
   <string name="composer_bottom_bar_expiration_time_three_days">3 hari</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 minggu</string>
   <string name="composer_error_setting_expiration_time">Pengaturan waktu kedaluwarsa gagal</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Pengaturan waktu kedaluwarsa tidak didukung</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Sebagai gantinya, kami menyarankan Anda untuk mengatur kata sandi bagi para penerima berikut:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Batal</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Tetap kirim</string>
+  <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Informasi pengiriman</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pengiriman pesan dari alamat @pm.me merupakan fitur berbayar. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
   <string name="composer_sender_changed_original_address_disabled">Alamat pengirim yang dipilih tidak aktif. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>

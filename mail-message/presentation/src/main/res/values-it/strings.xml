@@ -18,8 +18,8 @@
   -->
 <resources>
   <plurals name="attachment_count_label">
-    <item quantity="one">%d file</item>
-    <item quantity="other">%d file</item>
+    <item quantity="one">%d file allegato</item>
+    <item quantity="other">%d file allegati</item>
   </plurals>
   <string name="attachment_show_more_label">+ %1$d</string>
   <string name="attachment_permission_dialog_title">Autorizzazione necessaria</string>

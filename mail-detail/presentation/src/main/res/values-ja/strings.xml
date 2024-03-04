@@ -61,6 +61,7 @@
   <string name="message_body_remote_content_banner_text">リモートコンテンツの自動読み込みはオフになっています。これは設定で変更できます。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">埋め込み画像やリモートコンテンツの自動読み込みはオフになっています。これらは設定で変更できます。</string>
   <string name="message_phishing_banner_text">このメッセージはフィッシングの可能性があります。ご注意ください。</string>
+  <string name="message_expiration_banner_text">このメッセージは %1$s後に失効します</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">今後表示しない</string>

@@ -56,14 +56,15 @@
   <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi.</string>
   <string name="decryption_error">Decrittografia del messaggio non riuscita</string>
   <string name="detail_error_retrieving_message_body">Impossibile caricare il messaggio</string>
-  <string name="message_body_error_no_webview">Devi avere una WebView installata per poter visualizzare il contenuto di questo messaggio.</string>
+  <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto di questo messaggio</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
   <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disabilitato. Puoi cambiare queste opzioni nelle impostazioni.</string>
   <string name="message_phishing_banner_text">Il nostro sistema ha segnalato questo messaggio come tentativo di phishing. Verifica che sia legittimo.</string>
+  <string name="message_expiration_banner_text">Questo messaggio scadrà tra %1$s</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">Stai per uscire dall\'app e andare sul sito:</string>
+  <string name="external_link_confirmation_dialog_text">Vuoi uscire dall\'app e continuare sul seguente sito?</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo di nuovo</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>

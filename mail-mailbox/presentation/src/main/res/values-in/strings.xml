@@ -75,7 +75,7 @@
   <string name="onboarding_description_ga">Dibuat ulang sepenuhnya dari awal, aplikasi Proton Mail baru dibuat untuk stabilitas dan kinerja.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Privasi untuk semua</string>
-  <string name="onboarding_privacy_for_all_description">Undang pengguna lain ke Proton Mail agar Anda dan para rekan yang Anda undang dapat saling memperoleh manfaat dari enkripsi end-to-end.</string>
+  <string name="onboarding_privacy_for_all_description">Undang pengguna lain ke Proton Mail agar Anda dan rekan Anda dapat saling memperoleh manfaat dari enkripsi end-to-end.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Selalu termutakhir</string>
   <string name="onboarding_easily_up_to_date_description">Baca pesan berutas dengan mudah dalam mode percakapan.</string>

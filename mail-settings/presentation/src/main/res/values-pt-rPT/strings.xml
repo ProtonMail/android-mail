@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">Definições da aplicação</string>
   <string name="mail_settings_theme"> Tema</string>
   <string name="mail_settings_push_notifications">Notificações push</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">Bloqueio automático</string>
   <string name="mail_settings_alternative_routing">Redirecionamento alternativo</string>
   <string name="mail_settings_app_language">Idioma da aplicação</string>
   <string name="mail_settings_combined_contacts">Contatos combinados</string>
@@ -116,26 +116,26 @@
   <string name="mail_settings_notifications_update_error">Erro ao atualizar as definições</string>
   <string name="mail_settings_notifications_loading_error">Erro ao carregar as definições</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
-  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
+  <string name="mail_settings_auto_lock_title">Bloqueio automático</string>
+  <string name="mail_settings_auto_lock_item_title">Bloqueio automático da aplicação</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Alterar o código PIN</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
-  <string name="mail_settings_auto_lock_immediately">Immediately</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Temporizador do bloqueio automático</string>
+  <string name="mail_settings_auto_lock_immediately">Imediatamente</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutos de inatividade.</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hora de inatividade</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dia de inatividade</string>
   <string name="mail_settings_auto_lock_update_error">Erro ao atualizar as definições</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
-  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_input_title">Inserir o código PIN</string>
+  <string name="mail_settings_pin_insertion_set_title">Definir o código PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirme o seu PIN</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">Ícone de bloqueio</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de pontos</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Retrocesso</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
-  <string name="mail_settings_pin_insertion_button_create">Create</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
+  <string name="mail_settings_pin_insertion_button_create">Criar</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Os códigos PIN não correspondem.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
@@ -146,11 +146,11 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_text">Encerrar a sessão</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Encerrar a sessão</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Tem certeza de que deseja terminar a sessão?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
   <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
   <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->

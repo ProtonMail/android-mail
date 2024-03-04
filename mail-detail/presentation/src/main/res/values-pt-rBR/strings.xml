@@ -62,6 +62,7 @@
   <string name="message_body_remote_content_banner_text">O carregamento automático de conteúdo remoto está desativado. Isso pode ser alterado nas configurações.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">O carregamento automático de imagens incorporadas e conteúdo remoto está desativado. Isso pode ser alterado nas configurações.</string>
   <string name="message_phishing_banner_text">Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se é legítimo.</string>
+  <string name="message_expiration_banner_text">Esta mensagem expirará em %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Você está prestes a sair do aplicativo e navegar para:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Não perguntar novamente</string>

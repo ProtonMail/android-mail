@@ -57,6 +57,12 @@
   <string name="composer_bottom_bar_expiration_time_three_days">3 días</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 semana</string>
   <string name="composer_error_setting_expiration_time">Error al establecer la fecha de expiración</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">No se admiten los mensajes con fecha de caducidad.</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomendamos configurar una contraseña para los siguientes destinatarios:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancelar</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Enviar de todos modos</string>
+  <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Notificación de envío</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">El envío de mensajes desde @pm.me es una función de pago. Tu mensaje será enviado desde tu dirección por defecto.</string>
   <string name="composer_sender_changed_original_address_disabled">La selección de dirección de envío está desactivada. Tu mensaje se enviará desde tu dirección de correo por defecto.</string>

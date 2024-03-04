@@ -49,17 +49,23 @@
   <string name="composer_warning_local_data_shown">Nu s-a încărcat ultima versiune a acestei ciorne. Orice modificare va anula conținutul acesteia.</string>
   <string name="composer_button_add_password">Adăugare parolă</string>
   <string name="composer_button_set_expiration">Setare timp expirare</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Expiră la</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
-  <string name="composer_bottom_bar_expiration_time_none">None</string>
-  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
-  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
-  <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
-  <string name="composer_sender_changed_dialog_title">Sending notice</string>
-  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
-  <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Dată expirare</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Gata</string>
+  <string name="composer_bottom_bar_expiration_time_none">Fără</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">o oră</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">o zi</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 zile</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">o săptămână</string>
+  <string name="composer_error_setting_expiration_time">Setarea timpului de expirare a eșuat.</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Expirarea nu e suportată</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Se recomandă configurarea unei parole pentru următorii destinatari:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Anulare</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Trimitere așa</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Notificare trimitere</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Trimiterea de mesaje de la adrese cu domeniul @pm.me este o funcție cu plată. Mesajul vă va fi trimis de pe adresa implicită.</string>
+  <string name="composer_sender_changed_original_address_disabled">Adresa expeditorului selectată este dezactivată. Mesajul vă va fi trimis de la adresa implicită.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Mesaj nou</string>

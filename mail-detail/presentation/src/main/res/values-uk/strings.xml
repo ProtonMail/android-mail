@@ -64,6 +64,7 @@
   <string name="message_body_remote_content_banner_text">Автоматичне завантаження віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Автоматичне завантаження вбудованих зображень і віддаленого вмісту вимкнено. Це можна змінити в налаштуваннях.</string>
   <string name="message_phishing_banner_text">Наша система позначила це повідомлення спробою шахрайства. Переконайтеся, що воно надійне.</string>
+  <string name="message_expiration_banner_text">Термін дії цього повідомлення завершується через %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Ви збираєтеся вийти з програми та перейти до:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Не питати знову</string>
@@ -88,7 +89,7 @@
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
   <string name="message_report_phishing_dialog_title_offline">Attention</string>
   <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
-  <string name="message_report_phishing_dialog_confim_button_offline">Гаразд</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Підтвердити звіт про шахрайство</string>
   <string name="message_report_phishing_dialog_message">Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirm</string>

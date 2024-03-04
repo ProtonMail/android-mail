@@ -40,7 +40,7 @@
   <string name="mailbox_error_message_unexpected">예상치 못한 문제가 발생했습니다</string>
   <string name="mailbox_is_empty_title">메시지 없음</string>
   <string name="mailbox_is_empty_description">최신 상태입니다</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">읽지 않은 메세지 없음</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">읽지 않은 메시지 없음</string>
   <string name="mailbox_is_empty_folder_description">폴더가 비어있음</string>
   <string name="mailbox_is_empty_spam_description">스팸 폴더가 비어있음</string>
   <string name="mailbox_is_empty_trash_description">휴지통이 깨끗합니다</string>

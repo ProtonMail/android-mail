@@ -61,6 +61,7 @@
   <string name="message_body_remote_content_banner_text">已經關閉遠端內容的自動載入。這可以在設定中變更。</string>
   <string name="message_body_embedded_and_remote_content_banner_text">已經關閉內嵌影像與遠端內容的自動載入。這可以在設定中變更。</string>
   <string name="message_phishing_banner_text">我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正常郵件。</string>
+  <string name="message_expiration_banner_text">此郵件的有效期限尚餘 %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">您將離開應用程式並導覽到:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">下次無需再詢問</string>
@@ -82,9 +83,9 @@
   <string name="conversation_deleted">往來對話已刪除</string>
   <string name="message_body_load_remote_content_button_text">載入遠端內容</string>
   <string name="message_body_load_embedded_images_button_text">載入內嵌圖片</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">戴入遠端及內崁內容</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">此功能僅在線上提供。</string>
   <string name="message_report_phishing_dialog_confim_button_offline">好</string>
   <string name="message_report_phishing_dialog_title">確認提報釣魚郵件</string>
   <string name="message_report_phishing_dialog_message">檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。</string>

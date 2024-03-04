@@ -64,6 +64,7 @@
   <string name="message_body_remote_content_banner_text">Аўтаматычная загрузка аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Аўтаматычная загрузка ўбудаваных відарысаў і аддаленага змесціва выключана. Гэта можна змяніць у наладах.</string>
   <string name="message_phishing_banner_text">Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Праверце яго надзейнасць</string>
+  <string name="message_expiration_banner_text">Тэрмін дзеяння гэтага паведамлення міне праз %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Вы збіраецеся выйсці з праграмы і перайсці ў:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Больш не пытаць</string>

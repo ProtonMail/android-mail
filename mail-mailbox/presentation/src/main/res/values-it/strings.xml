@@ -90,7 +90,7 @@
   <string name="onboarding_easily_up_to_date_description">Scorri velocemente i messaggi raggruppati in modalità conversazione.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Preciso e ordinato</string>
-  <string name="onboarding_neat_and_tidy_description">Classifica i messaggi con cartelle, etichette e colori per personalizzare la tua casella di posta e renderla perfetta.</string>
+  <string name="onboarding_neat_and_tidy_description">Organizza i messaggi con cartelle, etichette e colori per personalizzare la tua casella di posta e renderla perfetta.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Avanti</string>
   <string name="onboarding_get_started">Inizia ora</string>

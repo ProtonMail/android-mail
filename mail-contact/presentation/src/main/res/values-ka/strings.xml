@@ -67,8 +67,8 @@
   <string name="contact_property_time_zone">დროის სარტყელი</string>
   <string name="contact_form_loading_error">კონტაქტების ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="contact_form_save_success">კონტაქტი შენახულია</string>
-  <string name="contact_form_create_success">Contact created</string>
-  <string name="contact_form_update_success">Contact updated</string>
+  <string name="contact_form_create_success">კონტაქტი შექმნა</string>
+  <string name="contact_form_update_success">კონტაქტი განახლდა</string>
   <string name="save_contact_content_description">კონტაქტის შენახვა</string>
   <string name="contact_form_save">შენახვა</string>
   <string name="add_new">ახლის დამატება</string>
@@ -97,28 +97,34 @@
   <string name="contact_details_delete_dialog_cancel_button">გაუქმება</string>
   <string name="contact_details_delete_dialog_confirm_button">დიახ</string>
   <string name="contact_form_save_error">კონტაქტის შენახვის შეცდომა. მოგვიანებით სცადეთ</string>
-  <string name="all_contacts_tab">Contacts</string>
+  <string name="all_contacts_tab">კონტაქტები</string>
   <string name="contact_groups_tab">ჯგუფები</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d member</item>
     <item quantity="other">%1$d members</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="one">Member (%1$d)</item>
-    <item quantity="other">Members (%1$d)</item>
+    <item quantity="one">წევრო (%1$d)</item>
+    <item quantity="other">წევრო (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">კონტაქტის შენახვის შეცდომა. ის არასწორი ელფოსტის მისამართს შეიცავს</string>
-  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
-  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_details_loading_error">კონტაქტების ჯგუფის ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="contact_group_form_loading_error">კონტაქტების ჯგუფის ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="edit_contact_group_content_description">კონტაქტების ჯგუფის ჩასწორება</string>
   <string name="delete_contact_group_content_description">კონტაქტების ჯგუფის წაშლა</string>
   <string name="send_group_message">ჯგუფისთვის შეტყობინების გაგზავნა</string>
-  <string name="contact_group_form_save">Save</string>
-  <string name="contact_group_form_name_hint">Display name</string>
-  <string name="remove_member_content_description">Remove member</string>
-  <string name="add_members">Add members</string>
-  <string name="change_color">Change color</string>
+  <string name="contact_group_form_save">შენახვა</string>
+  <string name="contact_group_form_name_hint">საჩვენებელი სახელი</string>
+  <string name="remove_member_content_description">წევრის წაშლა</string>
+  <string name="add_members">წევრის დამატება</string>
+  <string name="change_color">ფერის შეცვლა</string>
   <string name="contact_group_form_create_success">კონტაქტების ჯგუფი შეიქმნა</string>
   <string name="contact_group_form_update_success">კონტაქტების ჯგუფი განახლდა</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">კონტაქტების ჯგუფის შენახვის შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="members_loading_error">წევრების ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="members_done">დასრულებული</string>
+  <string name="add_members_error">წევრების დამატების შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="manage_members_title">წევრების მართვა</string>
+  <string name="search_contact">კონტაქტის ძებნა</string>
+  <string name="member_update_error">წევრის განახლების შეცდომა. მოგვიანებით სცადეთ</string>
 </resources>

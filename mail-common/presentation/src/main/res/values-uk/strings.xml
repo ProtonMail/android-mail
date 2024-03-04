@@ -35,8 +35,8 @@
   <string name="action_mark_unread_description">Позначити непрочитаним</string>
   <string name="action_star_description">Позначити зірочкою</string>
   <string name="action_unstar_description">Прибрати зірочку</string>
-  <string name="action_label_description">Позначити як</string>
-  <string name="action_move_description">Перемістити до</string>
+  <string name="action_label_description">Позначити міткою</string>
+  <string name="action_move_description">Перемістити</string>
   <string name="action_trash_description">Смітник</string>
   <string name="action_delete_description">Видалити</string>
   <string name="action_archive_description">Архівувати</string>
@@ -44,10 +44,10 @@
   <string name="action_view_in_light_mode_description">Переглянути повідомлення у світлому режимі</string>
   <string name="action_view_in_dark_mode_description">Переглянути повідомлення в темному режимі</string>
   <string name="action_print_description">Друкувати</string>
-  <string name="action_view_headers_description">Перегляд заголовків</string>
-  <string name="action_view_html_description">Перегляд HTML</string>
+  <string name="action_view_headers_description">Переглянути заголовки</string>
+  <string name="action_view_html_description">Переглянути HTML</string>
   <string name="action_report_phishing_description">Повідомити про шахрайство</string>
-  <string name="action_remind_description">Нагадати мені</string>
+  <string name="action_remind_description">Нагадати</string>
   <string name="action_save_pdf_description">Зберегти як PDF</string>
   <string name="action_sender_emails_description">Налаштувати дію для майбутніх листів від цього відправника</string>
   <string name="action_save_attachments_description">Зберегти вкладення</string>

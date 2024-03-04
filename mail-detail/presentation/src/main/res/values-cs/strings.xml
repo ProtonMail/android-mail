@@ -64,6 +64,7 @@
   <string name="message_body_remote_content_banner_text">Automatické načítání vzdáleného obsahu je vypnuto. Tuto možnost lze změnit v nastavení.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatické načítání vložených obrázků a vzdáleného obsahu je vypnuto. Tyto možnosti lze změnit v nastavení.</string>
   <string name="message_phishing_banner_text">Náš systém označil tuto zprávu jako pokus o phishing. Zkontrolujte, že se jedná o legitimní zprávu.</string>
+  <string name="message_expiration_banner_text">Tato zpráva vyprší za %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Chystáte se opustit aplikaci a přejít na:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Příště se neptat</string>
@@ -94,5 +95,5 @@
   <string name="message_report_phishing_dialog_confim_button">Potvrdit</string>
   <string name="message_report_phishing_dialog_cancel_button">Zrušit</string>
   <string name="open_on_protoncalendar_banner_title">Otevřít v Proton kalendáři</string>
-  <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný e-mail</string>
+  <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný kalendář</string>
 </resources>

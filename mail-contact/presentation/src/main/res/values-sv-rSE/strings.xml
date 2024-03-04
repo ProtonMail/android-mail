@@ -114,11 +114,17 @@
   <string name="delete_contact_group_content_description">Ta bort kontaktgrupp</string>
   <string name="send_group_message">Skicka gruppmeddelande</string>
   <string name="contact_group_form_save">Spara</string>
-  <string name="contact_group_form_name_hint">Display name</string>
+  <string name="contact_group_form_name_hint">Visningsnamn</string>
   <string name="remove_member_content_description">Ta bort medlem</string>
   <string name="add_members">Lägg till medlemmar</string>
   <string name="change_color">Ändra färg</string>
   <string name="contact_group_form_create_success">Kontaktgrupp skapad</string>
   <string name="contact_group_form_update_success">Kontaktgrupp uppdaterad</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">Det gick inte spara kontaktgrupp, försök igen senare</string>
+  <string name="members_loading_error">Det gick inte ladda medlemmar, försök igen senare</string>
+  <string name="members_done">Klar</string>
+  <string name="add_members_error">Det gick inte lägga till medlemmar, försök igen senare</string>
+  <string name="manage_members_title">Hantera medlemmar</string>
+  <string name="search_contact">Sök efter kontakt</string>
+  <string name="member_update_error">Det gick inte uppdatera medlem, försök igen senare</string>
 </resources>

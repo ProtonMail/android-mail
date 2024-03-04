@@ -121,4 +121,10 @@
   <string name="contact_group_form_create_success">Kontaktgruppe erstellt</string>
   <string name="contact_group_form_update_success">Kontaktgruppe aktualisiert</string>
   <string name="contact_group_form_save_error">Fehler beim Speichern der Kontaktgruppe. Bitte versuche es später erneut.</string>
+  <string name="members_loading_error">Fehler beim Laden von Mitgliedern. Bitte versuche es später erneut.</string>
+  <string name="members_done">Fertig</string>
+  <string name="add_members_error">Fehler beim Hinzufügen von Mitgliedern. Bitte versuche es später erneut.</string>
+  <string name="manage_members_title">Mitglieder verwalten</string>
+  <string name="search_contact">Kontakt suchen</string>
+  <string name="member_update_error">Fehler beim Aktualisieren des Mitglieds. Bitte versuche es später erneut.</string>
 </resources>

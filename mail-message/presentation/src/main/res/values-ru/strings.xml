@@ -34,7 +34,7 @@
   <string name="attachment_type_image">Изображение</string>
   <string name="attachment_type_video">Видео</string>
   <string name="attachment_type_audio">Аудио</string>
-  <string name="attachment_type_unknown">Unknown</string>
+  <string name="attachment_type_unknown">Неизвестный тип</string>
   <string name="attachment_type_pdf">PDF</string>
   <string name="attachment_type_text">Текст</string>
   <string name="attachment_type_document">Документ</string>

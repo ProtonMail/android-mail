@@ -26,7 +26,7 @@
   <string name="attachment_show_more_label">+ ще %1$d</string>
   <string name="attachment_permission_dialog_title">Потрібен дозвіл</string>
   <string name="attachment_permission_dialog_message">Щоб завантажити вкладення, Proton Mail потребує дозволу на доступ до вашого сховища.</string>
-  <string name="attachment_permission_dialog_dismiss_button">Гаразд</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Налаштування</string>
   <string name="attachment_type_description">%1$s</string>
   <!-- Attachment Types -->

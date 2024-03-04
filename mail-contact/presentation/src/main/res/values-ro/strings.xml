@@ -67,8 +67,8 @@
   <string name="contact_property_time_zone">Fus orar</string>
   <string name="contact_form_loading_error">Eroare la încărcarea contactului. Reîncercați mai târziu.</string>
   <string name="contact_form_save_success">Contact salvat</string>
-  <string name="contact_form_create_success">Contact created</string>
-  <string name="contact_form_update_success">Contact updated</string>
+  <string name="contact_form_create_success">Contact creat</string>
+  <string name="contact_form_update_success">Contact actualizat</string>
   <string name="save_contact_content_description">Salvare contact</string>
   <string name="contact_form_save">Salvare</string>
   <string name="add_new">Adăugare</string>
@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Anulare</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Eroare la salvarea contactului. Reîncercați mai târziu.</string>
-  <string name="all_contacts_tab">Contacts</string>
+  <string name="all_contacts_tab">Contacte</string>
   <string name="contact_groups_tab">Grupuri</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d member</item>
@@ -105,22 +105,28 @@
     <item quantity="other">%1$d members</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="one">Member (%1$d)</item>
-    <item quantity="few">Members (%1$d)</item>
-    <item quantity="other">Members (%1$d)</item>
+    <item quantity="one">Membri (%1$d)</item>
+    <item quantity="few">Membri (%1$d)</item>
+    <item quantity="other">Membri (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Eroare salvare contact. Conține o adresă de e-mail nevalidă.</string>
-  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
-  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_details_loading_error">Eroare la încărcarea grupului. Reîncercați mai târziu.</string>
+  <string name="contact_group_form_loading_error">Eroare la încărcarea grupului. Reîncercați mai târziu.</string>
   <string name="edit_contact_group_content_description">Editare grup de contacte</string>
   <string name="delete_contact_group_content_description">Ștergere grup de contacte</string>
   <string name="send_group_message">Trimitere mesaj la grup</string>
-  <string name="contact_group_form_save">Save</string>
-  <string name="contact_group_form_name_hint">Display name</string>
-  <string name="remove_member_content_description">Remove member</string>
-  <string name="add_members">Add members</string>
-  <string name="change_color">Change color</string>
+  <string name="contact_group_form_save">Salvare</string>
+  <string name="contact_group_form_name_hint">Nume afișat</string>
+  <string name="remove_member_content_description">Eliminare membru</string>
+  <string name="add_members">Adăugare membri</string>
+  <string name="change_color">Modificare culoare</string>
   <string name="contact_group_form_create_success">Grup de contacte creat</string>
   <string name="contact_group_form_update_success">Grup de contacte actualizat</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">Eroare la salvarea grupului de contacte. Reîncercați mai târziu.</string>
+  <string name="members_loading_error">Eroare la încărcarea membrilor. Reîncercați mai târziu.</string>
+  <string name="members_done">Gata</string>
+  <string name="add_members_error">Eroare la adăugarea membrilor. Reîncercați mai târziu.</string>
+  <string name="manage_members_title">Gestionare membri</string>
+  <string name="search_contact">Căutare contact</string>
+  <string name="member_update_error">Eroare la actualizarea membrului. Reîncercați mai târziu.</string>
 </resources>

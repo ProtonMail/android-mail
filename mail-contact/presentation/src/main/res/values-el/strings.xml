@@ -67,8 +67,8 @@
   <string name="contact_property_time_zone">Ζώνη ώρας</string>
   <string name="contact_form_loading_error">Σφάλμα φόρτωσης επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="contact_form_save_success">Η επαφή αποθηκεύτηκε</string>
-  <string name="contact_form_create_success">Contact created</string>
-  <string name="contact_form_update_success">Contact updated</string>
+  <string name="contact_form_create_success">Η επαφή δημιουργήθηκε</string>
+  <string name="contact_form_update_success">Η επαφή ενημερώθηκε</string>
   <string name="save_contact_content_description">Αποθήκευση επαφής</string>
   <string name="contact_form_save">Αποθήκευση</string>
   <string name="add_new">Προσθήκη νέας</string>
@@ -97,28 +97,34 @@
   <string name="contact_details_delete_dialog_cancel_button">Ακύρωση</string>
   <string name="contact_details_delete_dialog_confirm_button">ΟΚ</string>
   <string name="contact_form_save_error">Σφάλμα κατά την αποθήκευση της επαφής, δοκιμάστε ξανά αργότερα</string>
-  <string name="all_contacts_tab">Contacts</string>
+  <string name="all_contacts_tab">Επαφές</string>
   <string name="contact_groups_tab">Ομάδες</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d member</item>
     <item quantity="other">%1$d members</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="one">Member (%1$d)</item>
-    <item quantity="other">Members (%1$d)</item>
+    <item quantity="one">Μέλος (%1$d)</item>
+    <item quantity="other">Μέλη (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Σφάλμα κατά την αποθήκευση επαφής, περιέχει μια μη έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείο</string>
-  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
-  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_details_loading_error">Σφάλμα φόρτωσης ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="contact_group_form_loading_error">Σφάλμα φόρτωσης ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="edit_contact_group_content_description">Επεξεργασία ομάδας επαφών</string>
   <string name="delete_contact_group_content_description">Διαγραφή ομάδας επαφών</string>
   <string name="send_group_message">Στείλτε μήνυμα ομάδας</string>
-  <string name="contact_group_form_save">Save</string>
-  <string name="contact_group_form_name_hint">Display name</string>
-  <string name="remove_member_content_description">Remove member</string>
-  <string name="add_members">Add members</string>
-  <string name="change_color">Change color</string>
+  <string name="contact_group_form_save">Αποθήκευση</string>
+  <string name="contact_group_form_name_hint">Εμφανιζόμενο Όνομα</string>
+  <string name="remove_member_content_description">Αφαίρεση μέλους</string>
+  <string name="add_members">Προσθήκη μελών</string>
+  <string name="change_color">Αλλαγή χρώματος</string>
   <string name="contact_group_form_create_success">Η ομάδα επαφών δημιουργήθηκε</string>
   <string name="contact_group_form_update_success">Η ομάδα επαφών ενημερώθηκε</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">Σφάλμα κατά την αποθήκευση της ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="members_loading_error">Σφάλμα φόρτωσης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="members_done">Ολοκληρώθηκε</string>
+  <string name="add_members_error">Error adding members, please try again later</string>
+  <string name="manage_members_title">Manage members</string>
+  <string name="search_contact">Search for contact</string>
+  <string name="member_update_error">Error updating member, please try again later</string>
 </resources>
