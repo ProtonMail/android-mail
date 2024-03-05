@@ -28,7 +28,7 @@ class ContactGroupRemoteDataSourceImpl @Inject constructor(
     private val enqueuer: Enqueuer
 ) : ContactGroupRemoteDataSource {
 
-    override suspend fun addContactEmailIdsToContactGroup(
+    override fun addContactEmailIdsToContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
@@ -44,7 +44,7 @@ class ContactGroupRemoteDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun removeContactEmailIdsFromContactGroup(
+    override fun removeContactEmailIdsFromContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>

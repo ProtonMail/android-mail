@@ -34,19 +34,21 @@ class ContactGroupLocalDataSourceImpl @Inject constructor(
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
     ) {
-        val contactEmails = contactLocalDataSource.observeAllContacts(userId).firstOrNull()?.map { contact ->
+        val contactEmailsNotInGroup = contactLocalDataSource.observeAllContacts(userId).firstOrNull()?.map { contact ->
             contact.contactEmails.filter { contactEmail ->
                 contactEmail.id in contactEmailIds && labelId.id !in contactEmail.labelIds
             }
         }?.flatten() ?: emptyList()
 
-        val contactEmailsWithAddedLabelId = contactEmails.map {
+        val contactEmailsWithAddedLabelId = contactEmailsNotInGroup.map {
             it.copy(labelIds = it.labelIds.plus(labelId.id))
         }
 
-        contactLocalDataSource.upsertContactEmails(
-            *contactEmailsWithAddedLabelId.toTypedArray()
-        )
+        if (contactEmailsWithAddedLabelId.isNotEmpty()) {
+            contactLocalDataSource.upsertContactEmails(
+                *contactEmailsWithAddedLabelId.toTypedArray()
+            )
+        }
     }
 
     override suspend fun removeContactEmailIdsFromContactGroup(
@@ -54,18 +56,20 @@ class ContactGroupLocalDataSourceImpl @Inject constructor(
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
     ) {
-        val contactEmails = contactLocalDataSource.observeAllContacts(userId).firstOrNull()?.map { contact ->
+        val contactEmailsInGroup = contactLocalDataSource.observeAllContacts(userId).firstOrNull()?.map { contact ->
             contact.contactEmails.filter { contactEmail ->
                 contactEmail.id in contactEmailIds && labelId.id in contactEmail.labelIds
             }
         }?.flatten() ?: emptyList()
 
-        val contactEmailsWithRemovedLabelId = contactEmails.map {
+        val contactEmailsWithRemovedLabelId = contactEmailsInGroup.map {
             it.copy(labelIds = it.labelIds.minus(labelId.id))
         }
 
-        contactLocalDataSource.upsertContactEmails(
-            *contactEmailsWithRemovedLabelId.toTypedArray()
-        )
+        if (contactEmailsWithRemovedLabelId.isNotEmpty()) {
+            contactLocalDataSource.upsertContactEmails(
+                *contactEmailsWithRemovedLabelId.toTypedArray()
+            )
+        }
     }
 }

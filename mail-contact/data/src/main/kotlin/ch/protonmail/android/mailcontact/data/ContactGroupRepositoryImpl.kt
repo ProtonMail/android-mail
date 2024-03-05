@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.data
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcontact.data.local.ContactGroupLocalDataSource
 import ch.protonmail.android.mailcontact.data.remote.ContactGroupRemoteDataSource
@@ -39,17 +40,21 @@ class ContactGroupRepositoryImpl @Inject constructor(
         contactEmailIds: Set<ContactEmailId>
     ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
 
-        contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
+        Either.catch {
+            contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
+                userId,
+                labelId,
+                contactEmailIds
+            )
+        }.onLeft { return ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left() }
 
-        contactGroupRemoteDataSource.addContactEmailIdsToContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
+        Either.catch {
+            contactGroupRemoteDataSource.addContactEmailIdsToContactGroup(
+                userId,
+                labelId,
+                contactEmailIds
+            )
+        }.onLeft { return ContactGroupRepository.ContactGroupErrors.RemoteDataSourceError.left() }
 
         return Unit.right()
     }
@@ -60,17 +65,21 @@ class ContactGroupRepositoryImpl @Inject constructor(
         contactEmailIds: Set<ContactEmailId>
     ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
 
-        contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
+        Either.catch {
+            contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
+                userId,
+                labelId,
+                contactEmailIds
+            )
+        }.onLeft { return ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left() }
 
-        contactGroupRemoteDataSource.removeContactEmailIdsFromContactGroup(
-            userId,
-            labelId,
-            contactEmailIds
-        )
+        Either.catch {
+            contactGroupRemoteDataSource.removeContactEmailIdsFromContactGroup(
+                userId,
+                labelId,
+                contactEmailIds
+            )
+        }.onLeft { return ContactGroupRepository.ContactGroupErrors.RemoteDataSourceError.left() }
 
         return Unit.right()
     }

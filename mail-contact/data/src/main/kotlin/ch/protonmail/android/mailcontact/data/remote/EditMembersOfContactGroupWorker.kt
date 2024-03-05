@@ -32,6 +32,7 @@ import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
+import me.proton.core.network.domain.ApiManager
 
 @HiltWorker
 class EditMembersOfContactGroupWorker @AssistedInject constructor(
@@ -51,14 +52,17 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
         if (userId == null ||
             labelId == null ||
             @Suppress("UnnecessaryParentheses")
-            (labelContactEmailIds == null && unlabelContactEmailIds == null)
+            (labelContactEmailIds?.isNotEmpty() == false && unlabelContactEmailIds?.isNotEmpty() == false)
         ) {
             return Result.failure()
         }
 
+        val api: ApiManager<out ContactGroupApi> = apiProvider.get(UserId(userId))
+
+        @Suppress("TooGenericExceptionThrown")
         return kotlin.runCatching {
             if (labelContactEmailIds?.isNotEmpty() == true) {
-                val result = apiProvider.get<ContactGroupApi>(UserId(userId)).invoke {
+                val result = api {
                     labelContactEmails(
                         LabelContactEmailsBody(
                             labelId,
@@ -68,12 +72,12 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
                 }.toEither()
 
                 if (result.isLeft() || result.getOrNull()?.responses?.isAnyUnsuccessful() == true) {
-                    return@runCatching Result.failure()
+                    throw Exception("labelContactEmailIds failed")
                 }
             }
 
             if (unlabelContactEmailIds?.isNotEmpty() == true) {
-                val result = apiProvider.get<ContactGroupApi>(UserId(userId)).invoke {
+                val result = api {
                     unlabelContactEmails(
                         UnlabelContactEmailsBody(
                             labelId,
@@ -83,7 +87,7 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
                 }.toEither()
 
                 if (result.isLeft() || result.getOrNull()?.responses?.isAnyUnsuccessful() == true) {
-                    return@runCatching Result.failure()
+                    throw Exception("unlabelContactEmails failed")
                 }
             }
 

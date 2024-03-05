@@ -24,13 +24,13 @@ import me.proton.core.label.domain.entity.LabelId
 
 interface ContactGroupRemoteDataSource {
 
-    suspend fun addContactEmailIdsToContactGroup(
+    fun addContactEmailIdsToContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
     )
 
-    suspend fun removeContactEmailIdsFromContactGroup(
+    fun removeContactEmailIdsFromContactGroup(
         userId: UserId,
         labelId: LabelId,
         contactEmailIds: Set<ContactEmailId>
