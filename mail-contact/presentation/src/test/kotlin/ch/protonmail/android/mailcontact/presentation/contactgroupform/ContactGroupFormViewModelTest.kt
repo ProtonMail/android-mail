@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiMo
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -508,7 +509,7 @@ class ContactGroupFormViewModelTest {
         contactEmailIds: List<ContactEmailId>
     ) {
         coEvery {
-            createContactGroupMock.invoke(userId, name, color, contactEmailIds)
+            createContactGroupMock.invoke(userId, name, ColorRgbHex(color), contactEmailIds)
         } returns Unit.right()
     }
 
@@ -520,7 +521,7 @@ class ContactGroupFormViewModelTest {
         contactEmailIds: List<ContactEmailId>
     ) {
         coEvery {
-            editContactGroupMock.invoke(userId, labelId, name, color, contactEmailIds)
+            editContactGroupMock.invoke(userId, labelId, name, ColorRgbHex(color), contactEmailIds)
         } returns Unit.right()
     }
 }

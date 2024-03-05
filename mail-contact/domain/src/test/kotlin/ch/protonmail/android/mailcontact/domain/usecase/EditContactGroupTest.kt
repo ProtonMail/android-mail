@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -79,7 +80,13 @@ class EditContactGroupTest {
         expectEditContactGroupMembersSuccess(expectedContactEmailIds)
 
         // When
-        editContactGroup(userId, contactGroupLabelId, contactGroupName, contactGroupColor, expectedContactEmailIds)
+        editContactGroup(
+            userId,
+            contactGroupLabelId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
 
         // Then
         coVerify {
@@ -98,7 +105,7 @@ class EditContactGroupTest {
             userId,
             contactGroupLabelId,
             contactGroupName,
-            contactGroupColor,
+            ColorRgbHex(contactGroupColor),
             expectedContactEmailIds
         )
 
@@ -118,7 +125,7 @@ class EditContactGroupTest {
             userId,
             contactGroupLabelId,
             contactGroupName,
-            contactGroupColor,
+            ColorRgbHex(contactGroupColor),
             expectedContactEmailIds
         )
 

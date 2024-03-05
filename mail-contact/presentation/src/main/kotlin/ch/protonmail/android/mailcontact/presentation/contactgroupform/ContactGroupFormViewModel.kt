@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -203,7 +204,7 @@ class ContactGroupFormViewModel @Inject constructor(
         createContactGroup(
             userId = primaryUserId(),
             name = contactGroupFormUiModel.name,
-            color = contactGroupFormUiModel.color.getHexStringFromColor(),
+            color = ColorRgbHex(contactGroupFormUiModel.color.getHexStringFromColor()),
             contactEmailIds = contactGroupFormUiModel.members.map { it.id }
         ).getOrElse {
             return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
@@ -219,7 +220,7 @@ class ContactGroupFormViewModel @Inject constructor(
             userId = primaryUserId(),
             labelId = labelId,
             name = contactGroupFormUiModel.name,
-            color = contactGroupFormUiModel.color.getHexStringFromColor(),
+            color = ColorRgbHex(contactGroupFormUiModel.color.getHexStringFromColor()),
             contactEmailIds = contactGroupFormUiModel.members.map { it.id }
         ).getOrElse {
             return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)

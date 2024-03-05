@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -36,7 +37,7 @@ class EditContactGroup @Inject constructor(
         userId: UserId,
         labelId: LabelId,
         name: String,
-        color: String,
+        color: ColorRgbHex,
         contactEmailIds: List<ContactEmailId>
     ): Either<EditContactGroupError, Unit> = either {
 
@@ -48,7 +49,7 @@ class EditContactGroup @Inject constructor(
             userId,
             contactGroupLabel.copy(
                 name = name,
-                color = color
+                color = color.hex
             )
         )
 

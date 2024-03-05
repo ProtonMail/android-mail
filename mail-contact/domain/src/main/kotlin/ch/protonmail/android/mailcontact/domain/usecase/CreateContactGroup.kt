@@ -19,11 +19,12 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
+import arrow.core.raise.either
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
+import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
-import arrow.core.raise.either
-import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.label.domain.repository.LabelLocalDataSource
 import me.proton.core.label.domain.repository.LabelRemoteDataSource
 import javax.inject.Inject
@@ -37,13 +38,13 @@ class CreateContactGroup @Inject constructor(
     suspend operator fun invoke(
         userId: UserId,
         name: String,
-        color: String,
+        color: ColorRgbHex,
         contactEmailIds: List<ContactEmailId>
     ): Either<CreateContactGroupError, Unit> = either {
 
         val label = NewLabel(
             name = name,
-            color = color,
+            color = color.hex,
             isNotified = null,
             isExpanded = null,
             isSticky = null,

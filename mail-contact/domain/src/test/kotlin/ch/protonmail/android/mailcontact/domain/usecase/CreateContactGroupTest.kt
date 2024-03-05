@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.just
@@ -91,7 +92,12 @@ class CreateContactGroupTest {
         expectEditContactGroupMembersSuccess(expectedContactEmailIds)
 
         // When
-        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
 
         // Then
         assertEquals(Unit.right(), actual)
@@ -103,7 +109,12 @@ class CreateContactGroupTest {
         expectCreateLabelThrows(expectedNewLabel)
 
         // When
-        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
 
         // Then
         assertEquals(CreateContactGroupError.CreatingLabelError.left(), actual)
@@ -117,7 +128,12 @@ class CreateContactGroupTest {
         expectEditContactGroupMembersFail(expectedContactEmailIds)
 
         // When
-        val actual = createContactGroup(userId, contactGroupName, contactGroupColor, expectedContactEmailIds)
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
 
         // Then
         assertEquals(CreateContactGroupError.EditingMembersError.left(), actual)
