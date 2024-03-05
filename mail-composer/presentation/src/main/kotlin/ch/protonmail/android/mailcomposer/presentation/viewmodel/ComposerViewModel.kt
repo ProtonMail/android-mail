@@ -519,11 +519,15 @@ class ComposerViewModel @Inject constructor(
         return if (draftFields.haveBlankSubject()) {
             ComposerEvent.ConfirmEmptySubject
         } else if (state.value.messageExpiresIn != Duration.ZERO) {
-            val externalRecipients = draftFields.let {
-                getExternalRecipients(primaryUserId(), it.recipientsTo, it.recipientsCc, it.recipientsBcc)
-            }
-            if (externalRecipients.isNotEmpty()) {
-                ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients(externalRecipients)
+            if (!state.value.isMessagePasswordSet) {
+                val externalRecipients = draftFields.let {
+                    getExternalRecipients(primaryUserId(), it.recipientsTo, it.recipientsCc, it.recipientsBcc)
+                }
+                if (externalRecipients.isNotEmpty()) {
+                    ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients(externalRecipients)
+                } else {
+                    onSendMessage(action)
+                }
             } else {
                 onSendMessage(action)
             }

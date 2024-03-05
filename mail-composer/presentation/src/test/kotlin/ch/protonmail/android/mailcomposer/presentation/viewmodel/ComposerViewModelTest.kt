@@ -284,7 +284,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
-        expectObserveMessagePassword(expectedUserId, messageId)
+        expectMessagePassword(expectedUserId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, messageId)
 
@@ -319,7 +319,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -364,7 +364,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -409,7 +409,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -447,7 +447,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -493,7 +493,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -539,7 +539,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -585,7 +585,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -622,7 +622,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -672,7 +672,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -716,7 +716,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -759,7 +759,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -816,10 +816,9 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        expectNoExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -835,7 +834,6 @@ class ComposerViewModelTest {
 
         // Then
         coVerifyOrder {
-            getExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
             draftUploaderMock.stopContinuousUpload()
             storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
             sendMessageMock(expectedUserId, expectedMessageId)
@@ -875,10 +873,9 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        expectNoExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
@@ -894,7 +891,6 @@ class ComposerViewModelTest {
 
         // Then
         coVerifyOrder {
-            getExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
             draftUploaderMock.stopContinuousUpload()
             storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
             sendMessageMock(expectedUserId, expectedMessageId)
@@ -915,7 +911,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -942,7 +938,7 @@ class ComposerViewModelTest {
         val expectedDraftBody = expectDraftBodyWithSignature()
         expectInjectAddressSignature(expectedUserId, expectedDraftBody, expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -993,7 +989,7 @@ class ComposerViewModelTest {
             expectObservedMessageAttachments(expectedUserId, expectedMessageId)
             expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
             expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-            expectObserveMessagePassword(expectedUserId, expectedMessageId)
+            expectMessagePassword(expectedUserId, expectedMessageId)
             expectNoFileShareVia()
             expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1030,7 +1026,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1052,7 +1048,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1078,7 +1074,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1105,7 +1101,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1132,7 +1128,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1164,7 +1160,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1199,7 +1195,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), previousSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1231,7 +1227,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1264,7 +1260,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1294,7 +1290,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1337,7 +1333,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1377,7 +1373,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1417,7 +1413,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
@@ -1443,7 +1439,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1470,7 +1466,7 @@ class ComposerViewModelTest {
             expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
             expectNoInputDraftAction()
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-            expectObserveMessagePassword(expectedUserId, expectedDraftId)
+            expectMessagePassword(expectedUserId, expectedDraftId)
             expectNoFileShareVia()
             expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1507,7 +1503,7 @@ class ComposerViewModelTest {
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1563,7 +1559,7 @@ class ComposerViewModelTest {
                 expectedAction
             )
             expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-            expectObserveMessagePassword(expectedUserId, expectedDraftId)
+            expectMessagePassword(expectedUserId, expectedDraftId)
             expectNoFileShareVia()
             expectValidSenderAddress(expectedUserId, expectedDraftFields.sender)
             expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
@@ -1615,7 +1611,7 @@ class ComposerViewModelTest {
             expectedAction
         )
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
         expectInvalidSenderAddress(
@@ -1658,7 +1654,7 @@ class ComposerViewModelTest {
         expectParentDraftDataError(expectedUserId, expectedParentId) { DataError.Local.DecryptionError }
         expectObservedMessageAttachments(expectedUserId, draftId)
         expectObserveMessageSendingError(expectedUserId, draftId)
-        expectObserveMessagePassword(expectedUserId, draftId)
+        expectMessagePassword(expectedUserId, draftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, draftId)
 
@@ -1680,7 +1676,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectNoInputDraftAction()
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1704,7 +1700,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
 
@@ -1729,7 +1725,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1754,7 +1750,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1795,7 +1791,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedDraftId)
         expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
         expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectObserveMessagePassword(expectedUserId, expectedDraftId)
+        expectMessagePassword(expectedUserId, expectedDraftId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
 
@@ -1845,7 +1841,7 @@ class ComposerViewModelTest {
         expectAttachmentDeleteSucceeds(expectedUserId, expectedSenderEmail, messageId, expectedAttachmentId)
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
-        expectObserveMessagePassword(expectedUserId, messageId)
+        expectMessagePassword(expectedUserId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, messageId)
 
@@ -1895,7 +1891,7 @@ class ComposerViewModelTest {
         expectNoInputDraftAction()
         expectStoreParentAttachmentSucceeds(expectedUserId, messageId)
         expectObserveMessageSendingError(expectedUserId, messageId)
-        expectObserveMessagePassword(expectedUserId, messageId)
+        expectMessagePassword(expectedUserId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, messageId)
 
@@ -1924,7 +1920,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
 
@@ -1953,7 +1949,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
 
@@ -1983,7 +1979,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
 
@@ -2020,7 +2016,7 @@ class ComposerViewModelTest {
         expectStartDraftSync(expectedUserId, expectedMessageId)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectAddressValidation(expectedRecipient.address, true)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
@@ -2041,7 +2037,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
 
@@ -2068,7 +2064,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectSaveExpirationTimeForDraft(userId, messageId, expectedSenderEmail, expirationTime)
         expectObserveMessageExpirationTime(userId, messageId)
@@ -2097,7 +2093,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(userId, messageId)
         coEvery {
@@ -2127,7 +2123,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(userId, messageId)
         expectInjectAddressSignature(userId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(userId, messageId)
-        expectObserveMessagePassword(userId, messageId)
+        expectMessagePassword(userId, messageId)
         expectNoFileShareVia()
         val messageExpirationTime = expectObserveMessageExpirationTime(userId, messageId)
 
@@ -2138,59 +2134,60 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `should emit event for confirming sending an expiring message when there are external recipients`() = runTest {
-        // Given
-        val expectedSubject = Subject("Subject for the message")
-        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
-        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
-        val expectedDraftBody = DraftBody("I am plaintext")
-        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val expectedFields = DraftFields(
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            recipientsTo,
-            recipientsCc,
-            recipientsBcc,
-            null
-        )
-        mockParticipantMapper()
-        expectNetworkManagerIsDisconnected()
-        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
-        expectNoInputDraftMessageId()
-        expectNoInputDraftAction()
-        expectSendMessageSucceds(expectedUserId, expectedMessageId)
-        expectStopContinuousDraftUploadSucceeds()
-        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
-        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
-        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
-        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
-        expectNoFileShareVia()
-        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        val externalRecipients = expectExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
+    fun `should emit event to confirm sending expiring message when there are external recipients and no password`() =
+        runTest {
+            // Given
+            val expectedSubject = Subject("Subject for the message")
+            val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+            val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+            val expectedUserId = expectedUserId { UserIdSample.Primary }
+            val expectedDraftBody = DraftBody("I am plaintext")
+            expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+            val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
+            val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
+            val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+            val expectedFields = DraftFields(
+                expectedSenderEmail,
+                expectedSubject,
+                expectedDraftBody,
+                recipientsTo,
+                recipientsCc,
+                recipientsBcc,
+                null
+            )
+            mockParticipantMapper()
+            expectNetworkManagerIsDisconnected()
+            expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
+            expectNoInputDraftMessageId()
+            expectNoInputDraftAction()
+            expectSendMessageSucceds(expectedUserId, expectedMessageId)
+            expectStopContinuousDraftUploadSucceeds()
+            expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+            expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+            expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+            expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+            expectNoMessagePassword(expectedUserId, expectedMessageId)
+            expectNoFileShareVia()
+            expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+            val externalRecipients = expectExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
 
-        // Change internal state of the View Model to simulate the existence of all fields before closing the composer
-        expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
-        )
+            // Change internal state of the View Model to simulate the existence of all fields
+            expectedViewModelInitialState(
+                expectedMessageId,
+                expectedSenderEmail,
+                expectedSubject,
+                expectedDraftBody,
+                Triple(recipientsTo, recipientsCc, recipientsBcc)
+            )
 
-        // When
-        viewModel.submit(ComposerAction.OnSendMessage)
+            // When
+            viewModel.submit(ComposerAction.OnSendMessage)
 
-        // Then
-        viewModel.state.test {
-            assertEquals(Effect.of(externalRecipients), awaitItem().confirmSendExpiringMessage)
+            // Then
+            viewModel.state.test {
+                assertEquals(Effect.of(externalRecipients), awaitItem().confirmSendExpiringMessage)
+            }
         }
-    }
 
     @Test
     fun `should send message when sending an expiring message to external recipients was confirmed`() = runTest {
@@ -2224,7 +2221,7 @@ class ComposerViewModelTest {
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
-        expectObserveMessagePassword(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
         expectExternalRecipients(expectedUserId, recipientsTo, recipientsCc, recipientsBcc)
@@ -2677,9 +2674,13 @@ class ComposerViewModelTest {
         coJustRun { deleteAllAttachments(userId, senderEmail, messageId) }
     }
 
-    private fun expectObserveMessagePassword(userId: UserId, messageId: MessageId) {
+    private fun expectMessagePassword(userId: UserId, messageId: MessageId) {
         val messagePassword = MessagePassword(userId, messageId, "password", null)
         coEvery { observeMessagePassword(userId, messageId) } returns flowOf(messagePassword)
+    }
+
+    private fun expectNoMessagePassword(userId: UserId, messageId: MessageId) {
+        coEvery { observeMessagePassword(userId, messageId) } returns flowOf(null)
     }
 
     private fun expectAddressValidation(address: String, expectedResult: Boolean) {
@@ -2740,15 +2741,6 @@ class ComposerViewModelTest {
         recipientsBcc: RecipientsBcc
     ) = listOf(RecipientSample.ExternalEncrypted).also {
         coEvery { getExternalRecipients(userId, recipientsTo, recipientsCc, recipientsBcc) } returns it
-    }
-
-    private fun expectNoExternalRecipients(
-        userId: UserId,
-        recipientsTo: RecipientsTo,
-        recipientsCc: RecipientsCc,
-        recipientsBcc: RecipientsBcc
-    ) {
-        coEvery { getExternalRecipients(userId, recipientsTo, recipientsCc, recipientsBcc) } returns emptyList()
     }
 
     companion object TestData {
