@@ -35,6 +35,7 @@ cache: &cache
   tags:
     - shared-small
   before_script:
+    - !reference [before_script]
     - ./scripts/setup_firebase_gcloud.sh
   cache:
     *cache
@@ -48,6 +49,7 @@ cache: &cache
   tags:
     - shared-small
   before_script:
+    - !reference [before_script]
     - echo $SERVICE_ACCOUNT_MAIL > /tmp/service-account.json
     - ./scripts/release/generate_git_release_notes.sh /tmp/release_notes.txt
   rules:
