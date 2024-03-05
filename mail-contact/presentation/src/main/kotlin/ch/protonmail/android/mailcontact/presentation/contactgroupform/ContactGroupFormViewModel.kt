@@ -190,8 +190,9 @@ class ContactGroupFormViewModel @Inject constructor(
         if (stateValue !is ContactGroupFormState.Data) return
 
         viewModelScope.launch {
-            if (stateValue.contactGroup.id != null) handleUpdateContactGroup(stateValue.contactGroup)
-            else handleCreateContactGroup(stateValue.contactGroup)
+            stateValue.contactGroup.id?.let { labelId ->
+                handleUpdateContactGroup(labelId, stateValue.contactGroup)
+            } ?: handleCreateContactGroup(stateValue.contactGroup)
         }
     }
 
@@ -207,14 +208,12 @@ class ContactGroupFormViewModel @Inject constructor(
         emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)
     }
 
-    private suspend fun handleUpdateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
+    private suspend fun handleUpdateContactGroup(labelId: LabelId, contactGroupFormUiModel: ContactGroupFormUiModel) {
         emitNewStateFor(ContactGroupFormEvent.SavingContactGroup)
-
-        if (contactGroupFormUiModel.id == null) return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
 
         editContactGroup(
             userId = primaryUserId(),
-            labelId = contactGroupFormUiModel.id,
+            labelId = labelId,
             name = contactGroupFormUiModel.name,
             color = contactGroupFormUiModel.color.getHexStringFromColor()
         ).getOrElse {
