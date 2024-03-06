@@ -227,16 +227,19 @@ run_unit_test:
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane unitTest
     - bundle exec fastlane coverageReport
-  coverage: /Total.*?(\d{1,3}\.\d{0,2})%/
+  coverage: /TotalLineCoverage.*?(\d{1,3}\.\d{0,2})%/
+  interruptible: true
   artifacts:
+    when: always
     expire_in: 1 week
     paths:
-      - build/reports
+      - '**/build/reports/kover/cobertura*.xml'
+      - './coverage/build/reports/kover/html/'
     reports:
-      junit: ./**/build/test-results/test*/TEST-*.xml
+      junit: ./**/test-results/*/TEST-*.xml
       coverage_report:
         coverage_format: cobertura
-        path: build/reports/cobertura-coverage.xml
+        path: '**/build/reports/kover/cobertura*.xml'
 
 run_firebase_proton_core_libs_tests:
   extends: .firebase_test_job

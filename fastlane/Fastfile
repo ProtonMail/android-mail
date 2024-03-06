@@ -75,7 +75,7 @@ platform :android do
 
   desc "Generate test coverage report based on the last test run"
   lane :coverageReport do
-    gradle(task: "-Pci --console=plain coberturaCoverageReport")
+    gradle(task: "-Pci --console=plain coberturaXmlReport globalLineCoverage :coverage:koverHtmlReport -x :coverage:jacocoToCobertura")
   end
 
   desc "Publish alpha build to firebase dev group"
