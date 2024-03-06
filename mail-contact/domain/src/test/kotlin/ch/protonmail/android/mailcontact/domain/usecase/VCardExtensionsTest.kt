@@ -138,4 +138,22 @@ class VCardExtensionsTest {
         assertNull(actual.getExtendedProperty(givenNotSupportedRawProperty.propertyName))
     }
 
+    @Test
+    fun `sanitizeAndBuildVCard copies KEY properties from original VCARD`() = runTest {
+        // Given
+        val given = Ezvcard.parse(ContactVCardSample.stefanoVCardType2).first()
+
+        // When
+        val actual = given.sanitizeAndBuildVCard()
+
+        // Then
+        assertTrue(actual.keys.size == 2)
+
+        assertTrue(actual.keys[0].pref == 1)
+        assertNotNull(actual.keys[0].data)
+
+        assertTrue(actual.keys[1].pref == 2)
+        assertNotNull(actual.keys[1].data)
+    }
+
 }

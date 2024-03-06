@@ -27,6 +27,7 @@ import ezvcard.property.Categories
 import ezvcard.property.Email
 import ezvcard.property.FormattedName
 import ezvcard.property.Gender
+import ezvcard.property.Key
 import ezvcard.property.Language
 import ezvcard.property.Logo
 import ezvcard.property.Member
@@ -79,6 +80,7 @@ fun VCard.sanitizeAndBuildVCard(): VCard {
             is Gender,
             is Anniversary,
             is Nickname,
+            is Key,
             is Related -> vCard.addProperty(vCardProperty)
         }
 
@@ -101,7 +103,6 @@ fun VCard.sanitizeAndBuildVCard(): VCard {
 const val VCARD_PROD_ID = "-//ProtonMail//ProtonMail for Android vCard 1.0.0//EN"
 
 val protonSupportedVCardExtendedProperties = listOf(
-    "KEY",
     "X-PM-MIMETYPE",
     "X-PM-ENCRYPT",
     "X-PM-SIGN",
