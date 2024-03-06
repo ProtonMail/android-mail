@@ -27,7 +27,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Gradle.kotlinGradlePlugin}")
         classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.Gradle.hiltAndroidGradlePlugin}")
         classpath("com.google.gms:google-services:${Versions.Gradle.googleServicesPlugin}")
-        classpath("org.jacoco:org.jacoco.core:${Versions.Gradle.jacocoGradlePlugin}")
         classpath("io.sentry:sentry-android-gradle-plugin:${Versions.Gradle.sentryGradlePlugin}")
     }
 }
@@ -41,9 +40,11 @@ allprojects {
 
 plugins {
     id("me.proton.core.gradle-plugins.detekt") version Versions.Proton.corePlugin
-    id("me.proton.core.gradle-plugins.jacoco") version Versions.Proton.corePlugin
     id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
-    id("com.google.devtools.ksp") version "1.9.22-1.0.17" apply false
+    id("com.google.devtools.ksp") version Versions.Ksp.symbolProcessingApi apply false
+    id("me.proton.core.gradle-plugins.coverage-config") version Versions.Proton.corePlugin
+    id("me.proton.core.gradle-plugins.global-coverage") version Versions.Proton.corePlugin apply false
+    id("me.proton.core.gradle-plugins.coverage") version Versions.Proton.corePlugin apply false
 }
 
 subprojects {
@@ -64,12 +65,6 @@ subprojects {
         }
         tasks.findByName("detekt")?.dependsOn(":detekt-rules:assemble")
     }
-}
-
-protonCoverageMultiModuleOptions {
-    runTestTasksBefore = false
-    sharedExcludes = listOf("**/me/proton/core/**")
-    coverageConversionScript = { "$rootDir/../proton-libs/plugins/jacoco/scripts/cover2cover.py" }
 }
 
 protonDetekt {
@@ -116,7 +111,15 @@ fun isNonStable(version: String): Boolean {
 }
 
 fun Project.setupTests() {
+    fun Project.isRootProject() = this@isRootProject.subprojects.size != 0
+
     for (sub in subprojects) {
+
+        // Apply coverage plugin to non subprojects.
+        if (!sub.isRootProject()) {
+            sub.afterEvaluate { pluginManager.apply("me.proton.core.gradle-plugins.coverage") }
+        }
+
         sub.tasks.withType<Test> {
             // Test logging
             testLogging {
@@ -130,3 +133,4 @@ fun Project.setupTests() {
         }
     }
 }
+

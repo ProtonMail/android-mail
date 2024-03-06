@@ -29,6 +29,7 @@ includeCoreBuild {
 
 include(":app")
 include(":benchmark")
+include(":coverage")
 include(":detekt-rules")
 
 include(":mail-common:dagger")

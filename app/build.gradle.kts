@@ -27,7 +27,8 @@ plugins {
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
     id("io.sentry.android.gradle")
-    id("me.proton.core.gradle-plugins.environment-config") version "1.3.0"
+    id("org.jetbrains.kotlinx.kover")
+    id("me.proton.core.gradle-plugins.environment-config") version Versions.Proton.corePlugin
 }
 
 setAsHiltModule()
@@ -102,7 +103,7 @@ android {
 
         debug {
             isDebuggable = true
-            isTestCoverageEnabled = false
+            enableUnitTestCoverage = false
             postprocessing {
                 isObfuscate = false
                 isOptimizeCode = false
@@ -113,7 +114,7 @@ android {
         }
         release {
             isDebuggable = false
-            isTestCoverageEnabled = false
+            enableUnitTestCoverage = false
             postprocessing {
                 isObfuscate = false
                 isOptimizeCode = true
@@ -184,7 +185,7 @@ android {
         enableAggregatingTask = true
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("MANIFEST.MF")
         resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/licenses/**")
