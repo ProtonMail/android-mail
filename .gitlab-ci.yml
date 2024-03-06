@@ -29,7 +29,7 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 stages:
   - analyse
@@ -107,7 +107,7 @@ build_alpha_release:
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleAlphaRelease
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       # Always build on merge requests
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
@@ -122,7 +122,7 @@ build_prod_release:
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane assembleProdRelease
   rules:
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       # Always build on merge requests
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
@@ -182,14 +182,15 @@ run_firebase_proton_core_libs_tests:
   script:
     - bundle exec fastlane coreLibsTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
+    - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
 
 run_firebase_smoke_tests:
   extends: .firebase_test_job
   script:
     - bundle exec fastlane smokeTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" || $NIGHTLY_ALPHA_BUILD == "true"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') || $NIGHTLY_ALPHA_BUILD == "true"
       when: never
     - when: on_success
 
@@ -198,7 +199,7 @@ run_firebase_full_regression_tests:
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
+    - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($NIGHTLY_ALPHA_BUILD == "true" || $INTERNAL_ALPHA_RELEASE == "true")
     # Allow manual regression test runs on MRs if needed.
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: manual
@@ -212,7 +213,7 @@ tag_release:
   script:
     - bundle exec fastlane tagRelease
   rules:
-    - if: $CI_COMMIT_BRANCH == "master" && ($INTERNAL_ALPHA_RELEASE == "true")
+    - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($INTERNAL_ALPHA_RELEASE == "true")
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
@@ -224,7 +225,7 @@ deploy_to_firebase_dev:
       when: never
     - if: $INTERNAL_ALPHA_RELEASE == "true"
       when: never
-    - if: $CI_COMMIT_BRANCH == "master"
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
       when: manual
       allow_failure: true
@@ -265,6 +266,16 @@ distribute:debug:
       --filename "latest-mail-test-dev-debug.apk"
 
 include:
+  # Push the cache if it's the default branch
+  - rules:
+      - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    local: /ci/cache-policy-push-pull.yml
+
+  # Do not push the cache if it's not the default branch (e.g. MRs)
+  - rules:
+      - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+    local: /ci/cache-policy-pull.yml
+
   - project: 'translations/generator'
     ref: master
     file: '/jobs/sync-crowdin.gitlab-ci.yml'

@@ -3,6 +3,7 @@ cache: &cache
   paths:
     - ${CI_PROJECT_DIR}
   untracked: true
+  policy: pull
 
 .ruby-cache: &ruby-cache
   key:
@@ -11,12 +12,14 @@ cache: &cache
       - Gemfile.lock
   paths:
     - ${BUNDLE_GEM_PATH}
-  policy: pull-push
+  policy: pull
 
 .base_job:
   cache:
-    - *cache
-    - *ruby-cache
+    - <<: *cache
+      policy: !reference [.cache-policy, cache, policy]
+    - <<: *ruby-cache
+      policy: !reference [.cache-policy, cache, policy]
 
 .build_job:
   stage: build
@@ -38,7 +41,7 @@ cache: &cache
     - !reference [before_script]
     - ./scripts/setup_firebase_gcloud.sh
   cache:
-    *cache
+    policy: pull
 
 .firebase_deploy_job:
   stage: deploy
@@ -56,4 +59,4 @@ cache: &cache
     - if: $CI_PIPELINE_SOURCE == "parent_pipeline"
       when: never
   cache:
-    *cache
+    policy: pull
