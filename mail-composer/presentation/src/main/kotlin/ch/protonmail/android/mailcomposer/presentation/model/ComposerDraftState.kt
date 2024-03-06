@@ -52,8 +52,7 @@ data class ComposerDraftState(
     val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
     val senderChangedNotice: Effect<TextUiModel> = Effect.empty(),
     val messageExpiresIn: Duration,
-    val confirmSendExpiringMessage: Effect<List<Participant>>,
-    val isCustomExpirationTimeVisible: Boolean
+    val confirmSendExpiringMessage: Effect<List<Participant>>
 ) {
 
     companion object {
@@ -97,8 +96,7 @@ data class ComposerDraftState(
             isMessagePasswordSet = false,
             senderChangedNotice = Effect.empty(),
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty(),
-            isCustomExpirationTimeVisible = false
+            confirmSendExpiringMessage = Effect.empty()
         )
     }
 }

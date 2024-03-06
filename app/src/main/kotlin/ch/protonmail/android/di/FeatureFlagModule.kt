@@ -32,11 +32,10 @@ object FeatureFlagModule {
 
     @Provides
     @Singleton
-    fun provideDefaultMailFeatureFlags(@BuildDebug buildDebug: Boolean): MailFeatureDefaults {
+    fun provideDefaultMailFeatureFlags(): MailFeatureDefaults {
         return MailFeatureDefaults(
             mapOf(
-                MailFeatureId.ConversationMode to true,
-                MailFeatureId.CustomExpirationTime to buildDebug
+                MailFeatureId.ConversationMode to true
             )
         )
     }

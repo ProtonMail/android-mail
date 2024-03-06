@@ -62,11 +62,7 @@ import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
 @Composable
-fun SetExpirationTimeBottomSheetContent(
-    isCustomExpirationTimeVisible: Boolean,
-    expirationTime: Duration,
-    onDoneClick: (Duration) -> Unit
-) {
+fun SetExpirationTimeBottomSheetContent(expirationTime: Duration, onDoneClick: (Duration) -> Unit) {
 
     val selectedItem = remember { mutableStateOf(ExpirationTime.from(expirationTime)) }
     val selectedCustomDays = remember {
@@ -110,14 +106,7 @@ fun SetExpirationTimeBottomSheetContent(
     Divider()
 
     LazyColumn {
-        items(
-            items = ExpirationTime.values().filter {
-                when {
-                    isCustomExpirationTimeVisible -> true
-                    else -> it != ExpirationTime.Custom
-                }
-            }
-        ) { item ->
+        items(items = ExpirationTime.values()) { item ->
             ProtonRawListItem(
                 modifier = Modifier
                     .selectable(selected = item == selectedItem.value) { selectedItem.value = item }

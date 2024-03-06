@@ -24,12 +24,10 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
-import ch.protonmail.android.mailcommon.domain.MailFeatureId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
-import ch.protonmail.android.mailcommon.domain.usecase.ObserveMailFeature
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -128,9 +126,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
-import me.proton.core.featureflag.domain.entity.FeatureFlag
-import me.proton.core.featureflag.domain.entity.FeatureId
-import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
@@ -195,13 +190,6 @@ class ComposerViewModelTest {
     private val saveMessageExpirationTime = mockk<SaveMessageExpirationTime>()
     private val observeMessageExpirationTime = mockk<ObserveMessageExpirationTime>()
     private val getExternalRecipients = mockk<GetExternalRecipients>()
-    private val observeMailFeature = mockk<ObserveMailFeature> {
-        every {
-            this@mockk.invoke(any(), MailFeatureId.CustomExpirationTime)
-        } returns flowOf(
-            FeatureFlag(null, FeatureId("ExpiringMessages"), Scope.Local, defaultValue = true, value = true)
-        )
-    }
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -238,7 +226,6 @@ class ComposerViewModelTest {
             deleteAttachment,
             deleteAllAttachments,
             reEncryptAttachments,
-            observeMailFeature,
             observeMessagePassword,
             validateSenderAddress,
             saveMessageExpirationTime,
@@ -2417,8 +2404,7 @@ class ComposerViewModelTest {
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty(),
-            isCustomExpirationTimeVisible = false
+            confirmSendExpiringMessage = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)
