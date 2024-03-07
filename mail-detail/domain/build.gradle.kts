@@ -54,6 +54,8 @@ dependencies {
     implementation(Proton.Core.user)
 
     implementation(Dependencies.moduleDomainLibs)
+    implementation(AndroidX.Hilt.work)
+
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-label:domain"))
