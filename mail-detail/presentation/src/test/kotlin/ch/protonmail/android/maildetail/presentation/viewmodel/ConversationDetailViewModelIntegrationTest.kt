@@ -60,13 +60,13 @@ import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenIcsInProtonCalendar
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues.OpenProtonCalendarOnPlayStore
+import ch.protonmail.android.maildetail.domain.usecase.DelayedMarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
-import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -267,9 +267,9 @@ class ConversationDetailViewModelIntegrationTest {
         ).right()
     }
 
-    private val markMessageAndConversationReadIfAllRead: MarkMessageAndConversationReadIfAllMessagesRead =
+    private val markMessageAndConversationReadIfAllRead: DelayedMarkMessageAndConversationReadIfAllMessagesRead =
         mockk {
-            coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit.right()
+            coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
         }
     private val getCurrentEpochTimeDuration: GetCurrentEpochTimeDuration = mockk {
         coEvery { this@mockk.invoke() } returns Duration.parse("PT0S")
@@ -1609,7 +1609,7 @@ class ConversationDetailViewModelIntegrationTest {
         star: StarConversations = starConversations,
         unStar: UnStarConversations = unStarConversations,
         decryptedMessageBody: GetDecryptedMessageBody = getDecryptedMessageBody,
-        markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead =
+        markMessageAndConversationRead: DelayedMarkMessageAndConversationReadIfAllMessagesRead =
             markMessageAndConversationReadIfAllRead,
         getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
         ioDispatcher: CoroutineDispatcher = testDispatcher!!,
@@ -1641,7 +1641,7 @@ class ConversationDetailViewModelIntegrationTest {
         unStarConversations = unStar,
         savedStateHandle = savedState,
         getDecryptedMessageBody = decryptedMessageBody,
-        markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationReadIfAllMessagesRead,
+        markMessageAndConversationReadIfAllMessagesRead = markMessageAndConversationRead,
         setMessageViewState = setMessageViewState,
         observeConversationViewState = observeConversationViewState,
         getAttachmentIntentValues = getIntentValues,

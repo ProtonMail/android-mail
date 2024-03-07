@@ -39,11 +39,11 @@ import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
+import ch.protonmail.android.maildetail.domain.usecase.DelayedMarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
-import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -162,7 +162,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val unStarConversations: UnStarConversations,
     private val savedStateHandle: SavedStateHandle,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
-    private val markMessageAndConversationReadIfAllMessagesRead: MarkMessageAndConversationReadIfAllMessagesRead,
+    private val markMessageAndConversationReadIfAllMessagesRead: DelayedMarkMessageAndConversationReadIfAllMessagesRead,
     private val setMessageViewState: SetMessageViewState,
     private val observeConversationViewState: ObserveConversationViewState,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
