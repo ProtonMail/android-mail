@@ -20,6 +20,8 @@ package ch.protonmail.android.maildetail.dagger
 
 import ch.protonmail.android.maildetail.data.repository.InMemoryConversationStateRepositoryImpl
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
+import ch.protonmail.android.maildetail.domain.repository.MailDetailRepository
+import ch.protonmail.android.maildetail.domain.repository.MailDetailRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -38,4 +40,7 @@ internal interface ViewModelBindings {
     fun bindInMemoryConversationStateRepository(
         implementation: InMemoryConversationStateRepositoryImpl
     ): InMemoryConversationStateRepository
+
+    @Binds
+    fun bindMailDetailRepository(implementation: MailDetailRepositoryImpl): MailDetailRepository
 }
