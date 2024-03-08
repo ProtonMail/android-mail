@@ -31,6 +31,42 @@ workflow:
       when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
+.gradle-cache-dev: &gradle-cache-dev
+  key:
+    prefix: gradle-cache-dev
+    files:
+      - gradle/wrapper/gradle-wrapper.properties
+  paths:
+    - .gradle
+  policy: pull
+
+.gradle-cache-alpha: &gradle-cache-alpha
+  key:
+    prefix: gradle-cache-alpha
+    files:
+      - gradle/wrapper/gradle-wrapper.properties
+  paths:
+    - .gradle
+  policy: pull
+
+.gradle-cache-prod: &gradle-cache-prod
+  key:
+    prefix: gradle-cache-prod
+    files:
+      - gradle/wrapper/gradle-wrapper.properties
+  paths:
+    - .gradle
+  policy: pull
+
+.ruby-cache: &ruby-cache
+  key:
+    prefix: ruby-cache
+    files:
+      - Gemfile.lock
+  paths:
+    - ${BUNDLE_GEM_PATH}
+  policy: pull
+
 stages:
   - analyse
   - danger-review
@@ -44,7 +80,11 @@ stages:
 
 analyse:
   stage: analyse
-  extends: .base_job
+  cache:
+    - <<: *gradle-cache-dev
+      policy: !reference [ .cache-policy, cache, policy ]
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   tags:
     - shared-medium
   script:
@@ -56,6 +96,9 @@ analyse:
 
 danger-review:
   stage: danger-review
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   tags:
     - shared-small
   when: always
@@ -92,6 +135,11 @@ i18n-commit-locales:
 
 build_dev_debug:
   extends: .build_job
+  cache:
+    - <<: *gradle-cache-dev
+      policy: !reference [ .cache-policy, cache, policy ]
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - base64 -d - < "$GOOGLE_SERVICES_JSON_FILE" > app/google-services.json
     - bundle exec fastlane setupUiTestsAssets
@@ -100,6 +148,11 @@ build_dev_debug:
 
 build_alpha_release:
   extends: .build_job
+  cache:
+    - <<: *gradle-cache-alpha
+      policy: !reference [ .cache-policy, cache, policy ]
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
@@ -115,6 +168,11 @@ build_alpha_release:
 
 build_prod_release:
   extends: .build_job
+  cache:
+    - <<: *gradle-cache-prod
+      policy: !reference [ .cache-policy, cache, policy ]
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - base64 -d - < "$PRIVATE_PROPERTIES_FILE" > private.properties
     - base64 -d - < "$SENTRY_PROPERTIES_FILE" > sentry.properties
@@ -156,7 +214,11 @@ stopReview:
 
 run_unit_test:
   stage: test
-  extends: .base_job
+  cache:
+    - <<: *gradle-cache-dev
+      policy: !reference [ .cache-policy, cache, policy ]
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   tags:
     - xlarge-k8s
   dependencies:
@@ -178,6 +240,9 @@ run_unit_test:
 
 run_firebase_proton_core_libs_tests:
   extends: .firebase_test_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   allow_failure: true # Temporary, as long as we don't have a more specific test environment.
   script:
     - bundle exec fastlane coreLibsTest
@@ -186,6 +251,9 @@ run_firebase_proton_core_libs_tests:
 
 run_firebase_smoke_tests:
   extends: .firebase_test_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - bundle exec fastlane smokeTest
   rules:
@@ -196,6 +264,9 @@ run_firebase_smoke_tests:
 
 run_firebase_full_regression_tests:
   extends: .firebase_test_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - bundle exec fastlane fullRegressionTest
   rules:
@@ -207,7 +278,9 @@ run_firebase_full_regression_tests:
 
 tag_release:
   stage: tag
-  extends: .base_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   tags:
     - shared-small
   script:
@@ -217,6 +290,9 @@ tag_release:
 
 deploy_to_firebase_dev:
   extends: .firebase_deploy_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - bundle exec fastlane deployToFirebaseDevGroup
   rules:
@@ -232,6 +308,9 @@ deploy_to_firebase_dev:
 
 deploy_to_firebase_nightly:
   extends: .firebase_deploy_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - bundle exec fastlane deployToFirebaseNightlyGroup
   rules:
@@ -240,6 +319,9 @@ deploy_to_firebase_nightly:
 
 deploy_to_firebase_alpha:
   extends: .firebase_deploy_job
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   script:
     - bundle exec fastlane deployToFirebaseInternalAlphaGroup
   rules:
@@ -249,6 +331,7 @@ deploy_to_firebase_alpha:
 distribute:debug:
   stage: deploy
   image: $CI_REGISTRY/tpe/test-scripts
+  before_script: []
   dependencies:
     - build_dev_debug
   rules:

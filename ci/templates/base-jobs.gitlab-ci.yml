@@ -1,29 +1,5 @@
-cache: &cache
-  key: $CI_COMMIT_SHA
-  paths:
-    - ${CI_PROJECT_DIR}
-  untracked: true
-  policy: pull
-
-.ruby-cache: &ruby-cache
-  key:
-    prefix: ruby-cache
-    files:
-      - Gemfile.lock
-  paths:
-    - ${BUNDLE_GEM_PATH}
-  policy: pull
-
-.base_job:
-  cache:
-    - <<: *cache
-      policy: !reference [.cache-policy, cache, policy]
-    - <<: *ruby-cache
-      policy: !reference [.cache-policy, cache, policy]
-
 .build_job:
   stage: build
-  extends: .base_job
   tags:
     - xlarge-k8s
   artifacts:
@@ -32,7 +8,6 @@ cache: &cache
 
 .firebase_test_job:
   stage: test
-  extends: .base_job
   dependencies:
     - build_dev_debug
   tags:
@@ -45,7 +20,6 @@ cache: &cache
 
 .firebase_deploy_job:
   stage: deploy
-  extends: .base_job
   interruptible: false
   dependencies:
     - build_alpha_release
