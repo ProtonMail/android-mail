@@ -267,7 +267,7 @@ class SendMessageTest {
                 null,
                 null
             )
-        } returns GenerateMessagePackages.Error.GeneratingPackages.left()
+        } returns GenerateMessagePackages.Error.GeneratingPackages("generateMessagePackages exception").left()
 
         // When
         val result = sendMessage(userId, messageId)

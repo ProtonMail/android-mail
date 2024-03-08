@@ -38,6 +38,7 @@ import me.proton.core.crypto.common.pgp.EncryptedMessage
 import me.proton.core.crypto.common.pgp.PGPCrypto
 import me.proton.core.crypto.common.pgp.dataPacket
 import me.proton.core.crypto.common.pgp.decryptSessionKeyOrNull
+import me.proton.core.crypto.common.pgp.exception.CryptoException
 import me.proton.core.crypto.common.pgp.keyPacket
 import me.proton.core.key.domain.entity.key.PrivateKey
 import me.proton.core.key.domain.entity.key.PrivateKeyRing
@@ -185,6 +186,40 @@ class GenerateMessagePackagesTest {
                 )
             )
         )
+
+    }
+
+    @Test
+    fun `returns error when CryptoException is thrown`() = runTest {
+        // Given
+        val recipient1 = draft.message.toList.first().address
+        val recipient2 = draft.message.ccList.first().address
+        val recipient3 = draft.message.bccList.first().address
+        val recipient4 = draft.message.bccList[1].address
+
+        val sendPreferences = mapOf(
+            recipient1 to SendMessageSample.SendPreferences.ProtonMail,
+            recipient2 to SendMessageSample.SendPreferences.ClearMime,
+            recipient3 to SendMessageSample.SendPreferences.Cleartext,
+            recipient4 to SendMessageSample.SendPreferences.PgpMime
+        )
+
+        givenAllRecipients(recipient1, recipient2, recipient3, recipient4)
+
+        every { pgpCryptoMock.decryptText(any(), any()) } throws CryptoException("crypto failed")
+
+        // When
+        val actual = sut(
+            userAddress,
+            draft,
+            sendPreferences,
+            mapOf(attachment.attachmentId to attachmentFile),
+            SendMessageSample.MessagePassword,
+            SendMessageSample.Modulus
+        )
+
+        // Then
+        assertTrue(actual.isLeft())
 
     }
 
