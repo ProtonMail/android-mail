@@ -223,6 +223,45 @@ class GenerateMessagePackagesTest {
 
     }
 
+    @Test
+    fun `returns error when GenerateSendMessagePackages throws`() = runTest {
+        // Given
+        val recipient1 = draft.message.toList.first().address
+        val recipient2 = draft.message.ccList.first().address
+        val recipient3 = draft.message.bccList.first().address
+        val recipient4 = draft.message.bccList[1].address
+
+        val sendPreferences = mapOf(
+            recipient1 to SendMessageSample.SendPreferences.ProtonMail,
+            recipient2 to SendMessageSample.SendPreferences.ClearMime,
+            recipient3 to SendMessageSample.SendPreferences.Cleartext,
+            recipient4 to SendMessageSample.SendPreferences.PgpMime
+        )
+
+        givenAllRecipients(recipient1, recipient2, recipient3, recipient4)
+
+        coEvery {
+            generateSendMessagePackagesMock.invoke(
+                any(), any(), any(), any(), any(),
+                any(), any(), any(), any(), any(), any()
+            )
+        } throws Exception("generateSendMessagePackagesMock failed")
+
+        // When
+        val actual = sut(
+            userAddress,
+            draft,
+            sendPreferences,
+            mapOf(attachment.attachmentId to attachmentFile),
+            SendMessageSample.MessagePassword,
+            SendMessageSample.Modulus
+        )
+
+        // Then
+        assertTrue(actual.isLeft())
+
+    }
+
     /**
      * Returns expected list of top-level Mail Packages for all recipients combined.
      */

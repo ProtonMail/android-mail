@@ -38,11 +38,12 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @OptIn(ExperimentalEncodingApi::class)
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "MaxLineLength")
 class GenerateSendMessagePackages @Inject constructor(
     private val cryptoContext: CryptoContext
 ) {
 
+    @Throws(GenerateSendMessagePackagesException::class)
     @Suppress("LongMethod")
     suspend operator fun invoke(
         sendPreferences: Map<Email, SendPreferences>,
@@ -145,13 +146,21 @@ class GenerateSendMessagePackages @Inject constructor(
                         return@mapNotNull null
                     }
 
-                    val recipientBodyKeyPacket = recipientPublicKey.encryptSessionKey(
-                        cryptoContext,
-                        decryptedBodySessionKey
-                    )
+                    val recipientBodyKeyPacket = runCatching {
+                        recipientPublicKey.encryptSessionKey(
+                            cryptoContext,
+                            decryptedBodySessionKey
+                        )
+                    }.getOrElse {
+                        throw it.toGenerateSendMessagePackagesException("generateProtonMailAndCleartext: error encrypting SessionKey for recipientBodyKeyPacket")
+                    }
 
-                    val encryptedAttachmentKeyPackets = decryptedAttachmentSessionKeys.mapValues {
-                        Base64.encode(recipientPublicKey.encryptSessionKey(cryptoContext, it.value))
+                    val encryptedAttachmentKeyPackets = runCatching {
+                        decryptedAttachmentSessionKeys.mapValues {
+                            Base64.encode(recipientPublicKey.encryptSessionKey(cryptoContext, it.value))
+                        }
+                    }.getOrElse {
+                        throw it.toGenerateSendMessagePackagesException("generateProtonMailAndCleartext: error encrypting SessionKey for encryptedAttachmentKeyPackets")
                     }
 
                     recipientEmail to SendMessagePackage.Address.Internal(
@@ -266,6 +275,7 @@ class GenerateSendMessagePackages @Inject constructor(
         }
     }
 
+    @Suppress("LongMethod", "ThrowsCount")
     private suspend fun generateEncryptedOutside(
         sendPreferences: List<Map.Entry<Email, SendPreferences>>,
         decryptedBodySessionKey: SessionKey,
@@ -283,23 +293,43 @@ class GenerateSendMessagePackages @Inject constructor(
 
                 val passwordByteArray = messagePassword.password.toByteArray()
 
-                val bodyKeyPacket = Base64.encode(
-                    cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(decryptedBodySessionKey, passwordByteArray)
-                )
-
-                val attachmentKeyPackets = decryptedAttachmentSessionKeys.mapValues {
-                    Base64.encode(cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(it.value, passwordByteArray))
+                val bodyKeyPacket = runCatching {
+                    Base64.encode(
+                        cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(decryptedBodySessionKey, passwordByteArray)
+                    )
+                }.getOrElse {
+                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting SessionKey with password for bodyKeyPacket")
                 }
 
-                val token = Base64.encode(cryptoContext.pgpCrypto.generateRandomBytes(size = 32))
-                val encryptedToken = cryptoContext.pgpCrypto.encryptTextWithPassword(token, passwordByteArray)
+                val attachmentKeyPackets = runCatching {
+                    decryptedAttachmentSessionKeys.mapValues {
+                        Base64.encode(cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(it.value, passwordByteArray))
+                    }
+                }.getOrElse {
+                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting SessionKey with password for attachmentKeyPackets")
+                }
 
-                val passwordVerifier = cryptoContext.srpCrypto.calculatePasswordVerifier(
-                    username = "", // required for legacy reasons, can be empty
-                    password = passwordByteArray,
-                    modulusId = modulus.modulusId,
-                    modulus = modulus.modulus
-                )
+                val token = runCatching {
+                    Base64.encode(cryptoContext.pgpCrypto.generateRandomBytes(size = 32))
+                }.getOrElse {
+                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error generating random bytes")
+                }
+                val encryptedToken = runCatching {
+                    cryptoContext.pgpCrypto.encryptTextWithPassword(token, passwordByteArray)
+                }.getOrElse {
+                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting token")
+                }
+
+                val passwordVerifier = runCatching {
+                    cryptoContext.srpCrypto.calculatePasswordVerifier(
+                        username = "", // required for legacy reasons, can be empty
+                        password = passwordByteArray,
+                        modulusId = modulus.modulusId,
+                        modulus = modulus.modulus
+                    )
+                }.getOrElse {
+                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error calculating password verifier")
+                }
                 val auth = SendMessagePackage.Auth(
                     modulusId = passwordVerifier.modulusId,
                     version = passwordVerifier.version,
@@ -330,6 +360,14 @@ class GenerateSendMessagePackages @Inject constructor(
             type = globalPackageType
         )
     }
+
+    class GenerateSendMessagePackagesException(
+        reason: String,
+        cause: Throwable?
+    ) : Exception(reason, cause)
+
+    private fun Throwable?.toGenerateSendMessagePackagesException(reason: String) =
+        run { GenerateSendMessagePackagesException(reason, this) }
 
     companion object {
 

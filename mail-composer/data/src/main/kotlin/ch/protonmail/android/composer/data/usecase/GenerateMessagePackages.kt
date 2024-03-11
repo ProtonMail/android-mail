@@ -145,19 +145,21 @@ class GenerateMessagePackages @Inject constructor(
 
         val areAllAttachmentsSigned = localDraft.messageBody.attachments.all { it.signature != null }
 
-        val packages = generateSendMessagePackages(
-            sendPreferences,
-            decryptedPlaintextBodySessionKey,
-            encryptedPlaintextBodyDataPacket,
-            decryptedMimeBodySessionKey,
-            encryptedMimeBodyDataPacket,
-            localDraft.messageBody.mimeType,
-            signedAndEncryptedMimeBodyForRecipients,
-            decryptedAttachmentSessionKeys,
-            areAllAttachmentsSigned,
-            messagePassword,
-            modulus
-        )
+        val packages = runCatching {
+            generateSendMessagePackages(
+                sendPreferences,
+                decryptedPlaintextBodySessionKey,
+                encryptedPlaintextBodyDataPacket,
+                decryptedMimeBodySessionKey,
+                encryptedMimeBodyDataPacket,
+                localDraft.messageBody.mimeType,
+                signedAndEncryptedMimeBodyForRecipients,
+                decryptedAttachmentSessionKeys,
+                areAllAttachmentsSigned,
+                messagePassword,
+                modulus
+            )
+        }.getOrElse { return Error.GeneratingPackages("error in generateSendMessagePackages", it).left() }
 
         val areAllSubpackagesGenerated = packages.sumOf { it.addresses.size } == sendPreferences.size
 
