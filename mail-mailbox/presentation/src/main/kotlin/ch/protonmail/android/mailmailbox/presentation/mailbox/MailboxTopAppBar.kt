@@ -124,7 +124,10 @@ fun MailboxTopAppBar(
                 actions = {
 
                     if (uiModel.shouldShowActions) {
-                        UpsellingMailButton()
+                        @Suppress("ConstantConditionIf")
+                        if (false) { // Remove this condition when upselling is ready
+                            UpsellingMailButton()
+                        }
                         IconButton(
                             modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
                             onClick = actions.onEnterSearchMode
