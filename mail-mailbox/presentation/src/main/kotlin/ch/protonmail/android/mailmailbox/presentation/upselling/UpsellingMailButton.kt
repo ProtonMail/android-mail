@@ -30,6 +30,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,42 +40,47 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailmailbox.presentation.R
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun UpsellingMailButton(modifier: Modifier = Modifier, viewModel: UpsellingButtonViewModel = hiltViewModel()) {
-    val state = rememberAsState(flow = viewModel.state, initial = UpsellingButtonViewModel.initialState)
+    val state = viewModel.state.collectAsState()
     AnimatedVisibility(
         visible = state.value.isShown,
         enter = scaleIn(),
         exit = scaleOut()
     ) {
-        Surface(
-            modifier = modifier,
-            color = Color.Transparent,
-            onClick = {},
-            border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
-            shape = ProtonTheme.shapes.large
+        UpsellingMailButton(modifier = modifier)
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun UpsellingMailButton(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier,
+        color = Color.Transparent,
+        onClick = {},
+        border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
+        shape = ProtonTheme.shapes.large
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(ProtonDimens.SmallSpacing),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(ProtonDimens.SmallSpacing),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_logo_mail_mono),
-                    contentDescription = NO_CONTENT_DESCRIPTION,
-                    tint = ProtonTheme.colors.iconNorm
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_plus),
-                    contentDescription = NO_CONTENT_DESCRIPTION,
-                    tint = ProtonTheme.colors.iconNorm
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.ic_logo_mail_mono),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                tint = ProtonTheme.colors.iconNorm
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                tint = ProtonTheme.colors.iconNorm
+            )
         }
     }
 }
@@ -84,6 +90,6 @@ fun UpsellingMailButton(modifier: Modifier = Modifier, viewModel: UpsellingButto
 @Composable
 fun UpsellingMailButtonPreview() {
     ProtonTheme {
-        UpsellingMailButton(viewModel = UpsellingButtonViewModel())
+        UpsellingMailButton()
     }
 }
