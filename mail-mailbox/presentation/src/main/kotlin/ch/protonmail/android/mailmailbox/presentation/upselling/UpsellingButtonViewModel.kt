@@ -19,17 +19,40 @@
 package ch.protonmail.android.mailmailbox.presentation.upselling
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class UpsellingButtonViewModel @Inject constructor() : ViewModel() {
+class UpsellingButtonViewModel @Inject constructor(
+    observePrimaryUserId: ObservePrimaryUserId,
+    getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices
+) : ViewModel() {
 
     private val mutableState = MutableStateFlow(initialState)
     val state: StateFlow<UpsellingButtonState> = mutableState.asStateFlow()
+
+    init {
+        observePrimaryUserId()
+            .onEach { userId ->
+                getDynamicPlansAdjustedPrices(userId)
+                    .let { dynamicPlans ->
+                        Timber.d("UpsellingButtonViewModel: Plans count: ${dynamicPlans.plans.size}")
+                        Timber.d("UpsellingButtonViewModel: Plans: ${dynamicPlans.plans.map { it.name }}")
+
+                        mutableState.value = state.value.copy(isShown = dynamicPlans.plans.isNotEmpty())
+                    }
+            }
+            .launchIn(viewModelScope)
+    }
 
     companion object {
 
