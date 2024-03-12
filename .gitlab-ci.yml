@@ -13,8 +13,6 @@ before_script:
 variables:
   # Clean up cache when extraction fails
   FF_CLEAN_UP_FAILED_CACHE_EXTRACT: "true"
-  # Use fastzip to improve cache times
-  FF_USE_FASTZIP: "true"
   # Output upload and download progress every 5 seconds
   TRANSFER_METER_FREQUENCY: "5s"
   # Use no compression for artifacts
