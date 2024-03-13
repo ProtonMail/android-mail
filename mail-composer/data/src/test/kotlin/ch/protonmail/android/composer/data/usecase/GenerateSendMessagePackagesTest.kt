@@ -40,6 +40,7 @@ import org.junit.Rule
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.Test
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalEncodingApi::class)
@@ -75,7 +76,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         assertEquals(emptyList<SendMessagePackage>(), actual)
@@ -103,7 +104,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         assertEquals(emptyList<SendMessagePackage>(), actual)
@@ -130,7 +131,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -146,6 +147,7 @@ class GenerateSendMessagePackagesTest {
             type = PackageType.ProtonMail.type
         )
 
+        assertNotNull(actual)
         assertEquals(listOf(expected), actual)
 
         // make sure we don't leak keys, because everything should be encrypted
@@ -171,7 +173,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -186,6 +188,7 @@ class GenerateSendMessagePackagesTest {
             type = PackageType.PgpMime.type
         )
 
+        assertNotNull(actual)
         assertEquals(listOf(expected), actual)
 
         // make sure we don't leak keys, because everything should be encrypted
@@ -211,7 +214,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -247,7 +250,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -284,7 +287,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -323,7 +326,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = false,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -367,10 +370,11 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
 
+        assertNotNull(actual)
         assertTrue(actual.size == 1)
         assertTrue(actual.first().addresses.size == 2)
         assertTrue {
@@ -406,10 +410,11 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
 
+        assertNotNull(actual)
         assertTrue(actual.size == 1)
         assertTrue(actual.first().addresses.size == 2)
         assertTrue {
@@ -443,7 +448,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = null,
             modulus = null
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -459,6 +464,7 @@ class GenerateSendMessagePackagesTest {
             type = PackageType.ProtonMail.type
         )
 
+        assertNotNull(actual)
         assertEquals(listOf(expected), actual)
 
         // make sure we don't leak keys, because everything should be encrypted
@@ -489,7 +495,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = SendMessageSample.MessagePassword,
             modulus = SendMessageSample.Modulus
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -512,6 +518,7 @@ class GenerateSendMessagePackagesTest {
         )
 
         // Then
+        assertNotNull(actual)
         assertEquals(listOf(expected), actual)
         // make sure we don't leak keys, because everything should be encrypted
         assertEquals(null, actual.first().attachmentKeys)
@@ -541,7 +548,7 @@ class GenerateSendMessagePackagesTest {
             areAllAttachmentsSigned = true,
             messagePassword = SendMessageSample.MessagePassword,
             modulus = SendMessageSample.Modulus
-        )
+        ).getOrNull()
 
         // Then
         val expected = SendMessagePackage(
@@ -564,6 +571,7 @@ class GenerateSendMessagePackagesTest {
         )
 
         // Then
+        assertNotNull(actual)
         assertEquals(listOf(expected), actual)
         // make sure we don't leak keys, because everything should be encrypted
         assertEquals(null, actual.first().attachmentKeys)

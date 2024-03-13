@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.composer.data.usecase
 
+import arrow.core.Either
+import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -43,7 +46,6 @@ class GenerateSendMessagePackages @Inject constructor(
     private val cryptoContext: CryptoContext
 ) {
 
-    @Throws(GenerateSendMessagePackagesException::class)
     @Suppress("LongMethod")
     suspend operator fun invoke(
         sendPreferences: Map<Email, SendPreferences>,
@@ -57,7 +59,7 @@ class GenerateSendMessagePackages @Inject constructor(
         areAllAttachmentsSigned: Boolean,
         messagePassword: MessagePassword?,
         modulus: Modulus?
-    ): List<SendMessagePackage> {
+    ): Either<Error, List<SendMessagePackage>> = either {
 
         val sendPreferencesBySubpackageType = groupBySubpackageType(
             sendPreferences, isEncryptOutside = messagePassword != null
@@ -78,7 +80,7 @@ class GenerateSendMessagePackages @Inject constructor(
                 encryptedBodyDataPacket,
                 areAllAttachmentsSigned,
                 bodyContentType
-            )
+            ).bind()
 
         val clearMimeSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
             PackageType.ClearMime, emptyList()
@@ -105,7 +107,7 @@ class GenerateSendMessagePackages @Inject constructor(
                 messagePassword,
                 modulus,
                 areAllAttachmentsSigned
-            )
+            ).bind()
 
         val pgpMimeSendPreferences = sendPreferencesBySubpackageType.getOrDefault(
             PackageType.PgpMime, emptyList()
@@ -118,11 +120,13 @@ class GenerateSendMessagePackages @Inject constructor(
                 areAllAttachmentsSigned
             )
 
-        return listOfNotNull(
-            protonMailAndCleartextPackage.takeIf { it.addresses.isNotEmpty() },
-            clearMimePackage.takeIf { it.addresses.isNotEmpty() },
-            encryptedOutsidePackage.takeIf { it.addresses.isNotEmpty() }
-        ) + pgpMimePackages
+        return (
+            listOfNotNull(
+                protonMailAndCleartextPackage.takeIf { it.addresses.isNotEmpty() },
+                clearMimePackage.takeIf { it.addresses.isNotEmpty() },
+                encryptedOutsidePackage.takeIf { it.addresses.isNotEmpty() }
+            ) + pgpMimePackages
+            ).right()
     }
 
 
@@ -133,7 +137,7 @@ class GenerateSendMessagePackages @Inject constructor(
         encryptedBodyDataPacket: ByteArray,
         areAllAttachmentsSigned: Boolean,
         bodyContentType: MimeType
-    ): SendMessagePackage {
+    ): Either<Error, SendMessagePackage> = either {
 
         val addresses = sendPreferences.mapNotNull { (recipientEmail, sendPreference) ->
             when (sendPreference.pgpScheme) {
@@ -152,7 +156,7 @@ class GenerateSendMessagePackages @Inject constructor(
                             decryptedBodySessionKey
                         )
                     }.getOrElse {
-                        throw it.toGenerateSendMessagePackagesException("generateProtonMailAndCleartext: error encrypting SessionKey for recipientBodyKeyPacket")
+                        raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for recipientBodyKeyPacket"))
                     }
 
                     val encryptedAttachmentKeyPackets = runCatching {
@@ -160,7 +164,7 @@ class GenerateSendMessagePackages @Inject constructor(
                             Base64.encode(recipientPublicKey.encryptSessionKey(cryptoContext, it.value))
                         }
                     }.getOrElse {
-                        throw it.toGenerateSendMessagePackagesException("generateProtonMailAndCleartext: error encrypting SessionKey for encryptedAttachmentKeyPackets")
+                        raise(Error.ProtonMailAndCleartext("generateProtonMailAndCleartext: error encrypting SessionKey for encryptedAttachmentKeyPackets"))
                     }
 
                     recipientEmail to SendMessagePackage.Address.Internal(
@@ -207,7 +211,7 @@ class GenerateSendMessagePackages @Inject constructor(
             type = globalPackageType,
             bodyKey = bodyKey,
             attachmentKeys = attachmentKeys
-        )
+        ).right()
     }
 
     private fun groupBySubpackageType(
@@ -275,7 +279,7 @@ class GenerateSendMessagePackages @Inject constructor(
         }
     }
 
-    @Suppress("LongMethod", "ThrowsCount")
+    @Suppress("LongMethod")
     private suspend fun generateEncryptedOutside(
         sendPreferences: List<Map.Entry<Email, SendPreferences>>,
         decryptedBodySessionKey: SessionKey,
@@ -285,7 +289,7 @@ class GenerateSendMessagePackages @Inject constructor(
         messagePassword: MessagePassword?,
         modulus: Modulus?,
         areAllAttachmentsSigned: Boolean
-    ): SendMessagePackage {
+    ): Either<Error, SendMessagePackage> = either {
 
         val addresses = if (messagePassword != null && modulus != null) {
 
@@ -298,7 +302,7 @@ class GenerateSendMessagePackages @Inject constructor(
                         cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(decryptedBodySessionKey, passwordByteArray)
                     )
                 }.getOrElse {
-                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting SessionKey with password for bodyKeyPacket")
+                    raise(Error.EncryptedOutside("generateEncryptedOutside: error encrypting SessionKey with password for bodyKeyPacket"))
                 }
 
                 val attachmentKeyPackets = runCatching {
@@ -306,18 +310,19 @@ class GenerateSendMessagePackages @Inject constructor(
                         Base64.encode(cryptoContext.pgpCrypto.encryptSessionKeyWithPassword(it.value, passwordByteArray))
                     }
                 }.getOrElse {
-                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting SessionKey with password for attachmentKeyPackets")
+                    raise(Error.EncryptedOutside("generateEncryptedOutside: error encrypting SessionKey with password for attachmentKeyPackets"))
                 }
 
                 val token = runCatching {
                     Base64.encode(cryptoContext.pgpCrypto.generateRandomBytes(size = 32))
                 }.getOrElse {
-                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error generating random bytes")
+                    raise(Error.EncryptedOutside("generateEncryptedOutside: error generating random bytes"))
                 }
+
                 val encryptedToken = runCatching {
                     cryptoContext.pgpCrypto.encryptTextWithPassword(token, passwordByteArray)
                 }.getOrElse {
-                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error encrypting token")
+                    raise(Error.EncryptedOutside("generateEncryptedOutside: error encrypting token"))
                 }
 
                 val passwordVerifier = runCatching {
@@ -328,8 +333,9 @@ class GenerateSendMessagePackages @Inject constructor(
                         modulus = modulus.modulus
                     )
                 }.getOrElse {
-                    throw it.toGenerateSendMessagePackagesException("generateEncryptedOutside: error calculating password verifier")
+                    raise(Error.EncryptedOutside("generateEncryptedOutside: error calculating password verifier"))
                 }
+
                 val auth = SendMessagePackage.Auth(
                     modulusId = passwordVerifier.modulusId,
                     version = passwordVerifier.version,
@@ -358,19 +364,18 @@ class GenerateSendMessagePackages @Inject constructor(
             mimeType = bodyContentType.value,
             body = Base64.encode(encryptedBodyDataPacket),
             type = globalPackageType
-        )
+        ).right()
     }
 
-    class GenerateSendMessagePackagesException(
-        reason: String,
-        cause: Throwable?
-    ) : Exception(reason, cause)
-
-    private fun Throwable?.toGenerateSendMessagePackagesException(reason: String) =
-        run { GenerateSendMessagePackagesException(reason, this) }
 
     companion object {
 
         const val SessionKeyAlgorithm = "aes256"
+
+    }
+
+    sealed class Error(open val message: String) {
+        data class ProtonMailAndCleartext(override val message: String) : Error(message)
+        data class EncryptedOutside(override val message: String) : Error(message)
     }
 }

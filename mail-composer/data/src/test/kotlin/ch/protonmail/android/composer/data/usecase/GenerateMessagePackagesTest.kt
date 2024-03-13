@@ -19,6 +19,8 @@
 package ch.protonmail.android.composer.data.usecase
 
 import java.io.File
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
@@ -224,7 +226,7 @@ class GenerateMessagePackagesTest {
     }
 
     @Test
-    fun `returns error when GenerateSendMessagePackages throws`() = runTest {
+    fun `returns error when GenerateSendMessagePackages returns error`() = runTest {
         // Given
         val recipient1 = draft.message.toList.first().address
         val recipient2 = draft.message.ccList.first().address
@@ -245,7 +247,7 @@ class GenerateMessagePackagesTest {
                 any(), any(), any(), any(), any(),
                 any(), any(), any(), any(), any(), any()
             )
-        } throws Exception("generateSendMessagePackagesMock failed")
+        } returns GenerateSendMessagePackages.Error.ProtonMailAndCleartext("error").left()
 
         // When
         val actual = sut(
@@ -332,7 +334,7 @@ class GenerateMessagePackagesTest {
                 body = Base64.encode(SendMessageSample.EncryptedMimeBodyDataPacket),
                 type = PackageType.PgpMime.type
             )
-        )
+        ).right()
     }
 
     @Test

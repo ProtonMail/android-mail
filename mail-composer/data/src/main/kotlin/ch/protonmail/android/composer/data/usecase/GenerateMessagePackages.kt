@@ -22,6 +22,7 @@ import java.io.File
 import java.io.StringWriter
 import arrow.core.Either
 import arrow.core.left
+import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
@@ -70,7 +71,8 @@ class GenerateMessagePackages @Inject constructor(
         attachmentFiles: Map<AttachmentId, File>,
         messagePassword: MessagePassword?,
         modulus: Modulus?
-    ): Either<Error, List<SendMessagePackage>> {
+    ): Either<Error, List<SendMessagePackage>> = either {
+
         lateinit var decryptedPlaintextBodySessionKey: SessionKey
         lateinit var encryptedPlaintextBodyDataPacket: DataPacket
 
@@ -145,21 +147,21 @@ class GenerateMessagePackages @Inject constructor(
 
         val areAllAttachmentsSigned = localDraft.messageBody.attachments.all { it.signature != null }
 
-        val packages = runCatching {
-            generateSendMessagePackages(
-                sendPreferences,
-                decryptedPlaintextBodySessionKey,
-                encryptedPlaintextBodyDataPacket,
-                decryptedMimeBodySessionKey,
-                encryptedMimeBodyDataPacket,
-                localDraft.messageBody.mimeType,
-                signedAndEncryptedMimeBodyForRecipients,
-                decryptedAttachmentSessionKeys,
-                areAllAttachmentsSigned,
-                messagePassword,
-                modulus
-            )
-        }.getOrElse { return Error.GeneratingPackages("error in generateSendMessagePackages", it).left() }
+        val packages = generateSendMessagePackages(
+            sendPreferences,
+            decryptedPlaintextBodySessionKey,
+            encryptedPlaintextBodyDataPacket,
+            decryptedMimeBodySessionKey,
+            encryptedMimeBodyDataPacket,
+            localDraft.messageBody.mimeType,
+            signedAndEncryptedMimeBodyForRecipients,
+            decryptedAttachmentSessionKeys,
+            areAllAttachmentsSigned,
+            messagePassword,
+            modulus
+        ).mapLeft {
+            Error.GeneratingPackages("error in generateSendMessagePackages: ${it.message}")
+        }.bind()
 
         val areAllSubpackagesGenerated = packages.sumOf { it.addresses.size } == sendPreferences.size
 
