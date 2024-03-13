@@ -23,16 +23,16 @@ import arrow.core.raise.Raise
 import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
+import ch.protonmail.android.mailcontact.domain.encryptAndSignNoTrailingSpacesTrim
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.domain.sanitizeAndBuildVCard
+import ch.protonmail.android.mailcontact.domain.signNoTrailingSpacesTrim
 import ezvcard.VCard
 import kotlinx.coroutines.flow.firstOrNull
-import me.proton.core.contact.domain.encryptAndSignContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.repository.ContactRepository
-import me.proton.core.contact.domain.signContactCard
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.domain.entity.UserId
@@ -94,11 +94,11 @@ class EncryptAndSignContactCards @Inject constructor(
                     fallbackName,
                     decryptedContact,
                     (signedContactCard ?: VCard()).sanitizeAndBuildVCard()
-                ).let { signContactCard(it) },
+                ).let { signNoTrailingSpacesTrim(it) },
                 decryptedContactMapper.mapToEncryptedAndSignedContactCard(
                     decryptedContact,
                     (encryptedAndSignedContactCard ?: VCard()).sanitizeAndBuildVCard()
-                ).let { encryptAndSignContactCard(it) }
+                ).let { encryptAndSignNoTrailingSpacesTrim(it) }
             )
         }
 

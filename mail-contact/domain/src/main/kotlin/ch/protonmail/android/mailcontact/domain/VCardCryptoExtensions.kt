@@ -19,13 +19,16 @@
 package ch.protonmail.android.mailcontact.domain
 
 import ezvcard.Ezvcard
+import ezvcard.VCard
 import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.DecryptedVCard
 import me.proton.core.crypto.common.pgp.Signature
 import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.key.domain.decryptText
+import me.proton.core.key.domain.encryptText
 import me.proton.core.key.domain.entity.keyholder.KeyHolderContext
+import me.proton.core.key.domain.signText
 import me.proton.core.key.domain.verifyText
 
 fun KeyHolderContext.decryptContactCardTrailingSpacesFallback(contactCard: ContactCard): DecryptedVCard {
@@ -72,4 +75,17 @@ private fun KeyHolderContext.verifyTextWithTrailingSpacesFallback(data: String, 
     return if (!verifyText(data, signature, trimTrailingSpaces = true)) {
         verifyText(data, signature, trimTrailingSpaces = false)
     } else true
+}
+
+fun KeyHolderContext.encryptAndSignNoTrailingSpacesTrim(vCard: VCard): ContactCard.Encrypted {
+    val vCardData = vCard.write()
+    val encryptedVCardData = encryptText(vCardData)
+    val vCardSignature = signText(vCardData, trimTrailingSpaces = false)
+    return ContactCard.Encrypted(encryptedVCardData, vCardSignature)
+}
+
+fun KeyHolderContext.signNoTrailingSpacesTrim(vCard: VCard): ContactCard.Signed {
+    val vCardData = vCard.write()
+    val vCardSignature = signText(vCardData, trimTrailingSpaces = false)
+    return ContactCard.Signed(vCardData, vCardSignature)
 }

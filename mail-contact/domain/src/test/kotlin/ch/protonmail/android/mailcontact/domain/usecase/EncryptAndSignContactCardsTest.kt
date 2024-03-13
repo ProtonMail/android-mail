@@ -21,11 +21,13 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import ch.protonmail.android.mailcontact.domain.encryptAndSignNoTrailingSpacesTrim
 import ch.protonmail.android.mailcontact.domain.mapper.DecryptedContactMapper
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.sanitizeAndBuildVCard
+import ch.protonmail.android.mailcontact.domain.signNoTrailingSpacesTrim
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -39,12 +41,10 @@ import io.mockk.mockkStatic
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.contact.domain.encryptAndSignContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.ContactWithCards
 import me.proton.core.contact.domain.entity.DecryptedVCard
 import me.proton.core.contact.domain.repository.ContactRepository
-import me.proton.core.contact.domain.signContactCard
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.crypto.common.pgp.VerificationStatus
 import me.proton.core.domain.arch.DataResult
@@ -341,16 +341,16 @@ class EncryptAndSignContactCardsTest {
     }
 
     private fun expectSignContactCard(vCard: VCard) {
-        mockkStatic(KeyHolderContext::signContactCard)
+        mockkStatic(KeyHolderContext::signNoTrailingSpacesTrim)
         every {
-            any<KeyHolderContext>().signContactCard(vCard)
+            any<KeyHolderContext>().signNoTrailingSpacesTrim(vCard)
         } returns ContactCard.Signed("signed vCard UID: ${vCard.uid.value}", "signature")
     }
 
     private fun expectEncryptAndSignContactCard(vCard: VCard) {
-        mockkStatic(KeyHolderContext::encryptAndSignContactCard)
+        mockkStatic(KeyHolderContext::encryptAndSignNoTrailingSpacesTrim)
         every {
-            any<KeyHolderContext>().encryptAndSignContactCard(vCard)
+            any<KeyHolderContext>().encryptAndSignNoTrailingSpacesTrim(vCard)
         } returns ContactCard.Encrypted("encrypted and signed vCard UID: ${vCard.uid.value}", "signature")
     }
 
