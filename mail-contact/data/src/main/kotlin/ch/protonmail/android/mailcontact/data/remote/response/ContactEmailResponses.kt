@@ -29,11 +29,11 @@ data class ContactEmailIdResponse(
     val response: ContactEmailCodeResponse
 )
 
-fun List<ContactEmailIdResponse>.isAnyUnsuccessful(): Boolean {
+fun List<ContactEmailIdResponse>.filterUnsuccessful(): List<ContactEmailIdResponse> {
 
     val responseSuccessCode = 1000
 
-    return this.any {
+    return this.filter {
         it.response.code != responseSuccessCode
     }
 }

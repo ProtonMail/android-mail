@@ -23,9 +23,10 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.mailcommon.data.mapper.toEither
+import ch.protonmail.android.mailcontact.data.local.ContactGroupLocalDataSource
 import ch.protonmail.android.mailcontact.data.remote.resource.LabelContactEmailsBody
 import ch.protonmail.android.mailcontact.data.remote.resource.UnlabelContactEmailsBody
-import ch.protonmail.android.mailcontact.data.remote.response.isAnyUnsuccessful
+import ch.protonmail.android.mailcontact.data.remote.response.filterUnsuccessful
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.contact.domain.entity.ContactEmailId
@@ -38,9 +39,11 @@ import me.proton.core.network.domain.ApiManager
 class EditMembersOfContactGroupWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
-    private val apiProvider: ApiProvider
+    private val apiProvider: ApiProvider,
+    private val contactGroupLocalDataSource: ContactGroupLocalDataSource
 ) : CoroutineWorker(context, workerParameters) {
 
+    @Suppress("LongMethod")
     override suspend fun doWork(): Result {
 
         val userId = inputData.getString(RawUserIdKey)
@@ -71,8 +74,17 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
                     )
                 }.toEither()
 
-                if (result.isLeft() || result.getOrNull()?.responses?.isAnyUnsuccessful() == true) {
+                val unsuccessfulResponses = result.getOrNull()?.responses?.filterUnsuccessful() ?: emptyList()
+
+                if (result.isLeft()) {
                     throw Exception("labelContactEmailIds failed")
+                } else if (unsuccessfulResponses.isNotEmpty()) {
+                    contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
+                        UserId(userId),
+                        LabelId(labelId),
+                        unsuccessfulResponses.map { ContactEmailId(it.contactEmailId) }.toSet()
+                    )
+                    throw Exception("labelContactEmailIds partially failed")
                 }
             }
 
@@ -86,8 +98,17 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
                     )
                 }.toEither()
 
-                if (result.isLeft() || result.getOrNull()?.responses?.isAnyUnsuccessful() == true) {
+                val unsuccessfulResponses = result.getOrNull()?.responses?.filterUnsuccessful() ?: emptyList()
+
+                if (result.isLeft()) {
                     throw Exception("unlabelContactEmails failed")
+                } else if (unsuccessfulResponses.isNotEmpty()) {
+                    contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
+                        UserId(userId),
+                        LabelId(labelId),
+                        unsuccessfulResponses.map { ContactEmailId(it.contactEmailId) }.toSet()
+                    )
+                    throw Exception("unlabelContactEmails partially failed")
                 }
             }
 
