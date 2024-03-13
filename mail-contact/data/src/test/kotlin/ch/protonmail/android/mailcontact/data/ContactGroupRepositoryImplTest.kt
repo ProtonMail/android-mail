@@ -60,24 +60,6 @@ class ContactGroupRepositoryImplTest {
     }
 
     @Test
-    fun `addContactEmailIdsToContactGroup should return LocalDataSourceError when local data source fails`() = runTest {
-        // Given
-        coEvery {
-            contactGroupLocalDataSourceMock.addContactEmailIdsToContactGroup(
-                userId,
-                labelId,
-                contactEmailIds
-            )
-        } throws Exception()
-
-        // When
-        val actual = contactGroupRepository.addContactEmailIdsToContactGroup(userId, labelId, contactEmailIds)
-
-        // Then
-        assertEquals(ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left(), actual)
-    }
-
-    @Test
     fun `addContactEmailIdsToContactGroup should return RemoteDataSourceError when remote data source fails`() =
         runTest {
             // Given
@@ -128,23 +110,6 @@ class ContactGroupRepositoryImplTest {
         assertEquals(Unit.right(), actual)
     }
 
-    @Test
-    fun `removeContactEmailIdsFromContactGroup should return LocalDataSourceError when local data source fails`() = runTest {
-        // Given
-        coEvery {
-            contactGroupLocalDataSourceMock.removeContactEmailIdsFromContactGroup(
-                userId,
-                labelId,
-                contactEmailIds
-            )
-        } throws Exception()
-
-        // When
-        val actual = contactGroupRepository.removeContactEmailIdsFromContactGroup(userId, labelId, contactEmailIds)
-
-        // Then
-        assertEquals(ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left(), actual)
-    }
 
     @Test
     fun `removeContactEmailIdsFromContactGroup should return RemoteDataSourceError when remote data source fails`() =

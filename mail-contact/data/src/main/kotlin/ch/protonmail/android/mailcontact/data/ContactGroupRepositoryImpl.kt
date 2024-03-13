@@ -40,13 +40,11 @@ class ContactGroupRepositoryImpl @Inject constructor(
         contactEmailIds: Set<ContactEmailId>
     ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
 
-        Either.catch {
-            contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
-                userId,
-                labelId,
-                contactEmailIds
-            )
-        }.onLeft { return ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left() }
+        contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
+            userId,
+            labelId,
+            contactEmailIds
+        )
 
         Either.catch {
             contactGroupRemoteDataSource.addContactEmailIdsToContactGroup(
@@ -65,13 +63,11 @@ class ContactGroupRepositoryImpl @Inject constructor(
         contactEmailIds: Set<ContactEmailId>
     ): Either<ContactGroupRepository.ContactGroupErrors, Unit> {
 
-        Either.catch {
-            contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
-                userId,
-                labelId,
-                contactEmailIds
-            )
-        }.onLeft { return ContactGroupRepository.ContactGroupErrors.LocalDataSourceError.left() }
+        contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
+            userId,
+            labelId,
+            contactEmailIds
+        )
 
         Either.catch {
             contactGroupRemoteDataSource.removeContactEmailIdsFromContactGroup(

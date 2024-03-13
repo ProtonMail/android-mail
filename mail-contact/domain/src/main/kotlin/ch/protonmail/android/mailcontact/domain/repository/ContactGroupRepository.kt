@@ -38,7 +38,6 @@ interface ContactGroupRepository {
     ): Either<ContactGroupErrors, Unit>
 
     sealed class ContactGroupErrors {
-        object LocalDataSourceError : ContactGroupErrors()
         object RemoteDataSourceError : ContactGroupErrors()
     }
 }

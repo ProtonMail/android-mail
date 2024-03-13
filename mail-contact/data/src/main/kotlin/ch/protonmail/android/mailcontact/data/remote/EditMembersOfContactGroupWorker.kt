@@ -52,7 +52,7 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
         if (userId == null ||
             labelId == null ||
             @Suppress("UnnecessaryParentheses")
-            (labelContactEmailIds?.isNotEmpty() == false && unlabelContactEmailIds?.isNotEmpty() == false)
+            (labelContactEmailIds.isNullOrEmpty() && unlabelContactEmailIds.isNullOrEmpty())
         ) {
             return Result.failure()
         }
