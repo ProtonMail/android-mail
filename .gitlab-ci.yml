@@ -29,6 +29,8 @@ workflow:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
+    - if: '$CI_COMMIT_TAG != null'
+      when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
 
 .gradle-cache-dev: &gradle-cache-dev
@@ -74,8 +76,8 @@ stages:
   - build
   - startReview
   - test
-  - tag
   - deploy
+  - tag
   - stopReview
 
 detekt:
@@ -297,6 +299,10 @@ tag_release:
   script:
     - bundle exec fastlane tagRelease
   rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($INTERNAL_ALPHA_RELEASE != "true")
+      when: manual
     - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($INTERNAL_ALPHA_RELEASE == "true")
 
 deploy_to_firebase_dev:
@@ -338,6 +344,22 @@ deploy_to_firebase_alpha:
   rules:
     - !reference [ .firebase_deploy_job, rules ]
     - if: $INTERNAL_ALPHA_RELEASE == "true"
+
+deploy_play_store_internal:
+  stage: deploy
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
+  dependencies:
+    - build_prod_release
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+  script:
+    - base64 -d - < "$PLAY_STORE_SERVICE_ACCOUNT_JSON" > /tmp/play_store_service_account.json
+    - bundle exec fastlane deployToPlayStoreInternal
 
 distribute:debug:
   stage: deploy
