@@ -119,10 +119,14 @@ platform :android do
     sh("../scripts/release/tag_release.sh")
   end
 
-  desc "Submit a new Closed-Testing Build in Alpha-v6 track to Play Store"
-  lane :deployToPlayStoreAlpha do
-    upload_to_play_store(track: 'alpha-v6', apk: 'app/build/outputs/apk/release/app-release.apk')
+  desc "Deploy to Play Store (Internal Track)"
+  lane :deployToPlayStoreInternal do
+    upload_to_play_store(
+      package_name: "ch.protonmail.android",
+      track: "internal",
+      apk: "./app/build/outputs/apk/prod/release/app-prod-release.apk",
+      json_key: "/tmp/play_store_service_account.json"
+    )
   end
-
 end
 
