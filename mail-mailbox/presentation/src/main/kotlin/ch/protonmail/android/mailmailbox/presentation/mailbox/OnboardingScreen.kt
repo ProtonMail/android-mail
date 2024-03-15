@@ -95,7 +95,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 
     Column(
         modifier = Modifier
-            .testTag("OnboardingScreenRootItem")
+            .testTag(OnboardingScreenTestTags.RootItem)
             .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
@@ -109,7 +109,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
             if (pagerState.currentPage != viewCount.minus(1)) {
                 IconButton(
                     modifier = Modifier
-                        .testTag("OnboardingScreenCloseButton")
+                        .testTag(OnboardingScreenTestTags.CloseButton)
                         .horizontalScroll(state = ScrollState(0), enabled = true),
                     onClick = {
                         actions.closeOnboarding()
@@ -183,7 +183,7 @@ fun OnboardingButton(
 
     ProtonSolidButton(
         modifier = Modifier
-            .testTag("OnboardingScreenBottomButton")
+            .testTag(OnboardingScreenTestTags.BottomButton)
             .padding(ProtonDimens.DefaultSpacing)
             .height(MailDimens.onboardingBottomButtonHeight)
             .fillMaxWidth()
@@ -247,4 +247,11 @@ private fun OnboardingScreenPreview() {
             actions = MailboxScreen.Actions.Empty
         )
     }
+}
+
+object OnboardingScreenTestTags {
+
+    const val RootItem = "OnboardingScreenRootItem"
+    const val CloseButton = "OnboardingScreenCloseButton"
+    const val BottomButton = "OnboardingScreenBottomButton"
 }
