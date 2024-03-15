@@ -78,7 +78,7 @@ stages:
   - deploy
   - stopReview
 
-analyse:
+detekt:
   stage: analyse
   cache:
     - <<: *gradle-cache-dev
@@ -369,6 +369,10 @@ include:
   - rules:
       - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
     local: /ci/cache-policy-pull.yml
+
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/devsecops/gitleaks/scan-repository@0.0.11
+    inputs:
+      stage: analyse
 
   - project: 'translations/generator'
     ref: master
