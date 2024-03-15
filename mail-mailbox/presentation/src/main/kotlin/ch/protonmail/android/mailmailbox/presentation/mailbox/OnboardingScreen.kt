@@ -103,6 +103,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
         // Keep the spacing to avoid the jumping effect on transitioning to the last page.
         Row(
             modifier = Modifier
+                .testTag(OnboardingScreenTestTags.TopBarRootItem)
                 .fillMaxWidth()
                 .heightIn(min = MailDimens.OnboardingCloseButtonToolbarHeight)
         ) {
@@ -252,6 +253,7 @@ private fun OnboardingScreenPreview() {
 object OnboardingScreenTestTags {
 
     const val RootItem = "OnboardingScreenRootItem"
+    const val TopBarRootItem = "OnboardingTopBarRootItem"
     const val CloseButton = "OnboardingScreenCloseButton"
     const val BottomButton = "OnboardingScreenBottomButton"
 }
