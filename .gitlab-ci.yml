@@ -94,6 +94,14 @@ analyse:
     reports:
       codequality: config/detekt/reports/mergedReport.json
 
+gradle_wrapper_validation:
+  stage: analyse
+  tags:
+    - shared-small
+  before_script: []
+  script:
+    - ./scripts/validate_gradle_wrapper.sh
+
 danger-review:
   stage: danger-review
   cache:
