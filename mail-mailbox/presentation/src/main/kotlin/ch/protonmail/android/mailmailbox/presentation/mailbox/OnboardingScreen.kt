@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -94,6 +95,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
 
     Column(
         modifier = Modifier
+            .testTag("OnboardingScreenRootItem")
             .fillMaxSize()
             .background(ProtonTheme.colors.backgroundNorm)
     ) {
@@ -106,7 +108,9 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
         ) {
             if (pagerState.currentPage != viewCount.minus(1)) {
                 IconButton(
-                    modifier = Modifier.horizontalScroll(state = ScrollState(0), enabled = true),
+                    modifier = Modifier
+                        .testTag("OnboardingScreenCloseButton")
+                        .horizontalScroll(state = ScrollState(0), enabled = true),
                     onClick = {
                         actions.closeOnboarding()
                     }
@@ -179,6 +183,7 @@ fun OnboardingButton(
 
     ProtonSolidButton(
         modifier = Modifier
+            .testTag("OnboardingScreenBottomButton")
             .padding(ProtonDimens.DefaultSpacing)
             .height(MailDimens.onboardingBottomButtonHeight)
             .fillMaxWidth()
