@@ -23,6 +23,7 @@ package ch.protonmail.android.uitest.helpers.core.navigation
  */
 internal sealed class Destination {
 
+    object Onboarding : Destination()
     object Inbox : Destination()
     object Drafts : Destination()
     object Archive : Destination()

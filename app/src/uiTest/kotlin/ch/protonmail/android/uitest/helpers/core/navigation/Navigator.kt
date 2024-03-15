@@ -71,6 +71,7 @@ internal class Navigator {
         if (performLoginViaUI) login()
 
         when (destination) {
+            is Destination.Onboarding,
             is Destination.Inbox -> Unit // It's the default screen post-login, nothing to do.
             is Destination.Drafts -> menuRobot {
                 openSidebarMenu()
