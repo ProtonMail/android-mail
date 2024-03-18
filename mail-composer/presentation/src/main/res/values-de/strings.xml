@@ -49,19 +49,20 @@
   <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>
   <string name="composer_button_add_password">Passwort hinzufügen</string>
   <string name="composer_button_set_expiration">Ablaufdatum festlegen</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Ablaufdatum</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Fertig</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Gültigkeitsdauer der Nachricht</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Festlegen</string>
   <string name="composer_bottom_bar_expiration_time_none">Keine</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 Stunde</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 Tag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 Tage</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 Woche</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Benutzerdefiniert</string>
   <string name="composer_error_setting_expiration_time">Fehler beim Festlegen der Ablaufzeit.</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Ablaufdatum nicht unterstützt</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Wir empfehlen, stattdessen für die folgenden Empfänger ein Passwort einzurichten:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Abbrechen</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Trotzdem senden</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Mitteilung wird gesendet</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Das Senden von Nachrichten von einer @pm.me-Adresse ist eine kostenpflichtige Funktion. Deine Nachricht wird von deiner Standardadresse gesendet</string>

@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>
   <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
   <string name="picker_dialog_cancel">Annulla</string>
+  <string name="color_purple">Viola</string>
+  <string name="color_enzian">Genziana</string>
+  <string name="color_pink">Rosa</string>
+  <string name="color_plum">Prugna</string>
+  <string name="color_strawberry">Fragola</string>
+  <string name="color_cerise">Ciliegia</string>
+  <string name="color_carrot">Carota</string>
+  <string name="color_copper">Rame</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Terra</string>
+  <string name="color_slate_blue">Blu ardesia</string>
+  <string name="color_cobalt">Cobalto</string>
+  <string name="color_pacific">Pacifico</string>
+  <string name="color_ocean">Oceano</string>
+  <string name="color_reef">Corallo</string>
+  <string name="color_pine">Pino</string>
+  <string name="color_fern">Felce</string>
+  <string name="color_forest">Foresta</string>
+  <string name="color_olive">Oliva</string>
+  <string name="color_pickle">Cetriolo</string>
 </resources>

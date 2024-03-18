@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Batalkan</string>
   <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>
   <string name="picker_dialog_cancel">Batal</string>
+  <string name="color_purple">Ungu</string>
+  <string name="color_enzian">Enzian</string>
+  <string name="color_pink">Merah jambu</string>
+  <string name="color_plum">Plum</string>
+  <string name="color_strawberry">Arbei</string>
+  <string name="color_cerise">Ceri</string>
+  <string name="color_carrot">Wortel</string>
+  <string name="color_copper">Tembaga</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Tanah</string>
+  <string name="color_slate_blue">Biru keabuan</string>
+  <string name="color_cobalt">Kobalt</string>
+  <string name="color_pacific">Pasifik</string>
+  <string name="color_ocean">Samudera</string>
+  <string name="color_reef">Karang</string>
+  <string name="color_pine">Pinus</string>
+  <string name="color_fern">Perdu</string>
+  <string name="color_forest">Hutan</string>
+  <string name="color_olive">Zaitun</string>
+  <string name="color_pickle">Acar</string>
 </resources>

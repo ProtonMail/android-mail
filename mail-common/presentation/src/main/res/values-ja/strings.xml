@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">キャンセル</string>
   <string name="mailbox_action_delete_dialog_button_delete">削除</string>
   <string name="picker_dialog_cancel">キャンセル</string>
+  <string name="color_purple">パープル</string>
+  <string name="color_enzian">Enzian</string>
+  <string name="color_pink">ピンク</string>
+  <string name="color_plum">Plum</string>
+  <string name="color_strawberry">ストロベリー</string>
+  <string name="color_cerise">Cerise</string>
+  <string name="color_carrot">キャロット</string>
+  <string name="color_copper">Copper</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Soil</string>
+  <string name="color_slate_blue">Slate blue</string>
+  <string name="color_cobalt">コバルト</string>
+  <string name="color_pacific">パシフィック</string>
+  <string name="color_ocean">オーシャン</string>
+  <string name="color_reef">リーフ</string>
+  <string name="color_pine">パイン</string>
+  <string name="color_fern">Fern</string>
+  <string name="color_forest">フォレスト</string>
+  <string name="color_olive">オリーブ</string>
+  <string name="color_pickle">Pickle</string>
 </resources>

@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">此草稿的最新版本無法載入。任何變更將覆蓋其內容。</string>
   <string name="composer_button_add_password">新增密碼</string>
   <string name="composer_button_set_expiration">設定到期時間</string>
-  <string name="composer_expiration_time_bottom_sheet_title">到期日</string>
-  <string name="composer_expiration_time_bottom_sheet_done">完成</string>
+  <string name="composer_expiration_time_bottom_sheet_title">郵件期限</string>
+  <string name="composer_expiration_time_bottom_sheet_done">設定</string>
   <string name="composer_bottom_bar_expiration_time_none">無</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 小時</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 天</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 天</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 週</string>
+  <string name="composer_bottom_bar_expiration_time_custom">自訂</string>
   <string name="composer_error_setting_expiration_time">設定到期日失敗</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">不支援到期日</string>

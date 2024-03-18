@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">Add password</string>
   <string name="composer_button_set_expiration">Postavi datum isteka</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Datum isteka</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Istek poruke</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
   <string name="composer_bottom_bar_expiration_time_none">None</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Vremenski istek nije podržan</string>

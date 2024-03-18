@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">გაუქმება</string>
   <string name="mailbox_action_delete_dialog_button_delete">წაშლა</string>
   <string name="picker_dialog_cancel">გაუქმება</string>
+  <string name="color_purple">იასამნისფერი</string>
+  <string name="color_enzian">ნაღვლისფერი</string>
+  <string name="color_pink">ვარდისფერი</string>
+  <string name="color_plum">ქლიავისფერი</string>
+  <string name="color_strawberry">მარწყვისფერი</string>
+  <string name="color_cerise">ღია ალუბლისფერი</string>
+  <string name="color_carrot">სტაფილოსფერი</string>
+  <string name="color_copper">სპილენძისფერი</string>
+  <string name="color_sahara">უდაბნოსფერი</string>
+  <string name="color_soil">მიწისფერი</string>
+  <string name="color_slate_blue">მოლურჯო-მონაცრისფრო</string>
+  <string name="color_cobalt">კაშკაშა ლურჯი</string>
+  <string name="color_pacific">წყნარი ოკეანის</string>
+  <string name="color_ocean">ზღვისფერი</string>
+  <string name="color_reef">მარჯნისფერი</string>
+  <string name="color_pine">ფიჭვისფერი</string>
+  <string name="color_fern">გვიმრისფერი</string>
+  <string name="color_forest">ტყისფერი</string>
+  <string name="color_olive">ზეთისხილისფერი</string>
+  <string name="color_pickle">კიტრი</string>
 </resources>

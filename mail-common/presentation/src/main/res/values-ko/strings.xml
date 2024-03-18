@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">취소</string>
   <string name="mailbox_action_delete_dialog_button_delete">삭제</string>
   <string name="picker_dialog_cancel">취소</string>
+  <string name="color_purple">퍼플</string>
+  <string name="color_enzian">엔지안</string>
+  <string name="color_pink">핑크</string>
+  <string name="color_plum">플럼</string>
+  <string name="color_strawberry">스트로베리</string>
+  <string name="color_cerise">세리즈</string>
+  <string name="color_carrot">캐럿</string>
+  <string name="color_copper">코퍼</string>
+  <string name="color_sahara">사하라</string>
+  <string name="color_soil">소일</string>
+  <string name="color_slate_blue">슬레이트 블루</string>
+  <string name="color_cobalt">코발트</string>
+  <string name="color_pacific">퍼시픽</string>
+  <string name="color_ocean">오션</string>
+  <string name="color_reef">리프</string>
+  <string name="color_pine">파인</string>
+  <string name="color_fern">펀</string>
+  <string name="color_forest">포레스트</string>
+  <string name="color_olive">올리브</string>
+  <string name="color_pickle">피클</string>
 </resources>

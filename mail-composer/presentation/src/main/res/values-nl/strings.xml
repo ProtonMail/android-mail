@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>
   <string name="composer_button_add_password">Wachtwoord toevoegen</string>
   <string name="composer_button_set_expiration">Stel vervaltijd in</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Verloopdatum</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Klaar</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Vervaldatum bericht</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Instellen</string>
   <string name="composer_bottom_bar_expiration_time_none">Geen</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 uur</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dagen</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Aangepast</string>
   <string name="composer_error_setting_expiration_time">Vervaltijd instellen mislukt</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Vervaldatum niet ondersteund</string>

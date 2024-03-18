@@ -76,7 +76,7 @@
   <string name="phone_section">Telefonní číslo</string>
   <string name="address_section">Adresa</string>
   <string name="note_section">Poznámka</string>
-  <string name="birthday_section">Datum narození</string>
+  <string name="birthday_section">Narozeniny</string>
   <string name="other_section">Další informace</string>
   <string name="display_name">Zobrazované jméno</string>
   <string name="first_name">Křestní jméno</string>
@@ -131,4 +131,5 @@
   <string name="manage_members_title">Spravovat členy</string>
   <string name="search_contact">Search for contact</string>
   <string name="member_update_error">Error updating member, please try again later</string>
+  <string name="contact_group_color">Contact group color</string>
 </resources>

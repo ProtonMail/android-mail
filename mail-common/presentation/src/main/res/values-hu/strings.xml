@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Mégsem</string>
   <string name="mailbox_action_delete_dialog_button_delete">Törlés</string>
   <string name="picker_dialog_cancel">Mégsem</string>
+  <string name="color_purple">Purple</string>
+  <string name="color_enzian">Encián</string>
+  <string name="color_pink">Pink</string>
+  <string name="color_plum">Szilvakék</string>
+  <string name="color_strawberry">Eper</string>
+  <string name="color_cerise">Cerise</string>
+  <string name="color_carrot">Sárgarépa</string>
+  <string name="color_copper">Réz</string>
+  <string name="color_sahara">Szahara</string>
+  <string name="color_soil">Föld</string>
+  <string name="color_slate_blue">Palakék</string>
+  <string name="color_cobalt">Kobalt</string>
+  <string name="color_pacific">Csendes-óceán</string>
+  <string name="color_ocean">Óceán</string>
+  <string name="color_reef">Zátony</string>
+  <string name="color_pine">Fenyő</string>
+  <string name="color_fern">Páfrány</string>
+  <string name="color_forest">Erdő</string>
+  <string name="color_olive">Olajzöld</string>
+  <string name="color_pickle">Kovászos uborka</string>
 </resources>

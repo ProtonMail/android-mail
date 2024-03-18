@@ -75,7 +75,7 @@
   <string name="phishing_link_confirmation_dialog_button_go_back">Volver (recomendado)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Ignorar la advertencia y continuar</string>
   <string name="message_delete_dialog_title">Eliminar mensaje</string>
-  <string name="message_delete_dialog_message">¿En verdad desea eliminar permanentemente este mensaje?</string>
+  <string name="message_delete_dialog_message">¿Está seguro de que quiere eliminar permanentemente este mensaje?</string>
   <string name="message_deleted">Mensaje eliminado</string>
   <string name="error_delete_message_failed">Error al eliminar el mensaje</string>
   <string name="error_delete_message_failed_wrong_folder">El mensaje no está en una ubicación de donde pueda ser eliminado</string>

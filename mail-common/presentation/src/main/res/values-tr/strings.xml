@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">İptal</string>
   <string name="mailbox_action_delete_dialog_button_delete">Sil</string>
   <string name="picker_dialog_cancel">İptal</string>
+  <string name="color_purple">Mor</string>
+  <string name="color_enzian">Kantaron</string>
+  <string name="color_pink">Pembe</string>
+  <string name="color_plum">Erik</string>
+  <string name="color_strawberry">Çilek</string>
+  <string name="color_cerise">Kiraz</string>
+  <string name="color_carrot">Havuç</string>
+  <string name="color_copper">Bakır</string>
+  <string name="color_sahara">Çöl</string>
+  <string name="color_soil">Toprak</string>
+  <string name="color_slate_blue">Arduvaz Mavisi</string>
+  <string name="color_cobalt">Kobalt</string>
+  <string name="color_pacific">Pasifik</string>
+  <string name="color_ocean">Okyanus</string>
+  <string name="color_reef">Resif</string>
+  <string name="color_pine">Çam</string>
+  <string name="color_fern">Eğrelti otu</string>
+  <string name="color_forest">Orman</string>
+  <string name="color_olive">Zeytin</string>
+  <string name="color_pickle">Salatalık</string>
 </resources>

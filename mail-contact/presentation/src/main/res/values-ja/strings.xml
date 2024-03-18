@@ -20,11 +20,11 @@
   <string name="contact_list_title">連絡先</string>
   <string name="contact_list_loading_error">連絡先の保存中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="no_contacts">連絡先が見つかりませんでした</string>
-  <string name="no_contact_groups">No contact groups found</string>
+  <string name="no_contact_groups">連絡先グループが見つかりませんでした</string>
   <string name="no_contacts_description">新しい連絡先を作成したり、既存の連絡先をインポートして、メールエクスペリエンスを向上させましょう。</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
   <string name="add_contact">連絡先を追加</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">連絡先グループを追加</string>
   <string name="add_contact_content_description">連絡先を追加</string>
   <string name="all_title">すべて</string>
   <string name="groups_title">グループ</string>
@@ -97,13 +97,13 @@
   <string name="contact_details_delete_dialog_cancel_button">キャンセル</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">連絡先の保存中にエラーが発生しました。後でもう一度お試しください。</string>
-  <string name="all_contacts_tab">Contacts</string>
-  <string name="contact_groups_tab">Groups</string>
+  <string name="all_contacts_tab">連絡先</string>
+  <string name="contact_groups_tab">グループ</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="other">%1$d members</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
-    <item quantity="other">Members (%1$d)</item>
+    <item quantity="other">メンバー (%1$d)</item>
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
   <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
@@ -111,18 +111,19 @@
   <string name="edit_contact_group_content_description">連絡先グループを編集</string>
   <string name="delete_contact_group_content_description">連絡先グループを削除</string>
   <string name="send_group_message">グループメッセージを送信</string>
-  <string name="contact_group_form_save">Save</string>
-  <string name="contact_group_form_name_hint">Display name</string>
-  <string name="remove_member_content_description">Remove member</string>
-  <string name="add_members">Add members</string>
-  <string name="change_color">Change color</string>
+  <string name="contact_group_form_save">保存</string>
+  <string name="contact_group_form_name_hint">表示名</string>
+  <string name="remove_member_content_description">メンバーを削除</string>
+  <string name="add_members">メンバーを追加</string>
+  <string name="change_color">色を変更</string>
   <string name="contact_group_form_create_success">連絡先グループが作成されました</string>
   <string name="contact_group_form_update_success">連絡先グループが更新されました</string>
   <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
-  <string name="members_done">Done</string>
+  <string name="members_done">完了</string>
   <string name="add_members_error">Error adding members, please try again later</string>
-  <string name="manage_members_title">Manage members</string>
-  <string name="search_contact">Search for contact</string>
+  <string name="manage_members_title">メンバーを管理</string>
+  <string name="search_contact">連絡先を検索</string>
   <string name="member_update_error">Error updating member, please try again later</string>
+  <string name="contact_group_color">連絡先グループの色</string>
 </resources>

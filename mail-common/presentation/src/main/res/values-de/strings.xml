@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Abbrechen</string>
   <string name="mailbox_action_delete_dialog_button_delete">Löschen</string>
   <string name="picker_dialog_cancel">Abbrechen</string>
+  <string name="color_purple">Violett</string>
+  <string name="color_enzian">Enzian</string>
+  <string name="color_pink">Rosa</string>
+  <string name="color_plum">Pflaume</string>
+  <string name="color_strawberry">Erdbeere</string>
+  <string name="color_cerise">Kirschrot</string>
+  <string name="color_carrot">Karotte</string>
+  <string name="color_copper">Kupfer</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Erde</string>
+  <string name="color_slate_blue">Schieferblau</string>
+  <string name="color_cobalt">Kobaltblau</string>
+  <string name="color_pacific">Pazifikblau</string>
+  <string name="color_ocean">Ozeanblau</string>
+  <string name="color_reef">Koralle</string>
+  <string name="color_pine">Kiefer</string>
+  <string name="color_fern">Farn</string>
+  <string name="color_forest">Waldgrün</string>
+  <string name="color_olive">Olivgrün</string>
+  <string name="color_pickle">Moosgrün</string>
 </resources>

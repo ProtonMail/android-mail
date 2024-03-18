@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>
   <string name="composer_button_add_password">Legg til passord</string>
   <string name="composer_button_set_expiration">Angi utløpstid</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Utløpsdato</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Ferdig</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Utløpstid for melding</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Angi</string>
   <string name="composer_bottom_bar_expiration_time_none">Ingen</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 time</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dager</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 uke</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Tilpasset</string>
   <string name="composer_error_setting_expiration_time">Innstilling av utløpstid mislyktes</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Utløpstid er ikke støttet</string>

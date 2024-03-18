@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Ακύρωση</string>
   <string name="mailbox_action_delete_dialog_button_delete">Διαγραφή</string>
   <string name="picker_dialog_cancel">Ακύρωση</string>
+  <string name="color_purple">Μωβ</string>
+  <string name="color_enzian">Ενζιάν</string>
+  <string name="color_pink">Ροζ</string>
+  <string name="color_plum">Δαμασκηνί</string>
+  <string name="color_strawberry">Φραουλί</string>
+  <string name="color_cerise">Κερίζ</string>
+  <string name="color_carrot">Καροτί</string>
+  <string name="color_copper">Χαλκός</string>
+  <string name="color_sahara">Σαχάρα</string>
+  <string name="color_soil">Χώμα</string>
+  <string name="color_slate_blue">Βιολετί</string>
+  <string name="color_cobalt">Κοβάλτιο</string>
+  <string name="color_pacific">Ειρηνικός</string>
+  <string name="color_ocean">Ωκεανός</string>
+  <string name="color_reef">Ύφαλος</string>
+  <string name="color_pine">Πεύκο</string>
+  <string name="color_fern">Φτέρη</string>
+  <string name="color_forest">Δάσος</string>
+  <string name="color_olive">Λαδί</string>
+  <string name="color_pickle">Τουρσί</string>
 </resources>

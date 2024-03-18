@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">取消</string>
   <string name="mailbox_action_delete_dialog_button_delete">刪除</string>
   <string name="picker_dialog_cancel">取消</string>
+  <string name="color_purple">紫色</string>
+  <string name="color_enzian">龍膽紫</string>
+  <string name="color_pink">粉紅</string>
+  <string name="color_plum">梅紅色</string>
+  <string name="color_strawberry">草莓紅</string>
+  <string name="color_cerise">櫻桃紅</string>
+  <string name="color_carrot">胡蘿蔔橘</string>
+  <string name="color_copper">銅色</string>
+  <string name="color_sahara">黃土色</string>
+  <string name="color_soil">泥土色</string>
+  <string name="color_slate_blue">板岩藍</string>
+  <string name="color_cobalt">鈷藍</string>
+  <string name="color_pacific">太平洋藍</string>
+  <string name="color_ocean">海洋藍</string>
+  <string name="color_reef">礁石色</string>
+  <string name="color_pine">墨松青</string>
+  <string name="color_fern">淺蕨綠</string>
+  <string name="color_forest">森林綠</string>
+  <string name="color_olive">橄欖綠</string>
+  <string name="color_pickle">醃黃瓜色</string>
 </resources>

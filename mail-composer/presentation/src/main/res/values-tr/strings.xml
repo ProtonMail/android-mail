@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>
   <string name="composer_button_add_password">Parola ekle</string>
   <string name="composer_button_set_expiration">Geçerlilik süresi ayarla</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Geçerlilik tarihi</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Tamam</string>
+  <string name="composer_expiration_time_bottom_sheet_title">İleti geçerlilik süresi</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Ayarla</string>
   <string name="composer_bottom_bar_expiration_time_none">Yok</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 saat</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 gün</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 gün</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 hafta</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Özel</string>
   <string name="composer_error_setting_expiration_time">Geçerlilik süresi ayarlanamadı</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Geçerlilik süresi desteklenmiyor</string>

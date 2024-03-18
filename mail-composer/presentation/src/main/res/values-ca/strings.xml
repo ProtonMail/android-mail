@@ -49,19 +49,20 @@
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
   <string name="composer_button_set_expiration">Definir el temps d\'expiració</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Data de caducitat</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Fet</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Caducitat del missatge</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Estableix</string>
   <string name="composer_bottom_bar_expiration_time_none">Cap</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dia</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dies</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 setmana</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Personalitza</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Caducitat no suportada</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomanem configurar una contrasenya pels destinataris següents:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel·la</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Envia de totes maneres</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel·li</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Enviï de totes maneres</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Avís d\'enviament</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>

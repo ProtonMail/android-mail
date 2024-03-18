@@ -127,4 +127,5 @@
   <string name="manage_members_title">წევრების მართვა</string>
   <string name="search_contact">კონტაქტის ძებნა</string>
   <string name="member_update_error">წევრის განახლების შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="contact_group_color">კონტაქტების ჯგუფის ფერი</string>
 </resources>

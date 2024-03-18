@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Todo o correio</string>
   <string name="label_title_all_drafts">Todos o rascunho</string>
   <string name="label_title_all_sent">Todos os enviados</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_all_scheduled">Tudo agendado</string>
   <string name="label_title_snoozed">Adiado</string>
   <string name="label_title_folders">Pastas</string>
   <string name="label_title_parent_folder">Pasta principal</string>

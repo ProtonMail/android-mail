@@ -44,14 +44,14 @@
   <string name="contact_type_email">Эл. почта</string>
   <string name="contact_type_phone">Телефон</string>
   <string name="contact_type_home">Home</string>
-  <string name="contact_type_work">Work</string>
+  <string name="contact_type_work">Рабочий</string>
   <string name="contact_type_other">Other</string>
   <string name="contact_type_mobile">Mobile</string>
   <string name="contact_type_main">Main</string>
   <string name="contact_type_fax">Факс</string>
   <string name="contact_type_pager">Пейджер</string>
   <string name="contact_type_address">Адрес</string>
-  <string name="contact_property_birthday">Birthday</string>
+  <string name="contact_property_birthday">День рождения</string>
   <string name="contact_property_note">Заметка</string>
   <string name="contact_property_photo">Фото</string>
   <string name="contact_property_logo">Логотип</string>
@@ -64,9 +64,9 @@
   <string name="contact_property_url">URL</string>
   <string name="contact_property_gender">Пол</string>
   <string name="contact_property_language">Язык</string>
-  <string name="contact_property_time_zone">Time zone</string>
+  <string name="contact_property_time_zone">Часовой пояс</string>
   <string name="contact_form_loading_error">Error loading contact, please try again later</string>
-  <string name="contact_form_save_success">Contact saved</string>
+  <string name="contact_form_save_success">Контакт сохранён</string>
   <string name="contact_form_create_success">Contact created</string>
   <string name="contact_form_update_success">Contact updated</string>
   <string name="save_contact_content_description">Сохранить контакт</string>
@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Отменить</string>
   <string name="contact_details_delete_dialog_confirm_button">Да</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">Contacts</string>
+  <string name="all_contacts_tab">Контакты</string>
   <string name="contact_groups_tab">Группы</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d member</item>
@@ -131,4 +131,5 @@
   <string name="manage_members_title">Управляйте участниками</string>
   <string name="search_contact">Search for contact</string>
   <string name="member_update_error">Error updating member, please try again later</string>
+  <string name="contact_group_color">Contact group color</string>
 </resources>

@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Den seneste version af denne kladde kunne ikke indlæses. Enhver ændring vil tilsidesætte dens indhold.</string>
   <string name="composer_button_add_password">Tilføj adgangskode</string>
   <string name="composer_button_set_expiration">Indstil udløbstidspunkt</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Udløbsdato</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Udført</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Beskedudløb</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Indstil</string>
   <string name="composer_bottom_bar_expiration_time_none">Ingen</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 time</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dage</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 uge</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Brugerdefineret</string>
   <string name="composer_error_setting_expiration_time">Indstilling af udløbstid mislykkedes</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Udløb ikke understøttet</string>

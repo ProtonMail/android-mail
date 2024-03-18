@@ -106,19 +106,19 @@
   <string name="mailbox_action_button_clear_spam">Buida el correu brossa</string>
   <string name="mailbox_action_clear_trash_dialog_title">Buida la carpeta Paperera</string>
   <string name="mailbox_action_clear_spam_dialog_title">Buida la carpeta del correu brossa</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Segur que voleu eliminar permanentment tots els missatges de la paperera?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Segur que voleu eliminar permanentment tots els missatges del correu brossa?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Segur que voleu eliminar permanentment totes les converses de la paperera?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Segur que voleu eliminar permanentment totes les converses del correu brossa?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"S'ha programat una operació de neteja."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertència</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">L\'emmagatzematge del vostre compte de Proton està ple en més d\'un 80%. Allibereu espai o milloreu el pla per a obtenir més espai d\'emmagatzematge.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">L\'emmagatzematge del vostre compte de Proton està ple en més d\'un 90%. Allibereu espai o milloreu el pla per a obtenir més espai d\'emmagatzematge.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">No m\'ho tornis a recordar</string>
   <string name="storage_limit_warning_dialog_confirm_button">D\'acord</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advertència</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_text">L\'emmagatzematge del vostre compte de Proton està ple al 100%. No podreu enviar o rebre correus electrònics a menys que elimineu permanentment alguns correus o milloreu el pla per a obtenir més espai d\'emmagatzematge.</string>
   <string name="storage_quota_over_dialog_confirm_button">D\'acord</string>
 </resources>

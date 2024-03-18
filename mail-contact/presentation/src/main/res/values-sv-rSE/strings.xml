@@ -127,4 +127,5 @@
   <string name="manage_members_title">Hantera medlemmar</string>
   <string name="search_contact">Sök efter kontakt</string>
   <string name="member_update_error">Det gick inte uppdatera medlem, försök igen senare</string>
+  <string name="contact_group_color">Kontaktgruppsfärg</string>
 </resources>

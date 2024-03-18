@@ -21,7 +21,7 @@
     <item quantity="other">%d berkas</item>
   </plurals>
   <string name="attachment_show_more_label">+%1$d lainnya</string>
-  <string name="attachment_permission_dialog_title">Izin dibutuhkan</string>
+  <string name="attachment_permission_dialog_title">Perizinan diperlukan</string>
   <string name="attachment_permission_dialog_message">Proton Mail memerlukan izin akses ke media penyimpanan Anda untuk mengunduh lampiran.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Pengaturan</string>
@@ -41,6 +41,6 @@
   <string name="bottom_sheet_move_to_title">Pindahkan ke...</string>
   <string name="bottom_sheet_done_action">Selesai</string>
   <string name="bottom_sheet_archive_action">Arsipkan juga?</string>
-  <string name="bottom_sheet_label_as_title">Beri label sebagai...</string>
+  <string name="bottom_sheet_label_as_title">Labeli sebagai...</string>
   <string name="bottom_sheet_more_header_message_from">Pesan dari %s</string>
 </resources>

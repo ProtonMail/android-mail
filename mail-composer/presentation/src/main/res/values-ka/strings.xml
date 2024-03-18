@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
   <string name="composer_button_add_password">პაროლის დამატება</string>
   <string name="composer_button_set_expiration">ვადის დაყენება</string>
-  <string name="composer_expiration_time_bottom_sheet_title">ვადა იწურება</string>
-  <string name="composer_expiration_time_bottom_sheet_done">მზადაა</string>
+  <string name="composer_expiration_time_bottom_sheet_title">შეტყობინების ვადა</string>
+  <string name="composer_expiration_time_bottom_sheet_done">დაყენება</string>
   <string name="composer_bottom_bar_expiration_time_none">არცერთი</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 სთ</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 დღე</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 დღე</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 კვირა</string>
+  <string name="composer_bottom_bar_expiration_time_custom">ხელით</string>
   <string name="composer_error_setting_expiration_time">ვადის ამოწურვის დროის დაყენება ჩავარდა</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">ვადა მხარდაჭერილი არაა</string>

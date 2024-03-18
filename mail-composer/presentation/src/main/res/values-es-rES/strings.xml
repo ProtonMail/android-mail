@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
   <string name="composer_button_add_password">Añadir una contraseña</string>
   <string name="composer_button_set_expiration">Establecer el tiempo de expiración</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Fecha de expiración</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Terminado</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Expiración del mensaje</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Establecer</string>
   <string name="composer_bottom_bar_expiration_time_none">Ninguna</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 día</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 días</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 semana</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Personalizar</string>
   <string name="composer_error_setting_expiration_time">Error al establecer la fecha de expiración</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">No se admiten los mensajes con fecha de caducidad.</string>

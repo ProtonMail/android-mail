@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Den senaste versionen av detta utkast misslyckades att laddas. Alla ändringar kommer att åsidosätta dess innehåll.</string>
   <string name="composer_button_add_password">Lägg till lösenord</string>
   <string name="composer_button_set_expiration">Ställ in utgångstid</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Utgångsdatum</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Klar</string>
+  <string name="composer_expiration_time_bottom_sheet_title">När meddelandet löper ut</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Ställ in</string>
   <string name="composer_bottom_bar_expiration_time_none">Ingen</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 timme</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dag</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dagar</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 vecka</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Anpassad</string>
   <string name="composer_error_setting_expiration_time">Misslyckades ställa in utgångstid</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Förfallotid stöds inte</string>

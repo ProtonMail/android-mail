@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Annuleren</string>
   <string name="mailbox_action_delete_dialog_button_delete">Verwijderen</string>
   <string name="picker_dialog_cancel">Annuleren</string>
+  <string name="color_purple">Paars</string>
+  <string name="color_enzian">Gentiaan</string>
+  <string name="color_pink">Roze</string>
+  <string name="color_plum">Pruim</string>
+  <string name="color_strawberry">Aardbei</string>
+  <string name="color_cerise">Kers</string>
+  <string name="color_carrot">Wortel</string>
+  <string name="color_copper">Koper</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Aarde</string>
+  <string name="color_slate_blue">Leiblauw</string>
+  <string name="color_cobalt">Kobalt</string>
+  <string name="color_pacific">Stille oceaan</string>
+  <string name="color_ocean">Oceaan</string>
+  <string name="color_reef">Rif</string>
+  <string name="color_pine">Den</string>
+  <string name="color_fern">Varen</string>
+  <string name="color_forest">Bos</string>
+  <string name="color_olive">Olijf</string>
+  <string name="color_pickle">Augurk</string>
 </resources>

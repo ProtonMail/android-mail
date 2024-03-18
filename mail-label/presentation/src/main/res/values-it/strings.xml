@@ -67,8 +67,8 @@
   <string name="folder_settings_content_description">Impostazioni delle cartelle</string>
   <string name="folder_settings_title">Impostazioni</string>
   <string name="folder_settings_done_button">Fatto</string>
-  <string name="folder_settings_folder_colors">Colorazione delle cartelle</string>
-  <string name="folder_settings_parent_color">Applicazione del colore della cartella principale</string>
+  <string name="folder_settings_folder_colors">Visualizzazione dei colori</string>
+  <string name="folder_settings_parent_color">Uso del colore della cartella principale</string>
   <string name="folder_list_loading_error">Errore nel caricamento delle cartelle. Riprova più tardi.</string>
   <string name="folder_loading_error">Errore nel caricamento della cartella. Riprova più tardi.</string>
   <string name="switch_on">Abilitato</string>

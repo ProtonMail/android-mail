@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
   <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
   <string name="picker_dialog_cancel">Cancelar</string>
+  <string name="color_purple">Morado</string>
+  <string name="color_enzian">Genciana</string>
+  <string name="color_pink">Rosa</string>
+  <string name="color_plum">Ciruela</string>
+  <string name="color_strawberry">Fresa</string>
+  <string name="color_cerise">Cereza</string>
+  <string name="color_carrot">Zanahoria</string>
+  <string name="color_copper">Cobre</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Suelo</string>
+  <string name="color_slate_blue">Azul pizarra</string>
+  <string name="color_cobalt">Cobalto</string>
+  <string name="color_pacific">Pacífico</string>
+  <string name="color_ocean">Océano</string>
+  <string name="color_reef">Arrecife</string>
+  <string name="color_pine">Pino</string>
+  <string name="color_fern">Helecho</string>
+  <string name="color_forest">Bosque</string>
+  <string name="color_olive">Olivo</string>
+  <string name="color_pickle">Pepinillo</string>
 </resources>

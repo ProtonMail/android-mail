@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">이 원고의 가장 최근 버전을 불러오는 데 실패했습니다. 어떤 변경점이 있더라도 그것을 덮어쓰게 됩니다.</string>
   <string name="composer_button_add_password">비밀번호 추가</string>
   <string name="composer_button_set_expiration">만료 시간 설정</string>
-  <string name="composer_expiration_time_bottom_sheet_title">만료 시기</string>
-  <string name="composer_expiration_time_bottom_sheet_done">완료</string>
+  <string name="composer_expiration_time_bottom_sheet_title">메시지 유효기간</string>
+  <string name="composer_expiration_time_bottom_sheet_done">설정하기</string>
   <string name="composer_bottom_bar_expiration_time_none">없음</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1시간</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1일</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3일</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1주</string>
+  <string name="composer_bottom_bar_expiration_time_custom">커스텀</string>
   <string name="composer_error_setting_expiration_time">만료 시간 설정 실패</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">유효기간을 지원하지 않습니다</string>

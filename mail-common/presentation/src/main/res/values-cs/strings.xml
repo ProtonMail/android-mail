@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Zrušit</string>
   <string name="mailbox_action_delete_dialog_button_delete">Smazat</string>
   <string name="picker_dialog_cancel">Zrušit</string>
+  <string name="color_purple">Purpurová</string>
+  <string name="color_enzian">Hořec</string>
+  <string name="color_pink">Růžová</string>
+  <string name="color_plum">Švestka</string>
+  <string name="color_strawberry">Jahoda</string>
+  <string name="color_cerise">Třešeň</string>
+  <string name="color_carrot">Mrkev</string>
+  <string name="color_copper">Měď</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Půda</string>
+  <string name="color_slate_blue">Modrá břidlice</string>
+  <string name="color_cobalt">Kobalt</string>
+  <string name="color_pacific">Pacifik</string>
+  <string name="color_ocean">Oceán</string>
+  <string name="color_reef">Útes</string>
+  <string name="color_pine">Borovice</string>
+  <string name="color_fern">Kapradí</string>
+  <string name="color_forest">Les</string>
+  <string name="color_olive">Oliva</string>
+  <string name="color_pickle">Okurka</string>
 </resources>

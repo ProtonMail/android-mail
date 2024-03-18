@@ -59,12 +59,12 @@
     <item quantity="other">Eliminar %d mensajes</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">¿En verdad desea eliminar permanentemente esta conversación?</item>
-    <item quantity="other">¿En verdad desea eliminar permanentemente estas conversaciones?</item>
+    <item quantity="one">¿Está seguro de que quiere eliminar permanentemente esta conversación?</item>
+    <item quantity="other">¿Está seguro de que quiere eliminar permanentemente estas conversaciones?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">¿En verdad desea eliminar permanentemente este mensaje?</item>
-    <item quantity="other">¿En verdad desea eliminar permanentemente estos mensajes?</item>
+    <item quantity="one">¿Está seguro de que quiere eliminar permanentemente este mensaje?</item>
+    <item quantity="other">¿Está seguro de que quiere eliminar permanentemente estos mensajes?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Mensaje eliminado permanentemente</item>
@@ -106,10 +106,10 @@
   <string name="mailbox_action_button_clear_spam">Vaciar spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Vaciar papelera</string>
   <string name="mailbox_action_clear_spam_dialog_title">Vaciar spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">¿En verdad desea eliminar permanentemente todos los mensajes en la carpeta ‘Papelera’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">¿En verdad desea eliminar permanentemente todos los mensajes en la carpeta ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">¿En verdad desea eliminar permanentemente todas las conversaciones en ‘Papelera’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">¿En verdad desea eliminar permanentemente todas las conversaciones en ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">¿Está seguro de que quiere eliminar permanentemente todos los mensajes en la carpeta ‘Papelera’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">¿Está seguro de que quiere eliminar permanentemente todos los mensajes en la carpeta ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">¿Está seguro de que quiere eliminar permanentemente todas las conversaciones en ‘Papelera’?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">¿Está seguro de que quiere eliminar permanentemente todas las conversaciones en ‘Spam’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertencia</string>

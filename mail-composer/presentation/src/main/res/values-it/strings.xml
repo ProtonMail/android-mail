@@ -50,12 +50,13 @@
   <string name="composer_button_add_password">Aggiungi una password</string>
   <string name="composer_button_set_expiration">Imposta la scadenza</string>
   <string name="composer_expiration_time_bottom_sheet_title">Scadenza del messaggio</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Fatto</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Imposta</string>
   <string name="composer_bottom_bar_expiration_time_none">Nessuna</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 giorni</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 settimana</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Personalizzata</string>
   <string name="composer_error_setting_expiration_time">Impostazione della scadenza non riuscita</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Scadenza non supportata</string>

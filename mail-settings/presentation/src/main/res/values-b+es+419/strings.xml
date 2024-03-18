@@ -148,7 +148,7 @@
   <string name="mail_settings_pin_insertion_error_unknown">Ocurrió un error al verificar su código PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Cerrar sesión</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Cerrar sesión</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">¿En verdad desea la cerrar sesión?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">¿Está seguro de que quiere la cerrar sesión?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
   <string name="mail_settings_pin_insertion_created_success">Código PIN creado con éxito.</string>

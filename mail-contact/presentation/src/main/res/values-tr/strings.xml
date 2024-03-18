@@ -100,8 +100,8 @@
   <string name="all_contacts_tab">Kişiler</string>
   <string name="contact_groups_tab">Gruplar</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d üye</item>
+    <item quantity="other">%1$d üyeler</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Üye (%1$d)</item>
@@ -123,8 +123,9 @@
   <string name="contact_group_form_save_error">Kişi grubu kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="members_loading_error">Üyeler yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="members_done">Tamam</string>
-  <string name="add_members_error">Üyeleri eklerken hata oluştu, lütfen daha sonra tekrar deneyin</string>
-  <string name="manage_members_title">Üyeleri yönetin</string>
-  <string name="search_contact">Kişi arayın</string>
-  <string name="member_update_error">Üye güncellenirken hata oluştu, lütfen daha sonra tekrar deneyin</string>
+  <string name="add_members_error">Üyeler eklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="manage_members_title">Üye yönetimi</string>
+  <string name="search_contact">Kişi ara</string>
+  <string name="member_update_error">Üye güncellenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="contact_group_color">Kişi grubu rengi</string>
 </resources>

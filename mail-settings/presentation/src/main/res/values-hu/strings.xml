@@ -133,7 +133,7 @@
   <string name="mail_settings_pin_insertion_lock_icon_description">Zárolási ikon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometrikus azonosítás</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Biometrikus hitelesítés</string>
   <string name="mail_settings_pin_insertion_button_create">Létrehozás</string>
   <string name="mail_settings_pin_insertion_button_confirm">Megerősítés</string>
   <string name="mail_settings_pin_insertion_error_no_match">A PIN-kódok nem egyeznek.</string>

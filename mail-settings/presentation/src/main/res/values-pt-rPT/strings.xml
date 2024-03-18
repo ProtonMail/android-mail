@@ -118,12 +118,12 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueio automático</string>
   <string name="mail_settings_auto_lock_item_title">Bloqueio automático da aplicação</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
+  <string name="mail_settings_auto_lock_item_description">Ative esta funcionalidade para bloquear automaticamente a sua aplicação e use o código PIN para a desbloquear.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Alterar o código PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Temporizador do bloqueio automático</string>
   <string name="mail_settings_auto_lock_immediately">Imediatamente</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutos de inatividade.</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutos de inatividade.</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hora de inatividade</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dia de inatividade</string>
   <string name="mail_settings_auto_lock_update_error">Erro ao atualizar as definições</string>
@@ -132,8 +132,8 @@
   <string name="mail_settings_pin_insertion_confirm_title">Confirme o seu PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Ícone de bloqueio</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de pontos</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Retrocesso</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
+  <string name="mail_settings_pin_insertion_backspace_description">Retroceder</string>
+  <string name="mail_settings_pin_insertion_biometric_description">Autenticação Biométrica</string>
   <string name="mail_settings_pin_insertion_button_create">Criar</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Os códigos PIN não correspondem.</string>
@@ -142,17 +142,17 @@
     <item quantity="other">%s tentativas restantes.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">%s tentativa restante até à limpeza segura dos dados.</item>
+    <item quantity="other">%s tentativas restantes até à limpeza segura dos dados.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Encerrar a sessão</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Encerrar a sessão</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Ocorreu um erro ao verificar o seu código PIN.</string>
+  <string name="mail_settings_pin_insertion_signout_text">Terminar sessão</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Terminar sessão</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Tem certeza de que deseja terminar a sessão?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
-  <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
+  <string name="mail_settings_pin_insertion_created_success">Código PIN criado com sucesso.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Código PIN alterado com sucesso.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">A limpar os dados locais em cache…</string>
   <!-- Error messages -->

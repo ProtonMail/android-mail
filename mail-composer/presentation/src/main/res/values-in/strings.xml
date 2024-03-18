@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
   <string name="composer_button_add_password">Tambahkan kata sandi</string>
   <string name="composer_button_set_expiration">Tentukan waktu kedaluwarsa</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Waktu kedaluwarsa</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Selesai</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Waktu kedaluwarsa pesan</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Atur</string>
   <string name="composer_bottom_bar_expiration_time_none">Tidak ada</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 jam</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 hari</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 hari</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 minggu</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Sesuaikan</string>
   <string name="composer_error_setting_expiration_time">Pengaturan waktu kedaluwarsa gagal</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Pengaturan waktu kedaluwarsa tidak didukung</string>

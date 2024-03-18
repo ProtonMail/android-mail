@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Avbryt</string>
   <string name="mailbox_action_delete_dialog_button_delete">Ta bort</string>
   <string name="picker_dialog_cancel">Avbryt</string>
+  <string name="color_purple">Lila</string>
+  <string name="color_enzian">Enzian</string>
+  <string name="color_pink">Rosa</string>
+  <string name="color_plum">Plommon</string>
+  <string name="color_strawberry">Jordgubb</string>
+  <string name="color_cerise">Körsbär</string>
+  <string name="color_carrot">Morot</string>
+  <string name="color_copper">Koppar</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Jord</string>
+  <string name="color_slate_blue">Skifferblå</string>
+  <string name="color_cobalt">Kobolt</string>
+  <string name="color_pacific">Stilla havet</string>
+  <string name="color_ocean">Hav</string>
+  <string name="color_reef">Rev</string>
+  <string name="color_pine">Tall</string>
+  <string name="color_fern">Ormbunke</string>
+  <string name="color_forest">Skog</string>
+  <string name="color_olive">Oliv</string>
+  <string name="color_pickle">Gurka</string>
 </resources>

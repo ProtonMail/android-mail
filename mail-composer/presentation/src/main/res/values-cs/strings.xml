@@ -49,26 +49,27 @@
   <string name="composer_warning_local_data_shown">Nejnovější verzi tohoto návrhu se nepodařilo načíst. Jakákoli změna přepíše její obsah.</string>
   <string name="composer_button_add_password">Přidat heslo</string>
   <string name="composer_button_set_expiration">Nastavit dobu platnosti</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Datum vypršení</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Hotovo</string>
-  <string name="composer_bottom_bar_expiration_time_none">Žádné</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Vypršení zprávy</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Nastavit</string>
+  <string name="composer_bottom_bar_expiration_time_none">Neomezeně</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hodina</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 den</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dny</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 týden</string>
-  <string name="composer_error_setting_expiration_time">Nastavení doby platnosti se nezdařilo</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Vlastní</string>
+  <string name="composer_error_setting_expiration_time">Nastavení doby platnosti selhalo</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Vypršení platnosti není podporováno</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Místo toho doporučujeme nastavit heslo pro následující příjemce:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Zpět</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Přesto odeslat</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Zaslání upozornění</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Odesílání zpráv z @pm.me je placená funkce. Vaše zpráva bude odeslána z vaší výchozí adresy.</string>
-  <string name="composer_sender_changed_original_address_disabled">Vybraná adresa odesílatele je zakázána. Zpráva bude odeslána z vaší výchozí adresy.</string>
+  <string name="composer_sender_changed_original_address_disabled">Vybraná adresa odesílatele byla deaktivována. Zpráva bude odeslána z vaší výchozí adresy.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_title">Nová zpráva</string>
   <string name="composer_send_without_subject_dialog_text">Odeslat zprávu bez předmětu?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Ano</string>
   <string name="composer_send_without_subject_dialog_reject_button">Ne</string>
@@ -80,7 +81,7 @@
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
   <string name="set_message_password_title">Šifrovat zprávu</string>
   <string name="set_message_password_info_message">Nastavit heslo pro šifrování zprávy uživatelům bez Proton Mailu.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Více informací</a></string>
   <string name="set_message_password_label">Heslo zprávy</string>
   <string name="set_message_password_label_repeat">Zopakujte heslo</string>
   <string name="set_message_password_label_hint">Nápověda k heslu (nepovinné)</string>

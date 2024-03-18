@@ -49,19 +49,20 @@
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
   <string name="composer_button_add_password">パスワードを追加</string>
   <string name="composer_button_set_expiration">有効期限を設定</string>
-  <string name="composer_expiration_time_bottom_sheet_title">有効期限</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Done</string>
-  <string name="composer_bottom_bar_expiration_time_none">None</string>
-  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
-  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
+  <string name="composer_expiration_time_bottom_sheet_title">メッセージの有効期限</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
+  <string name="composer_bottom_bar_expiration_time_none">なし</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 時間</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 日</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 日</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 週間</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">有効期限はサポートされていません</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">以下の宛先へパスワードを設定して送信することをおすすめします:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">キャンセル</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">このまま送信</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Sending notice</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
@@ -74,7 +75,7 @@
   <string name="composer_send_without_subject_dialog_reject_button">いいえ</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
-  <string name="message_sending_error_dialog_button_dismiss">Close</string>
+  <string name="message_sending_error_dialog_button_dismiss">閉じる</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>

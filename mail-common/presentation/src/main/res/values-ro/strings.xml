@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Anulare</string>
   <string name="mailbox_action_delete_dialog_button_delete">Ștergere</string>
   <string name="picker_dialog_cancel">Anulare</string>
+  <string name="color_purple">Violet</string>
+  <string name="color_enzian">Gențiană</string>
+  <string name="color_pink">Roz</string>
+  <string name="color_plum">Prună</string>
+  <string name="color_strawberry">Căpșună</string>
+  <string name="color_cerise">Cireșiu</string>
+  <string name="color_carrot">Morcov</string>
+  <string name="color_copper">Cupru</string>
+  <string name="color_sahara">Sahara</string>
+  <string name="color_soil">Pământiu</string>
+  <string name="color_slate_blue">Ardezie albastră</string>
+  <string name="color_cobalt">Cobalt</string>
+  <string name="color_pacific">Pacific</string>
+  <string name="color_ocean">Ocean</string>
+  <string name="color_reef">Recif</string>
+  <string name="color_pine">Pin</string>
+  <string name="color_fern">Ferigă</string>
+  <string name="color_forest">Pădure</string>
+  <string name="color_olive">Măsliniu</string>
+  <string name="color_pickle">Murături</string>
 </resources>

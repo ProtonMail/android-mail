@@ -49,19 +49,20 @@
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>
   <string name="composer_button_add_password">Προσθήκη κωδικού πρόσβασης</string>
   <string name="composer_button_set_expiration">Ορισμός χρόνου λήξης</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Λήγει στις</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Έτοιμο</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Λήξη μηνύματος</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Ορισμός</string>
   <string name="composer_bottom_bar_expiration_time_none">Κανένα</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ώρα</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 ημέρα</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 ημέρες</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 εβδομάδα</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Προσαρμοσμένο</string>
   <string name="composer_error_setting_expiration_time">Η ρύθμιση του χρόνου λήξης απέτυχε</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Μη υποστηριζόμενη ημ/νία λήξης</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Συνιστούμε να ορίσετε έναν κωδικό πρόσβασης για τους ακόλουθους παραλήπτες:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Ακύρωση</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Αποστολή ούτως ή άλλως</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Αποστολή ειδοποίησης</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Η αποστολή μηνυμάτων από διεύθυνση @pm.me είναι μια λειτουργία επί πληρωμή. Το μήνυμά σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση.</string>

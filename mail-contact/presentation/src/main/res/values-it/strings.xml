@@ -73,7 +73,7 @@
   <string name="contact_form_save">Salva</string>
   <string name="add_new">Aggiungi</string>
   <string name="email_section">Email</string>
-  <string name="phone_section">Numero di telefono</string>
+  <string name="phone_section">Telefono</string>
   <string name="address_section">Indirizzo</string>
   <string name="note_section">Nota</string>
   <string name="birthday_section">Compleanno</string>
@@ -127,4 +127,5 @@
   <string name="manage_members_title">Gestisci i membri</string>
   <string name="search_contact">Cerca nei contatti</string>
   <string name="member_update_error">Errore nell\'aggiornamento del membro. Riprova più tardi.</string>
+  <string name="contact_group_color">Colore del gruppo di contatti</string>
 </resources>

@@ -104,21 +104,21 @@
   <string name="mailbox_search_no_results_explanation">Data de pesquisa, nome, endereço de e-mail ou linha de assunto</string>
   <string name="mailbox_action_button_clear_trash">Esvaziar o lixo</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta Lixo</string>
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens no \'Lixo\'?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens no \'Spam\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Tem a certeza que pretende eliminar permanentemente todas as conversas na pasta \"Lixo\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Tem a certeza que pretende eliminar permanentemente todas as conversas na pasta \"Spam\"?</string>
   <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está agendada"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Aviso</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">O armazenamento da sua conta Proton está mais de 80% cheio. Liberte espaço ou atualize para obter mais armazenamento.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">O armazenamento da sua conta Proton está mais de 90% cheio. Liberte espaço ou atualize para obter mais armazenamento.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Não lembrar novamente</string>
   <string name="storage_limit_warning_dialog_confirm_button">Aceitar</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Aviso</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_text">O armazenamento da sua conta Proton está 100% cheio. Não será possível enviar ou receber e-mails, a não ser que elimine permanentemente alguns e-mails ou atualize para obter mais armazenamento.</string>
   <string name="storage_quota_over_dialog_confirm_button">Aceitar</string>
 </resources>

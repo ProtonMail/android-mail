@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Отменить</string>
   <string name="mailbox_action_delete_dialog_button_delete">Удалить</string>
   <string name="picker_dialog_cancel">Отменить</string>
+  <string name="color_purple">Фиолетовый</string>
+  <string name="color_enzian">Энзианский</string>
+  <string name="color_pink">Розовый</string>
+  <string name="color_plum">Сливовый</string>
+  <string name="color_strawberry">Клубничный</string>
+  <string name="color_cerise">Вишнёвый</string>
+  <string name="color_carrot">Морковный</string>
+  <string name="color_copper">Медный</string>
+  <string name="color_sahara">Сахара</string>
+  <string name="color_soil">Землистый</string>
+  <string name="color_slate_blue">Синевато-серый</string>
+  <string name="color_cobalt">Кобальтовый</string>
+  <string name="color_pacific">Тихоокеанский</string>
+  <string name="color_ocean">Океанический</string>
+  <string name="color_reef">Коралловый</string>
+  <string name="color_pine">Сосновый</string>
+  <string name="color_fern">Папоротниковый</string>
+  <string name="color_forest">Лесной</string>
+  <string name="color_olive">Оливковый</string>
+  <string name="color_pickle">Огуречный</string>
 </resources>

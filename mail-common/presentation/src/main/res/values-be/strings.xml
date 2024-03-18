@@ -91,4 +91,24 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Скасаваць</string>
   <string name="mailbox_action_delete_dialog_button_delete">Выдаліць</string>
   <string name="picker_dialog_cancel">Скасаваць</string>
+  <string name="color_purple">Фіялетавы</string>
+  <string name="color_enzian">Чарнільны</string>
+  <string name="color_pink">Ружовы</string>
+  <string name="color_plum">Слівавы</string>
+  <string name="color_strawberry">Клубнічны</string>
+  <string name="color_cerise">Вішнёвы</string>
+  <string name="color_carrot">Маркоўны</string>
+  <string name="color_copper">Медны</string>
+  <string name="color_sahara">Сахара</string>
+  <string name="color_soil">Зямлісты</string>
+  <string name="color_slate_blue">Сланцава-блакітны</string>
+  <string name="color_cobalt">Кобальтавы</string>
+  <string name="color_pacific">Ціхаакіянскі</string>
+  <string name="color_ocean">Акіянічны</string>
+  <string name="color_reef">Рыфавы</string>
+  <string name="color_pine">Сасновы</string>
+  <string name="color_fern">Папаратнікавы</string>
+  <string name="color_forest">Лясны</string>
+  <string name="color_olive">Аліўкавы</string>
+  <string name="color_pickle">Агурочны</string>
 </resources>

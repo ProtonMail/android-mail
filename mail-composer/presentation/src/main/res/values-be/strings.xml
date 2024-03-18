@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Збой загрузкі апошняй версіі гэтага чарнавіка. Любыя змены перавызначаць яго змесцівам.</string>
   <string name="composer_button_add_password">Дадаць пароль</string>
   <string name="composer_button_set_expiration">Задаць тэрмін дзеяння</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Тэрмін дзеяння</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Гатова</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Тэрмін дзеяння паведамлення</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Задаць</string>
   <string name="composer_bottom_bar_expiration_time_none">Няма</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 гадзіна</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 дзень</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 дні</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 тыдзень</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Карыстальніцкае</string>
   <string name="composer_error_setting_expiration_time">Збой наладжвання тэрміну дзеяння</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Тэрмін дзеяння не падтрымліваецца</string>

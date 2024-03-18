@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="dialog_sign_out_account_title">Cerrar sesión</string>
-  <string name="dialog_sign_out_account_description">¿En verdad desea la cerrar sesión?</string>
+  <string name="dialog_sign_out_account_description">¿Está seguro de que quiere la cerrar sesión?</string>
   <string name="dialog_sign_out_account_confirm">Sí</string>
   <string name="dialog_sign_out_account_cancel">No</string>
   <string name="dialog_remove_account_title">Eliminar cuenta</string>

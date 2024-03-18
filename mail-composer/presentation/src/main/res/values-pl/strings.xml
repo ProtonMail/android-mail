@@ -49,13 +49,14 @@
   <string name="composer_warning_local_data_shown">Nie udało się załadować najnowszej wersji szkicu. Wszelkie jej zmiany spowodują nadpisanie zawartości.</string>
   <string name="composer_button_add_password">Dodaj hasło</string>
   <string name="composer_button_set_expiration">Ustaw czas wygaśnięcia</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Data wygaśnięcia</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Gotowe</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Wygaśniecie wiadomości</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Ustaw</string>
   <string name="composer_bottom_bar_expiration_time_none">Brak</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 godzina</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 dzień</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dni</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 tydzień</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Niestandardowy</string>
   <string name="composer_error_setting_expiration_time">Ustawienie czasu wygaśnięcia nie powiodło się</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Wygaśnięcie nie jest obsługiwane</string>
