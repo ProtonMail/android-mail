@@ -24,11 +24,11 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.MainActivity
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
 import ch.protonmail.android.uitest.rule.HiltInjectRule
 import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import kotlinx.coroutines.runBlocking
 import me.proton.core.auth.domain.entity.SessionInfo

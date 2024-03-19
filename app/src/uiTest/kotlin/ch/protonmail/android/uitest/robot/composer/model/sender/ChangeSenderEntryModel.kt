@@ -23,7 +23,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcomposer.presentation.ui.ChangeSenderBottomSheetTestTags
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitHidden
 

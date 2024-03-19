@@ -27,6 +27,7 @@ import ch.protonmail.android.networkmocks.mockwebserver.requests.respondWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.serveOnce
 import ch.protonmail.android.networkmocks.mockwebserver.requests.withStatusCode
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
@@ -38,7 +39,6 @@ import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.UiDeviceHolder.uiDevice
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest

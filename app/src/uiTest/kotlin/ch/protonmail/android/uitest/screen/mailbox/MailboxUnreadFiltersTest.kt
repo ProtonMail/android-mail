@@ -19,22 +19,19 @@
 package ch.protonmail.android.uitest.screen.mailbox
 
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.UnreadItemsFilterTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.test.annotations.suite.SmokeTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 
 @SmokeTest
-internal class MailboxUnreadFiltersTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class MailboxUnreadFiltersTest : HiltInstrumentedTest() {
 
     private val unreadFilterNode by lazy {
         composeTestRule

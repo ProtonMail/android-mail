@@ -23,7 +23,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarCustomLabelTestTags
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.child
 

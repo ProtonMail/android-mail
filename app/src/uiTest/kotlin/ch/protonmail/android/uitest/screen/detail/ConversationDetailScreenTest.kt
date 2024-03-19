@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.screen.detail
 
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -32,6 +31,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDet
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.robot.detail.ConversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.conversationDetailRobot
 import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
@@ -42,20 +42,17 @@ import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
 import ch.protonmail.android.uitest.robot.detail.verify
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder.createAndGetComposeRule
 import ch.protonmail.android.uitest.util.getString
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.Ignore
-import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 @Suppress("TooManyFunctions")
 @RegressionTest
-internal class ConversationDetailScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = createAndGetComposeRule()
+@HiltAndroidTest
+internal class ConversationDetailScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun whenConversationIsLoadedThenSubjectIsDisplayed() {

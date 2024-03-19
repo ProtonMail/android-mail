@@ -29,7 +29,7 @@ import ch.protonmail.android.uitest.robot.menu.MenuRobot
 import ch.protonmail.android.uitest.robot.settings.account.verify
 import ch.protonmail.android.uitest.robot.settings.swipeactions.verify
 import ch.protonmail.android.uitest.robot.settings.verify
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules

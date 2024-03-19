@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.screen.detail
 
 import android.net.Uri
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
@@ -32,6 +31,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewData
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.detail.ExtendedHeaderRecipientEntry
@@ -41,17 +41,14 @@ import ch.protonmail.android.uitest.robot.detail.section.bottomBarSection
 import ch.protonmail.android.uitest.robot.detail.section.messageBodySection
 import ch.protonmail.android.uitest.robot.detail.section.messageHeaderSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.collections.immutable.toImmutableList
-import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
 @RegressionTest
-internal class MessageDetailScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class MessageDetailScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun whenMessageIsLoadedThenMessageHeaderIsDisplayed() {

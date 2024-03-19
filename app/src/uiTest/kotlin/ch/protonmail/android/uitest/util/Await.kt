@@ -25,6 +25,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 
 fun ComposeTestRule.awaitProgressIsHidden() {
     onNodeWithTag(PROTON_PROGRESS_TEST_TAG)

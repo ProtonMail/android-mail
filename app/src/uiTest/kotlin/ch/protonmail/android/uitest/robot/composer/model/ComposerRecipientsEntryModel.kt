@@ -36,7 +36,7 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
 import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntryModel
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
 import ch.protonmail.android.uitest.util.awaitHidden
 

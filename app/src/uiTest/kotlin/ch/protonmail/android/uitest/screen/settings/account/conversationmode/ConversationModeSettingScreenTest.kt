@@ -23,20 +23,17 @@ import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.isToggleable
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingState.Data
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 
 @RegressionTest
-internal class ConversationModeSettingScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class ConversationModeSettingScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun testConversationModeToggleIsOnWhenStateIsTrue() {

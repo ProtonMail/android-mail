@@ -27,7 +27,7 @@ import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetTestTags
 import ch.protonmail.android.uitest.models.folders.Tint
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.child
 

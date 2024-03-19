@@ -16,17 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.util
+package ch.protonmail.android.test.utils
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.ComposeTestRule
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 
-internal object ComposeTestRuleHolder {
+object ComposeTestRuleHolder {
 
-    private val composeContentTestRule: Lazy<ComposeContentTestRule> = lazy { createComposeRule() }
-    private val composeTestRule: Lazy<ComposeTestRule> = lazy { createEmptyComposeRule() }
+    @PublishedApi
+    internal val composeContentTestRule: Lazy<ComposeContentTestRule> = lazy {
+        createAndroidComposeRule<HiltComponentActivity>()
+    }
+
+    @PublishedApi
+    internal val composeTestRule: Lazy<ComposeTestRule> = lazy { createEmptyComposeRule() }
 
     val rule: ComposeTestRule
         get() = when {

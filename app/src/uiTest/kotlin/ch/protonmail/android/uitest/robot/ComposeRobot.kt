@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.robot
 
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import ch.protonmail.android.test.robot.ProtonMailRobot
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 
 /**
  * A base [ProtonMailRobot] for Compose screens.

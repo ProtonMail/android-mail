@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.screen.settings.appsettings.theme
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailsettings.domain.model.Theme
 import ch.protonmail.android.mailsettings.domain.model.Theme.DARK
@@ -32,19 +31,17 @@ import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSetti
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.theme.ThemeUiModel
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.util.onNodeWithText
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 @RegressionTest
-internal class ThemeSettingScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class ThemeSettingScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun testOnlySystemDefaultIsSelectedWhenThemeIsSystemDefault() {

@@ -19,20 +19,19 @@
 package ch.protonmail.android.uitest.screen.mailbox
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import arrow.core.nonEmptyListOf
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelSample
 import ch.protonmail.android.maillabel.presentation.text
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
-import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
@@ -40,10 +39,11 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
@@ -55,21 +55,18 @@ import ch.protonmail.android.uitest.robot.mailbox.section.emptyListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.listSection
 import ch.protonmail.android.uitest.robot.mailbox.section.progressListSection
 import ch.protonmail.android.uitest.robot.mailbox.section.verify
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.ManagedState
 import ch.protonmail.android.uitest.util.StateManager
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Ignore
-import org.junit.Rule
 import org.junit.Test
 
 @RegressionTest
-internal class MailboxScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class MailboxScreenTest : HiltInstrumentedTest() {
 
     private val topMailboxItem = MailboxListItemEntry(
         index = 0,

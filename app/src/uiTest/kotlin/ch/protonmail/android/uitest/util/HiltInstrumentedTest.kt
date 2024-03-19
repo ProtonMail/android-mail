@@ -16,9 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.test.utils
+package ch.protonmail.android.uitest.util
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.rule.MainInitializerRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -29,12 +31,14 @@ import org.junit.rules.RuleChain
 open class HiltInstrumentedTest {
 
     private val hiltTestRule = HiltAndroidRule(this)
+    private val mainInitializerRule = MainInitializerRule()
     val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
 
     @get:Rule
     val ruleChain: RuleChain = RuleChain
         .outerRule(hiltTestRule)
         .around(composeTestRule)
+        .around(mainInitializerRule)
 
     @Before
     fun setup() {

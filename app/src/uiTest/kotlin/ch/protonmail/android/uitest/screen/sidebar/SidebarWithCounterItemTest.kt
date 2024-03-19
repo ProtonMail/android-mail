@@ -19,7 +19,6 @@
 package ch.protonmail.android.uitest.screen.sidebar
 
 import androidx.compose.ui.test.assertTextEquals
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarItemWithCounterTestTags
@@ -27,17 +26,15 @@ import ch.protonmail.android.maillabel.presentation.sidebar.sidebarLabelItems
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarSystemLabelItems
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.component.ProtonSidebarLazy
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 
 @SmokeTest
-internal class SidebarWithCounterItemTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class SidebarWithCounterItemTest : HiltInstrumentedTest() {
 
     private val countersNode by lazy {
         composeTestRule.onNodeWithTag(SidebarItemWithCounterTestTags.Counter, useUnmergedTree = true)

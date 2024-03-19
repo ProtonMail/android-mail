@@ -36,10 +36,10 @@ import androidx.compose.ui.test.performTouchInput
 import ch.protonmail.android.mailcommon.presentation.compose.AvatarTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxItemTestTags
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenTestTags
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.models.avatar.AvatarInitial
 import ch.protonmail.android.uitest.models.folders.MailFolderEntry
 import ch.protonmail.android.uitest.models.folders.MailLabelEntry
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.util.assertions.assertItemIsRead
 import ch.protonmail.android.uitest.util.assertions.assertTintColor
 import ch.protonmail.android.uitest.util.awaitDisplayed

@@ -22,7 +22,6 @@ import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -35,18 +34,17 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState.Data
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.util.InstrumentationHolder
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 
 @Suppress("SameParameterValue") // We want test parameters to be explicit
 @RegressionTest
-internal class MailboxTopAppBarTest {
+@HiltAndroidTest
+internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
 
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
     private val context = InstrumentationHolder.instrumentation.targetContext
 
     @Test

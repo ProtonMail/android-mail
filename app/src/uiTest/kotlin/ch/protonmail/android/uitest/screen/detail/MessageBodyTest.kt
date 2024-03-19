@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.screen.detail
 import java.util.UUID
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities.Capabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
@@ -31,15 +30,13 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageBodyTestTags
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebViewTestTags
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
-import org.junit.Rule
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 
 @RegressionTest
-class MessageBodyTest {
-
-    @get:Rule
-    val rule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+class MessageBodyTest : HiltInstrumentedTest() {
 
     @Test
     fun shouldDisplayWebViewIfAvailable() {
@@ -48,7 +45,7 @@ class MessageBodyTest {
         val state = MessageDetailBodyUiModelSample.build(messageContent)
 
         // when
-        rule.setContent {
+        composeTestRule.setContent {
             CompositionLocalProvider(LocalDeviceCapabilitiesProvider provides Capabilities(hasWebView = true)) {
                 MessageBody(
                     modifier = Modifier,
@@ -60,8 +57,8 @@ class MessageBodyTest {
         }
 
         // then
-        rule.onNodeWithTag(MessageBodyWebViewTestTags.WebView).assertExists()
-        rule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(MessageBodyWebViewTestTags.WebView).assertExists()
+        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative).assertDoesNotExist()
     }
 
     @Test
@@ -71,7 +68,7 @@ class MessageBodyTest {
         val state = MessageDetailBodyUiModelSample.build(messageContent)
 
         // when
-        rule.setContent {
+        composeTestRule.setContent {
             CompositionLocalProvider(LocalDeviceCapabilitiesProvider provides Capabilities(hasWebView = false)) {
                 MessageBody(
                     modifier = Modifier,
@@ -83,7 +80,7 @@ class MessageBodyTest {
         }
 
         // then
-        rule.onNodeWithTag(MessageBodyWebViewTestTags.WebView).assertDoesNotExist()
-        rule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative).assertExists()
+        composeTestRule.onNodeWithTag(MessageBodyWebViewTestTags.WebView).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative).assertExists()
     }
 }

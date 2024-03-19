@@ -20,7 +20,6 @@ package ch.protonmail.android.uitest.screen.settings.appsettings.swipeactions
 
 import androidx.compose.ui.test.assertAny
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onParent
@@ -30,21 +29,19 @@ import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.Swi
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceState.Loading
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.SwipeActionsPreferenceUiModel
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.component.PROTON_PROGRESS_TEST_TAG
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import kotlin.test.Test
 import ch.protonmail.android.mailsettings.presentation.R as SettingsR
 import me.proton.core.presentation.R as CoreR
 
 @RegressionTest
-internal class SwipeActionsPreferenceScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class SwipeActionsPreferenceScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun progressIsShownWhileDataLoading() {

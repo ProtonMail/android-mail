@@ -21,7 +21,6 @@ package ch.protonmail.android.uitest.screen.settings.appsettings.combinedcontact
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailcommon.presentation.Effect
@@ -30,17 +29,15 @@ import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_SNACKBAR
 import ch.protonmail.android.mailsettings.presentation.settings.combinedcontacts.TEST_TAG_COMBINED_CONTACTS_TOGGLE_ITEM
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
-import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
 @RegressionTest
-internal class CombinedContactsSettingScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class CombinedContactsSettingScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun testSwitchIsCheckedIfCombinedContactsSettingIsEnabled() {

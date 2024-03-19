@@ -22,7 +22,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -38,8 +37,10 @@ import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
 import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarState
 import ch.protonmail.android.test.annotations.suite.RegressionTest
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.util.HiltInstrumentedTest
+import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.util.onNodeWithText
+import dagger.hilt.android.testing.HiltAndroidTest
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Rule
@@ -50,10 +51,8 @@ import me.proton.core.presentation.compose.R as core
 private const val APP_VERSION_FOOTER = "Proton Mail 6.0.0-alpha+test"
 
 @RegressionTest
-internal class SidebarScreenTest {
-
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule = ComposeTestRuleHolder.createAndGetComposeRule()
+@HiltAndroidTest
+internal class SidebarScreenTest : HiltInstrumentedTest() {
 
     @Test
     fun subscriptionIsShownWhenSidebarStateIsDisplaySubscription() {

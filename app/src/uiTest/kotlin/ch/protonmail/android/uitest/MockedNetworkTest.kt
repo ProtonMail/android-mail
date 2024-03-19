@@ -22,6 +22,7 @@ import android.Manifest
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.test.rule.GrantPermissionRule
 import ch.protonmail.android.test.idlingresources.ComposeIdlingResource
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.helpers.core.TestIdWatcher
 import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.login.LoginType
@@ -31,7 +32,6 @@ import ch.protonmail.android.uitest.rule.MainInitializerRule
 import ch.protonmail.android.uitest.rule.MockIntentsRule
 import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
 import ch.protonmail.android.uitest.rule.MockTimeRule
-import ch.protonmail.android.uitest.util.ComposeTestRuleHolder
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.unmockkObject
