@@ -195,6 +195,13 @@ object AndroidX {
         }
     }
 
+    object WebKit {
+
+        private const val version = Versions.AndroidX.webkit
+
+        const val webkit = "androidx.webkit:webkit:$version"
+    }
+
     object Work {
 
         private const val version = Versions.AndroidX.work

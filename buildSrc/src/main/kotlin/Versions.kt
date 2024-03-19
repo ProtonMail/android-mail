@@ -63,6 +63,7 @@ object Versions {
         const val testEspresso = "3.5.1"
         const val testUiautomator = "2.3.0-alpha03"
         const val tracing = "1.2.0"
+        const val webkit = "1.10.0"
         const val work = "2.9.0-rc01"
     }
 

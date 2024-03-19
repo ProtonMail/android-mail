@@ -23,7 +23,6 @@ import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -54,6 +53,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
@@ -154,12 +155,7 @@ fun MessageBodyWebView(
                     it.settings.allowFileAccess = false
                     it.settings.loadWithOverviewMode = messageBodyUiModel.mimeType == Html
                     it.settings.useWideViewPort = messageBodyUiModel.mimeType == Html
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        it.settings.isAlgorithmicDarkeningAllowed = true
-                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        it.settings.forceDark =
-                            if (isSystemInDarkTheme) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
-                    }
+                    configureDarkLightMode(it, isSystemInDarkTheme)
                 },
                 captureBackPresses = false,
                 state = state,
@@ -211,6 +207,18 @@ fun MessageBodyWebView(
     }
 }
 
+private fun configureDarkLightMode(webView: WebView, allowAlgorithmicDarkening: Boolean) {
+    if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            webView.settings.isAlgorithmicDarkeningAllowed = allowAlgorithmicDarkening
+        } else {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(
+                webView.settings, allowAlgorithmicDarkening
+            )
+        }
+    }
+}
 
 @Composable
 private fun ExpandCollapseBodyButton(modifier: Modifier = Modifier, onClick: () -> Unit) {

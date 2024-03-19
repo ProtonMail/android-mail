@@ -136,6 +136,7 @@ object Dependencies {
         add(AndroidX.Paging.compose)
         add(AndroidX.Paging.runtime)
         add(AndroidX.Room.ktx)
+        add(AndroidX.WebKit.webkit)
         add(Arrow.core)
         add(JakeWharton.timber)
         add(JavaX.inject)
