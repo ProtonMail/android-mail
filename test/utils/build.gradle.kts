@@ -19,7 +19,10 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
+
+setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.testutils"
@@ -41,8 +44,11 @@ android {
 }
 
 dependencies {
-    implementation(JakeWharton.timber)
+    implementation(AndroidX.Compose.uiTest)
+    implementation(AndroidX.Compose.uiTestJUnit)
+    implementation(Dagger.hiltAndroidTesting)
     implementation(Dependencies.testLibs)
+    implementation(JakeWharton.timber)
 
     implementation(project(":mail-composer"))
 }
