@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -52,13 +54,15 @@ import timber.log.Timber
 @Composable
 fun DetailMoreActionsBottomSheetContent(
     state: DetailMoreActionsBottomSheetState,
-    actions: DetailMoreActionsBottomSheetContent.Actions
+    actions: DetailMoreActionsBottomSheetContent.Actions,
+    viewModePreference: ViewModePreference
 ) {
     when (state) {
         is DetailMoreActionsBottomSheetState.Data -> DetailMoreActionsBottomSheetContent(
             uiModel = state.messageDataUiModel,
             actionsUiModel = state.replyActionsUiModel,
-            actionCallbacks = actions
+            actionCallbacks = actions,
+            viewModePreference
         )
 
         else -> ProtonCenteredProgress()
@@ -69,7 +73,8 @@ fun DetailMoreActionsBottomSheetContent(
 fun DetailMoreActionsBottomSheetContent(
     uiModel: DetailMoreActionsBottomSheetState.MessageDataUiModel,
     actionsUiModel: ImmutableList<ActionUiModel>,
-    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
+    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions,
+    viewModePreference: ViewModePreference
 ) {
 
     Column {
@@ -97,6 +102,8 @@ fun DetailMoreActionsBottomSheetContent(
 
         LazyColumn {
             items(actionsUiModel) { actionItem ->
+                if (shouldSkipActionItem(actionItem, isSystemInDarkTheme(), viewModePreference)) return@items
+
                 ProtonRawListItem(
                     modifier = Modifier
                         .clickable {
@@ -128,11 +135,23 @@ private fun callbackForAction(
     Action.Reply -> actionCallbacks.onReply
     Action.ReplyAll -> actionCallbacks.onReplyAll
     Action.Forward -> actionCallbacks.onForward
+    Action.ViewInLightMode -> actionCallbacks.onViewInLightMode
+    Action.ViewInDarkMode -> actionCallbacks.onViewInDarkMode
     Action.ReportPhishing -> actionCallbacks.onReportPhishing
 
     else -> {
         { Timber.d("Action not handled $action.") }
     }
+}
+
+private fun shouldSkipActionItem(
+    actionItem: ActionUiModel,
+    isSystemInDarkTheme: Boolean,
+    viewModePreference: ViewModePreference
+): Boolean = when (actionItem.action) {
+    Action.ViewInLightMode -> !isSystemInDarkTheme || viewModePreference == ViewModePreference.LightMode
+    Action.ViewInDarkMode -> !isSystemInDarkTheme || viewModePreference == ViewModePreference.DarkMode
+    else -> false
 }
 
 
@@ -142,6 +161,8 @@ object DetailMoreActionsBottomSheetContent {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
+        val onViewInLightMode: (MessageId) -> Unit,
+        val onViewInDarkMode: (MessageId) -> Unit,
         val onReportPhishing: (MessageId) -> Unit
     )
 }
@@ -157,7 +178,7 @@ private fun BottomSheetContentPreview() {
                     TextUiModel("Message from Antony Hayes"),
                     "123"
                 ),
-                listOf(
+                replyActionsUiModel = listOf(
                     ActionUiModel(Action.Reply),
                     ActionUiModel(Action.ReplyAll),
                     ActionUiModel(Action.Forward),
@@ -168,8 +189,11 @@ private fun BottomSheetContentPreview() {
                 onReply = {},
                 onReplyAll = {},
                 onForward = {},
+                onViewInLightMode = {},
+                onViewInDarkMode = {},
                 onReportPhishing = {}
-            )
+            ),
+            ViewModePreference.LightMode
         )
     }
 }

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 
 @Composable
@@ -34,6 +35,7 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
         modifier = modifier,
         messageBodyUiModel = uiModel,
         bodyDisplayMode = MessageBodyExpandCollapseMode.NotApplicable,
+        messageBodyViewModePreference = ViewModePreference.LightMode,
         webViewActions = MessageBodyWebView.Actions(
             onMessageBodyLinkClicked = {},
             onMessageBodyLinkLongClicked = {},

@@ -157,7 +157,8 @@ class MessageDetailReducer @Inject constructor(
 
                 is MessageViewAction.LabelAsConfirmed,
                 is MessageDetailEvent.ReportPhishingRequested,
-                is MessageViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
+                is MessageViewAction.DismissBottomSheet,
+                is MessageViewAction.SwitchViewMode -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {

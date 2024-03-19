@@ -46,8 +46,8 @@ fun Action.iconDrawable() = when (this) {
     Action.Delete -> R.drawable.ic_proton_trash_cross
     Action.Archive -> R.drawable.ic_proton_archive_box
     Action.Spam -> R.drawable.ic_proton_fire
-    Action.ViewInLightMode -> R.drawable.ic_proton_circle
-    Action.ViewInDarkMode -> R.drawable.ic_proton_circle_filled
+    Action.ViewInLightMode -> R.drawable.ic_proton_sun
+    Action.ViewInDarkMode -> R.drawable.ic_proton_moon
     Action.Print -> R.drawable.ic_proton_printer
     Action.ViewHeaders -> R.drawable.ic_proton_file_lines
     Action.ViewHtml -> R.drawable.ic_proton_code

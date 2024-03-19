@@ -21,6 +21,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -39,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -72,6 +74,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -103,6 +106,12 @@ fun MessageDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val messageBodyViewModePreference = rememberSaveable {
+        mutableStateOf(
+            if (isSystemInDarkTheme) ViewModePreference.DarkMode else ViewModePreference.LightMode
+        )
+    }
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -166,8 +175,17 @@ fun MessageDetailScreen(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
+                        onViewInLightMode = {
+                            messageBodyViewModePreference.value = ViewModePreference.LightMode
+                            viewModel.submit(MessageViewAction.SwitchViewMode)
+                        },
+                        onViewInDarkMode = {
+                            messageBodyViewModePreference.value = ViewModePreference.DarkMode
+                            viewModel.submit(MessageViewAction.SwitchViewMode)
+                        },
                         onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
-                    )
+                    ),
+                    viewModePreference = messageBodyViewModePreference.value
                 )
 
                 else -> {
@@ -181,6 +199,7 @@ fun MessageDetailScreen(
         MessageDetailScreen(
             modifier = modifier,
             state = state,
+            messageBodyViewModePreference = messageBodyViewModePreference.value,
             actions = MessageDetailScreen.Actions(
                 onExit = actions.onExit,
                 onReload = { viewModel.submit(MessageViewAction.Reload) },
@@ -220,6 +239,7 @@ fun MessageDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 fun MessageDetailScreen(
     state: MessageDetailState,
+    messageBodyViewModePreference: ViewModePreference,
     actions: MessageDetailScreen.Actions,
     modifier: Modifier = Modifier
 ) {
@@ -366,6 +386,7 @@ fun MessageDetailScreen(
                     messageMetadataState = state.messageMetadataState,
                     messageBannersState = state.messageBannersState,
                     messageBodyState = state.messageBodyState,
+                    messageBodyViewModePreference = messageBodyViewModePreference,
                     actions = messageDetailContentActions,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
@@ -386,6 +407,7 @@ private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
     messageBannersState: MessageBannersState,
     messageBodyState: MessageBodyState,
+    messageBodyViewModePreference: ViewModePreference,
     actions: MessageDetailContent.Actions,
     paddingOffsetDp: Dp = 0f.dp
 ) {
@@ -427,6 +449,7 @@ private fun MessageDetailContent(
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
                     expandCollapseMode = messageBodyState.expandCollapseMode,
+                    messageBodyViewModePreference = messageBodyViewModePreference,
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
@@ -453,6 +476,7 @@ private fun MessageDetailContent(
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
                         expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable,
+                        messageBodyViewModePreference = messageBodyViewModePreference,
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
@@ -586,7 +610,7 @@ private fun MessageDetailScreenPreview(
     @PreviewParameter(MessageDetailsPreviewProvider::class) state: MessageDetailState
 ) {
     ProtonTheme3 {
-        MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
+        MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty, messageBodyViewModePreference = ViewModePreference.LightMode)
     }
 }
 

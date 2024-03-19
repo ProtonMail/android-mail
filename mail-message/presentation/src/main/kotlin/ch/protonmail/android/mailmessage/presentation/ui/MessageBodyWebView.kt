@@ -75,6 +75,7 @@ import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
 import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
 import com.google.accompanist.web.AccompanistWebChromeClient
@@ -91,6 +92,7 @@ fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     bodyDisplayMode: MessageBodyExpandCollapseMode,
+    messageBodyViewModePreference: ViewModePreference,
     webViewActions: MessageBodyWebView.Actions,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
@@ -134,7 +136,11 @@ fun MessageBodyWebView(
 
     val messageId = messageBodyUiModel.messageId
 
-    val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
+    val client = remember(
+        messageBodyUiModel.shouldShowRemoteContent,
+        messageBodyUiModel.shouldShowEmbeddedImages,
+        messageBodyViewModePreference
+    ) {
         object : AccompanistWebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {

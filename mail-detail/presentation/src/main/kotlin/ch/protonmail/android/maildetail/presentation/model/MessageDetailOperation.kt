@@ -143,6 +143,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class ReportPhishing(val messageId: MessageId) : MessageViewAction
     object ReportPhishingConfirmed : MessageViewAction, AffectingReportPhishingDialog
     object ReportPhishingDismissed : MessageViewAction, AffectingReportPhishingDialog
+    object SwitchViewMode : MessageViewAction, AffectingBottomSheet
 
     data class OpenInProtonCalendar(val messageId: MessageId) : MessageViewAction
 }
