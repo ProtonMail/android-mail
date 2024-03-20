@@ -20,10 +20,8 @@ package ch.protonmail.android.mailmessage.presentation.ui
 
 import java.io.ByteArrayInputStream
 import android.net.Uri
-import android.os.Build
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
-import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -42,6 +40,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -58,8 +57,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.webkit.WebSettingsCompat
-import androidx.webkit.WebViewFeature
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
@@ -136,11 +133,16 @@ fun MessageBodyWebView(
 
     val messageId = messageBodyUiModel.messageId
 
-    val client = remember(
-        messageBodyUiModel.shouldShowRemoteContent,
-        messageBodyUiModel.shouldShowEmbeddedImages,
-        messageBodyViewModePreference
-    ) {
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+
+    var webView by remember { mutableStateOf<WebView?>(null) }
+    LaunchedEffect(key1 = messageBodyViewModePreference) {
+        webView?.let {
+            configureDarkLightMode(it, isSystemInDarkTheme, messageBodyViewModePreference)
+        }
+    }
+
+    val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
         object : AccompanistWebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -182,8 +184,6 @@ fun MessageBodyWebView(
         }
     }
 
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-
     // This is will on be used if the WebView height is higher than the max constraint.
     var webViewHeightPx by remember { mutableIntStateOf(0) }
 
@@ -199,8 +199,9 @@ fun MessageBodyWebView(
                     it.settings.allowFileAccess = false
                     it.settings.loadWithOverviewMode = true
                     it.settings.useWideViewPort = true
-                    configureDarkLightMode(it, isSystemInDarkTheme)
+                    configureDarkLightMode(it, isSystemInDarkTheme, messageBodyViewModePreference)
                     configureLongClick(it, actions.onMessageBodyLinkLongClicked)
+                    webView = it
                 },
                 captureBackPresses = false,
                 state = state,
@@ -279,19 +280,23 @@ private fun configureLongClick(view: WebView, onLongClick: (uri: Uri) -> Unit) {
     }
 }
 
-private fun configureDarkLightMode(webView: WebView, shouldDarkenWebView: Boolean) {
-    if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+private fun configureDarkLightMode(
+    webView: WebView,
+    isInDarkTheme: Boolean,
+    viewModePreference: ViewModePreference
+) {
+    if (isInDarkTheme) {
+        configureDarkLightModeWhenInDarkTheme(webView, viewModePreference)
+    } else {
+        webView.showInLightMode()
+    }
+}
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            webView.settings.isAlgorithmicDarkeningAllowed = shouldDarkenWebView
-        } else {
-            WebSettingsCompat.setAlgorithmicDarkeningAllowed(
-                webView.settings, shouldDarkenWebView
-            )
-        }
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        webView.settings.forceDark =
-            if (shouldDarkenWebView) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
+private fun configureDarkLightModeWhenInDarkTheme(webView: WebView, viewModePreference: ViewModePreference) {
+    if (viewModePreference == ViewModePreference.LightMode) {
+        webView.showInLightMode()
+    } else {
+        webView.showInDarkMode()
     }
 }
 

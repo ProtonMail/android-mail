@@ -610,7 +610,11 @@ private fun MessageDetailScreenPreview(
     @PreviewParameter(MessageDetailsPreviewProvider::class) state: MessageDetailState
 ) {
     ProtonTheme3 {
-        MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty, messageBodyViewModePreference = ViewModePreference.LightMode)
+        MessageDetailScreen(
+            state = state,
+            actions = MessageDetailScreen.Actions.Empty,
+            messageBodyViewModePreference = ViewModePreference.LightMode
+        )
     }
 }
 
