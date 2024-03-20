@@ -353,25 +353,41 @@ deploy_play_store_internal:
     - base64 -d - < "$PLAY_STORE_SERVICE_ACCOUNT_JSON" > /tmp/play_store_service_account.json
     - bundle exec fastlane deployToPlayStoreInternal
 
-distribute:debug:
+distribute_debug_mr:
   stage: deploy
   image: $CI_REGISTRY/tpe/test-scripts
-  before_script: []
   dependencies:
     - build_dev_debug
   rules:
-    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
       allow_failure: true
+  before_script: []
   script:
-    - pip install httpx
-    - upload_to_nexus.py
-      --path app/build/outputs/apk/dev/debug/app-dev-debug.apk
-      --repository "TestData/builds/Mail/Android/LatestDevDebug/"
-      --filename "latest-mail-dev-debug.apk"
-    - upload_to_nexus.py
-      --path app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
-      --repository "TestData/builds/Mail/Android/LatestTestDevDebug"
-      --filename "latest-mail-test-dev-debug.apk"
+    - MAIN_APK=app/build/outputs/apk/dev/debug/app-dev-debug.apk
+    - TEST_APK=app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+    - /usr/local/bin/nexus/mr_created_commit_pushed.py
+      --token "$PRIVATE_TOKEN_GITLAB_API_PROTON_CI"
+      --component "/Mail/Android"
+      --file_paths "$MAIN_APK" "$TEST_APK"
+      --file_names "mail-dev-debug.apk" "mail-dev-debug-test.apk"
+
+distribute_debug_post_merge:
+  stage: deploy
+  image: $CI_REGISTRY/tpe/test-scripts
+  dependencies:
+    - build_dev_debug
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
+      allow_failure: true
+  before_script: []
+  script:
+    - MAIN_APK=app/build/outputs/apk/dev/debug/app-dev-debug.apk
+    - TEST_APK=app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
+    - /usr/local/bin/nexus/mr_merged_with_post_merge_pipeline.py
+      --token "$PRIVATE_TOKEN_GITLAB_API_PROTON_CI"
+      --component "/Mail/Android"
+      --file_paths "$MAIN_APK" "$TEST_APK"
+      --file_names "mail-dev-debug.apk" "mail-dev-debug-test.apk"
 
 include:
   # Push the cache if it's the default branch
