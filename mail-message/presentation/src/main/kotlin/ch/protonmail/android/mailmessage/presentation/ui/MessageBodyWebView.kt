@@ -23,6 +23,7 @@ import android.net.Uri
 import android.os.Build
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
+import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -207,16 +208,19 @@ fun MessageBodyWebView(
     }
 }
 
-private fun configureDarkLightMode(webView: WebView, allowAlgorithmicDarkening: Boolean) {
+private fun configureDarkLightMode(webView: WebView, shouldDarkenWebView: Boolean) {
     if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            webView.settings.isAlgorithmicDarkeningAllowed = allowAlgorithmicDarkening
+            webView.settings.isAlgorithmicDarkeningAllowed = shouldDarkenWebView
         } else {
             WebSettingsCompat.setAlgorithmicDarkeningAllowed(
-                webView.settings, allowAlgorithmicDarkening
+                webView.settings, shouldDarkenWebView
             )
         }
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        webView.settings.forceDark =
+            if (shouldDarkenWebView) WebSettings.FORCE_DARK_ON else WebSettings.FORCE_DARK_OFF
     }
 }
 
@@ -267,6 +271,7 @@ object MessageBodyWebView {
 }
 
 object MessageBodyWebViewTestTags {
+
     const val WebView = "MessageBodyWebView"
 }
 
