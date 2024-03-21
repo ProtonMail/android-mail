@@ -64,7 +64,11 @@ kapt {
 
 dependencies {
     api(platform(Dependencies.firebaseBom))
-    api(Firebase.messaging)
+    api(Firebase.messaging) {
+        exclude(group = "com.google.firebase", module = "firebase-core")
+        exclude(group = "com.google.firebase", module = "firebase-analytics")
+        exclude(group = "com.google.firebase", module = "firebase-measurement-connector")
+    }
 
     implementation(project(":mail-common"))
     implementation(project(":mail-label:domain"))
