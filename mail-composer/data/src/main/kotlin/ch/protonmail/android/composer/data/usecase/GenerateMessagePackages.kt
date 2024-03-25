@@ -63,7 +63,7 @@ class GenerateMessagePackages @Inject constructor(
     private val generateSendMessagePackages: GenerateSendMessagePackages
 ) {
 
-    @Suppress("LongMethod", "ReturnCount")
+    @Suppress("LongMethod")
     suspend operator fun invoke(
         senderAddress: UserAddress,
         localDraft: MessageWithBody,
@@ -89,10 +89,10 @@ class GenerateMessagePackages @Inject constructor(
             decryptedAttachmentSessionKeys = localDraft.messageBody.attachments.associate { attachment ->
                 attachment.keyPackets?.let {
                     val decryptedSessionKey = runCatching { decryptSessionKey(Base64.decode(it)) }.getOrElse {
-                        return Error.GeneratingPackages("error decrypting session key for attachments", it).left()
+                        raise(Error.GeneratingPackages("error decrypting session key for attachments", it))
                     }
                     attachment.attachmentId.id to decryptedSessionKey
-                } ?: return Error.GeneratingPackages("attachment keypackets are null").left()
+                } ?: raise(Error.GeneratingPackages("attachment keypackets are null"))
             }
 
             val encryptedBodyPgpMessage = localDraft.messageBody.body
@@ -102,7 +102,7 @@ class GenerateMessagePackages @Inject constructor(
             decryptedPlaintextBodySessionKey = runCatching {
                 decryptSessionKey(encryptedPlaintextBodySplit.keyPacket())
             }.getOrElse {
-                return Error.GeneratingPackages("error decrypting session key for PlaintextBody", it).left()
+                raise(Error.GeneratingPackages("error decrypting session key for PlaintextBody", it))
             }
             encryptedPlaintextBodyDataPacket = encryptedPlaintextBodySplit.dataPacket()
 
@@ -110,13 +110,13 @@ class GenerateMessagePackages @Inject constructor(
             val decryptedBody =
                 if (localDraft.messageBody.mimeType == MimeType.MultipartMixed) {
                     runCatching { decryptMimeMessage(encryptedBodyPgpMessage).body.content }.getOrElse {
-                        return Error.GeneratingPackages("error decrypting BodyPgpMessage as MimeMessage", it).left()
+                        raise(Error.GeneratingPackages("error decrypting BodyPgpMessage as MimeMessage", it))
                     }
                 } else {
                     runCatching {
                         decryptText(encryptedBodyPgpMessage)
                     }.getOrElse {
-                        return Error.GeneratingPackages("error decrypting BodyPgpMessage as Text", it).left()
+                        raise(Error.GeneratingPackages("error decrypting BodyPgpMessage as Text", it))
                     }
                 }
 
@@ -130,18 +130,20 @@ class GenerateMessagePackages @Inject constructor(
             // Encrypt and sign, then decrypt MIME body's session key to send it for plaintext recipients.
             val encryptedMimeBodySplit = runCatching {
                 encryptAndSignText(mimeBody).split(cryptoContext.pgpCrypto)
-            }.getOrElse { return Error.GeneratingPackages("error encrypting MimeBody", it).left() }
+            }.getOrElse {
+                raise(Error.GeneratingPackages("error encrypting MimeBody", it))
+            }
             decryptedMimeBodySessionKey = runCatching {
                 decryptSessionKey(encryptedMimeBodySplit.keyPacket())
             }.getOrElse {
-                return Error.GeneratingPackages("error decryptong session key for encryptedMimeBody", it).left()
+                raise(Error.GeneratingPackages("error decryptong session key for encryptedMimeBody", it))
             }
             encryptedMimeBodyDataPacket = encryptedMimeBodySplit.dataPacket()
 
             signedAndEncryptedMimeBodyForRecipients = sendPreferences.mapValues { entry ->
                 runCatching {
                     signAndEncryptMimeBody(entry, mimeBody, this, cryptoContext)
-                }.getOrElse { return Error.GeneratingPackages("error signing and encrypting MimeBody", it).left() }
+                }.getOrElse { raise(Error.GeneratingPackages("error signing and encrypting MimeBody", it)) }
             }.filterNullValues()
         }
 
