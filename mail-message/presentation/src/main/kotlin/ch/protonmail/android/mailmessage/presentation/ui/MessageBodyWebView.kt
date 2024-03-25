@@ -61,13 +61,13 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel.Html
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
@@ -93,7 +93,7 @@ fun MessageBodyWebView(
         } else {
             messageBodyUiModel.messageBody
         },
-        mimeType = messageBodyUiModel.mimeType.value
+        mimeType = MimeType.Html.value
     )
     val messageId = messageBodyUiModel.messageId
 
@@ -154,8 +154,8 @@ fun MessageBodyWebView(
                     it.settings.safeBrowsingEnabled = true
                     it.settings.allowContentAccess = false
                     it.settings.allowFileAccess = false
-                    it.settings.loadWithOverviewMode = messageBodyUiModel.mimeType == Html
-                    it.settings.useWideViewPort = messageBodyUiModel.mimeType == Html
+                    it.settings.loadWithOverviewMode = true
+                    it.settings.useWideViewPort = true
                     configureDarkLightMode(it, isSystemInDarkTheme)
                 },
                 captureBackPresses = false,
