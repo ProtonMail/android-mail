@@ -687,6 +687,50 @@ class ComposerViewModelTest {
     }
 
     @Test
+    fun `should emit UpdateContactSuggestions limiting results according to constant max value`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSearchTerm = "contact"
+        val suggestionField = ContactSuggestionsField.BCC
+
+        val expectedContactsExceedingLimit = (1..ComposerViewModel.Companion.maxContactAutocompletionCount + 1).map {
+            ContactSample.John.copy(
+                contactEmails = listOf(
+                    ContactTestData.buildContactEmailWith(
+                        name = "contact $it",
+                        address = "address@proton.ch"
+                    )
+                )
+            )
+        }
+        val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContactsExceedingLimit)
+        expectMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+
+        // When
+        viewModel.submit(action)
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(
+            ComposerViewModel.Companion.maxContactAutocompletionCount,
+            actual.contactSuggestions[ContactSuggestionsField.BCC]!!.size
+        )
+    }
+
+    @Test
     fun `should dismiss contact suggestions when ContactSuggestionsDismissed is emitted`() = runTest {
         // Given
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)

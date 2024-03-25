@@ -740,7 +740,7 @@ class ComposerViewModel @Inject constructor(
 
                 emitNewStateFor(
                     ComposerEvent.UpdateContactSuggestions(
-                        suggestedContacts,
+                        suggestedContacts.take(maxContactAutocompletionCount),
                         suggestionsField
                     )
                 )
@@ -771,5 +771,10 @@ class ComposerViewModel @Inject constructor(
                     }
                 }
             }
+    }
+
+    companion object {
+
+        internal const val maxContactAutocompletionCount = 100
     }
 }
