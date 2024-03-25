@@ -96,14 +96,6 @@ detekt:
     reports:
       codequality: config/detekt/reports/mergedReport.json
 
-gradle_wrapper_validation:
-  stage: analyse
-  tags:
-    - shared-small
-  before_script: []
-  script:
-    - ./scripts/validate_gradle_wrapper.sh
-
 danger-review:
   stage: danger-review
   cache:
@@ -393,6 +385,10 @@ include:
     local: /ci/cache-policy-pull.yml
 
   - component: gitlab.protontech.ch/proton/devops/cicd-components/devsecops/gitleaks/scan-repository@0.0.11
+    inputs:
+      stage: analyse
+
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/community/gradle-wrapper/validate@0.0.2
     inputs:
       stage: analyse
 
