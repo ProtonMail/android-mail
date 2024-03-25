@@ -41,6 +41,7 @@ import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -119,6 +120,7 @@ fun Home(
             type = ProtonSnackbarType.WARNING
         )
     }
+
     ConsumableLaunchedEffect(state.value.networkStatusEffect) {
         if (it == NetworkStatus.Disconnected) {
             showOfflineSnackbar()
@@ -251,7 +253,7 @@ fun Home(
                 addConversationDetail(
                     actions = ConversationDetail.Actions(
                         onExit = { notifyUserMessage ->
-                            navController.popBackStack()
+                            navController.navigateBack()
                             notifyUserMessage?.let {
                                 scope.launch {
                                     snackbarHostNormState.showSnackbar(
@@ -282,7 +284,7 @@ fun Home(
                 addMessageDetail(
                     actions = MessageDetail.Actions(
                         onExit = { notifyUserMessage ->
-                            navController.popBackStack()
+                            navController.navigateBack()
                             notifyUserMessage?.let {
                                 scope.launch {
                                     snackbarHostNormState.showSnackbar(
@@ -476,7 +478,7 @@ fun Home(
                 addPrivacySettings(navController)
                 addAutoLockSettings(navController)
                 addAutoLockPinScreen(
-                    onBack = { navController.popBackStack() },
+                    onBack = { navController.navigateBack() },
                     onShowSuccessSnackbar = {
                         scope.launch {
                             snackbarHostSuccessState.showSnackbar(message = it, type = ProtonSnackbarType.SUCCESS)

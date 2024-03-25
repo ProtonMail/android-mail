@@ -27,12 +27,13 @@ import ch.protonmail.android.MainActivity
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
-import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
+import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
 import ch.protonmail.android.mailcontact.presentation.managemembers.ManageMembersScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -114,7 +115,7 @@ internal fun NavGraphBuilder.addComposer(
     showMessageSendingOfflineSnackbar: () -> Unit
 ) {
     val actions = ComposerScreen.Actions(
-        onCloseComposerClick = navController::popBackStack,
+        onCloseComposerClick = navController::navigateBack,
         onSetMessagePasswordClick = { messageId, senderEmail ->
             navController.navigate(Destination.Screen.SetMessagePassword(messageId, senderEmail))
         },
@@ -138,8 +139,8 @@ internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostContr
     dialog(route = Destination.Dialog.SignOut.route) {
         SignOutAccountDialog(
             userId = it.get<String>(SignOutAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
-            onSignedOut = { navController.popBackStack() },
-            onCancelled = { navController.popBackStack() }
+            onSignedOut = { navController.navigateBack() },
+            onCancelled = { navController.navigateBack() }
         )
     }
 }
@@ -148,7 +149,7 @@ internal fun NavGraphBuilder.addSetMessagePassword(navController: NavHostControl
     composable(route = Destination.Screen.SetMessagePassword.route) {
         SetMessagePasswordScreen(
             onBackClick = {
-                navController.popBackStack()
+                navController.navigateBack()
             }
         )
     }
@@ -158,8 +159,8 @@ internal fun NavGraphBuilder.addRemoveAccountDialog(navController: NavHostContro
     dialog(route = Destination.Dialog.RemoveAccount.route) {
         RemoveAccountDialog(
             userId = it.get<String>(RemoveAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
-            onRemoved = { navController.popBackStack() },
-            onCancelled = { navController.popBackStack() }
+            onRemoved = { navController.navigateBack() },
+            onCancelled = { navController.navigateBack() }
         )
     }
 }
@@ -194,7 +195,7 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                 },
                 onClearCacheClick = {},
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigateBack()
                 }
             )
         )
@@ -209,7 +210,7 @@ internal fun NavGraphBuilder.addLabelList(
         LabelListScreen(
             actions = LabelListScreen.Actions(
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigateBack()
                 },
                 onLabelSelected = { labelId ->
                     navController.navigate(Destination.Screen.EditLabel(labelId))
@@ -230,7 +231,7 @@ internal fun NavGraphBuilder.addLabelForm(
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
-            navController.popBackStack()
+            navController.navigateBack()
         },
         showLabelSavedSnackbar = showLabelSavedSnackbar,
         showLabelDeletedSnackbar = showLabelDeletedSnackbar
@@ -247,7 +248,7 @@ internal fun NavGraphBuilder.addFolderList(
         FolderListScreen(
             actions = FolderListScreen.Actions(
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigateBack()
                 },
                 onFolderSelected = { labelId ->
                     navController.navigate(Destination.Screen.EditFolder(labelId))
@@ -256,7 +257,7 @@ internal fun NavGraphBuilder.addFolderList(
                     navController.navigate(Destination.Screen.CreateFolder.route)
                 },
                 exitWithErrorMessage = { message ->
-                    navController.popBackStack()
+                    navController.navigateBack()
                     showErrorSnackbar(message)
                 }
             )
@@ -271,17 +272,17 @@ internal fun NavGraphBuilder.addFolderForm(
 ) {
     val actions = FolderFormScreen.Actions.Empty.copy(
         onBackClick = {
-            navController.popBackStack()
+            navController.navigateBack()
         },
         onFolderParentClick = { labelId, currentParentLabelId ->
             navController.navigate(Destination.Screen.ParentFolderList(labelId, currentParentLabelId))
         },
         exitWithSuccessMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showSuccessSnackbar(message)
         },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         }
     )
@@ -309,24 +310,24 @@ internal fun NavGraphBuilder.addParentFolderList(
 ) {
     val actions = ParentFolderListScreen.Actions.Empty.copy(
         onBackClick = {
-            navController.popBackStack()
+            navController.navigateBack()
         },
         onFolderSelected = { labelId ->
             navController.previousBackStackEntry?.savedStateHandle?.set(
                 SavedStateKey.CurrentParentFolderId.key,
                 labelId.id
             )
-            navController.popBackStack()
+            navController.navigateBack()
         },
         onNoneClick = {
             navController.previousBackStackEntry?.savedStateHandle?.set(
                 SavedStateKey.CurrentParentFolderId.key,
                 ""
             )
-            navController.popBackStack()
+            navController.navigateBack()
         },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         }
     )
@@ -359,10 +360,10 @@ internal fun NavGraphBuilder.addContacts(
                     navController.navigate(Destination.Screen.ContactGroupDetails(labelId))
                 },
                 onBackClick = {
-                    navController.popBackStack()
+                    navController.navigateBack()
                 },
                 exitWithErrorMessage = { message ->
-                    navController.popBackStack()
+                    navController.navigateBack()
                     showErrorSnackbar(message)
                 }
             )
@@ -377,13 +378,13 @@ internal fun NavGraphBuilder.addContactDetails(
     showFeatureMissingSnackbar: () -> Unit
 ) {
     val actions = ContactDetailsScreen.Actions.Empty.copy(
-        onBackClick = { navController.popBackStack() },
+        onBackClick = { navController.navigateBack() },
         exitWithSuccessMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showSuccessSnackbar(message)
         },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         },
         onEditClick = { contactId ->
@@ -407,14 +408,14 @@ internal fun NavGraphBuilder.addContactForm(
 
     val actions = ContactFormScreen.Actions.Empty.copy(
         onCloseClick = {
-            navController.popBackStack()
+            navController.navigateBack()
         },
         exitWithSuccessMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showSuccessSnackbar(message)
         },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         }
     )
@@ -432,9 +433,9 @@ internal fun NavGraphBuilder.addContactGroupDetails(
     showFeatureMissingSnackbar: () -> Unit
 ) {
     val actions = ContactGroupDetailsScreen.Actions(
-        onBackClick = { navController.popBackStack() },
+        onBackClick = { navController.navigateBack() },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         },
         onEditClick = { labelId ->
@@ -456,13 +457,13 @@ internal fun NavGraphBuilder.addContactGroupForm(
     showErrorSnackbar: (message: String) -> Unit
 ) {
     val actions = ContactGroupFormScreen.Actions(
-        onClose = { navController.popBackStack() },
+        onClose = { navController.navigateBack() },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         },
         exitWithSuccessMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showSuccessSnackbar(message)
         },
         manageMembers = { selectedContactEmailsIds ->
@@ -501,11 +502,11 @@ internal fun NavGraphBuilder.addManageMembers(
                 SavedStateKey.SelectedContactEmailIds.key,
                 selectedContactEmailsIds.map { it.id }
             )
-            navController.popBackStack()
+            navController.navigateBack()
         },
-        onClose = { navController.popBackStack() },
+        onClose = { navController.navigateBack() },
         exitWithErrorMessage = { message ->
-            navController.popBackStack()
+            navController.navigateBack()
             showErrorSnackbar(message)
         }
     )

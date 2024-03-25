@@ -23,6 +23,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import ch.protonmail.android.LockScreenActivity
+import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
@@ -47,7 +48,7 @@ fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launche
     composable(route = Screen.AccountSettings.route) {
         AccountSettingScreen(
             actions = AccountSettingScreen.Actions(
-                onBackClick = { navController.popBackStack() },
+                onBackClick = { navController.navigateBack() },
                 onPasswordManagementClick = launcherActions.onPasswordManagement,
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
@@ -65,7 +66,7 @@ internal fun NavGraphBuilder.addAlternativeRoutingSetting(navController: NavHost
     composable(route = Screen.AlternativeRoutingSettings.route) {
         AlternativeRoutingSettingScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -74,7 +75,7 @@ internal fun NavGraphBuilder.addCombinedContactsSetting(navController: NavHostCo
     composable(route = Screen.CombinedContactsSettings.route) {
         CombinedContactsSettingScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -83,7 +84,7 @@ internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostC
     composable(route = Screen.ConversationModeSettings.route) {
         ConversationModeSettingScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -92,7 +93,7 @@ internal fun NavGraphBuilder.addDefaultEmailSettings(navController: NavHostContr
     composable(route = Screen.DefaultEmailSettings.route) {
         EditDefaultAddressScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -101,8 +102,8 @@ internal fun NavGraphBuilder.addDisplayNameSettings(navController: NavHostContro
     composable(route = Screen.DisplayNameSettings.route) {
         EditAddressIdentityScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() },
-            onCloseScreen = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() },
+            onCloseScreen = { navController.navigateBack() }
         )
     }
 }
@@ -111,7 +112,7 @@ internal fun NavGraphBuilder.addPrivacySettings(navController: NavHostController
     composable(route = Screen.PrivacySettings.route) {
         PrivacySettingsScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -120,7 +121,7 @@ internal fun NavGraphBuilder.addAutoLockSettings(navController: NavHostControlle
     composable(route = Screen.AutoLockSettings.route) {
         AutoLockSettingsScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() },
+            onBackClick = { navController.navigateBack() },
             onPinScreenNavigation = { navController.navigate(Screen.AutoLockPinScreen(it)) }
         )
     }
@@ -146,7 +147,7 @@ internal fun NavGraphBuilder.addEditSwipeActionsSettings(navController: NavHostC
         EditSwipeActionPreferenceScreen(
             modifier = Modifier,
             direction = SwipeActionDirection(it.require(SWIPE_DIRECTION_KEY)),
-            onBack = { navController.popBackStack() }
+            onBack = { navController.navigateBack() }
         )
     }
 }
@@ -155,7 +156,7 @@ internal fun NavGraphBuilder.addLanguageSettings(navController: NavHostControlle
     composable(route = Screen.LanguageSettings.route) {
         LanguageSettingsScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -165,7 +166,7 @@ internal fun NavGraphBuilder.addSwipeActionsSettings(navController: NavHostContr
         SwipeActionsPreferenceScreen(
             modifier = Modifier,
             actions = SwipeActionsPreferenceScreen.Actions(
-                onBackClick = { navController.popBackStack() },
+                onBackClick = { navController.navigateBack() },
                 onChangeSwipeLeftClick = {
                     navController.navigate(Screen.EditSwipeActionSettings(SwipeActionDirection.LEFT))
                 },
@@ -181,7 +182,7 @@ internal fun NavGraphBuilder.addThemeSettings(navController: NavHostController) 
     composable(route = Screen.ThemeSettings.route) {
         ThemeSettingsScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
@@ -190,7 +191,7 @@ internal fun NavGraphBuilder.addNotificationsSettings(navController: NavHostCont
     composable(route = Screen.Notifications.route) {
         PushNotificationsSettingsScreen(
             modifier = Modifier,
-            onBackClick = { navController.popBackStack() }
+            onBackClick = { navController.navigateBack() }
         )
     }
 }
