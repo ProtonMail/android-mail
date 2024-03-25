@@ -25,8 +25,8 @@
     <item quantity="one">%d üzenet</item>
     <item quantity="other">%d üzenet</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Válasz</string>
+  <string name="quick_reply_all_button_content_description">Válasz mindenkinek</string>
   <string name="more_button_content_description">Több</string>
   <string name="to">Címzett:</string>
   <string name="cc">Másolatot kap:</string>
@@ -64,34 +64,34 @@
   <string name="message_phishing_banner_text">A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az.</string>
   <string name="message_expiration_banner_text">Ez az üzenet lejár %1$s belül</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">Elhagyja az alkalmazást és megnyitja ezt:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ne kérdezze újra</string>
   <string name="external_link_confirmation_dialog_cancel_button">Mégsem</string>
   <string name="external_link_confirmation_dialog_continue_button">Folytatás</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Figyelem: gyanítottan hamis weboldal</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Ez a hivatkozás egy olyan weboldalhoz vezet, amely ellophatja személyes információit, mint például a jelszavait vagy a bankkártyája adatait.</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">A biztonsága érdekében ne folytassa.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Vissza (ajánlott)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Figyelmeztetés figyelmen kívül hagyása és folytatás</string>
   <string name="message_delete_dialog_title">Üzenet törlése</string>
   <string name="message_delete_dialog_message">Biztos, hogy véglegesen törli ezt az üzenetet?</string>
   <string name="message_deleted">Üzenet törölve</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_message_failed">Hiba az üzenet törlésekor</string>
+  <string name="error_delete_message_failed_wrong_folder">Az üzenet nem olyan helyen van, ahonnan törölhető</string>
+  <string name="error_delete_conversation_failed">Beszélgetés törlése nem sikerült</string>
+  <string name="error_delete_conversation_failed_wrong_folder">A beszélgetés nem olyan helyen van, ahonnan törölhető</string>
   <string name="conversation_deleted">Beszélgetés törölve</string>
   <string name="message_body_load_remote_content_button_text">Távoli tartalom betöltése</string>
   <string name="message_body_load_embedded_images_button_text">Beágyazott képek betöltése</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
-  <string name="message_report_phishing_dialog_title_offline">Attention</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Távoli, beágyazott tartalom betöltése</string>
+  <string name="message_report_phishing_dialog_title_offline">Figyelem</string>
+  <string name="message_report_phishing_dialog_message_offline">Ez a lehetőség csak internethez kapcsolódva érhető el.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Erősítse meg az adathalász bejelentést</string>
   <string name="message_report_phishing_dialog_message">Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.</string>
-  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
-  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="message_report_phishing_dialog_confim_button">Jóváhagyás</string>
+  <string name="message_report_phishing_dialog_cancel_button">Mégsem</string>
   <string name="open_on_protoncalendar_banner_title">Megnyitás a Proton Calendarban</string>
   <string name="open_on_protoncalendar_banner_description">Biztonságos, titkosított naptár</string>
 </resources>

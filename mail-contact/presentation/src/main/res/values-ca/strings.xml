@@ -22,7 +22,7 @@
   <string name="no_contacts">No s\'han trobat contactes.</string>
   <string name="no_contact_groups">No s\'han trobat grups de contactes.</string>
   <string name="no_contacts_description">Milloreu la vostra experiència de correu electrònic creant un contacte nou o important-ne els existents.</string>
-  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
+  <string name="no_contact_groups_description">Milloreu l\'experiència de correu electrònic creant un nou grup de contactes.</string>
   <string name="add_contact">Afegeix un contacte</string>
   <string name="add_contact_group">Afegeix un grup de contactes</string>
   <string name="add_contact_content_description">Afegeix un contacte</string>
@@ -96,7 +96,7 @@
   <string name="contact_details_delete_dialog_text">¿Esteu segur que voleu esborrar aquest contacte?</string>
   <string name="contact_details_delete_dialog_cancel_button">Cancel·la</string>
   <string name="contact_details_delete_dialog_confirm_button">D\'acord</string>
-  <string name="contact_form_save_error">Error saving contact, please try again later</string>
+  <string name="contact_form_save_error">S\'ha produït un error en desar el contacte. Torneu-ho a provar més tard</string>
   <string name="all_contacts_tab">Contactes</string>
   <string name="contact_groups_tab">Grups</string>
   <plurals name="contact_group_details_member_count">
@@ -107,9 +107,9 @@
     <item quantity="one">Membre (%1$d)</item>
     <item quantity="other">Membres (%1$d)</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
-  <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
-  <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_form_invalid_email_error">S\'ha produït un error en desar el contacte, conté una adreça de correu electrònic no vàlida</string>
+  <string name="contact_group_details_loading_error">S\'ha produït un error en carregar el grup de contactes. Torneu-ho a provar més tard</string>
+  <string name="contact_group_form_loading_error">S\'ha produït un error en carregar el grup de contactes. Torneu-ho a provar més tard</string>
   <string name="edit_contact_group_content_description">Edita Grup de Contactes</string>
   <string name="delete_contact_group_content_description">Eliminar grup de contactes</string>
   <string name="send_group_message">Enviar missatge de grup</string>
@@ -120,12 +120,12 @@
   <string name="change_color">Canvia el color</string>
   <string name="contact_group_form_create_success">Grup de contactes creat</string>
   <string name="contact_group_form_update_success">Grup de contactes actualitzat</string>
-  <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error">S\'ha produït un error en desar el grup de contactes. Torneu-ho a provar més tard</string>
   <string name="members_loading_error">S\'ha produït un error en carregar els membres. Proveu de nou més tard.</string>
   <string name="members_done">Fet</string>
   <string name="add_members_error">S\'ha produït un error en afegir membres. Torni-ho a provar més tard</string>
   <string name="manage_members_title">Gestioni els membres</string>
   <string name="search_contact">Cerqui el contacte</string>
   <string name="member_update_error">S\'ha produït un error en actualitzar el membre, si us plau, torni-ho a provar més tard</string>
-  <string name="contact_group_color">Contact group color</string>
+  <string name="contact_group_color">Color del grup de contactes</string>
 </resources>

@@ -81,10 +81,10 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nem sikerült betölteni a mappákat</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Üdvözöljük az új alkalmazásban</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+  <string name="onboarding_description_ga">A teljesen megújult Proton Mail alkalmazás a stabilitásra és hatékonyságra alapoz.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Adatbiztonság mindenkinek</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+  <string name="onboarding_privacy_for_all_description">Hívjon meg másokat is a Proton Mail használatára, így ők is élvezhetik a végpontok közti titkosítás előnyeit.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Könnyen naprakész</string>
   <string name="onboarding_easily_up_to_date_description">Beszélgetés üzemmódban könnyedén átfuthat a szálankénti üzeneteken.</string>
@@ -94,7 +94,7 @@
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Következő</string>
   <string name="onboarding_get_started">Kezdés</string>
-  <string name="onboarding_illustration_content_description"/>
+  <string name="onboarding_illustration_content_description">Indulási illusztráció</string>
   <string name="onboarding_close_content_description">Bezárás</string>
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
@@ -106,19 +106,19 @@
   <string name="mailbox_action_button_clear_spam">Levélszemét ürítése</string>
   <string name="mailbox_action_clear_trash_dialog_title">Lomtár mappa ürítése</string>
   <string name="mailbox_action_clear_spam_dialog_title">Levélszemét mappa ürítése</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation"/>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Biztos, hogy véglegesen törli az összes üzenetet a Lomtárból?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Biztos, hogy véglegesen törli az összes üzenetet a Levélszemét mappából?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Biztos, hogy véglegesen törli az összes beszélgetést a Lomtárból?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Biztos, hogy véglegesen törli az összes beszélgetést a Levélszemét mappából?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Ürítési művelet ütemezve"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Figyelmeztetés</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">A Proton fiók tárhelye már több mint 80%-ban foglalt. Szabadítson fel helyet, vagy váltson nagyobb csomagra több tárhelyhez.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">A Proton fiók tárhelye már több mint 90%-ban foglalt. Szabadítson fel helyet, vagy váltson nagyobb csomagra több tárhelyhez.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Ne emlékeztessen újra</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Figyelmeztetés</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_text">A Proton fiók tárhelye 100%-ban megtelt. Nem fog tudni további üzeneteket küldeni és fogadni, hacsak nem véglegesen töröl néhány e-mailt, vagy nagyobb csomagra vált.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

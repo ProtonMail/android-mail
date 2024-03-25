@@ -53,7 +53,7 @@
   <string name="action_save_attachments_description">保存附件</string>
   <string name="action_more_description">更多</string>
   <string name="action_reply_content_description">回复</string>
-  <string name="action_reply_to_content_description">Reply to %s</string>
+  <string name="action_reply_to_content_description">回复%s</string>
   <string name="action_reply_all_content_description">回复所有人</string>
   <string name="action_forward_content_description">转发</string>
   <string name="action_mark_read_content_description">标为已读</string>
@@ -90,7 +90,7 @@
   <string name="intent_failure_no_app_found_to_handle_this_action">未找到能完成此操作的应用</string>
   <string name="mailbox_action_delete_dialog_button_cancel">取消</string>
   <string name="mailbox_action_delete_dialog_button_delete">刪除</string>
-  <string name="picker_dialog_cancel">Cancel</string>
+  <string name="picker_dialog_cancel">取消</string>
   <string name="color_purple">Purple</string>
   <string name="color_enzian">Enzian</string>
   <string name="color_pink">Pink</string>

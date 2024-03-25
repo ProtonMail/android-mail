@@ -59,7 +59,7 @@
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">첨부한 이미지를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <string name="message_body_remote_content_banner_text">서버 콘텐츠를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">서버 이미지를 자동으로 불러오는 기능이 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">임베디드 이미지와 외부 콘텐츠의 자동 불러오기가 꺼져 있습니다. 설정에서 변경할 수 있습니다.</string>
   <string name="message_phishing_banner_text">당사 시스템이 이 메시지를 피싱 시도로 확인했습니다. 해당 메일이 합법적인 내용인지 확인해 주세요.</string>
   <string name="message_expiration_banner_text">메시지가 %1$s에 만료됨</string>
   <!-- External link confirmation dialog -->

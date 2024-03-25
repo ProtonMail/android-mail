@@ -84,9 +84,9 @@
   <string name="conversation_deleted">S\'ha eliminat la conversa.</string>
   <string name="message_body_load_remote_content_button_text">Carrega el contingut remot</string>
   <string name="message_body_load_embedded_images_button_text">Carrega les imatges incrustades</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Carrega contingut remot i incorporat</string>
   <string name="message_report_phishing_dialog_title_offline">Atenció</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Aquesta característica només està disponible en línia.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">D\'acord</string>
   <string name="message_report_phishing_dialog_title">Confirma l\'informe de phising</string>
   <string name="message_report_phishing_dialog_message">Informar d\'un missatge com a intent de pesca ens l\'enviarà a nosaltres per a poder analitzar-lo i millorar els nostres filtres. Això significa que podrem veure el contingut complet del missatge.</string>
