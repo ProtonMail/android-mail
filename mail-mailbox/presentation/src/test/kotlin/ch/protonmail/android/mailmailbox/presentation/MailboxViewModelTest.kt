@@ -94,9 +94,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -3823,6 +3823,18 @@ class MailboxViewModelTest {
 
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `navigate to inbox label will trigger selected mail label use case`() = runTest {
+        // Given
+        coJustRun { selectedMailLabelId.set(MailLabelId.System.Inbox) }
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.NavigateToInboxLabel)
+
+        // Then
+        coVerify { selectedMailLabelId.set(MailLabelId.System.Inbox) }
     }
 
     private fun returnExpectedStateForBottomBarEvent(

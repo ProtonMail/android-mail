@@ -85,8 +85,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UsedLabels
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
@@ -358,6 +358,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DeleteAll -> handleClearAllAction()
                 is MailboxViewAction.DeleteAllConfirmed -> handleClearAllConfirmedAction()
                 is MailboxViewAction.DeleteAllDialogDismissed -> handleClearAllDialogDismissed(viewAction)
+                is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
             }.exhaustive
         }
     }

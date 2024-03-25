@@ -142,6 +142,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DeleteAll : MailboxViewAction
     object DeleteAllConfirmed : MailboxViewAction
     object DeleteAllDialogDismissed : MailboxViewAction, AffectingClearDialog
+    object NavigateToInboxLabel : MailboxViewAction
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {

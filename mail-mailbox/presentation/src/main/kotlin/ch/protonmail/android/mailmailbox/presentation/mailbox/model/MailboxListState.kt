@@ -52,7 +52,10 @@ sealed interface MailboxListState {
             val refreshErrorEffect: Effect<Unit>,
             val refreshRequested: Boolean,
             val searchMode: MailboxSearchMode
-        ) : Data
+        ) : Data {
+
+            fun isInInboxLabel() = currentMailLabel.id == MailLabelId.System.Inbox
+        }
 
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
