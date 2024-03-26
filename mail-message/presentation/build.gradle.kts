@@ -28,8 +28,8 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     compileOptions {
@@ -51,6 +51,7 @@ android {
 
     packagingOptions {
         resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
     }
@@ -72,4 +73,5 @@ dependencies {
     implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)
+    androidTestImplementation(Dependencies.androidTestLibs)
 }
