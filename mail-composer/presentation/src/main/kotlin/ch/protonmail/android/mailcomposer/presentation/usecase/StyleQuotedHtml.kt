@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.StyledHtmlQuote
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
@@ -31,8 +32,11 @@ class StyleQuotedHtml @Inject constructor(
 ) {
 
     operator fun invoke(originalHtmlQuote: OriginalHtmlQuote): StyledHtmlQuote {
-        val sanitizedQuoteRaw = sanitizeHtmlOfDecryptedMessageBody(originalHtmlQuote.value, MimeTypeUiModel.Html)
-        val styledQuoteRaw = injectCssIntoDecryptedMessageBody(sanitizedQuoteRaw, MimeTypeUiModel.Html)
+        val originalHtmlMessageQuoteWithType = MessageBodyWithType(originalHtmlQuote.value, MimeTypeUiModel.Html)
+        val sanitizedQuoteRaw = sanitizeHtmlOfDecryptedMessageBody(originalHtmlMessageQuoteWithType)
+
+        val sanitizedHtmlMessageWithType = MessageBodyWithType(sanitizedQuoteRaw, MimeTypeUiModel.Html)
+        val styledQuoteRaw = injectCssIntoDecryptedMessageBody(sanitizedHtmlMessageWithType)
 
         return StyledHtmlQuote(styledQuoteRaw)
     }

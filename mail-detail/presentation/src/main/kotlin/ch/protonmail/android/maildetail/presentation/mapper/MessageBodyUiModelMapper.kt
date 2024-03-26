@@ -29,9 +29,10 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
-import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
+import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class MessageBodyUiModelMapper @Inject constructor(
     private val attachmentUiModelMapper: AttachmentUiModelMapper,
     private val doesMessageBodyHaveEmbeddedImages: DoesMessageBodyHaveEmbeddedImages,
     private val doesMessageBodyHaveRemoteContent: DoesMessageBodyHaveRemoteContent,
-    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
+    private val transformDecryptedMessageBody: TransformDecryptedMessageBody,
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
     private val extractMessageBodyWithoutQuote: ExtractMessageBodyWithoutQuote,
     private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
@@ -47,20 +48,22 @@ class MessageBodyUiModelMapper @Inject constructor(
 ) {
 
     suspend fun toUiModel(userId: UserId, decryptedMessageBody: DecryptedMessageBody): MessageBodyUiModel {
-        val sanitizedMessageBody = sanitizeHtmlOfDecryptedMessageBody(
+        val decryptedMessageBodyWithType = MessageBodyWithType(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         )
+        val sanitizedMessageBody = sanitizeHtmlOfDecryptedMessageBody(decryptedMessageBodyWithType)
         val shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId)
         val doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages(decryptedMessageBody)
         val shouldShowRemoteContent = shouldShowRemoteContent(userId)
         val doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent(decryptedMessageBody)
 
-        val originalMessageBody = injectCssIntoDecryptedMessageBody(
+        val sanitizedMessageBodyWithType = MessageBodyWithType(
             sanitizedMessageBody,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         )
 
+        val originalMessageBody = transformDecryptedMessageBody(sanitizedMessageBodyWithType)
         val extractQuoteResult = extractMessageBodyWithoutQuote(originalMessageBody)
         val bodyWithoutQuote = if (extractQuoteResult.hasQuote) {
             extractQuoteResult.messageBodyHtmlWithoutQuote

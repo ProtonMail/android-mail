@@ -18,38 +18,25 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
-import android.text.SpannableStringBuilder
-import androidx.core.text.HtmlCompat
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import javax.inject.Inject
 
 /**
- * Converts a [MessageBodyWithType] content text into HTML.
- * Returns the original content if the mime type is not PlainText.
+ * Transforms the message body depending on its mime type.
  */
-class ConvertPlainTextIntoHtml @Inject constructor() {
+class TransformDecryptedMessageBody @Inject constructor(
+    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
+    private val convertPlainTextIntoHtml: ConvertPlainTextIntoHtml
+) {
 
     operator fun invoke(messageBodyWithType: MessageBodyWithType): String {
-        return if (messageBodyWithType.mimeType != MimeTypeUiModel.PlainText) {
-            messageBodyWithType.messageBody
+        val transformedMessageBodyWithType = if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) {
+            MessageBodyWithType(convertPlainTextIntoHtml(messageBodyWithType), MimeTypeUiModel.Html)
         } else {
-            val builder = SpannableStringBuilder()
-            messageBodyWithType.messageBody.lines().forEachIndexed { index, line ->
-                builder.append(line)
-                if (index < messageBodyWithType.messageBody.lines().size - 1) {
-                    builder.append("\n")
-                }
-            }
-
-            return HtmlCompat.toHtml(
-                builder,
-                HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL
-            ).withWordWrap()
+            messageBodyWithType
         }
-    }
 
-    // If the plaintext message contains very long words
-    // we should probably break them to avoid scrolling horizontally.
-    private fun String.withWordWrap() = "<body style=\"word-wrap: break-word;\">\n$this</body>"
+        return injectCssIntoDecryptedMessageBody(transformedMessageBodyWithType)
+    }
 }

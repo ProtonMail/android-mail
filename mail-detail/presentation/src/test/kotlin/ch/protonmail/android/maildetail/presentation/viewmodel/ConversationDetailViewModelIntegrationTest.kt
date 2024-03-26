@@ -73,6 +73,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessag
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
@@ -126,7 +127,6 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
-import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
@@ -139,6 +139,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActions
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
+import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -308,6 +309,8 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val injectCssIntoDecryptedMessageBody = InjectCssIntoDecryptedMessageBody(context)
     private val sanitizeHtmlOfDecryptedMessageBody = SanitizeHtmlOfDecryptedMessageBody()
+    private val transformDecryptedMessageBody =
+        TransformDecryptedMessageBody(injectCssIntoDecryptedMessageBody, mockk())
     private val extractMessageBodyWithoutQuote = ExtractMessageBodyWithoutQuote()
     private val conversationMessageMapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
@@ -331,7 +334,7 @@ class ConversationDetailViewModelIntegrationTest {
             attachmentUiModelMapper = attachmentUiModelMapper,
             doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages,
             doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent,
-            injectCssIntoDecryptedMessageBody = injectCssIntoDecryptedMessageBody,
+            transformDecryptedMessageBody = transformDecryptedMessageBody,
             sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent,

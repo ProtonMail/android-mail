@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.presentation.usecase
 
 import java.util.regex.Pattern
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Attributes
@@ -32,17 +33,15 @@ class SanitizeHtmlOfDecryptedMessageBody @Inject constructor() {
         "form", "map", "area", "input", "embed", "script"
     )
 
-    operator fun invoke(messageBody: String, mimeType: MimeTypeUiModel): String {
-        return if (mimeType == MimeTypeUiModel.PlainText) {
-            messageBody
-        } else {
-            Jsoup.parse(messageBody)
-                .removeBlacklistedElements()
-                .removePingAttributes()
-                .removeLinkElements()
-                .removeEventAttributes()
-                .toString()
-        }
+    operator fun invoke(messageBodyWithType: MessageBodyWithType): String {
+        if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) return messageBodyWithType.messageBody
+
+        return Jsoup.parse(messageBodyWithType.messageBody)
+            .removeBlacklistedElements()
+            .removePingAttributes()
+            .removeLinkElements()
+            .removeEventAttributes()
+            .toString()
     }
 
     private fun Document.removeBlacklistedElements(): Document {

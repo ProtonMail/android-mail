@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.res.Resources.NotFoundException
 import androidx.annotation.RawRes
 import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.jsoup.Jsoup
@@ -35,18 +36,16 @@ class InjectCssIntoDecryptedMessageBody @Inject constructor(
     private val context: Context
 ) {
 
-    operator fun invoke(messageBody: String, mimeType: MimeTypeUiModel): String {
-        return if (mimeType == MimeTypeUiModel.PlainText) {
-            messageBody
-        } else {
-            val messageBodyDocument = Jsoup.parse(messageBody)
-            val messageBodyHead = messageBodyDocument.head()
+    operator fun invoke(messageBodyWithType: MessageBodyWithType): String {
+        if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) return messageBodyWithType.messageBody
 
-            messageBodyHead.injectMetaViewport()
-            messageBodyHead.injectCss(R.raw.css_reset_with_media_scheme_plus_custom_props)
+        val messageBodyDocument = Jsoup.parse(messageBodyWithType.messageBody)
+        val messageBodyHead = messageBodyDocument.head()
 
-            messageBodyDocument.toString()
-        }
+        messageBodyHead.injectMetaViewport()
+        messageBodyHead.injectCss(R.raw.css_reset_with_media_scheme_plus_custom_props)
+
+        return messageBodyDocument.toString()
     }
 
     private fun Element.injectCss(@RawRes rawResource: Int) {

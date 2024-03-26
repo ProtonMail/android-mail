@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -29,10 +30,11 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
     @Test
     fun `should not sanitize message body if it is plain text`() {
         // Given
+        val messageBodyWithType = MessageBodyWithType(TestData.plainTextMessageBody, MimeTypeUiModel.PlainText)
         val expected = "Plain text message body"
 
         // When
-        val actual = sanitizeHtmlOfDecryptedMessageBody(TestData.plainTextMessageBody, MimeTypeUiModel.PlainText)
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)
@@ -41,6 +43,10 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
     @Test
     fun `should remove blacklisted elements from message body`() {
         // Given
+        val messageBodyWithType = MessageBodyWithType(
+            TestData.messageBodyWithBlacklistedElements,
+            MimeTypeUiModel.Html
+        )
         val expected = """
             <html>
              <head>
@@ -54,10 +60,7 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = sanitizeHtmlOfDecryptedMessageBody(
-            TestData.messageBodyWithBlacklistedElements,
-            MimeTypeUiModel.Html
-        )
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)
@@ -66,6 +69,10 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
     @Test
     fun `should remove ping attributes from message body`() {
         // Given
+        val messageBodyWithType = MessageBodyWithType(
+            TestData.messageBodyWithPingAttributes,
+            MimeTypeUiModel.Html
+        )
         val expected = """
             <html>
              <head>
@@ -77,10 +84,7 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = sanitizeHtmlOfDecryptedMessageBody(
-            TestData.messageBodyWithPingAttributes,
-            MimeTypeUiModel.Html
-        )
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)
@@ -89,6 +93,10 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
     @Test
     fun `should remove link elements from message body`() {
         // Given
+        val messageBodyWithType = MessageBodyWithType(
+            TestData.messageBodyWithLinkElements,
+            MimeTypeUiModel.Html
+        )
         val expected = """
             <html>
              <head>
@@ -100,10 +108,7 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = sanitizeHtmlOfDecryptedMessageBody(
-            TestData.messageBodyWithLinkElements,
-            MimeTypeUiModel.Html
-        )
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)
@@ -112,6 +117,10 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
     @Test
     fun `should remove event attributes from message body`() {
         // Given
+        val messageBodyWithType = MessageBodyWithType(
+            TestData.messageBodyWithEventAttributes,
+            MimeTypeUiModel.Html
+        )
         val expected = """
             <html>
              <head>
@@ -123,10 +132,7 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = sanitizeHtmlOfDecryptedMessageBody(
-            TestData.messageBodyWithEventAttributes,
-            MimeTypeUiModel.Html
-        )
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)

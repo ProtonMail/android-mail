@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmessage.presentation.usecase
 import java.io.InputStream
 import android.content.Context
 import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import io.mockk.every
 import io.mockk.mockk
@@ -55,10 +56,8 @@ class InjectCssIntoDecryptedMessageBodyTest {
     @Test
     fun `should return the unchanged message body if the message is plain text`() {
         // When
-        val actual = injectCssIntoDecryptedMessageBody(
-            TestData.plainTextMessageBody,
-            MimeTypeUiModel.PlainText
-        )
+        val messageBodyWithType = MessageBodyWithType(TestData.plainTextMessageBody, MimeTypeUiModel.PlainText)
+        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(TestData.plainTextMessageBody, actual)
@@ -68,6 +67,7 @@ class InjectCssIntoDecryptedMessageBodyTest {
     fun `should inject light mode css in html message body when the app is in light mode`() {
         // Given
         every { cssInputStream.readBytes() } returns TestData.css.encodeToByteArray()
+        val messageBodyWithType = MessageBodyWithType(TestData.htmlMessageBody.trimIndent(), MimeTypeUiModel.Html)
         val expected = """
             <html>
              <head>
@@ -81,7 +81,7 @@ class InjectCssIntoDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = injectCssIntoDecryptedMessageBody(TestData.htmlMessageBody.trimIndent(), MimeTypeUiModel.Html)
+        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType)
 
         // Then
         assertEquals(expected, actual)
