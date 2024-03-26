@@ -22,7 +22,11 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import arrow.core.Either
+import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.toEither
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontact.data.local.ContactGroupLocalDataSource
 import ch.protonmail.android.mailcontact.data.remote.resource.LabelContactEmailsBody
 import ch.protonmail.android.mailcontact.data.remote.resource.UnlabelContactEmailsBody
@@ -34,6 +38,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiManager
+import timber.log.Timber
 
 @HiltWorker
 class EditMembersOfContactGroupWorker @AssistedInject constructor(
@@ -62,61 +67,73 @@ class EditMembersOfContactGroupWorker @AssistedInject constructor(
 
         val api: ApiManager<out ContactGroupApi> = apiProvider.get(UserId(userId))
 
-        @Suppress("TooGenericExceptionThrown")
-        return kotlin.runCatching {
-            if (labelContactEmailIds?.isNotEmpty() == true) {
-                val result = api {
-                    labelContactEmails(
-                        LabelContactEmailsBody(
-                            labelId,
-                            labelContactEmailIds.toList()
-                        )
-                    )
-                }.toEither()
+        val labelEither = if (labelContactEmailIds?.isNotEmpty() == true) {
+            label(api, userId, labelContactEmailIds, labelId)
+        } else Either.right()
 
-                val unsuccessfulResponses = result.getOrNull()?.responses?.filterUnsuccessful() ?: emptyList()
+        val unlabelEither = if (unlabelContactEmailIds?.isNotEmpty() == true) {
+            unlabel(api, userId, unlabelContactEmailIds, labelId)
+        } else Either.right()
 
-                if (result.isLeft()) {
-                    throw Exception("labelContactEmailIds failed")
-                } else if (unsuccessfulResponses.isNotEmpty()) {
-                    contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
-                        UserId(userId),
-                        LabelId(labelId),
-                        unsuccessfulResponses.map { ContactEmailId(it.contactEmailId) }.toSet()
-                    )
-                    throw Exception("labelContactEmailIds partially failed")
-                }
-            }
-
-            if (unlabelContactEmailIds?.isNotEmpty() == true) {
-                val result = api {
-                    unlabelContactEmails(
-                        UnlabelContactEmailsBody(
-                            labelId,
-                            unlabelContactEmailIds.toList()
-                        )
-                    )
-                }.toEither()
-
-                val unsuccessfulResponses = result.getOrNull()?.responses?.filterUnsuccessful() ?: emptyList()
-
-                if (result.isLeft()) {
-                    throw Exception("unlabelContactEmails failed")
-                } else if (unsuccessfulResponses.isNotEmpty()) {
-                    contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
-                        UserId(userId),
-                        LabelId(labelId),
-                        unsuccessfulResponses.map { ContactEmailId(it.contactEmailId) }.toSet()
-                    )
-                    throw Exception("unlabelContactEmails partially failed")
-                }
-            }
-
+        return if (labelEither.isRight() && unlabelEither.isRight()) {
             Result.success()
-        }.fold(
-            onSuccess = { Result.success() },
-            onFailure = { Result.failure() }
-        )
+        } else Result.failure()
+    }
+
+    private suspend fun label(
+        api: ApiManager<out ContactGroupApi>,
+        userId: String,
+        labelContactEmailIds: Array<String>,
+        labelId: String
+    ): Either<DataError.Remote, Unit> = either {
+        val result = api {
+            labelContactEmails(
+                LabelContactEmailsBody(
+                    labelId,
+                    labelContactEmailIds.toList()
+                )
+            )
+        }.toEither().bind()
+
+        val unsuccessfulContactEmailIds =
+            result.responses.filterUnsuccessful().map { ContactEmailId(it.contactEmailId) }
+
+        if (unsuccessfulContactEmailIds.isNotEmpty()) {
+            Timber.e("EditMembersOfContactGroupWorker, label: some ContactEmailIds failed")
+            contactGroupLocalDataSource.removeContactEmailIdsFromContactGroup(
+                UserId(userId),
+                LabelId(labelId),
+                unsuccessfulContactEmailIds.toSet()
+            )
+        }
+    }
+
+    private suspend fun unlabel(
+        api: ApiManager<out ContactGroupApi>,
+        userId: String,
+        unlabelContactEmailIds: Array<String>,
+        labelId: String
+    ): Either<DataError.Remote, Unit> = either {
+        val result = api {
+            unlabelContactEmails(
+                UnlabelContactEmailsBody(
+                    labelId,
+                    unlabelContactEmailIds.toList()
+                )
+            )
+        }.toEither().bind()
+
+        val unsuccessfulContactEmailIds =
+            result.responses.filterUnsuccessful().map { ContactEmailId(it.contactEmailId) }
+
+        if (unsuccessfulContactEmailIds.isNotEmpty()) {
+            Timber.e("EditMembersOfContactGroupWorker, unlabel: some ContactEmailIds failed")
+            contactGroupLocalDataSource.addContactEmailIdsToContactGroup(
+                UserId(userId),
+                LabelId(labelId),
+                unsuccessfulContactEmailIds.toSet()
+            )
+        }
     }
 
     companion object {
