@@ -30,7 +30,7 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        lint.targetSdk = Config.targetSdk
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

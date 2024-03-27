@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        lint.targetSdk = Config.targetSdk
         testInstrumentationRunner = Config.testInstrumentationRunner
     }
 
@@ -52,7 +52,7 @@ android {
         kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/licenses/**")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")

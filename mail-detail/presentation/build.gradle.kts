@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        lint.targetSdk = Config.targetSdk
         testInstrumentationRunner = Config.testInstrumentationRunner
     }
 

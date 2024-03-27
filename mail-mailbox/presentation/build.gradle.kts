@@ -31,7 +31,7 @@ android {
 
     defaultConfig {
         minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        lint.targetSdk = Config.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -52,7 +52,7 @@ android {
         kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("MANIFEST.MF")
         resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/licenses/**")

@@ -49,7 +49,7 @@ android {
         kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
     }
 
-    packagingOptions {
+    packaging {
         resources.excludes.add("META-INF/licenses/**")
         resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/AL2.0")

@@ -50,10 +50,12 @@ plugins {
 subprojects {
     if (project.findProperty("enableComposeCompilerReports") == "true") {
         kotlinCompilerArgs(
-            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
-                project.buildDir.absolutePath + "/compose_reports",
-            "-P", "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
-                project.buildDir.absolutePath + "/compose_metrics"
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                project.layout.buildDirectory.asFile.get().absolutePath + "/compose_reports",
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                project.layout.buildDirectory.asFile.get().absolutePath + "/compose_metrics"
         )
     }
 
@@ -72,18 +74,18 @@ protonDetekt {
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 setupDependenciesPlugin()
 setupTests()
 
 kotlinCompilerArgs(
-    "-Xopt-in=kotlin.RequiresOptIn",
-    // Enables experimental Coroutines (runBlockingTest).
-    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+    "-opt-in=kotlin.RequiresOptIn",
+    // Enables experimental Coroutines API.
+    "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
     // Enables experimental Time (Turbine).
-    "-Xopt-in=kotlin.time.ExperimentalTime"
+    "-opt-in=kotlin.time.ExperimentalTime"
 )
 
 fun Project.kotlinCompilerArgs(vararg extraCompilerArgs: String) {
@@ -104,7 +106,7 @@ fun Project.setupDependenciesPlugin() {
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
