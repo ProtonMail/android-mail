@@ -71,6 +71,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     targetProjectPath = ":app"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
