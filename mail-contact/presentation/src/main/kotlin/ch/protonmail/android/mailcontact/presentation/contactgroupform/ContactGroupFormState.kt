@@ -37,6 +37,7 @@ sealed interface ContactGroupFormState {
         val contactGroup: ContactGroupFormUiModel,
         val colors: List<ColorHexWithName>,
         val displaySaveLoader: Boolean = false,
+        val isSaveEnabled: Boolean = false,
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
     ) : ContactGroupFormState

@@ -116,7 +116,8 @@ fun ContactGroupFormScreen(
                         viewModel.submit(ContactGroupFormViewAction.OnSaveClick)
                     }
                 ),
-                displaySaveLoader = state is ContactGroupFormState.Data && state.displaySaveLoader
+                displaySaveLoader = state is ContactGroupFormState.Data && state.displaySaveLoader,
+                isSaveEnabled = state is ContactGroupFormState.Data && state.isSaveEnabled
             )
         },
         content = { paddingValues ->
@@ -351,7 +352,11 @@ fun ContactGroupMemberItem(
 }
 
 @Composable
-fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, displaySaveLoader: Boolean) {
+fun ContactGroupFormTopBar(
+    actions: ContactGroupFormTopBar.Actions,
+    displaySaveLoader: Boolean,
+    isSaveEnabled: Boolean
+) {
     ProtonTopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = { },
@@ -373,8 +378,12 @@ fun ContactGroupFormTopBar(actions: ContactGroupFormTopBar.Actions, displaySaveL
                     strokeWidth = MailDimens.ProgressStrokeWidth
                 )
             } else {
-                ProtonTextButton(onClick = actions.onSave) {
-                    val textColor = ProtonTheme.colors.textAccent
+                ProtonTextButton(
+                    onClick = actions.onSave,
+                    enabled = isSaveEnabled
+                ) {
+                    val textColor = if (isSaveEnabled) ProtonTheme.colors.textAccent
+                    else ProtonTheme.colors.interactionDisabled
                     Text(
                         text = stringResource(id = R.string.contact_group_form_save),
                         color = textColor,
@@ -478,6 +487,7 @@ private fun EmptyContactGroupFormContentPreview() {
 private fun ContactFormTopBarPreview() {
     ContactGroupFormTopBar(
         actions = ContactGroupFormTopBar.Actions.Empty,
-        displaySaveLoader = false
+        displaySaveLoader = false,
+        isSaveEnabled = true
     )
 }

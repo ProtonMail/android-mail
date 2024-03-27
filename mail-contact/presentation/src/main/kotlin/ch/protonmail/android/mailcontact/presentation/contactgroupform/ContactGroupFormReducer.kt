@@ -51,11 +51,13 @@ class ContactGroupFormReducer @Inject constructor() {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
                 contactGroup = event.contactGroupFormUiModel,
-                colors = event.colors
+                colors = event.colors,
+                isSaveEnabled = event.contactGroupFormUiModel.name.isNotBlank()
             )
             is ContactGroupFormState.Loading -> ContactGroupFormState.Data(
                 contactGroup = event.contactGroupFormUiModel,
-                colors = event.colors
+                colors = event.colors,
+                isSaveEnabled = event.contactGroupFormUiModel.name.isNotBlank()
             )
         }
     }
@@ -66,7 +68,8 @@ class ContactGroupFormReducer @Inject constructor() {
     ): ContactGroupFormState {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
-                contactGroup = event.contactGroupFormUiModel
+                contactGroup = event.contactGroupFormUiModel,
+                isSaveEnabled = event.contactGroupFormUiModel.name.isNotBlank()
             )
             is ContactGroupFormState.Loading -> currentState
         }

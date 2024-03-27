@@ -50,6 +50,9 @@ class ContactGroupFormReducerTest(
         private val loadedContactGroupFormUiModel2 = ContactGroupFormPreviewData
             .contactGroupFormSampleData
             .copy(memberCount = 0, members = emptyList())
+        private val loadedContactGroupFormUiModelBlankName = ContactGroupFormPreviewData
+            .contactGroupFormSampleData
+            .copy(name = " ")
 
         private val emptyLoadingState = ContactGroupFormState.Loading()
         private val loadedCreateContactGroupState = ContactGroupFormState.Data(
@@ -58,7 +61,13 @@ class ContactGroupFormReducerTest(
         )
         private val loadedUpdateContactGroupState = ContactGroupFormState.Data(
             contactGroup = loadedContactGroupFormUiModel,
-            colors = emptyList()
+            colors = emptyList(),
+            isSaveEnabled = true
+        )
+        private val loadedUpdateContactGroupStateBlankName = ContactGroupFormState.Data(
+            contactGroup = loadedContactGroupFormUiModelBlankName,
+            colors = emptyList(),
+            isSaveEnabled = false
         )
 
         private val transitionsFromLoadingState = listOf(
@@ -68,6 +77,13 @@ class ContactGroupFormReducerTest(
                     loadedContactGroupFormUiModel, emptyList()
                 ),
                 expectedState = loadedUpdateContactGroupState
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
+                event = ContactGroupFormEvent.ContactGroupLoaded(
+                    loadedContactGroupFormUiModelBlankName, emptyList()
+                ),
+                expectedState = loadedUpdateContactGroupStateBlankName
             ),
             TestInput(
                 currentState = emptyLoadingState,
@@ -119,6 +135,26 @@ class ContactGroupFormReducerTest(
                 event = ContactGroupFormEvent.ContactGroupUpdated,
                 expectedState = loadedUpdateContactGroupState.copy(
                     closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.UpdateContactGroupFormUiModel(
+                    loadedContactGroupFormUiModelBlankName
+                ),
+                expectedState = loadedUpdateContactGroupState.copy(
+                    contactGroup = loadedContactGroupFormUiModelBlankName,
+                    isSaveEnabled = false
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupStateBlankName,
+                event = ContactGroupFormEvent.UpdateContactGroupFormUiModel(
+                    loadedContactGroupFormUiModel
+                ),
+                expectedState = loadedUpdateContactGroupState.copy(
+                    contactGroup = loadedContactGroupFormUiModel,
+                    isSaveEnabled = true
                 )
             ),
             TestInput(

@@ -63,6 +63,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
+@Suppress("MaxLineLength")
 class ContactGroupFormViewModelTest {
 
     private val testUserId = UserIdTestData.userId
@@ -173,7 +174,8 @@ class ContactGroupFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel,
-                colors = testColors
+                colors = testColors,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -197,7 +199,33 @@ class ContactGroupFormViewModelTest {
                 val actual = awaitItem()
                 val expected = ContactGroupFormState.Data(
                     contactGroup = expectedContactGroupFormUiModel,
-                    colors = testColors
+                    colors = testColors,
+                    isSaveEnabled = true
+                )
+
+                assertEquals(expected, actual)
+            }
+        }
+
+    @Test
+    fun `given Label ID in SavedState, when init and observe contact group with blank Name, then emits loaded contact group state with Save Button disabled`() =
+        runTest {
+            // Given
+            val expectedContactGroup = testContactGroup
+            val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+            expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+            expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+            expectSavedStateLabelId(testLabelId)
+
+            // When
+            contactGroupFormViewModel.state.test {
+                // Then
+                val actual = awaitItem()
+                val expected = ContactGroupFormState.Data(
+                    contactGroup = expectedContactGroupFormUiModel,
+                    colors = testColors,
+                    isSaveEnabled = true
                 )
 
                 assertEquals(expected, actual)
@@ -245,7 +273,8 @@ class ContactGroupFormViewModelTest {
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel,
                 colors = testColors,
-                close = Effect.of(Unit)
+                close = Effect.of(Unit),
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -343,7 +372,8 @@ class ContactGroupFormViewModelTest {
                 contactGroup = expectedContactGroupFormUiModel,
                 colors = testColors,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success)),
-                displaySaveLoader = true
+                displaySaveLoader = true,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -371,7 +401,8 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList()),
-                colors = testColors
+                colors = testColors,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -404,7 +435,8 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel.copy(memberCount = 0, members = emptyList()),
-                colors = testColors
+                colors = testColors,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -434,7 +466,8 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel.copy(name = "NewName"),
-                colors = testColors
+                colors = testColors,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -464,7 +497,8 @@ class ContactGroupFormViewModelTest {
 
             val expected = ContactGroupFormState.Data(
                 contactGroup = expectedContactGroupFormUiModel.copy(color = Color.Blue),
-                colors = testColors
+                colors = testColors,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
