@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.mailbox.detail.attachments
 
+import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.networkmocks.mockwebserver.requests.MimeType
@@ -63,6 +64,7 @@ internal class AttachmentMultipleDownloadTests : MockedNetworkTest(loginType = L
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
+    @SdkSuppress(minSdkVersion = 30)
     @TestId("194333", "194338")
     fun testMultipleAttachmentWithSequentialDownloads() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
