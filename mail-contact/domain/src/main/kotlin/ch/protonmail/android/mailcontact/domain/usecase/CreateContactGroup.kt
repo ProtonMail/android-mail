@@ -18,10 +18,14 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class CreateContactGroup @Inject constructor(
@@ -32,7 +36,7 @@ class CreateContactGroup @Inject constructor(
         userId: UserId,
         name: String,
         color: String
-    ) {
+    ): Either<CreateContactGroupErrors, Unit> {
 
         val label = NewLabel(
             name = name,
@@ -44,7 +48,21 @@ class CreateContactGroup @Inject constructor(
             type = LabelType.ContactGroup
         )
 
-        labelRepository.createLabel(userId, label)
+        return kotlin.runCatching {
+            labelRepository.createLabel(userId, label)
+        }.fold(
+            onSuccess = {
+                Unit.right()
+            },
+            onFailure = {
+                Timber.e("CreateContactGroup failed: ${it.message}")
+                CreateContactGroupErrors.FailedToCreateContactGroup.left()
+            }
+        )
+    }
+
+    sealed interface CreateContactGroupErrors {
+        object FailedToCreateContactGroup : CreateContactGroupErrors
     }
 
 }

@@ -204,7 +204,9 @@ class ContactGroupFormViewModel @Inject constructor(
             userId = primaryUserId(),
             name = contactGroupFormUiModel.name,
             color = contactGroupFormUiModel.color.getHexStringFromColor()
-        )
+        ).getOrElse {
+            return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+        }
 
         emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)
     }

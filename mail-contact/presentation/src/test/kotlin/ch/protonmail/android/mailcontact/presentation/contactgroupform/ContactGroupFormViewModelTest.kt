@@ -43,10 +43,8 @@ import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFo
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
-import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.every
-import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
@@ -286,6 +284,37 @@ class ContactGroupFormViewModelTest {
     }
 
     @Test
+    fun `when create and on save action is submitted, when creating fails, then error event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = emptyContactGroupFormUiModel(Color.Red)
+        expectSavedStateLabelId(null)
+        expectCreateContactGroupFails(
+            testUserId,
+            expectedContactGroup.name,
+            expectedContactGroup.color.getHexStringFromColor()
+        )
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroup,
+                colors = testColors,
+                closeWithSuccess = Effect.empty(),
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error))
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
     fun `when update and on save action is submitted, then updated event is emitted`() = runTest {
         // Given
         val expectedContactGroup = testContactGroup
@@ -474,7 +503,17 @@ class ContactGroupFormViewModelTest {
     ) {
         coEvery {
             createContactGroupMock.invoke(userId, name, color)
-        } just Runs
+        } returns Unit.right()
+    }
+
+    private fun expectCreateContactGroupFails(
+        userId: UserId,
+        name: String,
+        color: String
+    ) {
+        coEvery {
+            createContactGroupMock.invoke(userId, name, color)
+        } returns CreateContactGroup.CreateContactGroupErrors.FailedToCreateContactGroup.left()
     }
 
     private fun expectEditContactGroup(
