@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import android.text.SpannableStringBuilder
+import androidx.core.text.HtmlCompat
 import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
@@ -60,7 +62,15 @@ class StoreDraftWithBody @Inject constructor(
                 .mapLeft { StoreDraftWithBodyError.DraftReadError }
                 .bind()
 
-            val encryptedDraftBody = encryptDraftBody(draftBody.appendQuotedHtml(quotedHtmlBody), senderAddress)
+            // If the original mime type is text/html OR we are quoting an HTML body
+            // we need to convert the text/plain mime type into text/html.
+            val updatedDraftBody = if (draftWithBody.messageBody.mimeType == MimeType.Html || quotedHtmlBody != null) {
+                draftBody.convertToHtml()
+            } else {
+                draftBody
+            }
+
+            val encryptedDraftBody = encryptDraftBody(updatedDraftBody.appendQuotedHtml(quotedHtmlBody), senderAddress)
                 .mapLeft {
                     Timber.e("Encrypt draft $messageId body to store to local DB failed")
                     StoreDraftWithBodyError.DraftBodyEncryptionError
@@ -70,6 +80,7 @@ class StoreDraftWithBody @Inject constructor(
             val updatedDraft = draftWithBody
                 .updateWith(senderAddress, encryptedDraftBody)
                 .updateMimeWhenQuotingHtml(quotedHtmlBody)
+
             saveDraft(updatedDraft, userId)
                 .mapFalse {
                     Timber.e("Store draft $messageId body to local DB failed")
@@ -80,12 +91,10 @@ class StoreDraftWithBody @Inject constructor(
     }
 
     private fun DraftBody.appendQuotedHtml(quotedHtmlBody: OriginalHtmlQuote?) =
-        quotedHtmlBody?.let { quotedHtml -> DraftBody("<pre>${this.value}</pre>${quotedHtml.value}") } ?: this
+        quotedHtmlBody?.let { quotedHtml -> DraftBody("${this.value}${quotedHtml.value}") } ?: this
 
     private fun MessageWithBody.updateMimeWhenQuotingHtml(quotedHtmlBody: OriginalHtmlQuote?): MessageWithBody {
-        if (quotedHtmlBody == null) {
-            return this
-        }
+        quotedHtmlBody ?: return this
         return this.copy(messageBody = this.messageBody.copy(mimeType = MimeType.Html))
     }
 
@@ -98,11 +107,23 @@ class StoreDraftWithBody @Inject constructor(
             body = encryptedDraftBody.value
         )
     )
+
+    private fun DraftBody.convertToHtml(): DraftBody {
+        val builder = SpannableStringBuilder()
+        value.lines().forEachIndexed { index, line ->
+            builder.append(line)
+            if (index < value.lines().size - 1) {
+                builder.append("\n")
+            }
+        }
+        val htmlMessageBody = HtmlCompat.toHtml(builder, HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
+        return DraftBody(value = htmlMessageBody)
+    }
 }
 
 sealed interface StoreDraftWithBodyError {
-    object DraftBodyEncryptionError : StoreDraftWithBodyError
-    object DraftSaveError : StoreDraftWithBodyError
-    object DraftReadError : StoreDraftWithBodyError
-    object DraftResolveUserAddressError : StoreDraftWithBodyError
+    data object DraftBodyEncryptionError : StoreDraftWithBodyError
+    data object DraftSaveError : StoreDraftWithBodyError
+    data object DraftReadError : StoreDraftWithBodyError
+    data object DraftResolveUserAddressError : StoreDraftWithBodyError
 }
