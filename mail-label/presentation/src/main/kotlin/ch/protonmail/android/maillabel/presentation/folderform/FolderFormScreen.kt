@@ -37,7 +37,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -62,9 +61,9 @@ import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPrevie
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsToggleItem
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
@@ -77,7 +76,6 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.label.domain.entity.LabelId
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FolderFormScreen(
     actions: FolderFormScreen.Actions,
@@ -164,9 +162,9 @@ fun FolderFormScreen(
             }
         },
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )

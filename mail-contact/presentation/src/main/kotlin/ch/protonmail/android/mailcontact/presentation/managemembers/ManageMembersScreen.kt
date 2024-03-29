@@ -40,7 +40,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -63,8 +62,8 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ManageMembersPreviewData
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
@@ -77,7 +76,6 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.contact.domain.entity.ContactEmailId
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ManageMembersScreen(
     actions: ManageMembersScreen.Actions,
@@ -145,9 +143,9 @@ fun ManageMembersScreen(
             }
         },
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )

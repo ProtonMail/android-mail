@@ -31,9 +31,9 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsState
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.model.AutoLockSettingsViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.viewmodel.AutoLockSettingsViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 
@@ -87,7 +87,7 @@ private fun AutoLockSettingsScreen(
                 onBackClick = onBackClick
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
         content = { paddingValues ->
             when (state) {
                 AutoLockSettingsState.Loading -> ProtonCenteredProgress()

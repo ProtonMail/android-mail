@@ -34,9 +34,9 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.presentation.R
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -85,7 +85,7 @@ fun PrivacySettingsScreen(
                 onBackClick = actions.onBackClick
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
         content = { paddingValues ->
             when (state) {
                 PrivacySettingsState.Loading -> ProtonCenteredProgress()

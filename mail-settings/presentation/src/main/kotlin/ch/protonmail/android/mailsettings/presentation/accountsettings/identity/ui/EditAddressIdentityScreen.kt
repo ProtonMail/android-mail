@@ -33,8 +33,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.previewdata.EditAddressIdentityScreenPreviewData
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -82,7 +82,7 @@ fun EditAddressIdentityScreen(
     Scaffold(
         modifier = modifier,
         topBar = { EditAddressIdentityTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
         content = { paddingValues ->
             when (state) {
                 EditAddressIdentityState.Loading -> ProtonCenteredProgress()

@@ -58,8 +58,8 @@ import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreview
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
@@ -152,6 +152,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                         }
                     }
                 }
+
                 is LabelFormState.Loading -> {
                     ProtonCenteredProgress(
                         modifier = Modifier
@@ -162,9 +163,9 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             }
         },
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )

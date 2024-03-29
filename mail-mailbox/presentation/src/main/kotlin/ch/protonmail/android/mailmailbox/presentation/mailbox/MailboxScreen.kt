@@ -113,11 +113,11 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBott
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.protonOutlinedButtonColors
@@ -370,8 +370,8 @@ fun MailboxScreen(
             )
         },
         snackbarHost = {
-            ProtonSnackbarHost(hostState = snackbarHostState)
-            ProtonSnackbarHost(hostState = snackbarHostErrorState)
+            DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState)
+            DismissableSnackbarHost(protonSnackbarHostState = snackbarHostErrorState)
         }
     ) { paddingValues ->
         when (val mailboxListState = mailboxState.mailboxListState) {

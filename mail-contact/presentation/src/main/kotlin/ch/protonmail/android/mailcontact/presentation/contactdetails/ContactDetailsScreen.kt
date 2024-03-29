@@ -47,7 +47,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -81,10 +80,10 @@ import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactDelete
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactEdit
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactExport
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
@@ -98,7 +97,6 @@ import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.contact.domain.entity.ContactId
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: ContactDetailsViewModel = hiltViewModel()) {
     val context = LocalContext.current
@@ -159,9 +157,9 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
             }
         },
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )

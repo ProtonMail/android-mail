@@ -31,9 +31,9 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.model.EditDefaultAddressState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.previewdata.EditDefaultAddressPreviewData
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.viewmodel.EditDefaultAddressViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -85,7 +85,7 @@ fun EditDefaultAddressScreen(
                 onBackClick = onBackClick
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
         content = { paddingValues ->
             when (state) {
                 EditDefaultAddressState.Loading -> ProtonCenteredProgress()

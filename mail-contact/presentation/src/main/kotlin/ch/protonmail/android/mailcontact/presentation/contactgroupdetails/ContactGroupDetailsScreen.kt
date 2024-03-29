@@ -39,7 +39,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -66,8 +65,8 @@ import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDelete
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupEdit
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupSendMessage
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
@@ -81,7 +80,6 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.label.domain.entity.LabelId
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ContactGroupDetailsScreen(
     actions: ContactGroupDetailsScreen.Actions,
@@ -130,9 +128,9 @@ fun ContactGroupDetailsScreen(
             }
         },
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )

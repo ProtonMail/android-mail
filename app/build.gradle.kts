@@ -230,6 +230,7 @@ dependencies {
     implementation(project(":mail-notifications"))
     implementation(project(":mail-pagination"))
     implementation(project(":mail-settings"))
+    implementation(project(":uicomponents"))
 
     debugImplementation(Dependencies.appDebug)
 

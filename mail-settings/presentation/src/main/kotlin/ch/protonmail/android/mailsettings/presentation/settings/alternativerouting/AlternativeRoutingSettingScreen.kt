@@ -30,9 +30,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
@@ -99,9 +99,9 @@ fun AlternativeRoutingSettingScreen(
             )
         },
         snackbarHost = { snackbarHostState ->
-            ProtonSnackbarHost(
-                hostState = ProtonSnackbarHostState(snackbarHostState, ProtonSnackbarType.ERROR),
-                modifier = Modifier.testTag(TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR)
+            DismissableSnackbarHost(
+                modifier = Modifier.testTag(TEST_TAG_ALTERNATIVE_ROUTING_SNACKBAR),
+                protonSnackbarHostState = ProtonSnackbarHostState(snackbarHostState, ProtonSnackbarType.ERROR)
             )
         }
     )

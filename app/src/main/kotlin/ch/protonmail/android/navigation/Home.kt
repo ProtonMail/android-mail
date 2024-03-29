@@ -85,9 +85,9 @@ import ch.protonmail.android.navigation.route.addSettings
 import ch.protonmail.android.navigation.route.addSignOutAccountDialog
 import ch.protonmail.android.navigation.route.addSwipeActionsSettings
 import ch.protonmail.android.navigation.route.addThemeSettings
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import io.sentry.compose.withSentryObservableEffect
 import kotlinx.coroutines.launch
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
@@ -224,21 +224,21 @@ fun Home(
         },
         drawerGesturesEnabled = currentDestinationRoute == Screen.Mailbox.route,
         snackbarHost = {
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostSuccess),
-                hostState = snackbarHostSuccessState
+                protonSnackbarHostState = snackbarHostSuccessState
             )
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostWarning),
-                hostState = snackbarHostWarningState
+                protonSnackbarHostState = snackbarHostWarningState
             )
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostNormal),
-                hostState = snackbarHostNormState
+                protonSnackbarHostState = snackbarHostNormState
             )
-            ProtonSnackbarHost(
+            DismissableSnackbarHost(
                 modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                hostState = snackbarHostErrorState
+                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     ) { contentPadding ->

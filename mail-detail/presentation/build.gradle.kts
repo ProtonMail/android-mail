@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":mail-settings:domain"))
     // Needed as PageType is a supertype of Message.
     implementation(project(":mail-pagination:domain"))
+    implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))

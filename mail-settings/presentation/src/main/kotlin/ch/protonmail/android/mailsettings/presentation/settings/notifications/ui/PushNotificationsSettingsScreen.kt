@@ -32,9 +32,9 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.notifications.model.PushNotificationSettingsViewAction
 import ch.protonmail.android.mailsettings.presentation.settings.notifications.model.PushNotificationsSettingsState
 import ch.protonmail.android.mailsettings.presentation.settings.notifications.viewmodel.PushNotificationsSettingsViewModel
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.component.ProtonSnackbarHost
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -79,7 +79,7 @@ fun PushNotificationsSettingsScreen(
                 onBackClick = onBackClick
             )
         },
-        snackbarHost = { ProtonSnackbarHost(hostState = snackbarHostState) },
+        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
         content = { paddingValues ->
             when (state) {
                 PushNotificationsSettingsState.Loading -> ProtonCenteredProgress()
