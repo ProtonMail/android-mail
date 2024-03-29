@@ -34,6 +34,7 @@ class ContactDetailsReducer @Inject constructor() {
             is ContactDetailsEvent.DeleteConfirmed -> reduceContactDeleteConfirmed(currentState)
             is ContactDetailsEvent.CallPhoneNumber -> reduceCallPhoneNumber(currentState, event)
             is ContactDetailsEvent.ComposeEmail -> reduceComposeEmail(currentState, event)
+            is ContactDetailsEvent.CopyToClipboard -> reduceCopyToClipboard(currentState, event)
         }
     }
 
@@ -106,6 +107,19 @@ class ContactDetailsReducer @Inject constructor() {
         return when (currentState) {
             is ContactDetailsState.Data -> currentState.copy(
                 openComposer = Effect.of(event.email)
+            )
+
+            is ContactDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceCopyToClipboard(
+        currentState: ContactDetailsState,
+        event: ContactDetailsEvent.CopyToClipboard
+    ): ContactDetailsState {
+        return when (currentState) {
+            is ContactDetailsState.Data -> currentState.copy(
+                copyToClipboard = Effect.of(event.value)
             )
 
             is ContactDetailsState.Loading -> currentState

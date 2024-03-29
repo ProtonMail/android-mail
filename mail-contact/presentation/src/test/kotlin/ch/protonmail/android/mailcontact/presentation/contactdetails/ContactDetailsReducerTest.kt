@@ -126,6 +126,13 @@ class ContactDetailsReducerTest(
             ),
             TestInput(
                 currentState = loadedContactState,
+                event = ContactDetailsEvent.CopyToClipboard(loadedContactState.contact.nameHeader),
+                expectedState = loadedContactState.copy(
+                    copyToClipboard = Effect.of(loadedContactState.contact.nameHeader)
+                )
+            ),
+            TestInput(
+                currentState = loadedContactState,
                 event = ContactDetailsEvent.ComposeEmail("test@proton.me"),
                 expectedState = loadedContactState.copy(
                     openComposer = Effect.of("test@proton.me")

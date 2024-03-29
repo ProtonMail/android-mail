@@ -81,6 +81,7 @@ class ContactDetailsViewModel @Inject constructor(
                     ContactDetailsViewAction.DeleteConfirmed -> handleDeleteConfirmed()
                     is ContactDetailsViewAction.OnCallClick -> handleOnCallClick(action.phoneNumber)
                     is ContactDetailsViewAction.OnEmailClick -> handleOnEmailClick(action)
+                    is ContactDetailsViewAction.OnLongClick -> handleOnLongClick(action)
                 }
             }
         }
@@ -116,6 +117,10 @@ class ContactDetailsViewModel @Inject constructor(
 
     private fun handleOnEmailClick(action: ContactDetailsViewAction.OnEmailClick) {
         emitNewStateFor(ContactDetailsEvent.ComposeEmail(action.email))
+    }
+
+    private fun handleOnLongClick(action: ContactDetailsViewAction.OnLongClick) {
+        emitNewStateFor(ContactDetailsEvent.CopyToClipboard(action.value))
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

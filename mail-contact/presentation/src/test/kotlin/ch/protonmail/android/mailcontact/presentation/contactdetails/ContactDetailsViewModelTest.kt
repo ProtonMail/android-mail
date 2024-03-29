@@ -190,6 +190,37 @@ class ContactDetailsViewModelTest {
     }
 
     @Test
+    fun `when OnLongClick action is submitted, then CopyToClipboard is emitted`() = runTest {
+        // Given
+        val expectedTextCopiedToClipboard = "Contact's name header content"
+        val expectedDecryptedContact = DecryptedContact(testContactId)
+        val expectedContactDetailsUiModel = ContactDetailsPreviewData.contactDetailsSampleData.copy(
+            nameHeader = expectedTextCopiedToClipboard
+        )
+        expectDecryptedContact(testUserId, testContactId, expectedDecryptedContact)
+        expectContactDetailsUiModel(expectedDecryptedContact, expectedContactDetailsUiModel)
+
+        expectSavedStateContactId(testContactId)
+
+        // When
+        contactDetailsViewModel.state.test {
+            // Then
+            awaitItem() // Contact was loaded
+
+            contactDetailsViewModel.submit(ContactDetailsViewAction.OnLongClick(expectedTextCopiedToClipboard))
+
+            val actual = awaitItem()
+
+            val expected = ContactDetailsState.Data(
+                contact = expectedContactDetailsUiModel,
+                copyToClipboard = Effect.of(expectedTextCopiedToClipboard)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
     fun `when OnEmailClick action is submitted, then open composer is emitted`() = runTest {
         // Given
         val expectedMail = "test@proton.me"

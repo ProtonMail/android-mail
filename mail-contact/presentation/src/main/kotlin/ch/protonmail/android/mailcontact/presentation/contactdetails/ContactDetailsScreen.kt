@@ -18,12 +18,18 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactdetails
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -96,10 +102,12 @@ import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.util.kotlin.takeIfNotBlank
 
 @Composable
 fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: ContactDetailsViewModel = hiltViewModel()) {
     val context = LocalContext.current
+    val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
@@ -109,7 +117,8 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
     val customActions = actions.copy(
         onDeleteClick = { viewModel.submit(ContactDetailsViewAction.DeleteRequested) },
         onCallClick = { phoneNumber -> viewModel.submit(ContactDetailsViewAction.OnCallClick(phoneNumber)) },
-        onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) }
+        onEmailClick = { email -> viewModel.submit(ContactDetailsViewAction.OnEmailClick(email)) },
+        onLongClick = { value -> viewModel.submit(ContactDetailsViewAction.OnLongClick(value)) }
     )
 
     Scaffold(
@@ -136,6 +145,17 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                             data = Uri.parse("tel:$it}")
                         }
                         context.startActivity(callIntent)
+                    }
+                    ConsumableLaunchedEffect(effect = state.copyToClipboard) { stringValue ->
+                        clipboardManager?.let {
+                            it.setPrimaryClip(ClipData.newPlainText("", stringValue))
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.action_copied_to_clipboard),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
                     }
                     ConsumableLaunchedEffect(effect = state.openComposer) { actions.navigateToComposer(it) }
                     ConsumableLaunchedEffect(effect = state.showDeleteConfirmDialog) {
@@ -347,17 +367,22 @@ private fun ContactDetailsGroupLabel(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ContactDetailsItem(
     modifier: Modifier = Modifier,
     contactDetailsItem: ContactDetailsItem,
     actions: ContactDetailsScreen.Actions
 ) {
+    val textToCopyToClipboard = if (contactDetailsItem is ContactDetailsItem.Text) {
+        contactDetailsItem.value.string().trim().takeIfNotBlank()
+    } else null
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(
-                enabled = contactDetailsItem is ContactDetailsItem.Text && contactDetailsItem.type is Triggerable,
+            .combinedClickable(
+                enabled = contactDetailsItem is ContactDetailsItem.Text,
                 onClick = {
                     if (contactDetailsItem is ContactDetailsItem.Text) {
                         if (contactDetailsItem.type is Triggerable) {
@@ -366,6 +391,11 @@ private fun ContactDetailsItem(
                                 is Triggerable.Email -> actions.onEmailClick(contactDetailsItem.type.email)
                             }
                         }
+                    }
+                },
+                onLongClick = {
+                    textToCopyToClipboard?.let {
+                        actions.onLongClick(it)
                     }
                 }
             )
@@ -542,6 +572,7 @@ object ContactDetailsScreen {
         val onDeleteClick: () -> Unit,
         val onCallClick: (String) -> Unit,
         val onEmailClick: (String) -> Unit,
+        val onLongClick: (String) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
         val navigateToComposer: (String) -> Unit
     ) {
@@ -556,6 +587,7 @@ object ContactDetailsScreen {
                 onDeleteClick = {},
                 onCallClick = {},
                 onEmailClick = {},
+                onLongClick = {},
                 showFeatureMissingSnackbar = {},
                 navigateToComposer = {}
             )

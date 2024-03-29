@@ -35,6 +35,7 @@ sealed class ContactDetailsState(
         override val close: Effect<Unit> = Effect.empty(),
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
         val callPhoneNumber: Effect<String> = Effect.empty(),
+        val copyToClipboard: Effect<String> = Effect.empty(),
         val openComposer: Effect<String> = Effect.empty(),
         val showDeleteConfirmDialog: Effect<Unit> = Effect.empty(),
         val contact: ContactDetailsUiModel

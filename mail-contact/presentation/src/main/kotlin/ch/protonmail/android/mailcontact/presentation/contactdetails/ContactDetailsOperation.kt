@@ -28,6 +28,7 @@ internal sealed interface ContactDetailsViewAction : ContactDetailsOperation {
     object OnCloseClick : ContactDetailsViewAction
     data class OnCallClick(val phoneNumber: String) : ContactDetailsViewAction
     data class OnEmailClick(val email: String) : ContactDetailsViewAction
+    data class OnLongClick(val value: String) : ContactDetailsViewAction
 }
 
 sealed interface ContactDetailsEvent : ContactDetailsOperation {
@@ -41,4 +42,5 @@ sealed interface ContactDetailsEvent : ContactDetailsOperation {
     object CloseContactDetails : ContactDetailsEvent
     data class CallPhoneNumber(val phoneNumber: String) : ContactDetailsEvent
     data class ComposeEmail(val email: String) : ContactDetailsEvent
+    data class CopyToClipboard(val value: String) : ContactDetailsEvent
 }
