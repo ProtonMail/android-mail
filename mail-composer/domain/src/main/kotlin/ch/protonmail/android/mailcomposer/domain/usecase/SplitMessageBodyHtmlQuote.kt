@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import androidx.core.text.HtmlCompat
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
@@ -47,7 +48,11 @@ class SplitMessageBodyHtmlQuote @Inject constructor() {
             }
         }
 
-        val bodyContent = htmlBodyDocument.body().text()
+        val bodyContent = HtmlCompat.fromHtml(
+            htmlBodyDocument.body().html(),
+            HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV
+        ).toString()
+
         Timber.d("Split body content without html $bodyContent")
         val draftBody = DraftBody(bodyContent)
         val draftQuote = htmlQuote?.let { OriginalHtmlQuote(it) }
@@ -56,6 +61,7 @@ class SplitMessageBodyHtmlQuote @Inject constructor() {
     }
 
     companion object {
+
         private val QuoteAnchors = listOf(
             ".protonmail_quote",
             ".gmail_quote",

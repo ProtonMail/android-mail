@@ -16,21 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcomposer.domain.usecase
+package ch.protonmail.android
 
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
+import ch.protonmail.android.mailcomposer.domain.usecase.SplitMessageBodyHtmlQuote
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
+@SmokeTest
 class SplitMessageBodyQuoteTest {
 
     private val splitMessageBodyHtmlQuote = SplitMessageBodyHtmlQuote()
 
     @Test
-    fun `returns given decrypted body and no quote when mime type is plain text`() {
+    fun returnsGivenDecryptedBodyAndNoQuoteWhenMimeTypeIsPlainText() {
         // Given
         val decryptedBody = DecryptedMessageBodyTestData.PlainTextDecryptedBody
 
@@ -42,7 +45,7 @@ class SplitMessageBodyQuoteTest {
     }
 
     @Test
-    fun `returns decrypted body text extracted from html and no quote when the input body has no quote anchors`() {
+    fun returnsDecryptedBodyTextExtractedFromHtmlAndNoQuoteWhenTheInputBodyHasNoQuoteAnchors() {
         // Given
         val decryptedBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody(
             value = HtmlBodyWithNoQuoteAnchors,
@@ -53,12 +56,12 @@ class SplitMessageBodyQuoteTest {
         val actual = splitMessageBodyHtmlQuote(decryptedBody)
 
         // Then
-        val expected = DraftBody("$BodyTypedContentRaw $BodyMoreTypedContentRaw")
+        val expected = DraftBody("$BodyTypedContentRaw \n$BodyMoreTypedContentRaw \n")
         assertEquals(Pair(expected, null), actual)
     }
 
     @Test
-    fun `returns non-html text extracted from html and quote when the input body has one of the quote anchors`() {
+    fun returnsNonHtmlTextExtractedFromHtmlAndQuoteWhenTheInputBodyHasOneOfTheQuoteAnchors() {
         // Given
         val decryptedBody = DecryptedMessageBodyTestData.buildDecryptedMessageBody(
             value = HtmlBodyWithProtonQuoteAnchor,
@@ -78,10 +81,11 @@ class SplitMessageBodyQuoteTest {
     companion object {
         private const val BodyTypedContentRaw = "Typed in content"
         private const val BodyMoreTypedContentRaw = "this is additional typed content"
-        private const val HtmlQuotedContentRaw = "<span> Any quoted html content here </span>"
+        private const val HtmlQuotedContentRaw = "<span>Any quoted html content here</span>"
         private const val ProtonQuoteAnchor = "<div class=\"protonmail_quote\">"
+        private const val ProtonQuoteClosingAnchor = "</div>"
 
-        private const val ProtonQuoteHtml = "$ProtonQuoteAnchor $HtmlQuotedContentRaw"
+        private const val ProtonQuoteHtml = "$ProtonQuoteAnchor$HtmlQuotedContentRaw$ProtonQuoteClosingAnchor"
 
         private const val HtmlBodyWithNoQuoteAnchors = """
            <html> <head>
