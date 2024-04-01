@@ -152,7 +152,7 @@
   <string name="mail_settings_pin_insertion_created_success">Kode PIN berhasil dibuat.</string>
   <string name="mail_settings_pin_insertion_changed_success">Kode PIN berhasil diubah.</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">Bersihkan cache data lokal...</string>
+  <string name="mail_settings_clearing_cached_data">Membersihkan cache data lokal…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Terdapat suatu kesalahan. Silakan coba lagi.</string>
   <!-- strings used for biometric enrollment -->

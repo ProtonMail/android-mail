@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
   <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>
-  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზი გამო:</string>
+  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზის გამო:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">სანდო გასაღებების გარეშე: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">მისამართი არ არსებობს: %s</string>
   <string name="set_message_password_title">შეტყობინების დაშიფრვა</string>

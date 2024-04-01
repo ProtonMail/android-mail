@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="contact_list_title">Stiki</string>
+  <string name="contact_list_loading_error">Napaka pri nalaganju stikov, poskusite znova pozneje</string>
+  <string name="no_contacts">Ni najdenih kontaktov</string>
+  <string name="no_contact_groups">Ni najdenih skupin stikov</string>
+  <string name="no_contacts_description">Izboljšajte svojo e-poštno izkušnjo tako, da ustvarite nov stik ali uvozite obstoječe.</string>
+  <string name="no_contact_groups_description">Izboljšajte svojo e-poštno izkušnjo tako, da ustvarite novo skupino stikov.</string>
+  <string name="add_contact">Dodaj stik</string>
+  <string name="add_contact_group">Dodaj skupino stikov</string>
+  <string name="add_contact_content_description">Dodaj stik</string>
+  <string name="all_title">Vse</string>
+  <string name="groups_title">Skupine</string>
+  <string name="group_member_count">%1$s član</string>
+  <string name="group_members_count">%1$s članov</string>
+  <string name="new_contact">Nov stik</string>
+  <string name="new_group">Nova skupina</string>
+  <string name="import_contact">Naloži stike naprave</string>
+  <string name="no_contact_email">Ni e-poštnih naslovov</string>
+  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <string name="contact_details_loading_error">Napaka pri nalaganju stika, poskusite znova pozneje</string>
+  <string name="contact_details_delete_success">Stik izbrisan</string>
+  <string name="edit_contact_content_description">Uredi stik</string>
+  <string name="delete_contact_content_description">Izbriši stik</string>
+  <string name="contact_avatar_image_content_description">Slika stika</string>
+  <string name="contact_groups_content_description">Skupina stikov</string>
+  <string name="contact_type_email">E-pošta</string>
+  <string name="contact_type_phone">Telefon</string>
+  <string name="contact_type_home">Domov</string>
+  <string name="contact_type_work">Službeni</string>
+  <string name="contact_type_other">Drugo</string>
+  <string name="contact_type_mobile">Mobilnik</string>
+  <string name="contact_type_main">Glavno</string>
+  <string name="contact_type_fax">Faks</string>
+  <string name="contact_type_pager">Pozivnik</string>
+  <string name="contact_type_address">Naslov</string>
+  <string name="contact_property_birthday">Rojstni dan</string>
+  <string name="contact_property_note">Opomba</string>
+  <string name="contact_property_photo">Fotografija</string>
+  <string name="contact_property_logo">Logotip</string>
+  <string name="contact_property_geo">Geo</string>
+  <string name="contact_property_organization">Organizacija</string>
+  <string name="contact_property_anniversary">Obletnica</string>
+  <string name="contact_property_title">Naslov</string>
+  <string name="contact_property_role">Vloga</string>
+  <string name="contact_property_member">Član</string>
+  <string name="contact_property_url">URL</string>
+  <string name="contact_property_gender">Spol</string>
+  <string name="contact_property_language">Jezik</string>
+  <string name="contact_property_time_zone">Časovni pas</string>
+  <string name="contact_form_loading_error">Napaka pri nalaganju stika, poskusite znova pozneje</string>
+  <string name="contact_form_save_success">Stik je shranjen</string>
+  <string name="contact_form_create_success">Stik ustvarjen</string>
+  <string name="contact_form_update_success">Stik posodobljen</string>
+  <string name="save_contact_content_description">Shrani stik</string>
+  <string name="contact_form_save">Shrani</string>
+  <string name="add_new">Dodaj</string>
+  <string name="email_section">E-pošta</string>
+  <string name="phone_section">Telefonska številka</string>
+  <string name="address_section">Naslov</string>
+  <string name="note_section">Opomba</string>
+  <string name="birthday_section">Rojstni dan</string>
+  <string name="other_section">Dodatni podatki</string>
+  <string name="display_name">Prikazno ime</string>
+  <string name="first_name">Ime</string>
+  <string name="last_name">Priimek</string>
+  <string name="email_address">E-poštni naslov</string>
+  <string name="phone_number">Telefonska številka</string>
+  <string name="additional_info">Dodatni podatki</string>
+  <string name="remove_contact_property">Odstrani lastnost stika</string>
+  <string name="property_type">Vrsta lastnosti</string>
+  <string name="property_label">Oznaka</string>
+  <string name="address_street">Ulica</string>
+  <string name="address_postal_code">Poštna številka</string>
+  <string name="address_city">Mesto</string>
+  <string name="address_region">Regija</string>
+  <string name="address_country">Država</string>
+  <string name="contact_details_delete_dialog_title">Izbriši stik</string>
+  <string name="contact_details_delete_dialog_text">Ali ste prepričani, da želite izbrisati ta stik?</string>
+  <string name="contact_details_delete_dialog_cancel_button">Prekliči</string>
+  <string name="contact_details_delete_dialog_confirm_button">V redu</string>
+  <string name="contact_form_save_error">Napaka pri shranjevanju stika, poskusite znova pozneje</string>
+  <string name="all_contacts_tab">Stiki</string>
+  <string name="contact_groups_tab">Skupine</string>
+  <plurals name="contact_group_details_member_count">
+    <item quantity="one">%1$d član</item>
+    <item quantity="two">%1$d člana</item>
+    <item quantity="few">%1$d člani</item>
+    <item quantity="other">%1$d članov</item>
+  </plurals>
+  <plurals name="contact_group_form_member_count">
+    <item quantity="one">Član (%1$d)</item>
+    <item quantity="two">Člana (%1$d)</item>
+    <item quantity="few">Člani (%1$d)</item>
+    <item quantity="other">Člani (%1$d)</item>
+  </plurals>
+  <string name="contact_form_invalid_email_error">Napaka pri shranjevanju stika – vsebuje neveljaven e-poštni naslov</string>
+  <string name="contact_group_details_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
+  <string name="contact_group_form_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
+  <string name="edit_contact_group_content_description">Uredi skupino stikov</string>
+  <string name="delete_contact_group_content_description">Izbriši skupino stikov</string>
+  <string name="send_group_message">Pošlji skupinsko sporočilo</string>
+  <string name="contact_group_form_save">Shrani</string>
+  <string name="contact_group_form_name_hint">Ime za prikaz</string>
+  <string name="remove_member_content_description">Odstrani člana</string>
+  <string name="add_members">Dodaj člane</string>
+  <string name="change_color">Spremeni barvo</string>
+  <string name="contact_group_form_create_success">Skupina stikov ustvarjena</string>
+  <string name="contact_group_form_update_success">Skupina stikov posodobljena</string>
+  <string name="contact_group_form_save_error">Napaka pri shranjevanju skupine stikov, poskusite znova pozneje</string>
+  <string name="members_loading_error">Napaka pri nalaganju članov, poskusite znova pozneje</string>
+  <string name="members_done">Končano</string>
+  <string name="add_members_error">Napaka pri dodajanju članov, poskusite znova pozneje</string>
+  <string name="manage_members_title">Urejanje članov</string>
+  <string name="search_contact">Iskanje stikov</string>
+  <string name="member_update_error">Napaka pri posodabljanju člana, poskusite znova pozneje</string>
+  <string name="contact_group_color">Barva skupine stikov</string>
+</resources>

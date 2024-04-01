@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="from_prefix">Od:</string>
+  <string name="to_prefix">Za:</string>
+  <string name="cc_prefix">Kp:</string>
+  <string name="bcc_prefix">Skp:</string>
+  <string name="subject_placeholder">Zadeva</string>
+  <string name="compose_message_placeholder">Sestavi sporočilo</string>
+  <string name="close_composer_content_description">Zapri urejevalnik</string>
+  <string name="send_message_content_description">Pošlji sporočilo</string>
+  <string name="composer_expand_recipients_button">Prikaži ostale prejemnike</string>
+  <string name="composer_error_invalid_email">E-poštni naslov ni veljaven</string>
+  <string name="composer_error_invalid_sender">Pošiljateljev naslov ni veljaven</string>
+  <string name="change_sender_button_content_description">Spremeni pošiljatelja</string>
+  <string name="composer_change_sender_paid_feature">Za spremembo pošiljateljevega naslova nadgradite na plačljiv paket</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Pošiljatelja ni mogoče spremeniti, ker pridobivanje uporabnikove naročnine ni uspelo. Poskusite znova.</string>
+  <string name="composer_error_store_draft_sender_address">Shranjevanje pošiljateljevega naslova za ta osnutek ni uspelo</string>
+  <string name="composer_error_store_draft_body">Shranjevanje telesa tega osnutka ni uspelo</string>
+  <string name="composer_error_duplicate_recipient">Odstranjen podvojen prejemnik: %1$s</string>
+  <string name="composer_error_store_draft_subject">Shranjevanje zadeve tega osnutka ni uspelo</string>
+  <string name="composer_error_store_draft_recipients">Shranjevanje prejemnikov tega osnutka ni uspelo</string>
+  <string name="composer_error_loading_draft">Vsebina tega osnutka trenutno ni na voljo. Z urejanjem boste prepisali vso morebitno dosedanjo vsebino.</string>
+  <string name="composer_add_attachments_content_description">Dodaj priponke</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">Uvozi iz ...</string>
+  <string name="composer_error_loading_parent_message">Podatkov sporočila ni bilo mogoče naložiti</string>
+  <string name="composer_original_message_quote">Izvorno sporočilo</string>
+  <string name="composer_sender_quote">Dne %s je %s &lt;%s&gt; napisal/-a:</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">V redu</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Dosežena je omejitev velikosti priponk</string>
+  <string name="composer_attachment_size_exceeded_dialog_message">Velikost priponk je omejena na %1$s</string>
+  <string name="composer_attachment_reencryption_failed_message">Vnovično šifriranje priponk ni bilo uspešno. Iz varnostnih razlogov so bile vse priponke odstranjene.</string>
+  <string name="composer_warning_local_data_shown">Zadnje različice tega osnutka ni bilo mogoče naložiti. Vsaka sprememba bo vplivala na njeno vsebino.</string>
+  <string name="composer_button_add_password">Dodaj geslo</string>
+  <string name="composer_button_set_expiration">Nastavi čas poteka</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Potek veljavnosti sporočila</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Nastavi</string>
+  <string name="composer_bottom_bar_expiration_time_none">Brez</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 ura</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 dan</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 dni</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 teden</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Po meri</string>
+  <string name="composer_error_setting_expiration_time">Nastavitev časa poteka ni uspela</string>
+  <!-- Send expiring message to external recipients dialog -->
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Potek ni podprt</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Priporočamo, da namesto tega nastavite geslo za naslednje prejemnike:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Prekliči</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Vseeno pošlji</string>
+  <!-- Sender changed dialog -->
+  <string name="composer_sender_changed_dialog_title">Obvestilo pred pošiljanjem</string>
+  <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pošiljanje sporočil z naslova @pm.me je plačljiva funkcija. Sporočilo bo poslano z vašega privzetega naslova.</string>
+  <string name="composer_sender_changed_original_address_disabled">Izbrani naslov pošiljatelja je onemogočen. Sporočilo bo poslano z vašega privzetega naslova.</string>
+  <string name="composer_sender_changed_dialog_confirm_button">V redu</string>
+  <!-- Message sending without subject dialog -->
+  <string name="composer_send_without_subject_dialog_title">Sestavi</string>
+  <string name="composer_send_without_subject_dialog_text">Pošljem sporočilo brez zadeve?</string>
+  <string name="composer_send_without_subject_dialog_confirm_button">Da</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Ne</string>
+  <!-- Message sending error dialog -->
+  <string name="message_sending_error_dialog_header">Napaka pri pošiljanju</string>
+  <string name="message_sending_error_dialog_button_dismiss">Zapri</string>
+  <string name="message_sending_error_dialog_text_error">Vaše e-pošte ni mogoče poslati na vneseno e-pošto zaradi naslednjega razloga:</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Ni zaupanja vrednih ključev: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Naslov ne obstaja: %s</string>
+  <string name="set_message_password_title">Šifriraj sporočilo</string>
+  <string name="set_message_password_info_message">Nastavi geslo za šifriranje tega sporočila za tiste, ki niso uporabniki Proton Maila.</string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Več informacij</a></string>
+  <string name="set_message_password_label">Geslo sporočila</string>
+  <string name="set_message_password_label_repeat">Ponovite geslo</string>
+  <string name="set_message_password_label_hint">Namig za geslo (izbirno)</string>
+  <string name="set_message_password_supporting_text">4 do 21 znakov</string>
+  <string name="set_message_password_supporting_error_text">Geslo mora biti dolgo najmanj 4 in največ 21 znakov</string>
+  <string name="set_message_password_supporting_text_repeat">Gesli se morata ujemati</string>
+  <string name="set_message_password_supporting_error_text_repeat">Gesli se ne ujemata.</string>
+  <string name="set_message_password_button_show">Prikaži geslo</string>
+  <string name="set_message_password_button_hide">Skrij geslo</string>
+  <string name="set_message_password_button_apply">Nastavi geslo</string>
+  <string name="set_message_password_button_save_changes">Shrani spremembe</string>
+  <string name="set_message_password_button_remove_password">Odstrani geslo</string>
+</resources>

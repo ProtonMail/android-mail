@@ -142,8 +142,8 @@
     <item quantity="other">%s återstående försök.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s remaining attempt until secure data wipe.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">%s återstående försök innan all data raderas av säkerhetsskäl</item>
+    <item quantity="other">%s återstående försök före all data raderas av säkerhetsskäl</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Det var ett fel att verifiera din PIN-kod.</string>
   <string name="mail_settings_pin_insertion_signout_text">Logga ut</string>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="detail_error_loading_contacts">Neuspešno nalaganje stikov</string>
+  <string name="detail_error_loading_conversation">Neuspešno nalaganje pogovorov</string>
+  <string name="detail_error_loading_messages">Neuspešno nalaganje sporočil</string>
+  <string name="error_mark_unread_failed">Označevanje kot neprebrano ni uspelo. Poskusite znova.</string>
+  <plurals name="message_count_label_text">
+    <item quantity="one">%d sporočilo</item>
+    <item quantity="two">%d sporočili</item>
+    <item quantity="few">%d sporočila</item>
+    <item quantity="other">%d sporočil</item>
+  </plurals>
+  <string name="quick_reply_button_content_description">Odgovori</string>
+  <string name="quick_reply_all_button_content_description">Odgovori vsem</string>
+  <string name="more_button_content_description">Več</string>
+  <string name="to">Za:</string>
+  <string name="cc">Kp:</string>
+  <string name="bcc">Skp:</string>
+  <string name="hide_details">Skrij podrobnosti</string>
+  <string name="undisclosed_recipients">Skriti prejemniki</string>
+  <string name="error_mark_as_unread_failed">Označevanje kot neprebrano ni uspelo. Poskusite znova.</string>
+  <string name="error_star_operation_failed">Označevanje z zvezdico ni uspelo. Poskusite znova.</string>
+  <string name="error_unstar_operation_failed">Odstranjevanje zvezdice ni uspelo. Poskusite znova.</string>
+  <string name="error_move_to_trash_failed">Premikanje v smeti ni uspelo. Poskusite znova.</string>
+  <string name="message_moved_to_trash">Sporočilo je premaknjeno v smetnjak</string>
+  <string name="message_moved_to_archive">Sporočilo je premaknjeno v arhiv</string>
+  <string name="message_moved_to_selected_destination">Sporočilo je premaknjeno v mapo %1$s</string>
+  <string name="error_move_message_failed">Premikanje sporočila ni uspelo. Poskusite znova.</string>
+  <string name="conversation_moved_to_trash">Pogovor je premaknjen v smetnjak</string>
+  <string name="conversation_moved_to_selected_destination">Pogovor je premaknjen v %1$s</string>
+  <string name="conversation_moved_to_archive">Pogovor je premaknjen v arhiv</string>
+  <string name="error_move_conversation_failed">Premikanje pogovora ni uspelo. Poskusite znova.</string>
+  <string name="error_loading_message">Nekaj je šlo narobe, poskusite znova.</string>
+  <string name="error_offline_loading_message">Nimate povezave. Za prikaz vsebine tega sporočila je potrebna internetna povezava.</string>
+  <string name="error_get_attachment_failed">Priponke ni bilo mogoče pridobiti.</string>
+  <string name="error_attachment_download_in_progress">Trenutni prenos se mora dokončati, preden se lahko začne naslednji.</string>
+  <string name="error_get_attachment_not_enough_memory">Priponke ni bilo mogoče prenesti zaradi nezadostne količine pomnilnika</string>
+  <string name="reload">Ponovno naloži</string>
+  <string name="error_relabel_message_failed">Napaka pri spreminjanju kategorije. Poskusite znova</string>
+  <string name="error_relabel_conversation_failed">Napaka pri spreminjanju pogovora. Poskusite znova</string>
+  <string name="please_go_back_online_to_load_messages">Nimate povezave. Za prenos sporočil se povežite v splet</string>
+  <string name="decryption_error">Dešifriranje sporočila ni uspelo.</string>
+  <string name="detail_error_retrieving_message_body">Sporočila ni mogoče prenesti</string>
+  <string name="message_body_error_no_webview">Za ogled vsebine tega sporočila morate imeti nameščen WebView.</string>
+  <!-- Banners -->
+  <string name="message_body_embedded_images_banner_text">Samodejno nalaganje vdelanih slik je izključeno. To lahko spremenite v nastavitvah.</string>
+  <string name="message_body_remote_content_banner_text">Samodejno nalaganje oddaljene vsebine je izključeno. To lahko spremenite v nastavitvah.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Samodejno nalaganje vdelanih slik in oddaljene vsebine je izključeno. To lahko spremenite v nastavitvah.</string>
+  <string name="message_phishing_banner_text">Naš sistem je označil to sporočilo kot poskus ribarjenja. Preverite, ali je legitimno.</string>
+  <string name="message_expiration_banner_text">To sporočilo bo poteklo v %1$s.</string>
+  <!-- External link confirmation dialog -->
+  <string name="external_link_confirmation_dialog_text">Zapustili boste aplikacijo in se pomaknili do:</string>
+  <string name="external_link_confirmation_dialog_do_not_ask_again">Ne sprašuj več</string>
+  <string name="external_link_confirmation_dialog_cancel_button">Prekliči</string>
+  <string name="external_link_confirmation_dialog_continue_button">Nadaljuj</string>
+  <!-- Phishing link confirmation dialog -->
+  <string name="phishing_link_confirmation_dialog_title">Pozor: morebitno lažno spletno mesto</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Ta povezava vodi na spletno mesto, ki bi lahko poskušalo ukrasti vaše podatke, kot so gesla in podatki o plačilnih karticah.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Zaradi vaše varnosti ne nadaljujte.</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">Vrnite se nazaj (priporočljivo)</string>
+  <string name="phishing_link_confirmation_dialog_button_continue">Prezri opozorilo in nadaljuj</string>
+  <string name="message_delete_dialog_title">Izbriši sporočilo</string>
+  <string name="message_delete_dialog_message">Ali ste prepričani, da želite trajno izbrisati to sporočilo?</string>
+  <string name="message_deleted">Sporočilo izbrisano</string>
+  <string name="error_delete_message_failed">Brisanje sporočila ni uspelo</string>
+  <string name="error_delete_message_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
+  <string name="error_delete_conversation_failed">Pogovora ni bilo mogoče izbrisati</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
+  <string name="conversation_deleted">Pogovor izbrisan</string>
+  <string name="message_body_load_remote_content_button_text">Naloži oddaljeno vsebino</string>
+  <string name="message_body_load_embedded_images_button_text">Naloži vdelane slike</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Naloži oddaljeno in vdelano vsebino</string>
+  <string name="message_report_phishing_dialog_title_offline">Pozor</string>
+  <string name="message_report_phishing_dialog_message_offline">Ta možnost je na voljo samo ob vzpostavljeni povezavi.</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">V redu</string>
+  <string name="message_report_phishing_dialog_title">Potrdite prijavo poskusa prevare</string>
+  <string name="message_report_phishing_dialog_message">S prijavo lažnega predstavljanja nam boste poslali sporočilo v analizo, s katero bomo izboljšali svoje filtre. To pomeni, da nam bo vsebina sporočila v celoti vidna.</string>
+  <string name="message_report_phishing_dialog_confim_button">Potrdi</string>
+  <string name="message_report_phishing_dialog_cancel_button">Prekliči</string>
+  <string name="open_on_protoncalendar_banner_title">Odpri v Proton Calendar</string>
+  <string name="open_on_protoncalendar_banner_description">Varen šifriran koledar</string>
+</resources>

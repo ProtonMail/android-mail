@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <plurals name="attachment_count_label">
+    <item quantity="one">%d datoteka</item>
+    <item quantity="two">%d datoteki</item>
+    <item quantity="few">%d datoteke</item>
+    <item quantity="other">%d datotek</item>
+  </plurals>
+  <string name="attachment_show_more_label">in še %1$d</string>
+  <string name="attachment_permission_dialog_title">Potrebno je dovoljenje</string>
+  <string name="attachment_permission_dialog_message">Za prenos priponke Proton Mail potrebuje dovoljenje za dostop do shrambe vaše naprave.</string>
+  <string name="attachment_permission_dialog_dismiss_button">V redu</string>
+  <string name="attachment_permission_dialog_action_button">Nastavitve</string>
+  <string name="attachment_type_description">Datoteka %1$s</string>
+  <!-- Attachment Types -->
+  <string name="attachment_type_archive">Arhiv</string>
+  <string name="attachment_type_image">Slika</string>
+  <string name="attachment_type_video">Videoposnetek</string>
+  <string name="attachment_type_audio">Zvok</string>
+  <string name="attachment_type_unknown">Neznano</string>
+  <string name="attachment_type_pdf">PDF</string>
+  <string name="attachment_type_text">Besedilo</string>
+  <string name="attachment_type_document">Dokument</string>
+  <string name="attachment_type_spreadsheet">Preglednica</string>
+  <string name="attachment_type_presentation">Predstavitev</string>
+  <!-- Bottom Sheet -->
+  <string name="bottom_sheet_move_to_title">Premakni v …</string>
+  <string name="bottom_sheet_done_action">Končano</string>
+  <string name="bottom_sheet_archive_action">Tudi arhiviraj?</string>
+  <string name="bottom_sheet_label_as_title">Označi kot ...</string>
+  <string name="bottom_sheet_more_header_message_from">Sporočilo od %s</string>
+</resources>

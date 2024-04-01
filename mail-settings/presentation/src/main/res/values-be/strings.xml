@@ -121,7 +121,7 @@
   <string name="mail_settings_auto_lock_item_description">Уключыце гэту функцыю, каб аўтаматычна блакіраваць праграму і ўжываць PIN-код для яе разблакіроўкі.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Змяніць PIN-код</string>
   <string name="mail_settings_auto_lock_item_timer_title">Час аўтаблакіроўкі</string>
-  <string name="mail_settings_auto_lock_immediately">Адразу</string>
+  <string name="mail_settings_auto_lock_immediately">Неадкладна</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 хвілін бяздзейнасці</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 хвілін бяздзейнасці</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 гадзіна бяздзейнасці</string>

@@ -138,16 +138,16 @@
   <string name="mail_settings_pin_insertion_button_confirm">Підтвердити</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN-коди відрізняються.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="one">Залишилася %s спроба</item>
     <item quantity="few">Залишилось %s спроби.</item>
-    <item quantity="many">Залишилось %s спроби.</item>
+    <item quantity="many">Залишилось %s спроб.</item>
     <item quantity="other">Залишилось %s спроби.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">Залишилася %s спроба до безпечного стирання даних.</item>
-    <item quantity="few">Залишилося %s спроби до безпечно стирання даних.</item>
-    <item quantity="many">Залишилося %s спроб до безпечного стирання даних.</item>
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="one">Залишилася %s спроба до стирання захищених даних.</item>
+    <item quantity="few">Залишилося %s спроби до стирання захищених даних.</item>
+    <item quantity="many">Залишилося %s спроб до стирання захищених даних.</item>
+    <item quantity="other">Залишилося %s спроб до стирання захищених даних.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Помилка під час перевірки PIN-коду.</string>
   <string name="mail_settings_pin_insertion_signout_text">Вийти</string>

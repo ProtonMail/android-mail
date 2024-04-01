@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="label_title_inbox">Prejeto</string>
+  <string name="label_title_drafts">Osnutki</string>
+  <string name="label_title_sent">Poslano</string>
+  <string name="label_title_starred">Z zvezdico</string>
+  <string name="label_title_archive">Arhiv</string>
+  <string name="label_title_spam">Neželena pošta</string>
+  <string name="label_title_trash">Smetnjak</string>
+  <string name="label_title_outbox">Odhodna pošta</string>
+  <string name="label_title_all_mail">Vsa pošta</string>
+  <string name="label_title_all_drafts">Vsi osnutki</string>
+  <string name="label_title_all_sent">Vse poslano</string>
+  <string name="label_title_all_scheduled">Vse načrtovano</string>
+  <string name="label_title_snoozed">Dremež</string>
+  <string name="label_title_folders">Mape</string>
+  <string name="label_title_parent_folder">Nadrejena mapa</string>
+  <string name="label_title_labels">Oznake</string>
+  <string name="label_title_create_folder">Ustvari mapo</string>
+  <string name="label_title_create_label">Ustvari oznako</string>
+  <string name="label_title_label_list">Seznam oznak</string>
+  <string name="label_title_folder_list">Seznam map</string>
+  <string name="label_list_no_labels_found">Ni najdenih oznak.</string>
+  <string name="label_list_create_label_placeholder_description">Ustvarite si oznake za lažje delo z e-pošto.</string>
+  <string name="create_label_content_description">Ustvari oznako</string>
+  <string name="label_form_create_label">Ustvari oznako</string>
+  <string name="folder_form_create_folder">Ustvari mapo</string>
+  <string name="label_form_edit_label">Uredi oznako</string>
+  <string name="folder_form_edit_folder">Uredi mapo</string>
+  <string name="label_form_save">Shrani</string>
+  <string name="label_form_delete">Izbriši oznako</string>
+  <string name="folder_form_delete">Izbriši mapo</string>
+  <string name="label_name_title">Ime</string>
+  <string name="add_a_label_name_hint">Dodaj ime oznake</string>
+  <string name="add_a_folder_name_hint">Dodajte ime mape</string>
+  <string name="input_field_max_characters_count">%1d/%2d znakov</string>
+  <string name="color_picker_title">Barva</string>
+  <string name="save_label_error">Napaka pri shranjevanju oznake, poskusite znova pozneje</string>
+  <string name="save_folder_error">Napaka pri shranjevanju mape, poskusite znova pozneje</string>
+  <string name="label_already_exists">Oznaka ali mapa s tem imenom že obstaja</string>
+  <string name="label_limit_reached_error">Dosežena omejitev števila oznak</string>
+  <string name="folder_limit_reached_error">Dosežena omejitev števila map</string>
+  <string name="delete_label_error">Napaka pri brisanju oznake</string>
+  <string name="input_field_clear_content_description">Izbriši besedilo</string>
+  <string name="label_list_item_content_description">Dodaj oznako predmetu na seznamu</string>
+  <string name="folder_list_item_content_description">Seznam map</string>
+  <string name="folder_list_no_folders_found">Ni map</string>
+  <string name="folder_list_create_folder_placeholder_description">Ustvarite si mape za lažje delo z e-pošto.</string>
+  <string name="create_folder_content_description">Dodaj mapo</string>
+  <string name="folder_settings_content_description">Nastavitve mape</string>
+  <string name="folder_settings_title">Nastavitve</string>
+  <string name="folder_settings_done_button">Končano</string>
+  <string name="folder_settings_folder_colors">Uporabi barve mape</string>
+  <string name="folder_settings_parent_color">Podeduj barvo nadrejene mape</string>
+  <string name="folder_list_loading_error">Napaka pri nalaganju map, poskusite znova pozneje</string>
+  <string name="folder_loading_error">Napaka pri nalaganju mape, poskusite znova pozneje</string>
+  <string name="switch_on">Vklopljeno</string>
+  <string name="switch_off">Izklopljeno</string>
+  <string name="folder_form_parent">Nadrejena mapa</string>
+  <string name="folder_form_no_parent">Brez</string>
+  <string name="folder_form_notifications">Obvestila</string>
+  <string name="folder_saved">Mapa skranjena</string>
+  <string name="folder_deleted">Mapa je izbrisana.</string>
+  <string name="parent_folder_none">Brez</string>
+</resources>

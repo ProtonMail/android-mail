@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="from_prefix">Des de:</string>
+  <string name="from_prefix">De:</string>
   <string name="to_prefix">Per a:</string>
-  <string name="cc_prefix">CC:</string>
+  <string name="cc_prefix">Cc:</string>
   <string name="bcc_prefix">CCO:</string>
   <string name="subject_placeholder">Assumpte</string>
   <string name="compose_message_placeholder">Escriure un correu electrònic</string>
@@ -42,13 +42,13 @@
   <string name="composer_error_loading_parent_message">No s\'ha pogut carregar la informació del missatge.</string>
   <string name="composer_original_message_quote">Missatge original</string>
   <string name="composer_sender_quote">El %s, %s &lt;%s&gt; va escriure:</string>
-  <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
+  <string name="composer_attachment_size_exceeded_dialog_confirm_button">D\'acord</string>
   <string name="composer_attachment_size_exceeded_dialog_title">S\'ha assolit el límit de fitxers adjunts.</string>
   <string name="composer_attachment_size_exceeded_dialog_message">El límit de mida pels arxius adjunts és de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">No s\'ha pogut tornar a xifrar el fitxer adjunt. Per motius de seguretat, s\'han eliminat tots els fitxers adjunts.</string>
   <string name="composer_warning_local_data_shown">La darrera versió d\'aquest esborrany no s\'ha pogut carregar. Qualsevol canvi anul·larà el seu contingut.</string>
   <string name="composer_button_add_password">Afegeix una contrasenya</string>
-  <string name="composer_button_set_expiration">Definir el temps d\'expiració</string>
+  <string name="composer_button_set_expiration">Establiu el temps de caducitat</string>
   <string name="composer_expiration_time_bottom_sheet_title">Caducitat del missatge</string>
   <string name="composer_expiration_time_bottom_sheet_done">Estableix</string>
   <string name="composer_bottom_bar_expiration_time_none">Cap</string>
@@ -61,8 +61,8 @@
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Caducitat no suportada</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomanem configurar una contrasenya pels destinataris següents:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel·li</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Enviï de totes maneres</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel·la</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Envia de totes maneres</string>
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Avís d\'enviament</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">L\'enviament de missatges des de @pm.me és una característica de pagament. El missatge s\'enviarà des de la vostra adreça per defecte.</string>

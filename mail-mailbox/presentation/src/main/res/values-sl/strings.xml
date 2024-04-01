@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="drawer_title_more">Več</string>
+  <string name="drawer_title_contacts">Stiki</string>
+  <string name="drawer_title_subscription">Naročnina</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Sestavi novo sporočilo</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Zapusti način izbire</string>
+  <string name="mailbox_toolbar_menu_button_content_description">Meni</string>
+  <string name="mailbox_toolbar_search_button_content_description">Iskanje</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Zapustite način iskanja</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Počisti iskalno poizvedbo</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Vnesite iskalno poizvedbo</string>
+  <plurals name="mailbox_toolbar_selected_count">
+    <item quantity="one">%d izbrano</item>
+    <item quantity="two">%d izbrani</item>
+    <item quantity="few">%d izbrana</item>
+    <item quantity="other">%d izbranih</item>
+  </plurals>
+  <plurals name="filter_unread_button_text">
+    <item quantity="one">%s neprebranih</item>
+    <item quantity="two">%s neprebrani</item>
+    <item quantity="few">%s neprebrana</item>
+    <item quantity="other">%s neprebranih</item>
+  </plurals>
+  <string name="mailbox_default_recipient">(brez prejemnika)</string>
+  <string name="mailbox_default_sender">(brez pošiljatelja)</string>
+  <string name="mailbox_error_message_offline">Ste brez povezave, elementov ni mogoče naložiti</string>
+  <string name="mailbox_error_message_generic">Nalaganje poštnega predala ni uspelo</string>
+  <string name="mailbox_error_message_unexpected">Prišlo je do nepričakovane napake</string>
+  <string name="mailbox_is_empty_title">Ni sporočil</string>
+  <string name="mailbox_is_empty_description">Vse je posodobljeno</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Ni neprebranih sporočil</string>
+  <string name="mailbox_is_empty_folder_description">Ta mapa je prazna</string>
+  <string name="mailbox_is_empty_spam_description">Mapa z neželeno pošto je prazna</string>
+  <string name="mailbox_is_empty_trash_description">Smetnjak je prazen</string>
+  <plurals name="mailbox_action_trash">
+    <item quantity="one">Sporočilo premaknjeno v smetnjak</item>
+    <item quantity="two">%d sporočili premaknjeni v smetnjak</item>
+    <item quantity="few">%d sporočila premaknjena v smetnjak</item>
+    <item quantity="other">%d sporočil premaknjenih v smetnjak</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_title">
+    <item quantity="one">Izbriši pogovor</item>
+    <item quantity="two">Izbriši %d pogovora</item>
+    <item quantity="few">Izbriši %d pogovore</item>
+    <item quantity="other">Izbriši %d pogovorov</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_title">
+    <item quantity="one">Izbriši sporočilo</item>
+    <item quantity="two">Izbriši %d sporočili</item>
+    <item quantity="few">Izbriši %d sporočila</item>
+    <item quantity="other">Izbriši %d sporočil</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation_dialog_message">
+    <item quantity="one">Ali ste prepričani, da želite trajno izbrisati ta pogovor?</item>
+    <item quantity="two">Ali ste prepričani, da želite trajno izbrisati ta pogovora?</item>
+    <item quantity="few">Ali ste prepričani, da želite trajno izbrisati te pogovore?</item>
+    <item quantity="other">Ali ste prepričani, da želite trajno izbrisati te pogovore?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message_dialog_message">
+    <item quantity="one">Ali ste prepričani, da želite trajno izbrisati to sporočilo?</item>
+    <item quantity="two">Ali ste prepričani, da želite trajno izbrisati ti sporočili?</item>
+    <item quantity="few">Ali ste prepričani, da želite trajno izbrisati ta sporočila?</item>
+    <item quantity="other">Ali ste prepričani, da želite trajno izbrisati ta sporočila?</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_message">
+    <item quantity="one">Sporočilo trajno izbrisano</item>
+    <item quantity="two">%d sporočili trajno izbrisani</item>
+    <item quantity="few">%d sporočila trajno izbrisana</item>
+    <item quantity="other">%d sporočil trajno izbrisanih</item>
+  </plurals>
+  <plurals name="mailbox_action_delete_conversation">
+    <item quantity="one">Pogovor trajno izbrisan</item>
+    <item quantity="two">%d pogovora trajno izbrisana</item>
+    <item quantity="few">%d pogovori trajno izbrisani</item>
+    <item quantity="other">%d pogovorov trajno izbrisanih</item>
+  </plurals>
+  <string name="mailbox_action_label_messages_failed">Dodajanje oznake ni uspelo</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Oznak ni bilo mogoče pridobiti</string>
+  <string name="mailbox_action_failed_retrieving_colors">Nastavitev barv ni bilo mogoče pridobiti</string>
+  <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Dobrodošli v novi aplikaciji</string>
+  <string name="onboarding_description_ga">Nova aplikacija Proton Mail, popolnoma prenovljena, je bila narejena za stabilnost in zmogljivost.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Zasebnost za vse</string>
+  <string name="onboarding_privacy_for_all_description">Povabite druge v Proton Mail, da boste lahko vsi izkoristili prednosti šifriranja od konca do konca.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Preprosto posodabljanje</string>
+  <string name="onboarding_easily_up_to_date_description">Brskajte po navojnih sporočilih v načinu pogovora.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Čisto in urejeno</string>
+  <string name="onboarding_neat_and_tidy_description">Z razporejanjem, oznakami in barvnimi oznakami sporočil ustvarite popoln poštni predal po meri.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Naprej</string>
+  <string name="onboarding_get_started">Začnite</string>
+  <string name="onboarding_illustration_content_description">Ilustracija upravljalske plošče</string>
+  <string name="onboarding_close_content_description">Zapri</string>
+  <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
+  <string name="mailbox_action_archive_message">Sporočilo je premaknjeno v arhiv</string>
+  <string name="mailbox_action_spam_message">Sporočilo premaknjeno v neželeno pošto.</string>
+  <string name="mailbox_search_placeholder_text">Išči sporočila</string>
+  <string name="mailbox_search_no_results_title">Ni najdenih rezultatov</string>
+  <string name="mailbox_search_no_results_explanation">Iskanje datuma, imena, e-poštnega naslova ali zadeve sporočila</string>
+  <string name="mailbox_action_button_clear_trash">Izprazni smetnjak</string>
+  <string name="mailbox_action_button_clear_spam">Izprazni Vsiljeno pošto</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Izprazni mapo Smetnjak</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Izprazni mapo Vsiljena pošta</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Smetnjaku«?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Vsiljeni pošti«?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Smetnjaku«?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Vsiljeni pošti«?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Načrtovana je operacija za čiščenje"</string>
+  <!--    Storage Limit Warning-->
+  <string name="storage_limit_warning_dialog_title">Opozorilo</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Vaša Proton shramba je več kot 80 % zasedena. Sprostite prostor ali nadgradite za več prostora.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Vaša Proton shramba je več kot 90 % zasedena. Sprostite prostor ali nadgradite za več prostora.</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Ne opominjaj me več</string>
+  <string name="storage_limit_warning_dialog_confirm_button">V redu</string>
+  <!--    Storage Quota Over Warning-->
+  <string name="storage_quota_over_dialog_title">Opozorilo</string>
+  <string name="storage_quota_over_dialog_text">Vaša Proton shramba je 100 % zasedena. Dokler ne sprostite nekaj prostora ali nadgradite paket, bo prejemanje novih sporočil in pošiljanje onemogočeno.</string>
+  <string name="storage_quota_over_dialog_confirm_button">V redu</string>
+</resources>

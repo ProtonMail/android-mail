@@ -24,7 +24,7 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">关闭选择模式</string>
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜索模式模式</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜索模式</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -40,7 +40,7 @@
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
   <string name="mailbox_is_empty_title">无邮件</string>
   <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">没有未读消息</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">没有未读邮件</string>
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
   <string name="mailbox_is_empty_trash_description">回收站为空</string>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="expiration_expired">Poteklo</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%d u</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="retry">Poskusite znova</string>
+  <string name="toolbar_back_content_description">Nazaj na prejšnji zaslon</string>
+  <string name="x_error_not_logged_in">Niste prijavljeni</string>
+  <string name="action_reply">Odgovori</string>
+  <string name="action_reply_all">Odgovori vsem</string>
+  <string name="action_forward">Posreduj</string>
+  <string name="action_reply_description">Odgovori</string>
+  <string name="action_reply_to_description">Odgovori %s</string>
+  <string name="action_reply_all_description">Odgovori vsem</string>
+  <string name="action_forward_description">Posreduj</string>
+  <string name="action_mark_read_description">Označi kot prebrano</string>
+  <string name="action_mark_unread_description">Označi kot neprebrano</string>
+  <string name="action_star_description">Zvezdica</string>
+  <string name="action_unstar_description">Odznači</string>
+  <string name="action_label_description">Označi kot</string>
+  <string name="action_move_description">Premakni v</string>
+  <string name="action_trash_description">Smetnjak</string>
+  <string name="action_delete_description">Izbriši</string>
+  <string name="action_archive_description">Arhiviraj</string>
+  <string name="action_spam_description">Premakni med neželeno pošto</string>
+  <string name="action_view_in_light_mode_description">Ogled sporočila v svetlem načinu</string>
+  <string name="action_view_in_dark_mode_description">Ogled sporočila v temnem načinu</string>
+  <string name="action_print_description">Natisni</string>
+  <string name="action_view_headers_description">Prikaži glave</string>
+  <string name="action_view_html_description">Prikaži HTML</string>
+  <string name="action_report_phishing_description">Prijavi lažno predstavljanje</string>
+  <string name="action_remind_description">Opomni me</string>
+  <string name="action_save_pdf_description">Shrani kot PDF</string>
+  <string name="action_sender_emails_description">Nastavi dejanje za prihodnja sporočila tega pošiljatelja</string>
+  <string name="action_save_attachments_description">Shrani priponke</string>
+  <string name="action_more_description">Več</string>
+  <string name="action_reply_content_description">Odgovori</string>
+  <string name="action_reply_to_content_description">Odgovori %s</string>
+  <string name="action_reply_all_content_description">Odgovori vsem</string>
+  <string name="action_forward_content_description">Posreduj</string>
+  <string name="action_mark_read_content_description">Označi kot prebrano</string>
+  <string name="action_mark_unread_content_description">Označi kot neprebrano</string>
+  <string name="action_star_content_description">Označi z zvezdico</string>
+  <string name="action_unstar_content_description">Odstrani zvezdico</string>
+  <string name="action_label_content_description">Označi kot</string>
+  <string name="action_move_content_description">Premakni v</string>
+  <string name="action_trash_content_description">Smetnjak</string>
+  <string name="action_delete_content_description">Izbriši</string>
+  <string name="action_archive_content_description">Arhiviraj</string>
+  <string name="action_spam_content_description">Neželena pošta</string>
+  <string name="action_view_in_light_mode_content_description">Ogled sporočila v svetlem načinu</string>
+  <string name="action_view_in_dark_mode_content_description">Ogled sporočila v temnem načinu</string>
+  <string name="action_print_content_description">Natisni</string>
+  <string name="action_view_headers_content_description">Prikaži glave</string>
+  <string name="action_view_html_content_description">Prikaži HTML</string>
+  <string name="action_report_phishing_content_description">Prijavi lažno predstavljanje</string>
+  <string name="action_remind_content_description">Opomni me</string>
+  <string name="action_save_pdf_content_description">Shrani kot PDF</string>
+  <string name="action_sender_emails_content_description">Nastavi dejanje za prihodnja sporočila tega pošiljatelja</string>
+  <string name="action_save_attachments_content_description">Shrani priponke</string>
+  <string name="action_more_content_description">Več</string>
+  <string name="common_error_loading_actions">Neuspešno nalaganje dejanj</string>
+  <string name="yesterday">Včeraj</string>
+  <!-- notification channels -->
+  <string name="attachment_download_notification_channel_name">Priponke</string>
+  <string name="attachment_download_notification_channel_description">Obvestila o prenosih priponk</string>
+  <string name="email_notification_channel_name">Sporočila</string>
+  <string name="login_notification_channel_name">Obvestila o prijavah</string>
+  <string name="email_notification_channel_description">Obvestila o prejeti e-pošti</string>
+  <string name="login_notification_channel_description">Obvestila o novih prijavah</string>
+  <string name="auth_badge_official">Uradno</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Najdena ni bila nobena aplikacija za to opravilo</string>
+  <string name="mailbox_action_delete_dialog_button_cancel">Prekliči</string>
+  <string name="mailbox_action_delete_dialog_button_delete">Izbriši</string>
+  <string name="picker_dialog_cancel">Prekliči</string>
+  <string name="color_purple">Vijolična</string>
+  <string name="color_enzian">Encijan</string>
+  <string name="color_pink">Rožnata</string>
+  <string name="color_plum">Slivnato vijolična</string>
+  <string name="color_strawberry">Jagodno rdeča</string>
+  <string name="color_cerise">Češnjevo rdeča</string>
+  <string name="color_carrot">Korenčkasto oranžna</string>
+  <string name="color_copper">Bakrena</string>
+  <string name="color_sahara">Saharsko rjava</string>
+  <string name="color_soil">Zemeljsko rjava</string>
+  <string name="color_slate_blue">Skrilasto modra</string>
+  <string name="color_cobalt">Kobaltna</string>
+  <string name="color_pacific">Pacifiško modra</string>
+  <string name="color_ocean">Oceansko modra</string>
+  <string name="color_reef">Koralno modra</string>
+  <string name="color_pine">Bor</string>
+  <string name="color_fern">Praprotno zelena</string>
+  <string name="color_forest">Gozdno zelena</string>
+  <string name="color_olive">Olivno zelena</string>
+  <string name="color_pickle">Kumarično zelena</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <string name="dialog_sign_out_account_title">Odjava</string>
+  <string name="dialog_sign_out_account_description">Ali ste prepričani, da se želite izpisati?</string>
+  <string name="dialog_sign_out_account_confirm">Da</string>
+  <string name="dialog_sign_out_account_cancel">Ne</string>
+  <string name="dialog_remove_account_title">Odstrani račun</string>
+  <string name="dialog_remove_account_description">Odjavili se boste in odstranili vse podatke, povezane s tem računom.</string>
+  <string name="dialog_remove_account_confirm">Odstrani</string>
+  <string name="dialog_remove_account_cancel">Prekliči</string>
+  <string name="user_select_other_account_content_description">Izberite drug račun</string>
+  <string name="you_are_offline">Niste povezani</string>
+  <string name="feature_coming_soon">Funkcija bo kmalu na voljo ...</string>
+  <string name="mailbox_draft_saved">Osnutek shranjen</string>
+  <string name="mailbox_message_sending">Pošiljanje sporočila …</string>
+  <string name="mailbox_message_sending_offline">Ni povezave, sporočilo je uvrščeno v pošiljanje</string>
+  <string name="mailbox_message_sending_success">Sporočilo poslano</string>
+  <string name="mailbox_message_sending_error">Napaka pri pošiljanju sporočila</string>
+  <string name="mailbox_message_sending_error_action">Pojdi v mapo Osnutki</string>
+  <string name="mailbox_attachment_uploading_error">Napaka pri nalaganju priponke</string>
+  <string name="notification_switched_account">Preklopili ste na račun: %s</string>
+  <string name="label_saved">Oznaka shranjena</string>
+  <string name="label_deleted">Oznaka izbrisana</string>
+  <string name="label_list_loading_error">Napaka pri nalaganju oznake, poskusite znova pozneje</string>
+  <string name="app_locked">Aplikacija zaklenjena</string>
+  <string name="use_pin_instead">Namesto tega uporabi kodo PIN</string>
+</resources>

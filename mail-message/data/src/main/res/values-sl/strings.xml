@@ -17,11 +17,5 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="notification_summary_text_new_messages">Missatges nous</string>
-  <string name="notification_summary_text_new_login_alerts">Alertes d\'inici de sessió noves</string>
-  <string name="notification_title_text_new_login_alerts_fallback">Proton Mail</string>
-  <string name="notification_title_text_new_message_fallback">Nou missatge</string>
-  <string name="notification_actions_archive_description">Arxiva</string>
-  <string name="notification_actions_trash_description">Paperera</string>
-  <string name="notification_actions_reply_description">Respon</string>
+  <string name="attachment_download_notification_title">Prenašanje priponke</string>
 </resources>

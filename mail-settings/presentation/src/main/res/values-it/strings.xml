@@ -27,7 +27,7 @@
   <string name="mail_settings_auto_lock">Blocco automatico</string>
   <string name="mail_settings_alternative_routing">Percorso alternativo</string>
   <string name="mail_settings_app_language">Lingua dell\'interfaccia</string>
-  <string name="mail_settings_combined_contacts">Contatti combinati</string>
+  <string name="mail_settings_combined_contacts">Unione dei contatti</string>
   <string name="mail_settings_local_cache">Cache locale</string>
   <string name="mail_settings_local_cache_hint">Spazio utilizzato: %s</string>
   <string name="mail_settings_local_cache_clear_button">Cancella la cache</string>
@@ -117,7 +117,7 @@
   <string name="mail_settings_notifications_loading_error">Errore nel caricamento delle impostazioni</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
-  <string name="mail_settings_auto_lock_item_title">Blocco automatico dell\'app</string>
+  <string name="mail_settings_auto_lock_item_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app dopo un determinato periodo di tempo. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambio del codice PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
