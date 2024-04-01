@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase
 
+import arrow.core.left
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -29,6 +30,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class CreateContactGroupTest {
 
@@ -60,6 +62,22 @@ class CreateContactGroupTest {
         coVerify {
             labelRepositoryMock.createLabel(userId, expectedNewLabel)
         }
+    }
+
+    @Test
+    fun `should return error when LabelRepository throws an exception`() = runTest {
+        // Given
+        expectLabelRepositoryFailure()
+
+        // When
+        val actual = createContactGroup(userId, contactGroupName, contactGroupColor)
+
+        // Then
+        assertEquals(CreateContactGroup.CreateContactGroupErrors.FailedToCreateContactGroup.left(), actual)
+    }
+
+    private fun expectLabelRepositoryFailure() {
+        coEvery { labelRepositoryMock.createLabel(userId, any()) } throws Exception("")
     }
 
 }
