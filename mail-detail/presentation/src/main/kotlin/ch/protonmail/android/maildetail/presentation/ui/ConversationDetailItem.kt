@@ -49,7 +49,9 @@ import me.proton.core.compose.theme.ProtonTheme
 fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
+    messageBodyViewModePreference: ViewModePreference,
     modifier: Modifier = Modifier,
+
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     ElevatedCard(
@@ -77,6 +79,7 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
+                    messageBodyViewModePreference = messageBodyViewModePreference,
                     onMessageBodyLoadFinished = onMessageBodyLoadFinished
                 )
             }
@@ -101,6 +104,7 @@ private fun ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
+    messageBodyViewModePreference: ViewModePreference,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     val headerActions = MessageDetailHeader.Actions.Empty.copy(
@@ -126,7 +130,7 @@ private fun ConversationDetailExpandedItem(
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             expandCollapseMode = uiModel.expandCollapseMode,
-            messageBodyViewModePreference = ViewModePreference.LightMode,
+            messageBodyViewModePreference = messageBodyViewModePreference,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },

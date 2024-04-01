@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -44,6 +45,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -116,6 +118,12 @@ fun ConversationDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val messageBodyViewModePreference = rememberSaveable {
+        mutableStateOf(
+            if (isSystemInDarkTheme) ViewModePreference.DarkMode else ViewModePreference.LightMode
+        )
+    }
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -179,11 +187,17 @@ fun ConversationDetailScreen(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
-                        onViewInLightMode = {},
-                        onViewInDarkMode = {},
+                        onViewInLightMode = {
+                            messageBodyViewModePreference.value = ViewModePreference.LightMode
+                            viewModel.submit(ConversationDetailViewAction.SwitchViewMode)
+                        },
+                        onViewInDarkMode = {
+                            messageBodyViewModePreference.value = ViewModePreference.DarkMode
+                            viewModel.submit(ConversationDetailViewAction.SwitchViewMode)
+                        },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
                     ),
-                    ViewModePreference.LightMode
+                    viewModePreference = messageBodyViewModePreference.value
                 )
 
                 else -> {
@@ -251,7 +265,8 @@ fun ConversationDetailScreen(
                     viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
                 }
             ),
-            scrollToMessageId = state.scrollToMessage?.id
+            scrollToMessageId = state.scrollToMessage?.id,
+            messageBodyViewModePreference = messageBodyViewModePreference.value
         )
     }
 }
@@ -263,7 +278,8 @@ fun ConversationDetailScreen(
     state: ConversationDetailState,
     actions: ConversationDetailScreen.Actions,
     modifier: Modifier = Modifier,
-    scrollToMessageId: String?
+    scrollToMessageId: String?,
+    messageBodyViewModePreference: ViewModePreference,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(snapAnimationSpec = null)
     val snackbarHostState = ProtonSnackbarHostState()
@@ -433,6 +449,7 @@ fun ConversationDetailScreen(
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
+                    messageBodyViewModePreference = messageBodyViewModePreference,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
             }
@@ -463,6 +480,7 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
+    messageBodyViewModePreference: ViewModePreference,
     paddingOffsetDp: Dp = 0f.dp
 ) {
     val listState = rememberLazyListState()
@@ -578,6 +596,7 @@ private fun MessagesContent(
                 }.onSizeChanged {
                     itemsHeight[index] = it.height
                 },
+                messageBodyViewModePreference = messageBodyViewModePreference,
                 onMessageBodyLoadFinished = { messageId, height ->
                     Timber.d("onMessageBodyLoadFinished: $messageId, $height. loadedItemsChanged: $loadedItemsChanged")
                     loadedItemsHeight[messageId.id] = height
@@ -721,7 +740,8 @@ private fun ConversationDetailScreenPreview(
             ConversationDetailScreen(
                 state = state,
                 actions = ConversationDetailScreen.Actions.Empty,
-                scrollToMessageId = null
+                scrollToMessageId = null,
+                messageBodyViewModePreference = ViewModePreference.LightMode
             )
         }
     }

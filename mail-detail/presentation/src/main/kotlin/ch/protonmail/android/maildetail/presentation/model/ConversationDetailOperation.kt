@@ -171,4 +171,5 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingReportPhishingDialog
 
     data class OpenInProtonCalendar(val messageId: MessageId) : ConversationDetailViewAction
+    object SwitchViewMode : ConversationDetailViewAction, AffectingBottomSheet
 }

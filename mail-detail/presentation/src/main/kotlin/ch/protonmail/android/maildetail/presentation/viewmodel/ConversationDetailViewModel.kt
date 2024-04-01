@@ -231,7 +231,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ShowEmbeddedImages,
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
             is ConversationDetailViewAction.LoadRemoteContent,
-            is ConversationDetailViewAction.ReportPhishingDismissed -> directlyHandleViewAction(action)
+            is ConversationDetailViewAction.ReportPhishingDismissed,
+            is ConversationDetailViewAction.SwitchViewMode -> directlyHandleViewAction(action)
         }
     }
 

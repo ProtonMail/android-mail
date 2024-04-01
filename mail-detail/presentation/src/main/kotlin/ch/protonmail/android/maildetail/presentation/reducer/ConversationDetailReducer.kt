@@ -122,7 +122,8 @@ class ConversationDetailReducer @Inject constructor(
 
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailEvent.ReportPhishingRequested,
-                is ConversationDetailViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
+                is ConversationDetailViewAction.DismissBottomSheet,
+                is ConversationDetailViewAction.SwitchViewMode -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
