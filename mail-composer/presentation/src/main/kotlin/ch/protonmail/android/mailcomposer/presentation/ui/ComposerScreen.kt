@@ -174,7 +174,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
-                        .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     // Not showing the form till we're done loading ensure it does receive the
                     // right "initial values" from state when displayed
