@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -473,6 +474,20 @@ class MessageDetailReducerTest(
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = false,
                 shouldReduceReportPhishingDialogState = true
+            ),
+            TestInput(
+                MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode),
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = true,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceDeleteDialogState = false,
+                shouldReduceReportPhishingDialogState = false
             )
         )
 

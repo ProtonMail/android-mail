@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiMod
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
@@ -117,7 +118,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When
@@ -160,7 +162,8 @@ class MessageBodyUiModelMapperTest {
                     AttachmentUiModelSample.documentWithMultipleDots
                 )
             ),
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When
@@ -199,7 +202,8 @@ class MessageBodyUiModelMapperTest {
                     AttachmentUiModelSample.calendar
                 )
             ),
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When
@@ -239,7 +243,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When
@@ -272,7 +277,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                viewModePreference = ViewModePreference.ThemeDefault
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -307,7 +313,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                viewModePreference = ViewModePreference.ThemeDefault
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -342,7 +349,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                viewModePreference = ViewModePreference.ThemeDefault
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
@@ -377,7 +385,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                viewModePreference = ViewModePreference.ThemeDefault
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
@@ -406,7 +415,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowExpandCollapseButton = false,
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
-            userAddress = null
+            userAddress = null,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When
@@ -442,7 +452,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowExpandCollapseButton = true,
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
 
         // When

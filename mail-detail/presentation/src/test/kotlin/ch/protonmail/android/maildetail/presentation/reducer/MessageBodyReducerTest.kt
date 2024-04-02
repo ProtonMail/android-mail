@@ -26,8 +26,13 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
+import io.mockk.every
+import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -39,7 +44,18 @@ class MessageBodyReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val messageBodyReducer = MessageBodyReducer()
+    private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody> {
+        every {
+            this@mockk.invoke(
+                MessageBodyWithType(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody,
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.mimeType
+                ),
+                ViewModePreference.LightMode
+            )
+        } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody
+    }
+    private val messageBodyReducer = MessageBodyReducer(injectCssIntoDecryptedMessageBody)
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
@@ -168,6 +184,15 @@ class MessageBodyReducerTest(
                 ),
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.bodyWithRemoteAndEmbeddedContentLoaded
+                )
+            ),
+            TestInput(
+                MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel),
+                MessageViewAction.SwitchViewMode(ViewModePreference.LightMode),
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.copy(
+                        viewModePreference = ViewModePreference.LightMode
+                    )
                 )
             )
         )

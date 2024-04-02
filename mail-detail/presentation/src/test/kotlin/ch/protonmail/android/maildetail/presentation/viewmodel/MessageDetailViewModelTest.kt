@@ -102,6 +102,8 @@ import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -110,6 +112,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsB
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -324,11 +327,22 @@ class MessageDetailViewModelTest {
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val networkManager = mockk<NetworkManager>()
+    private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody> {
+        every {
+            this@mockk.invoke(
+                MessageBodyWithType(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody,
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.mimeType
+                ),
+                ViewModePreference.LightMode
+            )
+        } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody
+    }
 
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(messageDetailActionBarUiModelMapper, messageDetailHeaderUiModelMapper),
         MessageBannersReducer(messageBannersUiModelMapper),
-        MessageBodyReducer(),
+        MessageBodyReducer(injectCssIntoDecryptedMessageBody),
         BottomBarReducer(),
         BottomSheetReducer(
             MoveToBottomSheetReducer(),
@@ -1672,6 +1686,22 @@ class MessageDetailViewModelTest {
                 assertNotNull(calendarIntentValues)
             }
         }
+
+    @Test
+    fun `emit correct state when switching the view mode is requested`() = runTest {
+        // Given
+        val expected = ViewModePreference.LightMode
+
+        viewModel.state.test {
+            skipItems(4)
+
+            // When
+            viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
+
+            val state = awaitItem().messageBodyState as MessageBodyState.Data
+            assertEquals(expected, state.messageBodyUiModel.viewModePreference)
+        }
+    }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {
         assertEquals(MessageDetailState.Loading, awaitItem())

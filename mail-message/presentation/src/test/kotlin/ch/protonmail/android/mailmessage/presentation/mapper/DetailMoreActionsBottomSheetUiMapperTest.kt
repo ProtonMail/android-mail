@@ -56,6 +56,8 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         val expectedList = listOf(
             ActionUiModel(Action.Reply),
             ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ViewInLightMode),
+            ActionUiModel(Action.ViewInDarkMode),
             ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 
@@ -83,6 +85,8 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
             ),
             ActionUiModel(Action.ReplyAll),
             ActionUiModel(Action.Forward),
+            ActionUiModel(Action.ViewInLightMode),
+            ActionUiModel(Action.ViewInDarkMode),
             ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
 

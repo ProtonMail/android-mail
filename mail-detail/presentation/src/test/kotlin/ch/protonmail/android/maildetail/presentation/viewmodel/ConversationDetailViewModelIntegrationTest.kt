@@ -131,6 +131,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
@@ -305,6 +306,9 @@ class ConversationDetailViewModelIntegrationTest {
             every {
                 openRawResource(R.raw.css_reset_with_custom_props)
             } returns ByteArrayInputStream("".toByteArray())
+            every {
+                openRawResource(R.raw.css_media_scheme)
+            } returns ByteArrayInputStream("".toByteArray())
         }
     }
     private val injectCssIntoDecryptedMessageBody = InjectCssIntoDecryptedMessageBody(context)
@@ -350,7 +354,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = BottomBarReducer(),
         metadataReducer = ConversationDetailMetadataReducer(),
-        messagesReducer = ConversationDetailMessagesReducer(),
+        messagesReducer = ConversationDetailMessagesReducer(injectCssIntoDecryptedMessageBody),
         bottomSheetReducer = BottomSheetReducer(
             moveToBottomSheetReducer = MoveToBottomSheetReducer(),
             labelAsBottomSheetReducer = LabelAsBottomSheetReducer(),
@@ -1586,6 +1590,47 @@ class ConversationDetailViewModelIntegrationTest {
                 assertNotNull(calendarIntentValues)
             }
         }
+
+    @Test
+    fun `emit the correct state when switching of view mode has been requested`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(
+                ConversationDetailViewAction.SwitchViewMode(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId,
+                    ViewModePreference.LightMode
+                )
+            )
+
+            // then
+            val state = awaitItem().messagesState as ConversationDetailsMessagesState.Data
+            val expandedMessage = state.messages.find {
+                it.messageId.id == MessageWithLabelsSample.InvoiceWithLabel.message.messageId.id
+            } as Expanded
+            val actual = expandedMessage.messageBodyUiModel.viewModePreference
+            assertEquals(ViewModePreference.LightMode, actual)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(

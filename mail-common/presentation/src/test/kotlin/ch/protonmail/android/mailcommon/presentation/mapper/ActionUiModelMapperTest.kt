@@ -163,7 +163,7 @@ class ActionUiModelMapperTest(
                     action = Action.ViewInLightMode,
                     expected = ActionUiModel(
                         Action.ViewInLightMode,
-                        R.drawable.ic_proton_circle,
+                        R.drawable.ic_proton_sun,
                         TextUiModel(commonRes.string.action_view_in_light_mode_description),
                         TextUiModel(commonRes.string.action_view_in_light_mode_content_description)
                     )
@@ -175,7 +175,7 @@ class ActionUiModelMapperTest(
                     action = Action.ViewInDarkMode,
                     expected = ActionUiModel(
                         Action.ViewInDarkMode,
-                        R.drawable.ic_proton_circle_filled,
+                        R.drawable.ic_proton_moon,
                         TextUiModel(commonRes.string.action_view_in_dark_mode_description),
                         TextUiModel(commonRes.string.action_view_in_dark_mode_content_description)
                     )

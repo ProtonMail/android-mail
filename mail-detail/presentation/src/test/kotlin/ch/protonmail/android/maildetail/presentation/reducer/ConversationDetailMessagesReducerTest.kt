@@ -26,6 +26,12 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -39,9 +45,21 @@ class ConversationDetailMessagesReducerTest(
     private val input: Input
 ) {
 
+    private val injectCssIntoDecryptedMessageBody = mockk<InjectCssIntoDecryptedMessageBody> {
+        every {
+            this@mockk.invoke(
+                MessageBodyWithType(
+                    ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.messageBody,
+                    ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.mimeType
+                ),
+                ViewModePreference.LightMode
+            )
+        } returns ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.messageBody
+    }
+
     @Test
     fun test() {
-        val reducer = ConversationDetailMessagesReducer()
+        val reducer = ConversationDetailMessagesReducer(injectCssIntoDecryptedMessageBody)
         val result = reducer.newStateFrom(input.currentState, input.operation)
         assertEquals(input.expectedState, result, testName)
     }
@@ -305,6 +323,27 @@ class ConversationDetailMessagesReducerTest(
                 expectedState = ConversationDetailsMessagesState.Data(
                     messages = listOf(
                         ConversationDetailMessageUiModelSample.WithRemoteAndEmbeddedContentLoaded
+                    ).toImmutableList()
+                )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
+                    ).toImmutableList()
+                ),
+                operation = ConversationDetailViewAction.SwitchViewMode(
+                    MessageIdSample.AugWeatherForecast, ViewModePreference.LightMode
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.copy(
+                            messageBodyUiModel =
+                            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.copy(
+                                viewModePreference = ViewModePreference.LightMode
+                            )
+                        )
                     ).toImmutableList()
                 )
             )
