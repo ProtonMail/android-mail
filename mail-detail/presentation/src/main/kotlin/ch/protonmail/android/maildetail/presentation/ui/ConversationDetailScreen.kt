@@ -20,7 +20,6 @@ package ch.protonmail.android.maildetail.presentation.ui
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +44,6 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -118,12 +116,6 @@ fun ConversationDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
-    val isSystemInDarkTheme = isSystemInDarkTheme()
-    val messageBodyViewModePreference = rememberSaveable {
-        mutableStateOf(
-            if (isSystemInDarkTheme) ViewModePreference.DarkMode else ViewModePreference.LightMode
-        )
-    }
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -188,20 +180,17 @@ fun ConversationDetailScreen(
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
                         onViewInLightMode = {
-                            messageBodyViewModePreference.value = ViewModePreference.LightMode
                             viewModel.submit(
                                 ConversationDetailViewAction.SwitchViewMode(it, ViewModePreference.LightMode)
                             )
                         },
                         onViewInDarkMode = {
-                            messageBodyViewModePreference.value = ViewModePreference.DarkMode
                             viewModel.submit(
                                 ConversationDetailViewAction.SwitchViewMode(it, ViewModePreference.DarkMode)
                             )
                         },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
-                    ),
-                    viewModePreference = messageBodyViewModePreference.value
+                    )
                 )
 
                 else -> {

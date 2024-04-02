@@ -39,7 +39,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -54,15 +53,13 @@ import timber.log.Timber
 @Composable
 fun DetailMoreActionsBottomSheetContent(
     state: DetailMoreActionsBottomSheetState,
-    actions: DetailMoreActionsBottomSheetContent.Actions,
-    viewModePreference: ViewModePreference
+    actions: DetailMoreActionsBottomSheetContent.Actions
 ) {
     when (state) {
         is DetailMoreActionsBottomSheetState.Data -> DetailMoreActionsBottomSheetContent(
             uiModel = state.messageDataUiModel,
             actionsUiModel = state.replyActionsUiModel,
-            actionCallbacks = actions,
-            viewModePreference
+            actionCallbacks = actions
         )
 
         else -> ProtonCenteredProgress()
@@ -73,8 +70,7 @@ fun DetailMoreActionsBottomSheetContent(
 fun DetailMoreActionsBottomSheetContent(
     uiModel: DetailMoreActionsBottomSheetState.MessageDataUiModel,
     actionsUiModel: ImmutableList<ActionUiModel>,
-    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions,
-    viewModePreference: ViewModePreference
+    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
 ) {
 
     Column {
@@ -102,7 +98,7 @@ fun DetailMoreActionsBottomSheetContent(
 
         LazyColumn {
             items(actionsUiModel) { actionItem ->
-                if (shouldSkipActionItem(actionItem, isSystemInDarkTheme(), viewModePreference)) return@items
+                if (shouldSkipActionItem(actionItem, isSystemInDarkTheme())) return@items
 
                 ProtonRawListItem(
                     modifier = Modifier
@@ -144,16 +140,8 @@ private fun callbackForAction(
     }
 }
 
-private fun shouldSkipActionItem(
-    actionItem: ActionUiModel,
-    isSystemInDarkTheme: Boolean,
-    viewModePreference: ViewModePreference
-): Boolean = when (actionItem.action) {
-    Action.ViewInLightMode -> !isSystemInDarkTheme || viewModePreference == ViewModePreference.LightMode
-    Action.ViewInDarkMode -> !isSystemInDarkTheme || viewModePreference == ViewModePreference.DarkMode
-    else -> false
-}
-
+private fun shouldSkipActionItem(actionItem: ActionUiModel, isSystemInDarkTheme: Boolean): Boolean =
+    !isSystemInDarkTheme && actionItem.action in arrayOf(Action.ViewInLightMode, Action.ViewInDarkMode)
 
 object DetailMoreActionsBottomSheetContent {
 
@@ -192,8 +180,7 @@ private fun BottomSheetContentPreview() {
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
                 onReportPhishing = {}
-            ),
-            ViewModePreference.LightMode
+            )
         )
     }
 }
