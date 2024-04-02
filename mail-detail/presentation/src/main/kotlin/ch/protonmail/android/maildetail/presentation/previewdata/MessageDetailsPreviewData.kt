@@ -39,6 +39,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.persistentListOf
@@ -70,7 +71,8 @@ object MessageDetailsPreviewData {
                 shouldShowExpandCollapseButton = false,
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
-                userAddress = null
+                userAddress = null,
+                viewModePreference = ViewModePreference.LightMode
             ),
             expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),

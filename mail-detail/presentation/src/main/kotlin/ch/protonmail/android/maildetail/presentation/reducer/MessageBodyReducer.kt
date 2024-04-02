@@ -141,13 +141,14 @@ class MessageBodyReducer @Inject constructor(
     }
 
     private fun MessageBodyState.newStateFromSwitchViewMode(viewModePreference: ViewModePreference): MessageBodyState {
-        return when(this) {
+        return when (this) {
             is MessageBodyState.Data -> this.copy(
                 messageBodyUiModel = messageBodyUiModel.copy(
                     messageBody = injectCssIntoDecryptedMessageBody(
                         MessageBodyWithType(messageBodyUiModel.messageBody, messageBodyUiModel.mimeType),
                         viewModePreference
-                    )
+                    ),
+                    viewModePreference = viewModePreference
                 )
             )
             else -> this

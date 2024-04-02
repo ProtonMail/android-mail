@@ -35,7 +35,6 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
         modifier = modifier,
         messageBodyUiModel = uiModel,
         bodyDisplayMode = MessageBodyExpandCollapseMode.NotApplicable,
-        messageBodyViewModePreference = ViewModePreference.LightMode,
         webViewActions = MessageBodyWebView.Actions(
             onMessageBodyLinkClicked = {},
             onMessageBodyLinkLongClicked = {},
@@ -59,5 +58,6 @@ private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
     shouldShowExpandCollapseButton = false,
     shouldShowOpenInProtonCalendar = false,
     attachments = null,
-    userAddress = null
+    userAddress = null,
+    viewModePreference = ViewModePreference.ThemeDefault
 )

@@ -33,7 +33,8 @@ data class MessageBodyUiModel(
     val shouldShowExpandCollapseButton: Boolean,
     val shouldShowOpenInProtonCalendar: Boolean,
     val attachments: AttachmentGroupUiModel?,
-    val userAddress: UserAddress?
+    val userAddress: UserAddress?,
+    val viewModePreference: ViewModePreference
 )
 
 enum class MimeTypeUiModel(val value: String) {

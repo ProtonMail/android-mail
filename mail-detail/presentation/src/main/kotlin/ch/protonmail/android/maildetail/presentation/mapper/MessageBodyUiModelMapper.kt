@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiMod
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
 import me.proton.core.domain.entity.UserId
@@ -87,7 +88,8 @@ class MessageBodyUiModelMapper @Inject constructor(
                     }
                 )
             } else null,
-            userAddress = decryptedMessageBody.userAddress
+            userAddress = decryptedMessageBody.userAddress,
+            viewModePreference = ViewModePreference.ThemeDefault
         )
     }
 
@@ -103,7 +105,8 @@ class MessageBodyUiModelMapper @Inject constructor(
         shouldShowExpandCollapseButton = false,
         shouldShowOpenInProtonCalendar = false,
         attachments = null,
-        userAddress = null
+        userAddress = null,
+        viewModePreference = ViewModePreference.ThemeDefault
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

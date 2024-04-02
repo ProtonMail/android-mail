@@ -56,7 +56,6 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
-import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonSolidButton
@@ -70,7 +69,6 @@ import me.proton.core.compose.theme.defaultSmallWeak
 fun MessageBody(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
-    messageBodyViewModePreference: ViewModePreference,
     actions: MessageBody.Actions,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     expandCollapseMode: MessageBodyExpandCollapseMode
@@ -117,7 +115,6 @@ fun MessageBody(
             modifier = modifier,
             messageBodyUiModel = messageBodyUiModel,
             bodyDisplayMode = expandCollapseMode,
-            messageBodyViewModePreference = messageBodyViewModePreference,
             webViewActions = MessageBodyWebView.Actions(
                 onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                 onMessageBodyLinkLongClicked = {}, // Deferred init to MessageBodyWebView.

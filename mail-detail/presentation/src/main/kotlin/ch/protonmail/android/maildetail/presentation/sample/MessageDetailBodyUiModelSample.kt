@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import me.proton.core.user.domain.entity.UserAddress
 
 object MessageDetailBodyUiModelSample {
@@ -89,6 +90,7 @@ object MessageDetailBodyUiModelSample {
         shouldShowOpenInProtonCalendar = shouldShowOpenInProtonCalendar,
         shouldShowExpandCollapseButton = false,
         attachments = attachments,
-        userAddress = userAddress
+        userAddress = userAddress,
+        viewModePreference = ViewModePreference.ThemeDefault
     )
 }

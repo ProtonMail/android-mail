@@ -89,7 +89,6 @@ fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     bodyDisplayMode: MessageBodyExpandCollapseMode,
-    messageBodyViewModePreference: ViewModePreference,
     webViewActions: MessageBodyWebView.Actions,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
@@ -136,9 +135,9 @@ fun MessageBodyWebView(
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     var webView by remember { mutableStateOf<WebView?>(null) }
-    LaunchedEffect(key1 = messageBodyViewModePreference) {
+    LaunchedEffect(key1 = messageBodyUiModel.viewModePreference) {
         webView?.let {
-            configureDarkLightMode(it, isSystemInDarkTheme, messageBodyViewModePreference)
+            configureDarkLightMode(it, isSystemInDarkTheme, messageBodyUiModel.viewModePreference)
         }
     }
 
@@ -199,7 +198,7 @@ fun MessageBodyWebView(
                     it.settings.allowFileAccess = false
                     it.settings.loadWithOverviewMode = true
                     it.settings.useWideViewPort = true
-                    configureDarkLightMode(it, isSystemInDarkTheme, messageBodyViewModePreference)
+                    configureDarkLightMode(it, isSystemInDarkTheme, messageBodyUiModel.viewModePreference)
                     configureLongClick(it, actions.onMessageBodyLinkLongClicked)
                     webView = it
                 },

@@ -130,7 +130,6 @@ private fun ConversationDetailExpandedItem(
         MessageBody(
             messageBodyUiModel = uiModel.messageBodyUiModel,
             expandCollapseMode = uiModel.expandCollapseMode,
-            messageBodyViewModePreference = messageBodyViewModePreference,
             actions = MessageBody.Actions(
                 onMessageBodyLinkClicked = { actions.onMessageBodyLinkClicked(uiModel.messageId, it) },
                 onShowAllAttachments = { actions.onShowAllAttachmentsForMessage(uiModel.messageId) },

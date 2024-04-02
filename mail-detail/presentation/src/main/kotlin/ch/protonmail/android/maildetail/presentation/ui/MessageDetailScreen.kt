@@ -199,7 +199,6 @@ fun MessageDetailScreen(
         MessageDetailScreen(
             modifier = modifier,
             state = state,
-            messageBodyViewModePreference = messageBodyViewModePreference.value,
             actions = MessageDetailScreen.Actions(
                 onExit = actions.onExit,
                 onReload = { viewModel.submit(MessageViewAction.Reload) },
@@ -239,7 +238,6 @@ fun MessageDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 fun MessageDetailScreen(
     state: MessageDetailState,
-    messageBodyViewModePreference: ViewModePreference,
     actions: MessageDetailScreen.Actions,
     modifier: Modifier = Modifier
 ) {
@@ -386,7 +384,6 @@ fun MessageDetailScreen(
                     messageMetadataState = state.messageMetadataState,
                     messageBannersState = state.messageBannersState,
                     messageBodyState = state.messageBodyState,
-                    messageBodyViewModePreference = messageBodyViewModePreference,
                     actions = messageDetailContentActions,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
@@ -407,7 +404,6 @@ private fun MessageDetailContent(
     messageMetadataState: MessageMetadataState.Data,
     messageBannersState: MessageBannersState,
     messageBodyState: MessageBodyState,
-    messageBodyViewModePreference: ViewModePreference,
     actions: MessageDetailContent.Actions,
     paddingOffsetDp: Dp = 0f.dp
 ) {
@@ -449,7 +445,6 @@ private fun MessageDetailContent(
                 is MessageBodyState.Data -> MessageBody(
                     messageBodyUiModel = messageBodyState.messageBodyUiModel,
                     expandCollapseMode = messageBodyState.expandCollapseMode,
-                    messageBodyViewModePreference = messageBodyViewModePreference,
                     actions = MessageBody.Actions(
                         onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                         onShowAllAttachments = actions.onShowAllAttachmentsClicked,
@@ -476,7 +471,6 @@ private fun MessageDetailContent(
                     MessageBody(
                         messageBodyUiModel = messageBodyState.encryptedMessageBody,
                         expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable,
-                        messageBodyViewModePreference = messageBodyViewModePreference,
                         actions = MessageBody.Actions(
                             onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
@@ -610,11 +604,7 @@ private fun MessageDetailScreenPreview(
     @PreviewParameter(MessageDetailsPreviewProvider::class) state: MessageDetailState
 ) {
     ProtonTheme3 {
-        MessageDetailScreen(
-            state = state,
-            actions = MessageDetailScreen.Actions.Empty,
-            messageBodyViewModePreference = ViewModePreference.LightMode
-        )
+        MessageDetailScreen(state = state, actions = MessageDetailScreen.Actions.Empty)
     }
 }
 
