@@ -40,7 +40,6 @@ import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHead
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
-import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -49,9 +48,7 @@ import me.proton.core.compose.theme.ProtonTheme
 fun ConversationDetailItem(
     uiModel: ConversationDetailMessageUiModel,
     actions: ConversationDetailItem.Actions,
-    messageBodyViewModePreference: ViewModePreference,
     modifier: Modifier = Modifier,
-
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     ElevatedCard(
@@ -79,7 +76,6 @@ fun ConversationDetailItem(
                 ConversationDetailExpandedItem(
                     uiModel = uiModel,
                     actions = actions,
-                    messageBodyViewModePreference = messageBodyViewModePreference,
                     onMessageBodyLoadFinished = onMessageBodyLoadFinished
                 )
             }
@@ -104,7 +100,6 @@ private fun ConversationDetailExpandedItem(
     uiModel: Expanded,
     actions: ConversationDetailItem.Actions,
     modifier: Modifier = Modifier,
-    messageBodyViewModePreference: ViewModePreference,
     onMessageBodyLoadFinished: (messageId: MessageId, height: Int) -> Unit
 ) {
     val headerActions = MessageDetailHeader.Actions.Empty.copy(

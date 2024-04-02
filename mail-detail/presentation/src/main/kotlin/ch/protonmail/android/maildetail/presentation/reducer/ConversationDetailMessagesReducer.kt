@@ -26,13 +26,19 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 @Suppress("ComplexMethod")
-class ConversationDetailMessagesReducer @Inject constructor() {
+class ConversationDetailMessagesReducer @Inject constructor(
+    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody
+) {
 
     fun newStateFrom(
         currentState: ConversationDetailsMessagesState,
@@ -102,6 +108,10 @@ class ConversationDetailMessagesReducer @Inject constructor() {
 
         is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent -> {
             currentState.toNewStateLoadRemoteAndEmbeddedContent(operation)
+        }
+
+        is ConversationDetailViewAction.SwitchViewMode -> {
+            currentState.toNewStateForSwitchViewMode(operation.messageId, operation.viewModePreference)
         }
     }
 
@@ -296,5 +306,34 @@ class ConversationDetailMessagesReducer @Inject constructor() {
                 }
             )
         )
+    }
+
+    private fun ConversationDetailsMessagesState.toNewStateForSwitchViewMode(
+        messageId: MessageId,
+        viewModePreference: ViewModePreference
+    ): ConversationDetailsMessagesState {
+        return when (this) {
+            is ConversationDetailsMessagesState.Data -> this.copy(
+                messages = messages.map {
+                    if (it is ConversationDetailMessageUiModel.Expanded && it.messageId.id == messageId.id) {
+                        it.copy(
+                            messageBodyUiModel = it.messageBodyUiModel.copy(
+                                messageBody = injectCssIntoDecryptedMessageBody(
+                                    MessageBodyWithType(
+                                        it.messageBodyUiModel.messageBody,
+                                        it.messageBodyUiModel.mimeType
+                                    ),
+                                    viewModePreference
+                                ),
+                                viewModePreference = viewModePreference
+                            )
+                        )
+                    } else {
+                        it
+                    }
+                }.toImmutableList()
+            )
+            else -> this
+        }
     }
 }

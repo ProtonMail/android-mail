@@ -32,6 +32,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.label.domain.entity.LabelId
@@ -171,5 +172,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingReportPhishingDialog
 
     data class OpenInProtonCalendar(val messageId: MessageId) : ConversationDetailViewAction
-    object SwitchViewMode : ConversationDetailViewAction, AffectingBottomSheet
+    data class SwitchViewMode(
+        val messageId: MessageId,
+        val viewModePreference: ViewModePreference
+    ) : ConversationDetailViewAction, AffectingBottomSheet, AffectingMessages
 }
