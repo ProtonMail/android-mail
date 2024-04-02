@@ -177,11 +177,11 @@ fun MessageDetailScreen(
                         onForward = actions.onForward,
                         onViewInLightMode = {
                             messageBodyViewModePreference.value = ViewModePreference.LightMode
-                            viewModel.submit(MessageViewAction.SwitchViewMode)
+                            viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                         },
                         onViewInDarkMode = {
                             messageBodyViewModePreference.value = ViewModePreference.DarkMode
-                            viewModel.submit(MessageViewAction.SwitchViewMode)
+                            viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode))
                         },
                         onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
                     ),

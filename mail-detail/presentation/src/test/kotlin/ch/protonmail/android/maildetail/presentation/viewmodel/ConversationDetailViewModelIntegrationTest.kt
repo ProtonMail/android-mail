@@ -303,7 +303,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val context = mockk<Context> {
         every { resources } returns mockk {
             every {
-                openRawResource(R.raw.css_reset_with_media_scheme_plus_custom_props)
+                openRawResource(R.raw.css_reset_with_custom_props)
             } returns ByteArrayInputStream("".toByteArray())
         }
     }

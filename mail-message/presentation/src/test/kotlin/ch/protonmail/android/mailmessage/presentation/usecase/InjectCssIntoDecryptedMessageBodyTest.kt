@@ -23,6 +23,7 @@ import android.content.Context
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
@@ -35,9 +36,11 @@ import kotlin.test.assertEquals
 class InjectCssIntoDecryptedMessageBodyTest {
 
     private val cssInputStream = mockk<InputStream>(relaxUnitFun = true)
+    private val cssMediaQueryStream = mockk<InputStream>(relaxUnitFun = true)
     private val context = mockk<Context> {
         every { resources } returns mockk {
-            every { openRawResource(R.raw.css_reset_with_media_scheme_plus_custom_props) } returns cssInputStream
+            every { openRawResource(R.raw.css_reset_with_custom_props) } returns cssInputStream
+            every { openRawResource(R.raw.css_media_scheme) } returns cssMediaQueryStream
         }
     }
 
@@ -64,7 +67,7 @@ class InjectCssIntoDecryptedMessageBodyTest {
     }
 
     @Test
-    fun `should inject light mode css in html message body when the app is in light mode`() {
+    fun `should inject css in html message body when the view mode preference is light mode`() {
         // Given
         every { cssInputStream.readBytes() } returns TestData.css.encodeToByteArray()
         val messageBodyWithType = MessageBodyWithType(TestData.htmlMessageBody.trimIndent(), MimeTypeUiModel.Html)
@@ -81,7 +84,59 @@ class InjectCssIntoDecryptedMessageBodyTest {
         """.trimIndent()
 
         // When
-        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType)
+        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType, ViewModePreference.LightMode)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should inject css and media query in html message body when the view mode preference is theme default`() {
+        // Given
+        every { cssInputStream.readBytes() } returns TestData.css.encodeToByteArray()
+        every { cssMediaQueryStream.readBytes() } returns TestData.cssMediaQuery.encodeToByteArray()
+        val messageBodyWithType = MessageBodyWithType(TestData.htmlMessageBody.trimIndent(), MimeTypeUiModel.Html)
+        val expected = """
+            <html>
+             <head>
+              <meta name="viewport" content="width=device-width, user-scalable=yes">
+              <style>${TestData.css}</style>
+              <style>${TestData.cssMediaQuery}</style>
+             </head>
+             <body>
+              <p>HTML message body</p>
+             </body>
+            </html>
+        """.trimIndent()
+
+        // When
+        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType, ViewModePreference.ThemeDefault)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should inject css and media query in html message body when the view mode preference is dark mode`() {
+        // Given
+        every { cssInputStream.readBytes() } returns TestData.css.encodeToByteArray()
+        every { cssMediaQueryStream.readBytes() } returns TestData.cssMediaQuery.encodeToByteArray()
+        val messageBodyWithType = MessageBodyWithType(TestData.htmlMessageBody.trimIndent(), MimeTypeUiModel.Html)
+        val expected = """
+            <html>
+             <head>
+              <meta name="viewport" content="width=device-width, user-scalable=yes">
+              <style>${TestData.css}</style>
+              <style>${TestData.cssMediaQuery}</style>
+             </head>
+             <body>
+              <p>HTML message body</p>
+             </body>
+            </html>
+        """.trimIndent()
+
+        // When
+        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType, ViewModePreference.DarkMode)
 
         // Then
         assertEquals(expected, actual)
@@ -90,6 +145,7 @@ class InjectCssIntoDecryptedMessageBodyTest {
     object TestData {
 
         const val css = "css"
+        const val cssMediaQuery = "cssMediaQuery"
         const val htmlMessageBody = """
             <html>
              <head>

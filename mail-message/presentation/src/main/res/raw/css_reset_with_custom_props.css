@@ -189,11 +189,4 @@ blockquote blockquote blockquote blockquote blockquote blockquote{
 	--background-norm: white;
 	--text-norm: #262a33;
 }
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background-norm: #1C1B24;
-		--text-norm: white;
-	}
-}
  

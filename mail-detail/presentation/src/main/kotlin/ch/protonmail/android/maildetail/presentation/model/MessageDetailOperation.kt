@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.contact.domain.entity.Contact
@@ -143,7 +144,9 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class ReportPhishing(val messageId: MessageId) : MessageViewAction
     object ReportPhishingConfirmed : MessageViewAction, AffectingReportPhishingDialog
     object ReportPhishingDismissed : MessageViewAction, AffectingReportPhishingDialog
-    object SwitchViewMode : MessageViewAction, AffectingBottomSheet
+    data class SwitchViewMode(
+        val viewModePreference: ViewModePreference
+    ) : MessageViewAction, AffectingBottomSheet, AffectingMessageBody
 
     data class OpenInProtonCalendar(val messageId: MessageId) : MessageViewAction
 }

@@ -41,4 +41,4 @@ enum class MimeTypeUiModel(val value: String) {
     Html("text/html")
 }
 
-enum class ViewModePreference { LightMode, DarkMode }
+enum class ViewModePreference { ThemeDefault, LightMode, DarkMode }

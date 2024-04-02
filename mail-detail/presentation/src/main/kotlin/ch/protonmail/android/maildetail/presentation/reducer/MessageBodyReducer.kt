@@ -24,9 +24,14 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import javax.inject.Inject
 
-class MessageBodyReducer @Inject constructor() {
+class MessageBodyReducer @Inject constructor(
+    private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody
+) {
 
     fun newStateFrom(
         messageBodyState: MessageBodyState,
@@ -47,6 +52,7 @@ class MessageBodyReducer @Inject constructor() {
             is MessageViewAction.ShowEmbeddedImages -> messageBodyState.newStateFromShowEmbeddedImages()
             is MessageViewAction.LoadRemoteAndEmbeddedContent ->
                 messageBodyState.newStateFromLoadRemoteAndEmbeddedContent()
+            is MessageViewAction.SwitchViewMode -> messageBodyState.newStateFromSwitchViewMode(event.viewModePreference)
         }
     }
 
@@ -132,5 +138,19 @@ class MessageBodyReducer @Inject constructor() {
             ),
             expandCollapseMode = expandCollapseMode
         )
+    }
+
+    private fun MessageBodyState.newStateFromSwitchViewMode(viewModePreference: ViewModePreference): MessageBodyState {
+        return when(this) {
+            is MessageBodyState.Data -> this.copy(
+                messageBodyUiModel = messageBodyUiModel.copy(
+                    messageBody = injectCssIntoDecryptedMessageBody(
+                        MessageBodyWithType(messageBodyUiModel.messageBody, messageBodyUiModel.mimeType),
+                        viewModePreference
+                    )
+                )
+            )
+            else -> this
+        }
     }
 }

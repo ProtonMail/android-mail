@@ -25,6 +25,7 @@ import androidx.annotation.RawRes
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
@@ -36,14 +37,20 @@ class InjectCssIntoDecryptedMessageBody @Inject constructor(
     private val context: Context
 ) {
 
-    operator fun invoke(messageBodyWithType: MessageBodyWithType): String {
+    operator fun invoke(
+        messageBodyWithType: MessageBodyWithType,
+        viewModePreference: ViewModePreference = ViewModePreference.ThemeDefault
+    ): String {
         if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) return messageBodyWithType.messageBody
 
         val messageBodyDocument = Jsoup.parse(messageBodyWithType.messageBody)
         val messageBodyHead = messageBodyDocument.head()
 
         messageBodyHead.injectMetaViewport()
-        messageBodyHead.injectCss(R.raw.css_reset_with_media_scheme_plus_custom_props)
+        messageBodyHead.injectCss(R.raw.css_reset_with_custom_props)
+        if (viewModePreference in arrayOf(ViewModePreference.ThemeDefault, ViewModePreference.DarkMode)) {
+            messageBodyHead.injectCss(R.raw.css_media_scheme)
+        }
 
         return messageBodyDocument.toString()
     }
