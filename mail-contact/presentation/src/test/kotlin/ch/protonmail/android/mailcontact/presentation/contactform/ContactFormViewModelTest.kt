@@ -37,7 +37,7 @@ import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
-import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModelWithInitialFields
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
@@ -113,7 +113,7 @@ class ContactFormViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel()
+                contact = emptyContactFormUiModelWithInitialFields()
             )
 
             assertEquals(expected, actual)
@@ -169,7 +169,7 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel(),
+                contact = emptyContactFormUiModelWithInitialFields(),
                 close = Effect.of(Unit)
             )
 
@@ -201,7 +201,7 @@ class ContactFormViewModelTest {
 
             val actual = awaitItem()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(displayName = "Create"),
+                contact = emptyContactFormUiModelWithInitialFields().copy(displayName = "Create"),
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_create_success)),
                 displaySaveLoader = true,
                 isSaveEnabled = true
@@ -572,12 +572,13 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Emails))
 
             val actual = awaitItem()
+            val contact = emptyContactFormUiModelWithInitialFields()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(
-                    emails = emptyContactFormUiModel().emails.toMutableList().apply {
-                        this.add(emptyEmailField("0"))
+                contact = contact.copy(
+                    emails = contact.emails.toMutableList().apply {
+                        this.add(emptyEmailField(contact.incrementalUniqueFieldId.toString()))
                     },
-                    incrementalUniqueFieldId = 1
+                    incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
                 )
             )
 
@@ -598,12 +599,13 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Telephones))
 
             val actual = awaitItem()
+            val contact = emptyContactFormUiModelWithInitialFields()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(
-                    telephones = emptyContactFormUiModel().telephones.toMutableList().apply {
-                        this.add(emptyTelephoneField("0"))
+                contact = contact.copy(
+                    telephones = contact.telephones.toMutableList().apply {
+                        this.add(emptyTelephoneField(contact.incrementalUniqueFieldId.toString()))
                     },
-                    incrementalUniqueFieldId = 1
+                    incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
                 )
             )
 
@@ -624,12 +626,13 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Addresses))
 
             val actual = awaitItem()
+            val contact = emptyContactFormUiModelWithInitialFields()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(
-                    addresses = emptyContactFormUiModel().addresses.toMutableList().apply {
-                        this.add(emptyAddressField("0"))
+                contact = contact.copy(
+                    addresses = emptyContactFormUiModelWithInitialFields().addresses.toMutableList().apply {
+                        this.add(emptyAddressField(contact.incrementalUniqueFieldId.toString()))
                     },
-                    incrementalUniqueFieldId = 1
+                    incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
                 )
             )
 
@@ -650,12 +653,13 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Notes))
 
             val actual = awaitItem()
+            val contact = emptyContactFormUiModelWithInitialFields()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(
-                    notes = emptyContactFormUiModel().notes.toMutableList().apply {
-                        this.add(emptyNoteField("0"))
+                contact = contact.copy(
+                    notes = contact.notes.toMutableList().apply {
+                        this.add(emptyNoteField(contact.incrementalUniqueFieldId.toString()))
                     },
-                    incrementalUniqueFieldId = 1
+                    incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
                 )
             )
 
@@ -681,18 +685,19 @@ class ContactFormViewModelTest {
             contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Others))
 
             val actual = awaitItem()
+            val contact = emptyContactFormUiModelWithInitialFields()
             val expected = ContactFormState.Data(
-                contact = emptyContactFormUiModel().copy(
-                    others = emptyContactFormUiModel().others.toMutableList().apply {
+                contact = contact.copy(
+                    others = contact.others.toMutableList().apply {
                         this.add(
                             InputField.SingleTyped(
-                                fieldId = "0",
+                                fieldId = contact.incrementalUniqueFieldId.toString(),
                                 value = "",
                                 selectedType = FieldType.OtherType.Organization
                             )
                         )
                     },
-                    incrementalUniqueFieldId = 1
+                    incrementalUniqueFieldId = contact.incrementalUniqueFieldId.plus(1)
                 )
             )
 

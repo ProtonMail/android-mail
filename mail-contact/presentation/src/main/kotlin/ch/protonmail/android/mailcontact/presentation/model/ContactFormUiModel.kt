@@ -176,6 +176,13 @@ fun emptyContactFormUiModel() = ContactFormUiModel(
     otherTypes = FieldType.OtherType.values().toList(),
     incrementalUniqueFieldId = 0
 )
+
+fun emptyContactFormUiModelWithInitialFields() = emptyContactFormUiModel().copy(
+    emails = listOf(emptyEmailField("0")),
+    telephones = listOf(emptyTelephoneField("1")),
+    incrementalUniqueFieldId = 2
+)
+
 fun emptyEmailField(fieldId: String) = InputField.SingleTyped(
     fieldId = fieldId,
     value = "",

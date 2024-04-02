@@ -31,7 +31,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMa
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
 import ch.protonmail.android.mailcontact.presentation.model.emptyAddressField
-import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModelWithInitialFields
 import ch.protonmail.android.mailcontact.presentation.model.emptyEmailField
 import ch.protonmail.android.mailcontact.presentation.model.emptyNoteField
 import ch.protonmail.android.mailcontact.presentation.model.emptyRandomOtherField
@@ -86,7 +86,7 @@ class ContactFormViewModel @Inject constructor(
             }
         } ?: run {
             emitNewStateFor(
-                ContactFormEvent.ContactLoaded(emptyContactFormUiModel())
+                ContactFormEvent.ContactLoaded(emptyContactFormUiModelWithInitialFields())
             )
         }
     }
