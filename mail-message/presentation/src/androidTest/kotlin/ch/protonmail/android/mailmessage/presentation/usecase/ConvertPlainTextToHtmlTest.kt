@@ -18,8 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
-import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
+import ch.protonmail.android.mailmessage.domain.usecase.ConvertPlainTextIntoHtml
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -28,19 +27,7 @@ internal class ConvertPlainTextToHtmlTest {
     private val convertPlainTextIntoHtml = ConvertPlainTextIntoHtml()
 
     @Test
-    fun shouldKeepBodyUnchangedWhenMimeTypeIsNotPlainText() {
-        // Given
-        val messageBodyWithType = MessageBodyWithType("<div>Something something</div>", MimeTypeUiModel.Html)
-
-        // When
-        val actual = convertPlainTextIntoHtml(messageBodyWithType)
-
-        // Then
-        assertEquals(messageBodyWithType.messageBody, actual)
-    }
-
-    @Test
-    fun shouldParseBodyIntoHtmlAndEscapeCharactersWhenMimeTypeIsPlainText() {
+    fun shouldParseStringIntoHtmlAndEscapeCharacters() {
         // Given
         val plainTextMessage = """
             A message
@@ -49,18 +36,16 @@ internal class ConvertPlainTextToHtmlTest {
             With some other characters at the end <> /\
         """.trimIndent()
 
-        val messageBodyWithType = MessageBodyWithType(plainTextMessage, MimeTypeUiModel.PlainText)
         val expected = """
-            <body style="word-wrap: break-word;">
             <p dir="ltr" style="margin-top:0; margin-bottom:0;">A message</p>
             <p dir="ltr" style="margin-top:0; margin-bottom:0;">with body &amp; new lines.</p>
             <br>
             <p dir="ltr" style="margin-top:0; margin-bottom:0;">With some other characters at the end &lt;&gt; /\</p>
-            </body>
+
         """.trimIndent()
 
         // When
-        val actual = convertPlainTextIntoHtml(messageBodyWithType)
+        val actual = convertPlainTextIntoHtml(plainTextMessage)
 
         // Then
         assertEquals(expected, actual)

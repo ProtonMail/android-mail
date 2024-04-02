@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
+import ch.protonmail.android.mailmessage.domain.usecase.ConvertPlainTextIntoHtml
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import io.mockk.called
@@ -41,7 +42,7 @@ internal class TransformDecryptedMessageBodyTest {
         // Given
         val messageBodyWithType = MessageBodyWithType("message body", MimeTypeUiModel.Html)
         every { injectCssIntoDecryptedMessageBody(messageBodyWithType) } returns ""
-        every { convertPlainTextIntoHtml(messageBodyWithType) } returns ""
+        every { convertPlainTextIntoHtml(messageBodyWithType.messageBody) } returns ""
 
         // When
         transformDecryptedMessageBody(messageBodyWithType)
@@ -56,7 +57,7 @@ internal class TransformDecryptedMessageBodyTest {
         // Given
         val messageBodyWithType = MessageBodyWithType("message body", MimeTypeUiModel.PlainText)
         val convertedMessageBodyWithType = MessageBodyWithType("converted message body", MimeTypeUiModel.Html)
-        every { convertPlainTextIntoHtml(messageBodyWithType) } returns "converted message body"
+        every { convertPlainTextIntoHtml(messageBodyWithType.messageBody) } returns "converted message body"
         every { injectCssIntoDecryptedMessageBody(convertedMessageBodyWithType) } returns ""
 
         // When
@@ -64,7 +65,7 @@ internal class TransformDecryptedMessageBodyTest {
 
         // Then
         verifySequence {
-            convertPlainTextIntoHtml(messageBodyWithType)
+            convertPlainTextIntoHtml(messageBodyWithType.messageBody)
             injectCssIntoDecryptedMessageBody(convertedMessageBodyWithType)
         }
     }

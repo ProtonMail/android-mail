@@ -18,12 +18,13 @@
 
 package ch.protonmail.android.mailmessage.presentation.usecase
 
+import ch.protonmail.android.mailmessage.domain.usecase.ConvertPlainTextIntoHtml
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import javax.inject.Inject
 
 /**
- * Transforms the message body depending on its mime type.
+ * Transform the decrypted message body into HTML if needed.
  */
 class TransformDecryptedMessageBody @Inject constructor(
     private val injectCssIntoDecryptedMessageBody: InjectCssIntoDecryptedMessageBody,
@@ -31,10 +32,12 @@ class TransformDecryptedMessageBody @Inject constructor(
 ) {
 
     operator fun invoke(messageBodyWithType: MessageBodyWithType): String {
-        val transformedMessageBodyWithType = if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) {
-            MessageBodyWithType(convertPlainTextIntoHtml(messageBodyWithType), MimeTypeUiModel.Html)
-        } else {
-            messageBodyWithType
+
+        val transformedMessageBodyWithType = when (messageBodyWithType.mimeType) {
+            MimeTypeUiModel.PlainText ->
+                MessageBodyWithType(convertPlainTextIntoHtml(messageBodyWithType.messageBody), MimeTypeUiModel.Html)
+
+            MimeTypeUiModel.Html -> messageBodyWithType
         }
 
         return injectCssIntoDecryptedMessageBody(transformedMessageBodyWithType)

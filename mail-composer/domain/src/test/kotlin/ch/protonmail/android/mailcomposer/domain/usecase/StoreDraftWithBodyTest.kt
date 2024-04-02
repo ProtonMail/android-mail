@@ -1,3 +1,21 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.left
@@ -14,11 +32,13 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
+import ch.protonmail.android.mailmessage.domain.usecase.ConvertPlainTextIntoHtml
 import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
@@ -27,7 +47,7 @@ import org.junit.Rule
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class StoreDraftWithBodyTest {
+internal class StoreDraftWithBodyTest {
 
     @get:Rule
     val loggingTestRule = LoggingTestRule()
@@ -36,6 +56,7 @@ class StoreDraftWithBodyTest {
     private val saveDraftMock = mockk<SaveDraft>()
     private val getLocalDraftMock = mockk<GetLocalDraft>()
     private val resolveUserAddressMock = mockk<ResolveUserAddress>()
+    private val convertPlainTextIntoHtml = mockk<ConvertPlainTextIntoHtml>()
     private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithBody = StoreDraftWithBody(
@@ -43,6 +64,7 @@ class StoreDraftWithBodyTest {
         encryptDraftBodyMock,
         saveDraftMock,
         resolveUserAddressMock,
+        convertPlainTextIntoHtml,
         fakeTransactor
     )
 
@@ -88,8 +110,8 @@ class StoreDraftWithBodyTest {
             // Given
             val plaintextDraftBody = DraftBody("I am plaintext")
             val quotedHtmlBody = OriginalHtmlQuote("<div> I am quoted html </div>")
-            val preformattedDraftText = "<pre>${plaintextDraftBody.value}</pre>"
-            val expectedMergedBody = DraftBody("$preformattedDraftText${quotedHtmlBody.value}")
+            val htmlDraftBody = expectedConvertedText(plaintextDraftBody.value, plaintextDraftBody.value)
+            val expectedMergedBody = DraftBody("$htmlDraftBody${quotedHtmlBody.value}")
             val senderAddress = UserAddressSample.build()
             val senderEmail = SenderEmail(senderAddress.email)
             val expectedUserId = UserIdSample.Primary
@@ -220,6 +242,11 @@ class StoreDraftWithBodyTest {
 
         // Then
         assertEquals(StoreDraftWithBodyError.DraftReadError.left(), actualEither)
+    }
+
+    private fun expectedConvertedText(original: String, expected: String): String {
+        every { convertPlainTextIntoHtml(original) } returns expected
+        return expected
     }
 
     private fun expectedGetLocalDraft(
