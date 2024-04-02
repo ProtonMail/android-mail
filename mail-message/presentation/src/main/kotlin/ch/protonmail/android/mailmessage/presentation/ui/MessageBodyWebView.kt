@@ -43,6 +43,7 @@ import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -142,7 +143,7 @@ fun MessageBodyWebView(
     val isSystemInDarkTheme = isSystemInDarkTheme()
 
     // This is will on be used if the WebView height is higher than the max constraint.
-    var webViewHeightPx by remember { mutableStateOf(0) }
+    var webViewHeightPx by remember { mutableIntStateOf(0) }
 
     Column(modifier = modifier) {
         key(client) {
@@ -163,6 +164,7 @@ fun MessageBodyWebView(
                 modifier = with(
                     Modifier
                         .testTag(MessageBodyWebViewTestTags.WebView)
+                        .padding(ProtonDimens.DefaultSpacing)
                         .fillMaxWidth()
                         // There are no guarantees onSizeChanged will not be re-invoked with the same size.
                         // We need to take our own measures to avoid callback with the same size.

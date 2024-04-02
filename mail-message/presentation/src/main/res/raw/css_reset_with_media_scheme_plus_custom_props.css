@@ -126,7 +126,6 @@ body{
     font-size:100%;
     width:100%;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
-    padding:1rem;
     line-height:1.5;
 	  background: var(--background-norm);
 	  color: var(--text-norm);
@@ -134,7 +133,6 @@ body{
 /* Only override <pre> when it's the first direct child of the body (case when replying to HTML). */
 body > pre:first-child {
     margin:0;
-    padding:1rem;
     font-size:100%;
     width:100%;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
