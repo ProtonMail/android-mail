@@ -115,12 +115,13 @@ fun MessageBody(
             modifier = modifier,
             messageBodyUiModel = messageBodyUiModel,
             bodyDisplayMode = expandCollapseMode,
-            actions = MessageBodyWebView.Actions(
-                actions.onMessageBodyLinkClicked,
-                actions.onShowAllAttachments,
-                actions.onExpandCollapseButtonClicked,
-                actions.onAttachmentClicked,
-                actions.loadEmbeddedImage
+            webViewActions = MessageBodyWebView.Actions(
+                onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                onMessageBodyLinkLongClicked = {}, // Deferred init to MessageBodyWebView.
+                onShowAllAttachments = actions.onShowAllAttachments,
+                onExpandCollapseButtonCLicked = actions.onExpandCollapseButtonClicked,
+                onAttachmentClicked = actions.onAttachmentClicked,
+                loadEmbeddedImage = actions.loadEmbeddedImage
             ),
             onMessageBodyLoaded = onMessageBodyLoaded
         )

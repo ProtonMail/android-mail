@@ -41,6 +41,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
@@ -51,15 +52,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
+import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
+import ch.protonmail.android.mailcommon.presentation.extension.openShareIntentForUri
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
@@ -69,6 +75,8 @@ import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
+import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
@@ -83,11 +91,14 @@ fun MessageBodyWebView(
     modifier: Modifier = Modifier,
     messageBodyUiModel: MessageBodyUiModel,
     bodyDisplayMode: MessageBodyExpandCollapseMode,
-    actions: MessageBodyWebView.Actions,
-    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> }
+    webViewActions: MessageBodyWebView.Actions,
+    onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
+    viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     var contentLoaded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
     val state = rememberWebViewStateWithHTMLData(
         data = if (bodyDisplayMode == MessageBodyExpandCollapseMode.Collapsed) {
             messageBodyUiModel.messageBodyWithoutQuote
@@ -96,6 +107,31 @@ fun MessageBodyWebView(
         },
         mimeType = MimeType.Html.value
     )
+
+    val webViewInteractionState = viewModel.state.collectAsState().value
+    val longClickDialogState = remember { mutableStateOf(false) }
+
+    val actions = webViewActions.copy(
+        onMessageBodyLinkLongClicked = {
+            viewModel.submit(MessageBodyWebViewOperation.MessageBodyWebViewAction.LongClickLink(it))
+        }
+    )
+
+    val longClickDialogActions = MessageWebViewLongPressDialog.Actions(
+        onCopyClicked = { uri ->
+            context.copyTextToClipboard(
+                label = context.getString(R.string.message_link_long_click_copy_description),
+                text = uri.toString()
+            )
+            longClickDialogState.value = false
+        },
+        onShareClicked = { uri ->
+            context.openShareIntentForUri(uri, context.getString(R.string.message_link_long_click_share_via))
+            longClickDialogState.value = false
+        },
+        onDismissed = { longClickDialogState.value = false }
+    )
+
     val messageId = messageBodyUiModel.messageId
 
     val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
@@ -158,6 +194,7 @@ fun MessageBodyWebView(
                     it.settings.loadWithOverviewMode = true
                     it.settings.useWideViewPort = true
                     configureDarkLightMode(it, isSystemInDarkTheme)
+                    configureLongClick(it, actions.onMessageBodyLinkLongClicked)
                 },
                 captureBackPresses = false,
                 state = state,
@@ -207,6 +244,32 @@ fun MessageBodyWebView(
                 )
             )
         }
+    }
+
+    if (longClickDialogState.value && webViewInteractionState.lastFocusedUri != null) {
+        MessageWebViewLongPressDialog(
+            actions = longClickDialogActions,
+            linkUri = webViewInteractionState.lastFocusedUri
+        )
+    }
+
+    ConsumableLaunchedEffect(webViewInteractionState.longClickLinkEffect) {
+        longClickDialogState.value = true
+    }
+}
+
+private fun configureLongClick(view: WebView, onLongClick: (uri: Uri) -> Unit) {
+    view.setOnLongClickListener {
+        val result = (it as WebView).hitTestResult
+        val type = result.type
+
+        if (listOf(WebView.HitTestResult.EMAIL_TYPE, WebView.HitTestResult.SRC_ANCHOR_TYPE).contains(type)) {
+            val uri = runCatching { Uri.parse(result.extra) }.getOrNull() ?: return@setOnLongClickListener false
+            onLongClick(uri)
+            return@setOnLongClickListener true
+        }
+
+        false
     }
 }
 
@@ -264,12 +327,12 @@ object MessageBodyWebView {
 
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
+        val onMessageBodyLinkLongClicked: (uri: Uri) -> Unit,
         val onShowAllAttachments: () -> Unit,
         val onExpandCollapseButtonCLicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?
     )
-
 }
 
 object MessageBodyWebViewTestTags {
