@@ -325,6 +325,13 @@ class ConversationDetailMessagesReducer @Inject constructor(
                                     ),
                                     viewModePreference
                                 ),
+                                messageBodyWithoutQuote = injectCssIntoDecryptedMessageBody(
+                                    MessageBodyWithType(
+                                        it.messageBodyUiModel.messageBodyWithoutQuote,
+                                        it.messageBodyUiModel.mimeType
+                                    ),
+                                    viewModePreference
+                                ),
                                 viewModePreference = viewModePreference
                             )
                         )

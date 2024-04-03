@@ -148,6 +148,10 @@ class MessageBodyReducer @Inject constructor(
                         MessageBodyWithType(messageBodyUiModel.messageBody, messageBodyUiModel.mimeType),
                         viewModePreference
                     ),
+                    messageBodyWithoutQuote = injectCssIntoDecryptedMessageBody(
+                        MessageBodyWithType(messageBodyUiModel.messageBodyWithoutQuote, messageBodyUiModel.mimeType),
+                        viewModePreference
+                    ),
                     viewModePreference = viewModePreference
                 )
             )
