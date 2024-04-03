@@ -33,14 +33,18 @@ import ch.protonmail.android.mailcontact.data.remote.response.LabelContactEmails
 import ch.protonmail.android.mailcontact.data.remote.response.UnlabelContactEmailsResponse
 import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.ContactEmailId
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.data.ApiProvider
 import me.proton.core.network.domain.ApiResult
 import kotlin.test.BeforeTest
@@ -144,8 +148,8 @@ class EditMembersOfContactGroupWorkerTest {
     @Test
     fun `doWork should return failure when both labelContactEmailIdsKey and unlabelContactEmailIdsKey are null`() =
         runTest {
-            every { parameters.inputData.getString(EditMembersOfContactGroupWorker.RawLabelContactEmailIdsKey) } returns null
-            every { parameters.inputData.getString(EditMembersOfContactGroupWorker.RawUnlabelContactEmailIdsKey) } returns null
+            every { parameters.inputData.getStringArray(EditMembersOfContactGroupWorker.RawLabelContactEmailIdsKey) } returns null
+            every { parameters.inputData.getStringArray(EditMembersOfContactGroupWorker.RawUnlabelContactEmailIdsKey) } returns null
 
             val result = worker.doWork()
 
@@ -185,7 +189,7 @@ class EditMembersOfContactGroupWorkerTest {
     }
 
     @Test
-    fun `doWork should return failure when labelContactEmails succeeds but one of the results failed, and rollback the failed results`() =
+    fun `doWork should return success when labelContactEmails succeeds but one of the results failed, and rollback the failed results`() =
         runTest {
             // Given
             val expectedLabelContactEmailsResponse = LabelContactEmailsResponse(
@@ -197,13 +201,19 @@ class EditMembersOfContactGroupWorkerTest {
                     ),
                     ContactEmailIdResponse(
                         ContactEmailSample.contactEmail2.id.id,
-                        ContactEmailCodeResponse(666)
+                        ContactEmailCodeResponse(666) // fail
                     )
                 )
             )
             val expectedRolledBackContactEmailId = ContactEmailSample.contactEmail2.id
 
             coEvery { contactGroupApi.labelContactEmails(any()) } returns expectedLabelContactEmailsResponse
+
+            expectRemoveContactEmailIdsFromContactGroup(
+                userId,
+                labelId,
+                setOf(expectedRolledBackContactEmailId)
+            )
 
             every {
                 parameters.inputData.getStringArray(EditMembersOfContactGroupWorker.RawUnlabelContactEmailIdsKey)
@@ -213,7 +223,7 @@ class EditMembersOfContactGroupWorkerTest {
             val result = worker.doWork()
 
             // Then
-            assertEquals(Result.failure(), result)
+            assertEquals(Result.success(), result)
             coVerify(exactly = 1) {
                 contactGroupLocalDataSourceMock.removeContactEmailIdsFromContactGroup(
                     userId,
@@ -224,23 +234,7 @@ class EditMembersOfContactGroupWorkerTest {
         }
 
     @Test
-    fun `doWork should return failure when labelContactEmails fails`() = runTest {
-        // Given
-        coEvery { contactGroupApi.labelContactEmails(any()) } throws Exception()
-
-        every {
-            parameters.inputData.getStringArray(EditMembersOfContactGroupWorker.RawUnlabelContactEmailIdsKey)
-        } returns emptyArray()
-
-        // When
-        val result = worker.doWork()
-
-        // Then
-        assertEquals(Result.failure(), result)
-    }
-
-    @Test
-    fun `doWork should return failure when unlabelContactEmails succeeds but one of the results failed, and rollback the failed results`() =
+    fun `doWork should return success when unlabelContactEmails succeeds but one of the results failed, and rollback the failed results`() =
         runTest {
             // Given
             every {
@@ -256,7 +250,7 @@ class EditMembersOfContactGroupWorkerTest {
                     ),
                     ContactEmailIdResponse(
                         ContactEmailSample.contactEmail2.id.id,
-                        ContactEmailCodeResponse(666)
+                        ContactEmailCodeResponse(666) // fail
                     )
                 )
             )
@@ -264,11 +258,17 @@ class EditMembersOfContactGroupWorkerTest {
 
             coEvery { contactGroupApi.unlabelContactEmails(any()) } returns expectedUnlabelContactEmailsResponse
 
+            expectAddContactEmailIdsToContactGroup(
+                userId,
+                labelId,
+                setOf(expectedRolledBackContactEmailId)
+            )
+
             // When
             val result = worker.doWork()
 
             // Then
-            assertEquals(Result.failure(), result)
+            assertEquals(Result.success(), result)
             coVerify(exactly = 1) {
                 contactGroupLocalDataSourceMock.addContactEmailIdsToContactGroup(
                     userId,
@@ -278,20 +278,24 @@ class EditMembersOfContactGroupWorkerTest {
             }
         }
 
-    @Test
-    fun `doWork should return failure when unlabelContactEmails fails`() = runTest {
-        // Given
-        every {
-            parameters.inputData.getStringArray(EditMembersOfContactGroupWorker.RawLabelContactEmailIdsKey)
-        } returns emptyArray()
+    private fun expectRemoveContactEmailIdsFromContactGroup(
+        userId: UserId,
+        labelId: LabelId,
+        contactEmailIds: Set<ContactEmailId>
+    ) {
+        coEvery {
+            contactGroupLocalDataSourceMock.removeContactEmailIdsFromContactGroup(userId, labelId, contactEmailIds)
+        } just Runs
+    }
 
-        coEvery { contactGroupApi.unlabelContactEmails(any()) } throws Exception()
-
-        // When
-        val result = worker.doWork()
-
-        // Then
-        assertEquals(Result.failure(), result)
+    private fun expectAddContactEmailIdsToContactGroup(
+        userId: UserId,
+        labelId: LabelId,
+        contactEmailIds: Set<ContactEmailId>
+    ) {
+        coEvery {
+            contactGroupLocalDataSourceMock.addContactEmailIdsToContactGroup(userId, labelId, contactEmailIds)
+        } just Runs
     }
 
 }
