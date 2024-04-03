@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -194,19 +195,20 @@ fun CustomSingleLineTopAppBar(
                     textAlign = TextAlign.Center
                 )
             }
-            Text(
-                modifier = Modifier
-                    .graphicsLayer {
-                        alpha = subjectLineAlpha
-                    }
-                    .fillMaxWidth()
-                    .testTag(DetailScreenTopBarTestTags.Subject),
-                maxLines = 1,
-                text = title,
-                overflow = TextOverflow.Ellipsis,
-                style = ProtonTheme.typography.defaultStrongNorm,
-                textAlign = TextAlign.Center
-            )
+            SelectionContainer(modifier = Modifier.testTag(DetailScreenTopBarTestTags.Subject)) {
+                Text(
+                    modifier = Modifier
+                        .graphicsLayer {
+                            alpha = subjectLineAlpha
+                        }
+                        .fillMaxWidth(),
+                    maxLines = 1,
+                    text = title,
+                    overflow = TextOverflow.Ellipsis,
+                    style = ProtonTheme.typography.defaultStrongNorm,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
 
         if (isStarred != null) {
@@ -247,21 +249,20 @@ private fun SubjectHeader(
                 vertical = ProtonDimens.SmallSpacing
             )
     ) {
-
-        Text(
-            modifier = Modifier
-                .graphicsLayer {
-                    alpha = subjectTextAlpha
-                }
-                .testTag(DetailScreenTopBarTestTags.Subject)
-                .fillMaxWidth()
-                .align(Alignment.Center),
-            text = subject,
-            overflow = TextOverflow.Ellipsis,
-            style = ProtonTheme.typography.headlineNorm,
-            textAlign = TextAlign.Center
-        )
-
+        SelectionContainer(modifier = Modifier.testTag(DetailScreenTopBarTestTags.Subject)) {
+            Text(
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = subjectTextAlpha
+                    }
+                    .fillMaxWidth()
+                    .align(Alignment.Center),
+                text = subject,
+                overflow = TextOverflow.Ellipsis,
+                style = ProtonTheme.typography.headlineNorm,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 

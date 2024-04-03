@@ -21,6 +21,7 @@ package ch.protonmail.android.uitest.robot.detail.model
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.ui.DetailScreenTopBarTestTags
@@ -51,7 +52,7 @@ internal class DetailScreenTopBarEntryModel(composeTestRule: ComposeTestRule) {
 
     // region verification
     fun hasSubject(value: String) = apply {
-        subject.assertTextEquals(value)
+        subject.onChild().assertTextEquals(value)
     }
     // endregion
 }
