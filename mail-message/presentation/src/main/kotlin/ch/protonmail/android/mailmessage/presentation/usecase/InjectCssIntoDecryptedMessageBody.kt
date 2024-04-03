@@ -24,7 +24,6 @@ import android.content.res.Resources.NotFoundException
 import androidx.annotation.RawRes
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
-import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.jsoup.Jsoup
@@ -41,8 +40,6 @@ class InjectCssIntoDecryptedMessageBody @Inject constructor(
         messageBodyWithType: MessageBodyWithType,
         viewModePreference: ViewModePreference = ViewModePreference.ThemeDefault
     ): String {
-        if (messageBodyWithType.mimeType == MimeTypeUiModel.PlainText) return messageBodyWithType.messageBody
-
         val messageBodyDocument = Jsoup.parse(messageBodyWithType.messageBody)
         val messageBodyHead = messageBodyDocument.head()
 

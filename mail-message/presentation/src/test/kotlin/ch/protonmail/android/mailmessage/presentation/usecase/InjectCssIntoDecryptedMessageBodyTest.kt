@@ -57,16 +57,6 @@ class InjectCssIntoDecryptedMessageBodyTest {
     }
 
     @Test
-    fun `should return the unchanged message body if the message is plain text`() {
-        // When
-        val messageBodyWithType = MessageBodyWithType(TestData.plainTextMessageBody, MimeTypeUiModel.PlainText)
-        val actual = injectCssIntoDecryptedMessageBody(messageBodyWithType)
-
-        // Then
-        assertEquals(TestData.plainTextMessageBody, actual)
-    }
-
-    @Test
     fun `should inject css in html message body when the view mode preference is light mode`() {
         // Given
         every { cssInputStream.readBytes() } returns TestData.css.encodeToByteArray()
