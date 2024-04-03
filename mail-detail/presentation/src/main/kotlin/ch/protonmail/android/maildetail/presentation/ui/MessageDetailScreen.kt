@@ -217,7 +217,11 @@ fun MessageDetailScreen(
                     viewModel.submit(MessageViewAction.LoadRemoteAndEmbeddedContent(it))
                 },
                 onOpenInProtonCalendar = { viewModel.submit(MessageViewAction.OpenInProtonCalendar(it)) },
-                handleProtonCalendarRequest = actions.handleProtonCalendarRequest
+                handleProtonCalendarRequest = actions.handleProtonCalendarRequest,
+                onViewInLightMode = {
+                    viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
+                },
+                onViewInDarkMode = { viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode)) }
             )
         )
     }
@@ -333,8 +337,8 @@ fun MessageDetailScreen(
                     onDelete = actions.onDeleteClick,
                     onArchive = { Timber.d("message onArchive clicked") },
                     onSpam = { Timber.d("message onSpam clicked") },
-                    onViewInLightMode = { Timber.d("message onViewInLightMode clicked") },
-                    onViewInDarkMode = { Timber.d("message onViewInDarkMode clicked") },
+                    onViewInLightMode = actions.onViewInLightMode,
+                    onViewInDarkMode = actions.onViewInDarkMode,
                     onPrint = { Timber.d("message onPrint clicked") },
                     onViewHeaders = { Timber.d("message onViewHeaders clicked") },
                     onViewHtml = { Timber.d("message onViewHtml clicked") },
@@ -528,7 +532,9 @@ object MessageDetailScreen {
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
-        val onOpenInProtonCalendar: (MessageId) -> Unit
+        val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onViewInLightMode: () -> Unit,
+        val onViewInDarkMode: () -> Unit
     ) {
 
         companion object {
@@ -560,7 +566,9 @@ object MessageDetailScreen {
                 onLoadEmbeddedImages = {},
                 onLoadRemoteAndEmbeddedContent = {},
                 onOpenInProtonCalendar = {},
-                handleProtonCalendarRequest = {}
+                handleProtonCalendarRequest = {},
+                onViewInLightMode = {},
+                onViewInDarkMode = {}
             )
         }
     }
