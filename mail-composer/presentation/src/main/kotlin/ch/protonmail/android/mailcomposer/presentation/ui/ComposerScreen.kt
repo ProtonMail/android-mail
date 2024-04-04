@@ -33,6 +33,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -171,10 +172,23 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         .alpha(.5f)
                 ) { ProtonCenteredProgress() }
             } else {
+                val scrollState = rememberScrollState()
+                val bodyChangedByUser = remember { mutableStateOf(false) }
+
+                // Scroll to the top as the content is being loaded and max scroll position gets updated
+                // until the user interacts with the body
+                if (!bodyChangedByUser.value) {
+                    LaunchedEffect(scrollState.maxValue) {
+                        if (scrollState.maxValue.isValidScrollPos()) {
+                            scrollState.scrollTo(scrollState.maxValue)
+                        }
+                    }
+                }
+
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
-                        .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                        .verticalScroll(scrollState, reverseScrolling = true)
                 ) {
                     // Not showing the form till we're done loading ensure it does receive the
                     // right "initial values" from state when displayed
@@ -191,7 +205,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             viewModel,
                             { recipientsOpen = it },
                             { focusedField = it },
-                            { bottomSheetType.value = it }
+                            { bottomSheetType.value = it },
+                            { bodyChangedByUser.value = true }
                         ),
                         contactSuggestions = state.contactSuggestions,
                         areContactSuggestionsExpanded = state.areContactSuggestionsExpanded
@@ -362,7 +377,8 @@ private fun buildActions(
     viewModel: ComposerViewModel,
     onToggleRecipients: (Boolean) -> Unit,
     onFocusChanged: (FocusedFieldType) -> Unit,
-    setBottomSheetType: (BottomSheetType) -> Unit
+    setBottomSheetType: (BottomSheetType) -> Unit,
+    onBodyChangedByUser: () -> Unit
 ): ComposerFormActions = ComposerFormActions(
     onToggleRecipients = onToggleRecipients,
     onFocusChanged = onFocusChanged,
@@ -374,12 +390,17 @@ private fun buildActions(
         viewModel.submit(ComposerAction.ContactSuggestionTermChanged(searchTerm, suggestionsField))
     },
     onSubjectChanged = { viewModel.submit(ComposerAction.SubjectChanged(Subject(it))) },
-    onBodyChanged = { viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it))) },
+    onBodyChanged = {
+        onBodyChangedByUser()
+        viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it)))
+    },
     onChangeSender = {
         setBottomSheetType(BottomSheetType.ChangeSender)
         viewModel.submit(ComposerAction.ChangeSenderRequested)
     }
 )
+
+private fun Int.isValidScrollPos(): Boolean = this < Int.MAX_VALUE && this > 0
 
 object ComposerScreen {
 
