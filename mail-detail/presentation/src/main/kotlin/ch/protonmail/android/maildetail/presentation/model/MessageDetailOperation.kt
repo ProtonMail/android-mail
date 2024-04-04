@@ -147,6 +147,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class SwitchViewMode(
         val viewModePreference: ViewModePreference
     ) : MessageViewAction, AffectingBottomSheet, AffectingMessageBody
-
+    object PrintRequested : MessageViewAction, AffectingBottomSheet
     data class OpenInProtonCalendar(val messageId: MessageId) : MessageViewAction
 }

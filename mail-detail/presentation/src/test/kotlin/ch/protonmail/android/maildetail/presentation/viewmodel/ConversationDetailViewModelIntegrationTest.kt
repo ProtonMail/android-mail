@@ -133,6 +133,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMa
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
@@ -1629,6 +1630,42 @@ class ConversationDetailViewModelIntegrationTest {
             } as Expanded
             val actual = expandedMessage.messageBodyUiModel.viewModePreference
             assertEquals(ViewModePreference.LightMode, actual)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `emit the correct state when printing the message has been requested`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(
+                ConversationDetailViewAction.PrintRequested(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+
+            // then
+            val actual = awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            assertEquals(BottomSheetVisibilityEffect.Hide, actual)
 
             cancelAndIgnoreRemainingEvents()
         }

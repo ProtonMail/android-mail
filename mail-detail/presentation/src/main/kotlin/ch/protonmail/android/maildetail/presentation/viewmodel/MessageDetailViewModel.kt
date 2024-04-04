@@ -187,6 +187,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
             is MessageViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar()
             is MessageViewAction.SwitchViewMode -> directlyHandleViewAction(action)
+            is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
         }
     }
 

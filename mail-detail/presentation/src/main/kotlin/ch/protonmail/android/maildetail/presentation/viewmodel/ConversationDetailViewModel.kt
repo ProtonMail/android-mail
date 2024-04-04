@@ -232,7 +232,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
             is ConversationDetailViewAction.LoadRemoteContent,
             is ConversationDetailViewAction.ReportPhishingDismissed,
-            is ConversationDetailViewAction.SwitchViewMode -> directlyHandleViewAction(action)
+            is ConversationDetailViewAction.SwitchViewMode,
+            is ConversationDetailViewAction.PrintRequested -> directlyHandleViewAction(action)
         }
     }
 

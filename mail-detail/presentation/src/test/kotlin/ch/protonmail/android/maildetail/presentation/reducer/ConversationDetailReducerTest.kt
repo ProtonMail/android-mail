@@ -184,7 +184,8 @@ class ConversationDetailReducerTest(
             ),
             ConversationDetailViewAction.SwitchViewMode(
                 MessageId(messageId.id), ViewModePreference.LightMode
-            ) affects listOf(BottomSheet, Messages)
+            ) affects listOf(BottomSheet, Messages),
+            ConversationDetailViewAction.PrintRequested(MessageId(messageId.id)) affects listOf(BottomSheet)
         )
 
         val events = listOf(

@@ -123,7 +123,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailEvent.ReportPhishingRequested,
                 is ConversationDetailViewAction.DismissBottomSheet,
-                is ConversationDetailViewAction.SwitchViewMode -> BottomSheetOperation.Dismiss
+                is ConversationDetailViewAction.SwitchViewMode,
+                is ConversationDetailViewAction.PrintRequested -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {

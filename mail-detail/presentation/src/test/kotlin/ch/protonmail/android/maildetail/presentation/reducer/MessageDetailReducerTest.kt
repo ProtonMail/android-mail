@@ -494,6 +494,20 @@ class MessageDetailReducerTest(
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = false,
                 shouldReduceReportPhishingDialogState = false
+            ),
+            TestInput(
+                MessageViewAction.PrintRequested,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false,
+                shouldReduceDeleteDialogState = false,
+                shouldReduceReportPhishingDialogState = false
             )
         )
 

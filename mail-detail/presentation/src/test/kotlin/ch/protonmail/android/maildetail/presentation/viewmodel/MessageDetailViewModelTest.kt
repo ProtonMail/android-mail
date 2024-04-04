@@ -105,6 +105,7 @@ import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBo
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -1713,6 +1714,20 @@ class MessageDetailViewModelTest {
 
             val state = awaitItem().messageBodyState as MessageBodyState.Data
             assertEquals(expected, state.messageBodyUiModel.viewModePreference)
+        }
+    }
+
+    @Test
+    fun `emit correct state when printing the message was requested`() = runTest {
+        viewModel.state.test {
+            skipItems(4)
+
+            // When
+            viewModel.submit(MessageViewAction.PrintRequested)
+
+            // Then
+            val expected = BottomSheetVisibilityEffect.Hide
+            assertEquals(expected, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume())
         }
     }
 

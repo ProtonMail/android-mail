@@ -174,6 +174,7 @@ fun MessageDetailScreen(
                         onViewInDarkMode = {
                             viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode))
                         },
+                        onPrint = { viewModel.submit(MessageViewAction.PrintRequested) },
                         onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
                     )
                 )

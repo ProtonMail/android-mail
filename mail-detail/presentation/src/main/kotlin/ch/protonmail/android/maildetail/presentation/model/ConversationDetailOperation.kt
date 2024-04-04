@@ -176,4 +176,5 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val messageId: MessageId,
         val viewModePreference: ViewModePreference
     ) : ConversationDetailViewAction, AffectingBottomSheet, AffectingMessages
+    data class PrintRequested(val messageId: MessageId) : ConversationDetailViewAction, AffectingBottomSheet
 }
