@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -43,10 +44,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,12 +74,11 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
 import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
-import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
+import com.google.accompanist.web.LoadingState
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -93,8 +91,6 @@ fun MessageBodyWebView(
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
-    var contentLoaded by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     val state = rememberWebViewStateWithHTMLData(
@@ -172,19 +168,18 @@ fun MessageBodyWebView(
         }
     }
 
-    val chromeClient = remember {
-        object : AccompanistWebChromeClient() {
-            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                if (newProgress == 100) {
-                    contentLoaded = true
-                }
-            }
+    var webViewHeightPx by remember { mutableStateOf(0) }
+
+    LaunchedEffect(key1 = state.loadingState, key2 = webViewHeightPx) {
+        if (state.loadingState == LoadingState.Finished && webViewHeightPx > 0) {
+            // The purpose of this delay is to prevent multiple calls to onMessageBodyLoaded. WebView height
+            // may continue to change after the content is loaded, so we wait a bit to make sure the height is stable.
+            // If this block is called again, current coroutine will be cancelled automatically
+            delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
+
+            onMessageBodyLoaded(messageId, webViewHeightPx)
         }
     }
-
-    // This is will on be used if the WebView height is higher than the max constraint.
-    var webViewHeightPx by remember { mutableIntStateOf(0) }
 
     Column(modifier = modifier) {
         key(client) {
@@ -204,32 +199,14 @@ fun MessageBodyWebView(
                 },
                 captureBackPresses = false,
                 state = state,
-                modifier = with(
-                    Modifier
-                        .testTag(MessageBodyWebViewTestTags.WebView)
-                        .fillMaxWidth()
-                        // There are no guarantees onSizeChanged will not be re-invoked with the same size.
-                        // We need to take our own measures to avoid callback with the same size.
-                        .onSizeChanged { size ->
-                            if (size.height >= 0 && contentLoaded) {
-                                scope.launch {
-                                    delay(WEB_PAGE_CONTENT_LOAD_TIMEOUT)
-                                    if (webViewHeightPx != size.height) {
-                                        onMessageBodyLoaded(messageId, size.height)
-                                        webViewHeightPx = size.height
-                                    }
-                                }
-                            }
-                        }
-                ) {
-                    if (webViewHeightPx < WEB_VIEW_FIXED_MAX_HEIGHT) {
-                        this
-                    } else {
-                        height((WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
-                    }
-                },
-                client = client,
-                chromeClient = chromeClient
+                modifier = Modifier
+                    .testTag(MessageBodyWebViewTestTags.WebView)
+                    .fillMaxWidth()
+                    .heightIn(max = (WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
+                    .onSizeChanged { size ->
+                        webViewHeightPx = size.height
+                    },
+                client = client
             )
         }
         if (bodyDisplayMode != MessageBodyExpandCollapseMode.NotApplicable) {
@@ -349,7 +326,7 @@ object MessageBodyWebViewTestTags {
     const val WebView = "MessageBodyWebView"
 }
 
-private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 500L
+private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
