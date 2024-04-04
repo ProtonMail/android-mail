@@ -41,6 +41,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.test.Test
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @OptIn(ExperimentalEncodingApi::class)
@@ -576,6 +577,47 @@ class GenerateSendMessagePackagesTest {
         // make sure we don't leak keys, because everything should be encrypted
         assertEquals(null, actual.first().attachmentKeys)
         assertEquals(null, actual.first().bodyKey)
+    }
+
+    @Test
+    fun `fallback to PgpMime when contact send preferences is pgpInline`() = runTest {
+        // Given
+        val sendPreferences = SendMessageSample.SendPreferences.PgpInline
+
+        // When
+        val actual = sut(
+            mapOf(SendMessageSample.RecipientEmail to sendPreferences),
+            SendMessageSample.BodySessionKey,
+            SendMessageSample.EncryptedBodyDataPacket,
+            SendMessageSample.MimeBodySessionKey,
+            SendMessageSample.EncryptedMimeBodyDataPacket,
+            MimeType.PlainText,
+            mapOf(SendMessageSample.RecipientEmail to SendMessageSample.SignedEncryptedMimeBody),
+            emptyMap(),
+            areAllAttachmentsSigned = true,
+            messagePassword = null,
+            modulus = null
+        ).getOrNull()
+
+        // Then
+        val expected = SendMessagePackage(
+            addresses = mapOf(
+                SendMessageSample.RecipientEmail to SendMessagePackage.Address.ExternalEncrypted(
+                    signature = true.toInt(),
+                    bodyKeyPacket = Base64.encode(SendMessageSample.SignedEncryptedMimeBody.first)
+                )
+            ),
+            mimeType = me.proton.core.mailsettings.domain.entity.MimeType.Mixed.value, // forced multipart
+            body = Base64.encode(SendMessageSample.SignedEncryptedMimeBody.second),
+            type = PackageType.PgpMime.type
+        )
+
+        assertNotNull(actual)
+        assertEquals(listOf(expected), actual)
+
+        // make sure we don't leak keys, because everything should be encrypted
+        assertNull(actual.first().attachmentKeys)
+        assertNull(actual.first().bodyKey)
     }
 
     private fun expectPublicKeyEncryptSessionKey(): PublicKey {

@@ -225,6 +225,7 @@ class GenerateSendMessagePackages @Inject constructor(
                 it.value.sign -> PackageType.ClearMime
                 else -> PackageType.Cleartext
             }
+            PackageType.PgpInline,
             PackageType.PgpMime -> when {
                 it.value.encrypt -> PackageType.PgpMime
                 isEncryptOutside -> PackageType.EncryptedOutside

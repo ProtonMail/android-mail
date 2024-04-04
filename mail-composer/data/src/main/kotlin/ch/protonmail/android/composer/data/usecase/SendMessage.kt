@@ -100,7 +100,10 @@ class SendMessage @Inject constructor(
             messagePassword = messagePassword,
             modulus = modulus
         )
-            .mapLeft { Error.GeneratingPackages }
+            .mapLeft {
+                Timber.e("Error generating packages: $it")
+                Error.GeneratingPackages
+            }
             .bind()
 
         val expiresInSeconds = observeMessageExpirationTime(userId, messageId).first()?.expiresIn?.inWholeSeconds ?: 0
