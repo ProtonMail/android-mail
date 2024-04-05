@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.data.repository.local
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.mapper.safeData
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
@@ -37,11 +38,16 @@ class MobileFooterLocalDataSourceImpl @Inject constructor(
 ) : MobileFooterLocalDataSource {
 
     override fun observeMobileFooterPreference(userId: UserId): Flow<Either<PreferencesError, MobileFooterPreference>> =
-        dataStoreProvider.mobileFooterDataStore.safeData.map { preferences ->
-            preferences.map {
-                val isEnabled = it[getMobileFooterEnabledPrefKey(userId)] ?: DefaultValues.Disabled
-                val footerValue = it[getMobileFooterValuePrefKey(userId)] ?: DefaultValues.StringValue
-                MobileFooterPreference(footerValue, isEnabled)
+        dataStoreProvider.mobileFooterDataStore.safeData.map outerMap@{ preferences ->
+            preferences.map innerMap@{
+                val isEnabled = it[getMobileFooterEnabledPrefKey(userId)]
+                val footerValue = it[getMobileFooterValuePrefKey(userId)]
+
+                return@outerMap if (isEnabled != null && footerValue != null) {
+                    MobileFooterPreference(footerValue, isEnabled).right()
+                } else {
+                    PreferencesError.left()
+                }
             }
         }
 
@@ -62,10 +68,4 @@ class MobileFooterLocalDataSourceImpl @Inject constructor(
     private fun getMobileFooterValuePrefKey(userId: UserId) = stringPreferencesKey(
         "${userId.id}-mobileFooterValuePrefKey"
     )
-
-    private object DefaultValues {
-
-        const val Disabled = false
-        const val StringValue = ""
-    }
 }

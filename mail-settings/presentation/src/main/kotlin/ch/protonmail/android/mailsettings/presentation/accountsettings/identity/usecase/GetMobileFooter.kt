@@ -37,19 +37,28 @@ class GetMobileFooter @Inject constructor(
     private val mobileFooterRepository: MobileFooterRepository
 ) {
 
+    private val freeUserMobileFooter: MobileFooter by lazy {
+        MobileFooter.FreeUserMobileFooter(
+            context.getString(R.string.mail_settings_identity_mobile_footer_default_free)
+        )
+    }
+
+    private val defaultMobileFooter: MobileFooter by lazy {
+        MobileFooter.PaidUserMobileFooter(
+            value = context.getString(R.string.mail_settings_identity_mobile_footer_default_free),
+            enabled = true
+        )
+    }
+
     suspend operator fun invoke(userId: UserId): Either<DataError, MobileFooter> = either {
         val isPaidUser = isPaidUser(userId).getOrElse {
             raise(DataError.Local.Unknown)
         }
 
         if (!isPaidUser) {
-            return@either MobileFooter.FreeUserMobileFooter(
-                context.getString(R.string.mail_settings_identity_mobile_footer_default_free)
-            )
+            return@either freeUserMobileFooter
         }
 
-        mobileFooterRepository.getMobileFooter(userId).getOrElse {
-            raise(DataError.Local.NoDataCached)
-        }
+        mobileFooterRepository.getMobileFooter(userId).getOrElse { defaultMobileFooter }
     }
 }

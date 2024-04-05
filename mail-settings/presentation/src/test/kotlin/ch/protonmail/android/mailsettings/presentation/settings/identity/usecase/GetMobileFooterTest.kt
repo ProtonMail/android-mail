@@ -25,16 +25,19 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.After
 import org.junit.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 internal class GetMobileFooterTest {
@@ -89,17 +92,28 @@ internal class GetMobileFooterTest {
     }
 
     @Test
-    fun `should propagate the error when the mobile footer cannot be retrieved`() = runTest {
+    fun `should propagate the default footer when the mobile footer has never been set`() = runTest {
         // Given
-        val expectedError = DataError.Local.NoDataCached.left()
-        expectPaidUser()
-        coEvery { mobileFooterRepository.getMobileFooter(BaseUserId) } returns expectedError
+        val expectedDefault = MobileFooter.PaidUserMobileFooter(BaseDefaultString, true)
+        expectPaidUserWithNoFooter()
+        coEvery {
+            context.getString(R.string.mail_settings_identity_mobile_footer_default_free)
+        } returns BaseDefaultString
 
         // When
-        val result = getMobileFooter(BaseUserId)
+        val result = getMobileFooter(BaseUserId).getOrNull()
 
         // Then
-        assertEquals(expectedError, result)
+        assertNotNull(result)
+        assertEquals(result.enabled, expectedDefault.enabled)
+        assertEquals(result.value, expectedDefault.value)
+        verify(exactly = 1) { context.getString(R.string.mail_settings_identity_mobile_footer_default_free) }
+    }
+
+    private fun expectPaidUserWithNoFooter() {
+        val error = DataError.Local.NoDataCached.left()
+        coEvery { isPaidUser(BaseUserId) } returns true.right()
+        coEvery { mobileFooterRepository.getMobileFooter(BaseUserId) } returns error
     }
 
     private fun expectPaidUser() {
@@ -114,5 +128,6 @@ internal class GetMobileFooterTest {
     private companion object {
 
         val BaseUserId = UserId("123")
+        const val BaseDefaultString = "Default"
     }
 }

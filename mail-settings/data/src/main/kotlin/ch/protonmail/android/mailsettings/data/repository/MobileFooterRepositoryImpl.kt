@@ -19,15 +19,15 @@
 package ch.protonmail.android.mailsettings.data.repository
 
 import arrow.core.Either
-import arrow.core.getOrElse
+import arrow.core.left
 import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailsettings.data.repository.local.MobileFooterLocalDataSource
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.MobileFooterPreference
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -36,10 +36,12 @@ class MobileFooterRepositoryImpl @Inject constructor(
 ) : MobileFooterRepository {
 
     override suspend fun getMobileFooter(userId: UserId): Either<DataError, MobileFooter> = either {
-        mobileFooterLocalDataSource.observeMobileFooterPreference(userId).mapLatest {
-            val preference = it.getOrElse { raise(DataError.Local.NoDataCached) }
-            MobileFooter.PaidUserMobileFooter(preference.value, preference.enabled)
-        }.firstOrNull() ?: raise(DataError.Local.NoDataCached)
+        val preference = mobileFooterLocalDataSource.observeMobileFooterPreference(userId)
+            .firstOrNull()
+            ?.getOrNull()
+            ?: return DataError.Local.NoDataCached.left()
+
+        return MobileFooter.PaidUserMobileFooter(preference.value, preference.enabled).right()
     }
 
     override suspend fun updateMobileFooter(

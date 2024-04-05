@@ -60,7 +60,7 @@ internal class MobileFooterLocalDataSourceImplTest {
     }
 
     @Test
-    fun `should return defaults when no preference is stored locally`() = runTest {
+    fun `should return an error when no preference is stored locally`() = runTest {
         // Given
         coEvery { preferences.get<Boolean>(any()) } returns null
         every { mobileFooterDataStoreSpy.data } returns flowOf(preferences)
@@ -68,7 +68,7 @@ internal class MobileFooterLocalDataSourceImplTest {
         // When
         mobileFooterLocalDataSource.observeMobileFooterPreference(BaseUserId).test {
             // Then
-            assertEquals(DefaultMobileFooterPreference.right(), awaitItem())
+            assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
         }
     }
@@ -134,6 +134,5 @@ internal class MobileFooterLocalDataSourceImplTest {
 
         val BaseUserId = UserId("123")
         val BaseMobileFooterPreference = MobileFooterPreference("value", enabled = true)
-        val DefaultMobileFooterPreference = MobileFooterPreference("", enabled = false)
     }
 }
