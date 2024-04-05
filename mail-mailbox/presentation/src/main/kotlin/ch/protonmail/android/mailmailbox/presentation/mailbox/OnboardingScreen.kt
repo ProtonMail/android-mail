@@ -142,6 +142,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
     Column(Modifier.fillMaxHeight()) {
         Image(
             modifier = Modifier
+                .testTag(OnboardingScreenTestTags.OnboardingImage)
                 .fillMaxHeight(MailDimens.OnboardingIllustrationWeight)
                 .fillMaxWidth(),
             contentScale = ContentScale.Fit,
@@ -256,4 +257,5 @@ object OnboardingScreenTestTags {
     const val TopBarRootItem = "OnboardingTopBarRootItem"
     const val CloseButton = "OnboardingScreenCloseButton"
     const val BottomButton = "OnboardingScreenBottomButton"
+    const val OnboardingImage = "OnboardingScreenWelcomeImage"
 }
