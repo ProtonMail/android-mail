@@ -32,6 +32,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Snoozed
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Spam
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Starred
 import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Trash
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Companion.unmodifiableByUserList
 import me.proton.core.label.domain.entity.LabelId
 
 enum class SystemLabelId(val labelId: LabelId) {
@@ -87,7 +88,7 @@ enum class SystemLabelId(val labelId: LabelId) {
 
     companion object {
 
-        private val map = values().associateBy { stringOf(it) }
+        private val map = entries.associateBy { stringOf(it) }
 
         val displayedList = listOf(Inbox, Drafts, Sent, Starred, Archive, Spam, Trash, AllMail)
 
@@ -95,7 +96,9 @@ enum class SystemLabelId(val labelId: LabelId) {
 
         val exclusiveList = exclusiveDestinationList + Drafts + Sent
 
-        fun stringOf(value: SystemLabelId): String = value.labelId.id
+        val unmodifiableByUserList = listOf(AllMail, AlmostAllMail, AllDrafts, AllSent, AllScheduled, Outbox, Snoozed)
+
+        private fun stringOf(value: SystemLabelId): String = value.labelId.id
         fun enumOf(value: String?): SystemLabelId = map[value] ?: Inbox
     }
 }
@@ -118,4 +121,6 @@ fun SystemLabelId.toMailLabelSystem(): MailLabel.System = when (this) {
     SystemLabelId.Snoozed -> MailLabel.System(Snoozed)
 }
 
-fun LabelId.isReservedSystemLabelId() = id in SystemLabelId.values().map { it.labelId.id }
+fun LabelId.isReservedSystemLabelId() = id in SystemLabelId.entries.map { it.labelId.id }
+
+fun List<LabelId>.filterUnmodifiableLabels(): List<LabelId> = this - unmodifiableByUserList.map { it.labelId }.toSet()

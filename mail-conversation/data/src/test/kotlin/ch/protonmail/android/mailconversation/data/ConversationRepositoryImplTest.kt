@@ -45,6 +45,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.message.MessageTestData
+import ch.protonmail.android.testdata.message.MessageTestData.unmodifiableLabels
 import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -777,7 +778,7 @@ class ConversationRepositoryImplTest {
         // given
         val conversations = listOf(ConversationTestData.conversationWithConversationLabels)
         val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
-        val labelsToBeRemoved = listOf(LabelId("1"))
+        val labelsToBeRemoved = listOf(LabelId("3"))
         val labelsToBeAdded = listOf(LabelId("10"), LabelId("11"))
         coEvery {
             conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
@@ -807,6 +808,82 @@ class ConversationRepositoryImplTest {
         coVerifyOrder {
             conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
             conversationLocalDataSource.addLabels(userId, conversationIds, labelsToBeAdded)
+        }
+    }
+
+    @Test
+    fun `relabel conversations does not remove unmodifiable labels`() = runTest {
+        // given
+        val conversations = listOf(ConversationTestData.conversationWithConversationLabels)
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        val labelsToBeAdded = listOf(SystemLabelId.Starred.labelId)
+        val labelsToBeRemoved = unmodifiableLabels.map { it.labelId }
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
+        } returns conversations.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, labelsToBeAdded)
+        } returns conversations.right()
+        coEvery {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = emptySet()
+            )
+        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        coEvery {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = labelsToBeAdded.toSet()
+            )
+        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+
+        // when
+        conversationRepository.relabel(userId, conversationIds, labelsToBeRemoved, labelsToBeAdded)
+
+        // then
+        coVerifyOrder {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, emptyList())
+            conversationLocalDataSource.addLabels(userId, conversationIds, labelsToBeAdded)
+        }
+    }
+
+    @Test
+    fun `relabel conversations does not add unmodifiable labels`() = runTest {
+        // given
+        val conversations = listOf(ConversationTestData.conversationWithConversationLabels)
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        val labelsToBeAdded = unmodifiableLabels.map { it.labelId }
+        val labelsToBeRemoved = listOf(SystemLabelId.Starred.labelId)
+        coEvery {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
+        } returns conversations.right()
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, emptyList())
+        } returns conversations.right()
+        coEvery {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToRemove = labelsToBeRemoved.toSet()
+            )
+        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+        coEvery {
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = emptySet()
+            )
+        } returns MessageTestData.unStarredMsgByConversationWithStarredMsg.right()
+
+        // when
+        conversationRepository.relabel(userId, conversationIds, labelsToBeRemoved, labelsToBeAdded)
+
+        // then
+        coVerifyOrder {
+            conversationLocalDataSource.removeLabels(userId, conversationIds, labelsToBeRemoved)
+            conversationLocalDataSource.addLabels(userId, conversationIds, emptyList())
         }
     }
 

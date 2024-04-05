@@ -31,7 +31,7 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRemo
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.maillabel.domain.extension.isSpam
 import ch.protonmail.android.maillabel.domain.extension.isTrash
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.filterUnmodifiableLabels
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.usecase.ExcludeDraftMessagesAlreadyInOutbox
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -146,13 +146,14 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ): Either<DataError, List<Conversation>> {
-        return conversationLocalDataSource.addLabels(userId, conversationIds, labelIds).onRight {
+        val filteredLabelIdsToAdd = labelIds.filterUnmodifiableLabels()
+        return conversationLocalDataSource.addLabels(userId, conversationIds, filteredLabelIdsToAdd).onRight {
             messageLocalDataSource.relabelMessagesInConversations(
                 userId = userId,
                 conversationIds = conversationIds,
-                labelIdsToAdd = labelIds.toSet()
+                labelIdsToAdd = filteredLabelIdsToAdd.toSet()
             )
-            conversationRemoteDataSource.addLabels(userId, conversationIds, labelIds)
+            conversationRemoteDataSource.addLabels(userId, conversationIds, filteredLabelIdsToAdd)
         }
     }
 
@@ -173,13 +174,14 @@ class ConversationRepositoryImpl @Inject constructor(
         conversationIds: List<ConversationId>,
         labelIds: List<LabelId>
     ): Either<DataError, List<Conversation>> {
-        return conversationLocalDataSource.removeLabels(userId, conversationIds, labelIds).onRight {
+        val filteredLabelIdsToRemove = labelIds.filterUnmodifiableLabels()
+        return conversationLocalDataSource.removeLabels(userId, conversationIds, filteredLabelIdsToRemove).onRight {
             messageLocalDataSource.relabelMessagesInConversations(
                 userId = userId,
                 conversationIds = conversationIds,
-                labelIdsToRemove = labelIds.toSet()
+                labelIdsToRemove = filteredLabelIdsToRemove.toSet()
             )
-            conversationRemoteDataSource.removeLabels(userId, conversationIds, labelIds)
+            conversationRemoteDataSource.removeLabels(userId, conversationIds, filteredLabelIdsToRemove)
         }
     }
 
@@ -202,7 +204,6 @@ class ConversationRepositoryImpl @Inject constructor(
         if (toLabelId.isTrash() || toLabelId.isSpam()) {
             return moveToTrashOrSpam(userId, conversationIds, allLabelIds, toLabelId)
         }
-
 
         return conversationLocalDataSource.relabel(
             userId = userId,
@@ -303,23 +304,18 @@ class ConversationRepositoryImpl @Inject constructor(
     ): Either<DataError, List<Conversation>> {
         require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
 
-        val persistentLabels = setOf(
-            SystemLabelId.AllDrafts.labelId,
-            SystemLabelId.AllMail.labelId,
-            SystemLabelId.AllSent.labelId
-        )
-        val labelsToBeRemoved = allLabelIds - persistentLabels
+        val filteredLabelIdsToRemove = allLabelIds.filterUnmodifiableLabels()
 
         return conversationLocalDataSource.relabel(
             userId = userId,
             conversationIds = conversationIds,
             labelIdsToAdd = listOf(labelId),
-            labelIdsToRemove = labelsToBeRemoved
+            labelIdsToRemove = filteredLabelIdsToRemove
         ).onRight {
             messageLocalDataSource.relabelMessagesInConversations(
                 userId = userId,
                 conversationIds = conversationIds,
-                labelIdsToRemove = labelsToBeRemoved.toSet(),
+                labelIdsToRemove = filteredLabelIdsToRemove.toSet(),
                 labelIdsToAdd = setOf(labelId)
             )
             conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)

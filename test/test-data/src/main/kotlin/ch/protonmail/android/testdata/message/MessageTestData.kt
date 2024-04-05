@@ -23,6 +23,13 @@ import java.time.temporal.ChronoUnit
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.AllDrafts
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.AllMail
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.AllScheduled
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.AllSent
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.AlmostAllMail
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Outbox
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Snoozed
 import ch.protonmail.android.mailmessage.domain.model.AttachmentCount
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -43,6 +50,9 @@ object MessageTestData {
     val recipient1 = Recipient("recipient1@pm.me", "Recipient1")
     val recipient2 = Recipient("recipient2@pm.me", "Recipient2")
     val recipient3 = Recipient("recipient3@pm.me", "Recipient3")
+
+    // Do not reference production code directly for this, otherwise tests will never fail in case of changes.
+    val unmodifiableLabels = listOf(AllMail, AlmostAllMail, AllDrafts, AllSent, AllScheduled, Outbox, Snoozed)
 
     val message = buildMessage(
         userId = userId, id = RAW_MESSAGE_ID, subject = RAW_SUBJECT, labelIds = listOf(SystemLabelId.Inbox.labelId.id)
