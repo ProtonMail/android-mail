@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
@@ -65,6 +66,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
@@ -569,8 +571,9 @@ private fun MailboxSwipeRefresh(
     }
 }
 
+@SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 private fun MailboxItemsList(
     state: MailboxListState,
     listState: LazyListState,
@@ -586,11 +589,32 @@ private fun MailboxItemsList(
 
     val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchMode.isInSearch()
 
+    // Detect if user manually scrolled the list
+    var userScrolled by remember { mutableStateOf(false) }
+    var userTapped by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = listState.isScrollInProgress) {
+        if (!userScrolled && userTapped && listState.isScrollInProgress) {
+            userScrolled = true
+        }
+    }
+
+    // Scroll to the top of the list to make the first item always visible until the user scrolls the list
+    if (!userScrolled) {
+        LaunchedEffect(listState.firstVisibleItemIndex) {
+            listState.animateScrollToItem(0)
+        }
+    }
     LazyColumn(
         state = listState,
         modifier = Modifier
             .testTag(MailboxScreenTestTags.List)
             .fillMaxSize()
+            .pointerInteropFilter { event ->
+                if (!userTapped && event.action == android.view.MotionEvent.ACTION_DOWN) {
+                    userTapped = true
+                }
+                false // Allow the event to propagate
+            }
     ) {
         if (state is MailboxListState.Data) {
             state.clearState.let { it as? MailboxListState.Data.ClearState.Visible }?.let {
