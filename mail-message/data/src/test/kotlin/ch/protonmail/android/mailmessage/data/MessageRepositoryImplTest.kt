@@ -49,6 +49,7 @@ import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageBodyTestData
 import ch.protonmail.android.testdata.message.MessageTestData
+import ch.protonmail.android.testdata.message.MessageTestData.unmodifiableLabels
 import io.mockk.Called
 import io.mockk.Ordering
 import io.mockk.coEvery
@@ -876,6 +877,84 @@ class MessageRepositoryImplTest {
         coVerify {
             remoteDataSource.removeLabelsFromMessages(userId, listOf(message.messageId), listOf(labelToBeRemoved))
             remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), listOf(labelToBeAdded))
+        }
+    }
+
+    @Test
+    fun `relabel call does not add unmodifiable labels`() = runTest {
+        // Given
+        val labelIds = listOf(SystemLabelId.Starred.labelId)
+        val message = MessageTestData.message.copy(labelIds = labelIds)
+        val labelsToAdd = unmodifiableLabels.map { it.labelId }
+        val labelsToRemove = listOf(SystemLabelId.Starred.labelId)
+        coEvery {
+            localDataSource.relabelMessages(
+                userId,
+                listOf(message.messageId),
+                labelIdsToRemove = labelsToRemove.toSet(),
+                labelIdsToAdd = emptySet()
+            )
+        } returns listOf(message).right()
+
+        // When
+        messageRepository.relabel(
+            userId,
+            listOf(message.messageId),
+            labelsToBeRemoved = labelsToRemove,
+            labelsToBeAdded = labelsToAdd
+        )
+
+        // Then
+        coVerify {
+            localDataSource.relabelMessages(
+                userId,
+                listOf(message.messageId),
+                labelIdsToRemove = labelsToRemove.toSet(),
+                labelIdsToAdd = emptySet()
+            )
+        }
+        coVerify {
+            remoteDataSource.removeLabelsFromMessages(userId, listOf(message.messageId), labelsToRemove)
+            remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), emptyList())
+        }
+    }
+
+    @Test
+    fun `relabel call does not remove unmodifiable labels`() = runTest {
+        // Given
+        val labelIds = listOf(SystemLabelId.Inbox.labelId)
+        val message = MessageTestData.message.copy(labelIds = labelIds)
+        val labelsToAdd = listOf(SystemLabelId.Starred.labelId)
+        val labelsToRemove = unmodifiableLabels.map { it.labelId }
+        coEvery {
+            localDataSource.relabelMessages(
+                userId,
+                listOf(message.messageId),
+                labelIdsToRemove = emptySet(),
+                labelIdsToAdd = labelsToAdd.toSet()
+            )
+        } returns listOf(message).right()
+
+        // When
+        messageRepository.relabel(
+            userId,
+            listOf(message.messageId),
+            labelsToBeRemoved = labelsToRemove,
+            labelsToBeAdded = labelsToAdd
+        )
+
+        // Then
+        coVerify {
+            localDataSource.relabelMessages(
+                userId,
+                listOf(message.messageId),
+                labelIdsToRemove = emptySet(),
+                labelIdsToAdd = labelsToAdd.toSet()
+            )
+        }
+        coVerify {
+            remoteDataSource.removeLabelsFromMessages(userId, listOf(message.messageId), emptyList())
+            remoteDataSource.addLabelsToMessages(userId, listOf(message.messageId), labelsToAdd)
         }
     }
 

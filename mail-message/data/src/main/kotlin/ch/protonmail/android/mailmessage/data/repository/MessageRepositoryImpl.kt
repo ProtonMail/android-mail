@@ -28,7 +28,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.extension.isSpam
 import ch.protonmail.android.maillabel.domain.extension.isTrash
-import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.filterUnmodifiableLabels
 import ch.protonmail.android.mailmessage.data.local.MessageBodyFileWriteException
 import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.remote.MessageApi
@@ -259,14 +259,17 @@ class MessageRepositoryImpl @Inject constructor(
         labelsToBeRemoved: List<LabelId>,
         labelsToBeAdded: List<LabelId>
     ): Either<DataError.Local, List<Message>> {
+        val filteredLabelIdsToAdd = labelsToBeAdded.filterUnmodifiableLabels()
+        val filteredLabelIdsToRemove = labelsToBeRemoved.filterUnmodifiableLabels()
+
         return localDataSource.relabelMessages(
             userId,
             messageIds,
-            labelsToBeRemoved.toSet(),
-            labelsToBeAdded.toSet()
+            filteredLabelIdsToRemove.toSet(),
+            filteredLabelIdsToAdd.toSet()
         ).onRight {
-            remoteDataSource.removeLabelsFromMessages(userId, messageIds, labelsToBeRemoved)
-            remoteDataSource.addLabelsToMessages(userId, messageIds, labelsToBeAdded)
+            remoteDataSource.removeLabelsFromMessages(userId, messageIds, filteredLabelIdsToRemove)
+            remoteDataSource.addLabelsToMessages(userId, messageIds, filteredLabelIdsToAdd)
         }
     }
 
@@ -311,15 +314,11 @@ class MessageRepositoryImpl @Inject constructor(
         val messages = localDataSource.observeMessages(userId, messageIds).first().takeIf { it.isNotEmpty() }
             ?: return DataError.Local.NoDataCached.left()
 
-        val persistentLabels = listOf(
-            SystemLabelId.AllDrafts.labelId,
-            SystemLabelId.AllMail.labelId,
-            SystemLabelId.AllSent.labelId
-        )
+        val labelsToBeRemoved = messages.flatMap { it.labelIds }.filterUnmodifiableLabels()
         return relabel(
             userId = userId,
             messageIds = messageIds,
-            labelsToBeRemoved = messages.flatMap { it.labelIds }.filterNot { it in persistentLabels },
+            labelsToBeRemoved = labelsToBeRemoved,
             labelsToBeAdded = listOf(labelId)
         )
     }
