@@ -29,7 +29,7 @@ class ConvertPlainTextIntoHtml @Inject constructor() {
 
     operator fun invoke(messageBody: String): String {
         val spannable = messageBody.toSpannable()
-        return HtmlCompat.toHtml(spannable, HtmlCompat.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+        return HtmlCompat.toHtml(spannable, HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
     }
 }
 

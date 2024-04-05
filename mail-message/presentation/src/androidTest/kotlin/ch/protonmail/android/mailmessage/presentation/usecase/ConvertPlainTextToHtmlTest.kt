@@ -37,10 +37,9 @@ internal class ConvertPlainTextToHtmlTest {
         """.trimIndent()
 
         val expected = """
-            <p dir="ltr" style="margin-top:0; margin-bottom:0;">A message</p>
-            <p dir="ltr" style="margin-top:0; margin-bottom:0;">with body &amp; new lines.</p>
-            <br>
-            <p dir="ltr" style="margin-top:0; margin-bottom:0;">With some other characters at the end &lt;&gt; /\</p>
+            <p dir="ltr">A message<br>
+            with body &amp; new lines.</p>
+            <p dir="ltr">With some other characters at the end &lt;&gt; /\</p>
 
         """.trimIndent()
 
