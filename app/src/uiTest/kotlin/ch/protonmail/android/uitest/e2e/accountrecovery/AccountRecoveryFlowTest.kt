@@ -12,6 +12,7 @@ import dagger.hilt.android.testing.UninstallModules
 import me.proton.core.accountmanager.data.AccountStateHandler
 import me.proton.core.accountrecovery.dagger.CoreAccountRecoveryFeaturesModule
 import me.proton.core.accountrecovery.domain.IsAccountRecoveryEnabled
+import me.proton.core.accountrecovery.domain.IsAccountRecoveryResetEnabled
 import me.proton.core.accountrecovery.test.MinimalAccountRecoveryNotificationTest
 import me.proton.core.auth.test.usecase.WaitForPrimaryAccount
 import me.proton.core.domain.entity.UserId
@@ -58,6 +59,15 @@ internal class AccountRecoveryFlowTest : BaseTest(), MinimalAccountRecoveryNotif
     @BindValue
     internal val isAccountRecoveryEnabled = object : IsAccountRecoveryEnabled {
         override fun invoke(userId: UserId?): Boolean = true
+        override fun isLocalEnabled(): Boolean = true
+        override fun isRemoteEnabled(userId: UserId?): Boolean = true
+    }
+
+    @BindValue
+    internal val isAccountRecoveryResetEnabled = object : IsAccountRecoveryResetEnabled {
+        override fun invoke(userId: UserId?): Boolean = true
+        override fun isLocalEnabled(): Boolean = true
+        override fun isRemoteEnabled(userId: UserId?): Boolean = true
     }
 
     @BindValue

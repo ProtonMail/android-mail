@@ -94,6 +94,7 @@ import me.proton.core.observability.data.db.ObservabilityDatabase
 import me.proton.core.observability.data.entity.ObservabilityEventEntity
 import me.proton.core.payment.data.local.db.PaymentDatabase
 import me.proton.core.payment.data.local.entity.GooglePurchaseEntity
+import me.proton.core.payment.data.local.entity.PurchaseEntity
 import me.proton.core.push.data.local.db.PushConverters
 import me.proton.core.push.data.local.db.PushDatabase
 import me.proton.core.push.data.local.db.PushEntity
@@ -168,6 +169,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         ConversationLabelEntity::class,
         // in app purchase
         GooglePurchaseEntity::class,
+        PurchaseEntity::class,
         // observability
         ObservabilityEventEntity::class,
         // telemetry
@@ -242,7 +244,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 31
+        const val version = 32
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -274,7 +276,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_27_28,
             AppDatabaseMigrations.MIGRATION_28_29,
             AppDatabaseMigrations.MIGRATION_29_30,
-            AppDatabaseMigrations.MIGRATION_30_31
+            AppDatabaseMigrations.MIGRATION_30_31,
+            AppDatabaseMigrations.MIGRATION_31_32
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
