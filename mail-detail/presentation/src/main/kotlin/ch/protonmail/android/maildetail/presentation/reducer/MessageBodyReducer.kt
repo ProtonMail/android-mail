@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
@@ -53,6 +54,7 @@ class MessageBodyReducer @Inject constructor(
             is MessageViewAction.LoadRemoteAndEmbeddedContent ->
                 messageBodyState.newStateFromLoadRemoteAndEmbeddedContent()
             is MessageViewAction.SwitchViewMode -> messageBodyState.newStateFromSwitchViewMode(event.viewModePreference)
+            is MessageViewAction.PrintRequested -> messageBodyState.newStateFromPrintRequested()
         }
     }
 
@@ -153,6 +155,17 @@ class MessageBodyReducer @Inject constructor(
                         viewModePreference
                     ),
                     viewModePreference = viewModePreference
+                )
+            )
+            else -> this
+        }
+    }
+
+    private fun MessageBodyState.newStateFromPrintRequested(): MessageBodyState {
+        return when (this) {
+            is MessageBodyState.Data -> this.copy(
+                messageBodyUiModel = messageBodyUiModel.copy(
+                    printEffect = Effect.of(Unit)
                 )
             )
             else -> this

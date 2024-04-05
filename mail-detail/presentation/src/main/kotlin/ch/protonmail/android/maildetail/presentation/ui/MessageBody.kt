@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
+import android.webkit.WebView
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -114,7 +115,8 @@ fun MessageBody(
                 onShowAllAttachments = actions.onShowAllAttachments,
                 onExpandCollapseButtonCLicked = actions.onExpandCollapseButtonClicked,
                 onAttachmentClicked = actions.onAttachmentClicked,
-                loadEmbeddedImage = actions.loadEmbeddedImage
+                loadEmbeddedImage = actions.loadEmbeddedImage,
+                onPrint = actions.onPrint
             ),
             onMessageBodyLoaded = onMessageBodyLoaded
         )
@@ -226,7 +228,8 @@ object MessageBody {
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
-        val onOpenInProtonCalendar: (MessageId) -> Unit
+        val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onPrint: (WebView) -> Unit
     )
 }
 

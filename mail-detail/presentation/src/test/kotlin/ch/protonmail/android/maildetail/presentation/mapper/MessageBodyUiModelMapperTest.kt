@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -119,7 +120,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When
@@ -163,7 +165,8 @@ class MessageBodyUiModelMapperTest {
                 )
             ),
             userAddress = UserAddressSample.PrimaryAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When
@@ -203,7 +206,8 @@ class MessageBodyUiModelMapperTest {
                 )
             ),
             userAddress = UserAddressSample.PrimaryAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When
@@ -244,7 +248,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When
@@ -278,7 +283,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
-                viewModePreference = ViewModePreference.ThemeDefault
+                viewModePreference = ViewModePreference.ThemeDefault,
+                printEffect = Effect.empty()
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -314,7 +320,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
-                viewModePreference = ViewModePreference.ThemeDefault
+                viewModePreference = ViewModePreference.ThemeDefault,
+                printEffect = Effect.empty()
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -350,7 +357,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
-                viewModePreference = ViewModePreference.ThemeDefault
+                viewModePreference = ViewModePreference.ThemeDefault,
+                printEffect = Effect.empty()
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
@@ -386,7 +394,8 @@ class MessageBodyUiModelMapperTest {
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
-                viewModePreference = ViewModePreference.ThemeDefault
+                viewModePreference = ViewModePreference.ThemeDefault,
+                printEffect = Effect.empty()
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
@@ -416,7 +425,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
             userAddress = null,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When
@@ -453,7 +463,8 @@ class MessageBodyUiModelMapperTest {
             shouldShowOpenInProtonCalendar = false,
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
 
         // When

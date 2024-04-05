@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import android.content.Context
 import android.net.Uri
+import android.webkit.WebView
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,6 +55,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
@@ -136,7 +139,8 @@ class MessageDetailViewModel @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName,
     private val reportPhishingMessage: ReportPhishingMessage,
     private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
-    private val networkManager: NetworkManager
+    private val networkManager: NetworkManager,
+    private val printMessage: PrintMessage
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -188,6 +192,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar()
             is MessageViewAction.SwitchViewMode -> directlyHandleViewAction(action)
             is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
+            is MessageViewAction.Print -> handlePrint(action.context, action.webView)
         }
     }
 
@@ -675,6 +680,10 @@ class MessageDetailViewModel @Inject constructor(
                 emitNewStateFrom(MessageDetailEvent.HandleOpenProtonCalendarRequest(intent))
             }
         )
+    }
+
+    private fun handlePrint(context: Context, webView: WebView) {
+        printMessage(context, webView)
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.testdata.message
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -137,7 +138,8 @@ object MessageBodyUiModelTestData {
             attachments = attachments,
             shouldShowExpandCollapseButton = false,
             userAddress = userAddress,
-            viewModePreference = viewModePreference
+            viewModePreference = viewModePreference,
+            printEffect = Effect.empty()
         )
     }
 }

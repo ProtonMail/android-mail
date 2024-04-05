@@ -140,7 +140,8 @@ private fun ConversationDetailExpandedItem(
                 onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                 onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                 onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
-                onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
+                onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
+                onPrint = {}
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )

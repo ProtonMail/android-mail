@@ -73,7 +73,8 @@ object MessageDetailsPreviewData {
                 shouldShowOpenInProtonCalendar = false,
                 attachments = null,
                 userAddress = null,
-                viewModePreference = ViewModePreference.LightMode
+                viewModePreference = ViewModePreference.LightMode,
+                printEffect = Effect.empty()
             ),
             expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),

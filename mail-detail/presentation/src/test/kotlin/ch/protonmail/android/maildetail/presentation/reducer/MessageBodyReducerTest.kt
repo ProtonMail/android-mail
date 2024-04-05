@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
@@ -192,6 +193,15 @@ class MessageBodyReducerTest(
                 MessageBodyState.Data(
                     MessageBodyUiModelTestData.plainTextMessageBodyUiModel.copy(
                         viewModePreference = ViewModePreference.LightMode
+                    )
+                )
+            ),
+            TestInput(
+                MessageBodyState.Data(MessageBodyUiModelTestData.plainTextMessageBodyUiModel),
+                MessageViewAction.PrintRequested,
+                MessageBodyState.Data(
+                    MessageBodyUiModelTestData.plainTextMessageBodyUiModel.copy(
+                        printEffect = Effect.of(Unit)
                     )
                 )
             )

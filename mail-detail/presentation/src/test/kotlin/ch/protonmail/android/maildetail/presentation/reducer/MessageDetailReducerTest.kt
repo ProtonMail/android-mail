@@ -499,7 +499,7 @@ class MessageDetailReducerTest(
                 MessageViewAction.PrintRequested,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBannersState = false,
-                shouldReduceMessageBodyState = false,
+                shouldReduceMessageBodyState = true,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
                 shouldReduceToErrorEffect = false,

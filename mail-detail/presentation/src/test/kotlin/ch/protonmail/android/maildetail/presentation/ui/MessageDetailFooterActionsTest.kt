@@ -51,7 +51,8 @@ internal class MessageDetailFooterActionsTest {
             onLoadEmbeddedImages = {},
             onLoadRemoteAndEmbeddedContent = {},
             onOpenInProtonCalendar = {},
-            showFeatureMissingSnackbar = {}
+            showFeatureMissingSnackbar = {},
+            onPrint = {}
         )
 
         // When
@@ -81,7 +82,8 @@ internal class MessageDetailFooterActionsTest {
             onOpenMessageBodyLink = {},
             showFeatureMissingSnackbar = {},
             onBodyExpandCollapseButtonClicked = {},
-            onScrollRequestCompleted = {}
+            onScrollRequestCompleted = {},
+            onPrint = {}
         )
 
         // When

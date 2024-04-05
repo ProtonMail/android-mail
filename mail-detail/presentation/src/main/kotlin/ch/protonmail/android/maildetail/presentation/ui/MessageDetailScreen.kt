@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
+import android.webkit.WebView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,6 +43,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -105,6 +107,7 @@ fun MessageDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = MessageDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -223,7 +226,8 @@ fun MessageDetailScreen(
                 onViewInLightMode = {
                     viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                 },
-                onViewInDarkMode = { viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode)) }
+                onViewInDarkMode = { viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode)) },
+                onPrint = { viewModel.submit(MessageViewAction.Print(context, it)) }
             )
         )
     }
@@ -371,8 +375,8 @@ fun MessageDetailScreen(
                     onLoadRemoteContent = actions.onLoadRemoteContent,
                     onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                     onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
-                    onOpenInProtonCalendar = actions.onOpenInProtonCalendar
-
+                    onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
+                    onPrint = actions.onPrint
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -453,7 +457,8 @@ private fun MessageDetailContent(
                             onLoadRemoteContent = actions.onLoadRemoteContent,
                             onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                             onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
-                            onOpenInProtonCalendar = actions.onOpenInProtonCalendar
+                            onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
+                            onPrint = actions.onPrint
                         )
                     )
                     MessageDetailFooter(
@@ -484,7 +489,8 @@ private fun MessageDetailContent(
                             onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                             onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                             onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
-                            onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
+                            onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
+                            onPrint = actions.onPrint
                         )
                     )
                 }
@@ -542,7 +548,8 @@ object MessageDetailScreen {
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onViewInLightMode: () -> Unit,
-        val onViewInDarkMode: () -> Unit
+        val onViewInDarkMode: () -> Unit,
+        val onPrint: (WebView) -> Unit
     ) {
 
         companion object {
@@ -576,7 +583,8 @@ object MessageDetailScreen {
                 onOpenInProtonCalendar = {},
                 handleProtonCalendarRequest = {},
                 onViewInLightMode = {},
-                onViewInDarkMode = {}
+                onViewInDarkMode = {},
+                onPrint = {}
             )
         }
     }
@@ -599,7 +607,8 @@ object MessageDetailContent {
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
-        val onOpenInProtonCalendar: (MessageId) -> Unit
+        val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onPrint: (WebView) -> Unit
     )
 }
 

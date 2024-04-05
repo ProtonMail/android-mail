@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import android.content.Context
 import android.net.Uri
+import android.webkit.WebView
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -77,6 +79,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageReportPhishi
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -143,6 +146,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -346,6 +350,7 @@ class MessageDetailViewModelTest {
             )
         } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody
     }
+    private val printMessage = mockk<PrintMessage>()
 
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(
@@ -398,7 +403,8 @@ class MessageDetailViewModelTest {
             resolveParticipantName = resolveParticipantName,
             reportPhishingMessage = reportPhishingMessage,
             isProtonCalendarInstalled = isProtonCalendarInstalled,
-            networkManager = networkManager
+            networkManager = networkManager,
+            printMessage = printMessage
         )
     }
 
@@ -1726,8 +1732,29 @@ class MessageDetailViewModelTest {
             viewModel.submit(MessageViewAction.PrintRequested)
 
             // Then
-            val expected = BottomSheetVisibilityEffect.Hide
-            assertEquals(expected, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume())
+            val item = awaitItem()
+            assertIs<Effect<BottomSheetVisibilityEffect.Hide>>(item.bottomSheetState?.bottomSheetVisibilityEffect)
+            val expectedPrintEffect = Effect.of(Unit)
+            val messageBodyState = item.messageBodyState as MessageBodyState.Data
+            assertEquals(expectedPrintEffect, messageBodyState.messageBodyUiModel.printEffect)
+        }
+    }
+
+    @Test
+    fun `call the print message use case in order to print a message`() = runTest {
+        // Given
+        val context = mockk<Context>()
+        val webView = mockk<WebView>()
+        every { printMessage(context, webView) } returns mockk()
+
+        viewModel.state.test {
+            skipItems(4)
+
+            // When
+            viewModel.submit(MessageViewAction.Print(context, webView))
+
+            // Then
+            verify { printMessage(context, webView) }
         }
     }
 

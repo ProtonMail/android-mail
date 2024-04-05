@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
@@ -41,7 +42,8 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
             onShowAllAttachments = {},
             onExpandCollapseButtonCLicked = {},
             onAttachmentClicked = {},
-            loadEmbeddedImage = { _, _ -> null }
+            loadEmbeddedImage = { _, _ -> null },
+            onPrint = {}
         )
     )
 }
@@ -59,5 +61,6 @@ private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
     shouldShowOpenInProtonCalendar = false,
     attachments = null,
     userAddress = null,
-    viewModePreference = ViewModePreference.ThemeDefault
+    viewModePreference = ViewModePreference.ThemeDefault,
+    printEffect = Effect.empty()
 )

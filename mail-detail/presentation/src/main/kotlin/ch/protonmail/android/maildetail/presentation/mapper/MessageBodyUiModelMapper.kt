@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -89,7 +90,8 @@ class MessageBodyUiModelMapper @Inject constructor(
                 )
             } else null,
             userAddress = decryptedMessageBody.userAddress,
-            viewModePreference = ViewModePreference.ThemeDefault
+            viewModePreference = ViewModePreference.ThemeDefault,
+            printEffect = Effect.empty()
         )
     }
 
@@ -106,7 +108,8 @@ class MessageBodyUiModelMapper @Inject constructor(
         shouldShowOpenInProtonCalendar = false,
         attachments = null,
         userAddress = null,
-        viewModePreference = ViewModePreference.ThemeDefault
+        viewModePreference = ViewModePreference.ThemeDefault,
+        printEffect = Effect.empty()
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

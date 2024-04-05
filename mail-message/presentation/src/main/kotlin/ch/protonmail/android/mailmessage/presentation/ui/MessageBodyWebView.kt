@@ -137,6 +137,10 @@ fun MessageBodyWebView(
         }
     }
 
+    ConsumableLaunchedEffect(messageBodyUiModel.printEffect) {
+        webView?.let { actions.onPrint(it) }
+    }
+
     val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
         object : AccompanistWebViewClient() {
 
@@ -317,7 +321,8 @@ object MessageBodyWebView {
         val onShowAllAttachments: () -> Unit,
         val onExpandCollapseButtonCLicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
-        val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?
+        val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
+        val onPrint: (WebView) -> Unit
     )
 }
 
