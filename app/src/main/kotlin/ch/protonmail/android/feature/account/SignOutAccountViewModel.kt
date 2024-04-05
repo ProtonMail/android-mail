@@ -39,14 +39,19 @@ class SignOutAccountViewModel @Inject constructor(
     private val mutableState = MutableStateFlow<State>(State.Initial)
     val state = mutableState.asStateFlow()
 
-    fun signOut(userId: UserId? = null) = viewModelScope.launch {
-        mutableState.emit(State.SigningOut)
-
+    fun signOut(userId: UserId? = null, removeAccount: Boolean = false) = viewModelScope.launch {
         val resolvedUserId = requireNotNull(userId ?: getPrimaryUserIdOrNull())
         enqueuer.cancelAllWork(resolvedUserId)
-        accountManager.disableAccount(resolvedUserId)
 
-        mutableState.emit(State.SignedOut)
+        if (removeAccount) {
+            mutableState.emit(State.Removing)
+            accountManager.removeAccount(resolvedUserId)
+            mutableState.emit(State.Removed)
+        } else {
+            mutableState.emit(State.SigningOut)
+            accountManager.disableAccount(resolvedUserId)
+            mutableState.emit(State.SignedOut)
+        }
     }
 
     private suspend fun getPrimaryUserIdOrNull() = accountManager.getPrimaryUserId().firstOrNull()
@@ -55,5 +60,7 @@ class SignOutAccountViewModel @Inject constructor(
         object Initial : State()
         object SigningOut : State()
         object SignedOut : State()
+        object Removing : State()
+        object Removed : State()
     }
 }

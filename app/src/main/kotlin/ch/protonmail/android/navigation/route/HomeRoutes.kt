@@ -139,8 +139,11 @@ internal fun NavGraphBuilder.addSignOutAccountDialog(navController: NavHostContr
     dialog(route = Destination.Dialog.SignOut.route) {
         SignOutAccountDialog(
             userId = it.get<String>(SignOutAccountDialog.USER_ID_KEY)?.takeIfNotBlank()?.let(::UserId),
-            onSignedOut = { navController.navigateBack() },
-            onCancelled = { navController.navigateBack() }
+            actions = SignOutAccountDialog.Actions(
+                onSignedOut = { navController.navigateBack() },
+                onRemoved = { navController.navigateBack() },
+                onCancelled = { navController.navigateBack() }
+            )
         )
     }
 }

@@ -25,15 +25,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.R
-import ch.protonmail.android.feature.account.RemoveAccountViewModel.State
-import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Initial
-import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removed
-import ch.protonmail.android.feature.account.RemoveAccountViewModel.State.Removing
+import ch.protonmail.android.feature.account.SignOutAccountViewModel.State
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.component.ProtonTextButton
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.domain.entity.UserId
@@ -44,21 +41,20 @@ fun RemoveAccountDialog(
     userId: UserId? = null,
     onCancelled: () -> Unit,
     onRemoved: () -> Unit,
-    removeAccountViewModel: RemoveAccountViewModel = hiltViewModel()
+    viewModel: SignOutAccountViewModel = hiltViewModel()
 ) {
-    val viewState by rememberAsState(removeAccountViewModel.state, Initial)
+    val viewState by viewModel.state.collectAsStateWithLifecycle()
 
     when (viewState) {
-        Initial -> Unit
-        Removing -> Unit
-        Removed -> onRemoved()
+        State.Removed -> onRemoved()
+        else -> Unit
     }
 
     RemoveAccountDialog(
         modifier = modifier,
         viewState = viewState,
         onCancelClicked = onCancelled,
-        onRemoveClicked = { removeAccountViewModel.remove(userId) }
+        onRemoveClicked = { viewModel.signOut(userId, removeAccount = true) }
     )
 }
 
@@ -79,14 +75,15 @@ private fun RemoveAccountDialog(
                 onClick = onRemoveClicked,
                 content = {
                     when (viewState) {
-                        Initial,
-                        Removed -> Text(
+                        State.Initial,
+                        State.Removed -> Text(
                             text = stringResource(id = R.string.dialog_remove_account_confirm),
                             style = ProtonTheme.typography.defaultStrongNorm,
                             color = ProtonTheme.colors.textAccent
                         )
 
-                        Removing -> CircularProgressIndicator()
+                        State.Removing -> CircularProgressIndicator()
+                        else -> Unit
                     }
                 }
             )
