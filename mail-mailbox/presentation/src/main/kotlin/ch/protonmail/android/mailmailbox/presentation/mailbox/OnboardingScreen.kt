@@ -64,7 +64,6 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headlineNorm
 
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen(actions: MailboxScreen.Actions) {

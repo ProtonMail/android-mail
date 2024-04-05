@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.onboarding.section
 
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import ch.protonmail.android.mailmailbox.presentation.mailbox.OnboardingScreenTestTags
@@ -25,11 +26,15 @@ import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.onboarding.OnboardingRobot
+import ch.protonmail.android.uitest.util.child
 
 @AttachTo(targets = [OnboardingRobot::class], identifier = "middleSection")
 internal class OnboardingMiddleSection : ComposeSectionRobot() {
 
-    private val onboardingImage = composeTestRule.onNodeWithTag(OnboardingScreenTestTags.OnboardingImage)
+    private val parent = composeTestRule.onNodeWithTag(OnboardingScreenTestTags.RootItem)
+    private val onboardingImage = parent.child {
+        hasTestTag(OnboardingScreenTestTags.OnboardingImage)
+    }
 
     @VerifiesOuter
     inner class Verify {
@@ -39,5 +44,3 @@ internal class OnboardingMiddleSection : ComposeSectionRobot() {
         }
     }
 }
-
-

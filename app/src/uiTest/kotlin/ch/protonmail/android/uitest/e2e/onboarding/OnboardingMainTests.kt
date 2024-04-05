@@ -29,6 +29,8 @@ import ch.protonmail.android.uitest.helpers.login.LoginTestUserTypes
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.onboarding.onboardingRobot
 import ch.protonmail.android.uitest.robot.onboarding.section.topBarSection
+import ch.protonmail.android.uitest.robot.onboarding.section.bottomSection
+import ch.protonmail.android.uitest.robot.onboarding.section.middleSection
 import ch.protonmail.android.uitest.robot.onboarding.section.verify
 import ch.protonmail.android.uitest.robot.onboarding.verify
 import dagger.hilt.android.testing.BindValue
@@ -64,6 +66,14 @@ internal class OnboardingMainTests : MockedNetworkTest(
 
             topBarSection {
                 verify { isCloseButtonShown() }
+            }
+
+            middleSection {
+                verify { isOnboardingImageShown() }
+            }
+
+            bottomSection {
+                verify { isBottomButtonShown() }
             }
         }
     }
