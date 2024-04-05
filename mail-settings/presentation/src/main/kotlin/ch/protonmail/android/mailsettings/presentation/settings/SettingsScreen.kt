@@ -23,6 +23,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Divider
@@ -42,6 +43,7 @@ import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Loading
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
@@ -81,7 +83,7 @@ fun MainSettingsScreen(
             actions = dataActions
         )
 
-        is Loading -> Unit
+        is Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
     }
 }
 

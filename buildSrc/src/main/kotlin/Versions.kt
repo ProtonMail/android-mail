@@ -47,7 +47,7 @@ object Versions {
         const val hilt = "1.2.0"
         const val lifecycle = "2.6.1"
         const val material3 = "1.1.2"
-        const val navigation = "2.6.0-rc02"
+        const val navigation = "2.7.7"
         const val paging = "3.2.1"
         const val pagingCompose = "3.2.1"
         const val perfetto = "1.0.0"
