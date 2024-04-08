@@ -58,6 +58,8 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
@@ -97,8 +99,7 @@ fun ContactGroupDetailsScreen(
                 state = state,
                 actions = actions,
                 onDeleteClick = {
-                    // Call view model submit with delete view action here
-                    actions.showFeatureMissingSnackbar()
+                    viewModel.submit(ContactGroupDetailsViewAction.OnDeleteClick)
                 }
             )
         },
@@ -113,7 +114,20 @@ fun ContactGroupDetailsScreen(
                     )
 
                     ConsumableLaunchedEffect(effect = state.openComposer) { actions.navigateToComposer(it) }
+                    ConsumableTextEffect(effect = state.deletionSuccess) { message ->
+                        actions.exitWithNormMessage(message)
+                    }
+                    ConsumableTextEffect(effect = state.deletionError) { message ->
+                        actions.showErrorMessage(message)
+                    }
+
+                    DeleteDialog(
+                        state = state.deleteDialogState,
+                        confirm = { viewModel.submit(ContactGroupDetailsViewAction.OnDeleteConfirmedClick) },
+                        dismiss = { viewModel.submit(ContactGroupDetailsViewAction.OnDeleteDismissedClick) }
+                    )
                 }
+
                 is ContactGroupDetailsState.Loading -> {
                     ProtonCenteredProgress(
                         modifier = Modifier
@@ -346,9 +360,10 @@ object ContactGroupDetailsScreen {
     data class Actions(
         val onBackClick: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
+        val exitWithNormMessage: (String) -> Unit,
+        val showErrorMessage: (String) -> Unit,
         val onEditClick: (LabelId) -> Unit,
-        val navigateToComposer: (List<String>) -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit
+        val navigateToComposer: (List<String>) -> Unit
     ) {
 
         companion object {
@@ -356,9 +371,10 @@ object ContactGroupDetailsScreen {
             val Empty = Actions(
                 onBackClick = {},
                 exitWithErrorMessage = {},
+                exitWithNormMessage = {},
+                showErrorMessage = {},
                 onEditClick = {},
-                navigateToComposer = {},
-                showFeatureMissingSnackbar = {}
+                navigateToComposer = {}
             )
         }
     }
@@ -370,7 +386,8 @@ private fun ContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            contactGroup = contactGroupDetailsSampleData
+            contactGroup = contactGroupDetailsSampleData,
+            deleteDialogState = DeleteDialogState.Hidden
         ),
         onSendClick = {}
     )
@@ -385,7 +402,8 @@ private fun EmptyContactGroupDetailsContentPreview() {
             contactGroup = contactGroupDetailsSampleData.copy(
                 memberCount = 0,
                 members = emptyList()
-            )
+            ),
+            deleteDialogState = DeleteDialogState.Hidden
         ),
         onSendClick = {}
     )
@@ -397,7 +415,8 @@ private fun ContactDetailsTopBarPreview() {
     ContactGroupDetailsTopBar(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            contactGroup = contactGroupDetailsSampleData
+            contactGroup = contactGroupDetailsSampleData,
+            deleteDialogState = DeleteDialogState.Hidden
         ),
         actions = ContactGroupDetailsScreen.Actions.Empty,
         onDeleteClick = {}

@@ -433,7 +433,7 @@ internal fun NavGraphBuilder.addContactForm(
 internal fun NavGraphBuilder.addContactGroupDetails(
     navController: NavHostController,
     showErrorSnackbar: (message: String) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit
+    showNormSnackbar: (message: String) -> Unit
 ) {
     val actions = ContactGroupDetailsScreen.Actions(
         onBackClick = { navController.navigateBack() },
@@ -441,13 +441,19 @@ internal fun NavGraphBuilder.addContactGroupDetails(
             navController.navigateBack()
             showErrorSnackbar(message)
         },
+        exitWithNormMessage = { message ->
+            navController.navigateBack()
+            showNormSnackbar(message)
+        },
+        showErrorMessage = { message ->
+            showErrorSnackbar(message)
+        },
         onEditClick = { labelId ->
             navController.navigate(Destination.Screen.EditContactGroup(labelId))
         },
         navigateToComposer = { emails ->
             navController.navigate(Destination.Screen.MessageActionComposer(DraftAction.ComposeToAddresses(emails)))
-        },
-        showFeatureMissingSnackbar = showFeatureMissingSnackbar
+        }
     )
     composable(route = Destination.Screen.ContactGroupDetails.route) {
         ContactGroupDetailsScreen(actions)

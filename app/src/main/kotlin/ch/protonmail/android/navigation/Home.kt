@@ -434,8 +434,13 @@ fun Home(
                             )
                         }
                     },
-                    showFeatureMissingSnackbar = {
-                        showFeatureMissingSnackbar()
+                    showNormSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
+                            )
+                        }
                     }
                 )
                 addContactGroupForm(

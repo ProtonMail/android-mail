@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData
 import org.junit.Test
@@ -52,7 +53,8 @@ class ContactGroupDetailsReducerTest(
         private val emptyLoadingState = ContactGroupDetailsState.Loading()
         private val loadedContactGroupState = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            contactGroup = loadedContactGroupDetailsUiModel
+            contactGroup = loadedContactGroupDetailsUiModel,
+            deleteDialogState = DeleteDialogState.Hidden
         )
 
         private val transitionsFromLoadingState = listOf(
@@ -107,6 +109,42 @@ class ContactGroupDetailsReducerTest(
                     openComposer = Effect.of(
                         loadedContactGroupState.contactGroup.members.map { it.email }
                     )
+                )
+            ),
+            TestInput(
+                currentState = loadedContactGroupState,
+                event = ContactGroupDetailsEvent.ShowDeleteDialog(
+                    "My cool group"
+                ),
+                expectedState = loadedContactGroupState.copy(
+                    deleteDialogState = DeleteDialogState.Shown(
+                        title = TextUiModel(R.string.contact_group_delete_dialog_title, "My cool group"),
+                        message = TextUiModel(R.string.contact_group_delete_dialog_message)
+                    )
+                )
+            ),
+            TestInput(
+                currentState = loadedContactGroupState,
+                event = ContactGroupDetailsEvent.DismissDeleteDialog,
+                expectedState = loadedContactGroupState.copy(
+                    deleteDialogState = DeleteDialogState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = loadedContactGroupState,
+                event = ContactGroupDetailsEvent.DeletingError,
+                expectedState = loadedContactGroupState.copy(
+                    deleteDialogState = DeleteDialogState.Hidden,
+                    deletionError = Effect.of(TextUiModel(R.string.contact_group_details_deletion_error))
+                )
+            ),
+            TestInput(
+                currentState = loadedContactGroupState,
+                event = ContactGroupDetailsEvent.DeletingSuccess,
+                expectedState = loadedContactGroupState.copy(
+                    close = Effect.of(Unit),
+                    deleteDialogState = DeleteDialogState.Hidden,
+                    deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
                 )
             )
         )

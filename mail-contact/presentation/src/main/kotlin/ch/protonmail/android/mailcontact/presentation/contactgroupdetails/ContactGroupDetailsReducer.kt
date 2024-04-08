@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
 import javax.inject.Inject
 
@@ -34,6 +35,10 @@ class ContactGroupDetailsReducer @Inject constructor() {
             is ContactGroupDetailsEvent.LoadContactGroupError -> reduceLoadContactGroupError(currentState)
             is ContactGroupDetailsEvent.CloseContactGroupDetails -> reduceCloseContactGroupDetails(currentState)
             is ContactGroupDetailsEvent.ComposeEmail -> reduceComposeEmail(currentState, event)
+            is ContactGroupDetailsEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState, event)
+            is ContactGroupDetailsEvent.DismissDeleteDialog -> reduceDismissDeleteDialog(currentState)
+            ContactGroupDetailsEvent.DeletingSuccess -> reduceContactGroupDeleted(currentState)
+            ContactGroupDetailsEvent.DeletingError -> reduceDeletingContactGroupError(currentState)
         }
     }
 
@@ -46,9 +51,11 @@ class ContactGroupDetailsReducer @Inject constructor() {
                 isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
                 contactGroup = event.contactGroupDetailsUiModel
             )
+
             is ContactGroupDetailsState.Loading -> ContactGroupDetailsState.Data(
                 isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
-                contactGroup = event.contactGroupDetailsUiModel
+                contactGroup = event.contactGroupDetailsUiModel,
+                deleteDialogState = DeleteDialogState.Hidden
             )
         }
     }
@@ -75,6 +82,54 @@ class ContactGroupDetailsReducer @Inject constructor() {
     ): ContactGroupDetailsState {
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(openComposer = Effect.of(event.emails))
+            is ContactGroupDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceShowDeleteDialog(
+        currentState: ContactGroupDetailsState,
+        event: ContactGroupDetailsEvent.ShowDeleteDialog
+    ): ContactGroupDetailsState {
+        return when (currentState) {
+            is ContactGroupDetailsState.Data -> currentState.copy(
+                deleteDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.contact_group_delete_dialog_title, event.groupName),
+                    message = TextUiModel(R.string.contact_group_delete_dialog_message)
+                )
+            )
+            is ContactGroupDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceDismissDeleteDialog(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
+        println("reduceDismissDeleteDialog, currentState: $currentState")
+        return when (currentState) {
+            is ContactGroupDetailsState.Data -> currentState.copy(
+                deleteDialogState = DeleteDialogState.Hidden
+            )
+            is ContactGroupDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceContactGroupDeleted(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
+        return when (currentState) {
+            is ContactGroupDetailsState.Data -> currentState.copy(
+                close = Effect.of(Unit),
+                deleteDialogState = DeleteDialogState.Hidden,
+                deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
+            )
+
+            is ContactGroupDetailsState.Loading -> currentState
+        }
+    }
+
+    private fun reduceDeletingContactGroupError(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
+        return when (currentState) {
+            is ContactGroupDetailsState.Data -> currentState.copy(
+                deletionError = Effect.of(TextUiModel(R.string.contact_group_details_deletion_error)),
+                deleteDialogState = DeleteDialogState.Hidden
+            )
+
             is ContactGroupDetailsState.Loading -> currentState
         }
     }

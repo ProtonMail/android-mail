@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,6 +49,7 @@ class ContactGroupDetailsViewModel @Inject constructor(
     private val reducer: ContactGroupDetailsReducer,
     private val contactGroupDetailsUiModelMapper: ContactGroupDetailsUiModelMapper,
     private val savedStateHandle: SavedStateHandle,
+    private val deleteContactGroup: DeleteContactGroup,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -78,6 +80,9 @@ class ContactGroupDetailsViewModel @Inject constructor(
                         ContactGroupDetailsEvent.CloseContactGroupDetails
                     )
                     ContactGroupDetailsViewAction.OnEmailClick -> handleOnEmailClick()
+                    ContactGroupDetailsViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    ContactGroupDetailsViewAction.OnDeleteConfirmedClick -> handleOnDeleteConfirmedClick()
+                    ContactGroupDetailsViewAction.OnDeleteDismissedClick -> handleOnDeleteDismissedClick()
                 }
             }
         }
@@ -91,6 +96,40 @@ class ContactGroupDetailsViewModel @Inject constructor(
                 currentState.contactGroup.members.map { it.email }
             )
         )
+    }
+
+    private fun handleOnDeleteClick() {
+        val currentState = state.value
+        if (currentState !is ContactGroupDetailsState.Data) return
+
+        emitNewStateFor(
+            ContactGroupDetailsEvent.ShowDeleteDialog(
+                currentState.contactGroup.name
+            )
+        )
+    }
+
+    private fun handleOnDeleteConfirmedClick() {
+        val currentState = state.value
+        if (currentState !is ContactGroupDetailsState.Data) return
+
+        viewModelScope.launch {
+            deleteContactGroup(
+                userId = primaryUserId(),
+                labelId = currentState.contactGroup.id
+            ).getOrElse {
+                return@launch emitNewStateFor(ContactGroupDetailsEvent.DeletingError)
+            }
+
+            emitNewStateFor(ContactGroupDetailsEvent.DeletingSuccess)
+        }
+    }
+
+    private fun handleOnDeleteDismissedClick() {
+        val currentState = state.value
+        if (currentState !is ContactGroupDetailsState.Data) return
+
+        emitNewStateFor(ContactGroupDetailsEvent.DismissDeleteDialog)
     }
 
     private fun flowContactGroupDetailsEvent(userId: UserId, labelId: LabelId): Flow<ContactGroupDetailsEvent> {

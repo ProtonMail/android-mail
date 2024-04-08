@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModel
 
 sealed class ContactGroupDetailsState(
@@ -35,7 +36,10 @@ sealed class ContactGroupDetailsState(
         override val close: Effect<Unit> = Effect.empty(),
         val isSendEnabled: Boolean,
         val contactGroup: ContactGroupDetailsUiModel,
-        val openComposer: Effect<List<String>> = Effect.empty()
+        val openComposer: Effect<List<String>> = Effect.empty(),
+        val deleteDialogState: DeleteDialogState,
+        val deletionSuccess: Effect<TextUiModel> = Effect.empty(),
+        val deletionError: Effect<TextUiModel> = Effect.empty()
     ) : ContactGroupDetailsState(Effect.empty())
 }
 
