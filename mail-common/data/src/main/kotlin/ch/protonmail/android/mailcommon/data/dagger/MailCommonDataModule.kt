@@ -18,9 +18,11 @@
 
 package ch.protonmail.android.mailcommon.data.dagger
 
+import ch.protonmail.android.mailcommon.data.repository.UndoableOperationInMemoryRepository
 import ch.protonmail.android.mailcommon.data.system.BuildVersionProviderImpl
 import ch.protonmail.android.mailcommon.data.system.ContentValuesProviderImpl
 import ch.protonmail.android.mailcommon.data.system.DeviceCapabilitiesImpl
+import ch.protonmail.android.mailcommon.domain.repository.UndoableOperationRepository
 import ch.protonmail.android.mailcommon.domain.system.BuildVersionProvider
 import ch.protonmail.android.mailcommon.domain.system.ContentValuesProvider
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
@@ -28,6 +30,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module(includes = [MailCommonDataModule.BindsModule::class])
 @InstallIn(SingletonComponent::class)
@@ -45,5 +48,9 @@ object MailCommonDataModule {
 
         @Binds
         fun bindContentValuesProvider(impl: ContentValuesProviderImpl): ContentValuesProvider
+
+        @Binds
+        @Singleton
+        fun bindUndoableOperationRepository(impl: UndoableOperationInMemoryRepository): UndoableOperationRepository
     }
 }
