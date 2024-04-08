@@ -22,6 +22,8 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
+import ch.protonmail.android.mailcommon.domain.usecase.RegisterUndoableOperation
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
@@ -31,6 +33,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.util.kotlin.filterNullValues
 import javax.inject.Inject
 
 class MoveConversations @Inject constructor(
@@ -38,7 +41,8 @@ class MoveConversations @Inject constructor(
     private val observeExclusiveMailLabels: ObserveExclusiveMailLabels,
     private val observeMailLabels: ObserveMailLabels,
     private val incrementUnreadCount: IncrementUnreadCount,
-    private val decrementUnreadCount: DecrementUnreadCount
+    private val decrementUnreadCount: DecrementUnreadCount,
+    private val registerUndoableOperation: RegisterUndoableOperation
 ) {
 
     suspend operator fun invoke(
@@ -51,8 +55,36 @@ class MoveConversations @Inject constructor(
         decrementUnreadConversationsCount(userId, conversationIds, exclusiveMailLabels)
         conversationRepository
             .move(userId, conversationIds, allLabelIds, exclusiveMailLabels, toLabelId = labelId)
-            .onRight { incrementUnreadConversationsCount(userId, conversationIds, labelId) }
+            .onRight {
+                incrementUnreadConversationsCount(userId, conversationIds, labelId)
+                registerUndoableOperations(userId, conversationIds, exclusiveMailLabels, labelId)
+            }
             .bind()
+    }
+
+    private suspend fun registerUndoableOperations(
+        userId: UserId,
+        conversationIds: List<ConversationId>,
+        exclusiveLabelIds: List<LabelId>,
+        labelId: LabelId
+    ) {
+        val conversationIdToLabelIdPairs = conversationRepository
+            .observeCachedConversations(userId, conversationIds)
+            .firstOrNull()
+            ?.map { conversation ->
+                Pair(
+                    conversation.conversationId.id,
+                    conversation.labels.firstOrNull { it.labelId in exclusiveLabelIds }?.labelId
+                )
+            }
+
+        conversationIdToLabelIdPairs?.let {
+            val operation = UndoableOperation.MoveConversations(
+                conversationIdToLabelIdPairs.toMap().filterNullValues(),
+                labelId
+            )
+            registerUndoableOperation(operation)
+        }
     }
 
     private suspend fun decrementUnreadConversationsCount(

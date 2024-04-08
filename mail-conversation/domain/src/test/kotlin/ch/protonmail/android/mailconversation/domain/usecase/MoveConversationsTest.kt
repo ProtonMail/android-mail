@@ -21,10 +21,12 @@ package ch.protonmail.android.mailconversation.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.RegisterUndoableOperation
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
@@ -57,6 +59,7 @@ class MoveConversationsTest {
     private val observeExclusiveMailLabels = mockk<ObserveExclusiveMailLabels>()
     private val decrementUnreadCount: DecrementUnreadCount = mockk()
     private val incrementUnreadCount: IncrementUnreadCount = mockk()
+    private val registerUndoableOperation = mockk<RegisterUndoableOperation>()
 
     private val moveConversations by lazy {
         MoveConversations(
@@ -64,7 +67,8 @@ class MoveConversationsTest {
             observeExclusiveMailLabels = observeExclusiveMailLabels,
             observeMailLabels = observeMailLabels,
             incrementUnreadCount = incrementUnreadCount,
-            decrementUnreadCount = decrementUnreadCount
+            decrementUnreadCount = decrementUnreadCount,
+            registerUndoableOperation = registerUndoableOperation
         )
     }
 
@@ -128,6 +132,7 @@ class MoveConversationsTest {
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveSucceeds(destinationLabel, conversations)
+        expectRegisterUndoOperationSucceeds()
         coEvery {
             conversationRepository.observeCachedConversations(userId, conversationIds)
         } returns flowOf(conversations)
@@ -167,6 +172,7 @@ class MoveConversationsTest {
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveSucceeds(destinationLabel, conversations)
+        expectRegisterUndoOperationSucceeds()
         coEvery {
             conversationRepository.observeCachedConversations(userId, conversationIds)
         } returns flowOf(conversations)
@@ -179,6 +185,35 @@ class MoveConversationsTest {
         coVerify {
             incrementUnreadCount(userId, whetherForecastExpectedLabelIds)
         }
+    }
+
+    @Test
+    fun `store undoable operation when moving conversation locally succeeds`() = runTest {
+        // given
+        val destinationLabel = LabelId("labelId")
+        val alphaAppConversation = ConversationSample.AlphaAppFeedback
+        val conversations = listOf(alphaAppConversation)
+        val operationMap = mapOf(
+            Pair(alphaAppConversation.conversationId.id, LabelIdSample.Inbox)
+        )
+        val expectedOperation = UndoableOperation.MoveConversations(operationMap, destinationLabel)
+        expectObserveMailLabelsSucceeds()
+        expectObserveExclusiveMailLabelSucceeds()
+        expectMoveSucceeds(destinationLabel, conversations)
+        expectRegisterUndoOperationSucceeds(expectedOperation)
+        coEvery {
+            conversationRepository.observeCachedConversations(userId, conversationIds)
+        } returns flowOf(conversations)
+
+        // when
+        moveConversations(userId, conversationIds, destinationLabel)
+
+        // then
+        coVerify { registerUndoableOperation(expectedOperation) }
+    }
+
+    private fun expectRegisterUndoOperationSucceeds(expectedOperation: UndoableOperation.MoveConversations? = null) {
+        coEvery { registerUndoableOperation(expectedOperation ?: any()) } just Runs
     }
 
     private fun expectMoveSucceeds(destinationLabel: LabelId, expectedList: List<Conversation>) {
