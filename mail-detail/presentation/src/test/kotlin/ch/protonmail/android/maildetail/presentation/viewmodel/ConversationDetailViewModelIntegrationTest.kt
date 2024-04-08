@@ -23,6 +23,7 @@ import java.util.Random
 import android.content.Context
 import android.net.Uri
 import android.text.format.Formatter
+import android.webkit.WebView
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -108,6 +109,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
@@ -159,6 +161,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -286,6 +289,7 @@ class ConversationDetailViewModelIntegrationTest {
         coEvery { this@mockk.invoke(userId) } returns true
     }
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
+    private val printMessage = mockk<PrintMessage>()
 
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
@@ -1664,8 +1668,53 @@ class ConversationDetailViewModelIntegrationTest {
             )
 
             // then
-            val actual = awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
-            assertEquals(BottomSheetVisibilityEffect.Hide, actual)
+            val item = awaitItem()
+
+            val actualBottomSheetVisibilityEffect = item.bottomSheetState?.bottomSheetVisibilityEffect
+            assertIs<Effect<BottomSheetVisibilityEffect.Hide>>(actualBottomSheetVisibilityEffect)
+
+            val messagesState = item.messagesState as ConversationDetailsMessagesState.Data
+            val expandedMessage = messagesState.messages.find {
+                it.messageId.id == MessageWithLabelsSample.InvoiceWithLabel.message.messageId.id
+            } as Expanded
+            val actual = expandedMessage.messageBodyUiModel.printEffect
+            assertEquals(Effect.of(Unit), actual)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should call the print message use case in order to print a message`() = runTest {
+        // Given
+        val context = mockk<Context>()
+        val webView = mockk<WebView>()
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        every { printMessage(context, webView) } returns mockk()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(
+                ConversationDetailViewAction.Print(context, webView)
+            )
+
+            // then
+            verify { printMessage(context, webView) }
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -1738,7 +1787,8 @@ class ConversationDetailViewModelIntegrationTest {
         updateLinkConfirmationSetting = updateLinkConfirmationSetting,
         resolveParticipantName = resolveParticipantName,
         isProtonCalendarInstalled = protonCalendarInstalled,
-        networkManager = networkMgmt
+        networkManager = networkMgmt,
+        printMessage = printMessage
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

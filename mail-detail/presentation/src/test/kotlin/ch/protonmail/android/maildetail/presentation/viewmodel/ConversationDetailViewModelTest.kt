@@ -95,6 +95,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
@@ -297,6 +298,7 @@ class ConversationDetailViewModelTest {
     private val networkManager = mockk<NetworkManager>()
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
+    private val printMessage = mockk<PrintMessage>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -335,7 +337,8 @@ class ConversationDetailViewModelTest {
             resolveParticipantName = resolveParticipantsName,
             networkManager = networkManager,
             reportPhishingMessage = reportPhishingMessage,
-            isProtonCalendarInstalled = isProtonCalendarInstalled
+            isProtonCalendarInstalled = isProtonCalendarInstalled,
+            printMessage = printMessage
         )
     }
 

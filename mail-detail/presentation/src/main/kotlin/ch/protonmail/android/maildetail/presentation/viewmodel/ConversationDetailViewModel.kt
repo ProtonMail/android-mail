@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import android.content.Context
+import android.webkit.WebView
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -99,6 +101,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
@@ -173,7 +176,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val resolveParticipantName: ResolveParticipantName,
     private val reportPhishingMessage: ReportPhishingMessage,
     private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
-    private val networkManager: NetworkManager
+    private val networkManager: NetworkManager,
+    private val printMessage: PrintMessage
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -218,6 +222,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing(action)
             is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
+            is ConversationDetailViewAction.Print -> handlePrint(action.context, action.webView)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -871,6 +876,10 @@ class ConversationDetailViewModel @Inject constructor(
                 emitNewStateFrom(ConversationDetailEvent.HandleOpenProtonCalendarRequest(intent))
             }
         )
+    }
+
+    private fun handlePrint(context: Context, webView: WebView) {
+        printMessage(context, webView)
     }
 
     companion object {

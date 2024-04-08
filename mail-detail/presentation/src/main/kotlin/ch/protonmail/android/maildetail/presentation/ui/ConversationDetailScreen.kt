@@ -18,6 +18,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
+import android.webkit.WebView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -52,6 +53,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -116,6 +118,7 @@ fun ConversationDetailScreen(
     val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -257,6 +260,9 @@ fun ConversationDetailScreen(
                 },
                 onOpenInProtonCalendar = {
                     viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
+                },
+                onPrint = { webView ->
+                    viewModel.submit(ConversationDetailViewAction.Print(context, webView))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -434,7 +440,8 @@ fun ConversationDetailScreen(
                     onLoadRemoteContent = actions.onLoadRemoteContent,
                     onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                     onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
-                    onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
+                    onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
+                    onPrint = actions.onPrint
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -678,7 +685,8 @@ object ConversationDetailScreen {
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
-        val onOpenInProtonCalendar: (MessageId) -> Unit
+        val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onPrint: (WebView) -> Unit
     ) {
 
         companion object {
@@ -713,7 +721,8 @@ object ConversationDetailScreen {
                 onLoadRemoteContent = {},
                 onLoadEmbeddedImages = {},
                 onLoadRemoteAndEmbeddedContent = {},
-                onOpenInProtonCalendar = {}
+                onOpenInProtonCalendar = {},
+                onPrint = { _ -> }
             )
         }
     }

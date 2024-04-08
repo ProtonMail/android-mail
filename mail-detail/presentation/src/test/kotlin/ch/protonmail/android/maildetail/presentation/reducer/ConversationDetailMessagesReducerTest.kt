@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
@@ -342,6 +343,27 @@ class ConversationDetailMessagesReducerTest(
                             messageBodyUiModel =
                             ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.copy(
                                 viewModePreference = ViewModePreference.LightMode
+                            )
+                        )
+                    ).toImmutableList()
+                )
+            ),
+
+            Input(
+                currentState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
+                    ).toImmutableList()
+                ),
+                operation = ConversationDetailViewAction.PrintRequested(
+                    MessageIdSample.AugWeatherForecast
+                ),
+                expectedState = ConversationDetailsMessagesState.Data(
+                    messages = listOf(
+                        ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.copy(
+                            messageBodyUiModel =
+                            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.messageBodyUiModel.copy(
+                                printEffect = Effect.of(Unit)
                             )
                         )
                     ).toImmutableList()

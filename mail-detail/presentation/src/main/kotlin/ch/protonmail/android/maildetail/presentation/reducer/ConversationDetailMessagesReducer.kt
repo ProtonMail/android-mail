@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.reducer
 
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
@@ -112,6 +113,10 @@ class ConversationDetailMessagesReducer @Inject constructor(
 
         is ConversationDetailViewAction.SwitchViewMode -> {
             currentState.toNewStateForSwitchViewMode(operation.messageId, operation.viewModePreference)
+        }
+
+        is ConversationDetailViewAction.PrintRequested -> {
+            currentState.toNewStateForPrintRequested(operation.messageId)
         }
     }
 
@@ -337,6 +342,30 @@ class ConversationDetailMessagesReducer @Inject constructor(
                         )
                     } else {
                         it
+                    }
+                }.toImmutableList()
+            )
+            else -> this
+        }
+    }
+
+    private fun ConversationDetailsMessagesState.toNewStateForPrintRequested(
+        messageId: MessageId
+    ): ConversationDetailsMessagesState {
+        return when (this) {
+            is ConversationDetailsMessagesState.Data -> this.copy(
+                messages = messages.map { messageUiModel ->
+                    if (
+                        messageUiModel is ConversationDetailMessageUiModel.Expanded &&
+                        messageUiModel.messageId.id == messageId.id
+                    ) {
+                        messageUiModel.copy(
+                            messageBodyUiModel = messageUiModel.messageBodyUiModel.copy(
+                                printEffect = Effect.of(Unit)
+                            )
+                        )
+                    } else {
+                        messageUiModel
                     }
                 }.toImmutableList()
             )
