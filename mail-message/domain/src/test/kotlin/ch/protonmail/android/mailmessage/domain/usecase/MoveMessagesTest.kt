@@ -21,7 +21,9 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.RegisterUndoableOperation
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
@@ -31,9 +33,12 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.coVerifySequence
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -51,12 +56,14 @@ class MoveMessagesTest {
     private val decrementUnreadCount = mockk<DecrementUnreadCount>()
     private val incrementUnreadCount = mockk<IncrementUnreadCount>()
     private val observeExclusiveMailLabels = mockk<ObserveExclusiveMailLabels>()
+    private val registerUndoableOperation = mockk<RegisterUndoableOperation>()
 
     private val moveMessages = MoveMessages(
         messageRepository,
         decrementUnreadCount,
         incrementUnreadCount,
-        observeExclusiveMailLabels
+        observeExclusiveMailLabels,
+        registerUndoableOperation
     )
 
     @Test
@@ -65,6 +72,7 @@ class MoveMessagesTest {
         expectObserveExclusiveMailLabelSucceeds()
         expectGetLocalMessagesSucceeds()
         expectMoveSucceeds(SystemLabelId.Spam.labelId, listOf(MessageSample.AugWeatherForecast))
+        expectRegisterUndoOperationSucceeds()
 
         // When
         val actual = moveMessages(userId, messageIds, SystemLabelId.Spam.labelId)
@@ -98,6 +106,7 @@ class MoveMessagesTest {
             expectObserveExclusiveMailLabelSucceeds()
             expectGetLocalMessagesSucceeds(messages)
             expectMoveSucceeds(toLabel, messages, expectedMap)
+            expectRegisterUndoOperationSucceeds()
             coEvery { decrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
             coEvery { incrementUnreadCount(userId, unreadMessage.labelIds) } returns Unit.right()
 
@@ -110,6 +119,29 @@ class MoveMessagesTest {
                 incrementUnreadCount(userId, unreadMessage.labelIds)
             }
         }
+
+    @Test
+    fun `store undoable operation when moving messages locally succeeds`() = runTest {
+        // given
+        val toLabel = SystemLabelId.Trash.labelId
+        val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice)
+        val expectedMap = messages.associate { it.messageId to it.labelIds.first() }
+        val expectedOperation = UndoableOperation.MoveMessages(expectedMap.mapKeys { it.key.id }, toLabel)
+        expectObserveExclusiveMailLabelSucceeds()
+        expectGetLocalMessagesSucceeds(messages)
+        expectMoveSucceeds(toLabel, messages, expectedMap)
+        expectRegisterUndoOperationSucceeds(expectedOperation)
+
+        // when
+        moveMessages(userId, messageIds, toLabel)
+
+        // then
+        coVerify { registerUndoableOperation(expectedOperation) }
+    }
+
+    private fun expectRegisterUndoOperationSucceeds(expectedOperation: UndoableOperation.MoveMessages? = null) {
+        coEvery { registerUndoableOperation(expectedOperation ?: any()) } just Runs
+    }
 
     private fun expectObserveExclusiveMailLabelSucceeds() {
         every { observeExclusiveMailLabels(userId) } returns flowOf(

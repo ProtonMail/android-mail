@@ -19,8 +19,11 @@
 package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
+import arrow.core.mapNotNull
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
+import ch.protonmail.android.mailcommon.domain.usecase.RegisterUndoableOperation
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveMailLabels
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -34,7 +37,8 @@ class MoveMessages @Inject constructor(
     private val messageRepository: MessageRepository,
     private val decrementUnreadCount: DecrementUnreadCount,
     private val incrementUnreadCount: IncrementUnreadCount,
-    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels
+    private val observeExclusiveMailLabels: ObserveExclusiveMailLabels,
+    private val registerUndoableOperation: RegisterUndoableOperation
 ) {
 
     suspend operator fun invoke(
@@ -50,8 +54,22 @@ class MoveMessages @Inject constructor(
         decrementUnreadCountInOriginLabel(userId, messagesWithExclusiveLabels.keys)
         val messageIdsWithExclusiveLabels = messagesWithExclusiveLabels.mapKeys { it.key.messageId }
         messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId)
-            .onRight { messages -> incrementUnreadCountInDestinationLabel(userId, messages) }
+            .onRight { messages ->
+                incrementUnreadCountInDestinationLabel(userId, messages)
+                registerUndoableOperations(messageIdsWithExclusiveLabels, labelId)
+            }
             .bind()
+    }
+
+    private suspend fun registerUndoableOperations(
+        messageIdsWithExclusiveLabels: Map<MessageId, LabelId?>,
+        labelId: LabelId
+    ) {
+        val operation = UndoableOperation.MoveMessages(
+            messageIdsWithExclusiveLabels.mapKeys { it.key.id }.mapNotNull { it.value },
+            labelId
+        )
+        registerUndoableOperation(operation)
     }
 
     private suspend fun incrementUnreadCountInDestinationLabel(userId: UserId, messages: List<Message>) {
