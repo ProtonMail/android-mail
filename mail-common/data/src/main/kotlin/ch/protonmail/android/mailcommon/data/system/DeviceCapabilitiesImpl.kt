@@ -22,7 +22,7 @@ import android.webkit.WebView
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import javax.inject.Inject
 
-internal class DeviceCapabilitiesImpl @Inject constructor() : DeviceCapabilities {
+class DeviceCapabilitiesImpl @Inject constructor() : DeviceCapabilities {
 
     // No need for custom getters as per official documentation:
     // "If the WebView package changes, any app process that has loaded WebView will be killed."
