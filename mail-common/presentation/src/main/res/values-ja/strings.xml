@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">新規ログインの通知</string>
   <string name="auth_badge_official">公式</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">この操作を処理するアプリが見つかりませんでした。</string>
+  <string name="action_copied_to_clipboard">Copied to clipboard</string>
   <string name="mailbox_action_delete_dialog_button_cancel">キャンセル</string>
   <string name="mailbox_action_delete_dialog_button_delete">削除</string>
   <string name="picker_dialog_cancel">キャンセル</string>

@@ -17,15 +17,15 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="contact_list_title">Contatos</string>
+  <string name="contact_list_title">Contactos</string>
   <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
   <string name="no_contacts">No contacts found</string>
   <string name="no_contact_groups">No contact groups found</string>
   <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
-  <string name="add_contact">Adicionar o contacto</string>
+  <string name="add_contact">Adicionar contacto</string>
   <string name="add_contact_group">Add contact group</string>
-  <string name="add_contact_content_description">Adicionar o contacto</string>
+  <string name="add_contact_content_description">Adicionar contacto</string>
   <string name="all_title">Todos</string>
   <string name="groups_title">Grupos</string>
   <string name="group_member_count">%1$s membro</string>
@@ -43,7 +43,7 @@
   <string name="contact_groups_content_description">Grupos de contactos</string>
   <string name="contact_type_email">E-mail</string>
   <string name="contact_type_phone">Telefone</string>
-  <string name="contact_type_home">Início</string>
+  <string name="contact_type_home">Casa</string>
   <string name="contact_type_work">Trabalho</string>
   <string name="contact_type_other">Outro</string>
   <string name="contact_type_mobile">Telemóvel</string>
@@ -59,7 +59,7 @@
   <string name="contact_property_organization">Organização</string>
   <string name="contact_property_anniversary">Aniversário</string>
   <string name="contact_property_title">Título</string>
-  <string name="contact_property_role">Papel</string>
+  <string name="contact_property_role">Função</string>
   <string name="contact_property_member">Membro</string>
   <string name="contact_property_url">URL</string>
   <string name="contact_property_gender">Género</string>
@@ -70,7 +70,7 @@
   <string name="contact_form_create_success">O contacto foi criado.</string>
   <string name="contact_form_update_success">O contacto foi atualizado.</string>
   <string name="save_contact_content_description">Guardar o contacto</string>
-  <string name="contact_form_save">Salvar</string>
+  <string name="contact_form_save">Guardar</string>
   <string name="add_new">Adicionar</string>
   <string name="email_section">E-mail</string>
   <string name="phone_section">Número de telefone</string>
@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancelar</string>
   <string name="contact_details_delete_dialog_confirm_button">Aceitar</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">Contatos</string>
+  <string name="all_contacts_tab">Contactos</string>
   <string name="contact_groups_tab">Grupos</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d membro</item>
@@ -113,13 +113,13 @@
   <string name="edit_contact_group_content_description">Editar grupo de contactos</string>
   <string name="delete_contact_group_content_description">Eliminar grupo de contactos</string>
   <string name="send_group_message">Enviar mensagem de grupo</string>
-  <string name="contact_group_form_save">Salvar</string>
+  <string name="contact_group_form_save">Guardar</string>
   <string name="contact_group_form_name_hint">Nome a mostrar</string>
   <string name="remove_member_content_description">Remover o membro</string>
   <string name="add_members">Adicionar membros</string>
   <string name="change_color">Alterar a cor</string>
   <string name="contact_group_form_create_success">Grupo de contactos criado</string>
-  <string name="contact_group_form_update_success">Grupo de contactos actualizado</string>
+  <string name="contact_group_form_update_success">Grupo de contactos atualizado</string>
   <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
   <string name="members_done">Terminado</string>

@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">새로운 로그인 알림</string>
   <string name="auth_badge_official">공식</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">이 작업을 처리하는 앱을 찾을 수 없습니다</string>
+  <string name="action_copied_to_clipboard">클립보드로 복사함</string>
   <string name="mailbox_action_delete_dialog_button_cancel">취소</string>
   <string name="mailbox_action_delete_dialog_button_delete">삭제</string>
   <string name="picker_dialog_cancel">취소</string>

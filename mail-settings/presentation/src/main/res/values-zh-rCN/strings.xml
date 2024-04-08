@@ -24,7 +24,7 @@
   <string name="mail_settings_app_settings">程序设置</string>
   <string name="mail_settings_theme">配色</string>
   <string name="mail_settings_push_notifications">推送通知</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">自动锁定</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
   <string name="mail_settings_app_language">语言</string>
   <string name="mail_settings_combined_contacts">共用通讯录</string>
@@ -116,21 +116,21 @@
   <string name="mail_settings_notifications_update_error">更新设置时出现错误</string>
   <string name="mail_settings_notifications_loading_error">加载设置时出现错误</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_title">自动锁定</string>
   <string name="mail_settings_auto_lock_item_title">自动锁定程序</string>
   <string name="mail_settings_auto_lock_item_description">开启后程序可自动锁定，需要输入解锁密码才能使用。</string>
   <string name="mail_settings_auto_lock_change_pin_description">更改解锁密码</string>
   <string name="mail_settings_auto_lock_item_timer_title">自动锁定时间</string>
   <string name="mail_settings_auto_lock_immediately">立刻</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">五分钟无操作</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">十五分钟内无操作</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">一小时无操作</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">一天内无操作</string>
   <string name="mail_settings_auto_lock_update_error">更新设置时出现错误</string>
   <string name="mail_settings_pin_insertion_input_title">输入解锁密码</string>
   <string name="mail_settings_pin_insertion_set_title">设置解锁密码</string>
   <string name="mail_settings_pin_insertion_confirm_title">确认解锁密码</string>
-  <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
+  <string name="mail_settings_pin_insertion_lock_icon_description">锁定图标</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>

@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">Noves notificacions d\'inici de sessió</string>
   <string name="auth_badge_official">Oficial</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">No s\'ha trobat cap aplicació per a gestionar aquesta acció</string>
+  <string name="action_copied_to_clipboard">Copied to clipboard</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancel·la</string>
   <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
   <string name="picker_dialog_cancel">Cancel·la</string>

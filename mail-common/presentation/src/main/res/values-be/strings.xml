@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">Новыя апавяшчэнні пра ўваходы</string>
   <string name="auth_badge_official">Афіцыйны</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Не знойдзена праграм для апрацоўкі гэтага дзеяння</string>
+  <string name="action_copied_to_clipboard">Скапіявана ў буфер абмену</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Скасаваць</string>
   <string name="mailbox_action_delete_dialog_button_delete">Выдаліць</string>
   <string name="picker_dialog_cancel">Скасаваць</string>

@@ -33,7 +33,7 @@
   <string name="new_contact">Kontak baru</string>
   <string name="new_group">Grup baru</string>
   <string name="import_contact">Unggah kontak perangkat</string>
-  <string name="no_contact_email">Tidak ada alamat surel</string>
+  <string name="no_contact_email">Tidak ada alamat email</string>
   <string name="multiple_contact_emails">%1$s, + %2$d</string>
   <string name="contact_details_loading_error">Terdapat kesalahan dalam memuat kontak. Silakan coba lagi nanti</string>
   <string name="contact_details_delete_success">Kontak dihapus</string>

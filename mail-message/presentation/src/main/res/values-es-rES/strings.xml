@@ -44,4 +44,9 @@
   <string name="bottom_sheet_archive_action">¿También archivar?</string>
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
   <string name="bottom_sheet_more_header_message_from">Mensaje de %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Copiar el enlace</string>
+  <string name="message_link_long_click_copy_description">Texto copiado desde Proton Mail</string>
+  <string name="message_link_long_click_share">Compartir el enlace</string>
+  <string name="message_link_long_click_share_via">Compartir el enlace por</string>
 </resources>

@@ -44,4 +44,9 @@
   <string name="bottom_sheet_archive_action">Sposta nell\'archivio dopo l\'etichettatura</string>
   <string name="bottom_sheet_label_as_title">Etichetta come...</string>
   <string name="bottom_sheet_more_header_message_from">Messaggio da %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Copia il link</string>
+  <string name="message_link_long_click_copy_description">Testo copiato da Proton Mail</string>
+  <string name="message_link_long_click_share">Condividi il link</string>
+  <string name="message_link_long_click_share_via">Condividi il link tramite</string>
 </resources>

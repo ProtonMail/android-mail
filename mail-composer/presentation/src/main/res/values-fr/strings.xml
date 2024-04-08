@@ -51,7 +51,7 @@
   <string name="composer_button_set_expiration">Définir la date d\'expiration</string>
   <string name="composer_expiration_time_bottom_sheet_title">Délai d\'expiration du message</string>
   <string name="composer_expiration_time_bottom_sheet_done">Configurer</string>
-  <string name="composer_bottom_bar_expiration_time_none"/>
+  <string name="composer_bottom_bar_expiration_time_none">Aucun</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 heure</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 jour</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 jours</string>

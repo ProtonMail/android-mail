@@ -25,8 +25,8 @@
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜索模式</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">清除搜索关键词</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">输入搜索关键词</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="other">已选择 %d 项</item>
   </plurals>
@@ -39,7 +39,7 @@
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
   <string name="mailbox_error_message_unexpected">发生意外错误。</string>
   <string name="mailbox_is_empty_title">无邮件</string>
-  <string name="mailbox_is_empty_description">You are up to date</string>
+  <string name="mailbox_is_empty_description">已是最新版本.</string>
   <string name="mailbox_is_empty_no_unread_messages_title">没有未读邮件</string>
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
@@ -95,21 +95,21 @@
   <string name="mailbox_search_no_results_explanation">搜索日期、姓名、邮箱地址或邮件主题</string>
   <string name="mailbox_action_button_clear_trash">清空废件箱</string>
   <string name="mailbox_action_button_clear_spam">清空垃圾邮件</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_clear_trash_dialog_title">清空废件箱</string>
+  <string name="mailbox_action_clear_spam_dialog_title">清空垃圾邮件</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">确定要永久删除废件箱中的所有邮件吗？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">确定要永久删除所有垃圾邮件吗？</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">确定要永久删除废件箱中涉及的所有会话吗？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">确定要永久删除垃圾邮件涉及的所有会话吗？</string>
+  <string name="mailbox_action_clear_operation_scheduled">"清除操作已经安排"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">警告</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">您的 Proton 账户存储空间已使用超过80%。请清理无用资料释放空间或升级以获取更多存储空间。</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">您的 Proton 账户存储空间已使用超过90%。请清理无用资料释放空间或升级以获取更多存储空间。</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">不再提示</string>
-  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
+  <string name="storage_limit_warning_dialog_confirm_button">好的</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
-  <string name="storage_quota_over_dialog_confirm_button">OK</string>
+  <string name="storage_quota_over_dialog_title">警告</string>
+  <string name="storage_quota_over_dialog_text">您的 Proton 账户存储空间已满，必须永久删除部分邮件或付费扩容才能继续收发邮件。</string>
+  <string name="storage_quota_over_dialog_confirm_button">好的</string>
 </resources>

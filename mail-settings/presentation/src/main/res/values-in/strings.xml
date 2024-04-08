@@ -32,7 +32,7 @@
   <string name="mail_settings_local_cache_hint">Ruang terpakai: %s</string>
   <string name="mail_settings_local_cache_clear_button">Bersihkan data</string>
   <string name="mail_settings_swipe_actions">Tindakan usap</string>
-  <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat surel yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>
+  <string name="mail_settings_combined_contacts_hint">Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.</string>
   <string name="mail_settings_alternative_routing_hint">Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan: Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Bawaan sistem</string>
@@ -51,10 +51,10 @@
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Langganan</string>
   <string name="mail_settings_password_management">Pengelolaan kata sandi</string>
-  <string name="mail_settings_recovery_email">Alamat surel pemulihan</string>
+  <string name="mail_settings_recovery_email">Alamat email pemulihan</string>
   <string name="mail_settings_mailbox_size">Ukuran kotak surat</string>
   <string name="mail_settings_addresses">Alamat</string>
-  <string name="mail_settings_default_email_address">Alamat surel default</string>
+  <string name="mail_settings_default_email_address">Alamat email default</string>
   <string name="mail_settings_display_name_and_signature">Nama tampilan dan tanda tangan</string>
   <string name="mail_settings_mailbox">Kotak Surat</string>
   <string name="mail_settings_privacy">Privasi</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_folders">Folder</string>
   <string name="mail_settings_conversation_mode">Mode percakapan</string>
   <string name="mail_settings_not_set">Belum ditentukan</string>
-  <string name="mail_settings_conversation_mode_hint">Tentukan apakah surel yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
+  <string name="mail_settings_conversation_mode_hint">Tentukan apakah email yang terhubung dalam suatu rantai percakapan akan saling dikelompokkan atau ditampilkan secara terpisah</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Alamat email bawaan</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Alamat yang tidak aktif</string>

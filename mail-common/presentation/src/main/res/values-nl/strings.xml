@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">Nieuwe inlogmeldingen</string>
   <string name="auth_badge_official">Officieel</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Er is geen app gevonden om deze actie uit te voeren</string>
+  <string name="action_copied_to_clipboard">Copied to clipboard</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Annuleren</string>
   <string name="mailbox_action_delete_dialog_button_delete">Verwijderen</string>
   <string name="picker_dialog_cancel">Annuleren</string>

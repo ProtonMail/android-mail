@@ -49,7 +49,7 @@
   <string name="action_report_phishing_description">Laporkan upaya phishing</string>
   <string name="action_remind_description">Ingatkan saya</string>
   <string name="action_save_pdf_description">Simpan sebagai PDF</string>
-  <string name="action_sender_emails_description">Tentukan tindakan untuk surel dari pengirim ini ke depannya</string>
+  <string name="action_sender_emails_description">Tentukan tindakan untuk email dari pengirim ini ke depannya</string>
   <string name="action_save_attachments_description">Simpan lampiran</string>
   <string name="action_more_description">Lainnya</string>
   <string name="action_reply_content_description">Balas</string>
@@ -74,7 +74,7 @@
   <string name="action_report_phishing_content_description">Laporkan phishing</string>
   <string name="action_remind_content_description">Ingatkan saya</string>
   <string name="action_save_pdf_content_description">Simpan sebagai PDF</string>
-  <string name="action_sender_emails_content_description">Tentukan tindakan untuk surel dari pengirim ini ke depannya</string>
+  <string name="action_sender_emails_content_description">Tentukan tindakan untuk email dari pengirim ini ke depannya</string>
   <string name="action_save_attachments_content_description">Simpan lampiran</string>
   <string name="action_more_content_description">Lainnya</string>
   <string name="common_error_loading_actions">Tindakan gagal dimuat</string>
@@ -82,12 +82,13 @@
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Lampiran</string>
   <string name="attachment_download_notification_channel_description">Notifikasi untuk unduhan lampiran</string>
-  <string name="email_notification_channel_name">Surel</string>
+  <string name="email_notification_channel_name">Email</string>
   <string name="login_notification_channel_name">Peringatan masuk</string>
-  <string name="email_notification_channel_description">Notifikasi surel masuk</string>
+  <string name="email_notification_channel_description">Notifikasi email masuk</string>
   <string name="login_notification_channel_description">Pemberitahuan masuk terbaru</string>
   <string name="auth_badge_official">Resmi</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Aplikasi untuk menangani tindakan ini tidak ditemukan</string>
+  <string name="action_copied_to_clipboard">Copied to clipboard</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Batalkan</string>
   <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>
   <string name="picker_dialog_cancel">Batal</string>

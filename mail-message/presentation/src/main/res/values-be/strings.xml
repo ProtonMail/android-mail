@@ -46,4 +46,9 @@
   <string name="bottom_sheet_archive_action">Таксама архіваваць?</string>
   <string name="bottom_sheet_label_as_title">Пазначыць як...</string>
   <string name="bottom_sheet_more_header_message_from">Паведамленне ад %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Скапіяваць спасылку</string>
+  <string name="message_link_long_click_copy_description">Тэкст скапіяваны з Proton Mail</string>
+  <string name="message_link_long_click_share">Абагуліць спасылку</string>
+  <string name="message_link_long_click_share_via">Абагуліць спасылку праз</string>
 </resources>

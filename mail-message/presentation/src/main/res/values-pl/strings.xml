@@ -46,4 +46,9 @@
   <string name="bottom_sheet_archive_action">Również archiwizuj?</string>
   <string name="bottom_sheet_label_as_title">Oznacz jako...</string>
   <string name="bottom_sheet_more_header_message_from">Wiadomość od %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Kopiuj link</string>
+  <string name="message_link_long_click_copy_description">Tekst został skopiowany z Proton Mail</string>
+  <string name="message_link_long_click_share">Udostępnij link</string>
+  <string name="message_link_long_click_share_via">Udostępnij link</string>
 </resources>

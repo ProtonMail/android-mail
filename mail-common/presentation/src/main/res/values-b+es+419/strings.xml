@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">Notificaciones de nuevos inicios de sesión</string>
   <string name="auth_badge_official">Oficial</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">No se encontró una aplicación para ejecutar esta acción</string>
+  <string name="action_copied_to_clipboard">Copiado al portapapeles</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Cancelar</string>
   <string name="mailbox_action_delete_dialog_button_delete">Eliminar</string>
   <string name="picker_dialog_cancel">Cancelar</string>

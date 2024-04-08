@@ -88,6 +88,7 @@
   <string name="login_notification_channel_description">Yeni oturumların bildirimleri</string>
   <string name="auth_badge_official">Resmi</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Bu işlemi yapacak bir uygulama bulunamadı</string>
+  <string name="action_copied_to_clipboard">Panoya kopyalandı</string>
   <string name="mailbox_action_delete_dialog_button_cancel">İptal</string>
   <string name="mailbox_action_delete_dialog_button_delete">Sil</string>
   <string name="picker_dialog_cancel">İptal</string>

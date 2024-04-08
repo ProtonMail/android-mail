@@ -45,4 +45,9 @@
   <string name="bottom_sheet_archive_action">Also archive?</string>
   <string name="bottom_sheet_label_as_title">Označi kao...</string>
   <string name="bottom_sheet_more_header_message_from">Poruka od %s</string>
+  <!-- Message body link actions -->
+  <string name="message_link_long_click_copy">Copy link</string>
+  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
+  <string name="message_link_long_click_share">Share link</string>
+  <string name="message_link_long_click_share_via">Share link via</string>
 </resources>
