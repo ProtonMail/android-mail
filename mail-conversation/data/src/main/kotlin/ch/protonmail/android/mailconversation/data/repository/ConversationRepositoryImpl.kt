@@ -187,15 +187,6 @@ class ConversationRepositoryImpl @Inject constructor(
 
     override suspend fun move(
         userId: UserId,
-        conversationId: ConversationId,
-        allLabelIds: List<LabelId>,
-        fromLabelIds: List<LabelId>,
-        toLabelId: LabelId
-    ): Either<DataError, Conversation> = move(userId, listOf(conversationId), allLabelIds, fromLabelIds, toLabelId)
-        .map { it.first() }
-
-    override suspend fun move(
-        userId: UserId,
         conversationIds: List<ConversationId>,
         allLabelIds: List<LabelId>,
         fromLabelIds: List<LabelId>,

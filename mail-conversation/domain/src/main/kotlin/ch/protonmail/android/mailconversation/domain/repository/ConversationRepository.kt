@@ -116,14 +116,6 @@ interface ConversationRepository {
 
     suspend fun move(
         userId: UserId,
-        conversationId: ConversationId,
-        allLabelIds: List<LabelId>,
-        fromLabelIds: List<LabelId> = emptyList(),
-        toLabelId: LabelId
-    ): Either<DataError, Conversation>
-
-    suspend fun move(
-        userId: UserId,
         conversationIds: List<ConversationId>,
         allLabelIds: List<LabelId>,
         fromLabelIds: List<LabelId> = emptyList(),
