@@ -188,5 +188,6 @@ blockquote blockquote blockquote blockquote blockquote blockquote{
 :root {
 	--background-norm: white;
 	--text-norm: #262a33;
+	padding: 1rem;
 }
  

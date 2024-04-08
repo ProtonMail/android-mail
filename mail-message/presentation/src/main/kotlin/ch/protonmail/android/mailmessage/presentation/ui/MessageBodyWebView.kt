@@ -207,7 +207,6 @@ fun MessageBodyWebView(
                 modifier = with(
                     Modifier
                         .testTag(MessageBodyWebViewTestTags.WebView)
-                        .padding(ProtonDimens.DefaultSpacing)
                         .fillMaxWidth()
                         // There are no guarantees onSizeChanged will not be re-invoked with the same size.
                         // We need to take our own measures to avoid callback with the same size.
