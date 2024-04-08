@@ -25,6 +25,10 @@ import me.proton.core.label.domain.entity.LabelType
 
 object LabelSample {
 
+    val AllDrafts = build(
+        labelId = LabelIdSample.AllDraft,
+        type = LabelType.MessageFolder
+    )
     val Archive = build(
         labelId = LabelIdSample.Archive,
         type = LabelType.MessageFolder

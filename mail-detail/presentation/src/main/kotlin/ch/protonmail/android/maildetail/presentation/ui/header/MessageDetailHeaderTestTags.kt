@@ -25,6 +25,7 @@ object MessageDetailHeaderTestTags {
     const val Time = "Time"
     const val SenderAddress = "SenderAddress"
     const val Icons = "Icons"
+    const val ActionsRootItem = "ActionsRootItem"
     const val MoreButton = "MoreButton"
     const val ReplyButton = "ReplyButton"
     const val ReplyAllButton = "ReplyAllButton"

@@ -50,6 +50,10 @@ internal class MessageHeaderEntryModel(
         useUnmergedTree = true
     )
 
+    private val quickActionsItem = rootItem.child {
+        hasTestTag(MessageDetailHeaderTestTags.ActionsRootItem)
+    }
+
     private val avatarRootItem = rootItem.child {
         hasTestTag(AvatarTestTags.AvatarRootItem)
     }
@@ -82,15 +86,15 @@ internal class MessageHeaderEntryModel(
         hasTestTag(MessageDetailHeaderTestTags.Time)
     }
 
-    private val replyButton = rootItem.child {
+    private val replyButton = quickActionsItem.child {
         hasTestTag(MessageDetailHeaderTestTags.ReplyButton)
     }
 
-    private val replyAllButton = rootItem.child {
+    private val replyAllButton = quickActionsItem.child {
         hasTestTag(MessageDetailHeaderTestTags.ReplyAllButton)
     }
 
-    private val moreButton = rootItem.child {
+    private val moreButton = quickActionsItem.child {
         hasTestTag(MessageDetailHeaderTestTags.MoreButton)
     }
 

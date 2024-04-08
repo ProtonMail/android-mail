@@ -150,7 +150,6 @@ private fun MessageDetailHeaderLayout(
             senderAddressRef,
             iconsRef,
             timeRef,
-            moreButtonRef,
             allRecipientsRef,
             toRecipientsTitleRef,
             toRecipientsRef,
@@ -164,7 +163,7 @@ private fun MessageDetailHeaderLayout(
         ) = createRefs()
 
         val (
-            quickReplyButtonRef,
+            headerActionsRef,
             locationRef,
             sizeRef,
             hideDetailsRef
@@ -193,7 +192,7 @@ private fun MessageDetailHeaderLayout(
                 width = Dimension.fillToConstraints
                 top.linkTo(senderNameRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(quickReplyButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(headerActionsRef.start, margin = ProtonDimens.SmallSpacing)
             },
             participantUiModel = uiModel.sender,
             isExpanded = isExpanded,
@@ -215,47 +214,20 @@ private fun MessageDetailHeaderLayout(
         Time(
             modifier = modifier.constrainAs(timeRef) {
                 top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(parent.end)
+                end.linkTo(parent.end, margin = ProtonDimens.ExtraSmallSpacing)
             },
             time = uiModel.time
         )
 
-        if (uiModel.recipientsCount > 1) {
-            MessageDetailHeaderButton(
-                modifier = modifier
-                    .testTag(MessageDetailHeaderTestTags.ReplyAllButton)
-                    .constrainAs(quickReplyButtonRef) {
-                        top.linkTo(senderNameRef.bottom)
-                        bottom.linkTo(moreButtonRef.bottom)
-                        end.linkTo(moreButtonRef.start, margin = ProtonDimens.ExtraSmallSpacing)
-                    },
-                iconResource = R.drawable.ic_proton_reply_all,
-                contentDescriptionResource = R.string.quick_reply_all_button_content_description,
-                onClick = { actions.onReplyAll(MessageId(uiModel.messageIdUiModel.id)) }
-            )
-        } else {
-            MessageDetailHeaderButton(
-                modifier = modifier
-                    .testTag(MessageDetailHeaderTestTags.ReplyButton)
-                    .constrainAs(quickReplyButtonRef) {
-                        top.linkTo(senderNameRef.bottom)
-                        bottom.linkTo(moreButtonRef.bottom)
-                        end.linkTo(moreButtonRef.start, margin = ProtonDimens.ExtraSmallSpacing)
-                    },
-                iconResource = R.drawable.ic_proton_reply,
-                contentDescriptionResource = R.string.quick_reply_button_content_description,
-                onClick = { actions.onReply(MessageId(uiModel.messageIdUiModel.id)) }
-            )
-        }
-
-        MessageDetailHeaderButton(
-            modifier = modifier.constrainAs(moreButtonRef) {
-                top.linkTo(senderNameRef.bottom)
-                end.linkTo(timeRef.end, margin = MailDimens.ExtraSmallNegativeOffset)
-            },
-            iconResource = R.drawable.ic_proton_three_dots_vertical,
-            contentDescriptionResource = R.string.more_button_content_description,
-            onClick = { actions.onMore(MessageId(uiModel.messageIdUiModel.id)) }
+        MessageDetailHeaderActions(
+            modifier = modifier
+                .testTag(MessageDetailHeaderTestTags.ActionsRootItem)
+                .constrainAs(headerActionsRef) {
+                    top.linkTo(senderNameRef.bottom)
+                    end.linkTo(parent.end)
+                },
+            uiModel = uiModel,
+            actions = actions
         )
 
         AllRecipients(
@@ -263,7 +235,7 @@ private fun MessageDetailHeaderLayout(
                 width = Dimension.fillToConstraints
                 top.linkTo(senderAddressRef.bottom, margin = ProtonDimens.ExtraSmallSpacing)
                 start.linkTo(avatarRef.end, margin = ProtonDimens.SmallSpacing)
-                end.linkTo(quickReplyButtonRef.start, margin = ProtonDimens.SmallSpacing)
+                end.linkTo(headerActionsRef.start, margin = ProtonDimens.SmallSpacing)
                 visibility = visibleWhen(!isExpanded)
             },
             allRecipients = uiModel.allRecipients
@@ -289,7 +261,7 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = allRecipientsRef,
                         startReference = avatarRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         recipients = uiModel.toRecipients,
                         isExpanded = isExpanded,
                         hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients
@@ -319,7 +291,7 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = toRecipientsRef,
                         startReference = avatarRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         recipients = uiModel.ccRecipients,
                         isExpanded = isExpanded
                     )
@@ -347,7 +319,7 @@ private fun MessageDetailHeaderLayout(
                     constrainRecipients(
                         topReference = ccRecipientsRef,
                         startReference = avatarRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         recipients = uiModel.bccRecipients,
                         isExpanded = isExpanded
                     )
@@ -369,7 +341,7 @@ private fun MessageDetailHeaderLayout(
             modifier = modifier.constrainAs(labelsRef) {
                 constrainExtendedHeaderRow(
                     topReference = spacerRef,
-                    endReference = quickReplyButtonRef,
+                    endReference = headerActionsRef,
                     isExpanded = isExpanded,
                     topMargin = ProtonDimens.SmallSpacing
                 )
@@ -385,7 +357,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(extendedTimeRef) {
                     constrainExtendedHeaderRow(
                         topReference = labelsRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -399,7 +371,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(locationRef) {
                     constrainExtendedHeaderRow(
                         topReference = extendedTimeRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -414,7 +386,7 @@ private fun MessageDetailHeaderLayout(
                 .constrainAs(sizeRef) {
                     constrainExtendedHeaderRow(
                         topReference = locationRef,
-                        endReference = quickReplyButtonRef,
+                        endReference = headerActionsRef,
                         isExpanded = isExpanded
                     )
                 },
@@ -781,8 +753,6 @@ private fun ConstrainScope.constrainExtendedHeaderRow(
 
 private fun visibleWhen(isVisible: Boolean) = if (isVisible) Visibility.Visible else Visibility.Gone
 
-private val MessageDetailHeaderUiModel.recipientsCount
-    get() = (toRecipients + ccRecipients + bccRecipients).toSet().size
 
 object MessageDetailHeader {
     data class Actions(

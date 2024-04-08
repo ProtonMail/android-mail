@@ -52,6 +52,7 @@ object MessageDetailHeaderUiModelSample {
         time = time,
         extendedTime = extendedTime,
         shouldShowUndisclosedRecipients = false,
+        shouldShowActions = true,
         allRecipients = allRecipients,
         toRecipients = toRecipients,
         ccRecipients = ccRecipients,
