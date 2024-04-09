@@ -50,7 +50,8 @@ object MessageDetailsPreviewData {
     val Message = MessageDetailState(
         messageMetadataState = MessageMetadataState.Data(
             messageDetailActionBar = MessageDetailActionBarUiModelPreviewData.FirstWeekOfAugWeatherForecast,
-            messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels
+            messageDetailHeader = MessageDetailHeaderPreviewData.WithoutLabels,
+            messageDetailFooter = MessageDetailFooterPreviewData.ReplyAll
         ),
         messageBannersState = MessageBannersState.Data(
             messageBannersUiModel = MessageBannersUiModel(
@@ -112,7 +113,8 @@ object MessageDetailsPreviewData {
                     LabelUiModelSample.Document,
                     LabelUiModelSample.News
                 )
-            )
+            ),
+            messageDetailFooter = MessageDetailFooterPreviewData.ReplyAll
         )
     )
 

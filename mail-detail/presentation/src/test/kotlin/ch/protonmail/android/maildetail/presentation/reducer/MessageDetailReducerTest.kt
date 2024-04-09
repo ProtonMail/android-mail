@@ -47,6 +47,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
+import ch.protonmail.android.testdata.maildetail.MessageDetailFooterUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelUiModelTestData
 import ch.protonmail.android.testdata.message.MessageBodyUiModelTestData
@@ -220,11 +221,16 @@ class MessageDetailReducerTest(
     companion object {
 
         private val detailHeaderUiModel = MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
+        private val detailFooterUiModel = MessageDetailFooterUiModelTestData.messageDetailFooterUiModel
         private val messageBodyUiModel = MessageBodyUiModelTestData.plainTextMessageBodyUiModel
         private val actionBarUiModel = MessageDetailActionBarUiModelTestData.uiModel
         private val currentState = MessageDetailState.Loading
         private val reducedState = MessageDetailState(
-            messageMetadataState = MessageMetadataState.Data(actionBarUiModel, detailHeaderUiModel),
+            messageMetadataState = MessageMetadataState.Data(
+                actionBarUiModel,
+                detailHeaderUiModel,
+                detailFooterUiModel
+            ),
             messageBannersState = MessageBannersState.Data(messageBannersUiModel),
             messageBodyState = MessageBodyState.Data(messageBodyUiModel),
             bottomBarState = BottomBarState.Data.Shown(listOf(ActionUiModelTestData.markUnread).toImmutableList()),

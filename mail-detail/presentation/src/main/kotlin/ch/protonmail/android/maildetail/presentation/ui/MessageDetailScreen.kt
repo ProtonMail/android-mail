@@ -66,6 +66,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
+import ch.protonmail.android.maildetail.presentation.ui.footer.MessageDetailFooter
 import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeader
 import ch.protonmail.android.maildetail.presentation.viewmodel.MessageDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -435,24 +436,30 @@ private fun MessageDetailContent(
             }
             when (messageBodyState) {
                 is MessageBodyState.Loading -> ProtonCenteredProgress()
-                is MessageBodyState.Data -> MessageBody(
-                    messageBodyUiModel = messageBodyState.messageBodyUiModel,
-                    expandCollapseMode = messageBodyState.expandCollapseMode,
-                    actions = MessageBody.Actions(
-                        onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
-                        onShowAllAttachments = actions.onShowAllAttachmentsClicked,
-                        onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
-                        onAttachmentClicked = actions.onAttachmentClicked,
-                        loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
-                        onReply = actions.onReply,
-                        onReplyAll = actions.onReplyAll,
-                        onForward = actions.onForward,
-                        onLoadRemoteContent = actions.onLoadRemoteContent,
-                        onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
-                        onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
-                        onOpenInProtonCalendar = actions.onOpenInProtonCalendar
+                is MessageBodyState.Data -> {
+                    MessageBody(
+                        messageBodyUiModel = messageBodyState.messageBodyUiModel,
+                        expandCollapseMode = messageBodyState.expandCollapseMode,
+                        actions = MessageBody.Actions(
+                            onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
+                            onShowAllAttachments = actions.onShowAllAttachmentsClicked,
+                            onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
+                            onAttachmentClicked = actions.onAttachmentClicked,
+                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
+                            onReply = actions.onReply,
+                            onReplyAll = actions.onReplyAll,
+                            onForward = actions.onForward,
+                            onLoadRemoteContent = actions.onLoadRemoteContent,
+                            onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
+                            onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
+                            onOpenInProtonCalendar = actions.onOpenInProtonCalendar
+                        )
                     )
-                )
+                    MessageDetailFooter(
+                        uiModel = messageMetadataState.messageDetailFooter,
+                        actions = MessageDetailFooter.Actions.fromMessageDetailContentActions(actions)
+                    )
+                }
 
                 is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                     messageBodyState = messageBodyState,

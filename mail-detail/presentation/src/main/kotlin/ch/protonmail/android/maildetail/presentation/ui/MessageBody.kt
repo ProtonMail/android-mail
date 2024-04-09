@@ -19,18 +19,13 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -50,7 +45,6 @@ import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilit
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
-import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -61,7 +55,6 @@ import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
@@ -128,77 +121,6 @@ fun MessageBody(
     } else {
         MessageBodyNoWebView(
             modifier = modifier
-        )
-    }
-
-    MessageActionButtons(messageId = MessageIdUiModel(messageBodyUiModel.messageId.id), callbacks = actions)
-}
-
-@Composable
-private fun MessageActionButtons(
-    modifier: Modifier = Modifier,
-    messageId: MessageIdUiModel,
-    callbacks: MessageBody.Actions
-) {
-    Row(
-        modifier = modifier
-            .testTag(MessageBodyTestTags.MessageActionsRootItem)
-            .fillMaxWidth()
-            .padding(ProtonDimens.SmallSpacing)
-            .padding(top = ProtonDimens.DefaultSpacing),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        MessageActionButton(
-            modifier = Modifier
-                .testTag(MessageBodyTestTags.MessageReplyButton)
-                .weight(1f, false),
-            onClick = { callbacks.onReply(MessageId(messageId.id)) },
-            iconResource = R.drawable.ic_proton_reply,
-            textResource = R.string.action_reply
-        )
-        MessageActionButton(
-            modifier = Modifier
-                .testTag(MessageBodyTestTags.MessageReplyAllButton)
-                .weight(1f, false),
-            onClick = { callbacks.onReplyAll(MessageId(messageId.id)) },
-            iconResource = R.drawable.ic_proton_reply_all,
-            textResource = R.string.action_reply_all
-        )
-        MessageActionButton(
-            modifier = Modifier
-                .testTag(MessageBodyTestTags.MessageForwardButton)
-                .weight(1f, false),
-            onClick = { callbacks.onForward(MessageId(messageId.id)) },
-            iconResource = R.drawable.ic_proton_forward,
-            textResource = R.string.action_forward
-        )
-    }
-}
-
-@Composable
-private fun MessageActionButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    @DrawableRes iconResource: Int,
-    @StringRes textResource: Int
-) {
-    Button(
-        modifier = modifier,
-        shape = RoundedCornerShape(MailDimens.ActionButtonShapeRadius),
-        border = BorderStroke(Dp.Hairline, ProtonTheme.colors.shade20),
-        colors = ButtonDefaults.buttonColors(backgroundColor = ProtonTheme.colors.backgroundNorm),
-        elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
-        onClick = { onClick() }
-    ) {
-        Icon(
-            modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
-            painter = painterResource(id = iconResource),
-            tint = ProtonTheme.colors.iconNorm,
-            contentDescription = null
-        )
-        Text(
-            text = stringResource(textResource),
-            style = ProtonTheme.typography.defaultSmallNorm
         )
     }
 }

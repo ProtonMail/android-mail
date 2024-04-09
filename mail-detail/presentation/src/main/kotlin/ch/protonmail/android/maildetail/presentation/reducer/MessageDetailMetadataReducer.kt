@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailFooterUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
@@ -28,7 +29,8 @@ import javax.inject.Inject
 
 class MessageDetailMetadataReducer @Inject constructor(
     private val messageDetailActionBarUiModelMapper: MessageDetailActionBarUiModelMapper,
-    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper
+    private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageDetailFooterUiModelMapper: MessageDetailFooterUiModelMapper
 ) {
 
     @SuppressWarnings("NotImplementedDeclaration")
@@ -39,7 +41,8 @@ class MessageDetailMetadataReducer @Inject constructor(
         return when (event) {
             is MessageDetailEvent.MessageWithLabelsEvent -> MessageMetadataState.Data(
                 messageDetailActionBarUiModelMapper.toUiModel(event.messageWithLabels.message),
-                messageDetailHeaderUiModelMapper.toUiModel(event.messageWithLabels, event.contacts, event.folderColor)
+                messageDetailHeaderUiModelMapper.toUiModel(event.messageWithLabels, event.contacts, event.folderColor),
+                messageDetailFooterUiModelMapper.toUiModel(event.messageWithLabels)
             )
 
             is MessageDetailEvent.NoCachedMetadata -> currentState

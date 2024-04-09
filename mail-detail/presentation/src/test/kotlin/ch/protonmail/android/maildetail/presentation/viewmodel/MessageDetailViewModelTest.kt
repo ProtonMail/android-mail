@@ -59,6 +59,7 @@ import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailFooterUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -121,6 +122,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfi
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
+import ch.protonmail.android.testdata.maildetail.MessageDetailFooterUiModelTestData.messageDetailFooterUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
@@ -263,6 +265,11 @@ class MessageDetailViewModelTest {
             )
         } returns messageDetailHeaderUiModel
     }
+    private val messageDetailFooterUiModelMapper = mockk<MessageDetailFooterUiModelMapper> {
+        every {
+            toUiModel(any())
+        } returns messageDetailFooterUiModel
+    }
     private val messageBannersUiModelMapper = mockk<MessageBannersUiModelMapper> {
         every { createMessageBannersUiModel(any()) } returns messageBannersUiModel
     }
@@ -340,7 +347,11 @@ class MessageDetailViewModelTest {
     }
 
     private val messageDetailReducer = MessageDetailReducer(
-        MessageDetailMetadataReducer(messageDetailActionBarUiModelMapper, messageDetailHeaderUiModelMapper),
+        MessageDetailMetadataReducer(
+            messageDetailActionBarUiModelMapper,
+            messageDetailHeaderUiModelMapper,
+            messageDetailFooterUiModelMapper
+        ),
         MessageBannersReducer(messageBannersUiModelMapper),
         MessageBodyReducer(injectCssIntoDecryptedMessageBody),
         BottomBarReducer(),
@@ -457,7 +468,8 @@ class MessageDetailViewModelTest {
                     subject,
                     isStarred
                 ),
-                messageDetailHeaderUiModel
+                messageDetailHeaderUiModel,
+                messageDetailFooterUiModel
             )
             assertEquals(expected, awaitItem().messageMetadataState)
             cancelAndIgnoreRemainingEvents()
@@ -837,7 +849,8 @@ class MessageDetailViewModelTest {
             val dataState = MessageDetailState.Loading.copy(
                 messageMetadataState = MessageMetadataState.Data(
                     MessageDetailActionBarUiModelTestData.uiModel,
-                    messageDetailHeaderUiModel
+                    messageDetailHeaderUiModel,
+                    messageDetailFooterUiModel
                 ),
                 messageBannersState = MessageBannersState.Data(messageBannersUiModel),
                 messageBodyState = MessageBodyState.Data(

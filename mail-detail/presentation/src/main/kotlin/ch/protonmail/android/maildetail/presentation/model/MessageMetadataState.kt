@@ -22,10 +22,11 @@ sealed interface MessageMetadataState {
 
     data class Data(
         val messageDetailActionBar: MessageDetailActionBarUiModel,
-        val messageDetailHeader: MessageDetailHeaderUiModel
+        val messageDetailHeader: MessageDetailHeaderUiModel,
+        val messageDetailFooter: MessageDetailFooterUiModel
     ) : MessageMetadataState
 
-    object Loading : MessageMetadataState
+    data object Loading : MessageMetadataState
 
     sealed interface Error : MessageMetadataState
 }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailActionBarUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailFooterUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
@@ -26,6 +27,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.testdata.maildetail.MessageDetailFooterUiModelTestData.messageDetailFooterUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
 import ch.protonmail.android.testdata.message.MessageDetailActionBarUiModelTestData
 import io.mockk.coEvery
@@ -55,10 +57,19 @@ class MessageStateReducerTest(
             toUiModel(MessageWithLabelsSample.UnreadInvoice, emptyList(), FolderColorSettings())
         } returns messageDetailHeaderUiModel
     }
+    private val messageDetailFooterUiModelMapper = mockk<MessageDetailFooterUiModelMapper> {
+        coEvery {
+            toUiModel(MessageWithLabelsSample.Invoice)
+        } returns messageDetailFooterUiModel
+        coEvery {
+            toUiModel(MessageWithLabelsSample.UnreadInvoice)
+        } returns messageDetailFooterUiModel
+    }
 
     private val detailReducer = MessageDetailMetadataReducer(
         messageDetailActionBarUiModelMapper,
-        messageDetailHeaderUiModelMapper
+        messageDetailHeaderUiModelMapper,
+        messageDetailFooterUiModelMapper
     )
 
     @Test
@@ -87,19 +98,31 @@ class MessageStateReducerTest(
                     emptyList(),
                     FolderColorSettings()
                 ),
-                expectedState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel)
+                expectedState = MessageMetadataState.Data(
+                    messageUiModel,
+                    messageDetailHeaderUiModel,
+                    messageDetailFooterUiModel
+                )
             )
         )
 
         private val transitionsFromDataState = listOf(
             TestInput(
-                currentState = MessageMetadataState.Data(messageUiModel, messageDetailHeaderUiModel),
+                currentState = MessageMetadataState.Data(
+                    messageUiModel,
+                    messageDetailHeaderUiModel,
+                    messageDetailFooterUiModel
+                ),
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     MessageWithLabelsSample.UnreadInvoice,
                     emptyList(),
                     FolderColorSettings()
                 ),
-                expectedState = MessageMetadataState.Data(updatedMessageUiModel, messageDetailHeaderUiModel)
+                expectedState = MessageMetadataState.Data(
+                    updatedMessageUiModel,
+                    messageDetailHeaderUiModel,
+                    messageDetailFooterUiModel
+                )
             )
         )
 
