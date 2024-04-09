@@ -52,6 +52,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper,
     private val resolveParticipantName: ResolveParticipantName,
     private val messageDetailHeaderUiModelMapper: MessageDetailHeaderUiModelMapper,
+    private val messageDetailFooterUiModelMapper: MessageDetailFooterUiModelMapper,
     private val messageBannersUiModelMapper: MessageBannersUiModelMapper,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val participantUiModelMapper: ParticipantUiModelMapper
@@ -100,6 +101,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
                 contacts,
                 folderColorSettings
             ),
+            messageDetailFooterUiModel = messageDetailFooterUiModelMapper.toUiModel(messageWithLabels),
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
             requestPhishingLinkConfirmation = message.isPhishing(),
             messageBodyUiModel = uiModel,

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageDetailFooterUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
@@ -238,6 +239,10 @@ object ConversationDetailMessageUiModelSample {
             ccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
             bccRecipients = emptyList<ParticipantUiModel>().toImmutableList(),
             labels = persistentListOf()
+        ),
+        messageDetailFooterUiModel = MessageDetailFooterUiModel(
+            messageId = MessageIdUiModel(message.messageId.id),
+            shouldShowReplyAll = false
         ),
         messageBannersUiModel = MessageBannersUiModel(
             shouldShowPhishingBanner = true,

@@ -83,6 +83,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.mapper.DetailAvatarUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
+import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailFooterUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageDetailHeaderUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageLocationUiModelMapper
@@ -333,6 +334,7 @@ class ConversationDetailViewModelIntegrationTest {
             participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
             resolveParticipantName = resolveParticipantName
         ),
+        messageDetailFooterUiModelMapper = MessageDetailFooterUiModelMapper(),
         messageBannersUiModelMapper = MessageBannersUiModelMapper(context),
         messageBodyUiModelMapper = MessageBodyUiModelMapper(
             attachmentUiModelMapper = attachmentUiModelMapper,

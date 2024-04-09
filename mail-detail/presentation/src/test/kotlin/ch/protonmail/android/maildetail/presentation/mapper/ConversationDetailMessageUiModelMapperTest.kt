@@ -105,6 +105,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
             resolveParticipantName = resolveParticipantName
         )
     )
+    private val messageDetailFooterUiModelMapper = spyk(MessageDetailFooterUiModelMapper())
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val messageBannersUiModelMapper = mockk<MessageBannersUiModelMapper> {
         every { createMessageBannersUiModel(any()) } returns messageBannersUiModel
@@ -138,6 +139,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         messageLocationUiModelMapper = messageLocationUiModelMapper,
         resolveParticipantName = resolveParticipantName,
         messageDetailHeaderUiModelMapper = messageDetailHeaderUiModelMapper,
+        messageDetailFooterUiModelMapper = messageDetailFooterUiModelMapper,
         messageBannersUiModelMapper = messageBannersUiModelMapper,
         messageBodyUiModelMapper = messageBodyUiModelMapper,
         participantUiModelMapper = participantUiModelMapper,

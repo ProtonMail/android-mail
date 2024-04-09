@@ -36,6 +36,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.maildetail.presentation.ui.footer.MessageDetailFooter
 import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeader
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -142,6 +143,10 @@ private fun ConversationDetailExpandedItem(
                 onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) }
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
+        )
+        MessageDetailFooter(
+            uiModel = uiModel.messageDetailFooterUiModel,
+            actions = MessageDetailFooter.Actions.fromConversationDetailItemActions(actions)
         )
     }
 }
