@@ -70,7 +70,8 @@ internal class ComposerMainTests : MockedNetworkTest(loginType = LoginTestUserTy
         val expectedSender = "fancycapybara@proton.black"
         val expectedRecipient = "test@example.com"
         val expectedSubject = "Subject"
-        val expectedBody = "Text message"
+        val typedBody = "Text message"
+        val expectedBody = "$typedBody\n\nSent from Proton Mail Android"
 
         navigator {
             navigateTo(Destination.Composer)
@@ -108,8 +109,7 @@ internal class ComposerMainTests : MockedNetworkTest(loginType = LoginTestUserTy
 
             // Message body field
             messageBodySection {
-                verify { hasPlaceholderText() }
-                typeMessageBody(expectedBody)
+                typeMessageBody(typedBody)
                 verify { hasText(expectedBody) }
             }
         }

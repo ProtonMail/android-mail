@@ -97,6 +97,7 @@ internal class AttachmentDetailsMainTests : MockedNetworkTest(loginType = LoginT
     }
 
     @Test
+    @SdkSuppress(minSdkVersion = 30)
     @TestId("194341")
     fun testAttachmentLoaderIsStillShownOnMessageReopening() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
