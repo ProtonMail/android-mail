@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
 import javax.inject.Inject
 
@@ -41,6 +42,10 @@ class ContactGroupFormReducer @Inject constructor() {
             ContactGroupFormEvent.SaveContactGroupError -> reduceSaveContactGroupError(currentState)
             ContactGroupFormEvent.SavingContactGroup -> reduceSavingContactGroup(currentState)
             ContactGroupFormEvent.UpdateMembersError -> reduceUpdateMembersError(currentState)
+            ContactGroupFormEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState)
+            ContactGroupFormEvent.DismissDeleteDialog -> reduceDismissDeleteDialog(currentState)
+            ContactGroupFormEvent.DeletingSuccess -> reduceContactGroupDeleted(currentState)
+            ContactGroupFormEvent.DeletingError -> reduceDeletingContactGroupError(currentState)
         }
     }
 
@@ -129,6 +134,49 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Data -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.add_members_error))
             )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceShowDeleteDialog(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                deleteDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.contact_group_delete_dialog_title, currentState.contactGroup.name),
+                    message = TextUiModel(R.string.contact_group_delete_dialog_message)
+                )
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceDismissDeleteDialog(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                deleteDialogState = DeleteDialogState.Hidden
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceContactGroupDeleted(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                deleteDialogState = DeleteDialogState.Hidden,
+                deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
+            )
+
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceDeletingContactGroupError(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                deletionError = Effect.of(TextUiModel(R.string.contact_group_details_deletion_error)),
+                deleteDialogState = DeleteDialogState.Hidden
+            )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }

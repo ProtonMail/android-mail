@@ -24,13 +24,16 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.EditContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
@@ -101,6 +104,7 @@ class ContactGroupFormViewModelTest {
     private val savedStateHandleMock = mockk<SavedStateHandle>()
     private val createContactGroupMock = mockk<CreateContactGroup>()
     private val editContactGroupMock = mockk<EditContactGroup>()
+    private val deleteContactGroupMock = mockk<DeleteContactGroup>()
 
     private val getColorHexWithNameList = mockk<GetColorHexWithNameList> {
         every { this@mockk.invoke() } returns testColors
@@ -117,6 +121,7 @@ class ContactGroupFormViewModelTest {
             savedStateHandleMock,
             createContactGroupMock,
             editContactGroupMock,
+            deleteContactGroupMock,
             getColorHexWithNameList,
             observePrimaryUserId
         )
@@ -477,6 +482,154 @@ class ContactGroupFormViewModelTest {
         }
     }
 
+    @Test
+    fun `when OnDeleteClick action is submitted, then ShowDeleteDialog event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(
+                ContactGroupFormViewAction.OnDeleteClick
+            )
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel,
+                colors = testColors,
+                isSaveEnabled = true,
+                deleteDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel(R.string.contact_group_delete_dialog_title, expectedContactGroup.name),
+                    message = TextUiModel(R.string.contact_group_delete_dialog_message)
+                )
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when OnDeleteConfirmedClick action is submitted, then after success deleting, DeletingSuccess event is emitted`() =
+        runTest {
+            // Given
+            val expectedContactGroup = testContactGroup
+            val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+            expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+            expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+            expectSavedStateLabelId(testLabelId)
+            expectDeleteContactGroupSuccess(testUserId, testLabelId)
+
+            // When
+            contactGroupFormViewModel.state.test {
+                // Then
+                awaitItem() // ContactGroup was loaded
+
+                contactGroupFormViewModel.submit(
+                    ContactGroupFormViewAction.OnDeleteConfirmedClick
+                )
+
+                val actual = awaitItem()
+
+                val expected = ContactGroupFormState.Data(
+                    contactGroup = expectedContactGroupFormUiModel,
+                    colors = testColors,
+                    isSaveEnabled = true,
+                    deleteDialogState = DeleteDialogState.Hidden,
+                    deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success)),
+                    deletionError = Effect.empty()
+                )
+
+                assertEquals(expected, actual)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when OnDeleteConfirmedClick action is submitted, then after failure deleting, DeletingError event is emitted`() =
+        runTest {
+            // Given
+            val expectedContactGroup = testContactGroup
+            val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+            expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+            expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+            expectSavedStateLabelId(testLabelId)
+            expectDeleteContactGroupFail(testUserId, testLabelId)
+
+            // When
+            contactGroupFormViewModel.state.test {
+                // Then
+                awaitItem() // ContactGroup was loaded
+
+                contactGroupFormViewModel.submit(
+                    ContactGroupFormViewAction.OnDeleteConfirmedClick
+                )
+
+                val actual = awaitItem()
+
+                val expected = ContactGroupFormState.Data(
+                    contactGroup = expectedContactGroupFormUiModel,
+                    colors = testColors,
+                    isSaveEnabled = true,
+                    deleteDialogState = DeleteDialogState.Hidden,
+                    deletionSuccess = Effect.empty(),
+                    deletionError = Effect.of(TextUiModel(R.string.contact_group_details_deletion_error)),
+                    close = Effect.empty()
+                )
+
+                assertEquals(expected, actual)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when OnDeleteDismissedClick action is submitted, DismissDeleteDialog event is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = testContactGroup
+        val expectedContactGroupFormUiModel = ContactGroupFormPreviewData.contactGroupFormSampleData
+        expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+        expectContactGroupFormUiModel(expectedContactGroup, expectedContactGroupFormUiModel)
+
+        expectSavedStateLabelId(testLabelId)
+        expectDeleteContactGroupFail(testUserId, testLabelId)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnDeleteClick)
+            awaitItem() // DeleteContactGroup modal was shown
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnDeleteDismissedClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroupFormUiModel,
+                colors = testColors,
+                isSaveEnabled = true,
+                deleteDialogState = DeleteDialogState.Hidden,
+                deletionSuccess = Effect.empty(),
+                deletionError = Effect.empty(),
+                close = Effect.empty()
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
     private fun expectSavedStateLabelId(labelId: LabelId?) {
         every {
             savedStateHandleMock.get<String>(ContactGroupFormScreen.ContactGroupFormLabelIdKey)
@@ -523,5 +676,17 @@ class ContactGroupFormViewModelTest {
         coEvery {
             editContactGroupMock.invoke(userId, labelId, name, ColorRgbHex(color), contactEmailIds)
         } returns Unit.right()
+    }
+
+    private fun expectDeleteContactGroupSuccess(userId: UserId, contactGroupId: LabelId) {
+        coEvery {
+            deleteContactGroupMock.invoke(userId, contactGroupId)
+        } returns Unit.right()
+    }
+
+    private fun expectDeleteContactGroupFail(userId: UserId, contactGroupId: LabelId) {
+        coEvery {
+            deleteContactGroupMock.invoke(userId, contactGroupId)
+        } returns DataErrorSample.Unreachable.left()
     }
 }

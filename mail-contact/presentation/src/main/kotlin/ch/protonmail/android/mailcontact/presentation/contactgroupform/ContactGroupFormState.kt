@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupform
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModel
 
 sealed interface ContactGroupFormState {
@@ -39,6 +40,9 @@ sealed interface ContactGroupFormState {
         val displaySaveLoader: Boolean = false,
         val isSaveEnabled: Boolean = false,
         val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
-        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty()
+        val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+        val deleteDialogState: DeleteDialogState = DeleteDialogState.Hidden,
+        val deletionSuccess: Effect<TextUiModel> = Effect.empty(),
+        val deletionError: Effect<TextUiModel> = Effect.empty()
     ) : ContactGroupFormState
 }

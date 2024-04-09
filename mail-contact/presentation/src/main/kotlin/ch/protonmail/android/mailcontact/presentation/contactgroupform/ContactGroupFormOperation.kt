@@ -40,6 +40,9 @@ sealed interface ContactGroupFormViewAction : ContactGroupFormOperation {
     data class OnUpdateColor(
         val color: Color
     ) : ContactGroupFormViewAction
+    data object OnDeleteClick : ContactGroupFormViewAction
+    data object OnDeleteConfirmedClick : ContactGroupFormViewAction
+    data object OnDeleteDismissedClick : ContactGroupFormViewAction
 }
 
 sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
@@ -57,4 +60,8 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     object ContactGroupCreated : ContactGroupFormEvent
     object ContactGroupUpdated : ContactGroupFormEvent
     object UpdateMembersError : ContactGroupFormEvent
+    data object ShowDeleteDialog : ContactGroupFormEvent
+    data object DismissDeleteDialog : ContactGroupFormEvent
+    data object DeletingSuccess : ContactGroupFormEvent
+    data object DeletingError : ContactGroupFormEvent
 }

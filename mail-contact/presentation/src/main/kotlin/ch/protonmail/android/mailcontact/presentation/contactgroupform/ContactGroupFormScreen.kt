@@ -56,6 +56,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -67,8 +68,10 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
 import ch.protonmail.android.mailcontact.presentation.ui.ColorPickerDialog
+import ch.protonmail.android.mailcontact.presentation.ui.DeleteContactGroupDialog
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
+import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSecondaryButton
@@ -136,6 +139,9 @@ fun ContactGroupFormScreen(
                             },
                             onUpdateColor = {
                                 viewModel.submit(ContactGroupFormViewAction.OnUpdateColor(it))
+                            },
+                            onDeleteGroupClick = {
+                                viewModel.submit(ContactGroupFormViewAction.OnDeleteClick)
                             }
                         )
                     )
@@ -149,6 +155,18 @@ fun ContactGroupFormScreen(
                             type = ProtonSnackbarType.ERROR
                         )
                     }
+                    ConsumableTextEffect(effect = state.deletionSuccess) { message ->
+                        actions.exitToContactsWithNormMessage(message)
+                    }
+                    ConsumableTextEffect(effect = state.deletionError) { message ->
+                        actions.showErrorMessage(message)
+                    }
+
+                    DeleteContactGroupDialog(
+                        state = state.deleteDialogState,
+                        confirm = { viewModel.submit(ContactGroupFormViewAction.OnDeleteConfirmedClick) },
+                        dismiss = { viewModel.submit(ContactGroupFormViewAction.OnDeleteDismissedClick) }
+                    )
                 }
                 is ContactGroupFormState.Loading -> {
                     ProtonCenteredProgress(
@@ -183,106 +201,134 @@ fun ContactGroupFormContent(
     state: ContactGroupFormState.Data,
     actions: ContactGroupFormContent.Actions
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
+    ConstraintLayout(
+        modifier = modifier.fillMaxSize()
     ) {
-        item {
-            Column(modifier.fillMaxWidth()) {
-                IconContactAvatar(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(
-                            top = ProtonDimens.DefaultSpacing,
-                            bottom = ProtonDimens.ExtraSmallSpacing
+        val (deleteButtonBox) = createRefs()
+
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            item {
+                Column(modifier.fillMaxWidth()) {
+                    IconContactAvatar(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(
+                                top = ProtonDimens.DefaultSpacing,
+                                bottom = ProtonDimens.ExtraSmallSpacing
+                            ),
+                        iconResId = R.drawable.ic_proton_users,
+                        backgroundColor = state.contactGroup.color
+                    )
+                    val openDialog = remember { mutableStateOf(false) }
+                    var selectedColor by remember { mutableStateOf(state.contactGroup.color) }
+                    if (openDialog.value) {
+                        ColorPickerDialog(
+                            title = stringResource(R.string.contact_group_color),
+                            selectedValue = selectedColor,
+                            values = state.colors,
+                            onDismissRequest = { openDialog.value = false },
+                            onValueSelected = { selectedValue ->
+                                openDialog.value = false
+                                selectedColor = selectedValue
+                                actions.onUpdateColor(selectedValue)
+                            }
+                        )
+                    }
+                    ProtonSecondaryButton(
+                        modifier = modifier
+                            .padding(
+                                vertical = ProtonDimens.SmallSpacing,
+                                horizontal = ProtonDimens.DefaultSpacing
+                            )
+                            .align(Alignment.CenterHorizontally),
+                        onClick = { openDialog.value = true }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.change_color),
+                            modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+                            style = ProtonTheme.typography.defaultSmallNorm
+                        )
+                    }
+                    FormInputField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(ProtonDimens.DefaultSpacing),
+                        initialValue = state.contactGroup.name,
+                        hint = stringResource(id = R.string.contact_group_form_name_hint),
+                        onTextChange = actions.onUpdateName
+                    )
+                    Row(
+                        modifier = Modifier.padding(
+                            top = ProtonDimens.MediumSpacing,
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing
                         ),
-                    iconResId = R.drawable.ic_proton_users,
-                    backgroundColor = state.contactGroup.color
-                )
-                val openDialog = remember { mutableStateOf(false) }
-                var selectedColor by remember { mutableStateOf(state.contactGroup.color) }
-                if (openDialog.value) {
-                    ColorPickerDialog(
-                        title = stringResource(R.string.contact_group_color),
-                        selectedValue = selectedColor,
-                        values = state.colors,
-                        onDismissRequest = { openDialog.value = false },
-                        onValueSelected = { selectedValue ->
-                            openDialog.value = false
-                            selectedColor = selectedValue
-                            actions.onUpdateColor(selectedValue)
-                        }
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            modifier = modifier
+                                .size(ProtonDimens.SmallIconSize),
+                            painter = painterResource(id = R.drawable.ic_proton_users),
+                            tint = ProtonTheme.colors.iconWeak,
+                            contentDescription = NO_CONTENT_DESCRIPTION
+                        )
+                        Text(
+                            modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
+                            style = ProtonTheme.typography.defaultSmallWeak,
+                            text = pluralStringResource(
+                                R.plurals.contact_group_form_member_count,
+                                state.contactGroup.memberCount,
+                                state.contactGroup.memberCount
+                            )
+                        )
+                    }
+                    Divider(
+                        modifier = Modifier.padding(top = ProtonDimens.SmallSpacing),
+                        color = ProtonTheme.colors.separatorNorm
                     )
                 }
+            }
+            items(state.contactGroup.members) { member ->
+                ContactGroupMemberItem(
+                    contactGroupMember = member,
+                    actions = actions
+                )
+            }
+            item {
                 ProtonSecondaryButton(
-                    modifier = modifier
-                        .padding(
-                            vertical = ProtonDimens.SmallSpacing,
-                            horizontal = ProtonDimens.DefaultSpacing
-                        )
-                        .align(Alignment.CenterHorizontally),
-                    onClick = { openDialog.value = true }
+                    modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
+                    onClick = actions.onAddMemberClick
                 ) {
                     Text(
-                        text = stringResource(R.string.change_color),
+                        text = stringResource(R.string.add_members),
                         modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
                         style = ProtonTheme.typography.defaultSmallNorm
                     )
                 }
-                FormInputField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(ProtonDimens.DefaultSpacing),
-                    initialValue = state.contactGroup.name,
-                    hint = stringResource(id = R.string.contact_group_form_name_hint),
-                    onTextChange = actions.onUpdateName
-                )
-                Row(
-                    modifier = Modifier.padding(
-                        top = ProtonDimens.MediumSpacing,
-                        start = ProtonDimens.DefaultSpacing,
-                        end = ProtonDimens.DefaultSpacing
-                    ),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        modifier = modifier
-                            .size(ProtonDimens.SmallIconSize),
-                        painter = painterResource(id = R.drawable.ic_proton_users),
-                        tint = ProtonTheme.colors.iconWeak,
-                        contentDescription = NO_CONTENT_DESCRIPTION
-                    )
-                    Text(
-                        modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
-                        style = ProtonTheme.typography.defaultSmallWeak,
-                        text = pluralStringResource(
-                            R.plurals.contact_group_form_member_count,
-                            state.contactGroup.memberCount,
-                            state.contactGroup.memberCount
-                        )
-                    )
-                }
-                Divider(
-                    modifier = Modifier.padding(top = ProtonDimens.SmallSpacing),
-                    color = ProtonTheme.colors.separatorNorm
-                )
             }
         }
-        items(state.contactGroup.members) { member ->
-            ContactGroupMemberItem(
-                contactGroupMember = member,
-                actions = actions
-            )
-        }
-        item {
-            ProtonSecondaryButton(
-                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                onClick = actions.onAddMemberClick
+
+        if (state.contactGroup.id != null) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = ProtonTheme.colors.backgroundNorm
+                    )
+                    .constrainAs(deleteButtonBox) {
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stringResource(R.string.add_members),
-                    modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
-                    style = ProtonTheme.typography.defaultSmallNorm
+                FormDeleteButton(
+                    modifier = modifier,
+                    text = stringResource(id = R.string.contact_group_delete_button_text),
+                    onClick = { actions.onDeleteGroupClick() }
                 )
             }
         }
@@ -401,6 +447,8 @@ object ContactGroupFormScreen {
         val onClose: () -> Unit,
         val exitWithErrorMessage: (String) -> Unit,
         val exitWithSuccessMessage: (String) -> Unit,
+        val exitToContactsWithNormMessage: (String) -> Unit,
+        val showErrorMessage: (String) -> Unit,
         val manageMembers: (List<ContactEmailId>) -> Unit
     ) {
 
@@ -410,7 +458,9 @@ object ContactGroupFormScreen {
                 onClose = {},
                 exitWithErrorMessage = {},
                 exitWithSuccessMessage = {},
-                manageMembers = {}
+                manageMembers = {},
+                exitToContactsWithNormMessage = {},
+                showErrorMessage = {}
             )
         }
     }
@@ -422,7 +472,8 @@ object ContactGroupFormContent {
         val onAddMemberClick: () -> Unit,
         val onRemoveMemberClick: (ContactEmailId) -> Unit,
         val onUpdateName: (String) -> Unit,
-        val onUpdateColor: (Color) -> Unit
+        val onUpdateColor: (Color) -> Unit,
+        val onDeleteGroupClick: () -> Unit
     ) {
 
         companion object {
@@ -431,7 +482,8 @@ object ContactGroupFormContent {
                 onAddMemberClick = {},
                 onRemoveMemberClick = {},
                 onUpdateName = {},
-                onUpdateColor = {}
+                onUpdateColor = {},
+                onDeleteGroupClick = {}
             )
         }
     }
