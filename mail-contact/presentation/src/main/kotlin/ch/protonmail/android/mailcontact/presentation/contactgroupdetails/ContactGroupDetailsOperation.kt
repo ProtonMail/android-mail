@@ -34,14 +34,12 @@ sealed interface ContactGroupDetailsEvent : ContactGroupDetailsOperation {
     data class ContactGroupLoaded(
         val contactGroupDetailsUiModel: ContactGroupDetailsUiModel
     ) : ContactGroupDetailsEvent
-    object LoadContactGroupError : ContactGroupDetailsEvent
-    data class ShowDeleteDialog(
-        val groupName: String
-    ) : ContactGroupDetailsEvent
-    object DismissDeleteDialog : ContactGroupDetailsEvent
-    object DeletingError : ContactGroupDetailsEvent
-    object DeletingSuccess : ContactGroupDetailsEvent
-    object CloseContactGroupDetails : ContactGroupDetailsEvent
+    data object LoadContactGroupError : ContactGroupDetailsEvent
+    data object ShowDeleteDialog : ContactGroupDetailsEvent
+    data object DismissDeleteDialog : ContactGroupDetailsEvent
+    data object DeletingError : ContactGroupDetailsEvent
+    data object DeletingSuccess : ContactGroupDetailsEvent
+    data object CloseContactGroupDetails : ContactGroupDetailsEvent
     data class ComposeEmail(
         val emails: List<String>
     ) : ContactGroupDetailsEvent

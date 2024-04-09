@@ -113,12 +113,13 @@ class ContactGroupDetailsReducerTest(
             ),
             TestInput(
                 currentState = loadedContactGroupState,
-                event = ContactGroupDetailsEvent.ShowDeleteDialog(
-                    "My cool group"
-                ),
+                event = ContactGroupDetailsEvent.ShowDeleteDialog,
                 expectedState = loadedContactGroupState.copy(
                     deleteDialogState = DeleteDialogState.Shown(
-                        title = TextUiModel(R.string.contact_group_delete_dialog_title, "My cool group"),
+                        title = TextUiModel(
+                            R.string.contact_group_delete_dialog_title,
+                            loadedContactGroupState.contactGroup.name
+                        ),
                         message = TextUiModel(R.string.contact_group_delete_dialog_message)
                     )
                 )
@@ -142,7 +143,6 @@ class ContactGroupDetailsReducerTest(
                 currentState = loadedContactGroupState,
                 event = ContactGroupDetailsEvent.DeletingSuccess,
                 expectedState = loadedContactGroupState.copy(
-                    close = Effect.of(Unit),
                     deleteDialogState = DeleteDialogState.Hidden,
                     deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
                 )

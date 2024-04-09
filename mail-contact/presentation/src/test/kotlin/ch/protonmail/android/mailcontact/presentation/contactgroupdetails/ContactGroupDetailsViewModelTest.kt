@@ -23,12 +23,12 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
-import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
@@ -310,8 +310,7 @@ class ContactGroupDetailsViewModelTest {
                     openComposer = Effect.empty(),
                     deleteDialogState = DeleteDialogState.Hidden,
                     deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success)),
-                    deletionError = Effect.empty(),
-                    close = Effect.of(Unit)
+                    deletionError = Effect.empty()
                 )
 
                 assertEquals(expected, actual)
@@ -425,6 +424,6 @@ class ContactGroupDetailsViewModelTest {
     private fun expectDeleteContactGroupFail(userId: UserId, contactGroupId: LabelId) {
         coEvery {
             deleteContactGroupMock.invoke(userId, contactGroupId)
-        } returns CreateContactGroupError.CreatingLabelError.left()
+        } returns DataErrorSample.Unreachable.left()
     }
 }

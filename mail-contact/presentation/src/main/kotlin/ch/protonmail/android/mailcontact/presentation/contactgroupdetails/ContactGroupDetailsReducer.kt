@@ -35,7 +35,7 @@ class ContactGroupDetailsReducer @Inject constructor() {
             is ContactGroupDetailsEvent.LoadContactGroupError -> reduceLoadContactGroupError(currentState)
             is ContactGroupDetailsEvent.CloseContactGroupDetails -> reduceCloseContactGroupDetails(currentState)
             is ContactGroupDetailsEvent.ComposeEmail -> reduceComposeEmail(currentState, event)
-            is ContactGroupDetailsEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState, event)
+            is ContactGroupDetailsEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState)
             is ContactGroupDetailsEvent.DismissDeleteDialog -> reduceDismissDeleteDialog(currentState)
             ContactGroupDetailsEvent.DeletingSuccess -> reduceContactGroupDeleted(currentState)
             ContactGroupDetailsEvent.DeletingError -> reduceDeletingContactGroupError(currentState)
@@ -86,27 +86,25 @@ class ContactGroupDetailsReducer @Inject constructor() {
         }
     }
 
-    private fun reduceShowDeleteDialog(
-        currentState: ContactGroupDetailsState,
-        event: ContactGroupDetailsEvent.ShowDeleteDialog
-    ): ContactGroupDetailsState {
+    private fun reduceShowDeleteDialog(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(
                 deleteDialogState = DeleteDialogState.Shown(
-                    title = TextUiModel(R.string.contact_group_delete_dialog_title, event.groupName),
+                    title = TextUiModel(R.string.contact_group_delete_dialog_title, currentState.contactGroup.name),
                     message = TextUiModel(R.string.contact_group_delete_dialog_message)
                 )
             )
+
             is ContactGroupDetailsState.Loading -> currentState
         }
     }
 
     private fun reduceDismissDeleteDialog(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
-        println("reduceDismissDeleteDialog, currentState: $currentState")
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(
                 deleteDialogState = DeleteDialogState.Hidden
             )
+
             is ContactGroupDetailsState.Loading -> currentState
         }
     }
@@ -114,7 +112,6 @@ class ContactGroupDetailsReducer @Inject constructor() {
     private fun reduceContactGroupDeleted(currentState: ContactGroupDetailsState): ContactGroupDetailsState {
         return when (currentState) {
             is ContactGroupDetailsState.Data -> currentState.copy(
-                close = Effect.of(Unit),
                 deleteDialogState = DeleteDialogState.Hidden,
                 deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
             )

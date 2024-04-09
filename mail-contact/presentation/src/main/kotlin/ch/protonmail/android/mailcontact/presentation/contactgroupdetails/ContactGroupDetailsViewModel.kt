@@ -99,13 +99,8 @@ class ContactGroupDetailsViewModel @Inject constructor(
     }
 
     private fun handleOnDeleteClick() {
-        val currentState = state.value
-        if (currentState !is ContactGroupDetailsState.Data) return
-
         emitNewStateFor(
-            ContactGroupDetailsEvent.ShowDeleteDialog(
-                currentState.contactGroup.name
-            )
+            ContactGroupDetailsEvent.ShowDeleteDialog
         )
     }
 

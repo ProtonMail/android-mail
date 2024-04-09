@@ -19,29 +19,19 @@
 package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
-import arrow.core.getOrElse
 import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class DeleteContactGroup @Inject constructor(
-    private val labelRepository: LabelRepository
+    private val deleteLabel: DeleteLabel
 ) {
 
-    suspend operator fun invoke(userId: UserId, labelId: LabelId): Either<CreateContactGroupError, Unit> = either {
-        Either.catch {
-            labelRepository.deleteLabel(
-                userId, LabelType.ContactGroup, labelId
-            )
-        }.getOrElse {
-            raise(DeleteContactGroupError.RepositoryError(it))
-        }
+    suspend operator fun invoke(userId: UserId, labelId: LabelId): Either<DataError, Unit> = either {
+        deleteLabel.invoke(userId, labelId, LabelType.ContactGroup)
     }
-}
-
-sealed class DeleteContactGroupError {
-    data class RepositoryError(val throwable: Throwable) : CreateContactGroupError()
 }

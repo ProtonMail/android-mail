@@ -58,11 +58,11 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
-import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsMember
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
+import ch.protonmail.android.mailcontact.presentation.ui.DeleteContactGroupDialog
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDelete
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupEdit
@@ -121,7 +121,7 @@ fun ContactGroupDetailsScreen(
                         actions.showErrorMessage(message)
                     }
 
-                    DeleteDialog(
+                    DeleteContactGroupDialog(
                         state = state.deleteDialogState,
                         confirm = { viewModel.submit(ContactGroupDetailsViewAction.OnDeleteConfirmedClick) },
                         dismiss = { viewModel.submit(ContactGroupDetailsViewAction.OnDeleteDismissedClick) }
