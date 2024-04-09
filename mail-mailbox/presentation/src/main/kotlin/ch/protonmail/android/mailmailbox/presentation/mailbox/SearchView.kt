@@ -85,13 +85,13 @@ internal fun SearchView(
                 .weight(1f)
                 .focusRequester(focusRequester)
                 .onFocusChanged { focusState ->
-                    if (focusState.isFocused && !isFocused) {
+                    if (focusState.isFocused && !isFocused && searchText.text.isEmpty()) {
                         isFocused = true
                         keyboardController?.show()
                     }
                 }
                 .onGloballyPositioned { _ ->
-                    if (!isFocused) {
+                    if (!isFocused && searchText.text.isEmpty()) {
                         focusRequester.requestFocus()
                     }
                 },
