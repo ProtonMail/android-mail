@@ -591,20 +591,24 @@ private fun MailboxItemsList(
     val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchMode.isInSearch()
 
     // Detect if user manually scrolled the list
-    var userScrolled by rememberSaveable { mutableStateOf(false) }
+    var mailboxScrolled by rememberSaveable { mutableStateOf(false) }
     var userTapped by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = listState.isScrollInProgress) {
-        if (!userScrolled && userTapped && listState.isScrollInProgress) {
-            userScrolled = true
+        if (!mailboxScrolled && userTapped && listState.isScrollInProgress) {
+            mailboxScrolled = true
         }
     }
 
     // Scroll to the top of the list to make the first item always visible until the user scrolls the list
-    if (!userScrolled) {
+    if (!mailboxScrolled) {
         LaunchedEffect(listState.firstVisibleItemIndex) {
-            listState.animateScrollToItem(0)
+            if (listState.firstVisibleItemIndex > 0) {
+                listState.scrollToItem(0)
+                mailboxScrolled = true
+            }
         }
     }
+
     LazyColumn(
         state = listState,
         modifier = Modifier
