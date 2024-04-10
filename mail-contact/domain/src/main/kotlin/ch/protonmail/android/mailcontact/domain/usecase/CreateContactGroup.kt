@@ -25,13 +25,11 @@ import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
-import me.proton.core.label.domain.repository.LabelLocalDataSource
-import me.proton.core.label.domain.repository.LabelRemoteDataSource
+import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class CreateContactGroup @Inject constructor(
-    private val labelRemoteDataSource: LabelRemoteDataSource,
-    private val labelLocalDataSource: LabelLocalDataSource,
+    private val labelRepository: LabelRepository,
     private val editContactGroupMembers: EditContactGroupMembers
 ) {
 
@@ -52,11 +50,13 @@ class CreateContactGroup @Inject constructor(
             type = LabelType.ContactGroup
         )
 
-        val createdLabel = Either.catch {
-            val createdLabel = labelRemoteDataSource.createLabel(userId, label)
-            labelLocalDataSource.upsertLabel(listOf(createdLabel))
-            createdLabel
+        Either.catch {
+            labelRepository.createLabel(userId, label)
         }.getOrNull() ?: raise(CreateContactGroupError.CreatingLabelError)
+
+        val createdLabel = labelRepository.getLabels(userId, LabelType.ContactGroup, refresh = true).find {
+            it.name == label.name
+        } ?: raise(CreateContactGroupError.CreatingLabelError)
 
         return editContactGroupMembers(
             userId,

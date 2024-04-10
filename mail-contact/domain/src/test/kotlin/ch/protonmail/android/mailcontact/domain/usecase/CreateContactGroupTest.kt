@@ -32,8 +32,7 @@ import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
-import me.proton.core.label.domain.repository.LabelLocalDataSource
-import me.proton.core.label.domain.repository.LabelRemoteDataSource
+import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -74,21 +73,19 @@ class CreateContactGroupTest {
         ContactEmailId("contact email ID 3")
     )
 
-    private val labelRemoteDataSourceMock = mockk<LabelRemoteDataSource>()
-    private val labelLocalDataSourceMock = mockk<LabelLocalDataSource>()
+    private val labelRepositoryMock = mockk<LabelRepository>()
     private val editContactGroupMembersMock = mockk<EditContactGroupMembers>()
 
     val createContactGroup = CreateContactGroup(
-        labelRemoteDataSourceMock,
-        labelLocalDataSourceMock,
+        labelRepositoryMock,
         editContactGroupMembersMock
     )
 
     @Test
-    fun `should call data sources and use case with correct arguments`() = runTest {
+    fun `should call repository and use case with correct arguments`() = runTest {
         // Given
-        expectCreateLabelSuccess(expectedNewLabel, expectedCreatedLabel)
-        expectUpsertLabelSuccess(expectedCreatedLabel)
+        expectCreateLabelSuccess(expectedNewLabel)
+        expectGetLabelsSuccess(listOf(expectedCreatedLabel))
         expectEditContactGroupMembersSuccess(expectedContactEmailIds)
 
         // When
@@ -121,10 +118,28 @@ class CreateContactGroupTest {
     }
 
     @Test
+    fun `should return error when creating ContactGroup suceeds but retrieving labels fails`() = runTest {
+        // Given
+        expectCreateLabelSuccess(expectedNewLabel)
+        expectGetLabelsEmptyResult()
+
+        // When
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
+
+        // Then
+        assertEquals(CreateContactGroupError.CreatingLabelError.left(), actual)
+    }
+
+    @Test
     fun `should return error when editing ContactGroup Members fails`() = runTest {
         // Given
-        expectCreateLabelSuccess(expectedNewLabel, expectedCreatedLabel)
-        expectUpsertLabelSuccess(expectedCreatedLabel)
+        expectCreateLabelSuccess(expectedNewLabel)
+        expectGetLabelsSuccess(listOf(expectedCreatedLabel))
         expectEditContactGroupMembersFail(expectedContactEmailIds)
 
         // When
@@ -159,16 +174,20 @@ class CreateContactGroupTest {
         } returns EditContactGroupMembers.EditContactGroupMembersError.ObservingContactGroup.left()
     }
 
-    private fun expectUpsertLabelSuccess(expectedCreatedLabel: Label) {
-        coEvery { labelLocalDataSourceMock.upsertLabel(listOf(expectedCreatedLabel)) } just Runs
+    private fun expectCreateLabelSuccess(expectedNewLabel: NewLabel) {
+        coEvery { labelRepositoryMock.createLabel(userId, expectedNewLabel) } just Runs
     }
 
-    private fun expectCreateLabelSuccess(expectedNewLabel: NewLabel, expectedCreatedLabel: Label) {
-        coEvery { labelRemoteDataSourceMock.createLabel(userId, expectedNewLabel) } returns expectedCreatedLabel
+    private fun expectGetLabelsSuccess(expectedLabels: List<Label>) {
+        coEvery { labelRepositoryMock.getLabels(userId, LabelType.ContactGroup, refresh = true) } returns expectedLabels
+    }
+
+    private fun expectGetLabelsEmptyResult() {
+        coEvery { labelRepositoryMock.getLabels(userId, LabelType.ContactGroup, refresh = true) } returns emptyList()
     }
 
     private fun expectCreateLabelThrows(expectedNewLabel: NewLabel) {
-        coEvery { labelRemoteDataSourceMock.createLabel(userId, expectedNewLabel) } throws Exception("")
+        coEvery { labelRepositoryMock.createLabel(userId, expectedNewLabel) } throws Exception("")
     }
 
 }
