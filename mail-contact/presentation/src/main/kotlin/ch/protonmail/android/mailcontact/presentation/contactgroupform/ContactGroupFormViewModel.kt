@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.EditContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
@@ -242,7 +243,11 @@ class ContactGroupFormViewModel @Inject constructor(
             color = ColorRgbHex(contactGroupFormUiModel.color.getHexStringFromColor()),
             contactEmailIds = contactGroupFormUiModel.members.map { it.id }
         ).getOrElse {
-            return emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+            return if (it is CreateContactGroupError.GroupNameDuplicate) {
+                emitNewStateFor(ContactGroupFormEvent.DuplicatedContactGroupName)
+            } else {
+                emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+            }
         }
 
         emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)

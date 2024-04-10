@@ -56,6 +56,7 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     object LoadError : ContactGroupFormEvent
     object Close : ContactGroupFormEvent
     object SaveContactGroupError : ContactGroupFormEvent
+    object DuplicatedContactGroupName : ContactGroupFormEvent
     object SavingContactGroup : ContactGroupFormEvent
     object ContactGroupCreated : ContactGroupFormEvent
     object ContactGroupUpdated : ContactGroupFormEvent

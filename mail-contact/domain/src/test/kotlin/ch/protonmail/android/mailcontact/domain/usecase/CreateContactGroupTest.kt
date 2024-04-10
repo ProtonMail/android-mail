@@ -33,6 +33,8 @@ import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.network.domain.ApiException
+import me.proton.core.network.domain.ApiResult
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -154,6 +156,41 @@ class CreateContactGroupTest {
         assertEquals(CreateContactGroupError.EditingMembersError.left(), actual)
     }
 
+    @Test
+    fun `should return error GroupNameDuplicate when ContactGroup with this name already exists`() = runTest {
+        // Given
+        expectCreateLabelThrowsNameAlreadyExists(expectedNewLabel)
+
+        // When
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
+
+        // Then
+        assertEquals(CreateContactGroupError.GroupNameDuplicate.left(), actual)
+    }
+
+    @Test
+    fun `should return error when creating ContactGroup succeeds but retrieving labels fails`() = runTest {
+        // Given
+        expectCreateLabelSuccess(expectedNewLabel)
+        expectGetLabelsEmptyResult()
+
+        // When
+        val actual = createContactGroup(
+            userId,
+            contactGroupName,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
+
+        // Then
+        assertEquals(CreateContactGroupError.CreatingLabelError.left(), actual)
+    }
+
     private fun expectEditContactGroupMembersSuccess(expectedContactEmailIds: List<ContactEmailId>) {
         coEvery {
             editContactGroupMembersMock(
@@ -183,11 +220,24 @@ class CreateContactGroupTest {
     }
 
     private fun expectGetLabelsEmptyResult() {
-        coEvery { labelRepositoryMock.getLabels(userId, LabelType.ContactGroup, refresh = true) } returns emptyList()
+        coEvery { labelRepositoryMock.getLabels(userId, LabelType.ContactGroup, true) } returns emptyList()
     }
 
     private fun expectCreateLabelThrows(expectedNewLabel: NewLabel) {
         coEvery { labelRepositoryMock.createLabel(userId, expectedNewLabel) } throws Exception("")
+    }
+
+    private fun expectCreateLabelThrowsNameAlreadyExists(expectedNewLabel: NewLabel) {
+        coEvery { labelRepositoryMock.createLabel(userId, expectedNewLabel) } throws ApiException(
+            ApiResult.Error.Http(
+                httpCode = 409,
+                message = "Conflict",
+                proton = ApiResult.Error.ProtonData(
+                    code = 2500,
+                    error = "A group with this name already exists"
+                )
+            )
+        )
     }
 
 }

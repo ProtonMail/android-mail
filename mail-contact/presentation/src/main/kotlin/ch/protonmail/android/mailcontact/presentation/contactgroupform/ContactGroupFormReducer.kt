@@ -40,6 +40,7 @@ class ContactGroupFormReducer @Inject constructor() {
             ContactGroupFormEvent.ContactGroupCreated -> reduceContactGroupCreated(currentState)
             ContactGroupFormEvent.ContactGroupUpdated -> reduceContactGroupUpdated(currentState)
             ContactGroupFormEvent.SaveContactGroupError -> reduceSaveContactGroupError(currentState)
+            ContactGroupFormEvent.DuplicatedContactGroupName -> reduceDuplicatedContactGroupName(currentState)
             ContactGroupFormEvent.SavingContactGroup -> reduceSavingContactGroup(currentState)
             ContactGroupFormEvent.UpdateMembersError -> reduceUpdateMembersError(currentState)
             ContactGroupFormEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState)
@@ -121,6 +122,17 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Loading -> currentState
         }
     }
+
+    private fun reduceDuplicatedContactGroupName(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error_already_exists)),
+                displaySaveLoader = false
+            )
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
     private fun reduceSavingContactGroup(currentState: ContactGroupFormState): ContactGroupFormState {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(

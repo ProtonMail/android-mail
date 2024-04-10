@@ -214,6 +214,16 @@ class ContactGroupFormReducerTest(
                     deleteDialogState = DeleteDialogState.Hidden,
                     deletionSuccess = Effect.of(TextUiModel(R.string.contact_group_details_deletion_success))
                 )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState.copy(
+                    displaySaveLoader = true
+                ),
+                event = ContactGroupFormEvent.DuplicatedContactGroupName,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error_already_exists)),
+                    displaySaveLoader = false
+                )
             )
         )
 

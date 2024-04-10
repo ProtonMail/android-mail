@@ -26,12 +26,15 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.network.domain.hasProtonErrorCode
 import javax.inject.Inject
 
 class CreateContactGroup @Inject constructor(
     private val labelRepository: LabelRepository,
     private val editContactGroupMembers: EditContactGroupMembers
 ) {
+
+    private val protonResponseCodeAlreadyExists = 2500
 
     suspend operator fun invoke(
         userId: UserId,
@@ -52,7 +55,11 @@ class CreateContactGroup @Inject constructor(
 
         Either.catch {
             labelRepository.createLabel(userId, label)
-        }.getOrNull() ?: raise(CreateContactGroupError.CreatingLabelError)
+        }.onLeft {
+            if (it.hasProtonErrorCode(protonResponseCodeAlreadyExists)) {
+                raise(CreateContactGroupError.GroupNameDuplicate)
+            } else raise(CreateContactGroupError.CreatingLabelError)
+        }
 
         val createdLabel = labelRepository.getLabels(userId, LabelType.ContactGroup, refresh = true).find {
             it.name == label.name
@@ -70,5 +77,6 @@ class CreateContactGroup @Inject constructor(
 
 sealed class CreateContactGroupError {
     object CreatingLabelError : CreateContactGroupError()
+    object GroupNameDuplicate : CreateContactGroupError()
     object EditingMembersError : CreateContactGroupError()
 }
