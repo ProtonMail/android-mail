@@ -22,6 +22,7 @@ import androidx.compose.ui.test.SemanticsNodeInteractionsProvider
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -151,12 +152,22 @@ internal class MailboxTopAppBarTest : HiltInstrumentedTest() {
 
     @Test
     fun searchTextFieldShouldHaveFocusWhenSearchModeStarted() {
+        setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "")
+
+        composeTestRule
+            .onNodeWithText("")
+            .assertIsDisplayed()
+            .assertIsFocused()
+    }
+
+    @Test
+    fun searchTextFieldShouldNotHaveFocusWhenSearchModeStartedWithExistingQuery() {
         setupScreenWithSearchMode(MAIL_LABEL_INBOX, searchQuery = "search query")
 
         composeTestRule
             .onNodeWithText("search query")
             .assertIsDisplayed()
-            .assertIsFocused()
+            .assertIsNotFocused()
     }
 
     @Test
