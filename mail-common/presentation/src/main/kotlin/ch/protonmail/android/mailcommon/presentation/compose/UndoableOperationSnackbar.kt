@@ -23,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.mailcommon.presentation.viewmodel.UndoOperationViewModel
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -36,7 +38,8 @@ import timber.log.Timber
 fun UndoableOperationSnackbar(
     modifier: Modifier = Modifier,
     snackbarHostState: ProtonSnackbarHostState,
-    actionEffect: Effect<ActionResult>
+    actionEffect: Effect<ActionResult>,
+    viewModel: UndoOperationViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val undoActionLabel = stringResource(id = R.string.undo_button_label)
@@ -49,6 +52,7 @@ fun UndoableOperationSnackbar(
                 val result = snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message, undoActionLabel)
                 if (result == SnackbarResult.ActionPerformed) {
                     Timber.d("Undo action performed")
+                    viewModel.submitUndo()
                 }
             } else {
                 snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM)
