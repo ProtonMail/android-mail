@@ -81,6 +81,7 @@ class MoveConversationsTest {
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveSucceeds(destinationLabel, expectedConversations)
+        expectRegisterUndoOperationSucceeds()
         coEvery { conversationRepository.observeCachedConversations(userId, conversationIds) } returns flowOf()
 
         // When
@@ -193,14 +194,10 @@ class MoveConversationsTest {
         val destinationLabel = LabelId("labelId")
         val alphaAppConversation = ConversationSample.AlphaAppFeedback
         val conversations = listOf(alphaAppConversation)
-        val operationMap = mapOf(
-            Pair(alphaAppConversation.conversationId.id, LabelIdSample.Inbox)
-        )
-        val expectedOperation = UndoableOperation.MoveConversations(operationMap, destinationLabel)
         expectObserveMailLabelsSucceeds()
         expectObserveExclusiveMailLabelSucceeds()
         expectMoveSucceeds(destinationLabel, conversations)
-        expectRegisterUndoOperationSucceeds(expectedOperation)
+        expectRegisterUndoOperationSucceeds()
         coEvery {
             conversationRepository.observeCachedConversations(userId, conversationIds)
         } returns flowOf(conversations)
@@ -209,11 +206,11 @@ class MoveConversationsTest {
         moveConversations(userId, conversationIds, destinationLabel)
 
         // then
-        coVerify { registerUndoableOperation(expectedOperation) }
+        coVerify { registerUndoableOperation(any<UndoableOperation.UndoMoveConversations>()) }
     }
 
-    private fun expectRegisterUndoOperationSucceeds(expectedOperation: UndoableOperation.MoveConversations? = null) {
-        coEvery { registerUndoableOperation(expectedOperation ?: any()) } just Runs
+    private fun expectRegisterUndoOperationSucceeds() {
+        coEvery { registerUndoableOperation(any<UndoableOperation.UndoMoveConversations>()) } just Runs
     }
 
     private fun expectMoveSucceeds(destinationLabel: LabelId, expectedList: List<Conversation>) {

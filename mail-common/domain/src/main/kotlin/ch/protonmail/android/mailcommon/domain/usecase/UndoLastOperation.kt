@@ -20,8 +20,6 @@ package ch.protonmail.android.mailcommon.domain.usecase
 
 import arrow.core.Either
 import arrow.core.left
-import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import javax.inject.Inject
 
 class UndoLastOperation @Inject constructor(
@@ -30,17 +28,12 @@ class UndoLastOperation @Inject constructor(
 
     suspend operator fun invoke(): Either<Error, Unit> {
         val operation = getUndoableOperation() ?: return Error.NoOperationToUndo.left()
-
-        when (operation) {
-            is UndoableOperation.MoveConversations -> Error.NotImplemented.left()
-            is UndoableOperation.MoveMessages -> Error.NotImplemented.left()
-        }
-
-        return Unit.right()
+        return operation.undo()
+            .mapLeft { Error.UndoFailed }
     }
 
     sealed interface Error {
         data object NoOperationToUndo : Error
-        data object NotImplemented : Error
+        data object UndoFailed : Error
     }
 }

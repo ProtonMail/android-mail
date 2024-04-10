@@ -1,8 +1,8 @@
 package ch.protonmail.android.mailcommon.domain.usecase
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.repository.UndoableOperationRepository
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,7 +20,11 @@ class RegisterUndoableOperationTest {
     @Test
     fun `registers undoable operation with the repository`() = runTest {
         // Given
-        val operation = UndoableOperation.MoveMessages(mapOf(Pair("msgId", LabelIdSample.Inbox)), LabelIdSample.Archive)
+        val lambda = {
+            println("logic to undo the operation")
+            Unit.right()
+        }
+        val operation = UndoableOperation.UndoMoveMessages(lambda)
         coEvery { undoableOperationRepository.storeOperation(operation) } just Runs
 
         // When

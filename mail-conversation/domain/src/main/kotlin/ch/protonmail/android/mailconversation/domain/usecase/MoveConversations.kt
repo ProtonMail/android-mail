@@ -33,7 +33,6 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.util.kotlin.filterNullValues
 import javax.inject.Inject
 
 class MoveConversations @Inject constructor(
@@ -52,38 +51,46 @@ class MoveConversations @Inject constructor(
     ): Either<DataError, Unit> = either {
         val allLabelIds = observeMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
         val exclusiveMailLabels = observeExclusiveMailLabels(userId).first().allById.mapNotNull { it.key.labelId }
+        val undoableOperation = defineUndoableOperation(userId, conversationIds, exclusiveMailLabels)
         decrementUnreadConversationsCount(userId, conversationIds, exclusiveMailLabels)
         conversationRepository
             .move(userId, conversationIds, allLabelIds, exclusiveMailLabels, toLabelId = labelId)
             .onRight {
                 incrementUnreadConversationsCount(userId, conversationIds, labelId)
-                registerUndoableOperations(userId, conversationIds, exclusiveMailLabels, labelId)
+                registerUndoableOperation(undoableOperation)
             }
             .bind()
     }
 
-    private suspend fun registerUndoableOperations(
+    private suspend fun defineUndoableOperation(
         userId: UserId,
         conversationIds: List<ConversationId>,
-        exclusiveLabelIds: List<LabelId>,
-        labelId: LabelId
-    ) {
-        val conversationIdToLabelIdPairs = conversationRepository
+        exclusiveLabelIds: List<LabelId>
+    ): UndoableOperation {
+        val conversationToOriginLabelIdMap = conversationRepository
             .observeCachedConversations(userId, conversationIds)
             .firstOrNull()
             ?.map { conversation ->
                 Pair(
-                    conversation.conversationId.id,
+                    conversation.conversationId,
                     conversation.labels.firstOrNull { it.labelId in exclusiveLabelIds }?.labelId
                 )
             }
+            ?.toMap()
 
-        conversationIdToLabelIdPairs?.let {
-            val operation = UndoableOperation.MoveConversations(
-                conversationIdToLabelIdPairs.toMap().filterNullValues(),
-                labelId
-            )
-            registerUndoableOperation(operation)
+        return UndoableOperation.UndoMoveConversations {
+            either {
+                val labelIdToConversationIds = conversationToOriginLabelIdMap?.keys?.groupBy {
+                    conversationToOriginLabelIdMap[it]
+                }
+
+                labelIdToConversationIds?.forEach {
+                    it.key?.let { labelId ->
+                        this@MoveConversations(userId, it.value, labelId)
+                            .onLeft { error -> raise(error) }
+                    }
+                }
+            }
         }
     }
 

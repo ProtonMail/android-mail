@@ -18,17 +18,18 @@
 
 package ch.protonmail.android.mailcommon.domain.model
 
-import me.proton.core.label.domain.entity.LabelId
+import arrow.core.Either
 
-sealed interface UndoableOperation {
+sealed class UndoableOperation(
+    open val undo: suspend () -> Either<DataError, Unit>
+) {
 
-    data class MoveMessages(
-        val messageIdsWithOrigin: Map<String, LabelId>,
-        val destination: LabelId
-    ) : UndoableOperation
+    data class UndoMoveMessages(
+        override val undo: suspend () -> Either<DataError, Unit>
+    ) : UndoableOperation(undo)
 
-    data class MoveConversations(
-        val conversationIdsWithOrigin: Map<String, LabelId>,
-        val destination: LabelId
-    ) : UndoableOperation
+    data class UndoMoveConversations(
+        override val undo: suspend () -> Either<DataError, Unit>
+    ) : UndoableOperation(undo)
+
 }

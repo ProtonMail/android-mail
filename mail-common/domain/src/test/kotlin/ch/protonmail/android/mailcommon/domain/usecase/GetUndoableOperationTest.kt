@@ -1,8 +1,8 @@
 package ch.protonmail.android.mailcommon.domain.usecase
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.repository.UndoableOperationRepository
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -18,7 +18,11 @@ class GetUndoableOperationTest {
     @Test
     fun `get last undoable operation from the repository`() = runTest {
         // Given
-        val expected = UndoableOperation.MoveMessages(mapOf(Pair("msgId", LabelIdSample.Inbox)), LabelIdSample.Archive)
+        val lambda = {
+            println("logic to undo the operation")
+            Unit.right()
+        }
+        val expected = UndoableOperation.UndoMoveMessages(lambda)
         coEvery { undoableOperationRepository.getLastOperation() } returns expected
 
         // When

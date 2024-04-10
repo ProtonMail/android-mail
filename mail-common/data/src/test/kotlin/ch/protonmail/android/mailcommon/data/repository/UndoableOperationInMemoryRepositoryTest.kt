@@ -1,7 +1,7 @@
 package ch.protonmail.android.mailcommon.data.repository
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
-import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -13,7 +13,11 @@ class UndoableOperationInMemoryRepositoryTest {
     @Test
     fun `stores and returns the last given operation in memory`() = runTest {
         // Given
-        val expected = UndoableOperation.MoveMessages(mapOf(Pair("msgId", LabelIdSample.Inbox)), LabelIdSample.Archive)
+        val lambda = {
+            println("logic to undo the operation")
+            Unit.right()
+        }
+        val expected = UndoableOperation.UndoMoveMessages(lambda)
         undoableOperationRepo.storeOperation(expected)
 
         // When

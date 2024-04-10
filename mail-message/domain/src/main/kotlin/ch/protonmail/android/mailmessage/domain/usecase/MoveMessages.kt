@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
-import arrow.core.mapNotNull
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
@@ -56,20 +55,31 @@ class MoveMessages @Inject constructor(
         messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId)
             .onRight { messages ->
                 incrementUnreadCountInDestinationLabel(userId, messages)
-                registerUndoableOperations(messageIdsWithExclusiveLabels, labelId)
+                registerUndoableOperations(userId, messageIdsWithExclusiveLabels)
             }
             .bind()
     }
 
     private suspend fun registerUndoableOperations(
-        messageIdsWithExclusiveLabels: Map<MessageId, LabelId?>,
-        labelId: LabelId
+        userId: UserId,
+        messageIdsWithOriginLabel: Map<MessageId, LabelId?>
     ) {
-        val operation = UndoableOperation.MoveMessages(
-            messageIdsWithExclusiveLabels.mapKeys { it.key.id }.mapNotNull { it.value },
-            labelId
+        registerUndoableOperation(
+            UndoableOperation.UndoMoveMessages {
+                either {
+                    val labelIdToMessagesIds = messageIdsWithOriginLabel.keys.groupBy {
+                        messageIdsWithOriginLabel[it]
+                    }
+
+                    labelIdToMessagesIds.forEach {
+                        it.key?.let { labelId ->
+                            this@MoveMessages(userId, it.value, labelId)
+                                .onLeft { error -> raise(error) }
+                        }
+                    }
+                }
+            }
         )
-        registerUndoableOperation(operation)
     }
 
     private suspend fun incrementUnreadCountInDestinationLabel(userId: UserId, messages: List<Message>) {

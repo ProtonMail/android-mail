@@ -126,21 +126,20 @@ class MoveMessagesTest {
         val toLabel = SystemLabelId.Trash.labelId
         val messages = listOf(MessageSample.Invoice, MessageSample.HtmlInvoice)
         val expectedMap = messages.associate { it.messageId to it.labelIds.first() }
-        val expectedOperation = UndoableOperation.MoveMessages(expectedMap.mapKeys { it.key.id }, toLabel)
         expectObserveExclusiveMailLabelSucceeds()
         expectGetLocalMessagesSucceeds(messages)
         expectMoveSucceeds(toLabel, messages, expectedMap)
-        expectRegisterUndoOperationSucceeds(expectedOperation)
+        expectRegisterUndoOperationSucceeds()
 
         // when
         moveMessages(userId, messageIds, toLabel)
 
         // then
-        coVerify { registerUndoableOperation(expectedOperation) }
+        coVerify { registerUndoableOperation(any<UndoableOperation.UndoMoveMessages>()) }
     }
 
-    private fun expectRegisterUndoOperationSucceeds(expectedOperation: UndoableOperation.MoveMessages? = null) {
-        coEvery { registerUndoableOperation(expectedOperation ?: any()) } just Runs
+    private fun expectRegisterUndoOperationSucceeds() {
+        coEvery { registerUndoableOperation(any<UndoableOperation.UndoMoveMessages>()) } just Runs
     }
 
     private fun expectObserveExclusiveMailLabelSucceeds() {
