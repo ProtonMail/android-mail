@@ -473,4 +473,45 @@ class MessageBodyUiModelMapperTest {
         // Then
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `user changeable fields should be mapped from the existing message body Ui model`() = runTest {
+        // Given
+        val messageId = MessageIdSample.build()
+        val messageBody = DecryptedMessageBody(
+            messageId,
+            decryptedMessageBody,
+            MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
+        val existingState = MessageBodyUiModel(
+            messageId = messageId,
+            messageBody = decryptedMessageBody,
+            messageBodyWithoutQuote = decryptedMessageBody,
+            mimeType = MimeTypeUiModel.Html,
+            shouldShowEmbeddedImages = true,
+            shouldShowRemoteContent = true,
+            shouldShowEmbeddedImagesBanner = false,
+            shouldShowRemoteContentBanner = true,
+            shouldShowExpandCollapseButton = false,
+            shouldShowOpenInProtonCalendar = false,
+            attachments = null,
+            userAddress = UserAddressSample.PrimaryAddress,
+            viewModePreference = ViewModePreference.DarkMode,
+            printEffect = Effect.empty()
+        )
+
+        every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
+        coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
+        coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
+
+        // When
+        val actual = messageBodyUiModelMapper.toUiModel(UserIdTestData.userId, messageBody, existingState)
+
+        // Then
+        assertEquals(existingState.shouldShowEmbeddedImages, actual.shouldShowEmbeddedImages)
+        assertEquals(existingState.shouldShowRemoteContent, actual.shouldShowRemoteContent)
+        assertEquals(existingState.viewModePreference, actual.viewModePreference)
+    }
+
 }

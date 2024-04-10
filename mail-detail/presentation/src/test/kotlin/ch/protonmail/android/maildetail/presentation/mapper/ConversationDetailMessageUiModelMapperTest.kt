@@ -28,6 +28,7 @@ import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
+import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.MessageLocationUiModelSample
 import ch.protonmail.android.maildetail.presentation.viewmodel.EmailBodyTestSamples
@@ -38,6 +39,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
+import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
@@ -115,7 +117,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         messageBody = EmailBodyTestSamples.BodyWithoutQuotes
     )
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper = mockk {
-        coEvery { toUiModel(any(), any<DecryptedMessageBody>()) } returns messageBodyUiModel
+        coEvery { toUiModel(any(), any<DecryptedMessageBody>(), any()) } returns messageBodyUiModel
     }
     private val participantUiModelMapper: ParticipantUiModelMapper = mockk {
         every {
@@ -328,5 +330,38 @@ internal class ConversationDetailMessageUiModelMapperTest {
         // Then
         assertEquals(true, result.isUnread)
         assertNull(result.messageDetailHeaderUiModel.location.color)
+    }
+
+    @Test
+    fun `should retain the body quote expanded or collapsed state`() = runTest {
+        // given
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
+        val contactsList = listOf(ContactSample.John, ContactSample.Doe)
+        val decryptedMessageBody = DecryptedMessageBody(
+            messageWithLabels.message.messageId,
+            UUID.randomUUID().toString(),
+            MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
+        val previousState = AugWeatherForecastExpanded.copy(expandCollapseMode = MessageBodyExpandCollapseMode.Expanded)
+
+        // when
+        val result = mapper.toUiModel(
+            messageWithLabels,
+            contacts = contactsList,
+            decryptedMessageBody = decryptedMessageBody,
+            folderColorSettings = folderColorSettings,
+            userAddress = UserAddressSample.PrimaryAddress,
+            existingMessageUiState = previousState
+        )
+
+        // then
+        assertEquals(MessageBodyExpandCollapseMode.Expanded, result.expandCollapseMode)
+        coVerify {
+            messageBodyUiModelMapper.toUiModel(
+                messageWithLabels.message.userId, decryptedMessageBody,
+                previousState.messageBodyUiModel
+            )
+        }
     }
 }

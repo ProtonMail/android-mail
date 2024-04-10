@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.isApplicable
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -89,10 +90,16 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         contacts: List<Contact>,
         decryptedMessageBody: DecryptedMessageBody,
         folderColorSettings: FolderColorSettings,
-        userAddress: UserAddress
+        userAddress: UserAddress,
+        existingMessageUiState: ConversationDetailMessageUiModel.Expanded? = null
     ): ConversationDetailMessageUiModel.Expanded {
         val (message, _) = messageWithLabels
-        val uiModel = messageBodyUiModelMapper.toUiModel(message.userId, decryptedMessageBody)
+        val uiModel =
+            messageBodyUiModelMapper.toUiModel(
+                message.userId,
+                decryptedMessageBody,
+                existingMessageUiState?.messageBodyUiModel
+            )
         return ConversationDetailMessageUiModel.Expanded(
             messageId = messageIdUiModelMapper.toUiModel(message.messageId),
             isUnread = message.unread,
@@ -105,7 +112,10 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
             requestPhishingLinkConfirmation = message.isPhishing(),
             messageBodyUiModel = uiModel,
-            expandCollapseMode = getInitialBodyExpandCollapseMode(uiModel),
+            expandCollapseMode = existingMessageUiState?.let {
+                if (it.expandCollapseMode.isApplicable()) it.expandCollapseMode
+                else getInitialBodyExpandCollapseMode(uiModel)
+            } ?: getInitialBodyExpandCollapseMode(uiModel),
             userAddress = userAddress
         )
     }

@@ -357,21 +357,37 @@ class ConversationDetailViewModel @Inject constructor(
         currentViewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>
     ): NonEmptyList<ConversationDetailMessageUiModel> {
         val messagesList = messages.map { messageWithLabels ->
+            val existingMessageState = getExistingExpandedMessageUiState(messageWithLabels.message.messageId)
+
             when (val viewState = currentViewState[messageWithLabels.message.messageId]) {
                 is InMemoryConversationStateRepository.MessageState.Expanding ->
                     buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
 
-                is InMemoryConversationStateRepository.MessageState.Expanded -> buildExpandedMessage(
-                    messageWithLabels,
-                    contacts,
-                    viewState.decryptedBody,
-                    folderColorSettings
-                )
+                is InMemoryConversationStateRepository.MessageState.Expanded -> {
+                    buildExpandedMessage(
+                        messageWithLabels,
+                        existingMessageState,
+                        contacts,
+                        viewState.decryptedBody,
+                        folderColorSettings
+                    )
+                }
 
                 else -> buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
             }
         }
         return messagesList
+    }
+
+    private fun getExistingExpandedMessageUiState(messageId: MessageId): ConversationDetailMessageUiModel.Expanded? {
+        return when (val messagesState = state.value.messagesState) {
+            is ConversationDetailsMessagesState.Data -> {
+                messagesState.messages
+                    .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
+                    .firstOrNull { it.messageId.id == messageId.id }
+            }
+            else -> null
+        }
     }
 
     private fun requestScrollToMessageId(
@@ -407,6 +423,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private suspend fun buildExpandedMessage(
         messageWithLabels: MessageWithLabels,
+        existingMessageUiState: ConversationDetailMessageUiModel.Expanded?,
         contacts: List<Contact>,
         decryptedBody: DecryptedMessageBody,
         folderColorSettings: FolderColorSettings
@@ -415,7 +432,8 @@ class ConversationDetailViewModel @Inject constructor(
         contacts,
         decryptedBody,
         folderColorSettings,
-        decryptedBody.userAddress
+        decryptedBody.userAddress,
+        existingMessageUiState
     )
 
     private fun observeBottomBarActions(conversationId: ConversationId) {

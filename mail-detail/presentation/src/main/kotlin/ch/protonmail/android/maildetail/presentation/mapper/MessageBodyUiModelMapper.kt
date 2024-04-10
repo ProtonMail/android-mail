@@ -49,15 +49,21 @@ class MessageBodyUiModelMapper @Inject constructor(
     private val shouldShowRemoteContent: ShouldShowRemoteContent
 ) {
 
-    suspend fun toUiModel(userId: UserId, decryptedMessageBody: DecryptedMessageBody): MessageBodyUiModel {
+    suspend fun toUiModel(
+        userId: UserId,
+        decryptedMessageBody: DecryptedMessageBody,
+        existingMessageBodyUiModel: MessageBodyUiModel? = null
+    ): MessageBodyUiModel {
         val decryptedMessageBodyWithType = MessageBodyWithType(
             decryptedMessageBody.value,
             decryptedMessageBody.mimeType.toMimeTypeUiModel()
         )
         val sanitizedMessageBody = sanitizeHtmlOfDecryptedMessageBody(decryptedMessageBodyWithType)
-        val shouldShowEmbeddedImages = shouldShowEmbeddedImages(userId)
+        val shouldShowEmbeddedImages = existingMessageBodyUiModel?.shouldShowEmbeddedImages
+            ?: shouldShowEmbeddedImages(userId)
         val doesMessageBodyHaveEmbeddedImages = doesMessageBodyHaveEmbeddedImages(decryptedMessageBody)
-        val shouldShowRemoteContent = shouldShowRemoteContent(userId)
+        val shouldShowRemoteContent =
+            existingMessageBodyUiModel?.shouldShowRemoteContent ?: shouldShowRemoteContent(userId)
         val doesMessageBodyHaveRemoteContent = doesMessageBodyHaveRemoteContent(decryptedMessageBody)
 
         val sanitizedMessageBodyWithType = MessageBodyWithType(
@@ -70,6 +76,7 @@ class MessageBodyUiModelMapper @Inject constructor(
         val bodyWithoutQuote = if (extractQuoteResult.hasQuote) {
             extractQuoteResult.messageBodyHtmlWithoutQuote
         } else originalMessageBody
+        val viewModePreference = existingMessageBodyUiModel?.viewModePreference ?: ViewModePreference.ThemeDefault
 
         return MessageBodyUiModel(
             messageId = decryptedMessageBody.messageId,
@@ -77,7 +84,7 @@ class MessageBodyUiModelMapper @Inject constructor(
             messageBodyWithoutQuote = bodyWithoutQuote,
             mimeType = decryptedMessageBody.mimeType.toMimeTypeUiModel(),
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
-            shouldShowRemoteContent = shouldShowRemoteContent(userId),
+            shouldShowRemoteContent = shouldShowRemoteContent,
             shouldShowEmbeddedImagesBanner = !shouldShowEmbeddedImages && doesMessageBodyHaveEmbeddedImages,
             shouldShowRemoteContentBanner = !shouldShowRemoteContent && doesMessageBodyHaveRemoteContent,
             shouldShowExpandCollapseButton = extractQuoteResult.hasQuote,
@@ -90,7 +97,7 @@ class MessageBodyUiModelMapper @Inject constructor(
                 )
             } else null,
             userAddress = decryptedMessageBody.userAddress,
-            viewModePreference = ViewModePreference.ThemeDefault,
+            viewModePreference = viewModePreference,
             printEffect = Effect.empty()
         )
     }

@@ -363,7 +363,7 @@ class MessageDetailViewModel @Inject constructor(
                 },
                 ifRight = {
                     observeAttachments(messageId, it.attachments)
-                    val initialUiModel = messageBodyUiModelMapper.toUiModel(userId, it)
+                    val initialUiModel = messageBodyUiModelMapper.toUiModel(userId, it, null)
                     MessageDetailEvent.MessageBodyEvent(
                         initialUiModel,
                         getInitialBodyExpandCollapseMode(initialUiModel)

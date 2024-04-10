@@ -23,3 +23,6 @@ enum class MessageBodyExpandCollapseMode {
     Expanded,
     NotApplicable
 }
+
+fun MessageBodyExpandCollapseMode.isApplicable() = this != MessageBodyExpandCollapseMode.NotApplicable
+
