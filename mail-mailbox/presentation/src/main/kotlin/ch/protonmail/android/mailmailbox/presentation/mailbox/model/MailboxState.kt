@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import androidx.compose.runtime.Stable
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -37,6 +38,6 @@ data class MailboxState(
     val deleteAllDialogState: DeleteDialogState,
     val storageLimitState: StorageLimitState,
     val bottomSheetState: BottomSheetState?,
-    val actionMessage: Effect<TextUiModel>,
+    val actionResult: Effect<ActionResult>,
     val error: Effect<TextUiModel>
 )

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
@@ -69,7 +70,7 @@ class MailboxReducer @Inject constructor(
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
             deleteAllDialogState = currentState.toNewDeleteAllActionStateFrom(operation),
             bottomSheetState = currentState.toNewBottomSheetState(operation),
-            actionMessage = currentState.toNewActionMessageStateFrom(operation),
+            actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation)
         )
 
@@ -139,11 +140,11 @@ class MailboxReducer @Inject constructor(
         }
     }
 
-    private fun MailboxState.toNewActionMessageStateFrom(operation: MailboxOperation): Effect<TextUiModel> {
+    private fun MailboxState.toNewActionMessageStateFrom(operation: MailboxOperation): Effect<ActionResult> {
         return if (operation is MailboxOperation.AffectingActionMessage) {
             actionMessageReducer.newStateFrom(operation)
         } else {
-            actionMessage
+            actionResult
         }
     }
 

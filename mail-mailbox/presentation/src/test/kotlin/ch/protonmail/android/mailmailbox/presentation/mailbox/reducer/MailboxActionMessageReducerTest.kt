@@ -2,6 +2,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -32,22 +33,30 @@ internal class MailboxActionMessageReducerTest(
         private val transitions = listOf(
             TestInput(
                 operation = MailboxEvent.Trash(5),
-                expectedState = Effect.of(TextUiModel(R.plurals.mailbox_action_trash, 5))
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(R.plurals.mailbox_action_trash, 5))
+                )
             ),
             TestInput(
                 operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId"),
-                expectedState = Effect.of(TextUiModel(R.string.mailbox_action_trash_message))
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_trash_message))
+                )
             ),
             TestInput(
                 operation = MailboxViewAction.SwipeArchiveAction(
                     UserIdSample.Primary,
                     "itemId"
                 ),
-                expectedState = Effect.of(TextUiModel(R.string.mailbox_action_archive_message))
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_archive_message))
+                )
             ),
             TestInput(
                 operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId"),
-                expectedState = Effect.of(TextUiModel(R.string.mailbox_action_spam_message))
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_spam_message))
+                )
             )
         )
 
@@ -68,7 +77,7 @@ internal class MailboxActionMessageReducerTest(
 
     data class TestInput(
         val operation: MailboxOperation.AffectingActionMessage,
-        val expectedState: Effect<TextUiModel>
+        val expectedState: Effect<ActionResult>
     )
 
 }

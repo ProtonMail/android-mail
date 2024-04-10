@@ -21,6 +21,9 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -29,23 +32,32 @@ import javax.inject.Inject
 
 class MailboxActionMessageReducer @Inject constructor() {
 
-    internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<TextUiModel> {
-        val textUiModel = when (operation) {
+    internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<ActionResult> {
+        val actionResult = when (operation) {
             is MailboxEvent.Trash ->
-                TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages)
+                UndoableActionResult(
+                    TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages)
+                )
+
 
             is MailboxEvent.DeleteConfirmed -> {
                 val resource = when (operation.viewMode) {
                     ViewMode.ConversationGrouping -> R.plurals.mailbox_action_delete_conversation
                     ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_delete_message
                 }
-                TextUiModel(resource, operation.numAffectedMessages)
+                DefinitiveActionResult(TextUiModel(resource, operation.numAffectedMessages))
             }
 
-            is MailboxViewAction.SwipeArchiveAction -> TextUiModel(R.string.mailbox_action_archive_message)
-            is MailboxViewAction.SwipeSpamAction -> TextUiModel(R.string.mailbox_action_spam_message)
-            is MailboxViewAction.SwipeTrashAction -> TextUiModel(R.string.mailbox_action_trash_message)
+            is MailboxViewAction.SwipeArchiveAction -> UndoableActionResult(
+                TextUiModel(R.string.mailbox_action_archive_message)
+            )
+            is MailboxViewAction.SwipeSpamAction -> UndoableActionResult(
+                TextUiModel(R.string.mailbox_action_spam_message)
+            )
+            is MailboxViewAction.SwipeTrashAction -> UndoableActionResult(
+                TextUiModel(R.string.mailbox_action_trash_message)
+            )
         }
-        return Effect.of(textUiModel)
+        return Effect.of(actionResult)
     }
 }

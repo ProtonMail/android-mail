@@ -1267,7 +1267,7 @@ class MailboxViewModel @Inject constructor(
             deleteAllDialogState = DeleteDialogState.Hidden,
             storageLimitState = StorageLimitState.None,
             bottomSheetState = null,
-            actionMessage = Effect.empty(),
+            actionResult = Effect.empty(),
             error = Effect.empty()
         )
     }

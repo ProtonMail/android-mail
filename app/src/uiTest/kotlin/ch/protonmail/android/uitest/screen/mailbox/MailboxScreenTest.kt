@@ -216,7 +216,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
                 onboardingState = OnboardingState.Hidden,
-                actionMessage = Effect.empty(),
+                actionResult = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,
                 deleteAllDialogState = DeleteDialogState.Hidden,
                 storageLimitState = StorageLimitState.HasEnoughSpace,

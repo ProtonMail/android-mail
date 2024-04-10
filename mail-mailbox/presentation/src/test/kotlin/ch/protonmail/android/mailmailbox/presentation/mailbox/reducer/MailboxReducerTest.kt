@@ -84,7 +84,7 @@ internal class MailboxReducerTest(
         every { newStateFrom(any()) } returns reducedState.upgradeStorageState
     }
     private val actionMessageReducer: MailboxActionMessageReducer = mockk {
-        every { newStateFrom(any()) } returns reducedState.actionMessage
+        every { newStateFrom(any()) } returns reducedState.actionResult
     }
     private val deleteDialogReducer: MailboxDeleteDialogReducer = mockk {
         every { newStateFrom(any()) } returns reducedState.deleteDialogState
@@ -147,7 +147,7 @@ internal class MailboxReducerTest(
         if (shouldReduceActionMessage) {
             verify { actionMessageReducer.newStateFrom(operation as MailboxOperation.AffectingActionMessage) }
         } else {
-            assertEquals(currentState.actionMessage, nextState.actionMessage)
+            assertEquals(currentState.actionResult, nextState.actionResult)
         }
 
         if (shouldReduceDeleteDialog) {
@@ -205,7 +205,7 @@ internal class MailboxReducerTest(
             ),
             bottomAppBarState = BottomBarState.Loading,
             onboardingState = OnboardingState.Hidden,
-            actionMessage = Effect.empty(),
+            actionResult = Effect.empty(),
             deleteDialogState = DeleteDialogState.Hidden,
             deleteAllDialogState = DeleteDialogState.Hidden,
             bottomSheetState = null,

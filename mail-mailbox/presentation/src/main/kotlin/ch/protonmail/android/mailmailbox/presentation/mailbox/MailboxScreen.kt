@@ -300,9 +300,11 @@ fun MailboxScreen(
     val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
     val rememberTopBarHeight = remember { mutableStateOf(0.dp) }
 
-    ConsumableTextEffect(effect = mailboxState.actionMessage) {
-        snackbarHostState.showSnackbar(message = it, type = ProtonSnackbarType.NORM)
+    mailboxState.actionResult.consume()?.let {
+        val message = it.message.string()
+        scope.launch { snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM) }
     }
+
     ConsumableTextEffect(effect = mailboxState.error) {
         snackbarHostErrorState.showSnackbar(message = it, type = ProtonSnackbarType.ERROR)
     }
