@@ -121,4 +121,6 @@
     <string name="color_olive">Olive</string>
     <string name="color_pickle">Pickle</string>
     <string name="undo_button_label">Undo</string>
+    <string name="undo_success_message">Action reverted</string>
+    <string name="undo_failure_message">Action revert failed</string>
 </resources>

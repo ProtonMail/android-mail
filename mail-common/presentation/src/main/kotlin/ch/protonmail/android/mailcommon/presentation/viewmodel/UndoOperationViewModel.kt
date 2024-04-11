@@ -21,7 +21,10 @@ package ch.protonmail.android.mailcommon.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.UndoLastOperation
+import ch.protonmail.android.mailcommon.presentation.Effect
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,5 +33,22 @@ class UndoOperationViewModel @Inject constructor(
     private val undoLastOperation: UndoLastOperation
 ) : ViewModel() {
 
-    fun submitUndo() = viewModelScope.launch { undoLastOperation() }
+    private val mutableState = MutableStateFlow(Initial)
+    val state = mutableState.asStateFlow()
+
+    fun submitUndo() = viewModelScope.launch {
+        undoLastOperation().fold(
+            ifLeft = { mutableState.emit(state.value.copy(undoFailed = Effect.of(Unit))) },
+            ifRight = { mutableState.emit(state.value.copy(undoSucceeded = Effect.of(Unit))) }
+        )
+    }
+
+    data class State(
+        val undoSucceeded: Effect<Unit>,
+        val undoFailed: Effect<Unit>
+    )
+
+    companion object {
+        private val Initial = State(Effect.empty(), Effect.empty())
+    }
 }

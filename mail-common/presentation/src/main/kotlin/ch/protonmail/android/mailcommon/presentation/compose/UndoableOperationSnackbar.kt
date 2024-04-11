@@ -20,10 +20,12 @@ package ch.protonmail.android.mailcommon.presentation.compose
 
 import androidx.compose.material.SnackbarResult
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
@@ -43,6 +45,20 @@ fun UndoableOperationSnackbar(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val undoActionLabel = stringResource(id = R.string.undo_button_label)
+    val state = viewModel.state.collectAsState()
+
+    val undoSuccessMessage = stringResource(id = R.string.undo_success_message)
+    suspend fun showUndoSuccess() {
+        snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, undoSuccessMessage)
+    }
+
+    val undoFailureMessage = stringResource(id = R.string.undo_failure_message)
+    suspend fun showUndoFailure() {
+        snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, undoFailureMessage)
+    }
+
+    ConsumableLaunchedEffect(effect = state.value.undoSucceeded) { showUndoSuccess() }
+    ConsumableLaunchedEffect(effect = state.value.undoFailed) { showUndoFailure() }
 
     actionEffect.consume()?.let {
         val message = it.message.string()
