@@ -20,6 +20,9 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -66,7 +69,7 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
         if (operation is MessageDetailOperation.AffectingErrorBar) {
-            val textRessource = when (operation) {
+            val textResource = when (operation) {
                 is MessageDetailEvent.ErrorMarkingUnread -> R.string.error_mark_unread_failed
                 is MessageDetailEvent.ErrorAddingStar -> R.string.error_star_operation_failed
                 is MessageDetailEvent.ErrorRemovingStar -> R.string.error_unstar_operation_failed
@@ -84,7 +87,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorDeletingNoApplicableFolder ->
                     R.string.error_delete_message_failed_wrong_folder
             }
-            Effect.of(TextUiModel(textRessource))
+            Effect.of(TextUiModel(textResource))
         } else {
             error
         }
@@ -99,19 +102,21 @@ class MessageDetailReducer @Inject constructor(
 
     private fun MessageDetailState.toNewExitWithMessageStateFrom(
         operation: MessageDetailOperation
-    ): Effect<TextUiModel> = when (operation) {
-        MessageViewAction.Trash -> Effect.of(TextUiModel(R.string.message_moved_to_trash))
+    ): Effect<ActionResult> = when (operation) {
+        MessageViewAction.Trash -> Effect.of(
+            UndoableActionResult(TextUiModel(R.string.message_moved_to_trash))
+        )
         is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
-            TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText)
+            UndoableActionResult(TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText))
         )
 
         is MessageViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
-            true -> Effect.of(TextUiModel(R.string.message_moved_to_archive))
+            true -> Effect.of(DefinitiveActionResult(TextUiModel(R.string.message_moved_to_archive)))
             else -> exitScreenWithMessageEffect
         }
 
         is MessageViewAction.DeleteConfirmed -> Effect.of(
-            TextUiModel(R.string.message_deleted)
+            DefinitiveActionResult(TextUiModel(R.string.message_deleted))
         )
 
         else -> exitScreenWithMessageEffect

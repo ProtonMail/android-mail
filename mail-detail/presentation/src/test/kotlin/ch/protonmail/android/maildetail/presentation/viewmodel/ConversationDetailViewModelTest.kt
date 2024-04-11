@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
@@ -937,7 +938,9 @@ class ConversationDetailViewModelTest {
                 operation = ConversationDetailViewAction.Trash
             )
         } returns ConversationDetailState.Loading.copy(
-            exitScreenWithMessageEffect = Effect.of(TextUiModel(string.conversation_moved_to_trash))
+            exitScreenWithMessageEffect = Effect.of(
+                ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_trash))
+            )
         )
 
         // When
@@ -999,9 +1002,8 @@ class ConversationDetailViewModelTest {
             reducer.newStateFrom(any(), ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
         } returns ConversationDetailState.Loading.copy(
             exitScreenWithMessageEffect = Effect.of(
-                TextUiModel(
-                    string.conversation_moved_to_selected_destination,
-                    "selectedLabel"
+                ActionResult.UndoableActionResult(
+                    TextUiModel(string.conversation_moved_to_selected_destination, "selectedLabel")
                 )
             )
         )
@@ -1243,7 +1245,9 @@ class ConversationDetailViewModelTest {
             coEvery {
                 reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true))
             } returns ConversationDetailState.Loading.copy(
-                exitScreenWithMessageEffect = Effect.of(TextUiModel(string.conversation_moved_to_archive))
+                exitScreenWithMessageEffect = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_archive))
+                )
             )
 
             // When

@@ -1098,7 +1098,7 @@ class ConversationRepositoryImplTest {
         } returns expectedFlow
 
         // When
-        val actual = conversationRepository.observeClearLabelOperation(userId, expectedLabel).test {
+        conversationRepository.observeClearLabelOperation(userId, expectedLabel).test {
             // Then
             assertTrue { awaitItem() }
         }

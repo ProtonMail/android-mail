@@ -45,6 +45,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -1233,7 +1234,7 @@ class ConversationDetailViewModelIntegrationTest {
     @Test
     fun `verify delete is executed when delete confirmed is called`() = runTest {
         // Given
-        val expectedMessage = TextUiModel(R.string.conversation_deleted)
+        val expectedMessage = ActionResult.DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))
         coEvery {
             observeConversationUseCase(userId, conversationId, false)
         } returns flowOf(
@@ -1376,7 +1377,7 @@ class ConversationDetailViewModelIntegrationTest {
 
             // When
             viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(defaultExpanded.message.messageId)))
-            var expandingState = awaitItem()
+            val expandingState = awaitItem()
 
             // Then
             message = (expandingState.messagesState as ConversationDetailsMessagesState.Data)

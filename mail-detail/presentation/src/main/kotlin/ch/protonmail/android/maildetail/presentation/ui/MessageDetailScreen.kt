@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
@@ -247,8 +248,9 @@ fun MessageDetailScreen(
     val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
     ConsumableLaunchedEffect(state.exitScreenEffect) { actions.onExit(null) }
-    ConsumableTextEffect(state.exitScreenWithMessageEffect) { string ->
-        actions.onExit(string)
+
+    state.exitScreenWithMessageEffect.consume()?.let {
+        actions.onExit(it)
     }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
@@ -503,7 +505,7 @@ private fun MessageDetailContent(
 object MessageDetail {
 
     data class Actions(
-        val onExit: (message: String?) -> Unit,
+        val onExit: (message: ActionResult?) -> Unit,
         val openMessageBodyLink: (uri: Uri) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
@@ -521,7 +523,7 @@ object MessageDetailScreen {
     const val MESSAGE_ID_KEY = "message id"
 
     data class Actions(
-        val onExit: (notifyUserMessage: String?) -> Unit,
+        val onExit: (notifyUserMessage: ActionResult?) -> Unit,
         val onReload: () -> Unit,
         val onStarClick: () -> Unit,
         val onTrashClick: () -> Unit,

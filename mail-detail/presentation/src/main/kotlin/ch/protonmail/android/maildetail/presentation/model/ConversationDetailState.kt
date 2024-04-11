@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -32,7 +33,7 @@ data class ConversationDetailState(
     val bottomBarState: BottomBarState,
     val bottomSheetState: BottomSheetState?,
     val exitScreenEffect: Effect<Unit>,
-    val exitScreenWithMessageEffect: Effect<TextUiModel>,
+    val exitScreenWithMessageEffect: Effect<ActionResult>,
     val error: Effect<TextUiModel>,
     val openMessageBodyLinkEffect: Effect<MessageBodyLink>,
     val openAttachmentEffect: Effect<OpenAttachmentIntentValues>,

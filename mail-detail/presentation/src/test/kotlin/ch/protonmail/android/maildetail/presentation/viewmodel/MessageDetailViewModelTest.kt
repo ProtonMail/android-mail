@@ -37,6 +37,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -715,7 +716,7 @@ class MessageDetailViewModelTest {
     @Test
     fun `when trash action is submitted, use case is called and success message is emitted`() = runTest {
         // Given
-        val expectedMessage = TextUiModel(R.string.message_moved_to_trash)
+        val expectedMessage = ActionResult.UndoableActionResult(TextUiModel(R.string.message_moved_to_trash))
 
         // when
         viewModel.submit(MessageViewAction.Trash)
@@ -777,7 +778,7 @@ class MessageDetailViewModelTest {
                 emptyList()
             ).right()
         )
-        val expectedMessage = TextUiModel(R.string.message_deleted)
+        val expectedMessage = ActionResult.DefinitiveActionResult(TextUiModel(R.string.message_deleted))
 
         // when
         viewModel.submit(MessageViewAction.DeleteConfirmed)

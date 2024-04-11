@@ -20,6 +20,9 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import java.util.UUID
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -141,7 +144,7 @@ class ConversationDetailReducerTest(
         val reducesBottomBar: Boolean,
         val reducesErrorBar: Boolean,
         val reducesExit: Boolean,
-        val expectedExitMessage: TextUiModel?,
+        val expectedExitMessage: ActionResult?,
         val reducesBottomSheet: Boolean,
         val reducesLinkClick: Boolean,
         val reducesMessageScroll: Boolean,
@@ -158,8 +161,8 @@ class ConversationDetailReducerTest(
         val messageId = MessageIdUiModel(UUID.randomUUID().toString())
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
-            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithMessage(
-                TextUiModel(string.conversation_moved_to_selected_destination, "spam")
+            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithResult(
+                UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
             ),
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
             ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
@@ -167,20 +170,22 @@ class ConversationDetailReducerTest(
                 SystemLabelId.Archive.toMailLabelSystem().id
             ) affects BottomSheet,
             ConversationDetailViewAction.Star affects Conversation,
-            ConversationDetailViewAction.Trash affects ExitWithMessage(TextUiModel(string.conversation_moved_to_trash)),
+            ConversationDetailViewAction.Trash affects ExitWithResult(
+                UndoableActionResult(TextUiModel(string.conversation_moved_to_trash))
+            ),
             ConversationDetailViewAction.UnStar affects Conversation,
             ConversationDetailViewAction.RequestLabelAsBottomSheet affects BottomSheet,
             ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
             ConversationDetailViewAction.LabelAsConfirmed(false) affects BottomSheet,
             ConversationDetailViewAction.LabelAsConfirmed(true) affects listOf(
                 BottomSheet,
-                ExitWithMessage(TextUiModel(string.conversation_moved_to_archive))
+                ExitWithResult(DefinitiveActionResult(TextUiModel(string.conversation_moved_to_archive)))
             ),
             ConversationDetailViewAction.MessageBodyLinkClicked(messageId, mockk()) affects LinkClick,
             ConversationDetailViewAction.RequestScrollTo(messageId) affects MessageScroll,
             ConversationDetailViewAction.DeleteConfirmed affects listOf(
                 DeleteDialog,
-                ExitWithMessage(TextUiModel(string.conversation_deleted))
+                ExitWithResult(DefinitiveActionResult(TextUiModel(string.conversation_deleted)))
             ),
             ConversationDetailViewAction.SwitchViewMode(
                 MessageId(messageId.id), ViewModePreference.LightMode
@@ -249,7 +254,7 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesBottomBar = entities.contains(BottomBar),
     reducesErrorBar = entities.contains(ErrorBar),
     reducesExit = entities.contains(Exit),
-    expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithMessage)?.message },
+    expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithResult)?.result },
     reducesBottomSheet = entities.contains(BottomSheet),
     reducesLinkClick = entities.contains(LinkClick),
     reducesMessageScroll = entities.contains(MessageScroll),
@@ -263,7 +268,7 @@ private object Messages : Entity
 private object Conversation : Entity
 private object BottomBar : Entity
 private object Exit : Entity
-private data class ExitWithMessage(val message: TextUiModel) : Entity
+private data class ExitWithResult(val result: ActionResult) : Entity
 private object ErrorBar : Entity
 private object BottomSheet : Entity
 private object LinkClick : Entity

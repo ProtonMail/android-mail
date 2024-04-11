@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -296,7 +297,7 @@ class MessageDetailReducerTest(
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
-                exitMessage = TextUiModel(string.message_moved_to_trash),
+                exitMessage = ActionResult.UndoableActionResult(TextUiModel(string.message_moved_to_trash)),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false,
@@ -345,7 +346,9 @@ class MessageDetailReducerTest(
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
-                exitMessage = TextUiModel(string.message_moved_to_selected_destination, "testLabel"),
+                exitMessage = ActionResult.UndoableActionResult(
+                    TextUiModel(string.message_moved_to_selected_destination, "testLabel")
+                ),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false,
@@ -382,7 +385,7 @@ class MessageDetailReducerTest(
                 shouldReduceMessageBodyState = false,
                 shouldReduceBottomBarState = false,
                 shouldReduceExitEffect = false,
-                exitMessage = TextUiModel(string.message_moved_to_archive),
+                exitMessage = ActionResult.DefinitiveActionResult(TextUiModel(string.message_moved_to_archive)),
                 shouldReduceToErrorEffect = false,
                 shouldReduceBottomSheetState = true,
                 shouldReduceOpenMessageBodyLinkEffect = false,
@@ -766,7 +769,7 @@ class MessageDetailReducerTest(
         val shouldReduceToErrorEffect: Boolean,
         val shouldReduceOpenMessageBodyLinkEffect: Boolean,
         val shouldReducePhishingLinkConfirmation: Boolean,
-        val exitMessage: TextUiModel? = null,
+        val exitMessage: ActionResult? = null,
         val shouldReduceDeleteDialogState: Boolean = false,
         val shouldReduceReportPhishingDialogState: Boolean = false
     )

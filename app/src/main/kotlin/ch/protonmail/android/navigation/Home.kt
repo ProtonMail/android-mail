@@ -26,6 +26,7 @@ import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -41,7 +42,10 @@ import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.R
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.compose.UndoableOperationSnackbar
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
@@ -203,6 +207,12 @@ fun Home(
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
     }
 
+    val undoActionEffect = remember { mutableStateOf(Effect.empty<ActionResult>()) }
+    UndoableOperationSnackbar(snackbarHostState = snackbarHostNormState, actionEffect = undoActionEffect.value)
+    fun showUndoableOperationSnackbar(actionResult: ActionResult) = scope.launch {
+        undoActionEffect.value = Effect.of(actionResult)
+    }
+
     ConsumableLaunchedEffect(state.value.messageSendingStatusEffect) { sendingStatus ->
         when (sendingStatus) {
             is MessageSendingStatus.MessageSent -> showSuccessSendingMessageSnackbar()
@@ -254,14 +264,7 @@ fun Home(
                     actions = ConversationDetail.Actions(
                         onExit = { notifyUserMessage ->
                             navController.navigateBack()
-                            notifyUserMessage?.let {
-                                scope.launch {
-                                    snackbarHostNormState.showSnackbar(
-                                        message = it,
-                                        type = ProtonSnackbarType.NORM
-                                    )
-                                }
-                            }
+                            notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
                         },
                         openMessageBodyLink = activityActions.openInActivityInNewTask,
                         openAttachment = activityActions.openIntentChooser,
@@ -285,14 +288,7 @@ fun Home(
                     actions = MessageDetail.Actions(
                         onExit = { notifyUserMessage ->
                             navController.navigateBack()
-                            notifyUserMessage?.let {
-                                scope.launch {
-                                    snackbarHostNormState.showSnackbar(
-                                        message = it,
-                                        type = ProtonSnackbarType.NORM
-                                    )
-                                }
-                            }
+                            notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
                         },
                         openMessageBodyLink = activityActions.openInActivityInNewTask,
                         openAttachment = activityActions.openIntentChooser,

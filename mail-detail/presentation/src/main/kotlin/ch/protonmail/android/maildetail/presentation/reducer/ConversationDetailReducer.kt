@@ -19,6 +19,9 @@
 package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -165,21 +168,24 @@ class ConversationDetailReducer @Inject constructor(
 
     private fun ConversationDetailState.toExitWithMessageState(
         operation: ConversationDetailOperation
-    ): Effect<TextUiModel> = when (operation) {
-        is ConversationDetailViewAction.Trash -> Effect.of(TextUiModel(R.string.conversation_moved_to_trash))
+    ): Effect<ActionResult> = when (operation) {
+        is ConversationDetailViewAction.Trash -> Effect.of(
+            UndoableActionResult(TextUiModel(R.string.conversation_moved_to_trash))
+        )
         is ConversationDetailViewAction.MoveToDestinationConfirmed -> Effect.of(
-            TextUiModel(
-                R.string.conversation_moved_to_selected_destination,
-                operation.mailLabelText
+            UndoableActionResult(
+                TextUiModel(R.string.conversation_moved_to_selected_destination, operation.mailLabelText)
             )
         )
 
         is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
-            true -> Effect.of(TextUiModel(R.string.conversation_moved_to_archive))
+            true -> Effect.of(DefinitiveActionResult(TextUiModel(R.string.conversation_moved_to_archive)))
             false -> exitScreenWithMessageEffect
         }
 
-        is ConversationDetailViewAction.DeleteConfirmed -> Effect.of(TextUiModel(R.string.conversation_deleted))
+        is ConversationDetailViewAction.DeleteConfirmed -> Effect.of(
+            DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))
+        )
 
         else -> exitScreenWithMessageEffect
     }

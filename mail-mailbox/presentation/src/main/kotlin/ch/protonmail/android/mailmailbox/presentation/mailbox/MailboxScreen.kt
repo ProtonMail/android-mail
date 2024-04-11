@@ -90,6 +90,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.UndoableOperationSnackbar
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
@@ -300,10 +301,7 @@ fun MailboxScreen(
     val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
     val rememberTopBarHeight = remember { mutableStateOf(0.dp) }
 
-    mailboxState.actionResult.consume()?.let {
-        val message = it.message.string()
-        scope.launch { snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM) }
-    }
+    UndoableOperationSnackbar(snackbarHostState = snackbarHostState, actionEffect = mailboxState.actionResult)
 
     ConsumableTextEffect(effect = mailboxState.error) {
         snackbarHostErrorState.showSnackbar(message = it, type = ProtonSnackbarType.ERROR)
