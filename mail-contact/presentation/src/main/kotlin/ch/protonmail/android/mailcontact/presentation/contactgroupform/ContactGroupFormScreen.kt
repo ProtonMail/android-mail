@@ -311,7 +311,7 @@ fun ContactGroupFormContent(
             }
         }
 
-        if (state.contactGroup.id != null) {
+        if (state.displayDeleteButton) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
