@@ -20,21 +20,19 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.data.mapper.isAlreadyExistsApiError
 import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.NewLabel
 import me.proton.core.label.domain.repository.LabelRepository
-import me.proton.core.network.domain.hasProtonErrorCode
 import javax.inject.Inject
 
 class CreateContactGroup @Inject constructor(
     private val labelRepository: LabelRepository,
     private val editContactGroupMembers: EditContactGroupMembers
 ) {
-
-    private val protonResponseCodeAlreadyExists = 2500
 
     suspend operator fun invoke(
         userId: UserId,
@@ -53,10 +51,10 @@ class CreateContactGroup @Inject constructor(
             type = LabelType.ContactGroup
         )
 
-        Either.catch {
+        runCatching {
             labelRepository.createLabel(userId, label)
-        }.onLeft {
-            if (it.hasProtonErrorCode(protonResponseCodeAlreadyExists)) {
+        }.getOrElse {
+            if (it.isAlreadyExistsApiError()) {
                 raise(CreateContactGroupError.GroupNameDuplicate)
             } else raise(CreateContactGroupError.CreatingLabelError)
         }
