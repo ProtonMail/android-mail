@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -173,7 +173,7 @@ object ConversationDetailItem {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (WebView) -> Unit
+        val onPrint: (PrintDocumentAdapter) -> Unit
     )
 }
 

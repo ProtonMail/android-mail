@@ -4,7 +4,6 @@ import android.content.Context
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintManager
-import android.webkit.WebView
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage.Companion.JobName
 import io.mockk.every
 import io.mockk.mockk
@@ -19,9 +18,6 @@ class PrintMessageTest {
         every { getSystemService(Context.PRINT_SERVICE) } returns printManager
     }
     private val printAdapter = mockk<PrintDocumentAdapter>()
-    private val webView = mockk<WebView> {
-        every { createPrintDocumentAdapter(JobName) } returns printAdapter
-    }
 
     private val printMessage = PrintMessage()
 
@@ -34,7 +30,7 @@ class PrintMessageTest {
         every { printManager.print(JobName, printAdapter, printAttributes) } returns mockk()
 
         // When
-        printMessage(context, webView)
+        printMessage(context, printAdapter)
 
         // Then
         verify { printManager.print(JobName, printAdapter, printAttributes) }

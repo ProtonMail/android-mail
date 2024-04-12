@@ -22,8 +22,8 @@ import java.io.ByteArrayInputStream
 import java.util.Random
 import android.content.Context
 import android.net.Uri
+import android.print.PrintDocumentAdapter
 import android.text.format.Formatter
-import android.webkit.WebView
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -1688,14 +1688,14 @@ class ConversationDetailViewModelIntegrationTest {
     fun `should call the print message use case in order to print a message`() = runTest {
         // Given
         val context = mockk<Context>()
-        val webView = mockk<WebView>()
+        val printDocumentAdapter = mockk<PrintDocumentAdapter>()
         val messages = nonEmptyListOf(
             MessageWithLabelsSample.AugWeatherForecast,
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        every { printMessage(context, webView) } returns mockk()
+        every { printMessage(context, printDocumentAdapter) } returns mockk()
 
         // When
         val viewModel = buildConversationDetailViewModel()
@@ -1710,11 +1710,11 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(4)
 
             viewModel.submit(
-                ConversationDetailViewAction.Print(context, webView)
+                ConversationDetailViewAction.Print(context, printDocumentAdapter)
             )
 
             // then
-            verify { printMessage(context, webView) }
+            verify { printMessage(context, printDocumentAdapter) }
 
             cancelAndIgnoreRemainingEvents()
         }

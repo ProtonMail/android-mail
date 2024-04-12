@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -192,7 +192,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar()
             is MessageViewAction.SwitchViewMode -> directlyHandleViewAction(action)
             is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
-            is MessageViewAction.Print -> handlePrint(action.context, action.webView)
+            is MessageViewAction.Print -> handlePrint(action.context, action.printDocumentAdapter)
         }
     }
 
@@ -682,8 +682,8 @@ class MessageDetailViewModel @Inject constructor(
         )
     }
 
-    private fun handlePrint(context: Context, webView: WebView) {
-        printMessage(context, webView)
+    private fun handlePrint(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
+        printMessage(context, printDocumentAdapter)
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

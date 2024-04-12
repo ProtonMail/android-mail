@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -229,7 +229,7 @@ object MessageBody {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (WebView) -> Unit
+        val onPrint: (PrintDocumentAdapter) -> Unit
     )
 }
 

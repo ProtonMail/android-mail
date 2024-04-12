@@ -20,19 +20,18 @@ package ch.protonmail.android.maildetail.presentation.usecase
 
 import android.content.Context
 import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
 import android.print.PrintManager
-import android.webkit.WebView
 import javax.inject.Inject
 
 class PrintMessage @Inject constructor() {
 
-    operator fun invoke(context: Context, webView: WebView) {
+    operator fun invoke(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
         val printManager = context.getSystemService(Context.PRINT_SERVICE) as PrintManager
-        val printAdapter = webView.createPrintDocumentAdapter(JobName)
 
         printManager.print(
             JobName,
-            printAdapter,
+            printDocumentAdapter,
             PrintAttributes.Builder().build()
         )
     }

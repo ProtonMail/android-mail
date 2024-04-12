@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -222,7 +222,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing(action)
             is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
-            is ConversationDetailViewAction.Print -> handlePrint(action.context, action.webView)
+            is ConversationDetailViewAction.Print -> handlePrint(action.context, action.printDocumentAdapter)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -878,8 +878,8 @@ class ConversationDetailViewModel @Inject constructor(
         )
     }
 
-    private fun handlePrint(context: Context, webView: WebView) {
-        printMessage(context, webView)
+    private fun handlePrint(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
+        printMessage(context, printDocumentAdapter)
     }
 
     companion object {

@@ -20,7 +20,7 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -1744,17 +1744,17 @@ class MessageDetailViewModelTest {
     fun `call the print message use case in order to print a message`() = runTest {
         // Given
         val context = mockk<Context>()
-        val webView = mockk<WebView>()
-        every { printMessage(context, webView) } returns mockk()
+        val printDocumentAdapter = mockk<PrintDocumentAdapter>()
+        every { printMessage(context, printDocumentAdapter) } returns mockk()
 
         viewModel.state.test {
             skipItems(4)
 
             // When
-            viewModel.submit(MessageViewAction.Print(context, webView))
+            viewModel.submit(MessageViewAction.Print(context, printDocumentAdapter))
 
             // Then
-            verify { printMessage(context, webView) }
+            verify { printMessage(context, printDocumentAdapter) }
         }
     }
 

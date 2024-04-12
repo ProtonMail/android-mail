@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.presentation.ui
 
 import java.io.ByteArrayInputStream
 import android.net.Uri
+import android.print.PrintDocumentAdapter
 import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
@@ -73,6 +74,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCol
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.webview.MessageBodyWebViewOperation
+import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView.PrintJobName
 import ch.protonmail.android.mailmessage.presentation.viewmodel.MessageBodyWebViewViewModel
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.LoadingState
@@ -138,7 +140,7 @@ fun MessageBodyWebView(
     }
 
     ConsumableLaunchedEffect(messageBodyUiModel.printEffect) {
-        webView?.let { actions.onPrint(it) }
+        webView?.let { actions.onPrint(it.createPrintDocumentAdapter(PrintJobName)) }
     }
 
     val client = remember(messageBodyUiModel.shouldShowRemoteContent, messageBodyUiModel.shouldShowEmbeddedImages) {
@@ -315,6 +317,8 @@ private fun ExpandCollapseBodyButtonPreview() {
 
 object MessageBodyWebView {
 
+    const val PrintJobName = "Proton Mail Document"
+
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onMessageBodyLinkLongClicked: (uri: Uri) -> Unit,
@@ -322,7 +326,7 @@ object MessageBodyWebView {
         val onExpandCollapseButtonCLicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
-        val onPrint: (WebView) -> Unit
+        val onPrint: (PrintDocumentAdapter) -> Unit
     )
 }
 

@@ -19,7 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.webkit.WebView
+import android.print.PrintDocumentAdapter
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -549,7 +549,7 @@ object MessageDetailScreen {
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
-        val onPrint: (WebView) -> Unit
+        val onPrint: (PrintDocumentAdapter) -> Unit
     ) {
 
         companion object {
@@ -608,7 +608,7 @@ object MessageDetailContent {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (WebView) -> Unit
+        val onPrint: (PrintDocumentAdapter) -> Unit
     )
 }
 
