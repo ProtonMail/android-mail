@@ -46,6 +46,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -177,7 +178,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val reportPhishingMessage: ReportPhishingMessage,
     private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
     private val networkManager: NetworkManager,
-    private val printMessage: PrintMessage
+    private val printMessage: PrintMessage,
+    private val markMessageAsUnread: MarkMessageAsUnread
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -223,6 +225,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
             is ConversationDetailViewAction.Print -> handlePrint(action.context, action.printDocumentAdapter)
+            is ConversationDetailViewAction.MarkMessageUnread -> handleMarkMessageUnread(action)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -880,6 +883,14 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun handlePrint(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
         printMessage(context, printDocumentAdapter)
+    }
+
+    private fun handleMarkMessageUnread(action: ConversationDetailViewAction.MarkMessageUnread) {
+        viewModelScope.launch {
+            markMessageAsUnread(primaryUserId.first(), action.messageId)
+            onCollapseMessage(MessageIdUiModel(action.messageId.id))
+            emitNewStateFrom(action)
+        }
     }
 
     companion object {

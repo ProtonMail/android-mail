@@ -51,6 +51,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -299,6 +300,7 @@ class ConversationDetailViewModelTest {
     private val reportPhishingMessage = mockk<ReportPhishingMessage>()
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val printMessage = mockk<PrintMessage>()
+    private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -338,7 +340,8 @@ class ConversationDetailViewModelTest {
             networkManager = networkManager,
             reportPhishingMessage = reportPhishingMessage,
             isProtonCalendarInstalled = isProtonCalendarInstalled,
-            printMessage = printMessage
+            printMessage = printMessage,
+            markMessageAsUnread = markMessageAsUnread
         )
     }
 

@@ -185,4 +185,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val context: Context,
         val printDocumentAdapter: PrintDocumentAdapter
     ) : ConversationDetailViewAction
+    data class MarkMessageUnread(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
 }

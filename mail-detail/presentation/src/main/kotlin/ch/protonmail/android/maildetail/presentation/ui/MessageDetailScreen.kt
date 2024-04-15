@@ -171,6 +171,7 @@ fun MessageDetailScreen(
                         onReply = actions.onReply,
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
+                        onMarkUnread = { viewModel.submit(MessageViewAction.MarkUnread) },
                         onViewInLightMode = {
                             viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                         },

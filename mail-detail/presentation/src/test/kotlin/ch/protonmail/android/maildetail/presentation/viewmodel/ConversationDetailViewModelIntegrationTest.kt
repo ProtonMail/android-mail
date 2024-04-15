@@ -68,6 +68,7 @@ import ch.protonmail.android.maildetail.domain.usecase.GetAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.usecase.GetDownloadingAttachmentsForMessages
 import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
@@ -290,6 +291,7 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val printMessage = mockk<PrintMessage>()
+    private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
 
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
@@ -1720,6 +1722,62 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should close bottom sheet, collapse message and call use case when marking a message as unread`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery {
+            markMessageAsUnread(userId, MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+        } returns MessageWithLabelsSample.InvoiceWithLabel.message.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(
+                ConversationDetailViewAction.RequestMoreActionsBottomSheet(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+            skipItems(2)
+            viewModel.submit(
+                ConversationDetailViewAction.MarkMessageUnread(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+
+            // then
+            assertEquals(
+                BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+            val item = awaitItem()
+            val messagesState = item.messagesState as ConversationDetailsMessagesState.Data
+            val message = messagesState.messages.find {
+                it.messageId.id == MessageWithLabelsSample.InvoiceWithLabel.message.messageId.id
+            }
+            assertIs<Collapsed>(message)
+            coVerify { markMessageAsUnread(userId, MessageWithLabelsSample.InvoiceWithLabel.message.messageId) }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1788,7 +1846,8 @@ class ConversationDetailViewModelIntegrationTest {
         resolveParticipantName = resolveParticipantName,
         isProtonCalendarInstalled = protonCalendarInstalled,
         networkManager = networkMgmt,
-        printMessage = printMessage
+        printMessage = printMessage,
+        markMessageAsUnread = markMessageAsUnread
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
