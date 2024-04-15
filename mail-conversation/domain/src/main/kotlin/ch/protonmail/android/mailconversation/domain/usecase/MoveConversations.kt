@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailconversation.domain.usecase
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
@@ -70,27 +72,25 @@ class MoveConversations @Inject constructor(
         val conversationToOriginLabelIdMap = conversationRepository
             .observeCachedConversations(userId, conversationIds)
             .firstOrNull()
-            ?.map { conversation ->
+            ?.associate { conversation ->
                 Pair(
                     conversation.conversationId,
                     conversation.labels.firstOrNull { it.labelId in exclusiveLabelIds }?.labelId
                 )
             }
-            ?.toMap()
+
+        val labelIdToConversationIds = conversationToOriginLabelIdMap?.keys?.groupBy {
+            conversationToOriginLabelIdMap[it]
+        }
 
         return UndoableOperation.UndoMoveConversations {
-            either {
-                val labelIdToConversationIds = conversationToOriginLabelIdMap?.keys?.groupBy {
-                    conversationToOriginLabelIdMap[it]
-                }
-
-                labelIdToConversationIds?.forEach {
-                    it.key?.let { labelId ->
-                        this@MoveConversations(userId, it.value, labelId)
-                            .onLeft { error -> raise(error) }
-                    }
+            labelIdToConversationIds?.forEach { entry ->
+                entry.key?.let { labelId ->
+                    this@MoveConversations(userId, entry.value, labelId)
+                        .onLeft { return@UndoMoveConversations it.left() }
                 }
             }
+            return@UndoMoveConversations Unit.right()
         }
     }
 

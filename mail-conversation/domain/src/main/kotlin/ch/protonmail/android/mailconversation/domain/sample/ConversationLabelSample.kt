@@ -84,6 +84,35 @@ object ConversationLabelSample {
         )
     }
 
+    object Newsletter {
+
+        val AllMail = build(
+            conversationId = ConversationIdSample.Newsletter,
+            labelId = LabelIdSample.AllMail
+        )
+
+        val Archive = build(
+            conversationId = ConversationIdSample.Newsletter,
+            labelId = LabelIdSample.Archive,
+            numMessages = 1
+        )
+    }
+
+    object AppointmentReminder {
+
+        val AllMail = build(
+            conversationId = ConversationIdSample.AppointmentReminder,
+            labelId = LabelIdSample.AllMail
+        )
+
+        val Archive = build(
+            conversationId = ConversationIdSample.AppointmentReminder,
+            labelId = LabelIdSample.Archive,
+            numMessages = 1
+        )
+    }
+
+
     fun build(
         conversationId: ConversationId = ConversationIdSample.build(),
         labelId: LabelId = LabelIdSample.build(),

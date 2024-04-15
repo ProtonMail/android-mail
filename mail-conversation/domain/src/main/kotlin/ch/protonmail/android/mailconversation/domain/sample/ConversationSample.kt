@@ -51,6 +51,27 @@ object ConversationSample {
         numMessages = 4
     )
 
+    val Newsletter = build(
+        conversationId = ConversationIdSample.Newsletter,
+        labels = listOf(
+            ConversationLabelSample.Newsletter.Archive,
+            ConversationLabelSample.Newsletter.AllMail
+        ),
+        subject = "Android weekly: android tips",
+        numMessages = 1
+    )
+
+    val AppointmentReminder = build(
+        conversationId = ConversationIdSample.AppointmentReminder,
+        labels = listOf(
+            ConversationLabelSample.AppointmentReminder.Archive,
+            ConversationLabelSample.AppointmentReminder.AllMail
+        ),
+        subject = "Reminder of your appointment",
+        numMessages = 1
+    )
+
+
     fun build(
         attachmentCount: AttachmentCount = AttachmentCountSample.build(),
         conversationId: ConversationId = ConversationIdSample.build(),
