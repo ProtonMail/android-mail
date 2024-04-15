@@ -18,13 +18,10 @@
 
 package ch.protonmail.android.mailcommon.presentation.model
 
-data class ActionResult(
-    val message: TextUiModel,
-    val isUndoable: Boolean
+sealed class ActionResult(
+    open val message: TextUiModel
 ) {
 
-    companion object {
-        fun UndoableActionResult(message: TextUiModel) = ActionResult(message, true)
-        fun DefinitiveActionResult(message: TextUiModel) = ActionResult(message, false)
-    }
+    data class UndoableActionResult(override val message: TextUiModel) : ActionResult(message)
+    data class DefinitiveActionResult(override val message: TextUiModel) : ActionResult(message)
 }

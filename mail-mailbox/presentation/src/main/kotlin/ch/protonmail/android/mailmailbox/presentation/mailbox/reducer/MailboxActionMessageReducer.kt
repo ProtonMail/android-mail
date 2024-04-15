@@ -22,8 +22,8 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction

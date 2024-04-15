@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcommon.domain.usecase
 
 import arrow.core.Either
 import arrow.core.left
+import timber.log.Timber
 import javax.inject.Inject
 
 class UndoLastOperation @Inject constructor(
@@ -27,7 +28,13 @@ class UndoLastOperation @Inject constructor(
 ) {
 
     suspend operator fun invoke(): Either<Error, Unit> {
-        val operation = getUndoableOperation() ?: return Error.NoOperationToUndo.left()
+        val operation = getUndoableOperation()
+
+        if (operation == null) {
+            Timber.w("Undo operation requested but no operation to undo was found")
+            return Error.NoOperationToUndo.left()
+        }
+
         return operation.undo()
             .mapLeft { Error.UndoFailed }
     }

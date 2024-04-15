@@ -20,8 +20,8 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.DefinitiveActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.Companion.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState

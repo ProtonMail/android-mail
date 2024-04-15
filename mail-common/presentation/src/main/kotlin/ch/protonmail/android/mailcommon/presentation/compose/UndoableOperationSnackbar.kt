@@ -64,7 +64,7 @@ fun UndoableOperationSnackbar(
         val message = it.message.string()
 
         coroutineScope.launch {
-            if (it.isUndoable) {
+            if (it is ActionResult.UndoableActionResult) {
                 val result = snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message, undoActionLabel)
                 if (result == SnackbarResult.ActionPerformed) {
                     Timber.d("Undo action performed")
