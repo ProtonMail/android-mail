@@ -82,5 +82,7 @@ class AddLabelMessageWorker @AssistedInject constructor(
             RawMessageIdsKey to messageIds.map { it.id }.serialize(),
             RawLabelIdKey to labelId.id
         )
+
+        fun id(userId: UserId): String = "AddLabelMessageWorker-${userId.id}"
     }
 }

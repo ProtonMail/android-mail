@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import androidx.work.ExistingWorkPolicy
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.toEither
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
@@ -107,13 +108,15 @@ class ConversationRemoteDataSourceImpl @Inject constructor(
     ) {
         conversationIds.chunked(MAX_CONVERSATION_IDS_API_LIMIT).forEach { conversationIdsChunk ->
             labelIds.forEach { labelId ->
-                enqueuer.enqueue<AddLabelConversationWorker>(
-                    userId,
-                    AddLabelConversationWorker.params(
+                enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                    userId = userId,
+                    workerId = AddLabelConversationWorker.id(userId),
+                    params = AddLabelConversationWorker.params(
                         userId = userId,
                         conversationIds = conversationIdsChunk,
                         labelId = labelId
-                    )
+                    ),
+                    existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
                 )
             }
         }

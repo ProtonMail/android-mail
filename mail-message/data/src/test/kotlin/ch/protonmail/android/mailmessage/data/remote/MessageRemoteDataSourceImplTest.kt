@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmessage.data.remote
 
 import java.net.UnknownHostException
+import androidx.work.ExistingWorkPolicy
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
@@ -276,20 +277,23 @@ class MessageRemoteDataSourceImplTest {
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
         val messageId2 = MessageIdSample.Invoice
         val labelId = LabelId("10")
-
+        appendOrReplaceUniqueAddLabelWorkSucceeds()
 
         // When
         messageRemoteDataSource.addLabelsToMessages(userId, listOf(messageId, messageId2), listOf(labelId))
 
         // Then
         verify {
-            enqueuer.enqueue<AddLabelMessageWorker>(
-                userId,
-                AddLabelMessageWorker.params(
+            enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                userId = userId,
+                workerId = AddLabelMessageWorker.id(userId),
+
+                params = AddLabelMessageWorker.params(
                     userId,
                     listOf(messageId, messageId2),
                     labelId
-                )
+                ),
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
             )
         }
     }
@@ -299,23 +303,28 @@ class MessageRemoteDataSourceImplTest {
         runTest {
             // Given
             val messageIds = List(MAX_ACTION_WORKER_PARAMETER_COUNT + 1) { MessageIdSample.Invoice }
+            appendOrReplaceUniqueAddLabelWorkSucceeds()
 
             // When
             messageRemoteDataSource.addLabelsToMessages(userId, messageIds, listOf(LabelId("10")))
 
             // Then
             verifySequence {
-                enqueuer.enqueue<AddLabelMessageWorker>(
-                    userId,
-                    AddLabelMessageWorker.params(
+                enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                    userId = userId,
+                    workerId = AddLabelMessageWorker.id(userId),
+                    params = AddLabelMessageWorker.params(
                         userId, messageIds.take(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
-                    )
+                    ),
+                    existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
                 )
-                enqueuer.enqueue<AddLabelMessageWorker>(
-                    userId,
-                    AddLabelMessageWorker.params(
+                enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                    userId = userId,
+                    workerId = AddLabelMessageWorker.id(userId),
+                    params = AddLabelMessageWorker.params(
                         userId, messageIds.drop(MAX_ACTION_WORKER_PARAMETER_COUNT), LabelId("10")
-                    )
+                    ),
+                    existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
                 )
             }
         }
@@ -326,19 +335,26 @@ class MessageRemoteDataSourceImplTest {
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
         val labelId = LabelId("10")
         val labelId2 = LabelId("11")
+        appendOrReplaceUniqueAddLabelWorkSucceeds()
+
         // When
         messageRemoteDataSource.addLabelsToMessages(userId, listOf(messageId), listOf(labelId, labelId2))
+
         // Then
         verify {
-            enqueuer.enqueue<AddLabelMessageWorker>(
-                userId,
-                AddLabelMessageWorker.params(userId, listOf(messageId), labelId)
+            enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                userId = userId,
+                workerId = AddLabelMessageWorker.id(userId),
+                params = AddLabelMessageWorker.params(userId, listOf(messageId), labelId),
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
             )
         }
         verify {
-            enqueuer.enqueue<AddLabelMessageWorker>(
-                userId,
-                AddLabelMessageWorker.params(userId, listOf(messageId), labelId2)
+            enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                userId = userId,
+                workerId = AddLabelMessageWorker.id(userId),
+                params = AddLabelMessageWorker.params(userId, listOf(messageId), labelId2),
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
             )
         }
     }
@@ -548,6 +564,17 @@ class MessageRemoteDataSourceImplTest {
 
         // Then
         assert(result.leftOrNull() is DataError.Remote)
+    }
+
+    private fun appendOrReplaceUniqueAddLabelWorkSucceeds() {
+        every {
+            enqueuer.enqueueUniqueWork<AddLabelMessageWorker>(
+                userId = userId,
+                workerId = AddLabelMessageWorker.id(userId),
+                params = any(),
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
+        } returns mockk()
     }
 
     private fun mapDeepEquals(expected: Map<String, Any?>, actual: Map<String, Any?>): Boolean =

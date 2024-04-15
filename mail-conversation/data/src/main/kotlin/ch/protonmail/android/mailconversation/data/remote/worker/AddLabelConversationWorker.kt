@@ -83,5 +83,7 @@ class AddLabelConversationWorker @AssistedInject constructor(
             RawConversationIdsKey to conversationIds.map { it.id }.toTypedArray(),
             RawLabelIdKey to labelId.id
         )
+
+        fun id(userId: UserId): String = "AddLabelConversationWorker-${userId.id}"
     }
 }

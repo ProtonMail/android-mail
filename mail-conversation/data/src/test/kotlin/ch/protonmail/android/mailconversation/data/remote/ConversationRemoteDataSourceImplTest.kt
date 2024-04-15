@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailconversation.data.remote
 
+import androidx.work.ExistingWorkPolicy
 import arrow.core.right
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
 import ch.protonmail.android.mailcommon.domain.benchmark.BenchmarkTracerImpl
@@ -56,7 +57,6 @@ import me.proton.core.network.domain.session.SessionId
 import me.proton.core.network.domain.session.SessionProvider
 import me.proton.core.test.android.api.TestApiManager
 import me.proton.core.util.kotlin.DefaultDispatcherProvider
-import org.junit.Before
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -85,20 +85,13 @@ class ConversationRemoteDataSourceImplTest {
         every { this@mockk.enqueue(userId, any(), any()) } returns mockk()
     }
 
-    private lateinit var apiProvider: ApiProvider
-    private lateinit var conversationRemoteDataSource: ConversationRemoteDataSourceImpl
-    private lateinit var benchmarkTracer: BenchmarkTracerImpl
-
-    @Before
-    fun setUp() {
-        benchmarkTracer = BenchmarkTracerImpl(false)
-        apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
-        conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
-            apiProvider,
-            enqueuer,
-            benchmarkTracer
-        )
-    }
+    private val apiProvider = ApiProvider(apiManagerFactory, sessionProvider, DefaultDispatcherProvider())
+    private val benchmarkTracer = BenchmarkTracerImpl(false)
+    private val conversationRemoteDataSource = ConversationRemoteDataSourceImpl(
+        apiProvider,
+        enqueuer,
+        benchmarkTracer
+    )
 
     @Test(expected = IllegalArgumentException::class)
     fun `pageKey size greater than ConversationApi maxPageSize throw Exception`() = runTest {
@@ -270,6 +263,7 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelId = LabelId("10")
+        appendOrReplaceUniqueAddLabelWorkSucceeds()
 
         // When
         conversationRemoteDataSource.addLabel(userId, listOf(conversationId), labelId)
@@ -281,7 +275,12 @@ class ConversationRemoteDataSourceImplTest {
             labelId
         )
         verify {
-            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedParams) })
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = match { mapDeepEquals(it, expectedParams) },
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
         }
     }
 
@@ -290,6 +289,7 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val labelList = listOf(LabelId("10"), LabelId("11"))
+        appendOrReplaceUniqueAddLabelWorkSucceeds()
 
         // When
         conversationRemoteDataSource.addLabels(userId, listOf(conversationId), labelList)
@@ -301,13 +301,23 @@ class ConversationRemoteDataSourceImplTest {
                 listOf(conversationId),
                 labelList.first()
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = match { mapDeepEquals(it, expectedFirst) },
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
             val expectedLast = AddLabelConversationWorker.params(
                 userId,
                 listOf(conversationId),
                 labelList.last()
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedLast) })
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = match { mapDeepEquals(it, expectedLast) },
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
         }
     }
 
@@ -316,6 +326,7 @@ class ConversationRemoteDataSourceImplTest {
         // Given
         val conversationIds = List(MAX_CONVERSATION_IDS_API_LIMIT + 1) { ConversationIdSample.Invoices }
         val labelId = LabelId("10")
+        appendOrReplaceUniqueAddLabelWorkSucceeds()
 
         // When
         conversationRemoteDataSource.addLabels(userId, conversationIds, listOf(labelId))
@@ -327,13 +338,23 @@ class ConversationRemoteDataSourceImplTest {
                 conversationIds.take(MAX_CONVERSATION_IDS_API_LIMIT),
                 labelId
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedFirst) })
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = match { mapDeepEquals(it, expectedFirst) },
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
             val expectedSecond = AddLabelConversationWorker.params(
                 userId,
                 conversationIds.drop(MAX_CONVERSATION_IDS_API_LIMIT),
                 labelId
             )
-            enqueuer.enqueue<AddLabelConversationWorker>(userId, match { mapDeepEquals(it, expectedSecond) })
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = match { mapDeepEquals(it, expectedSecond) },
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
         }
     }
 
@@ -532,7 +553,7 @@ class ConversationRemoteDataSourceImplTest {
         }
     }
 
-    @org.junit.Test
+    @Test
     fun `enqueues worker to clear label`() {
         // given
         val labelId = SystemLabelId.Trash.labelId
@@ -555,6 +576,17 @@ class ConversationRemoteDataSourceImplTest {
                 ClearConversationLabelWorker.params(userId, labelId)
             )
         }
+    }
+
+    private fun appendOrReplaceUniqueAddLabelWorkSucceeds() {
+        every {
+            enqueuer.enqueueUniqueWork<AddLabelConversationWorker>(
+                userId = userId,
+                workerId = AddLabelConversationWorker.id(userId),
+                params = any(),
+                existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            )
+        } returns mockk()
     }
 
     private fun mapDeepEquals(expected: Map<String, Any?>, actual: Map<String, Any?>): Boolean =
