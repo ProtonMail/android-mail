@@ -67,12 +67,12 @@
   <string name="composer_sender_changed_dialog_title">Sending notice</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
-  <string name="composer_sender_changed_dialog_confirm_button">OK</string>
+  <string name="composer_sender_changed_dialog_confirm_button">U redu</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_title">Nova poruka</string>
   <string name="composer_send_without_subject_dialog_text">Poslati poruku bez predmeta?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Yes</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Ne</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Zatvori</string>

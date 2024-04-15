@@ -109,6 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Il contient une adresse e-mail non valide.</string>
   <string name="contact_group_details_loading_error">Une erreur s\'est produite lors du chargement du contact. Veuillez réessayer plus tard.</string>
+  <string name="contact_group_details_deletion_success">Le groupe de contacts a été supprimé.</string>
+  <string name="contact_group_details_deletion_error">Une erreur s\'est produite pendant la suppression du groupe.</string>
+  <string name="contact_group_delete_dialog_title">Retirer le groupe %s des contacts ?</string>
+  <string name="contact_group_delete_dialog_message">Le groupe sera dissous,mais les contacts attribués ne seront pas affectés.</string>
+  <string name="contact_group_delete_dialog_confirm">Retirer</string>
+  <string name="contact_group_delete_dialog_dismiss">Conserver</string>
+  <string name="contact_group_delete_button_text">Supprimer le groupe</string>
   <string name="contact_group_form_loading_error">Une erreur s\'est produite lors du chargement du groupe de contacts. Veuillez réessayer plus tard.</string>
   <string name="edit_contact_group_content_description">Modifier le groupe de contacts</string>
   <string name="delete_contact_group_content_description">Supprimer le groupe de contacts</string>

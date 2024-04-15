@@ -113,6 +113,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Wystąpił błąd podczas zapisywania kontaktu. Kontakt zawiera nieprawidłowy adres e-mail</string>
   <string name="contact_group_details_loading_error">Wystąpił błąd podczas ładowania grupy kontaktów. Spróbuj ponownie później</string>
+  <string name="contact_group_details_deletion_success">Grupa kontaktów została usunięta</string>
+  <string name="contact_group_details_deletion_error">Wystąpił błąd podczas usuwania grupy kontaktów</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Usuń</string>
+  <string name="contact_group_delete_dialog_dismiss">Zachowaj</string>
+  <string name="contact_group_delete_button_text">Usuń grupę</string>
   <string name="contact_group_form_loading_error">Wystąpił błąd podczas ładowania grupy kontaktów. Spróbuj ponownie później</string>
   <string name="edit_contact_group_content_description">Edytuj grupę kontaktów</string>
   <string name="delete_contact_group_content_description">Usuń grupę kontaktów</string>

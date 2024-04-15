@@ -67,7 +67,7 @@
   <string name="folder_settings_content_description">Ajustes de carpeta</string>
   <string name="folder_settings_title">Ajustes</string>
   <string name="folder_settings_done_button">Terminado</string>
-  <string name="folder_settings_folder_colors">Utilizar las colores de carpetas</string>
+  <string name="folder_settings_folder_colors">Usar los colores de las carpetas</string>
   <string name="folder_settings_parent_color">Aplicar el color de la carpeta principal</string>
   <string name="folder_list_loading_error">Error al cargar las carpetas. Inténtalo de nuevo más tarde.</string>
   <string name="folder_loading_error">Error al cargar la carpeta. Inténtalo de nuevo más tarde.</string>

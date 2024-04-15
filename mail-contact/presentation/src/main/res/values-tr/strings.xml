@@ -109,6 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Kişi kaydedilirken sorun çıktı. Belirtilen e-posta adresi geçersiz</string>
   <string name="contact_group_details_loading_error">Kişi grubu yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="contact_group_details_deletion_success">Kişi grubu silindi</string>
+  <string name="contact_group_details_deletion_error">Kişi grubu silinirken hata oluştu</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Kaldır</string>
+  <string name="contact_group_delete_dialog_dismiss">Sakla</string>
+  <string name="contact_group_delete_button_text">Grubu sil</string>
   <string name="contact_group_form_loading_error">Kişi grubu yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="edit_contact_group_content_description">Kişi grubunu düzenle</string>
   <string name="delete_contact_group_content_description">Kişi grubunu sil</string>

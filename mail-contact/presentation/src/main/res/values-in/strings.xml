@@ -107,6 +107,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Kontak gagal disimpan karena mengandung alamat email yang tidak valid</string>
   <string name="contact_group_details_loading_error">Terdapat kesalahan dalam memuat grup kontak. Silakan coba lagi nanti</string>
+  <string name="contact_group_details_deletion_success">Grup kontak dihapus</string>
+  <string name="contact_group_details_deletion_error">Terdapat kesalahan dalam menghapus grup kontak</string>
+  <string name="contact_group_delete_dialog_title">Hapus %s grup dari Kontak?</string>
+  <string name="contact_group_delete_dialog_message">Grup ini akan dibubarkan, namun kontak yang telah ditetapkan tidak akan terpengaruh.</string>
+  <string name="contact_group_delete_dialog_confirm">Hapus</string>
+  <string name="contact_group_delete_dialog_dismiss">Pertahankan</string>
+  <string name="contact_group_delete_button_text">Hapus grup</string>
   <string name="contact_group_form_loading_error">Terdapat kesalahan dalam memuat grup kontak. Silakan coba lagi nanti</string>
   <string name="edit_contact_group_content_description">Sunting grup kontak</string>
   <string name="delete_contact_group_content_description">Hapus grup kontak</string>

@@ -107,6 +107,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">儲存聯絡人時發生錯誤，內含無效的電子郵件地址</string>
   <string name="contact_group_details_loading_error">載入聯絡人群組時發生錯誤，請稍後再試</string>
+  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
+  <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">載入聯絡人群組時發生錯誤，請稍後再試</string>
   <string name="edit_contact_group_content_description">編輯聯絡人群組</string>
   <string name="delete_contact_group_content_description">刪除聯絡人群組</string>

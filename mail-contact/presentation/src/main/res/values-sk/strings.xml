@@ -113,13 +113,20 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Chyba pri ukladaní kontaktu, obsahuje neplatnú emailovú adresu</string>
   <string name="contact_group_details_loading_error">Chyba pri načítaní skupiny kontaktov, skúste to neskôr, prosím</string>
+  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
+  <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">Chyba pri načítaní skupiny kontaktov, skúste to neskôr, prosím</string>
   <string name="edit_contact_group_content_description">Upraviť skupinu kontaktov</string>
   <string name="delete_contact_group_content_description">Zmazať skupinu kontaktov</string>
   <string name="send_group_message">Odoslať skupinovú správu</string>
   <string name="contact_group_form_save">Uložiť</string>
   <string name="contact_group_form_name_hint">Zobrazované meno</string>
-  <string name="remove_member_content_description">Odstániť člena</string>
+  <string name="remove_member_content_description">Odstrániť člena</string>
   <string name="add_members">Pridať členov</string>
   <string name="change_color">Zmeniť farbu</string>
   <string name="contact_group_form_create_success">Skupina kontaktov bola vytvorená</string>

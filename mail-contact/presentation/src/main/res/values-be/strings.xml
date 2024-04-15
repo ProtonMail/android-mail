@@ -113,6 +113,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Памылка захавання кантакту. Кантакт змяшчае памылковы адрас электроннай пошты</string>
   <string name="contact_group_details_loading_error">Памылка загрузкі групы. Паспрабуйце яшчэ раз пазней</string>
+  <string name="contact_group_details_deletion_success">Група кантактаў выдалена</string>
+  <string name="contact_group_details_deletion_error">Памылка выдалення групы кантактаў</string>
+  <string name="contact_group_delete_dialog_title">Выдаліць групу %s з кантактаў?</string>
+  <string name="contact_group_delete_dialog_message">Група будзе расфарміравана, але гэта не паўплывае на прызначаныя кантакты.</string>
+  <string name="contact_group_delete_dialog_confirm">Выдаліць</string>
+  <string name="contact_group_delete_dialog_dismiss">Захаваць гэта</string>
+  <string name="contact_group_delete_button_text">Выдаліць групу</string>
   <string name="contact_group_form_loading_error">Памылка загрузкі групы. Паспрабуйце яшчэ раз пазней</string>
   <string name="edit_contact_group_content_description">Рэдагаваць групу кантактаў</string>
   <string name="delete_contact_group_content_description">Выдаліць групу кантактаў</string>

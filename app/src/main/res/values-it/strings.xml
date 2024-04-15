@@ -32,13 +32,13 @@
   <string name="mailbox_message_sending">Invio del messaggio in corso</string>
   <string name="mailbox_message_sending_offline">Sei offline. Messaggio in coda per l\'invio.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
-  <string name="mailbox_message_sending_error">Errore nell\'invio del messaggio</string>
+  <string name="mailbox_message_sending_error">Invio del messaggio non riuscito</string>
   <string name="mailbox_message_sending_error_action">Vai alle bozze</string>
-  <string name="mailbox_attachment_uploading_error">Errore nel caricamento dell\'allegato</string>
+  <string name="mailbox_attachment_uploading_error">Caricamento dell\'allegato non riuscito</string>
   <string name="notification_switched_account">Account attuale: %s</string>
   <string name="label_saved">Etichetta salvata</string>
   <string name="label_deleted">Etichetta eliminata</string>
-  <string name="label_list_loading_error">Errore nel caricamento dell\'etichetta. Riprova più tardi.</string>
+  <string name="label_list_loading_error">Caricamento dell\'etichetta non riuscito. Riprova più tardi.</string>
   <string name="app_locked">App bloccata</string>
   <string name="use_pin_instead">Usa invece il PIN</string>
 </resources>

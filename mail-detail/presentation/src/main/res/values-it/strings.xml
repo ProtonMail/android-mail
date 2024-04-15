@@ -55,7 +55,7 @@
   <string name="error_relabel_conversation_failed">Nuova etichettatura della conversazione non riuscita. Riprova.</string>
   <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi.</string>
   <string name="decryption_error">Decrittografia del messaggio non riuscita</string>
-  <string name="detail_error_retrieving_message_body">Impossibile caricare il messaggio</string>
+  <string name="detail_error_retrieving_message_body">Caricamento del messaggio non riuscito</string>
   <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto di questo messaggio</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
@@ -78,9 +78,9 @@
   <string name="message_delete_dialog_message">Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
   <string name="message_deleted">Messaggio eliminato</string>
   <string name="error_delete_message_failed">Eliminazione del messaggio non riuscita</string>
-  <string name="error_delete_message_failed_wrong_folder">Il messaggio non è in una posizione dove può essere eliminato</string>
+  <string name="error_delete_message_failed_wrong_folder">Impossibile eliminare il messaggio a causa della sua posizione</string>
   <string name="error_delete_conversation_failed">Eliminazione della conversazione non riuscita</string>
-  <string name="error_delete_conversation_failed_wrong_folder">La conversazione non è in una posizione dove può essere eliminata</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Impossibile eliminare la conversazione a causa della sua posizione</string>
   <string name="conversation_deleted">Conversazione eliminata</string>
   <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>

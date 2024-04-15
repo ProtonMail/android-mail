@@ -109,6 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Error al guardar contacto, contiene una dirección de correo inválida.</string>
   <string name="contact_group_details_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
+  <string name="contact_group_details_deletion_success">Grupo de contactos eliminado</string>
+  <string name="contact_group_details_deletion_error">Error al eliminar el grupo de contactos</string>
+  <string name="contact_group_delete_dialog_title">¿Borrar el grupo %s de los contactos?</string>
+  <string name="contact_group_delete_dialog_message">El grupo se disolverá, pero los contactos asignados no se verán afectados.</string>
+  <string name="contact_group_delete_dialog_confirm">Borrar</string>
+  <string name="contact_group_delete_dialog_dismiss">Mantener</string>
+  <string name="contact_group_delete_button_text">Eliminar grupo</string>
   <string name="contact_group_form_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
   <string name="edit_contact_group_content_description">Editar grupo de contactos</string>
   <string name="delete_contact_group_content_description">Eliminar grupo de contactos</string>

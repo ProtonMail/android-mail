@@ -109,6 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
   <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
+  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
+  <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
   <string name="edit_contact_group_content_description">Editar grupo de contactos</string>
   <string name="delete_contact_group_content_description">Eliminar grupo de contactos</string>

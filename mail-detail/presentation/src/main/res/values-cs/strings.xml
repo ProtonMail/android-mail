@@ -86,9 +86,9 @@
   <string name="conversation_deleted">Konverzace smazána</string>
   <string name="message_body_load_remote_content_button_text">Načíst vzdálený obsah</string>
   <string name="message_body_load_embedded_images_button_text">Načíst vložené obrázky</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Načíst vzdálený a vložený obsah</string>
   <string name="message_report_phishing_dialog_title_offline">Upozornění</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Tyto funkce jsou pouze dostupné online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Potvrdit oznámení phishingu</string>
   <string name="message_report_phishing_dialog_message">Nahlášení této zprávy jako pokusu o phishing odešle tuto zprávu nám, abychom ji mohli analyzovat a zlepšit tím naše filtry. To znamená, že uvidíme kompletně celý obsah této zprávy.</string>

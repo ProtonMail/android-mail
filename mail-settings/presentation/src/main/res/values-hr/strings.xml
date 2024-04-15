@@ -134,7 +134,7 @@
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
-  <string name="mail_settings_pin_insertion_button_create">Create</string>
+  <string name="mail_settings_pin_insertion_button_create">Stvori</string>
   <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
@@ -151,8 +151,8 @@
   <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Da li ste sigurni da se želite odjaviti?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>
   <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
   <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->

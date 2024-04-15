@@ -39,7 +39,7 @@
   <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. Modificarla sovrascriverà qualsiasi contenuto già esistente.</string>
   <string name="composer_add_attachments_content_description">Aggiungi degli allegati</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importa da...</string>
-  <string name="composer_error_loading_parent_message">Impossibile caricare le informazioni del messaggio</string>
+  <string name="composer_error_loading_parent_message">Caricamento delle informazioni del messaggio non riuscito</string>
   <string name="composer_original_message_quote">Messaggio originale</string>
   <string name="composer_sender_quote">%s, %s &lt;%s&gt; ha scritto:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Errore nell\'invio del messaggio</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
-  <string name="message_sending_error_dialog_text_error">Impossibile inviare la tua email all\'indirizzo inserito a causa del seguente motivo:</string>
+  <string name="message_sending_error_dialog_text_error">Invio del messaggio all\'indirizzo inserito non riuscito a causa del seguente motivo:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Non ci sono chiavi attendibili: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">L\'indirizzo non esiste: %s</string>
   <string name="set_message_password_title">Crittografa il messaggio</string>

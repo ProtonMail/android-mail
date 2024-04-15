@@ -131,9 +131,9 @@
   <string name="mail_settings_pin_insertion_set_title">设置解锁密码</string>
   <string name="mail_settings_pin_insertion_confirm_title">确认解锁密码</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">锁定图标</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
-  <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
-  <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin 点</string>
+  <string name="mail_settings_pin_insertion_backspace_description">后退键</string>
+  <string name="mail_settings_pin_insertion_biometric_description">生物识别认证</string>
   <string name="mail_settings_pin_insertion_button_create">创建</string>
   <string name="mail_settings_pin_insertion_button_confirm">确定</string>
   <string name="mail_settings_pin_insertion_error_no_match">两次输入的解锁密码不一致。</string>
@@ -141,14 +141,14 @@
     <item quantity="other">剩余 %s 次尝试.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">若再输错 %s 次数据将被清除！</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">验证解锁密码失败</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_text">退出账户</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">退出账户</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">你确定要登出吗？</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">是</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">否</string>
   <string name="mail_settings_pin_insertion_created_success">解锁密码创建成功。</string>
   <string name="mail_settings_pin_insertion_changed_success">解锁密码更改成功。</string>
   <!-- Local storage -->

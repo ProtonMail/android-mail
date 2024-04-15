@@ -88,7 +88,7 @@
   <string name="login_notification_channel_description">Obvestila o novih prijavah</string>
   <string name="auth_badge_official">Uradno</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Najdena ni bila nobena aplikacija za to opravilo</string>
-  <string name="action_copied_to_clipboard">Copied to clipboard</string>
+  <string name="action_copied_to_clipboard">Kopirano v odložišče</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Prekliči</string>
   <string name="mailbox_action_delete_dialog_button_delete">Izbriši</string>
   <string name="picker_dialog_cancel">Prekliči</string>

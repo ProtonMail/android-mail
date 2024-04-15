@@ -107,6 +107,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">연락처 저장 오류, 유효하지 않은 이메일 주소를 포함합니다.</string>
   <string name="contact_group_details_loading_error">연락처 그룹 로드 오류, 다시 시도하십시오.</string>
+  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
+  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
+  <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">연락처 그룹 로딩 실패, 다시 시도하십시오.</string>
   <string name="edit_contact_group_content_description">연락처 그룹 수정</string>
   <string name="delete_contact_group_content_description">그룹 삭제</string>

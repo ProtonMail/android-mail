@@ -51,7 +51,7 @@
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Передплата</string>
   <string name="mail_settings_password_management">Керування паролями</string>
-  <string name="mail_settings_recovery_email">Пошта для відновлення доступу</string>
+  <string name="mail_settings_recovery_email">Резервна е-пошта</string>
   <string name="mail_settings_mailbox_size">Розмір поштової скриньки</string>
   <string name="mail_settings_addresses">Адреси</string>
   <string name="mail_settings_default_email_address">Типова електронна адреса</string>

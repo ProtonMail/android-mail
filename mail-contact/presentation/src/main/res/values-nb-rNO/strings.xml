@@ -109,6 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Feil under lagring av kontakt, den inneholder en ugyldig e-postadresse.</string>
   <string name="contact_group_details_loading_error">Kunne ikke laste inn kontaktgruppe. Prøv på nytt senere</string>
+  <string name="contact_group_details_deletion_success">Kontaktgruppe slettet</string>
+  <string name="contact_group_details_deletion_error">Feil ved sletting av kontaktgruppe</string>
+  <string name="contact_group_delete_dialog_title">Fjerne %s-gruppe fra kontakter?</string>
+  <string name="contact_group_delete_dialog_message">Gruppen oppløses, men de tilordnede kontaktene forblir upåvirket.</string>
+  <string name="contact_group_delete_dialog_confirm">Fjern</string>
+  <string name="contact_group_delete_dialog_dismiss">Behold den</string>
+  <string name="contact_group_delete_button_text">Slett gruppe</string>
   <string name="contact_group_form_loading_error">Kunne ikke laste inn kontaktgruppe. Prøv på nytt senere</string>
   <string name="edit_contact_group_content_description">Rediger kontaktgruppe</string>
   <string name="delete_contact_group_content_description">Slett kontaktgruppe</string>
