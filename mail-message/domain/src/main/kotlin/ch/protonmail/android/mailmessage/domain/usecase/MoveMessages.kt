@@ -19,7 +19,9 @@
 package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.raise.either
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.UndoableOperation
 import ch.protonmail.android.mailcommon.domain.usecase.RegisterUndoableOperation
@@ -46,10 +48,9 @@ class MoveMessages @Inject constructor(
         labelId: LabelId
     ): Either<DataError.Local, Unit> = either {
         val exclusiveMailLabels = observeExclusiveMailLabels(userId).first().allById.mapKeys { it.key.labelId }
-        val messagesWithExclusiveLabels =
-            messageRepository.getLocalMessages(userId, messageIds).associateWith {
-                it.labelIds.firstOrNull { labelId -> labelId in exclusiveMailLabels }
-            }
+        val messagesWithExclusiveLabels = messageRepository.getLocalMessages(userId, messageIds).associateWith {
+            it.labelIds.firstOrNull { labelId -> labelId in exclusiveMailLabels }
+        }
         decrementUnreadCountInOriginLabel(userId, messagesWithExclusiveLabels.keys)
         val messageIdsWithExclusiveLabels = messagesWithExclusiveLabels.mapKeys { it.key.messageId }
         messageRepository.moveTo(userId, messageIdsWithExclusiveLabels, labelId)
@@ -64,20 +65,17 @@ class MoveMessages @Inject constructor(
         userId: UserId,
         messageIdsWithOriginLabel: Map<MessageId, LabelId?>
     ) {
+        val labelIdToMessagesIds = messageIdsWithOriginLabel.keys.groupBy { messageIdsWithOriginLabel[it] }
+
         registerUndoableOperation(
             UndoableOperation.UndoMoveMessages {
-                either {
-                    val labelIdToMessagesIds = messageIdsWithOriginLabel.keys.groupBy {
-                        messageIdsWithOriginLabel[it]
-                    }
-
-                    labelIdToMessagesIds.forEach {
-                        it.key?.let { labelId ->
-                            this@MoveMessages(userId, it.value, labelId)
-                                .onLeft { error -> raise(error) }
-                        }
+                labelIdToMessagesIds.forEach { entry ->
+                    entry.key?.let { labelId ->
+                        this@MoveMessages(userId, entry.value, labelId)
+                            .onLeft { return@UndoMoveMessages it.left() }
                     }
                 }
+                return@UndoMoveMessages Unit.right()
             }
         )
     }
