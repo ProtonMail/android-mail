@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.model
 
 import android.content.Context
 import android.net.Uri
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
@@ -151,4 +152,8 @@ sealed interface MessageViewAction : MessageDetailOperation {
     object PrintRequested : MessageViewAction, AffectingBottomSheet, AffectingMessageBody
     data class Print(val context: Context) : MessageViewAction
     data class OpenInProtonCalendar(val messageId: MessageId) : MessageViewAction
+    data class RequestContactActionsBottomSheet(
+        val participant: ParticipantUiModel,
+        val avatarUiModel: AvatarUiModel
+    ) : MessageViewAction, AffectingBottomSheet
 }

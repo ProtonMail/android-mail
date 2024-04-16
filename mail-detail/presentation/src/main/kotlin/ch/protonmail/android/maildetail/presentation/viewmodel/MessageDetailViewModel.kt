@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcontact.domain.usecase.FindContactByEmail
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
@@ -67,6 +68,7 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -76,6 +78,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.StarMessages
 import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -139,7 +142,8 @@ class MessageDetailViewModel @Inject constructor(
     private val reportPhishingMessage: ReportPhishingMessage,
     private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
     private val networkManager: NetworkManager,
-    private val printMessage: PrintMessage
+    private val printMessage: PrintMessage,
+    private val findContactByEmail: FindContactByEmail
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -179,6 +183,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.MoveToDestinationSelected -> moveToDestinationSelected(action.mailLabelId)
             is MessageViewAction.MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
             is MessageViewAction.RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
+            is MessageViewAction.RequestContactActionsBottomSheet -> showContactActionsBottomSheetAndLoadData(action)
             is MessageViewAction.LabelAsToggleAction -> onLabelSelected(action.labelId)
             is MessageViewAction.LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is MessageViewAction.MessageBodyLinkClicked -> onMessageBodyLinkClicked(action.uri)
@@ -488,6 +493,27 @@ class MessageDetailViewModel @Inject constructor(
         }.onEach { event ->
             emitNewStateFrom(event)
         }.launchIn(viewModelScope)
+    }
+
+    private fun showContactActionsBottomSheetAndLoadData(action: MessageViewAction.RequestContactActionsBottomSheet) {
+        viewModelScope.launch {
+            emitNewStateFrom(action)
+
+            val userId = primaryUserId.first()
+            val contact = findContactByEmail(userId, action.participant.participantAddress)
+
+            val event = MessageDetailEvent.MessageBottomSheetEvent(
+                ContactActionsBottomSheetState.ContactActionsBottomSheetEvent.ActionData(
+                    participant = Participant(
+                        address = action.participant.participantAddress,
+                        name = action.participant.participantName
+                    ),
+                    avatarUiModel = action.avatarUiModel,
+                    contactId = contact?.id
+                )
+            )
+            emitNewStateFrom(event)
+        }
     }
 
     private fun showLabelAsBottomSheetAndLoadData(initialEvent: MessageViewAction) {

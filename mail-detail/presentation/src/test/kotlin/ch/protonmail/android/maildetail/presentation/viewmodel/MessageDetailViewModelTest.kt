@@ -37,10 +37,12 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcontact.domain.usecase.FindContactByEmail
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
@@ -69,6 +71,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailActionBa
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBannersReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
@@ -93,6 +96,7 @@ import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyErr
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -109,6 +113,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCol
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyWithType
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
@@ -125,6 +130,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailFooterUiModelTestData.messageDetailFooterUiModel
@@ -333,6 +339,10 @@ class MessageDetailViewModelTest {
             ).right()
         )
     }
+    private val findContactByEmail: FindContactByEmail = mockk<FindContactByEmail> {
+        coEvery { this@mockk.invoke(any(), any()) } returns ContactSample.Stefano
+    }
+
     private val updateLinkConfirmationSetting = mockk<UpdateLinkConfirmationSetting>()
 
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
@@ -408,7 +418,8 @@ class MessageDetailViewModelTest {
             reportPhishingMessage = reportPhishingMessage,
             isProtonCalendarInstalled = isProtonCalendarInstalled,
             networkManager = networkManager,
-            printMessage = printMessage
+            printMessage = printMessage,
+            findContactByEmail = findContactByEmail
         )
     }
 
@@ -1769,6 +1780,46 @@ class MessageDetailViewModelTest {
                     viewModel::loadEmbeddedImage
                 )
             }
+        }
+    }
+
+    @Test
+    fun `bottom sheet with data is emitted when contact actions bottom sheet is requested`() = runTest {
+        // Given
+        val participant = Participant(
+            "test@proton.me",
+            "Test User"
+        )
+        val contact = ContactSample.Stefano
+        coEvery {
+            observeMessage(userId = userId, messageId = messageId)
+        } returns flowOf(MessageSample.Invoice.right())
+
+        coEvery { findContactByEmail.invoke(userId, participant.address) } returns contact
+
+        val participantUiModel =
+            ParticipantUiModel(
+                participant.name,
+                participant.address,
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            )
+        val avatar = AvatarUiModel.ParticipantInitial("TU")
+
+        // When
+        viewModel.state.test {
+            viewModel.submit(MessageViewAction.RequestContactActionsBottomSheet(participantUiModel, avatar))
+            skipItems(4)
+
+            // Then
+            val messageDetailState = awaitItem()
+            assertIs<ContactActionsBottomSheetState.Data>(messageDetailState.bottomSheetState?.contentState)
+            val stateData =
+                messageDetailState.bottomSheetState?.contentState as ContactActionsBottomSheetState.Data
+            assertEquals(contact.id, stateData.contactId)
+            assertEquals(avatar, stateData.avatarUiModel)
+            assertEquals(participant, stateData.participant)
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

@@ -55,6 +55,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
@@ -66,6 +67,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.ui.footer.MessageDetailFooter
@@ -77,9 +79,11 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.ContactActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.DetailMoreActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
@@ -183,6 +187,17 @@ fun MessageDetailScreen(
                     )
                 )
 
+                is ContactActionsBottomSheetState -> ContactActionsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = ContactActionsBottomSheetContent.Actions(
+                        onCopyAddressClicked = { },
+                        onCopyNameClicked = { },
+                        onAddContactClicked = { },
+                        onNewMessageClicked = { },
+                        onViewContactDetailsClicked = { }
+                    )
+                )
+
                 else -> {
                     if (bottomSheetState.isVisible) {
                         ProtonCenteredProgress()
@@ -228,7 +243,15 @@ fun MessageDetailScreen(
                     viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                 },
                 onViewInDarkMode = { viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode)) },
-                onPrint = { viewModel.submit(MessageViewAction.Print(context)) }
+                onPrint = { viewModel.submit(MessageViewAction.Print(context)) },
+                onAvatarClicked = { participantUiModel, avatarUiModel ->
+                    viewModel.submit(
+                        MessageViewAction.RequestContactActionsBottomSheet(
+                            participantUiModel,
+                            avatarUiModel
+                        )
+                    )
+                }
             )
         )
     }
@@ -378,7 +401,8 @@ fun MessageDetailScreen(
                     onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                     onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
                     onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
-                    onPrint = actions.onPrint
+                    onPrint = actions.onPrint,
+                    onAvatarClicked = actions.onAvatarClicked
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -423,7 +447,8 @@ private fun MessageDetailContent(
     val headerActions = MessageDetailHeader.Actions.Empty.copy(
         onReply = actions.onReply,
         onReplyAll = actions.onReplyAll,
-        onMore = actions.onMoreActionsClick
+        onMore = actions.onMoreActionsClick,
+        onAvatarClicked = actions.onAvatarClicked
     )
 
     LazyColumn(
@@ -555,7 +580,8 @@ object MessageDetailScreen {
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
-        val onPrint: (MessageId) -> Unit
+        val onPrint: (MessageId) -> Unit,
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
 
         companion object {
@@ -590,7 +616,8 @@ object MessageDetailScreen {
                 handleProtonCalendarRequest = {},
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
-                onPrint = {}
+                onPrint = {},
+                onAvatarClicked = { _, _ -> }
             )
         }
     }
@@ -614,7 +641,8 @@ object MessageDetailContent {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (MessageId) -> Unit
+        val onPrint: (MessageId) -> Unit,
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     )
 }
 

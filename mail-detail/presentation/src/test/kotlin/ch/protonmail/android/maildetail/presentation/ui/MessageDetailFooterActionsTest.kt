@@ -52,7 +52,8 @@ internal class MessageDetailFooterActionsTest {
             onLoadRemoteAndEmbeddedContent = {},
             onOpenInProtonCalendar = {},
             showFeatureMissingSnackbar = {},
-            onPrint = {}
+            onPrint = {},
+            onAvatarClicked = { _, _ -> }
         )
 
         // When

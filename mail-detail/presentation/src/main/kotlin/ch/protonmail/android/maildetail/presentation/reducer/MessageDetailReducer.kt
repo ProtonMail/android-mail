@@ -158,6 +158,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is MessageViewAction.RequestLabelAsBottomSheet,
                 is MessageViewAction.RequestMoveToBottomSheet,
+                is MessageViewAction.RequestContactActionsBottomSheet,
                 is MessageViewAction.RequestMoreActionsBottomSheet -> BottomSheetOperation.Requested
 
                 is MessageViewAction.LabelAsConfirmed,
