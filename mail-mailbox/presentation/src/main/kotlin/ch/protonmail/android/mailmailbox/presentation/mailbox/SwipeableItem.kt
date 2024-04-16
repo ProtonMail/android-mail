@@ -220,7 +220,7 @@ fun SwipeableItemContainer(
         )
         Row(
             content = dismissContent,
-            modifier = Modifier.offset { IntOffset(state.offset.value.roundToInt(), 0) }
+            modifier = Modifier.offset { IntOffset(state.offset.value.roundToIntOrNull() ?: 0, 0) }
         )
     }
 }
@@ -263,3 +263,5 @@ private fun getDismissDirection(from: DismissValue, to: DismissValue): DismissDi
         else -> null
     }
 }
+
+private fun Float.roundToIntOrNull(): Int? = takeIf { !isNaN() }?.roundToInt()
