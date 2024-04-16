@@ -32,7 +32,8 @@ android {
     defaultConfig {
         minSdk = Config.minSdk
         lint.targetSdk = Config.targetSdk
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     compileOptions {
@@ -54,6 +55,7 @@ android {
 
     packaging {
         resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
     }
@@ -80,4 +82,5 @@ dependencies {
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
     testImplementation(project(":mail-detail:presentation"))
+    androidTestImplementation(Dependencies.androidTestLibs)
 }
