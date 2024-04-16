@@ -50,15 +50,15 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class DraftBodyChanged(val draftBody: DraftBody) : ComposerAction
     data class RemoveAttachment(val attachmentId: AttachmentId) : ComposerAction
 
-    object ChangeSenderRequested : ComposerAction
-    object OnBottomSheetOptionSelected : ComposerAction
-    object OnAddAttachments : ComposerAction
-    object OnCloseComposer : ComposerAction
-    object OnSendMessage : ComposerAction
-    object OnSetExpirationTimeRequested : ComposerAction
-    object ConfirmSendingWithoutSubject : ComposerAction
-    object RejectSendingWithoutSubject : ComposerAction
-    object SendExpiringMessageToExternalRecipientsConfirmed : ComposerAction
+    data object ChangeSenderRequested : ComposerAction
+    data object OnBottomSheetOptionSelected : ComposerAction
+    data object OnAddAttachments : ComposerAction
+    data object OnCloseComposer : ComposerAction
+    data object OnSendMessage : ComposerAction
+    data object OnSetExpirationTimeRequested : ComposerAction
+    data object ConfirmSendingWithoutSubject : ComposerAction
+    data object RejectSendingWithoutSubject : ComposerAction
+    data object SendExpiringMessageToExternalRecipientsConfirmed : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {
@@ -84,19 +84,19 @@ sealed interface ComposerEvent : ComposerOperation {
     data class OnMessageExpirationTimeUpdated(val messageExpirationTime: MessageExpirationTime?) : ComposerEvent
     data class ConfirmSendExpiringMessageToExternalRecipients(val externalRecipients: List<Recipient>) : ComposerEvent
 
-    object ErrorLoadingDefaultSenderAddress : ComposerEvent
-    object ErrorFreeUserCannotChangeSender : ComposerEvent
-    object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
-    object ErrorStoringDraftSenderAddress : ComposerEvent
-    object ErrorStoringDraftBody : ComposerEvent
-    object ErrorStoringDraftRecipients : ComposerEvent
-    object ErrorStoringDraftSubject : ComposerEvent
-    object OnCloseWithDraftSaved : ComposerEvent
-    object OnSendMessageOffline : ComposerEvent
-    object ErrorLoadingDraftData : ComposerEvent
-    object ErrorLoadingParentMessageData : ComposerEvent
-    object ErrorAttachmentsExceedSizeLimit : ComposerEvent
-    object ErrorAttachmentsReEncryption : ComposerEvent
-    object ErrorSettingExpirationTime : ComposerEvent
-    object ConfirmEmptySubject : ComposerEvent
+    data object ErrorLoadingDefaultSenderAddress : ComposerEvent
+    data object ErrorFreeUserCannotChangeSender : ComposerEvent
+    data object ErrorVerifyingPermissionsToChangeSender : ComposerEvent
+    data object ErrorStoringDraftSenderAddress : ComposerEvent
+    data object ErrorStoringDraftBody : ComposerEvent
+    data object ErrorStoringDraftRecipients : ComposerEvent
+    data object ErrorStoringDraftSubject : ComposerEvent
+    data object OnCloseWithDraftSaved : ComposerEvent
+    data object OnSendMessageOffline : ComposerEvent
+    data object ErrorLoadingDraftData : ComposerEvent
+    data object ErrorLoadingParentMessageData : ComposerEvent
+    data object ErrorAttachmentsExceedSizeLimit : ComposerEvent
+    data object ErrorAttachmentsReEncryption : ComposerEvent
+    data object ErrorSettingExpirationTime : ComposerEvent
+    data object ConfirmEmptySubject : ComposerEvent
 }
