@@ -80,6 +80,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHe
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.uicomponents.chips.thenIf
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -200,7 +201,9 @@ private fun MessageDetailHeaderLayout(
             },
             participantUiModel = uiModel.sender,
             isExpanded = isExpanded,
-            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
+            onClick = { participant ->
+                actions.onParticipantClicked(participant, uiModel.avatar)
+            }
         )
 
         Icons(
@@ -273,7 +276,8 @@ private fun MessageDetailHeaderLayout(
                 },
             recipients = uiModel.toRecipients,
             hasUndisclosedRecipients = uiModel.shouldShowUndisclosedRecipients,
-            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar,
+            onRecipientClick = { participant -> actions.onParticipantClicked(participant, uiModel.avatar) }
         )
 
         RecipientsTitle(
@@ -301,7 +305,8 @@ private fun MessageDetailHeaderLayout(
                     )
                 },
             recipients = uiModel.ccRecipients,
-            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar,
+            onRecipientClick = { participant -> actions.onParticipantClicked(participant, uiModel.avatar) }
         )
 
         RecipientsTitle(
@@ -329,7 +334,8 @@ private fun MessageDetailHeaderLayout(
                     )
                 },
             recipients = uiModel.bccRecipients,
-            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar
+            showFeatureMissingSnackbar = actions.onShowFeatureMissingSnackbar,
+            onRecipientClick = { participant -> actions.onParticipantClicked(participant, uiModel.avatar) }
         )
 
         Spacer(
@@ -463,7 +469,7 @@ private fun SenderAddress(
     modifier: Modifier = Modifier,
     participantUiModel: ParticipantUiModel,
     isExpanded: Boolean,
-    showFeatureMissingSnackbar: () -> Unit
+    onClick: (ParticipantUiModel) -> Unit
 ) {
     Row(
         modifier = modifier,
@@ -477,7 +483,7 @@ private fun SenderAddress(
             text = participantUiModel.participantAddress,
             textColor = ProtonTheme.colors.textAccent,
             clickable = isExpanded,
-            onClick = showFeatureMissingSnackbar
+            onClick = { onClick(participantUiModel) }
         )
     }
 }
@@ -544,7 +550,8 @@ private fun Recipients(
     modifier: Modifier = Modifier,
     recipients: ImmutableList<ParticipantUiModel>,
     hasUndisclosedRecipients: Boolean = false,
-    showFeatureMissingSnackbar: () -> Unit
+    showFeatureMissingSnackbar: () -> Unit,
+    onRecipientClick: (ParticipantUiModel) -> Unit
 ) {
     Column(modifier = modifier) {
         if (hasUndisclosedRecipients) {
@@ -562,8 +569,8 @@ private fun Recipients(
                     ParticipantText(
                         modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantName),
                         text = participant.participantName,
-                        clickable = false,
-                        onClick = showFeatureMissingSnackbar
+                        clickable = true,
+                        onClick = { onRecipientClick(participant) }
                     )
                     Spacer(modifier = Modifier.width(ProtonDimens.ExtraSmallSpacing))
                 }
@@ -574,7 +581,8 @@ private fun Recipients(
                     modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantValue),
                     text = participant.participantAddress,
                     textColor = ProtonTheme.colors.textAccent,
-                    onClick = showFeatureMissingSnackbar
+                    clickable = true,
+                    onClick = { onRecipientClick(participant) }
                 )
             }
             if (index != recipients.size - 1) {
@@ -597,15 +605,11 @@ private fun ParticipantText(
     clickable: Boolean = true,
     onClick: () -> Unit
 ) {
-    val textModifier = modifier.apply {
-        if (clickable) {
-            clickable(onClickLabel = text, onClick = onClick)
-        }
-    }
 
     Text(
         text = text,
-        modifier = textModifier,
+        modifier = modifier
+            .thenIf(clickable) { clickable(onClickLabel = text, onClick = onClick) },
         color = textColor,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
@@ -765,7 +769,8 @@ object MessageDetailHeader {
         val onReplyAll: (MessageId) -> Unit,
         val onShowFeatureMissingSnackbar: () -> Unit,
         val onMore: (MessageId) -> Unit,
-        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
 
         companion object {
@@ -776,7 +781,8 @@ object MessageDetailHeader {
                 onReplyAll = {},
                 onShowFeatureMissingSnackbar = {},
                 onMore = {},
-                onAvatarClicked = { _, _ -> }
+                onAvatarClicked = { _, _ -> },
+                onParticipantClicked = { _, _ -> }
             )
         }
     }

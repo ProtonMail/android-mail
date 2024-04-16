@@ -287,6 +287,14 @@ fun ConversationDetailScreen(
                             avatarUiModel
                         )
                     )
+                },
+                onParticipantClicked = { participantUiModel, avatarUiModel ->
+                    viewModel.submit(
+                        ConversationDetailViewAction.RequestContactActionsBottomSheet(
+                            participantUiModel,
+                            avatarUiModel
+                        )
+                    )
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -466,7 +474,8 @@ fun ConversationDetailScreen(
                     onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
                     onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
                     onPrint = actions.onPrint,
-                    onAvatarClicked = actions.onAvatarClicked
+                    onAvatarClicked = actions.onAvatarClicked,
+                    onParticipantClicked = actions.onParticipantClicked
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -711,7 +720,8 @@ object ConversationDetailScreen {
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
-        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
 
         companion object {
@@ -748,7 +758,8 @@ object ConversationDetailScreen {
                 onLoadRemoteAndEmbeddedContent = {},
                 onOpenInProtonCalendar = {},
                 onPrint = { _ -> },
-                onAvatarClicked = { _, _ -> }
+                onAvatarClicked = { _, _ -> },
+                onParticipantClicked = { _, _ -> }
             )
         }
     }

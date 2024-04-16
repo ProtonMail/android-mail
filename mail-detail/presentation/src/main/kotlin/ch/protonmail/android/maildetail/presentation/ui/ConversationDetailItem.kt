@@ -110,6 +110,7 @@ private fun ConversationDetailExpandedItem(
         onReplyAll = actions.onReplyAll,
         onMore = actions.onMoreActionsClick,
         onAvatarClicked = actions.onAvatarClicked,
+        onParticipantClicked = actions.onParticipantClicked,
         onShowFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
     )
 
@@ -176,7 +177,8 @@ object ConversationDetailItem {
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
-        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     )
 }
 

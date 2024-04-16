@@ -251,6 +251,14 @@ fun MessageDetailScreen(
                             avatarUiModel
                         )
                     )
+                },
+                onParticipantClicked = { participantUiModel, avatarUiModel ->
+                    viewModel.submit(
+                        MessageViewAction.RequestContactActionsBottomSheet(
+                            participantUiModel,
+                            avatarUiModel
+                        )
+                    )
                 }
             )
         )
@@ -402,7 +410,8 @@ fun MessageDetailScreen(
                     onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
                     onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
                     onPrint = actions.onPrint,
-                    onAvatarClicked = actions.onAvatarClicked
+                    onAvatarClicked = actions.onAvatarClicked,
+                    onParticipantClicked = actions.onParticipantClicked
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -448,7 +457,8 @@ private fun MessageDetailContent(
         onReply = actions.onReply,
         onReplyAll = actions.onReplyAll,
         onMore = actions.onMoreActionsClick,
-        onAvatarClicked = actions.onAvatarClicked
+        onAvatarClicked = actions.onAvatarClicked,
+        onParticipantClicked = actions.onParticipantClicked
     )
 
     LazyColumn(
@@ -581,7 +591,8 @@ object MessageDetailScreen {
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
         val onPrint: (MessageId) -> Unit,
-        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
 
         companion object {
@@ -617,7 +628,8 @@ object MessageDetailScreen {
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
                 onPrint = {},
-                onAvatarClicked = { _, _ -> }
+                onAvatarClicked = { _, _ -> },
+                onParticipantClicked = { _, _ -> }
             )
         }
     }
@@ -642,7 +654,8 @@ object MessageDetailContent {
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
-        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     )
 }
 

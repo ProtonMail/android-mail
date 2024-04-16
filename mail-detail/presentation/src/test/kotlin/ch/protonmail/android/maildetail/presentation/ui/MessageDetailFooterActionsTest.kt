@@ -53,7 +53,8 @@ internal class MessageDetailFooterActionsTest {
             onOpenInProtonCalendar = {},
             showFeatureMissingSnackbar = {},
             onPrint = {},
-            onAvatarClicked = { _, _ -> }
+            onAvatarClicked = { _, _ -> },
+            onParticipantClicked = { _, _ -> }
         )
 
         // When
@@ -85,7 +86,8 @@ internal class MessageDetailFooterActionsTest {
             onBodyExpandCollapseButtonClicked = {},
             onScrollRequestCompleted = {},
             onPrint = {},
-            onAvatarClicked = { _, _ -> }
+            onAvatarClicked = { _, _ -> },
+            onParticipantClicked = { _, _ -> }
         )
 
         // When
