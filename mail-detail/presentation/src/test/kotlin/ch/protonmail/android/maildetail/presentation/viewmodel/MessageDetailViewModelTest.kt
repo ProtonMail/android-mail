@@ -113,6 +113,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
@@ -367,7 +368,8 @@ class MessageDetailViewModelTest {
             MoveToBottomSheetReducer(),
             LabelAsBottomSheetReducer(),
             MailboxMoreActionsBottomSheetReducer(),
-            DetailMoreActionsBottomSheetReducer(DetailMoreActionsBottomSheetUiMapper())
+            DetailMoreActionsBottomSheetReducer(DetailMoreActionsBottomSheetUiMapper()),
+            ContactActionsBottomSheetReducer()
         ),
         MessageDeleteDialogReducer(),
         MessageReportPhishingDialogReducer()

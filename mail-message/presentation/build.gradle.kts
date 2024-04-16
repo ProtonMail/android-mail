@@ -63,6 +63,7 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     kapt(Dependencies.hiltAnnotationProcessors)
 
+    implementation(Proton.Core.contact)
     implementation(Proton.Core.label)
 
     implementation(project(":mail-common:domain"))
@@ -73,5 +74,6 @@ dependencies {
     implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test:test-data"))
     androidTestImplementation(Dependencies.androidTestLibs)
 }

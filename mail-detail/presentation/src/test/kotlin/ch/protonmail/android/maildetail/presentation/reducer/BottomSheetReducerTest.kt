@@ -31,6 +31,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
@@ -55,11 +56,13 @@ internal class BottomSheetReducerTest(
     private val labelAsBottomSheetReducer: LabelAsBottomSheetReducer = mockk(relaxed = true)
     private val mailboxMoreActionsBottomSheetReducer: MailboxMoreActionsBottomSheetReducer = mockk(relaxed = true)
     private val detailMoreActionsBottomSheetReducer: DetailMoreActionsBottomSheetReducer = mockk(relaxed = true)
+    private val contactActionsBottomSheetReducer: ContactActionsBottomSheetReducer = mockk(relaxed = true)
     private val reducer = BottomSheetReducer(
         moveToBottomSheetReducer,
         labelAsBottomSheetReducer,
         mailboxMoreActionsBottomSheetReducer,
-        detailMoreActionsBottomSheetReducer
+        detailMoreActionsBottomSheetReducer,
+        contactActionsBottomSheetReducer
     )
 
     @Test

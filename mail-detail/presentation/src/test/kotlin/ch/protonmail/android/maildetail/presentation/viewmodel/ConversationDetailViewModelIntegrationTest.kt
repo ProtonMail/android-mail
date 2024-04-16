@@ -140,6 +140,7 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
@@ -373,7 +374,8 @@ class ConversationDetailViewModelIntegrationTest {
             mailboxMoreActionsBottomSheetReducer = MailboxMoreActionsBottomSheetReducer(),
             detailMoreActionsBottomSheetReducer = DetailMoreActionsBottomSheetReducer(
                 DetailMoreActionsBottomSheetUiMapper()
-            )
+            ),
+            contactActionsBottomSheetReducer = ContactActionsBottomSheetReducer()
         ),
         deleteDialogReducer = ConversationDeleteDialogReducer(),
         reportPhishingDialogReducer = ConversationReportPhishingDialogReducer()

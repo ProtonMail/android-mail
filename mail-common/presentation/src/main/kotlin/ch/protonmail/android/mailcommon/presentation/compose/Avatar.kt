@@ -30,6 +30,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -37,6 +38,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
@@ -47,13 +49,23 @@ import me.proton.core.compose.theme.ProtonTheme
 fun Avatar(
     modifier: Modifier = Modifier,
     avatarUiModel: AvatarUiModel,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    clickable: Boolean = true,
+    outerContainerSize: Dp = MailDimens.DefaultTouchTargetSize,
+    avatarSize: Dp = MailDimens.AvatarMinSize,
+    backgroundShape: Shape = ProtonTheme.shapes.medium
 ) {
     Box(
         modifier = modifier
             .testTag(AvatarTestTags.AvatarRootItem)
-            .size(MailDimens.DefaultTouchTargetSize)
-            .clickable { onClick() },
+            .size(outerContainerSize)
+            .run {
+                if (clickable) {
+                    clickable(onClick = onClick)
+                } else {
+                    this // Return the current modifier unchanged if not clickable
+                }
+            },
         contentAlignment = Alignment.Center
     ) {
         when (avatarUiModel) {
@@ -62,13 +74,13 @@ fun Avatar(
                     modifier = Modifier
                         .testTag(AvatarTestTags.AvatarDraft)
                         .sizeIn(
-                            minWidth = MailDimens.AvatarMinSize,
-                            minHeight = MailDimens.AvatarMinSize
+                            minWidth = avatarSize,
+                            minHeight = avatarSize
                         )
                         .border(
                             width = MailDimens.DefaultBorder,
                             color = ProtonTheme.colors.interactionWeakNorm,
-                            shape = ProtonTheme.shapes.medium
+                            shape = backgroundShape
                         ),
                     contentAlignment = Alignment.Center
                 ) {
@@ -83,12 +95,12 @@ fun Avatar(
                 Box(
                     modifier = Modifier
                         .sizeIn(
-                            minWidth = MailDimens.AvatarMinSize,
-                            minHeight = MailDimens.AvatarMinSize
+                            minWidth = avatarSize,
+                            minHeight = avatarSize
                         )
                         .background(
                             color = ProtonTheme.colors.interactionWeakNorm,
-                            shape = ProtonTheme.shapes.medium
+                            shape = backgroundShape
                         ),
                     contentAlignment = Alignment.Center
                 ) {
@@ -104,20 +116,20 @@ fun Avatar(
                 Box(
                     modifier = Modifier
                         .sizeIn(
-                            minWidth = MailDimens.AvatarMinSize,
-                            minHeight = MailDimens.AvatarMinSize
+                            minWidth = avatarSize,
+                            minHeight = avatarSize
                         )
                         .border(
                             width = MailDimens.AvatarBorderLine,
                             color = ProtonTheme.colors.interactionNorm,
-                            shape = ProtonTheme.shapes.medium
+                            shape = backgroundShape
                         )
                         .background(
                             color = when (avatarUiModel.selected) {
                                 true -> ProtonTheme.colors.interactionNorm
                                 false -> ProtonTheme.colors.backgroundSecondary
                             },
-                            shape = ProtonTheme.shapes.medium
+                            shape = backgroundShape
                         )
                         .testTag(AvatarTestTags.AvatarSelectionMode)
                         .semantics { selected = avatarUiModel.selected },

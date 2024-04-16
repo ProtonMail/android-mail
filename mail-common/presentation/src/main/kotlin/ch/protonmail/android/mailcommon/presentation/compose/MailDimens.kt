@@ -114,4 +114,8 @@ object MailDimens {
     }
 
     val DialogCardRadius = 16.dp
+
+    object ContactActions {
+        val AvatarSize = 40.dp
+    }
 }

@@ -20,12 +20,15 @@ package ch.protonmail.android.mailmessage.presentation.model.bottomsheet
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 
 data class BottomSheetState(
@@ -126,4 +129,25 @@ sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
         val headerDescriptionText: TextUiModel,
         val messageId: String
     )
+}
+
+sealed interface ContactActionsBottomSheetState : BottomSheetContentState {
+
+    data class Data(
+        val participant: Participant,
+        val avatarUiModel: AvatarUiModel,
+        val contactId: ContactId?
+    ) : ContactActionsBottomSheetState
+
+    object Loading : ContactActionsBottomSheetState
+
+    sealed interface ContactActionsBottomSheetOperation : BottomSheetOperation
+
+    sealed interface ContactActionsBottomSheetEvent : ContactActionsBottomSheetOperation {
+        data class ActionData(
+            val participant: Participant,
+            val avatarUiModel: AvatarUiModel,
+            val contactId: ContactId?
+        ) : ContactActionsBottomSheetEvent
+    }
 }
