@@ -69,6 +69,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.OfficialBadge
 import ch.protonmail.android.mailcommon.presentation.compose.SmallNonClickableIcon
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maildetail.presentation.R
@@ -174,7 +175,10 @@ private fun MessageDetailHeaderLayout(
                 top.linkTo(parent.top, margin = ProtonDimens.SmallSpacing)
                 start.linkTo(parent.start)
             },
-            avatarUiModel = uiModel.avatar
+            avatarUiModel = uiModel.avatar,
+            onClick = {
+                actions.onAvatarClicked(uiModel.sender, uiModel.avatar)
+            }
         )
 
         SenderName(
@@ -760,7 +764,8 @@ object MessageDetailHeader {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onShowFeatureMissingSnackbar: () -> Unit,
-        val onMore: (MessageId) -> Unit
+        val onMore: (MessageId) -> Unit,
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
 
         companion object {
@@ -770,7 +775,8 @@ object MessageDetailHeader {
                 onReply = {},
                 onReplyAll = {},
                 onShowFeatureMissingSnackbar = {},
-                onMore = {}
+                onMore = {},
+                onAvatarClicked = { _, _ -> }
             )
         }
     }

@@ -31,11 +31,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.ui.footer.MessageDetailFooter
 import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeader
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -107,6 +109,7 @@ private fun ConversationDetailExpandedItem(
         onReply = actions.onReply,
         onReplyAll = actions.onReplyAll,
         onMore = actions.onMoreActionsClick,
+        onAvatarClicked = actions.onAvatarClicked,
         onShowFeatureMissingSnackbar = actions.showFeatureMissingSnackbar
     )
 
@@ -172,7 +175,8 @@ object ConversationDetailItem {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (MessageId) -> Unit
+        val onPrint: (MessageId) -> Unit,
+        val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     )
 }
 

@@ -121,6 +121,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
                 is ConversationDetailViewAction.RequestLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoreActionsBottomSheet,
+                is ConversationDetailViewAction.RequestContactActionsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
 
                 is ConversationDetailViewAction.LabelAsConfirmed,

@@ -51,6 +51,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
+import ch.protonmail.android.mailcontact.domain.usecase.FindContactByEmail
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationLabelSample
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
@@ -153,6 +154,7 @@ import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
+import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import io.mockk.Called
@@ -260,6 +262,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val getDownloadingAttachmentsForMessages = mockk<GetDownloadingAttachmentsForMessages>()
     private val getAttachmentIntentValues = mockk<GetAttachmentIntentValues>()
     private val getEmbeddedImageAvoidDuplicatedExecution = mockk<GetEmbeddedImageAvoidDuplicatedExecution>()
+    private val findContactByEmail: FindContactByEmail = mockk<FindContactByEmail> {
+        coEvery { this@mockk.invoke(any(), any()) } returns ContactSample.Stefano
+    }
     // endregion
 
     // region mock action use cases
@@ -1826,7 +1831,8 @@ class ConversationDetailViewModelIntegrationTest {
         getIntentValues: GetAttachmentIntentValues = getAttachmentIntentValues,
         ioDispatcher: CoroutineDispatcher = testDispatcher!!,
         networkMgmt: NetworkManager = networkManager,
-        protonCalendarInstalled: IsProtonCalendarInstalled = isProtonCalendarInstalled
+        protonCalendarInstalled: IsProtonCalendarInstalled = isProtonCalendarInstalled,
+        findContactByEmailAddress: FindContactByEmail = findContactByEmail
     ) = ConversationDetailViewModel(
         observePrimaryUserId = observePrimaryUser,
         messageIdUiModelMapper = messageIdUiModelMapper,
@@ -1865,7 +1871,8 @@ class ConversationDetailViewModelIntegrationTest {
         isProtonCalendarInstalled = protonCalendarInstalled,
         networkManager = networkMgmt,
         printMessage = printMessage,
-        markMessageAsUnread = markMessageAsUnread
+        markMessageAsUnread = markMessageAsUnread,
+        findContactByEmail = findContactByEmailAddress
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

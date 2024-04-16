@@ -20,6 +20,7 @@ package ch.protonmail.android.maildetail.presentation.model
 
 import android.content.Context
 import android.net.Uri
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
@@ -187,4 +188,11 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class MarkMessageUnread(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data class RequestContactActionsBottomSheet(
+        val participant: ParticipantUiModel,
+        val avatarUiModel: AvatarUiModel
+    ) : ConversationDetailViewAction,
+        AffectingBottomSheet
+
 }

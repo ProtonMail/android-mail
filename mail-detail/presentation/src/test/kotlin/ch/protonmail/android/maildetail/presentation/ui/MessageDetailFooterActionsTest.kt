@@ -83,7 +83,8 @@ internal class MessageDetailFooterActionsTest {
             showFeatureMissingSnackbar = {},
             onBodyExpandCollapseButtonClicked = {},
             onScrollRequestCompleted = {},
-            onPrint = {}
+            onPrint = {},
+            onAvatarClicked = { _, _ -> }
         )
 
         // When

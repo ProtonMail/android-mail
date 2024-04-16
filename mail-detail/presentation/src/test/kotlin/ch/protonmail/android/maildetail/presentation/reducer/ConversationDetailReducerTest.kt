@@ -23,6 +23,8 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.R
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
@@ -33,6 +35,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -159,6 +162,15 @@ class ConversationDetailReducerTest(
     private companion object {
 
         val messageId = MessageIdUiModel(UUID.randomUUID().toString())
+        private val participant =
+            ParticipantUiModel(
+                "Test User",
+                "test@proton.me",
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            )
+        val avatar = AvatarUiModel.ParticipantInitial("TU")
+
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
             ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithResult(
@@ -175,6 +187,7 @@ class ConversationDetailReducerTest(
             ),
             ConversationDetailViewAction.UnStar affects Conversation,
             ConversationDetailViewAction.RequestLabelAsBottomSheet affects BottomSheet,
+            ConversationDetailViewAction.RequestContactActionsBottomSheet(participant, avatar) affects BottomSheet,
             ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
             ConversationDetailViewAction.LabelAsConfirmed(false) affects BottomSheet,
             ConversationDetailViewAction.LabelAsConfirmed(true) affects listOf(

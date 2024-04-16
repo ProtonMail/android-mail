@@ -36,11 +36,14 @@ import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
+import ch.protonmail.android.mailcontact.domain.usecase.FindContactByEmail
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailconversation.domain.sample.ConversationSample
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
@@ -97,11 +100,14 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
+import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -110,6 +116,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
+import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.conversation.ConversationUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
@@ -277,6 +284,10 @@ class ConversationDetailViewModelTest {
             coEvery { this@mockk.invoke(any(), any(), any()) } returns Unit
         }
 
+    private val findContactByEmail: FindContactByEmail = mockk<FindContactByEmail> {
+        coEvery { this@mockk.invoke(any(), any()) } returns ContactSample.Stefano
+    }
+
     // Privacy settings for link confirmation dialog
     private val observePrivacySettings = mockk<ObservePrivacySettings> {
         coEvery { this@mockk.invoke(any()) } returns flowOf(
@@ -342,7 +353,8 @@ class ConversationDetailViewModelTest {
             reportPhishingMessage = reportPhishingMessage,
             isProtonCalendarInstalled = isProtonCalendarInstalled,
             printMessage = printMessage,
-            markMessageAsUnread = markMessageAsUnread
+            markMessageAsUnread = markMessageAsUnread,
+            findContactByEmail = findContactByEmail
         )
     }
 
@@ -1824,6 +1836,80 @@ class ConversationDetailViewModelTest {
 
             // Then
             verify { observeConversation(any(), any(), refreshData = true) }
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify contact actions bottom sheet data is build correctly`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded)
+        coEvery {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
+        } returns messages.first()
+        val participant = Participant(
+            "test@proton.me",
+            "Test User"
+        )
+        val participantUiModel =
+            ParticipantUiModel(
+                participant.name,
+                participant.address,
+                R.drawable.ic_proton_lock,
+                shouldShowOfficialBadge = false
+            )
+        val avatar = AvatarUiModel.ParticipantInitial("TU")
+
+        val event = ContactActionsBottomSheetState.ContactActionsBottomSheetEvent.ActionData(
+            participant = participant,
+            avatarUiModel = avatar,
+            contactId = ContactSample.Stefano.id
+        )
+
+        val expectedResult = ConversationDetailState.Loading.copy(
+            bottomSheetState = BottomSheetState(
+                ContactActionsBottomSheetState.Data(
+                    participant = participant,
+                    avatarUiModel = avatar,
+                    contactId = ContactSample.Stefano.id
+                )
+            )
+        )
+
+        coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithTwoLabels,
+                MessageWithLabelsSample.InvoiceWithLabel
+            ).right()
+        )
+
+        coEvery {
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailEvent.ConversationBottomSheetEvent(event)
+            )
+        } returns expectedResult
+
+        // When
+        viewModel.state.test {
+            viewModel.submit(
+                ConversationDetailViewAction.RequestContactActionsBottomSheet(
+                    participant = participantUiModel,
+                    avatarUiModel = avatar
+                )
+            )
+            // Request bottom Sheet call, we can ignore that
+            awaitItem()
+
+            // Then
+            val lastItem = awaitItem()
+            assertEquals(expectedResult, lastItem)
             cancelAndIgnoreRemainingEvents()
         }
     }
