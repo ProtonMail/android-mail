@@ -60,7 +60,7 @@ internal class SignOutAccountTest : MockedNetworkTest() {
     @TestId("256595")
     fun testSignOutIsPerformedOnDialogConfirmationWhenSingleAccountLoggedIn() {
         signOutAccountDialogRobot {
-            buttonsSection { tapYes() }
+            buttonsSection { tapSignOut() }
             // Do not call isNotShown() here as it transitions to an external non-compose screen.
         }
 
@@ -73,7 +73,7 @@ internal class SignOutAccountTest : MockedNetworkTest() {
     @TestId("256596")
     fun testSignOutIsNotPerformedOnDialogCancellationWhenSingleAccountLoggedIn() {
         signOutAccountDialogRobot {
-            buttonsSection { tapNo() }
+            buttonsSection { tapCancel() }
             verify { isNotShown() }
         }
 

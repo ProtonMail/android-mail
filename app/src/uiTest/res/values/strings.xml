@@ -102,4 +102,8 @@
 
     <!-- Decryption -->
     <string name="test_decryption_error">Message decryption failed.</string>
+
+    <!-- Sign out -->
+    <string name="test_sign_out_dialog_confirm">Sign out</string>
+    <string name="test_sign_out_dialog_cancel">Cancel</string>
 </resources>

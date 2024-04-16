@@ -18,24 +18,31 @@
 
 package ch.protonmail.android.uitest.robot.account.section
 
-import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.performClick
-import ch.protonmail.android.feature.account.SignOutAccountDialogTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
 import ch.protonmail.android.uitest.robot.account.SignOutAccountDialogRobot
+import ch.protonmail.android.uitest.util.getTestString
+import ch.protonmail.android.test.R as testR
 
 @AttachTo(targets = [SignOutAccountDialogRobot::class], identifier = "buttonsSection")
 internal class SignOutAccountDialogButtonsSection : ComposeSectionRobot() {
 
-    private val yesButton = composeTestRule.onNodeWithTag(SignOutAccountDialogTestTags.YesButton)
-    private val noButton = composeTestRule.onNodeWithTag(SignOutAccountDialogTestTags.NoButton)
+    private val signOutButton = composeTestRule.onAllNodesWithText(
+        getTestString(testR.string.test_sign_out_dialog_confirm)
+    ).onLast()
 
-    fun tapYes() {
-        yesButton.performClick()
+    private val noButton = composeTestRule.onAllNodesWithText(
+        getTestString(testR.string.test_sign_out_dialog_cancel)
+    ).onLast()
+
+    fun tapSignOut() {
+        signOutButton.performClick()
     }
 
-    fun tapNo() {
+    fun tapCancel() {
         noButton.performClick()
     }
 }
