@@ -235,19 +235,22 @@ class GenerateMessagePackages @Inject constructor(
 
     private fun generateMimeAttachment(attachment: MessageAttachment, attachmentFile: File): String {
 
+        // special way of encoding Base64 used in MIME: https://en.wikipedia.org/wiki/MIME#Encoded-Word
+        val fileName = "=?UTF-8?B?${Base64.encode(attachment.name.toByteArray())}?="
+
         val stringWriter = StringWriter()
         FoldedLineWriter(stringWriter).use {
+            it.write("Content-Transfer-Encoding: base64")
+            it.writeln()
+            it.write("Content-Type: ${attachment.mimeType}; filename=\"$fileName\"; name=\"$fileName\"")
+            it.writeln()
+            it.write("Content-Disposition: attachment; filename=\"$fileName\"; name=\"$fileName\"")
+            it.writeln()
+            it.writeln()
             it.write(Base64.encode(attachmentFile.readBytes()))
         }
-        val foldedAttachment = stringWriter.toString()
 
-        return """
-            |Content-Type: ${attachment.mimeType}; filename="${attachment.name}"; name="${attachment.name}"
-            |Content-Transfer-Encoding: base64
-            |Content-Disposition: attachment; filename="${attachment.name}"; name="${attachment.name}"
-            |
-            |$foldedAttachment
-        """.trimMargin()
+        return stringWriter.toString()
     }
 
     sealed interface Error {
