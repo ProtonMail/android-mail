@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.data.mapper
+package ch.protonmail.android.mailcontact.domain.mapper
 
 import me.proton.core.network.domain.hasProtonErrorCode
 
