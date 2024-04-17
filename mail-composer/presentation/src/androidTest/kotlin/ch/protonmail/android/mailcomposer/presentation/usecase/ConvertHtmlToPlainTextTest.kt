@@ -61,7 +61,91 @@ internal class ConvertHtmlToPlainTextTest {
         // Then
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun shouldRemoveStyleFromAnywhereInTheHtml() {
+        // Given
+        val expected = """
+            I have no style 
+        """.trimIndent()
+
+        // When
+        val actual = convertHtmlToPlainText(HTML_WITH_HEAD_AND_STYLE_IN_BODY)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun shouldRemoveOpenStyleFromAnywhereInTheHtml() {
+        // Given
+        val expected = """
+            I have no style 
+        """.trimIndent()
+
+        // When
+        val actual = convertHtmlToPlainText(HTML_WITH_HEAD_AND_OPEN_STYLE_IN_BODY)
+
+        // Then
+        assertEquals(expected, actual)
+    }
 }
+
+private val HTML_WITH_HEAD_AND_OPEN_STYLE_IN_BODY = """
+    |<head>
+    | <style>/* for HTML 5 */
+    |nav,
+    |section {
+    |  display: block;
+    |}
+    |blockquote blockquote blockquote {
+    |  padding: 0 !important;
+    |  border: none !important;
+    |}
+    |
+    |[hidden] {
+    |  display: none;
+    |}
+    |</style>
+    |  <meta name="viewport" content="width=462, maximum-scale=2">
+    |</head>
+    |
+    |<body>
+    |<style type="text/css">@media only screen and (min-width:768px){.templateContainer{width: 600px !important;}}
+    |@media only screen and (max-width: 480px){body,table,td,p,a,li{-webkit-text-size-adjust: none !important;}</style>
+    |I have no style
+    |</body>
+""".trimMargin("|")
+
+private val HTML_WITH_HEAD_AND_STYLE_IN_BODY = """
+    |<head>
+    | <style>/* for HTML 5 */
+    |nav,
+    |section {
+    |  display: block;
+    |}
+    |blockquote blockquote blockquote {
+    |  padding: 0 !important;
+    |  border: none !important;
+    |}
+    |
+    |[hidden] {
+    |  display: none;
+    |}
+    |</style>
+    |  <meta name="viewport" content="width=462, maximum-scale=2">
+    |</head>
+    |
+    |<body>
+    | <style>
+    |blockquote blockquote blockquote {
+    |  padding: 0 !important;
+    |  border: none !important;
+    |}
+    |</style>
+    |I have no style
+    |</body>
+""".trimMargin("|")
 
 private val HTML_WITH_CSS_IN_HEAD = """
     |<head>
