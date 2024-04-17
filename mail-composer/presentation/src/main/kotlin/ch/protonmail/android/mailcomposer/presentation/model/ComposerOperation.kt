@@ -59,6 +59,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     data object ConfirmSendingWithoutSubject : ComposerAction
     data object RejectSendingWithoutSubject : ComposerAction
     data object SendExpiringMessageToExternalRecipientsConfirmed : ComposerAction
+    data object RespondInlineRequested : ComposerAction
 }
 
 sealed interface ComposerEvent : ComposerOperation {
@@ -83,6 +84,7 @@ sealed interface ComposerEvent : ComposerOperation {
     ) : ComposerEvent
     data class OnMessageExpirationTimeUpdated(val messageExpirationTime: MessageExpirationTime?) : ComposerEvent
     data class ConfirmSendExpiringMessageToExternalRecipients(val externalRecipients: List<Recipient>) : ComposerEvent
+    data class RespondInlineContent(val plainText: String) : ComposerEvent
 
     data object ErrorLoadingDefaultSenderAddress : ComposerEvent
     data object ErrorFreeUserCannotChangeSender : ComposerEvent

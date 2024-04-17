@@ -27,10 +27,13 @@ import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
+import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
+import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsBcc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import ch.protonmail.android.mailcomposer.domain.model.StyledHtmlQuote
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
@@ -850,6 +853,34 @@ class ComposerReducerTest(
             )
         )
 
+        @Suppress("VariableMaxLength")
+        private val SubmittableToReplaceDraftBodyOnRespondnline = TestTransition(
+            name = "Should update state to replace draft body and remove quoted html when reply inline",
+            currentState = aSubmittableState(
+                messageId,
+                draftBody = "Existing draft body",
+                quotedHtmlBody = QuotedHtmlContent(
+                    OriginalHtmlQuote("<html>original html</html>"),
+                    StyledHtmlQuote("<html>styled html</html>")
+                ),
+                replaceDraftBody = Effect.empty()
+            ),
+            operation = ComposerEvent.RespondInlineContent("/noriginal html plain text"),
+            expectedState = aSubmittableState(
+                messageId,
+                draftBody = "Existing draft body",
+                quotedHtmlBody = null,
+                replaceDraftBody = Effect.of(TextUiModel("Existing draft body/noriginal html plain text"))
+            )
+        )
+
+        private val EmptyToUnchangedOnRespondInlineAction = TestTransition(
+            name = "Should change nothing when respond inline *action* is reduced",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerAction.RespondInlineRequested,
+            expectedState = ComposerDraftState.initial(messageId)
+        )
+
         private val transitions = listOf(
             EmptyToSubmittableToField,
             EmptyToNotSubmittableToField,
@@ -916,6 +947,7 @@ class ComposerReducerTest(
             bcc: List<RecipientUiModel> = emptyList(),
             draftBody: String = "",
             subject: Subject = Subject(""),
+            quotedHtmlBody: QuotedHtmlContent? = null,
             error: Effect<TextUiModel> = Effect.empty(),
             closeComposerWithMessageSending: Effect<Unit> = Effect.empty(),
             closeComposerWithMessageSendingOffline: Effect<Unit> = Effect.empty(),
@@ -923,7 +955,8 @@ class ComposerReducerTest(
             changeFocusToField: Effect<FocusedFieldType> = Effect.empty(),
             attachmentsFileSizeExceeded: Effect<Unit> = Effect.empty(),
             attachmentReEncryptionFailed: Effect<Unit> = Effect.empty(),
-            warning: Effect<TextUiModel> = Effect.empty()
+            warning: Effect<TextUiModel> = Effect.empty(),
+            replaceDraftBody: Effect<TextUiModel> = Effect.empty()
         ) = ComposerDraftState(
             fields = ComposerFields(
                 draftId = draftId,
@@ -933,7 +966,7 @@ class ComposerReducerTest(
                 bcc = bcc,
                 subject = subject.value,
                 body = draftBody,
-                quotedBody = null
+                quotedBody = quotedHtmlBody
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = Effect.empty(),
@@ -951,7 +984,7 @@ class ComposerReducerTest(
             attachmentsFileSizeExceeded = attachmentsFileSizeExceeded,
             attachmentsReEncryptionFailed = attachmentReEncryptionFailed,
             warning = warning,
-            replaceDraftBody = Effect.empty(),
+            replaceDraftBody = replaceDraftBody,
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty()

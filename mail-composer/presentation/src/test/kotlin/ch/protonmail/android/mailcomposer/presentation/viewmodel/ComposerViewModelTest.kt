@@ -84,6 +84,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlainText
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
@@ -129,6 +130,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -190,6 +192,7 @@ class ComposerViewModelTest {
     private val saveMessageExpirationTime = mockk<SaveMessageExpirationTime>()
     private val observeMessageExpirationTime = mockk<ObserveMessageExpirationTime>()
     private val getExternalRecipients = mockk<GetExternalRecipients>()
+    private val convertHtmlToPlainText = mockk<ConvertHtmlToPlainText>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
@@ -231,6 +234,7 @@ class ComposerViewModelTest {
             saveMessageExpirationTime,
             observeMessageExpirationTime,
             getExternalRecipients,
+            convertHtmlToPlainText,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -356,7 +360,11 @@ class ComposerViewModelTest {
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
 
         // Change internal state of the View Model to simulate an existing draft body before changing sender
-        expectedViewModelInitialState(messageId = expectedMessageId, draftBody = expectedDraftBody)
+        expectedViewModelInitialState(
+            messageId = expectedMessageId,
+            draftBody = expectedDraftBody,
+            quotedBody = expectedQuotedDraftBody
+        )
 
         val expectedReplaceDraftBodyTextUiModel = TextUiModel(expectDraftBodyWithSignature().value)
 
@@ -796,11 +804,11 @@ class ComposerViewModelTest {
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
+            messageId = expectedMessageId,
+            senderEmail = expectedSenderEmail,
+            subject = expectedSubject,
+            draftBody = expectedDraftBody,
+            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
 
         // When
@@ -853,11 +861,11 @@ class ComposerViewModelTest {
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
+            messageId = expectedMessageId,
+            senderEmail = expectedSenderEmail,
+            subject = expectedSubject,
+            draftBody = expectedDraftBody,
+            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
 
         // When
@@ -910,11 +918,11 @@ class ComposerViewModelTest {
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
+            messageId = expectedMessageId,
+            senderEmail = expectedSenderEmail,
+            subject = expectedSubject,
+            draftBody = expectedDraftBody,
+            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
 
         // When
@@ -2204,11 +2212,11 @@ class ComposerViewModelTest {
 
             // Change internal state of the View Model to simulate the existence of all fields
             expectedViewModelInitialState(
-                expectedMessageId,
-                expectedSenderEmail,
-                expectedSubject,
-                expectedDraftBody,
-                Triple(recipientsTo, recipientsCc, recipientsBcc)
+                messageId = expectedMessageId,
+                senderEmail = expectedSenderEmail,
+                subject = expectedSubject,
+                draftBody = expectedDraftBody,
+                recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
             )
 
             // When
@@ -2259,11 +2267,11 @@ class ComposerViewModelTest {
 
         // Change internal state of the View Model to simulate the existence of all fields before closing the composer
         expectedViewModelInitialState(
-            expectedMessageId,
-            expectedSenderEmail,
-            expectedSubject,
-            expectedDraftBody,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
+            messageId = expectedMessageId,
+            senderEmail = expectedSenderEmail,
+            subject = expectedSubject,
+            draftBody = expectedDraftBody,
+            recipients = Triple(recipientsTo, recipientsCc, recipientsBcc)
         )
 
         // When
@@ -2277,9 +2285,67 @@ class ComposerViewModelTest {
         }
     }
 
+    @Test
+    fun `should emit Effect to ReplaceDraftBody when Respond Inline Action`() = runTest {
+        // Given
+        val expectedDraftBody = DraftBody(RawDraftBody)
+        val expectedQuotedHtmlContent = QuotedHtmlContent(
+            OriginalHtmlQuote("<html>quoted body</html>"),
+            StyledHtmlQuote("<html>STYLED quoted body</html>")
+        )
+        val expectedQuotedHtmlInPlainText = "quoted body"
+        val originalSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val action = ComposerAction.RespondInlineRequested
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectStoreDraftBodySucceeds(
+            expectedMessageId,
+            expectedDraftBody,
+            expectedQuotedHtmlContent.original,
+            originalSenderEmail,
+            expectedUserId
+        )
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), originalSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        expectConvertHtmlToPlainTextSucceeds(expectedQuotedHtmlContent, expectedQuotedHtmlInPlainText)
+
+        // Change internal state of the View Model to simulate an existing draft body before changing sender
+        expectedViewModelInitialState(
+            messageId = expectedMessageId,
+            draftBody = expectedDraftBody,
+            quotedBody = expectedQuotedHtmlContent
+        )
+
+        val expectedReplaceDraftBodyTextUiModel = TextUiModel(
+            "${expectedDraftBody.value}$expectedQuotedHtmlInPlainText"
+        )
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        assertEquals(expectedReplaceDraftBodyTextUiModel, viewModel.state.value.replaceDraftBody.consume())
+        assertNull(viewModel.state.value.fields.quotedBody)
+    }
+
     @AfterTest
     fun tearDown() {
         unmockkObject(ComposerDraftState.Companion)
+    }
+
+    private fun expectConvertHtmlToPlainTextSucceeds(
+        expectedQuotedHtmlContent: QuotedHtmlContent,
+        expectedQuotedHtmlInPlainText: String
+    ) {
+        every { convertHtmlToPlainText(expectedQuotedHtmlContent.styled.value) } returns expectedQuotedHtmlInPlainText
     }
 
     private fun expectStyleQuotedHtml(originalHtmlQuote: OriginalHtmlQuote?, styledHtmlQuote: () -> StyledHtmlQuote) =
@@ -2412,6 +2478,7 @@ class ComposerViewModelTest {
         senderEmail: SenderEmail = SenderEmail(""),
         subject: Subject = Subject(""),
         draftBody: DraftBody = DraftBody(""),
+        quotedBody: QuotedHtmlContent? = null,
         recipients: Triple<RecipientsTo, RecipientsCc, RecipientsBcc> = Triple(
             RecipientsTo(emptyList()),
             RecipientsCc(emptyList()),
@@ -2427,7 +2494,7 @@ class ComposerViewModelTest {
                 recipients.third.value.map { RecipientUiModel.Valid(it.address) },
                 subject.value,
                 draftBody.value,
-                null
+                quotedBody
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = Effect.empty(),

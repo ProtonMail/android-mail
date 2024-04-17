@@ -32,5 +32,6 @@ internal data class ComposerFormActions(
     val onContactSuggestionTermChanged: (String, ContactSuggestionsField) -> Unit,
     val onSubjectChanged: (String) -> Unit,
     val onBodyChanged: (String) -> Unit,
-    val onChangeSender: () -> Unit
+    val onChangeSender: () -> Unit,
+    val onRespondInline: () -> Unit
 )

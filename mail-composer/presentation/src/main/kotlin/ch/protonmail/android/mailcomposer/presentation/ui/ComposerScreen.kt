@@ -397,7 +397,8 @@ private fun buildActions(
     onChangeSender = {
         setBottomSheetType(BottomSheetType.ChangeSender)
         viewModel.submit(ComposerAction.ChangeSenderRequested)
-    }
+    },
+    onRespondInline = { viewModel.submit(ComposerAction.RespondInlineRequested) }
 )
 
 private fun Int.isValidScrollPos(): Boolean = this < Int.MAX_VALUE && this > 0

@@ -42,6 +42,7 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.ClearMessageSendingError
+import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlainText
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
@@ -150,6 +151,7 @@ class ComposerViewModel @Inject constructor(
     private val saveMessageExpirationTime: SaveMessageExpirationTime,
     private val observeMessageExpirationTime: ObserveMessageExpirationTime,
     private val getExternalRecipients: GetExternalRecipients,
+    private val convertHtmlToPlainText: ConvertHtmlToPlainText,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -398,10 +400,18 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
                         onSendMessage(action)
                     )
+                    is ComposerAction.RespondInlineRequested -> emitNewStateFor(onRespondInline())
                 }
                 composerIdlingResource.decrement()
             }
         }
+    }
+
+    private fun onRespondInline(): ComposerEvent {
+        val quotedHtmlBody = state.value.fields.quotedBody!!
+        val quotedBodySpannable = convertHtmlToPlainText(quotedHtmlBody.styled.value)
+        Timber.d(quotedBodySpannable.toString())
+        return ComposerEvent.RespondInlineContent(quotedBodySpannable.toString())
     }
 
     private fun uploadDraftContinuouslyWhileInForeground(draftAction: DraftAction) {

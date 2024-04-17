@@ -79,6 +79,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.RejectSendingWithoutSubject -> updateForRejectSendWithoutSubject(currentState)
         is ComposerAction.OnSetExpirationTimeRequested -> updateStateForSetExpirationTimeRequested(currentState)
         is ComposerAction.ExpirationTimeSet -> updateStateForExpirationTimeSet(currentState)
+        is ComposerAction.RespondInlineRequested,
         is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> currentState
     }
 
@@ -169,6 +170,19 @@ class ComposerReducer @Inject constructor(
         )
         is ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients -> currentState.copy(
             confirmSendExpiringMessage = Effect.of(this.externalRecipients)
+        )
+
+        is ComposerEvent.RespondInlineContent -> updateStateForRespondInline(currentState, this.plainText)
+    }
+
+    private fun updateStateForRespondInline(
+        currentState: ComposerDraftState,
+        plainTextQuote: String
+    ): ComposerDraftState {
+        val bodyWithInlineQuote = currentState.fields.body.plus(plainTextQuote)
+        return currentState.copy(
+            fields = currentState.fields.copy(quotedBody = null),
+            replaceDraftBody = Effect.of(TextUiModel(bodyWithInlineQuote))
         )
     }
 
