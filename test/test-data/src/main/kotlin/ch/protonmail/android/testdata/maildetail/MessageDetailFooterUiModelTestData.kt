@@ -25,6 +25,7 @@ object MessageDetailFooterUiModelTestData {
 
     val messageDetailFooterUiModel = MessageDetailFooterUiModel(
         MessageIdUiModel("id"),
+        shouldShowButtons = true,
         shouldShowReplyAll = false
     )
 }

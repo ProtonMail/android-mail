@@ -57,6 +57,8 @@ fun MessageDetailFooter(
     uiModel: MessageDetailFooterUiModel,
     actions: MessageDetailFooter.Actions
 ) {
+    if (!uiModel.shouldShowButtons) return
+
     Row(
         modifier = modifier
             .testTag(MessageBodyTestTags.MessageActionsRootItem)
@@ -155,7 +157,7 @@ object MessageDetailFooter {
 
 @Preview(showBackground = true)
 @Composable
-internal fun MessageDetailHeaderPreview(
+internal fun MessageDetailFooterPreview(
     @PreviewParameter(MessageDetailFooterPreviewProvider::class) preview: MessageDetailFooterPreview
 ) {
     ProtonTheme {
