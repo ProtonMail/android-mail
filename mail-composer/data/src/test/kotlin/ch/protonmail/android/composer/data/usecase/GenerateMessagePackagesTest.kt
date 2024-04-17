@@ -24,6 +24,8 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.extension.encryptAndSignText
 import ch.protonmail.android.composer.data.remote.resource.SendMessagePackage
 import ch.protonmail.android.composer.data.sample.SendMessageSample
+import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
@@ -72,6 +74,7 @@ class GenerateMessagePackagesTest {
     )
 
     private val generateSendMessagePackagesMock = mockk<GenerateSendMessagePackages>()
+    private val generateMimeBodyMock = mockk<GenerateMimeBody>()
 
     private val armoredPrivateKey = "armoredPrivateKey"
     private val armoredPublicKey = "armoredPublicKey"
@@ -143,7 +146,8 @@ class GenerateMessagePackagesTest {
 
     private val sut = GenerateMessagePackages(
         cryptoContextMock,
-        generateSendMessagePackagesMock
+        generateSendMessagePackagesMock,
+        generateMimeBodyMock
     )
 
     @Test
@@ -162,6 +166,14 @@ class GenerateMessagePackagesTest {
         )
 
         givenAllRecipients(recipient1, recipient2, recipient3, recipient4)
+
+        expectGenerateMimeBody(
+            SendMessageSample.CleartextBody,
+            MimeType.PlainText,
+            listOf(attachment),
+            mapOf(attachment.attachmentId to attachmentFile),
+            "generated MIME body"
+        )
 
         // When
         val actual = sut(
@@ -241,6 +253,14 @@ class GenerateMessagePackagesTest {
         )
 
         givenAllRecipients(recipient1, recipient2, recipient3, recipient4)
+
+        expectGenerateMimeBody(
+            SendMessageSample.CleartextBody,
+            MimeType.PlainText,
+            listOf(attachment),
+            mapOf(attachment.attachmentId to attachmentFile),
+            "generated MIME body"
+        )
 
         coEvery {
             generateSendMessagePackagesMock.invoke(
@@ -372,6 +392,23 @@ class GenerateMessagePackagesTest {
         sut.encryptAndSignText("text to encrypt", SendMessageSample.PublicKey)
 
         verify(exactly = 0) { sut.privateKeyRing.unlockedPrimaryKey.unlockedKey.close() }
+    }
+
+    private fun expectGenerateMimeBody(
+        body: String,
+        bodyContentType: MimeType,
+        attachments: List<MessageAttachment>,
+        attachmentFiles: Map<AttachmentId, File>,
+        generatedMimeBody: String
+    ) {
+        every {
+            generateMimeBodyMock(
+                body,
+                bodyContentType,
+                attachments,
+                attachmentFiles
+            )
+        } returns generatedMimeBody
     }
 
 }
