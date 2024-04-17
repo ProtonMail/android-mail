@@ -168,8 +168,8 @@ fun MainSettingsScreen(
                     onClearCacheClick = actions.onClearCacheClick
                 )
             }
-            item { TelemetrySettingToggleItem() }
-            item { CrashReportSettingToggleItem() }
+            item { TelemetrySettingToggleItem(divider = { Divider() }) }
+            item { CrashReportSettingToggleItem(divider = { Divider() }) }
             item { ProtonSettingsHeader(title = string.mail_settings_app_information) }
             item {
                 ProtonSettingsItem(
