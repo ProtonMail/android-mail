@@ -32,6 +32,7 @@ import kotlin.random.Random
 /**
  * Correctly encodes and formats Message body in multipart/mixed content type.
  */
+@OptIn(ExperimentalEncodingApi::class)
 class GenerateMimeBody @Inject constructor() {
 
     @Suppress("ImplicitDefaultLocale")
@@ -75,11 +76,9 @@ class GenerateMimeBody @Inject constructor() {
         """.trimMargin()
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
     private fun generateMimeAttachment(attachment: MessageAttachment, attachmentFile: File): String {
 
-        // special way of encoding Base64 used in MIME: https://en.wikipedia.org/wiki/MIME#Encoded-Word
-        val fileName = "=?UTF-8?B?${Base64.encode(attachment.name.toByteArray())}?="
+        val fileName = generateEncodedFilename(attachment.name)
 
         val stringWriter = StringWriter()
         FoldedLineWriter(stringWriter).use {
@@ -94,5 +93,11 @@ class GenerateMimeBody @Inject constructor() {
         }
 
         return stringWriter.toString()
+    }
+
+    private fun generateEncodedFilename(filename: String): String {
+        // special way of encoding Base64 used in MIME: https://en.wikipedia.org/wiki/MIME#Encoded-Word
+        val base64Filename = Base64.encode(filename.toByteArray())
+        return "=?UTF-8?B?$base64Filename?="
     }
 }
