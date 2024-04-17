@@ -53,10 +53,10 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
-import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.ContactSuggestionState
@@ -259,6 +259,7 @@ internal fun ComposerForm(
                     .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
             )
             if (fields.quotedBody != null) {
+                RespondInlineButton(actions.onRespondInline)
                 BodyHtmlQuote(
                     value = fields.quotedBody.styled.value,
                     modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)

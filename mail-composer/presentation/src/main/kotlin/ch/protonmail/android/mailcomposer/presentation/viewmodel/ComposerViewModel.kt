@@ -400,18 +400,11 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
                         onSendMessage(action)
                     )
-                    is ComposerAction.RespondInlineRequested -> emitNewStateFor(onRespondInline())
+                    is ComposerAction.RespondInlineRequested -> onRespondInline()
                 }
                 composerIdlingResource.decrement()
             }
         }
-    }
-
-    private fun onRespondInline(): ComposerEvent {
-        val quotedHtmlBody = state.value.fields.quotedBody!!
-        val quotedBodySpannable = convertHtmlToPlainText(quotedHtmlBody.styled.value)
-        Timber.d(quotedBodySpannable.toString())
-        return ComposerEvent.RespondInlineContent(quotedBodySpannable.toString())
     }
 
     private fun uploadDraftContinuouslyWhileInForeground(draftAction: DraftAction) {
@@ -535,6 +528,13 @@ class ComposerViewModel @Inject constructor(
             }
         } else {
             onSendMessage(action)
+        }
+    }
+
+    private fun onRespondInline() {
+        state.value.fields.quotedBody?.let { quotedHtmlContent ->
+            val plainTextQuotedContent = convertHtmlToPlainText(quotedHtmlContent.styled.value)
+            emitNewStateFor(ComposerEvent.RespondInlineContent(plainTextQuotedContent))
         }
     }
 
