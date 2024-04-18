@@ -193,7 +193,7 @@ fun MessageDetailScreen(
                     actions = ContactActionsBottomSheetContent.Actions(
                         onCopyAddressClicked = { },
                         onCopyNameClicked = { },
-                        onAddContactClicked = { },
+                        onAddContactClicked = { actions.onAddContact(it.name, it.address) },
                         onNewMessageClicked = { },
                         onViewContactDetailsClicked = { actions.onViewContactDetails(it) }
                     )
@@ -554,7 +554,8 @@ object MessageDetail {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
-        val onViewContactDetails: (ContactId) -> Unit
+        val onViewContactDetails: (ContactId) -> Unit,
+        val onAddContact: (contactName: String, contactAddress: String) -> Unit
     )
 }
 

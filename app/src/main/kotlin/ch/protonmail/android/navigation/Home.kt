@@ -275,7 +275,10 @@ fun Home(
                         onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
                         onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
-                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) }
+                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
+                        onAddContact = { contactName, contactAddress ->
+                            navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        }
                     )
                 )
                 addMailbox(
@@ -300,7 +303,10 @@ fun Home(
                         onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
                         onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
-                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) }
+                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
+                        onAddContact = { contactName, contactAddress ->
+                            navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        }
                     )
                 )
                 addComposer(

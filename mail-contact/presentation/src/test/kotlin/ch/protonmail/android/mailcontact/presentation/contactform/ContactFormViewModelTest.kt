@@ -24,6 +24,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
@@ -62,6 +63,7 @@ import kotlin.random.Random
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ContactFormViewModelTest {
 
@@ -106,7 +108,7 @@ class ContactFormViewModelTest {
     @Test
     fun `given empty Contact ID in SavedState, when init, then emits create state`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -156,9 +158,29 @@ class ContactFormViewModelTest {
     }
 
     @Test
+    fun `given contact name and address in SavedState, when init, then emits create state with data`() = runTest {
+        // Given
+        val contactName = "Test User"
+        val contactEmail = "test@proton.me"
+        expectSavedStateContactId(null)
+        expectSavedStateContactName(contactName)
+        expectSavedStateContactEmail(contactEmail)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            assertTrue(actual is ContactFormState.Data)
+            assertEquals(contactName, actual.contact.displayName)
+            assertEquals(contactEmail, actual.contact.emails.first().value)
+        }
+    }
+
+    @Test
     fun `when OnCloseContactFormClick action is submitted, then CloseContactForm is emitted`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -180,7 +202,8 @@ class ContactFormViewModelTest {
     @Test
     fun `given create mode, when OnSaveClick action is submitted, then close with success is emitted`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
+
         every {
             contactFormUiModelMapperMock.toDecryptedContact(any(), any(), any(), any())
         } returns DecryptedContact(ContactId(""))
@@ -562,7 +585,7 @@ class ContactFormViewModelTest {
     @Test
     fun `when on add email action is submitted, then state contact is updated`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -589,7 +612,7 @@ class ContactFormViewModelTest {
     @Test
     fun `when on add telephone action is submitted, then state contact is updated`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -616,7 +639,7 @@ class ContactFormViewModelTest {
     @Test
     fun `when on add address action is submitted, then state contact is updated`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -643,7 +666,7 @@ class ContactFormViewModelTest {
     @Test
     fun `when on add note action is submitted, then state contact is updated`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         // When
         contactFormViewModel.state.test {
@@ -670,7 +693,7 @@ class ContactFormViewModelTest {
     @Test
     fun `when on add other action is submitted, then state contact is updated`() = runTest {
         // Given
-        expectSavedStateContactId(null)
+        expectNoSavedState()
 
         val supportedOtherFieldsCount = 8 // Size of the type list in ContactFormUiMode.emptyRandomOtherField
         // When adding others field the type is selected randomly. Mock random so that we know what type is ued.
@@ -847,10 +870,29 @@ class ContactFormViewModelTest {
         }
     }
 
+    private fun expectNoSavedState() {
+        expectSavedStateContactId(null)
+        expectSavedStateContactName(null)
+        expectSavedStateContactEmail(null)
+
+    }
+
     private fun expectSavedStateContactId(contactId: ContactId?) {
         every {
             savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactIdKey)
         } returns contactId?.id
+    }
+
+    private fun expectSavedStateContactName(contactName: String?) {
+        every {
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactNameKey)
+        } returns contactName?.toUrlSafeBase64String()
+    }
+
+    private fun expectSavedStateContactEmail(contactEmail: String?) {
+        every {
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactEmailKey)
+        } returns contactEmail?.toUrlSafeBase64String()
     }
 
     private fun expectDecryptedContact(

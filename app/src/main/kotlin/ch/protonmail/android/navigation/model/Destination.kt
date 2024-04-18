@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
+import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
@@ -27,7 +28,9 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Seriali
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
+import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactEmailKey
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
+import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactNameKey
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
@@ -150,19 +153,37 @@ sealed class Destination(val route: String) {
 
         object Contacts : Destination("contacts")
         object ContactDetails : Destination("contacts/contact/${ContactDetailsContactIdKey.wrap()}") {
+
             operator fun invoke(contactId: ContactId) = route.replace(ContactDetailsContactIdKey.wrap(), contactId.id)
         }
+
         object CreateContact : Destination("contacts/contact/form")
+        object AddContact : Destination(
+            "contacts/addContact/${ContactFormContactNameKey.wrap()}/${ContactFormContactEmailKey.wrap()}/form"
+        ) {
+
+            operator fun invoke(contactName: String, contactEmail: String) =
+                route.replace(ContactFormContactNameKey.wrap(), contactName.toUrlSafeBase64String()).replace(
+                    ContactFormContactEmailKey.wrap(), contactEmail.toUrlSafeBase64String()
+                )
+        }
+
         object EditContact : Destination("contacts/contact/${ContactFormContactIdKey.wrap()}/form") {
+
             operator fun invoke(contactId: ContactId) = route.replace(ContactFormContactIdKey.wrap(), contactId.id)
         }
+
         object ContactGroupDetails : Destination("contacts/group/${ContactGroupDetailsLabelIdKey.wrap()}") {
+
             operator fun invoke(labelId: LabelId) = route.replace(ContactGroupDetailsLabelIdKey.wrap(), labelId.id)
         }
+
         object CreateContactGroup : Destination("contacts/group/form")
         object EditContactGroup : Destination("contacts/group/${ContactGroupFormLabelIdKey.wrap()}/form") {
+
             operator fun invoke(labelId: LabelId) = route.replace(ContactGroupFormLabelIdKey.wrap(), labelId.id)
         }
+
         object ManageMembers : Destination("contacts/group/manageMembers")
     }
 

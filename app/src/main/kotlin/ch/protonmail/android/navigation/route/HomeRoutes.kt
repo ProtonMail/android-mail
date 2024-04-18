@@ -428,6 +428,9 @@ internal fun NavGraphBuilder.addContactForm(
     composable(route = Destination.Screen.EditContact.route) {
         ContactFormScreen(actions)
     }
+    composable(route = Destination.Screen.AddContact.route) {
+        ContactFormScreen(actions)
+    }
 }
 
 internal fun NavGraphBuilder.addContactGroupDetails(

@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.domain.util.fromUrlSafeBase64String
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContact
 import ch.protonmail.android.mailcontact.domain.usecase.EditContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
@@ -85,8 +86,25 @@ class ContactFormViewModel @Inject constructor(
                 )
             }
         } ?: run {
+            var contactData = emptyContactFormUiModelWithInitialFields()
+
+            savedStateHandle.get<String>(ContactFormScreen.ContactFormContactNameKey)?.let { contactName ->
+                contactData = contactData.copy(displayName = contactName.fromUrlSafeBase64String())
+            }
+
+            savedStateHandle.get<String>(ContactFormScreen.ContactFormContactEmailKey)
+                ?.let { contactEmail ->
+                    val email = emptyEmailField(contactData.incrementalUniqueFieldId.toString())
+                    contactData = contactData.copy(
+                        emails = listOf(email.copy(value = contactEmail.fromUrlSafeBase64String())),
+                        incrementalUniqueFieldId = contactData.incrementalUniqueFieldId.plus(1)
+                    )
+                }
+
             emitNewStateFor(
-                ContactFormEvent.ContactLoaded(emptyContactFormUiModelWithInitialFields())
+                ContactFormEvent.ContactLoaded(
+                    contactFormUiModel = contactData
+                )
             )
         }
     }

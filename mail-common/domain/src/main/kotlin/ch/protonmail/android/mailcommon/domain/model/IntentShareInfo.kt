@@ -18,9 +18,10 @@
 
 package ch.protonmail.android.mailcommon.domain.model
 
+import ch.protonmail.android.mailcommon.domain.util.fromUrlSafeBase64String
+import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
 import kotlinx.serialization.Serializable
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Serializable
 data class IntentShareInfo(
@@ -88,9 +89,3 @@ fun IntentShareInfo.decode(): IntentShareInfo {
         encoded = false
     )
 }
-
-@OptIn(ExperimentalEncodingApi::class)
-private fun String.toUrlSafeBase64String() = Base64.UrlSafe.encode(this.toByteArray())
-
-@OptIn(ExperimentalEncodingApi::class)
-private fun String.fromUrlSafeBase64String() = String(Base64.UrlSafe.decode(source = this))
