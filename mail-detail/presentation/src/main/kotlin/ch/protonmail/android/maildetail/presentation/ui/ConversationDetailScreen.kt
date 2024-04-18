@@ -209,7 +209,7 @@ fun ConversationDetailScreen(
                         onCopyAddressClicked = { },
                         onCopyNameClicked = { },
                         onAddContactClicked = { actions.onAddContact(it.name, it.address) },
-                        onNewMessageClicked = { },
+                        onNewMessageClicked = { actions.onComposeNewMessage(it.address) },
                         onViewContactDetailsClicked = { actions.onViewContactDetails(it) }
                     )
                 )
@@ -680,7 +680,8 @@ object ConversationDetail {
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onViewContactDetails: (ContactId) -> Unit,
-        val onAddContact: (contactName: String, contactAddress: String) -> Unit
+        val onAddContact: (contactName: String, contactAddress: String) -> Unit,
+        val onComposeNewMessage: (recipientAddress: String) -> Unit
     )
 }
 

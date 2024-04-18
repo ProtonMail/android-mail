@@ -278,6 +278,15 @@ fun Home(
                         onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
                         onAddContact = { contactName, contactAddress ->
                             navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        },
+                        onComposeNewMessage = {
+                            navController.navigate(
+                                Screen.MessageActionComposer(
+                                    DraftAction.ComposeToAddresses(
+                                        listOf(it)
+                                    )
+                                )
+                            )
                         }
                     )
                 )
@@ -306,6 +315,15 @@ fun Home(
                         onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
                         onAddContact = { contactName, contactAddress ->
                             navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        },
+                        onComposeNewMessage = {
+                            navController.navigate(
+                                Screen.MessageActionComposer(
+                                    DraftAction.ComposeToAddresses(
+                                        listOf(it)
+                                    )
+                                )
+                            )
                         }
                     )
                 )
