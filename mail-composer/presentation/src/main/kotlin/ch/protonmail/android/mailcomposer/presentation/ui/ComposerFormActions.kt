@@ -33,5 +33,6 @@ internal data class ComposerFormActions(
     val onSubjectChanged: (String) -> Unit,
     val onBodyChanged: (String) -> Unit,
     val onChangeSender: () -> Unit,
-    val onRespondInline: () -> Unit
+    val onRespondInline: () -> Unit,
+    val onScrollToTopRequested: suspend () -> Unit
 )

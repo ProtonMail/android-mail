@@ -37,7 +37,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -66,7 +65,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun ComposerForm(
     emailValidator: (String) -> Boolean,
@@ -254,6 +252,7 @@ internal fun ComposerForm(
                 shouldRequestFocus = shouldForceBodyTextFocus,
                 replaceDraftBody = replaceDraftBody,
                 onBodyChange = actions.onBodyChanged,
+                onScrollToTopRequested = actions.onScrollToTopRequested,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)
                     .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)

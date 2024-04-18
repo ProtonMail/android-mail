@@ -60,11 +60,13 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Actions.Companion.ReplaceDraftBodyTimeout
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.delay
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
 import me.proton.core.compose.component.ProtonAlertDialogText
@@ -75,6 +77,7 @@ import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme3
 import timber.log.Timber
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterialApi::class)
 @Suppress("UseComposableActions")
@@ -206,7 +209,11 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             { recipientsOpen = it },
                             { focusedField = it },
                             { bottomSheetType.value = it },
-                            { bodyChangedByUser.value = true }
+                            { bodyChangedByUser.value = true },
+                            {
+                                delay(ReplaceDraftBodyTimeout)
+                                scrollState.scrollTo(scrollState.maxValue)
+                            }
                         ),
                         contactSuggestions = state.contactSuggestions,
                         areContactSuggestionsExpanded = state.areContactSuggestionsExpanded
@@ -373,12 +380,14 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     }
 }
 
+@Suppress("LongParameterList")
 private fun buildActions(
     viewModel: ComposerViewModel,
     onToggleRecipients: (Boolean) -> Unit,
     onFocusChanged: (FocusedFieldType) -> Unit,
     setBottomSheetType: (BottomSheetType) -> Unit,
-    onBodyChangedByUser: () -> Unit
+    onBodyChangedByUser: () -> Unit,
+    onScrollToTopRequested: suspend () -> Unit
 ): ComposerFormActions = ComposerFormActions(
     onToggleRecipients = onToggleRecipients,
     onFocusChanged = onFocusChanged,
@@ -398,7 +407,8 @@ private fun buildActions(
         setBottomSheetType(BottomSheetType.ChangeSender)
         viewModel.submit(ComposerAction.ChangeSenderRequested)
     },
-    onRespondInline = { viewModel.submit(ComposerAction.RespondInlineRequested) }
+    onRespondInline = { viewModel.submit(ComposerAction.RespondInlineRequested) },
+    onScrollToTopRequested = onScrollToTopRequested
 )
 
 private fun Int.isValidScrollPos(): Boolean = this < Int.MAX_VALUE && this > 0
@@ -427,6 +437,8 @@ object ComposerScreen {
                 showMessageSendingSnackbar = {},
                 showMessageSendingOfflineSnackbar = {}
             )
+
+            val ReplaceDraftBodyTimeout = 100.milliseconds
         }
     }
 }

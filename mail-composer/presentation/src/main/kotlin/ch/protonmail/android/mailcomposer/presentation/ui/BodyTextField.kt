@@ -54,6 +54,7 @@ internal fun BodyTextField(
     replaceDraftBody: Effect<TextUiModel>,
     shouldRequestFocus: Effect<Unit>,
     onBodyChange: (String) -> Unit,
+    onScrollToTopRequested: suspend () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -102,5 +103,6 @@ internal fun BodyTextField(
     ConsumableTextEffect(effect = replaceDraftBody) {
         text = TextFieldValue(it)
         onBodyChange(it)
+        onScrollToTopRequested()
     }
 }
