@@ -274,7 +274,8 @@ fun Home(
                         showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
                         onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
-                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) }
+                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
+                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) }
                     )
                 )
                 addMailbox(
@@ -298,7 +299,8 @@ fun Home(
                         showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
                         onReply = { navController.navigate(Screen.MessageActionComposer(DraftAction.Reply(it))) },
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
-                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) }
+                        onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
+                        onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) }
                     )
                 )
                 addComposer(

@@ -98,6 +98,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
+import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.util.kotlin.exhaustive
 import timber.log.Timber
 
@@ -194,7 +195,7 @@ fun MessageDetailScreen(
                         onCopyNameClicked = { },
                         onAddContactClicked = { },
                         onNewMessageClicked = { },
-                        onViewContactDetailsClicked = { }
+                        onViewContactDetailsClicked = { actions.onViewContactDetails(it) }
                     )
                 )
 
@@ -552,7 +553,8 @@ object MessageDetail {
         val showFeatureMissingSnackbar: () -> Unit,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
-        val onForward: (MessageId) -> Unit
+        val onForward: (MessageId) -> Unit,
+        val onViewContactDetails: (ContactId) -> Unit
     )
 }
 
