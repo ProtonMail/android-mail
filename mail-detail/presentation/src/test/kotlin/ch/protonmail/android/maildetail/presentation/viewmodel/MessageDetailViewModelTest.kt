@@ -124,6 +124,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheet
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
+import ch.protonmail.android.mailmessage.presentation.reducer.UpsellingBottomSheetReducer
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -379,7 +380,8 @@ class MessageDetailViewModelTest {
             LabelAsBottomSheetReducer(),
             MailboxMoreActionsBottomSheetReducer(),
             DetailMoreActionsBottomSheetReducer(DetailMoreActionsBottomSheetUiMapper()),
-            ContactActionsBottomSheetReducer()
+            ContactActionsBottomSheetReducer(),
+            UpsellingBottomSheetReducer()
         ),
         MessageDeleteDialogReducer(),
         MessageReportPhishingDialogReducer()

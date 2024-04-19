@@ -146,6 +146,7 @@ import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsB
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.reducer.UpsellingBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
@@ -380,7 +381,8 @@ class ConversationDetailViewModelIntegrationTest {
             detailMoreActionsBottomSheetReducer = DetailMoreActionsBottomSheetReducer(
                 DetailMoreActionsBottomSheetUiMapper()
             ),
-            contactActionsBottomSheetReducer = ContactActionsBottomSheetReducer()
+            contactActionsBottomSheetReducer = ContactActionsBottomSheetReducer(),
+            upsellingBottomSheetReducer = UpsellingBottomSheetReducer()
         ),
         deleteDialogReducer = ConversationDeleteDialogReducer(),
         reportPhishingDialogReducer = ConversationReportPhishingDialogReducer()
