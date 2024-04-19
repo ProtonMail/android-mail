@@ -16,34 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.domain.annotations
 
-setAsHiltModule()
-
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
-
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(project(":mail-upselling:domain"))
-    implementation(Proton.Core.plan)
-}
+/**
+ * Indicates whether the entitlements shown in the 1-click flow should be replaced
+ * with the entitlements hardcoded in the current app version.
+ */
+annotation class ForceOneClickUpsellingDetailsOverride

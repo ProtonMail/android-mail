@@ -16,34 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.domain.usecase.featureflags
 
-setAsHiltModule()
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
+class IsUpgradePaidPlanSupportEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidUpsellingSupportUpgradePaidPlans"
     }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(project(":mail-upselling:domain"))
-    implementation(Proton.Core.plan)
 }
