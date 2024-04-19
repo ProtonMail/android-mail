@@ -83,6 +83,11 @@ include(":mail-settings:data")
 include(":mail-settings:domain")
 include(":mail-settings:presentation")
 
+include(":mail-upselling:dagger")
+include(":mail-upselling:data")
+include(":mail-upselling:domain")
+include(":mail-upselling:presentation")
+
 include(":uicomponents")
 
 include(":test:annotations")

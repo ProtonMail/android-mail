@@ -77,6 +77,11 @@ object Versions {
         const val turbine = "1.0.0"
     }
 
+    object Coil {
+
+        const val coil = "2.4.0"
+    }
+
     object Dagger {
 
         const val dagger = "2.49"

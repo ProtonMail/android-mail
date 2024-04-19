@@ -138,6 +138,7 @@ object Dependencies {
         add(AndroidX.Room.ktx)
         add(AndroidX.WebKit.webkit)
         add(Arrow.core)
+        add(Coil.coil)
         add(JakeWharton.timber)
         add(JavaX.inject)
         add(Jsoup.jsoup)

@@ -224,6 +224,13 @@ object Cash {
     const val turbine = "app.cash.turbine:turbine:$version"
 }
 
+object Coil {
+
+    private const val version = Versions.Coil.coil
+
+    const val coil = "io.coil-kt:coil-compose:$version"
+}
+
 object Dagger {
 
     private const val version = Versions.Dagger.dagger
