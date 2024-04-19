@@ -22,9 +22,15 @@ import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 
-@Preview(device = Devices.PHONE, uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(device = Devices.PHONE, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(device = "spec:width=411dp,height=891dp,orientation=landscape")
-@Preview(device = Devices.FOLDABLE)
-@Preview(device = Devices.TABLET)
+@Preview(device = Devices.PHONE, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "1. Theme - Light mode")
+@Preview(device = Devices.PHONE, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "2. Theme - Night mode")
+@Preview(device = "spec:width=360dp,height=1080dp,orientation=portrait", name = "3. Size - Narrow")
+@Preview(device = "spec:width=411dp,height=891dp,orientation=landscape", name = "4. Orientation Landscape")
+@Preview(
+    device = "spec:width=360dp,height=1080dp,orientation=portrait",
+    name = "Size - Narrow - 200% font scale",
+    fontScale = 2.0f
+)
+@Preview(device = Devices.FOLDABLE, name = "5. Foldable")
+@Preview(device = Devices.TABLET, name = "6. Tablet")
 annotation class AdaptivePreviews
