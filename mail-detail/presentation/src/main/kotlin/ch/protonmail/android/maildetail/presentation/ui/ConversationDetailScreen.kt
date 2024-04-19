@@ -65,6 +65,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
+import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
@@ -206,8 +207,24 @@ fun ConversationDetailScreen(
                 is ContactActionsBottomSheetState -> ContactActionsBottomSheetContent(
                     state = bottomSheetContentState,
                     actions = ContactActionsBottomSheetContent.Actions(
-                        onCopyAddressClicked = { },
-                        onCopyNameClicked = { },
+                        onCopyAddressClicked = {
+                            val message = context.getString(R.string.contact_actions_copy_address_performed)
+                            context.copyTextToClipboard(
+                                label = message,
+                                text = it.address
+                            )
+                            viewModel.submit(ConversationDetailViewAction.DismissBottomSheet)
+                            actions.showSnackbar(message)
+                        },
+                        onCopyNameClicked = {
+                            val message = context.getString(R.string.contact_actions_copy_name_performed)
+                            context.copyTextToClipboard(
+                                label = message,
+                                text = it.name
+                            )
+                            viewModel.submit(ConversationDetailViewAction.DismissBottomSheet)
+                            actions.showSnackbar(message)
+                        },
                         onAddContactClicked = { actions.onAddContact(it.name, it.address) },
                         onNewMessageClicked = { actions.onComposeNewMessage(it.address) },
                         onViewContactDetailsClicked = { actions.onViewContactDetails(it) }
@@ -681,7 +698,8 @@ object ConversationDetail {
         val onForward: (MessageId) -> Unit,
         val onViewContactDetails: (ContactId) -> Unit,
         val onAddContact: (contactName: String, contactAddress: String) -> Unit,
-        val onComposeNewMessage: (recipientAddress: String) -> Unit
+        val onComposeNewMessage: (recipientAddress: String) -> Unit,
+        val showSnackbar: (message: String) -> Unit
     )
 }
 
