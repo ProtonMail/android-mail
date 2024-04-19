@@ -39,6 +39,8 @@ internal object UpsellingDimens {
     const val DiscountTagDefaultZIndex = 1f
 
     const val UpsellingPaymentItemWeight = 1f
+
+    val CurrencyDivider = 2.dp
 }
 
 internal object UpsellingColors {
