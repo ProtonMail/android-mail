@@ -51,6 +51,8 @@ object UserTestData {
 
     val freeUser = build(subscribed = 0)
 
+    val paidMailUser = build(subscribed = 1)
+
     val paidUser = build(subscribed = 2)
 
     fun build(
