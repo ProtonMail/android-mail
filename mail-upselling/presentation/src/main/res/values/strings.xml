@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<resources>
+    <!-- Upselling -->
+    <string name="upselling_title">Upgrade to</string>
+    <string name="upselling_description">To unlock more storage and premium features</string>
+    <!-- Mail Plus -->
+    <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
+    <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
+    <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
+    <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
+    <string name="upselling_plus_feature_more">And 14 more premium features</string>
+    <!-- Unlimited -->
+    <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
+    <string name="upselling_unlimited_feature_storage">500 GB storage</string>
+    <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+    <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
+    <string name="upselling_unlimited_feature_drive">Drive Plus</string>
+    <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+    <!-- Other UI Items -->
+    <string name="upselling_discount_tag">SAVE %s%%</string>
+    <string name="upselling_month">/month</string>
+    <string name="upselling_get_button">Get %s</string>
+    <plurals name="upselling_month">
+        <item quantity="one">%d month</item>
+        <item quantity="other">%d months</item>
+    </plurals>
+    <!-- Errors -->
+    <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+    <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
+    <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+    <!-- Snackbar texts -->
+    <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
+    <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
+    <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+</resources>
