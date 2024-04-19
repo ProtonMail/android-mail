@@ -1,0 +1,70 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailupselling.presentation.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.usecase.FilterDynamicPlansByUserSubscription
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.Loading
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation.UpsellingBottomSheetContentEvent
+import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.update
+import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
+import me.proton.core.util.kotlin.takeIfNotEmpty
+import javax.inject.Inject
+
+@HiltViewModel
+internal class UpsellingBottomSheetViewModel @Inject constructor(
+    observePrimaryUser: ObservePrimaryUser,
+    private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
+    private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
+    private val upsellingBottomSheetContentReducer: UpsellingBottomSheetContentReducer
+) : ViewModel() {
+
+    private val mutableState = MutableStateFlow<UpsellingBottomSheetContentState>(Loading)
+    val state = mutableState.asStateFlow()
+
+    init {
+        observePrimaryUser().mapLatest { user ->
+            val userId = user?.userId
+                ?: return@mapLatest emitNewStateFrom(UpsellingBottomSheetContentEvent.LoadingError.NoUserId)
+
+            val dynamicPlans = runCatching { getDynamicPlansAdjustedPrices(userId) }.getOrElse {
+                return@mapLatest emitNewStateFrom(UpsellingBottomSheetContentEvent.LoadingError.NoSubscriptions)
+            }
+
+            val dynamicPlan = filterDynamicPlansByUserSubscription(userId, dynamicPlans).takeIfNotEmpty()?.first()
+                ?: return@mapLatest emitNewStateFrom(UpsellingBottomSheetContentEvent.LoadingError.NoSubscriptions)
+
+            emitNewStateFrom(UpsellingBottomSheetContentEvent.DataLoaded(userId, dynamicPlan))
+        }.launchIn(viewModelScope)
+    }
+
+    private fun emitNewStateFrom(operation: UpsellingBottomSheetContentOperation) {
+        mutableState.update { upsellingBottomSheetContentReducer.newStateFrom(operation) }
+    }
+}
