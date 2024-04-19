@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-label:presentation"))
+    implementation(project(":mail-upselling:presentation"))
     implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)
