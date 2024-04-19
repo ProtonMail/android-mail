@@ -50,6 +50,7 @@ dependencies {
     implementation(Proton.Core.label)
     implementation(Proton.Core.mailSettings)
     implementation(Proton.Core.network)
+    implementation(Proton.Core.plan)
     implementation(Proton.Core.user)
     implementation(Proton.Core.userSettings)
 
