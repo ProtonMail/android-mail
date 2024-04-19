@@ -28,7 +28,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -42,7 +41,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags.NavigationButton
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
-import ch.protonmail.android.mailmailbox.presentation.upselling.UpsellingMailButton
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingMailButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -122,12 +121,8 @@ fun MailboxTopAppBar(
                     }
                 },
                 actions = {
-
                     if (uiModel.shouldShowActions) {
-                        @Suppress("ConstantConditionIf")
-                        if (false) { // Remove this condition when upselling is ready
-                            UpsellingMailButton()
-                        }
+                        UpsellingMailButton(onClick = actions.onOpenUpsellingPage)
                         IconButton(
                             modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
                             onClick = actions.onEnterSearchMode
@@ -189,7 +184,6 @@ private fun TopAppBarInSearchMode(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) {
     IconButton(
         modifier = Modifier.testTag(NavigationButton),
@@ -222,7 +216,9 @@ object MailboxTopAppBar {
         val onTitleClick: () -> Unit,
         val onEnterSearchMode: () -> Unit,
         val onSearch: (query: String) -> Unit,
-        val onOpenComposer: () -> Unit
+        val onOpenComposer: () -> Unit,
+        val onOpenUpsellingPage: () -> Unit,
+        val onCloseUpsellingPage: () -> Unit
     )
 }
 
@@ -262,7 +258,9 @@ fun LoadingMailboxTopAppBarPreview() {
             onTitleClick = {},
             onEnterSearchMode = {},
             onSearch = {},
-            onOpenComposer = {}
+            onOpenComposer = {},
+            onOpenUpsellingPage = {},
+            onCloseUpsellingPage = {}
         )
     )
 }

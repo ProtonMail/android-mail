@@ -105,6 +105,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -358,6 +359,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DeleteAll -> handleClearAllAction()
                 is MailboxViewAction.DeleteAllConfirmed -> handleClearAllConfirmedAction()
                 is MailboxViewAction.DeleteAllDialogDismissed -> handleClearAllDialogDismissed(viewAction)
+                is MailboxViewAction.RequestUpsellingBottomSheet -> showUpsellingBottomSheet(viewAction)
                 is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
             }.exhaustive
         }
@@ -1112,6 +1114,16 @@ class MailboxViewModel @Inject constructor(
 
     private fun handleDeleteDialogDismissed() {
         emitNewStateFrom(MailboxViewAction.DeleteDialogDismissed)
+    }
+
+    private fun showUpsellingBottomSheet(operation: MailboxViewAction) {
+        viewModelScope.launch {
+            emitNewStateFrom(operation)
+
+            emitNewStateFrom(
+                MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+            )
+        }
     }
 
     private fun observeCurrentMailLabel() = observeMailLabels()

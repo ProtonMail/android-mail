@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -173,9 +174,9 @@ import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.plan.presentation.compose.usecase.ShouldUpgradeStorage
 import me.proton.core.test.kotlin.TestDispatcherProvider
-import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import ch.protonmail.android.mailconversation.domain.entity.Conversation as DomainConversation
 import ch.protonmail.android.mailmessage.domain.model.Message as DomainMessage
@@ -3826,6 +3827,34 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `should emit upselling data event when showing the upselling bottom sheet was requested`() = runTest {
+        // Given
+        val initialState = createMailboxDataState()
+        expectViewMode(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        expectRequestUpsellingBottomSheet(initialState)
+        expectUpsellingBottomSheetDataLoaded(initialState)
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet)
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(initialState, MailboxViewAction.RequestUpsellingBottomSheet)
+            }
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(
+                    initialState,
+                    MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+                )
+            }
+        }
+    }
+
+    @Test
     fun `navigate to inbox label will trigger selected mail label use case`() = runTest {
         // Given
         coJustRun { selectedMailLabelId.set(MailLabelId.System.Inbox) }
@@ -4151,6 +4180,21 @@ class MailboxViewModelTest {
 
     private fun expectedUnStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
         coJustRun { unStarConversations(userId, items.map { ConversationId(it.id) }) }
+    }
+
+    private fun expectRequestUpsellingBottomSheet(initialState: MailboxState) {
+        every {
+            mailboxReducer.newStateFrom(initialState, MailboxViewAction.RequestUpsellingBottomSheet)
+        } returns initialState
+    }
+
+    private fun expectUpsellingBottomSheetDataLoaded(initialState: MailboxState) {
+        every {
+            mailboxReducer.newStateFrom(
+                initialState,
+                MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+            )
+        } returns initialState
     }
 
     private fun createMailboxStateWithLabelAsBottomSheet(

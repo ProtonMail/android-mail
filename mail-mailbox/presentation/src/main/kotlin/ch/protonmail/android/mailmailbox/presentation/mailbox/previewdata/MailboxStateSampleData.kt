@@ -35,9 +35,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import kotlinx.collections.immutable.toImmutableList
 

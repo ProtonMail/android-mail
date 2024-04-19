@@ -35,8 +35,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAp
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
@@ -200,7 +200,8 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.MailboxBottomSheetEvent -> operation.bottomSheetOperation
                 is MailboxViewAction.RequestMoreActionsBottomSheet,
                 is MailboxViewAction.RequestMoveToBottomSheet,
-                is MailboxViewAction.RequestLabelAsBottomSheet -> BottomSheetOperation.Requested
+                is MailboxViewAction.RequestLabelAsBottomSheet,
+                is MailboxViewAction.RequestUpsellingBottomSheet -> BottomSheetOperation.Requested
 
                 is MailboxViewAction.LabelAsToggleAction -> LabelToggled(operation.label)
                 is MailboxEvent.ErrorRetrievingCustomMailLabels,

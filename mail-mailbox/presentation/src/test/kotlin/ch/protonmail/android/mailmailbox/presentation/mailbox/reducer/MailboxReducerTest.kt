@@ -444,6 +444,17 @@ internal class MailboxReducerTest(
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceStorageLimitState = true
+            ),
+            TestInput(
+                MailboxViewAction.RequestUpsellingBottomSheet,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceStorageLimitState = false
             )
         )
 

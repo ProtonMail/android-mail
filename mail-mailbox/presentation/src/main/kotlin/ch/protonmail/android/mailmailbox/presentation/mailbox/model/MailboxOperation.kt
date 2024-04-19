@@ -30,10 +30,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingErrorBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingMailboxList
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingStorageLimit
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingStorageLimit
-
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -143,6 +142,7 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DeleteAllConfirmed : MailboxViewAction
     object DeleteAllDialogDismissed : MailboxViewAction, AffectingClearDialog
     object NavigateToInboxLabel : MailboxViewAction
+    object RequestUpsellingBottomSheet : MailboxViewAction, AffectingBottomSheet
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
