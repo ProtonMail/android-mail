@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="18dp"
+    android:height="18dp"
+    android:viewportWidth="18"
+    android:viewportHeight="18">
+    <path
+        android:pathData="M8.333,4C8.333,3.08 7.587,2.333 6.667,2.333C5.746,2.333 5,3.08 5,4C5,4.92 5.746,5.667 6.667,5.667H8.333V4ZM3.889,4C3.889,4.625 4.095,5.202 4.444,5.667H2.222C1.609,5.667 1.111,6.164 1.111,6.778V9C1.111,9.614 1.609,10.111 2.222,10.111V14.556C2.222,15.783 3.217,16.778 4.444,16.778H13.333C14.561,16.778 15.556,15.783 15.556,14.556V10.111C16.169,10.111 16.667,9.614 16.667,9V6.778C16.667,6.164 16.169,5.667 15.556,5.667H13.333C13.682,5.202 13.889,4.625 13.889,4C13.889,2.466 12.645,1.222 11.111,1.222C10.202,1.222 9.396,1.659 8.889,2.333C8.382,1.659 7.575,1.222 6.667,1.222C5.133,1.222 3.889,2.466 3.889,4ZM2.222,6.778H6.667H8.323L8.323,9H3.333H2.222V6.778ZM8.323,10.111H3.333V14.556C3.333,15.169 3.831,15.667 4.444,15.667H8.323L8.323,10.111ZM9.434,15.667L9.434,10.111H14.444V14.556C14.444,15.169 13.947,15.667 13.333,15.667H9.434ZM9.434,9L9.434,6.778H9.444H11.111H15.556V9H14.444H9.434ZM12.778,4C12.778,4.92 12.032,5.667 11.111,5.667H9.444V4C9.444,3.08 10.191,2.333 11.111,2.333C12.032,2.333 12.778,3.08 12.778,4Z"
+        android:fillColor="#A7A4B5"
+        android:fillType="evenOdd" />
+</vector>

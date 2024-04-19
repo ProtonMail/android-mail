@@ -1,0 +1,28 @@
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="18dp"
+    android:height="18dp"
+    android:viewportWidth="18"
+    android:viewportHeight="18">
+    <path
+        android:pathData="M1.111,4.002C1.111,3.079 2.171,2.558 2.901,3.123L8.549,7.49C8.749,7.645 9.029,7.645 9.229,7.49L14.876,3.123C15.606,2.558 16.667,3.079 16.667,4.002V12.882C16.667,14.109 15.672,15.103 14.445,15.103H3.333C2.106,15.103 1.111,14.109 1.111,12.882V4.002ZM7.87,8.369L2.222,4.002V5.651L6.661,9.226C7.043,9.533 7.59,9.519 7.955,9.193L8.53,8.678C8.295,8.626 8.069,8.523 7.87,8.369ZM2.222,12.882V7.077L5.965,10.091C6.769,10.739 7.925,10.709 8.695,10.02L12.5,6.616V13.992H3.333C2.719,13.992 2.222,13.495 2.222,12.882ZM13.537,13.992H14.445C15.059,13.992 15.556,13.495 15.556,12.882V4.002L13.537,5.563V13.992Z"
+        android:fillColor="#A7A4B5"
+        android:fillType="evenOdd" />
+</vector>
