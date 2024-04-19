@@ -19,6 +19,9 @@
 package ch.protonmail.android.mailupselling.dagger
 
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupPaidPlanSupportEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingOneClickOverrideEnabled
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,11 +37,11 @@ object UpsellingModule {
 
     @Provides
     @SupportSignupPaidPlans
-    fun provideSupportSignupPaidPlans() = false
+    fun provideSupportSignupPaidPlans(isEnabled: IsSignupPaidPlanSupportEnabled) = isEnabled(null)
 
     @Provides
     @SupportUpgradePaidPlans
-    fun provideSupportUpgradePaidPlans() = false
+    fun provideSupportUpgradePaidPlans(isEnabled: IsUpgradePaidPlanSupportEnabled) = isEnabled(null)
 
     @Provides
     @ProductOnlyPaidPlans
@@ -46,7 +49,7 @@ object UpsellingModule {
 
     @Provides
     @ForceOneClickUpsellingDetailsOverride
-    fun provideOneClickOverrideEnabled() = false
+    fun provideOneClickOverrideEnabled(isEnabled: IsUpsellingOneClickOverrideEnabled) = isEnabled(null)
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
