@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -49,8 +48,8 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses
 import ch.protonmail.android.mailcomposer.domain.usecase.GetComposerSenderAddresses.Error
 import ch.protonmail.android.mailcomposer.domain.usecase.GetDecryptedDraftFields
-import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.GetExternalRecipients
+import ch.protonmail.android.mailcomposer.domain.usecase.GetLocalMessageDecrypted
 import ch.protonmail.android.mailcomposer.domain.usecase.IsValidEmailAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
@@ -68,6 +67,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithParentAtt
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithRecipients
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithSubject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreExternalAttachments
+import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.isInvalidDueToDisabledAddress
 import ch.protonmail.android.mailcomposer.domain.usecase.isInvalidDueToPaidAddress
 import ch.protonmail.android.mailcomposer.presentation.mapper.ParticipantMapper
@@ -87,6 +87,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSign
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -96,6 +97,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -125,6 +127,7 @@ class ComposerViewModel @Inject constructor(
     private val storeExternalAttachments: StoreExternalAttachments,
     private val getContacts: GetContacts,
     private val searchContacts: SearchContacts,
+    private val searchContactGroups: SearchContactGroups,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
@@ -736,10 +739,14 @@ class ComposerViewModel @Inject constructor(
         searchContactsJobs[suggestionsField]?.cancel()
 
         if (searchTerm.isNotBlank()) {
-            searchContactsJobs[suggestionsField] = searchContacts(primaryUserId(), searchTerm).onEach {
-                val suggestedContacts = it.getOrNull()?.flatMap { contact ->
+            searchContactsJobs[suggestionsField] = combine(
+                searchContacts(primaryUserId(), searchTerm),
+                searchContactGroups(primaryUserId(), searchTerm)
+            ) { contacts, contactGroups ->
+
+                val fromContacts = contacts.getOrNull()?.flatMap { contact ->
                     contact.contactEmails.map { contactEmail ->
-                        ContactSuggestionUiModel(
+                        ContactSuggestionUiModel.Contact(
                             name = contactEmail.name.takeIfNotBlank()
                                 ?: contact.name.takeIfNotBlank()
                                 ?: contactEmail.email,
@@ -748,9 +755,20 @@ class ComposerViewModel @Inject constructor(
                     }
                 } ?: emptyList()
 
+                val fromContactGroups = contactGroups.getOrNull()?.map { contactGroup ->
+                    ContactSuggestionUiModel.ContactGroup(
+                        name = contactGroup.name,
+                        emails = contactGroup.members.map { it.email }
+                    )
+                } ?: emptyList()
+
+                val suggestions = (fromContacts + fromContactGroups).sortedBy {
+                    it.name
+                }.take(maxContactAutocompletionCount)
+
                 emitNewStateFor(
                     ComposerEvent.UpdateContactSuggestions(
-                        suggestedContacts.take(maxContactAutocompletionCount),
+                        suggestions,
                         suggestionsField
                     )
                 )

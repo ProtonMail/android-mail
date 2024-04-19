@@ -49,6 +49,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.FocusableForm
 import ch.protonmail.android.mailcommon.presentation.compose.keyboardVisibilityAsState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerFields
@@ -291,7 +292,17 @@ private fun RecipientUiModel.toChipItem(): ChipItem = when (this) {
     is RecipientUiModel.Valid -> ChipItem.Valid(address)
 }
 
-private fun ContactSuggestionUiModel.toSuggestionContactItem(): SuggestionItem = SuggestionItem(
-    this.name,
-    this.email
-)
+@Composable
+private fun ContactSuggestionUiModel.toSuggestionContactItem(): SuggestionItem = when (this) {
+    is ContactSuggestionUiModel.Contact -> SuggestionItem(
+        this.name,
+        this.email
+    )
+    is ContactSuggestionUiModel.ContactGroup -> SuggestionItem(
+        this.name,
+        TextUiModel.PluralisedText(
+            value = R.plurals.composer_recipient_suggestion_contacts,
+            count = this.emails.size
+        ).string()
+    )
+}

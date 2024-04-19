@@ -18,7 +18,18 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-data class ContactSuggestionUiModel(
-    val name: String,
-    val email: String
-)
+sealed class ContactSuggestionUiModel(
+    open val name: String
+) {
+
+    data class Contact(
+        override val name: String,
+        val email: String
+    ) : ContactSuggestionUiModel(name)
+
+    data class ContactGroup(
+        override val name: String,
+        val emails: List<String>
+    ) : ContactSuggestionUiModel(name)
+}
+

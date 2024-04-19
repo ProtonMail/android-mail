@@ -735,13 +735,19 @@ class ComposerReducerTest(
             name = "Should update state with contact suggestions on UpdateContactSuggestions event",
             currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.UpdateContactSuggestions(
-                contactSuggestions = listOf(ContactSuggestionUiModel("contact name", "contact email")),
+                contactSuggestions = listOf(
+                    ContactSuggestionUiModel.Contact("contact name", "contact email"),
+                    ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
+                ),
                 suggestionsField = ContactSuggestionsField.BCC
             ),
             expectedState = ComposerDraftState.initial(messageId).copy(
                 contactSuggestions = mapOf(
                     ContactSuggestionsField.BCC
-                        to listOf(ContactSuggestionUiModel("contact name", "contact email"))
+                        to listOf(
+                            ContactSuggestionUiModel.Contact("contact name", "contact email"),
+                            ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
+                        )
                 ),
                 areContactSuggestionsExpanded = mapOf(ContactSuggestionsField.BCC to true)
             )

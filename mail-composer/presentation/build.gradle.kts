@@ -79,6 +79,7 @@ dependencies {
     debugImplementation(Dependencies.composeDebugLibs)
 
     testImplementation(Dependencies.testLibs)
+    testImplementation(Proton.Core.labelDomain)
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
     testImplementation(project(":mail-detail:presentation"))

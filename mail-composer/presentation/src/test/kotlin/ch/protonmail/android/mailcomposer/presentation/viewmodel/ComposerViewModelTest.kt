@@ -25,6 +25,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
@@ -89,7 +90,9 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSend
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
@@ -107,6 +110,7 @@ import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSa
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
+import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
@@ -159,6 +163,7 @@ class ComposerViewModelTest {
     private val networkManagerMock = mockk<NetworkManager>()
     private val getContactsMock = mockk<GetContacts>()
     private val searchContactsMock = mockk<SearchContacts>()
+    private val searchContactGroupsMock = mockk<SearchContactGroups>()
     private val participantMapperMock = mockk<ParticipantMapper>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
     private val composerIdlingResource = spyk<ComposerIdlingResource>()
@@ -208,6 +213,7 @@ class ComposerViewModelTest {
             storeExternalAttachmentStates,
             getContactsMock,
             searchContactsMock,
+            searchContactGroupsMock,
             participantMapperMock,
             reducer,
             isValidEmailAddressMock,
@@ -607,6 +613,7 @@ class ComposerViewModelTest {
         val expectedSearchTerm = "proton"
         val suggestionField = ContactSuggestionsField.BCC
         val expectedContacts = listOf(ContactSample.Doe, ContactSample.John)
+        val expectedContactGroups = emptyList<ContactGroup>()
         val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
 
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
@@ -617,6 +624,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
@@ -627,6 +635,7 @@ class ComposerViewModelTest {
         // Then
         verify {
             searchContactsMock(expectedUserId, expectedSearchTerm)
+            searchContactGroupsMock(expectedUserId, expectedSearchTerm)
         }
     }
 
@@ -657,6 +666,15 @@ class ComposerViewModelTest {
                 )
             )
         )
+        val expectedContactGroups = listOf(
+            ContactGroup(
+                UserIdSample.Primary,
+                LabelIdSample.LabelCoworkers,
+                "Coworkers contact group",
+                "#AABBCC",
+                listOf(ContactEmailSample.contactEmail1)
+            )
+        )
         val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
 
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
@@ -667,6 +685,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
@@ -679,11 +698,15 @@ class ComposerViewModelTest {
         assertEquals(
             mapOf(
                 ContactSuggestionsField.BCC to listOf(
-                    ContactSuggestionUiModel(
+                    ContactSuggestionUiModel.ContactGroup(
+                        expectedContactGroups[0].name,
+                        expectedContactGroups[0].members.map { it.email }
+                    ),
+                    ContactSuggestionUiModel.Contact(
                         expectedContacts[0].contactEmails.first().name,
                         expectedContacts[0].contactEmails.first().email
                     ),
-                    ContactSuggestionUiModel(
+                    ContactSuggestionUiModel.Contact(
                         expectedContacts[1].contactEmails.first().name,
                         expectedContacts[1].contactEmails.first().email
                     )
@@ -713,6 +736,7 @@ class ComposerViewModelTest {
                 )
             )
         }
+        val expectedContactGroups = emptyList<ContactGroup>()
         val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
 
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
@@ -723,6 +747,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContactsExceedingLimit)
+        expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
@@ -2722,6 +2747,17 @@ class ComposerViewModelTest {
             searchContactsMock.invoke(expectedUserId, expectedSearchTerm)
         } returns flowOf(expectedContacts.right())
         return expectedContacts
+    }
+
+    private fun expectSearchContactGroups(
+        expectedUserId: UserId,
+        expectedSearchTerm: String,
+        expectedContactGroups: List<ContactGroup>
+    ): List<ContactGroup> {
+        coEvery {
+            searchContactGroupsMock.invoke(expectedUserId, expectedSearchTerm)
+        } returns flowOf(expectedContactGroups.right())
+        return expectedContactGroups
     }
 
     private fun expectObservedMessageAttachments(userId: UserId, messageId: MessageId) {
