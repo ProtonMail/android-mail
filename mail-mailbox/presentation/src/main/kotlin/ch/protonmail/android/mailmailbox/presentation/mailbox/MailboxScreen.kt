@@ -113,10 +113,13 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMoreActionBottomSheetContent
+import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpsellingBottomSheet
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonButton
@@ -145,7 +148,8 @@ fun MailboxScreen(
 ) {
     val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
     val scope = rememberCoroutineScope()
 
     BackHandler(mailboxState.mailboxListState is MailboxListState.Data.SelectionMode) {
@@ -210,7 +214,9 @@ fun MailboxScreen(
             onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
             onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
             onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
-            onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) }
+            onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
+            onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
+            onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) }
         )
 
         mailboxState.bottomSheetState?.let {
@@ -269,6 +275,16 @@ fun MailboxScreen(
                         )
                     )
 
+                    is UpsellingBottomSheetState -> {
+                        MailboxUpsellingBottomSheet(
+                            actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+                                onUpgrade = { message -> actions.showNormalSnackbar(message) },
+                                onError = { message -> actions.showErrorSnackbar(message) }
+                            )
+                        )
+                    }
+
                     else -> {
                         if (bottomSheetState.isVisible) {
                             ProtonCenteredProgress()
@@ -300,6 +316,7 @@ fun MailboxScreen(
     val snackbarHostState = remember { ProtonSnackbarHostState() }
     val snackbarHostErrorState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
     val rememberTopBarHeight = remember { mutableStateOf(0.dp) }
+    val refreshErrorText = stringResource(id = R.string.mailbox_error_message_generic)
 
     UndoableOperationSnackbar(snackbarHostState = snackbarHostState, actionEffect = mailboxState.actionResult)
 
@@ -330,7 +347,9 @@ fun MailboxScreen(
                         onTitleClick = { scope.launch { lazyListState.animateScrollToItem(0) } },
                         onEnterSearchMode = { actions.onEnterSearchMode() },
                         onSearch = { query -> actions.onSearchQuery(query) },
-                        onOpenComposer = { actions.navigateToComposer() }
+                        onOpenComposer = { actions.navigateToComposer() },
+                        onOpenUpsellingPage = actions.onOpenUpsellingPage,
+                        onCloseUpsellingPage = actions.onCloseUpsellingPage
                     )
                 )
 
@@ -397,7 +416,7 @@ fun MailboxScreen(
                     }
 
                     ConsumableLaunchedEffect(mailboxListState.refreshErrorEffect) {
-                        actions.showRefreshErrorSnackbar()
+                        actions.showErrorSnackbar(refreshErrorText)
                     }
                 }
 
@@ -962,8 +981,8 @@ object MailboxScreen {
         val onRefreshListCompleted: () -> Unit,
         val openDrawerMenu: () -> Unit,
         val showOfflineSnackbar: () -> Unit,
-        val showRefreshErrorSnackbar: () -> Unit,
-        val showFeatureMissingSnackbar: () -> Unit,
+        val showNormalSnackbar: (String) -> Unit,
+        val showErrorSnackbar: (String) -> Unit,
         val onOfflineWithData: () -> Unit,
         val onErrorWithData: () -> Unit,
         val markAsRead: () -> Unit,
@@ -989,7 +1008,9 @@ object MailboxScreen {
         val onEnterSearchMode: () -> Unit,
         val onSearchQuery: (String) -> Unit,
         val onSearchResult: () -> Unit,
-        val onExitSearchMode: () -> Unit
+        val onExitSearchMode: () -> Unit,
+        val onOpenUpsellingPage: () -> Unit,
+        val onCloseUpsellingPage: () -> Unit
     ) {
 
         companion object {
@@ -1007,8 +1028,8 @@ object MailboxScreen {
                 onRefreshListCompleted = {},
                 openDrawerMenu = {},
                 showOfflineSnackbar = {},
-                showRefreshErrorSnackbar = {},
-                showFeatureMissingSnackbar = {},
+                showNormalSnackbar = {},
+                showErrorSnackbar = {},
                 onOfflineWithData = {},
                 onErrorWithData = {},
                 markAsRead = {},
@@ -1034,7 +1055,9 @@ object MailboxScreen {
                 onExitSearchMode = {},
                 onEnterSearchMode = {},
                 onSearchQuery = {},
-                onSearchResult = {}
+                onSearchResult = {},
+                onOpenUpsellingPage = {},
+                onCloseUpsellingPage = {}
             )
         }
     }

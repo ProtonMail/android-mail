@@ -143,10 +143,16 @@ fun Home(
         )
     }
 
-    val refreshMailboxErrorMessage = stringResource(id = R.string.mailbox_error_message_generic)
-    fun showRefreshErrorSnackbar() = scope.launch {
+    fun showNormalSnackbar(text: String) = scope.launch {
         snackbarHostErrorState.showSnackbar(
-            message = refreshMailboxErrorMessage,
+            message = text,
+            type = ProtonSnackbarType.NORM
+        )
+    }
+
+    fun showErrorSnackbar(text: String) = scope.launch {
+        snackbarHostErrorState.showSnackbar(
+            message = text,
             type = ProtonSnackbarType.ERROR
         )
     }
@@ -302,8 +308,8 @@ fun Home(
                     navController,
                     openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } },
                     showOfflineSnackbar = { showOfflineSnackbar() },
-                    showFeatureMissingSnackbar = { showFeatureMissingSnackbar() },
-                    showRefreshErrorSnackbar = { showRefreshErrorSnackbar() }
+                    showNormalSnackbar = { showNormalSnackbar(it) },
+                    showErrorSnackbar = { showErrorSnackbar(it) }
                 )
                 addMessageDetail(
                     actions = MessageDetail.Actions(
