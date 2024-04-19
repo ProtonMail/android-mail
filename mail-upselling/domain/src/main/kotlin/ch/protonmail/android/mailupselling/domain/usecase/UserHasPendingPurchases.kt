@@ -16,10 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.model
+package ch.protonmail.android.mailupselling.domain.usecase
 
-object DynamicPlansOneClickIds {
+import me.proton.core.accountmanager.domain.SessionManager
+import me.proton.core.domain.entity.UserId
+import me.proton.core.payment.domain.entity.Purchase
+import me.proton.core.payment.domain.entity.PurchaseState
+import javax.inject.Inject
 
-    const val UnlimitedPlanId = "bundle2022"
-    const val PlusPlanId = "mail2022"
+class UserHasPendingPurchases @Inject constructor(
+    private val sessionManager: SessionManager
+) {
+
+    suspend operator fun invoke(purchases: List<Purchase>, userId: UserId): Boolean {
+        if (purchases.isEmpty()) return false
+
+        val sessionId = sessionManager.getSessionId(userId)
+        return purchases.any {
+            it.sessionId == sessionId && it.purchaseState in listOf(PurchaseState.Purchased, PurchaseState.Subscribed)
+        }
+    }
 }
