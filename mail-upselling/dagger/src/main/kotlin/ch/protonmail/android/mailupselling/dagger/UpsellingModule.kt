@@ -16,8 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.di
+package ch.protonmail.android.mailupselling.dagger
 
+import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,7 +30,7 @@ import me.proton.core.plan.domain.SupportUpgradePaidPlans
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PlansModule {
+object UpsellingModule {
 
     @Provides
     @SupportSignupPaidPlans
@@ -44,6 +45,9 @@ object PlansModule {
     fun provideProductOnlyPaidPlans() = false
 
     @Provides
+    @ForceOneClickUpsellingDetailsOverride
+    fun provideOneClickOverrideEnabled() = false
+
+    @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
 }
-
