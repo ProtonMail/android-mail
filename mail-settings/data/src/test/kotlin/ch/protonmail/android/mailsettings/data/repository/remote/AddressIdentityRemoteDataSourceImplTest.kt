@@ -47,9 +47,7 @@ internal class AddressIdentityRemoteDataSourceImplTest {
         val expectedSignatureValue = SignatureValue("signature-name")
 
         val expectedWorkerId = "UpdateAddressIdentityWorker-${expectedAddressId.id}"
-        val expectedParams = UpdateAddressIdentityWorker.params(
-            expectedUserId, expectedAddressId, expectedDisplayName.value, expectedSignatureValue.text
-        )
+        val expectedParams = UpdateAddressIdentityWorker.params(expectedUserId, expectedAddressId)
 
         every {
             enqueuer.enqueueUniqueWork<UpdateAddressIdentityWorker>(

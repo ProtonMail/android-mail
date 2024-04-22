@@ -22,6 +22,8 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
+import ch.protonmail.android.mailsettings.domain.repository.AddressIdentityRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -37,23 +39,37 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 internal class UpdateAddressIdentityWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParameters: WorkerParameters,
+    private val repository: AddressIdentityRepository,
     private val apiProvider: ApiProvider
 ) : CoroutineWorker(context, workerParameters) {
 
+    @Suppress("ReturnCount")
     override suspend fun doWork(): Result {
         val userId = inputData.getString(RawUserIdKey)?.takeIfNotBlank()
-        val addressId = inputData.getString(RawAddressIdKey)?.takeIfNotBlank()
-        val displayName = inputData.getString(RawDisplayNameKey) ?: ""
-        val signature = inputData.getString(RawSignatureKey) ?: ""
+        val addressId = inputData.getString(RawAddressIdKey)?.takeIfNotBlank()?.let { AddressId(it) }
 
         if (userId == null || addressId == null) {
             return Result.failure()
         }
 
-        val updateRequest = UpdateAddressRequest(displayName = displayName, signature = signature)
+        val displayName = repository
+            .getDisplayName(addressId)
+            .getOrNull()
+            ?: return Result.failure(
+                workDataOf(KeyUpdateDataError to "Unable to fetch local display name.")
+            )
+
+        val signature = repository
+            .getSignatureValue(addressId)
+            .getOrNull()
+            ?: return Result.failure(
+                workDataOf(KeyUpdateDataError to "Unable to fetch local signature value.")
+            )
+
+        val updateRequest = UpdateAddressRequest(displayName = displayName.value, signature = signature.text)
 
         val result = apiProvider.get<AddressApi>(UserId(userId)).invoke {
-            updateAddress(addressId, updateRequest)
+            updateAddress(addressId.id, updateRequest)
         }
 
         return when (result) {
@@ -67,21 +83,13 @@ internal class UpdateAddressIdentityWorker @AssistedInject constructor(
 
     companion object {
 
-        private const val RawUserIdKey = "updateAddressIdentityWorkParamUserId"
-        private const val RawAddressIdKey = "updateAddressIdentityWorkParamAddressId"
-        private const val RawDisplayNameKey = "updateAddressIdentityWorkParamDisplayNameValue"
-        private const val RawSignatureKey = "updateAddressIdentityWorkParamSignatureValue"
+        const val RawUserIdKey = "updateAddressIdentityWorkParamUserId"
+        const val RawAddressIdKey = "updateAddressIdentityWorkParamAddressId"
+        const val KeyUpdateDataError = "updateAddressIdentityDataError"
 
-        fun params(
-            userId: UserId,
-            addressId: AddressId,
-            displayName: String,
-            signature: String
-        ) = mapOf(
+        fun params(userId: UserId, addressId: AddressId) = mapOf(
             RawUserIdKey to userId.id,
-            RawAddressIdKey to addressId.id,
-            RawDisplayNameKey to displayName,
-            RawSignatureKey to signature
+            RawAddressIdKey to addressId.id
         )
 
         fun id(addressId: AddressId): String = "UpdateAddressIdentityWorker-${addressId.id}"

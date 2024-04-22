@@ -40,7 +40,7 @@ class AddressIdentityRemoteDataSourceImpl @Inject constructor(
         enqueuer.enqueueUniqueWork<UpdateAddressIdentityWorker>(
             userId,
             workerId = UpdateAddressIdentityWorker.id(addressId),
-            UpdateAddressIdentityWorker.params(userId, addressId, displayName.value, signature.text),
+            UpdateAddressIdentityWorker.params(userId, addressId),
             existingWorkPolicy = ExistingWorkPolicy.REPLACE
         )
     }
