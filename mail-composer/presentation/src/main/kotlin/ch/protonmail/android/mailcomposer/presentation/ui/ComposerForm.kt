@@ -60,7 +60,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.uicomponents.chips.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.ContactSuggestionState
-import ch.protonmail.android.uicomponents.chips.SuggestionItem
+import ch.protonmail.android.uicomponents.chips.ContactSuggestionItem
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -148,7 +148,7 @@ internal fun ComposerForm(
                     ),
                     contactSuggestionState = ContactSuggestionState(
                         areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.TO] ?: false,
-                        suggestionItems = contactSuggestions[ContactSuggestionsField.TO]?.map {
+                        contactSuggestionItems = contactSuggestions[ContactSuggestionsField.TO]?.map {
                             it.toSuggestionContactItem()
                         } ?: emptyList()
                     )
@@ -202,7 +202,7 @@ internal fun ComposerForm(
                         ),
                         contactSuggestionState = ContactSuggestionState(
                             areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.CC] ?: false,
-                            suggestionItems = contactSuggestions[ContactSuggestionsField.CC]?.map {
+                            contactSuggestionItems = contactSuggestions[ContactSuggestionsField.CC]?.map {
                                 it.toSuggestionContactItem()
                             } ?: emptyList()
                         )
@@ -232,7 +232,7 @@ internal fun ComposerForm(
                         contactSuggestionState = ContactSuggestionState(
                             areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC]
                                 ?: false,
-                            suggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
+                            contactSuggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
                                 it.toSuggestionContactItem()
                             } ?: emptyList()
                         )
@@ -293,16 +293,18 @@ private fun RecipientUiModel.toChipItem(): ChipItem = when (this) {
 }
 
 @Composable
-private fun ContactSuggestionUiModel.toSuggestionContactItem(): SuggestionItem = when (this) {
-    is ContactSuggestionUiModel.Contact -> SuggestionItem(
+private fun ContactSuggestionUiModel.toSuggestionContactItem(): ContactSuggestionItem = when (this) {
+    is ContactSuggestionUiModel.Contact -> ContactSuggestionItem(
         this.name,
-        this.email
+        this.email,
+        listOf(this.email)
     )
-    is ContactSuggestionUiModel.ContactGroup -> SuggestionItem(
+    is ContactSuggestionUiModel.ContactGroup -> ContactSuggestionItem(
         this.name,
         TextUiModel.PluralisedText(
             value = R.plurals.composer_recipient_suggestion_contacts,
             count = this.emails.size
-        ).string()
+        ).string(),
+        this.emails
     )
 }

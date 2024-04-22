@@ -78,9 +78,10 @@ sealed class ChipItem(open val value: String) {
 }
 
 @Stable
-data class SuggestionItem(
+data class ContactSuggestionItem(
     val header: String,
-    val subheader: String
+    val subheader: String,
+    val emails: List<String>
 )
 
 /*
@@ -195,7 +196,7 @@ fun ChipsListTextField(
                 textStyle = textStyle
             )
 
-            if (contactSuggestionState.suggestionItems.isNotEmpty()) {
+            if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
                 DropdownMenu(
                     modifier = Modifier
                         .background(ProtonTheme.colors.backgroundNorm)
@@ -207,7 +208,7 @@ fun ChipsListTextField(
                         actions.onSuggestionsDismissed()
                     }
                 ) {
-                    contactSuggestionState.suggestionItems.forEach { selectionOption ->
+                    contactSuggestionState.contactSuggestionItems.forEach { selectionOption ->
                         DropdownMenuItem(
                             text = {
                                 Column(modifier = Modifier.padding(vertical = ProtonDimens.SmallSpacing)) {
@@ -230,7 +231,9 @@ fun ChipsListTextField(
 
                             },
                             onClick = {
-                                state.typeWord(selectionOption.subheader)
+                                selectionOption.emails.forEach {
+                                    state.typeWord(it)
+                                }
                                 actions.onSuggestionsDismissed()
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding

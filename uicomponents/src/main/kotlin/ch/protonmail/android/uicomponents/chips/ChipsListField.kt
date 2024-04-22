@@ -75,7 +75,7 @@ fun ChipsListField(
 @Stable
 data class ContactSuggestionState(
     val areSuggestionsExpanded: Boolean,
-    val suggestionItems: List<SuggestionItem>
+    val contactSuggestionItems: List<ContactSuggestionItem>
 )
 
 object ChipsListField {
