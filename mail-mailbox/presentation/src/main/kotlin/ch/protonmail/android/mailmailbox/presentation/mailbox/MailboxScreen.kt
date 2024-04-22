@@ -120,6 +120,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpse
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonButton
@@ -245,7 +246,7 @@ fun MailboxScreen(
 
         ProtonModalBottomSheetLayout(
             sheetState = bottomSheetState,
-            sheetContent = {
+            sheetContent = bottomSheetHeightConstrainedContent {
                 when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
                     is MoveToBottomSheetState -> MoveToBottomSheetContent(
                         state = bottomSheetContentState,
@@ -648,7 +649,9 @@ private fun MailboxItemsList(
                             ClearBanner()
                         }
 
-                        is MailboxListState.Data.ClearState.Visible.Button -> { ClearButton(it, actions) }
+                        is MailboxListState.Data.ClearState.Visible.Button -> {
+                            ClearButton(it, actions)
+                        }
                     }
                 }
             }
