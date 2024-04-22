@@ -30,6 +30,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -51,13 +53,14 @@ internal fun UpsellingBottomSheetContent(
     state: UpsellingBottomSheetContentState.Data,
     actions: UpsellingBottomSheet.Actions
 ) {
-    val sidebarColors = requireNotNull(ProtonTheme.colors.sidebarColors)
+    val contentColors = requireNotNull(UpsellingColors.BottomSheetContentColors)
+    val backgroundColor = Color(LocalContext.current.getColor(UpsellingColors.BottomSheetBackgroundColor))
     val dynamicPlansModel = state.plans
 
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = sidebarColors.backgroundNorm),
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
@@ -73,7 +76,7 @@ internal fun UpsellingBottomSheetContent(
                 modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
                 text = "${stringResource(id = R.string.upselling_title)} ${dynamicPlansModel.title.text.string()}",
                 style = ProtonTheme.typography.headlineNorm,
-                color = sidebarColors.textNorm
+                color = contentColors.textNorm
             )
         }
 
@@ -88,7 +91,7 @@ internal fun UpsellingBottomSheetContent(
                     .padding(top = ProtonDimens.SmallSpacing),
                 text = dynamicPlansModel.description.text.string(),
                 style = ProtonTheme.typography.defaultWeak,
-                color = sidebarColors.textWeak,
+                color = contentColors.textWeak,
                 textAlign = TextAlign.Center
             )
         }
@@ -99,7 +102,7 @@ internal fun UpsellingBottomSheetContent(
 
         dynamicPlansModel.entitlements.forEachIndexed { index, model ->
 
-            item { UpsellingEntitlementListItem(entitlementUiModel = model, color = sidebarColors.textWeak) }
+            item { UpsellingEntitlementListItem(entitlementUiModel = model, color = contentColors.textWeak) }
 
             if (index != dynamicPlansModel.entitlements.lastIndex) {
                 item {

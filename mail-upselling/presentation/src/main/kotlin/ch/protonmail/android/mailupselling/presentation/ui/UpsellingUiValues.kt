@@ -22,6 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
+import ch.protonmail.android.mailupselling.presentation.R
+import me.proton.core.compose.theme.ProtonColors
+import me.proton.core.compose.theme.ProtonTheme
 
 internal object UpsellingDimens {
 
@@ -45,6 +48,11 @@ internal object UpsellingDimens {
 
 internal object UpsellingColors {
 
+    val BottomSheetContentColors: ProtonColors?
+        @Composable
+        get() = ProtonTheme.colors.sidebarColors
+
+    val BottomSheetBackgroundColor = R.color.haiti
     val DiscountTagColorStops = arrayOf(0.0f to Color(0xFFA792FF), 0.5f to Color(0xFF27DDB1))
     val EntitlementsRowDivider = Color.White.copy(alpha = 0.08f)
     val SecondaryButtonBackground = android.graphics.Color.parseColor("#33FFFFFF")

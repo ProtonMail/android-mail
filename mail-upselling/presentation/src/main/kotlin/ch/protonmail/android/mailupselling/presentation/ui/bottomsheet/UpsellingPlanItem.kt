@@ -65,7 +65,7 @@ internal fun UpsellingPlanItem(
     planUiModel: DynamicPlanInstanceUiModel,
     actions: UpsellingBottomSheet.Actions
 ) {
-    val sidebarColors = requireNotNull(ProtonTheme.colors.sidebarColors)
+    val colors = requireNotNull(UpsellingColors.BottomSheetContentColors)
 
     Box(
         modifier = modifier
@@ -117,7 +117,7 @@ internal fun UpsellingPlanItem(
                 ),
                 text = pluralStringResource(R.plurals.upselling_month, planUiModel.cycle, planUiModel.cycle),
                 style = ProtonTheme.typography.captionUnspecified,
-                color = sidebarColors.textNorm
+                color = colors.textNorm
             )
             FlowRow(
                 modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
@@ -127,18 +127,18 @@ internal fun UpsellingPlanItem(
                 Text(
                     text = planUiModel.currency,
                     style = ProtonTheme.typography.defaultHighlightUnspecified,
-                    color = sidebarColors.textNorm
+                    color = colors.textNorm
                 )
                 Spacer(modifier = Modifier.padding(UpsellingDimens.CurrencyDivider))
                 Text(
                     text = planUiModel.price.string(),
                     style = ProtonTheme.typography.defaultHighlightUnspecified,
-                    color = sidebarColors.textNorm
+                    color = colors.textNorm
                 )
                 Text(
                     text = stringResource(id = R.string.upselling_month),
                     style = ProtonTheme.typography.captionUnspecified,
-                    color = sidebarColors.textWeak,
+                    color = colors.textWeak,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
             }

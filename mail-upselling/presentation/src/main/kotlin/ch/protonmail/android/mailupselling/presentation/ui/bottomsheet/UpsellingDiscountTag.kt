@@ -36,7 +36,7 @@ import me.proton.core.compose.theme.overlineStrongUnspecified
 
 @Composable
 internal fun UpsellingDiscountTag(modifier: Modifier = Modifier, text: TextUiModel) {
-    val colors = requireNotNull(ProtonTheme.colors.sidebarColors)
+    val colors = requireNotNull(UpsellingColors.BottomSheetContentColors)
 
     Box(
         modifier = modifier

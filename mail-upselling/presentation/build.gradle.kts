@@ -59,6 +59,9 @@ dependencies {
     implementation(project(":mail-common:presentation"))
     implementation(project(":uicomponents"))
 
+    debugImplementation(AndroidX.Compose.uiTooling)
+    debugImplementation(AndroidX.Compose.uiToolingPreview)
+
     implementation(AndroidX.Hilt.navigationCompose)
     implementation(Arrow.core)
     implementation(Coil.coil)

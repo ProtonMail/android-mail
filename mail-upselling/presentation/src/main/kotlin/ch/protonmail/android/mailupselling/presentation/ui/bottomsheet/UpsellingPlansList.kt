@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -63,7 +64,7 @@ internal fun UpsellingPlansList(
 
 @Composable
 private fun TextNoPlansAvailable() {
-    val colors = requireNotNull(ProtonTheme.colors.sidebarColors)
+    val colors = requireNotNull(UpsellingColors.BottomSheetContentColors)
 
     Text(
         modifier = Modifier
