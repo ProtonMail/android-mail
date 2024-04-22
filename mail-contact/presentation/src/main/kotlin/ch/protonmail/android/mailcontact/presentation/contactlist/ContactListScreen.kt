@@ -81,6 +81,7 @@ import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupCreate
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDetails
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -124,7 +125,7 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetContent = {
+        sheetContent = bottomSheetHeightConstrainedContent {
             ContactBottomSheetContent(
                 actions = ContactSettingsScreen.Actions(
                     onNewContactClick = {

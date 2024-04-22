@@ -67,6 +67,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderSampleData
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -101,7 +102,7 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetContent = {
+        sheetContent = bottomSheetHeightConstrainedContent {
             when (state) {
                 is FolderListState.Loading -> {}
                 is FolderListState.ListLoaded -> {

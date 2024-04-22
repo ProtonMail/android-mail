@@ -65,6 +65,7 @@ import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewMod
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.delay
 import me.proton.core.compose.component.ProtonAlertDialog
@@ -110,7 +111,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     )
 
     ProtonModalBottomSheetLayout(
-        sheetContent = {
+        sheetContent = bottomSheetHeightConstrainedContent {
             when (bottomSheetType.value) {
                 BottomSheetType.AddAttachments -> AddAttachmentsBottomSheetContent(
                     onImportFromSelected = {

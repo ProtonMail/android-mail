@@ -88,6 +88,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.ContactActi
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.DetailMoreActionsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -149,7 +150,7 @@ fun MessageDetailScreen(
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
-        sheetContent = {
+        sheetContent = bottomSheetHeightConstrainedContent {
             when (val bottomSheetContentState = state.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState -> MoveToBottomSheetContent(
                     state = bottomSheetContentState,
