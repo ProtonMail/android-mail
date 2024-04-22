@@ -88,7 +88,7 @@
   <string name="login_notification_channel_description">Сповіщення про новий вхід</string>
   <string name="auth_badge_official">Офіційний</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Не знайдено програми для обробки цієї дії</string>
-  <string name="action_copied_to_clipboard">Copied to clipboard</string>
+  <string name="action_copied_to_clipboard">Скопійовано до буфера обміну</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
   <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
   <string name="picker_dialog_cancel">Скасувати</string>
@@ -112,4 +112,7 @@
   <string name="color_forest">Лісовий</string>
   <string name="color_olive">Оливковий</string>
   <string name="color_pickle">Огірочний</string>
+  <string name="undo_button_label">Undo</string>
+  <string name="undo_success_message">Дію скасовано</string>
+  <string name="undo_failure_message">Action revert failed</string>
 </resources>

@@ -112,4 +112,7 @@
   <string name="color_forest">Les</string>
   <string name="color_olive">Oliva</string>
   <string name="color_pickle">Okurka</string>
+  <string name="undo_button_label">Zpět</string>
+  <string name="undo_success_message">Akce vrácena</string>
+  <string name="undo_failure_message">Vrácení selhalo</string>
 </resources>

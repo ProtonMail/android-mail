@@ -126,6 +126,7 @@
   <string name="contact_group_form_create_success">連絡先グループが作成されました</string>
   <string name="contact_group_form_update_success">連絡先グループが更新されました</string>
   <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error_already_exists">この名前のグループは既に存在します</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
   <string name="members_done">完了</string>
   <string name="add_members_error">Error adding members, please try again later</string>

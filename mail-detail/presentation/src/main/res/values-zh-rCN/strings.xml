@@ -24,8 +24,8 @@
   <plurals name="message_count_label_text">
     <item quantity="other">%d 封邮件</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">回复</string>
+  <string name="quick_reply_all_button_content_description">回复全部</string>
   <string name="more_button_content_description">更多</string>
   <string name="to">收件人：</string>
   <string name="cc">抄送：</string>
@@ -63,34 +63,34 @@
   <string name="message_phishing_banner_text">我们的系统已将此邮件认定为欺诈邮件，请确认其内容真实性。</string>
   <string name="message_expiration_banner_text">此邮件将在%1$s后过期</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">您即将在浏览器中打开:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">不再询问</string>
   <string name="external_link_confirmation_dialog_cancel_button">关闭</string>
   <string name="external_link_confirmation_dialog_continue_button">继续</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">警告：疑似虚假网站</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">此链接指向的网站可能会窃取您的密码、信用卡等信息。</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">为了您的安全，不要继续。</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">返回（推荐）</string>
   <string name="phishing_link_confirmation_dialog_button_continue">忽视警告并继续</string>
   <string name="message_delete_dialog_title">删除邮件</string>
   <string name="message_delete_dialog_message">确定要永久删除此邮件吗？</string>
   <string name="message_deleted">邮件已删除</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
-  <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_message_failed">删除邮件失败</string>
+  <string name="error_delete_message_failed_wrong_folder">消息位于不可以删除的位置。</string>
+  <string name="error_delete_conversation_failed">删除对话失败</string>
+  <string name="error_delete_conversation_failed_wrong_folder">对话位于不可以删除的位置。</string>
   <string name="conversation_deleted">会话已删除</string>
   <string name="message_body_load_remote_content_button_text">加载外链内容</string>
   <string name="message_body_load_embedded_images_button_text">加载嵌入图像</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
-  <string name="message_report_phishing_dialog_title_offline">Attention</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
-  <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">加载远程及内嵌内容</string>
+  <string name="message_report_phishing_dialog_title_offline">注意</string>
+  <string name="message_report_phishing_dialog_message_offline">此功能仅在联机时可用。</string>
+  <string name="message_report_phishing_dialog_confim_button_offline">好的</string>
   <string name="message_report_phishing_dialog_title">确认举报欺诈邮件</string>
   <string name="message_report_phishing_dialog_message">您举报的邮件会被上传，以便我们分析并改进过滤机制。这意味着我们将得知此邮件的所有内容。</string>
-  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
-  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="message_report_phishing_dialog_confim_button">确认</string>
+  <string name="message_report_phishing_dialog_cancel_button">取消</string>
   <string name="open_on_protoncalendar_banner_title">在 Proton Calendar 中打开</string>
   <string name="open_on_protoncalendar_banner_description">安全加密日历</string>
 </resources>

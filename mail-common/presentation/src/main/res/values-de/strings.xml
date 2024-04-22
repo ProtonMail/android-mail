@@ -112,4 +112,7 @@
   <string name="color_forest">Waldgrün</string>
   <string name="color_olive">Olivgrün</string>
   <string name="color_pickle">Moosgrün</string>
+  <string name="undo_button_label">Rückgängig machen</string>
+  <string name="undo_success_message">Vorgang wurde Rückgängig gemacht</string>
+  <string name="undo_failure_message">Aktion konnte nicht rückgängig gemacht werden</string>
 </resources>

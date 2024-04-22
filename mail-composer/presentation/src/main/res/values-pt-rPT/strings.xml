@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Adicionar uma palavra-passe</string>
   <string name="composer_button_set_expiration">Definir tempo de expiração</string>
   <string name="composer_expiration_time_bottom_sheet_title">Expiração da mensagem</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Definir</string>
   <string name="composer_bottom_bar_expiration_time_none">Nenhum</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1dia</string>

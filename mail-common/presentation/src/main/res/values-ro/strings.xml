@@ -88,7 +88,7 @@
   <string name="login_notification_channel_description">Notificări conectări noi</string>
   <string name="auth_badge_official">Oficial</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nu există vreo aplicație asociată acestei acțiuni.</string>
-  <string name="action_copied_to_clipboard">Copied to clipboard</string>
+  <string name="action_copied_to_clipboard">Copiat în memorie.</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Anulare</string>
   <string name="mailbox_action_delete_dialog_button_delete">Ștergere</string>
   <string name="picker_dialog_cancel">Anulare</string>
@@ -112,4 +112,7 @@
   <string name="color_forest">Pădure</string>
   <string name="color_olive">Măsliniu</string>
   <string name="color_pickle">Murături</string>
+  <string name="undo_button_label">Refacere</string>
+  <string name="undo_success_message">Acțiune inversată</string>
+  <string name="undo_failure_message">Acțiunea de refacere a eșuat.</string>
 </resources>

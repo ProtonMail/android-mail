@@ -112,4 +112,7 @@
   <string name="color_forest">Orman</string>
   <string name="color_olive">Zeytin</string>
   <string name="color_pickle">Salatalık</string>
+  <string name="undo_button_label">Geri al</string>
+  <string name="undo_success_message">İşlem geri alındı</string>
+  <string name="undo_failure_message">İşlem geri alınamadı</string>
 </resources>

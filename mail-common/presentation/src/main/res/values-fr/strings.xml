@@ -112,4 +112,7 @@
   <string name="color_forest">Forêt</string>
   <string name="color_olive">Olive</string>
   <string name="color_pickle">Cornichon</string>
+  <string name="undo_button_label">Annuler</string>
+  <string name="undo_success_message">Action annulée</string>
+  <string name="undo_failure_message">L\'annulation de l\'action n\'a pas abouti.</string>
 </resources>

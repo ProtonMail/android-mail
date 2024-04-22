@@ -112,4 +112,7 @@
   <string name="color_forest">포레스트</string>
   <string name="color_olive">올리브</string>
   <string name="color_pickle">피클</string>
+  <string name="undo_button_label">실행 취소</string>
+  <string name="undo_success_message">동작 되돌림</string>
+  <string name="undo_failure_message">동작 되돌리기 실패</string>
 </resources>

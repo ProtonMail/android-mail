@@ -112,4 +112,7 @@
   <string name="color_forest">Hutan</string>
   <string name="color_olive">Zaitun</string>
   <string name="color_pickle">Acar</string>
+  <string name="undo_button_label">Urungkan</string>
+  <string name="undo_success_message">Tindakan diurungkan</string>
+  <string name="undo_failure_message">Tindakan gagal diurungkan</string>
 </resources>

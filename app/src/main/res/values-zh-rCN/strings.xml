@@ -26,7 +26,7 @@
   <string name="dialog_remove_account_confirm">注销</string>
   <string name="dialog_remove_account_cancel">关闭</string>
   <string name="user_select_other_account_content_description">选择其他账户</string>
-  <string name="you_are_offline">网络不可用</string>
+  <string name="you_are_offline">您处于离线状态</string>
   <string name="feature_coming_soon">功能即将推出…</string>
   <string name="mailbox_draft_saved">草稿已保存</string>
   <string name="mailbox_message_sending">正在发送邮件…</string>

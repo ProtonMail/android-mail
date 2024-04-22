@@ -88,7 +88,7 @@
   <string name="login_notification_channel_description">Nuovi accessi agli account</string>
   <string name="auth_badge_official">Ufficiale</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Nessuna applicazione trovata per gestire questa azione</string>
-  <string name="action_copied_to_clipboard">Link copiato negli appunti</string>
+  <string name="action_copied_to_clipboard">Copiato negli appunti</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Annulla</string>
   <string name="mailbox_action_delete_dialog_button_delete">Elimina</string>
   <string name="picker_dialog_cancel">Annulla</string>
@@ -112,4 +112,7 @@
   <string name="color_forest">Foresta</string>
   <string name="color_olive">Oliva</string>
   <string name="color_pickle">Cetriolo</string>
+  <string name="undo_button_label">Annulla</string>
+  <string name="undo_success_message">Azione annullata</string>
+  <string name="undo_failure_message">Annullamento dell\'azione non riuscito</string>
 </resources>

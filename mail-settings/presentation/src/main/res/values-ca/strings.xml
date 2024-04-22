@@ -142,8 +142,8 @@
     <item quantity="other">%s intents restants.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s intents restants per a un esborrat de dades per seguretat</item>
-    <item quantity="other">%s intents restants fins que s\'esborrin les dades per seguretat.</item>
+    <item quantity="one">queda %s intent abans de l\'eliminació segura de les dades.</item>
+    <item quantity="other">queden %s intents abans de l\'eliminació segura de les dades.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">S\'ha produït un error en verificar el codi PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Tanca la sessió</string>

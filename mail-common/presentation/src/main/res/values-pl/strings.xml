@@ -112,4 +112,7 @@
   <string name="color_forest">Leśny</string>
   <string name="color_olive">Oliwkowy</string>
   <string name="color_pickle">Khaki</string>
+  <string name="undo_button_label">Cofnij</string>
+  <string name="undo_success_message">Akcja została cofnięta</string>
+  <string name="undo_failure_message">Cofnięcie akcji nie powiodło się</string>
 </resources>

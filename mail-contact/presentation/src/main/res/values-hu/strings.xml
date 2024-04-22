@@ -109,7 +109,7 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Hiba a névjegy mentésekor, mert az e-mail cím érvénytelen</string>
   <string name="contact_group_details_loading_error">Hiba a névjegycsoport betöltésekor, próbálja újra később</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_success">Névjegy csoport törölve</string>
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
@@ -128,6 +128,7 @@
   <string name="contact_group_form_create_success">Névjegy csoport létrehozva</string>
   <string name="contact_group_form_update_success">Névjegy csoport frissítve</string>
   <string name="contact_group_form_save_error">Hiba a névjegycsoport mentésekor, próbálja újra később</string>
+  <string name="contact_group_form_save_error_already_exists">Már létezik csoport ezzel a névvel</string>
   <string name="members_loading_error">Hiba a tagok betöltésekor, próbálja újra később</string>
   <string name="members_done">Kész</string>
   <string name="add_members_error">Hiba a tagok hozzáadásakor, próbálja újra később</string>

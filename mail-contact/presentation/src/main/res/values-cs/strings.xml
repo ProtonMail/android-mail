@@ -113,7 +113,7 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
   <string name="contact_group_details_loading_error">Chyba při načítání skupiny kontaktů, zkuste to prosím později</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_success">Skupina kontaktů smazána</string>
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
@@ -132,6 +132,7 @@
   <string name="contact_group_form_create_success">Skupina kontaktů byla vytvořena</string>
   <string name="contact_group_form_update_success">Skupina kontaktů byla aktualizována</string>
   <string name="contact_group_form_save_error">Chyba při ukládání skupiny kontaktů, zkuste to prosím později</string>
+  <string name="contact_group_form_save_error_already_exists">Skupina s tímto názvem už existuje</string>
   <string name="members_loading_error">Chyba při načítání členů, zkuste to prosím později</string>
   <string name="members_done">Hotovo</string>
   <string name="add_members_error">Error adding members, please try again later</string>

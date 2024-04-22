@@ -149,7 +149,7 @@
     <item quantity="many">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
     <item quantity="other">Засталося %s спроб, пакуль абароненыя даныя не будуць выцертыя.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка пры праверцы вашага PIN-кода.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Адбылася памылка падчас праверкі вашага PIN-кода.</string>
   <string name="mail_settings_pin_insertion_signout_text">Выйсці</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Выйсці</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Вы сапраўды хочаце выйсці?</string>

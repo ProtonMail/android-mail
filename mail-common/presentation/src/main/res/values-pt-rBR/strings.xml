@@ -112,4 +112,7 @@
   <string name="color_forest">Floresta</string>
   <string name="color_olive">Azeitona</string>
   <string name="color_pickle">Salmoura</string>
+  <string name="undo_button_label">Desfazer</string>
+  <string name="undo_success_message">Ação revertida</string>
+  <string name="undo_failure_message">Falha ao reverter a ação</string>
 </resources>

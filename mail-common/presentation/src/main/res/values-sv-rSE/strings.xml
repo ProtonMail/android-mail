@@ -112,4 +112,7 @@
   <string name="color_forest">Skog</string>
   <string name="color_olive">Oliv</string>
   <string name="color_pickle">Gurka</string>
+  <string name="undo_button_label">Ångra</string>
+  <string name="undo_success_message">Åtgärd återställd</string>
+  <string name="undo_failure_message">Action revert failed</string>
 </resources>

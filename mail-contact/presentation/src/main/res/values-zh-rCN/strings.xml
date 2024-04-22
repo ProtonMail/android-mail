@@ -126,6 +126,7 @@
   <string name="contact_group_form_create_success">群组已创建</string>
   <string name="contact_group_form_update_success">群组已更改</string>
   <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
+  <string name="contact_group_form_save_error_already_exists">此群组名已被使用。</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
   <string name="members_done">Done</string>
   <string name="add_members_error">Error adding members, please try again later</string>

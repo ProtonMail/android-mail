@@ -112,4 +112,7 @@
   <string name="color_forest">Лясны</string>
   <string name="color_olive">Аліўкавы</string>
   <string name="color_pickle">Агурочны</string>
+  <string name="undo_button_label">Адрабіць</string>
+  <string name="undo_success_message">Дзеянне вернута</string>
+  <string name="undo_failure_message">Збой вяртання дзеяння</string>
 </resources>

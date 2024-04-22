@@ -126,6 +126,7 @@
   <string name="contact_group_form_create_success">Grup kontak dibuat</string>
   <string name="contact_group_form_update_success">Grup kontak diperbarui</string>
   <string name="contact_group_form_save_error">Terdapat kesalahan dalam menyimpan grup kontak. Silakan coba lagi nanti</string>
+  <string name="contact_group_form_save_error_already_exists">Grup dengan nama ini sudah ada</string>
   <string name="members_loading_error">Terdapat kesalahan dalam memuat anggota. Silakan coba lagi nanti</string>
   <string name="members_done">Selesai</string>
   <string name="add_members_error">Terdapat kesalahan dalam menambahkan anggota, silakan coba lagi nanti</string>

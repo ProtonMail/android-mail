@@ -113,11 +113,11 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Napaka pri shranjevanju stika – vsebuje neveljaven e-poštni naslov</string>
   <string name="contact_group_details_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_success">Skupina stikov izbrisana</string>
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_confirm">Odstrani</string>
   <string name="contact_group_delete_dialog_dismiss">Keep it</string>
   <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
@@ -132,6 +132,7 @@
   <string name="contact_group_form_create_success">Skupina stikov ustvarjena</string>
   <string name="contact_group_form_update_success">Skupina stikov posodobljena</string>
   <string name="contact_group_form_save_error">Napaka pri shranjevanju skupine stikov, poskusite znova pozneje</string>
+  <string name="contact_group_form_save_error_already_exists">Skupina z enakim imenom že obstaja</string>
   <string name="members_loading_error">Napaka pri nalaganju članov, poskusite znova pozneje</string>
   <string name="members_done">Končano</string>
   <string name="add_members_error">Napaka pri dodajanju članov, poskusite znova pozneje</string>

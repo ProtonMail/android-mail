@@ -45,8 +45,8 @@
   <string name="bottom_sheet_label_as_title">Tilføj etikette...</string>
   <string name="bottom_sheet_more_header_message_from">Besked fra %s</string>
   <!-- Message body link actions -->
-  <string name="message_link_long_click_copy">Copy link</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
-  <string name="message_link_long_click_share">Share link</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_copy">Kopiér link</string>
+  <string name="message_link_long_click_copy_description">Tekst kopieret fra Proton Mail</string>
+  <string name="message_link_long_click_share">Del link</string>
+  <string name="message_link_long_click_share_via">Del link via</string>
 </resources>

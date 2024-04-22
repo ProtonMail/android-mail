@@ -128,6 +128,7 @@
   <string name="contact_group_form_create_success">Kontaktgrupp skapad</string>
   <string name="contact_group_form_update_success">Kontaktgrupp uppdaterad</string>
   <string name="contact_group_form_save_error">Det gick inte spara kontaktgrupp, försök igen senare</string>
+  <string name="contact_group_form_save_error_already_exists">En grupp med detta namn finns redan</string>
   <string name="members_loading_error">Det gick inte ladda medlemmar, försök igen senare</string>
   <string name="members_done">Klar</string>
   <string name="add_members_error">Det gick inte lägga till medlemmar, försök igen senare</string>

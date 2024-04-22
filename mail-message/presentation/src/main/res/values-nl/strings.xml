@@ -45,8 +45,8 @@
   <string name="bottom_sheet_label_as_title">Label als...</string>
   <string name="bottom_sheet_more_header_message_from">Bericht van %s</string>
   <!-- Message body link actions -->
-  <string name="message_link_long_click_copy">Copy link</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
-  <string name="message_link_long_click_share">Share link</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_copy">Link kopiëren</string>
+  <string name="message_link_long_click_copy_description">Tekst gekopieerd van Proton Mail</string>
+  <string name="message_link_long_click_share">Link delen</string>
+  <string name="message_link_long_click_share_via">Link delen via</string>
 </resources>

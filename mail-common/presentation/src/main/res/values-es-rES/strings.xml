@@ -112,4 +112,7 @@
   <string name="color_forest">Bosque</string>
   <string name="color_olive">Aceituna</string>
   <string name="color_pickle">Pepinillo</string>
+  <string name="undo_button_label">Deshacer</string>
+  <string name="undo_success_message">Acción revertida</string>
+  <string name="undo_failure_message">Error en revertir la acción</string>
 </resources>

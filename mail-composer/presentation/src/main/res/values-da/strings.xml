@@ -19,8 +19,8 @@
 <resources>
   <string name="from_prefix">Fra:</string>
   <string name="to_prefix">Til:</string>
-  <string name="cc_prefix">Cc:</string>
-  <string name="bcc_prefix">Bcc:</string>
+  <string name="cc_prefix">CC:</string>
+  <string name="bcc_prefix">BCC:</string>
   <string name="subject_placeholder">Emne</string>
   <string name="compose_message_placeholder">Skriv e-mail</string>
   <string name="close_composer_content_description">Luk skrivevinduet</string>

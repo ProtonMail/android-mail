@@ -107,13 +107,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">연락처 저장 오류, 유효하지 않은 이메일 주소를 포함합니다.</string>
   <string name="contact_group_details_loading_error">연락처 그룹 로드 오류, 다시 시도하십시오.</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_details_deletion_success">연락처 그룹 삭제됨</string>
+  <string name="contact_group_details_deletion_error">연락처 그룹 삭제 중 오류 생</string>
+  <string name="contact_group_delete_dialog_title">연락처에서 %s 그룹을 지웁니까?</string>
+  <string name="contact_group_delete_dialog_message">그룹은 해체되지만 할당된 연락처는 영향을 받지 않습니다.</string>
+  <string name="contact_group_delete_dialog_confirm">제거</string>
+  <string name="contact_group_delete_dialog_dismiss">유지</string>
+  <string name="contact_group_delete_button_text">그룹 삭제</string>
   <string name="contact_group_form_loading_error">연락처 그룹 로딩 실패, 다시 시도하십시오.</string>
   <string name="edit_contact_group_content_description">연락처 그룹 수정</string>
   <string name="delete_contact_group_content_description">그룹 삭제</string>
@@ -126,6 +126,7 @@
   <string name="contact_group_form_create_success">콘텐츠 그룹 생성됨</string>
   <string name="contact_group_form_update_success">연락처 그룹 업데이트됨</string>
   <string name="contact_group_form_save_error">연락처 그룹 저장 실패, 다시 시도하십시오.</string>
+  <string name="contact_group_form_save_error_already_exists">이 이름을 가진 그룹이 이미 있습니다</string>
   <string name="members_loading_error">구성원 로드 중 오류 발생, 다시 시도하십시오.</string>
   <string name="members_done">완료</string>
   <string name="add_members_error">구성원 추가 중 오류 발생, 다시 시도해주세요</string>

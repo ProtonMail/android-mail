@@ -109,13 +109,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Σφάλμα κατά την αποθήκευση επαφής, περιέχει μια μη έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείο</string>
   <string name="contact_group_details_loading_error">Σφάλμα φόρτωσης ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
+  <string name="contact_group_details_deletion_success">Η ομάδα επαφών διαγράφηκε</string>
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_delete_dialog_confirm">Αφαίρεση</string>
+  <string name="contact_group_delete_dialog_dismiss">Διατήρηση</string>
+  <string name="contact_group_delete_button_text">Διαγραφή ομάδας</string>
   <string name="contact_group_form_loading_error">Σφάλμα φόρτωσης ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="edit_contact_group_content_description">Επεξεργασία ομάδας επαφών</string>
   <string name="delete_contact_group_content_description">Διαγραφή ομάδας επαφών</string>
@@ -128,6 +128,7 @@
   <string name="contact_group_form_create_success">Η ομάδα επαφών δημιουργήθηκε</string>
   <string name="contact_group_form_update_success">Η ομάδα επαφών ενημερώθηκε</string>
   <string name="contact_group_form_save_error">Σφάλμα κατά την αποθήκευση της ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
+  <string name="contact_group_form_save_error_already_exists">Υπάρχει ήδη μια ομάδα με αυτό το όνομα</string>
   <string name="members_loading_error">Σφάλμα φόρτωσης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="members_done">Ολοκληρώθηκε</string>
   <string name="add_members_error">Σφάλμα προσθήκης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>

@@ -46,7 +46,7 @@
   <string name="bottom_sheet_more_header_message_from">%s göndericisinden ileti</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Bağlantıyı kopyala</string>
-  <string name="message_link_long_click_copy_description">Metin Proton Mail\'den kopyalandı</string>
+  <string name="message_link_long_click_copy_description">Proton Mail üzerindeki metin kopyalandı</string>
   <string name="message_link_long_click_share">Bağlantıyı paylaş</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_share_via">Bağlantıyı şununla paylaş</string>
 </resources>

@@ -115,8 +115,8 @@
   <string name="contact_group_details_loading_error">Wystąpił błąd podczas ładowania grupy kontaktów. Spróbuj ponownie później</string>
   <string name="contact_group_details_deletion_success">Grupa kontaktów została usunięta</string>
   <string name="contact_group_details_deletion_error">Wystąpił błąd podczas usuwania grupy kontaktów</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_delete_dialog_title">Usunąć grupę %s?</string>
+  <string name="contact_group_delete_dialog_message">Grupa zostanie usunięta, ale przypisane kontakty zostaną zachowane.</string>
   <string name="contact_group_delete_dialog_confirm">Usuń</string>
   <string name="contact_group_delete_dialog_dismiss">Zachowaj</string>
   <string name="contact_group_delete_button_text">Usuń grupę</string>
@@ -132,6 +132,7 @@
   <string name="contact_group_form_create_success">Grupa kontaktów została utworzona</string>
   <string name="contact_group_form_update_success">Grupa kontaktów została zaktualizowana</string>
   <string name="contact_group_form_save_error">Wystąpił błąd podczas zapisywania grupy kontaktów. Spróbuj ponownie później</string>
+  <string name="contact_group_form_save_error_already_exists">Grupa o tej nazwie już istnieje</string>
   <string name="members_loading_error">Wystąpił błąd podczas ładowania członków. Spróbuj ponownie później</string>
   <string name="members_done">Gotowe</string>
   <string name="add_members_error">Wystąpił błąd podczas dodawania członków. Spróbuj ponownie później</string>

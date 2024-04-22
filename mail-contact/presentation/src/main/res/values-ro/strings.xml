@@ -111,13 +111,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Eroare salvare contact. Conține o adresă de e-mail nevalidă.</string>
   <string name="contact_group_details_loading_error">Eroare la încărcarea grupului. Reîncercați mai târziu.</string>
-  <string name="contact_group_details_deletion_success">Contact group deleted</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_details_deletion_success">Grupul de contacte a fost șters</string>
+  <string name="contact_group_details_deletion_error">Eroare la ștergerea grupului de contacte.</string>
+  <string name="contact_group_delete_dialog_title">Eliminați grupul %s din contacte?</string>
+  <string name="contact_group_delete_dialog_message">Grupul va fi desființat, dar contactele alocate vor rămâne neafectate.</string>
+  <string name="contact_group_delete_dialog_confirm">Eliminare</string>
+  <string name="contact_group_delete_dialog_dismiss">Păstrare</string>
+  <string name="contact_group_delete_button_text">Ștergere grup</string>
   <string name="contact_group_form_loading_error">Eroare la încărcarea grupului. Reîncercați mai târziu.</string>
   <string name="edit_contact_group_content_description">Editare grup de contacte</string>
   <string name="delete_contact_group_content_description">Ștergere grup de contacte</string>
@@ -130,6 +130,7 @@
   <string name="contact_group_form_create_success">Grup de contacte creat</string>
   <string name="contact_group_form_update_success">Grup de contacte actualizat</string>
   <string name="contact_group_form_save_error">Eroare la salvarea grupului de contacte. Reîncercați mai târziu.</string>
+  <string name="contact_group_form_save_error_already_exists">Un grup cu acest nume există deja.</string>
   <string name="members_loading_error">Eroare la încărcarea membrilor. Reîncercați mai târziu.</string>
   <string name="members_done">Gata</string>
   <string name="add_members_error">Eroare la adăugarea membrilor. Reîncercați mai târziu.</string>
