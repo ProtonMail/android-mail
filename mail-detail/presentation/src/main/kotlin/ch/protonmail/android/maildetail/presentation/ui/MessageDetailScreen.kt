@@ -19,7 +19,6 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -216,7 +215,7 @@ fun MessageDetailScreen(
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
                 openAttachment = actions.openAttachment,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
-                loadEmbeddedImage = { viewModel.loadEmbeddedImage(it) },
+                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) },
                 onExpandCollapseButtonClicked = { viewModel.submit(MessageViewAction.ExpandOrCollapseMessageBody) },
                 onLoadRemoteContent = { viewModel.submit(MessageViewAction.LoadRemoteContent(it)) },
                 onLoadEmbeddedImages = { viewModel.submit(MessageViewAction.ShowEmbeddedImages(it)) },
@@ -229,7 +228,7 @@ fun MessageDetailScreen(
                     viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                 },
                 onViewInDarkMode = { viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode)) },
-                onPrint = { viewModel.submit(MessageViewAction.Print(context, it)) }
+                onPrint = { viewModel.submit(MessageViewAction.Print(context)) }
             )
         )
     }
@@ -453,7 +452,9 @@ private fun MessageDetailContent(
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
                             onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
                             onAttachmentClicked = actions.onAttachmentClicked,
-                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
+                            loadEmbeddedImage = { messageId, contentId ->
+                                actions.loadEmbeddedImage(messageId, contentId)
+                            },
                             onReply = actions.onReply,
                             onReplyAll = actions.onReplyAll,
                             onForward = actions.onForward,
@@ -485,7 +486,9 @@ private fun MessageDetailContent(
                             onShowAllAttachments = actions.onShowAllAttachmentsClicked,
                             onExpandCollapseButtonClicked = actions.onExpandCollapseButtonClicked,
                             onAttachmentClicked = actions.onAttachmentClicked,
-                            loadEmbeddedImage = { _, contentId -> actions.loadEmbeddedImage(contentId) },
+                            loadEmbeddedImage = { messageId, contentId ->
+                                actions.loadEmbeddedImage(messageId, contentId)
+                            },
                             onReply = { Timber.d("Message: Reply to message $it") },
                             onReplyAll = { Timber.d("Message: Reply All to message $it") },
                             onForward = { Timber.d("Message: Forward message $it") },
@@ -543,7 +546,7 @@ object MessageDetailScreen {
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
         val handleProtonCalendarRequest: (values: OpenProtonCalendarIntentValues) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
+        val loadEmbeddedImage: (MessageId, contentId: String) -> GetEmbeddedImageResult?,
         val onExpandCollapseButtonClicked: () -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
@@ -552,7 +555,7 @@ object MessageDetailScreen {
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
-        val onPrint: (PrintDocumentAdapter) -> Unit
+        val onPrint: (MessageId) -> Unit
     ) {
 
         companion object {
@@ -577,7 +580,7 @@ object MessageDetailScreen {
                 onAttachmentClicked = {},
                 openAttachment = {},
                 showFeatureMissingSnackbar = {},
-                loadEmbeddedImage = { null },
+                loadEmbeddedImage = { _, _ -> null },
                 onExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
                 onLoadRemoteContent = {},
@@ -601,7 +604,7 @@ object MessageDetailContent {
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val showFeatureMissingSnackbar: () -> Unit,
-        val loadEmbeddedImage: (contentId: String) -> GetEmbeddedImageResult?,
+        val loadEmbeddedImage: (MessageId, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
@@ -611,7 +614,7 @@ object MessageDetailContent {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (PrintDocumentAdapter) -> Unit
+        val onPrint: (MessageId) -> Unit
     )
 }
 

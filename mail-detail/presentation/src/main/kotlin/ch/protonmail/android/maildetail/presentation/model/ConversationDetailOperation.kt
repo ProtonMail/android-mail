@@ -20,7 +20,6 @@ package ch.protonmail.android.maildetail.presentation.model
 
 import android.content.Context
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
@@ -183,7 +182,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingBottomSheet, AffectingMessages
     data class Print(
         val context: Context,
-        val printDocumentAdapter: PrintDocumentAdapter
+        val messageId: MessageId
     ) : ConversationDetailViewAction
     data class MarkMessageUnread(
         val messageId: MessageId

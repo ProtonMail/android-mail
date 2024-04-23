@@ -19,7 +19,6 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
-import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -102,6 +101,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
@@ -224,7 +224,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishing -> handleReportPhishing(action)
             is ConversationDetailViewAction.ReportPhishingConfirmed -> handleReportPhishingConfirmed(action)
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
-            is ConversationDetailViewAction.Print -> handlePrint(action.context, action.printDocumentAdapter)
+            is ConversationDetailViewAction.Print -> handlePrint(action.context, action.messageId)
             is ConversationDetailViewAction.MarkMessageUnread -> handleMarkMessageUnread(action)
 
             is ConversationDetailViewAction.DeleteRequested,
@@ -899,8 +899,26 @@ class ConversationDetailViewModel @Inject constructor(
         )
     }
 
-    private fun handlePrint(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
-        printMessage(context, printDocumentAdapter)
+    private fun handlePrint(context: Context, messageId: MessageId) {
+        val conversationState = state.value.conversationState
+        val messagesState = state.value.messagesState
+        if (
+            conversationState is ConversationDetailMetadataState.Data &&
+            messagesState is ConversationDetailsMessagesState.Data
+        ) {
+            messagesState.messages.find { it.messageId.id == messageId.id }?.let {
+                if (it is ConversationDetailMessageUiModel.Expanded) {
+                    printMessage(
+                        context,
+                        conversationState.conversationUiModel.subject,
+                        it.messageDetailHeaderUiModel,
+                        it.messageBodyUiModel,
+                        it.expandCollapseMode,
+                        this@ConversationDetailViewModel::loadEmbeddedImage
+                    )
+                }
+            }
+        }
     }
 
     private fun handleMarkMessageUnread(action: ConversationDetailViewAction.MarkMessageUnread) {

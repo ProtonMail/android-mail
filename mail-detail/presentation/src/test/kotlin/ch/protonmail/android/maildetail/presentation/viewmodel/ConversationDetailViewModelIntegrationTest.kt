@@ -22,7 +22,6 @@ import java.io.ByteArrayInputStream
 import java.util.Random
 import android.content.Context
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import android.text.format.Formatter
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
@@ -94,6 +93,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ParticipantUiModelMa
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Collapsed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanded
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ExpandMessage
@@ -160,8 +160,10 @@ import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineDispatcher
@@ -1691,14 +1693,13 @@ class ConversationDetailViewModelIntegrationTest {
     fun `should call the print message use case in order to print a message`() = runTest {
         // Given
         val context = mockk<Context>()
-        val printDocumentAdapter = mockk<PrintDocumentAdapter>()
         val messages = nonEmptyListOf(
             MessageWithLabelsSample.AugWeatherForecast,
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        every { printMessage(context, printDocumentAdapter) } returns mockk()
+        every { printMessage(any(), any(), any(), any(), any(), any()) } just runs
 
         // When
         val viewModel = buildConversationDetailViewModel()
@@ -1713,11 +1714,25 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(4)
 
             viewModel.submit(
-                ConversationDetailViewAction.Print(context, printDocumentAdapter)
+                ConversationDetailViewAction.Print(context, MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
             )
 
             // then
-            verify { printMessage(context, printDocumentAdapter) }
+            val conversationState = viewModel.state.value.conversationState as ConversationDetailMetadataState.Data
+            val messagesState = viewModel.state.value.messagesState as ConversationDetailsMessagesState.Data
+            val messageState = messagesState.messages.find {
+                it.messageId.id == MessageWithLabelsSample.InvoiceWithLabel.message.messageId.id
+            } as Expanded
+            verify {
+                printMessage(
+                    context,
+                    conversationState.conversationUiModel.subject,
+                    messageState.messageDetailHeaderUiModel,
+                    messageState.messageBodyUiModel,
+                    messageState.expandCollapseMode,
+                    viewModel::loadEmbeddedImage
+                )
+            }
 
             cancelAndIgnoreRemainingEvents()
         }

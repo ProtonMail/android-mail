@@ -18,7 +18,6 @@
 package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -263,8 +262,8 @@ fun ConversationDetailScreen(
                 onOpenInProtonCalendar = {
                     viewModel.submit(ConversationDetailViewAction.OpenInProtonCalendar(MessageId(it.id)))
                 },
-                onPrint = { printDocumentAdapter ->
-                    viewModel.submit(ConversationDetailViewAction.Print(context, printDocumentAdapter))
+                onPrint = { messageId ->
+                    viewModel.submit(ConversationDetailViewAction.Print(context, messageId))
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -688,7 +687,7 @@ object ConversationDetailScreen {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (PrintDocumentAdapter) -> Unit
+        val onPrint: (MessageId) -> Unit
     ) {
 
         companion object {

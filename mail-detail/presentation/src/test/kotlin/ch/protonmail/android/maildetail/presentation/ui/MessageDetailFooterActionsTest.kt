@@ -41,7 +41,7 @@ internal class MessageDetailFooterActionsTest {
             onMessageBodyLinkClicked = {},
             onShowAllAttachmentsClicked = {},
             onAttachmentClicked = {},
-            loadEmbeddedImage = { null },
+            loadEmbeddedImage = { _, _ -> null },
             onReply = replyLambda,
             onReplyAll = replyAllLambda,
             onForward = forwardLambda,

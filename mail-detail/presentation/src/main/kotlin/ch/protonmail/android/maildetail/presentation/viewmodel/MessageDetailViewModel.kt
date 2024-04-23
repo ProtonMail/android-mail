@@ -20,7 +20,6 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -192,11 +191,11 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar()
             is MessageViewAction.SwitchViewMode -> directlyHandleViewAction(action)
             is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
-            is MessageViewAction.Print -> handlePrint(action.context, action.printDocumentAdapter)
+            is MessageViewAction.Print -> handlePrint(action.context)
         }
     }
 
-    fun loadEmbeddedImage(contentId: String): GetEmbeddedImageResult? {
+    fun loadEmbeddedImage(messageId: MessageId, contentId: String): GetEmbeddedImageResult? {
         return runBlocking {
             getEmbeddedImageAvoidDuplicatedExecution(
                 userId = primaryUserId.first(),
@@ -682,8 +681,19 @@ class MessageDetailViewModel @Inject constructor(
         )
     }
 
-    private fun handlePrint(context: Context, printDocumentAdapter: PrintDocumentAdapter) {
-        printMessage(context, printDocumentAdapter)
+    private fun handlePrint(context: Context) {
+        val messageMetadataState = state.value.messageMetadataState
+        val messageBodyState = state.value.messageBodyState
+        if (messageMetadataState is MessageMetadataState.Data && messageBodyState is MessageBodyState.Data) {
+            printMessage(
+                context,
+                messageMetadataState.messageDetailActionBar.subject,
+                messageMetadataState.messageDetailHeader,
+                messageBodyState.messageBodyUiModel,
+                messageBodyState.expandCollapseMode,
+                this@MessageDetailViewModel::loadEmbeddedImage
+            )
+        }
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

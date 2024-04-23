@@ -20,7 +20,6 @@ package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
 import android.net.Uri
-import android.print.PrintDocumentAdapter
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.Event
 import app.cash.turbine.ReceiveTurbine
@@ -144,8 +143,10 @@ import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.coVerifySequence
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
+import io.mockk.runs
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
@@ -1434,7 +1435,7 @@ class MessageDetailViewModelTest {
         } returns expectedResult
 
         // When
-        val actual = viewModel.loadEmbeddedImage(contentId)
+        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
 
         // Then
         assertEquals(expectedResult, actual)
@@ -1454,7 +1455,7 @@ class MessageDetailViewModelTest {
         } returns null
 
         // When
-        val actual = viewModel.loadEmbeddedImage(contentId)
+        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
 
         // Then
         assertNull(actual)
@@ -1745,17 +1746,27 @@ class MessageDetailViewModelTest {
     fun `call the print message use case in order to print a message`() = runTest {
         // Given
         val context = mockk<Context>()
-        val printDocumentAdapter = mockk<PrintDocumentAdapter>()
-        every { printMessage(context, printDocumentAdapter) } returns mockk()
+        every { printMessage(any(), any(), any(), any(), any(), any()) } just runs
 
         viewModel.state.test {
             skipItems(4)
 
             // When
-            viewModel.submit(MessageViewAction.Print(context, printDocumentAdapter))
+            viewModel.submit(MessageViewAction.Print(context))
 
             // Then
-            verify { printMessage(context, printDocumentAdapter) }
+            val messageMetadataState = viewModel.state.value.messageMetadataState as MessageMetadataState.Data
+            val messageBodyState = viewModel.state.value.messageBodyState as MessageBodyState.Data
+            verify {
+                printMessage(
+                    context,
+                    messageMetadataState.messageDetailActionBar.subject,
+                    messageMetadataState.messageDetailHeader,
+                    messageBodyState.messageBodyUiModel,
+                    messageBodyState.expandCollapseMode,
+                    viewModel::loadEmbeddedImage
+                )
+            }
         }
     }
 
