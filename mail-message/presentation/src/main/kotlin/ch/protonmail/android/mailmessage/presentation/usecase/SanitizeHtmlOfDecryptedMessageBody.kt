@@ -41,6 +41,7 @@ class SanitizeHtmlOfDecryptedMessageBody @Inject constructor() {
             .removePingAttributes()
             .removeLinkElements()
             .removeEventAttributes()
+            .removeContentEditableAttributes()
             .toString()
     }
 
@@ -66,6 +67,13 @@ class SanitizeHtmlOfDecryptedMessageBody @Inject constructor() {
         select("link[rel=stylesheet]").remove()
         select("link[rel=preload]").remove()
         select("link[rel=alternate stylesheet]").remove()
+        return this
+    }
+
+    private fun Document.removeContentEditableAttributes(): Document {
+        select("[contenteditable]").forEach { element ->
+            element.attributes().remove("contenteditable")
+        }
         return this
     }
 

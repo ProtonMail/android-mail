@@ -138,6 +138,34 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `should remove content editable from message body`() {
+        // Given
+        val messageBodyWithType = MessageBodyWithType(
+            TestData.messageBodyWithContentEditableAttribute,
+            MimeTypeUiModel.Html
+        )
+        val expected = """
+            <html>
+             <head>
+             </head>
+             <body>
+              <p style="color:blue">HTML p one</p>
+              <div>
+               HTML div one
+              </div>
+              <p id="some_id">Another p</p>
+             </body>
+            </html>
+        """.trimIndent()
+
+        // When
+        val actual = sanitizeHtmlOfDecryptedMessageBody(messageBodyWithType)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
     object TestData {
 
         const val plainTextMessageBody = "Plain text message body"
@@ -186,6 +214,17 @@ class SanitizeHtmlOfDecryptedMessageBodyTest {
              <body onLoad="loadFunction()" onError="errorFunction()">
               <p>HTML message body</p>
               <button onClick="clickFunction()">Click</button>
+             </body>
+            </html>
+        """
+        const val messageBodyWithContentEditableAttribute = """
+            <html>
+             <head>
+             </head>
+             <body>
+              <p contenteditable=true style="color:blue">HTML p one</p>
+              <div contenteditable=true>HTML div one</div>
+              <p id="some_id">Another p</p>
              </body>
             </html>
         """
