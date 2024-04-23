@@ -41,6 +41,8 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.user.domain.entity.AddressId
@@ -252,10 +254,12 @@ class DraftUploadTrackerTest {
             keyPackets = "sample_key_packets",
             signature = "sample_signature",
             encSignature = "sample_encryption_signature",
-            headers = mapOf(
-                "Content-Type" to "application/pdf",
-                "Content-Disposition" to "inline; filename=sample_attachment.pdf",
-                "X-Custom-Header" to "Custom Value"
+            headers = JsonObject(
+                mapOf(
+                    "Content-Type" to JsonPrimitive("application/pdf"),
+                    "Content-Disposition" to JsonPrimitive("inline; filename=sample_attachment.pdf"),
+                    "X-Custom-Header" to JsonPrimitive("Custom Value")
+                )
             )
         )
     }

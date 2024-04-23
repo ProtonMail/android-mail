@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+import kotlinx.serialization.json.JsonElement
+
 data class AttachmentId(val id: String)
 
 data class MessageAttachment(
@@ -29,7 +31,7 @@ data class MessageAttachment(
     val keyPackets: String?,
     val signature: String?,
     val encSignature: String?,
-    val headers: Map<String, String>
+    val headers: Map<String, JsonElement>
 ) {
     fun isCalendarAttachment(): Boolean = mimeType.lowercase().split(";").any { it.contains("text/calendar") }
 }
