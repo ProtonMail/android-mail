@@ -84,7 +84,7 @@ internal fun ContactEmptyDataScreen(
             description,
             Modifier.padding(
                 start = ProtonDimens.LargeSpacing,
-                top = MailDimens.TinySpacing,
+                top = ProtonDimens.ExtraSmallSpacing,
                 end = ProtonDimens.LargeSpacing
             ),
             style = ProtonTheme.typography.defaultSmallWeak,
