@@ -157,11 +157,11 @@ internal fun mockNetworkDispatcher(
 
     if (ignoreEvents) {
         addMockRequests(
-            get("/core/v4/events/*")
-                respondWith "/core/v4/events/event-id/event_base_placeholder.json"
+            get("/core/v5/events/*")
+                respondWith "/core/v5/events/event-id/event_base_placeholder.json"
                 withStatusCode 200 matchWildcards true,
-            get("/core/v4/events/latest")
-                respondWith "/core/v4/events/latest/events-latest_base_placeholder.json"
+            get("/core/v5/events/latest")
+                respondWith "/core/v5/events/latest/events-latest_base_placeholder.json"
                 withStatusCode 200
         )
     }
