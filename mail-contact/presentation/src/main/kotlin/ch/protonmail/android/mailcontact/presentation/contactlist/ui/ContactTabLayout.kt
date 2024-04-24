@@ -96,7 +96,7 @@ internal fun ContactTabLayout(
                     ContactGroupsScreenContent(
                         state = state,
                         actions = actions,
-                        onNewGroupClick = actions.openContactGroupForm
+                        onNewGroupClick = actions.onNewGroupClick
                     )
                 }
             }

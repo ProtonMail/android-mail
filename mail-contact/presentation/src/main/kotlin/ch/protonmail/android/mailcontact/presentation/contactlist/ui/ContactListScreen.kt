@@ -1,21 +1,3 @@
-/*
- * Copyright (c) 2022 Proton Technologies AG
- * This file is part of Proton Technologies AG and Proton Mail.
- *
- * Proton Mail is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Proton Mail is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
- */
-
 package ch.protonmail.android.mailcontact.presentation.contactlist.ui
 
 import androidx.activity.compose.BackHandler
@@ -49,11 +31,15 @@ import me.proton.core.label.domain.entity.LabelId
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
+fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
     val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    val actions = listActions.copy(
+        onNewGroupClick = { viewModel.submit(ContactListViewAction.OnNewContactGroupClick) }
+    )
 
     if (state is ContactListState.Loaded) {
         ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
@@ -105,10 +91,10 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
             content = { paddingValues ->
                 if (state is ContactListState.Loaded) {
                     ConsumableLaunchedEffect(effect = state.openContactForm) {
-                        actions.openContactForm()
+                        actions.onNavigateToNewContactForm()
                     }
                     ConsumableLaunchedEffect(effect = state.openContactGroupForm) {
-                        actions.openContactGroupForm()
+                        actions.onNavigateToNewGroupForm()
                     }
                     ConsumableLaunchedEffect(effect = state.openImportContact) {
                         actions.openImportContact()
@@ -163,8 +149,9 @@ object ContactListScreen {
         val onBackClick: () -> Unit,
         val onContactSelected: (ContactId) -> Unit,
         val onContactGroupSelected: (LabelId) -> Unit,
-        val openContactForm: () -> Unit,
-        val openContactGroupForm: () -> Unit,
+        val onNavigateToNewContactForm: () -> Unit,
+        val onNavigateToNewGroupForm: () -> Unit,
+        val onNewGroupClick: () -> Unit,
         val openImportContact: () -> Unit,
         val onSubscriptionUpgradeRequired: (String) -> Unit,
         val exitWithErrorMessage: (String) -> Unit
@@ -176,9 +163,10 @@ object ContactListScreen {
                 onBackClick = {},
                 onContactSelected = {},
                 onContactGroupSelected = {},
-                openContactForm = {},
-                openContactGroupForm = {},
+                onNavigateToNewContactForm = {},
+                onNavigateToNewGroupForm = {},
                 openImportContact = {},
+                onNewGroupClick = {},
                 onSubscriptionUpgradeRequired = {},
                 exitWithErrorMessage = {}
             )

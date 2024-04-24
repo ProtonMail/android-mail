@@ -34,7 +34,7 @@ import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDeta
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen
-import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListScreen
+import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListScreen
 import ch.protonmail.android.mailcontact.presentation.managemembers.ManageMembersScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -347,11 +347,11 @@ internal fun NavGraphBuilder.addContacts(
 ) {
     composable(route = Destination.Screen.Contacts.route) {
         ContactListScreen(
-            actions = ContactListScreen.Actions(
-                openContactForm = {
+            listActions = ContactListScreen.Actions(
+                onNavigateToNewContactForm = {
                     navController.navigate(Destination.Screen.CreateContact.route)
                 },
-                openContactGroupForm = {
+                onNavigateToNewGroupForm = {
                     navController.navigate(Destination.Screen.CreateContactGroup.route)
                 },
                 openImportContact = {
@@ -368,6 +368,9 @@ internal fun NavGraphBuilder.addContacts(
                 },
                 onSubscriptionUpgradeRequired = {
                     showNormalSnackbar(it)
+                },
+                onNewGroupClick = {
+                    // Defined at the inner call site.
                 },
                 exitWithErrorMessage = { message ->
                     navController.navigateBack()
