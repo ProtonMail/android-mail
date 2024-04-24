@@ -744,7 +744,7 @@ class ComposerViewModel @Inject constructor(
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
-                val fromContacts = contacts.getOrNull()?.flatMap { contact ->
+                val fromContacts = contacts.getOrNull()?.asSequence()?.flatMap { contact ->
                     contact.contactEmails.map { contactEmail ->
                         ContactSuggestionUiModel.Contact(
                             name = contactEmail.name.takeIfNotBlank()
@@ -753,14 +753,14 @@ class ComposerViewModel @Inject constructor(
                             email = contactEmail.email
                         )
                     }
-                } ?: emptyList()
+                } ?: emptySequence()
 
-                val fromContactGroups = contactGroups.getOrNull()?.map { contactGroup ->
+                val fromContactGroups = contactGroups.getOrNull()?.asSequence()?.map { contactGroup ->
                     ContactSuggestionUiModel.ContactGroup(
                         name = contactGroup.name,
                         emails = contactGroup.members.map { it.email }
                     )
-                } ?: emptyList()
+                } ?: emptySequence()
 
                 val suggestions = (fromContacts + fromContactGroups).sortedBy {
                     it.name
@@ -768,7 +768,7 @@ class ComposerViewModel @Inject constructor(
 
                 emitNewStateFor(
                     ComposerEvent.UpdateContactSuggestions(
-                        suggestions,
+                        suggestions.toList(),
                         suggestionsField
                     )
                 )
