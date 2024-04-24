@@ -143,17 +143,17 @@ fun Home(
         )
     }
 
-    fun showNormalSnackbar(text: String) = scope.launch {
-        snackbarHostErrorState.showSnackbar(
-            message = text,
-            type = ProtonSnackbarType.NORM
-        )
-    }
-
     fun showErrorSnackbar(text: String) = scope.launch {
         snackbarHostErrorState.showSnackbar(
             message = text,
             type = ProtonSnackbarType.ERROR
+        )
+    }
+
+    fun showNormalSnackbar(text: String) = scope.launch {
+        snackbarHostErrorState.showSnackbar(
+            message = text,
+            type = ProtonSnackbarType.NORM
         )
     }
 
@@ -422,6 +422,9 @@ fun Home(
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
+                    },
+                    showNormalSnackbar = {
+                        showNormalSnackbar(it)
                     },
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()

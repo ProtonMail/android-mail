@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.toArgb
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -102,6 +103,7 @@ class ContactListViewModelTest {
 
     private val reducer = ContactListReducer()
 
+    private val isPaidUser = mockk<IsPaidUser>()
     private val getInitials = GetInitials()
     private val contactListItemUiModelMapper = ContactListItemUiModelMapper(getInitials)
     private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper()
@@ -110,6 +112,7 @@ class ContactListViewModelTest {
         ContactListViewModel(
             observeContacts,
             observeContactGroupLabels,
+            isPaidUser,
             reducer,
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
@@ -144,7 +147,7 @@ class ContactListViewModelTest {
         contactListViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Empty()
+            val expected = ContactListState.Loaded.Empty()
 
             assertEquals(expected, actual)
         }
@@ -159,7 +162,7 @@ class ContactListViewModelTest {
         contactListViewModel.state.test {
             // Then
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -228,7 +231,7 @@ class ContactListViewModelTest {
             contactListViewModel.submit(ContactListViewAction.OnOpenBottomSheet)
 
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -254,7 +257,7 @@ class ContactListViewModelTest {
             contactListViewModel.submit(ContactListViewAction.OnDismissBottomSheet)
 
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -280,7 +283,7 @@ class ContactListViewModelTest {
             contactListViewModel.submit(ContactListViewAction.OnNewContactClick)
 
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -296,9 +299,10 @@ class ContactListViewModelTest {
     }
 
     @Test
-    fun `given contact list, when action new contact group, then emits open group form state`() = runTest {
+    fun `given paid user contact list, when action new contact group, then emits open group form state`() = runTest {
         // Given
         expectContactsData()
+        expectPaidUser(true)
 
         // When
         contactListViewModel.state.test {
@@ -307,7 +311,7 @@ class ContactListViewModelTest {
             contactListViewModel.submit(ContactListViewAction.OnNewContactGroupClick)
 
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -316,6 +320,34 @@ class ContactListViewModelTest {
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactGroupForm = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given free user contact list, when action new contact group, then emits open group form state`() = runTest {
+        // Given
+        expectContactsData()
+        expectPaidUser(false)
+
+        // When
+        contactListViewModel.state.test {
+            awaitItem()
+
+            contactListViewModel.submit(ContactListViewAction.OnNewContactGroupClick)
+
+            val actual = awaitItem()
+            val expected = ContactListState.Loaded.Data(
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
+                subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error))
             )
 
             assertEquals(expected, actual)
@@ -334,7 +366,7 @@ class ContactListViewModelTest {
             contactListViewModel.submit(ContactListViewAction.OnImportContactClick)
 
             val actual = awaitItem()
-            val expected = ContactListState.ListLoaded.Data(
+            val expected = ContactListState.Loaded.Data(
                 contacts = contactListItemUiModelMapper.toContactListItemUiModel(
                     listOf(defaultTestContact)
                 ),
@@ -356,5 +388,9 @@ class ContactListViewModelTest {
         coEvery {
             observeContactGroupLabels(userId = UserIdTestData.userId)
         } returns flowOf(listOf(defaultTestContactGroupLabel).right())
+    }
+
+    private fun expectPaidUser(value: Boolean) {
+        coEvery { isPaidUser(userId = UserIdTestData.userId) } returns value.right()
     }
 }

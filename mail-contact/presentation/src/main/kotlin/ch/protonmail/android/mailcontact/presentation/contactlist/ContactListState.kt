@@ -29,32 +29,35 @@ sealed interface ContactListState {
         val errorLoading: Effect<TextUiModel> = Effect.empty()
     ) : ContactListState
 
-    sealed interface ListLoaded : ContactListState {
+    sealed interface Loaded : ContactListState {
 
         val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect>
         val openContactForm: Effect<Unit>
         val openContactGroupForm: Effect<Unit>
         val openImportContact: Effect<Unit>
+        val subscriptionError: Effect<TextUiModel>
 
         data class Data(
             override val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
+            override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
             val contacts: List<ContactListItemUiModel>,
             val contactGroups: List<ContactGroupItemUiModel>
-        ) : ListLoaded
+        ) : Loaded
 
         data class Empty(
             override val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
-            override val openImportContact: Effect<Unit> = Effect.empty()
-        ) : ListLoaded
+            override val openImportContact: Effect<Unit> = Effect.empty(),
+            override val subscriptionError: Effect<TextUiModel> = Effect.empty()
+        ) : Loaded
     }
 }
 
 sealed interface BottomSheetVisibilityEffect {
-    object Show : BottomSheetVisibilityEffect
-    object Hide : BottomSheetVisibilityEffect
+    data object Show : BottomSheetVisibilityEffect
+    data object Hide : BottomSheetVisibilityEffect
 }

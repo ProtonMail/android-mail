@@ -24,11 +24,11 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiMod
 sealed interface ContactListOperation
 
 internal sealed interface ContactListViewAction : ContactListOperation {
-    object OnOpenBottomSheet : ContactListViewAction
-    object OnDismissBottomSheet : ContactListViewAction
-    object OnNewContactClick : ContactListViewAction
-    object OnNewContactGroupClick : ContactListViewAction
-    object OnImportContactClick : ContactListViewAction
+    data object OnOpenBottomSheet : ContactListViewAction
+    data object OnDismissBottomSheet : ContactListViewAction
+    data object OnNewContactClick : ContactListViewAction
+    data object OnNewContactGroupClick : ContactListViewAction
+    data object OnImportContactClick : ContactListViewAction
 }
 
 sealed interface ContactListEvent : ContactListOperation {
@@ -36,10 +36,11 @@ sealed interface ContactListEvent : ContactListOperation {
         val contactList: List<ContactListItemUiModel>,
         val contactGroups: List<ContactGroupItemUiModel>
     ) : ContactListEvent
-    object ErrorLoadingContactList : ContactListEvent
-    object OpenContactForm : ContactListEvent
-    object OpenContactGroupForm : ContactListEvent
-    object OpenImportContact : ContactListEvent
-    object OpenBottomSheet : ContactListEvent
-    object DismissBottomSheet : ContactListEvent
+    data object ErrorLoadingContactList : ContactListEvent
+    data object SubscriptionUpgradeRequiredError : ContactListEvent
+    data object OpenContactForm : ContactListEvent
+    data object OpenContactGroupForm : ContactListEvent
+    data object OpenImportContact : ContactListEvent
+    data object OpenBottomSheet : ContactListEvent
+    data object DismissBottomSheet : ContactListEvent
 }

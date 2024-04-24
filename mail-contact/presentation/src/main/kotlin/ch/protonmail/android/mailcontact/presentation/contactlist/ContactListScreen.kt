@@ -64,6 +64,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
@@ -88,7 +89,6 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSecondaryButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionNorm
@@ -102,11 +102,12 @@ import me.proton.core.label.domain.entity.LabelId
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
-    val state = rememberAsState(flow = viewModel.state, initial = viewModel.initialState).value
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    if (state is ContactListState.ListLoaded) {
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    if (state is ContactListState.Loaded) {
         ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
             when (bottomSheetEffect) {
                 BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
@@ -150,11 +151,11 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                             viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
                         }
                     ),
-                    isAddButtonVisible = state is ContactListState.ListLoaded.Data
+                    isAddButtonVisible = state is ContactListState.Loaded.Data
                 )
             },
             content = { paddingValues ->
-                if (state is ContactListState.ListLoaded) {
+                if (state is ContactListState.Loaded) {
                     ConsumableLaunchedEffect(effect = state.openContactForm) {
                         actions.openContactForm()
                     }
@@ -167,15 +168,20 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                 }
 
                 when (state) {
-                    is ContactListState.ListLoaded.Data -> {
+                    is ContactListState.Loaded.Data -> {
                         ContactTabLayout(
                             modifier = Modifier.padding(paddingValues),
                             scope = scope,
                             actions = actions,
                             state = state
                         )
+
+                        ConsumableTextEffect(effect = state.subscriptionError) { message ->
+                            actions.onSubscriptionUpgradeRequired(message)
+                        }
                     }
-                    is ContactListState.ListLoaded.Empty -> {
+
+                    is ContactListState.Loaded.Empty -> {
                         EmptyDataScreen(
                             iconResId = R.drawable.ic_proton_users_plus,
                             title = stringResource(R.string.no_contacts),
@@ -184,12 +190,13 @@ fun ContactListScreen(actions: ContactListScreen.Actions, viewModel: ContactList
                             showAddButton = ContactCreate.value,
                             onAddClick = { viewModel.submit(ContactListViewAction.OnOpenBottomSheet) }
                         )
+
+                        ConsumableTextEffect(effect = state.subscriptionError) { message ->
+                            actions.onSubscriptionUpgradeRequired(message)
+                        }
                     }
                     is ContactListState.Loading -> {
-                        ProtonCenteredProgress(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        )
+                        ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
 
                         ConsumableTextEffect(effect = state.errorLoading) { message ->
                             actions.exitWithErrorMessage(message)
@@ -269,7 +276,7 @@ fun ContactTabLayout(
     modifier: Modifier = Modifier,
     scope: CoroutineScope,
     actions: ContactListScreen.Actions,
-    state: ContactListState.ListLoaded.Data
+    state: ContactListState.Loaded.Data
 ) {
     val pages = listOf(
         stringResource(R.string.all_contacts_tab),
@@ -333,7 +340,7 @@ fun ContactTabLayout(
 @Composable
 fun ContactListScreenContent(
     modifier: Modifier = Modifier,
-    state: ContactListState.ListLoaded.Data,
+    state: ContactListState.Loaded.Data,
     actions: ContactListScreen.Actions
 ) {
     LazyColumn(
@@ -422,7 +429,7 @@ fun ContactListItem(
 @Composable
 fun ContactGroupsScreenContent(
     modifier: Modifier = Modifier,
-    state: ContactListState.ListLoaded.Data,
+    state: ContactListState.Loaded.Data,
     actions: ContactListScreen.Actions,
     onAddClick: () -> Unit
 ) {
@@ -624,6 +631,7 @@ object ContactListScreen {
         val openContactForm: () -> Unit,
         val openContactGroupForm: () -> Unit,
         val openImportContact: () -> Unit,
+        val onSubscriptionUpgradeRequired: (String) -> Unit,
         val exitWithErrorMessage: (String) -> Unit
     ) {
 
@@ -636,6 +644,7 @@ object ContactListScreen {
                 openContactForm = {},
                 openContactGroupForm = {},
                 openImportContact = {},
+                onSubscriptionUpgradeRequired = {},
                 exitWithErrorMessage = {}
             )
         }
@@ -682,7 +691,7 @@ object ContactListTopBar {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactListScreenPreview() {
     ContactListScreenContent(
-        state = ContactListState.ListLoaded.Data(
+        state = ContactListState.Loaded.Data(
             contacts = listOf(
                 headerSampleData,
                 contactSampleData,

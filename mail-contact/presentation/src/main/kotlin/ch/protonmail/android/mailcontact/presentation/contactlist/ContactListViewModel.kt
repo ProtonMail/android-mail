@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.presentation.contactlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
@@ -36,9 +37,8 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -47,6 +47,7 @@ import javax.inject.Inject
 class ContactListViewModel @Inject constructor(
     private val observeContacts: ObserveContacts,
     private val observeContactGroupLabels: ObserveContactGroupLabels,
+    private val isPaidUser: IsPaidUser,
     private val reducer: ContactListReducer,
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
@@ -54,10 +55,8 @@ class ContactListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId().filterNotNull()
-    private val actionMutex = Mutex()
 
-    val initialState: ContactListState = ContactListState.Loading()
-    private val mutableState = MutableStateFlow(initialState)
+    private val mutableState: MutableStateFlow<ContactListState> = MutableStateFlow(ContactListState.Loading())
     val state: StateFlow<ContactListState> = mutableState.asStateFlow()
 
     init {
@@ -70,17 +69,23 @@ class ContactListViewModel @Inject constructor(
 
     internal fun submit(action: ContactListViewAction) {
         viewModelScope.launch {
-            actionMutex.withLock {
-                when (action) {
-                    ContactListViewAction.OnOpenBottomSheet -> emitNewStateFor(ContactListEvent.OpenBottomSheet)
-                    ContactListViewAction.OnDismissBottomSheet -> emitNewStateFor(ContactListEvent.DismissBottomSheet)
-                    ContactListViewAction.OnNewContactClick -> emitNewStateFor(ContactListEvent.OpenContactForm)
-                    ContactListViewAction.OnNewContactGroupClick -> emitNewStateFor(
-                        ContactListEvent.OpenContactGroupForm
-                    )
-                    ContactListViewAction.OnImportContactClick -> emitNewStateFor(ContactListEvent.OpenImportContact)
-                }
+            when (action) {
+                ContactListViewAction.OnOpenBottomSheet -> emitNewStateFor(ContactListEvent.OpenBottomSheet)
+                ContactListViewAction.OnDismissBottomSheet -> emitNewStateFor(ContactListEvent.DismissBottomSheet)
+                ContactListViewAction.OnNewContactClick -> emitNewStateFor(ContactListEvent.OpenContactForm)
+                ContactListViewAction.OnNewContactGroupClick -> handleOnNewContactGroupClick()
+                ContactListViewAction.OnImportContactClick -> emitNewStateFor(ContactListEvent.OpenImportContact)
             }
+        }
+    }
+
+    private suspend fun handleOnNewContactGroupClick() {
+        val isPaid = isPaidUser(primaryUserId()).getOrElse { false }
+
+        if (isPaid) {
+            emitNewStateFor(ContactListEvent.OpenContactGroupForm)
+        } else {
+            emitNewStateFor(ContactListEvent.SubscriptionUpgradeRequiredError)
         }
     }
 
@@ -110,7 +115,7 @@ class ContactListViewModel @Inject constructor(
 
     private fun emitNewStateFor(event: ContactListEvent) {
         val currentState = state.value
-        mutableState.value = reducer.newStateFrom(currentState, event)
+        mutableState.update { reducer.newStateFrom(currentState, event) }
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

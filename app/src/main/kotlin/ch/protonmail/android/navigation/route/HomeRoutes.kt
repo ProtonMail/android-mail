@@ -342,6 +342,7 @@ internal fun NavGraphBuilder.addParentFolderList(
 internal fun NavGraphBuilder.addContacts(
     navController: NavHostController,
     showErrorSnackbar: (message: String) -> Unit,
+    showNormalSnackbar: (message: String) -> Unit,
     showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Contacts.route) {
@@ -364,6 +365,9 @@ internal fun NavGraphBuilder.addContacts(
                 },
                 onBackClick = {
                     navController.navigateBack()
+                },
+                onSubscriptionUpgradeRequired = {
+                    showNormalSnackbar(it)
                 },
                 exitWithErrorMessage = { message ->
                     navController.navigateBack()
