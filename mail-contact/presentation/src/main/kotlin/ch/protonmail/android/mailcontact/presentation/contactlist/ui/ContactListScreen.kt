@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.contactlist
+package ch.protonmail.android.mailcontact.presentation.contactlist.ui
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
@@ -72,6 +72,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.Avatar
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcontact.presentation.R
+import ch.protonmail.android.mailcontact.presentation.contactlist.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListState
+import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewAction
+import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactListPreviewData.contactGroupSampleData
