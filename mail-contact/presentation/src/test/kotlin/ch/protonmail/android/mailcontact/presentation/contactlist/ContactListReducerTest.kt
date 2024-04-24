@@ -33,7 +33,7 @@ import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)
-class ContactListReducerTest(
+internal class ContactListReducerTest(
     private val testName: String,
     private val testInput: TestInput
 ) {

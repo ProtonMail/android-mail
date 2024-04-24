@@ -31,7 +31,7 @@ internal sealed interface ContactListViewAction : ContactListOperation {
     data object OnImportContactClick : ContactListViewAction
 }
 
-sealed interface ContactListEvent : ContactListOperation {
+internal sealed interface ContactListEvent : ContactListOperation {
     data class ContactListLoaded(
         val contactList: List<ContactListItemUiModel>,
         val contactGroups: List<ContactGroupItemUiModel>
