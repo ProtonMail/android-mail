@@ -117,7 +117,7 @@ internal class UploadDraft @Inject constructor(
         remoteAttachments.forEach { attachment ->
             localAttachments.find {
                 it.keyPackets == attachment.keyPackets &&
-                    it.name == attachment.name && it.size == attachment.size
+                    it.name == attachment.name && it.mimeType == attachment.mimeType
             }?.let { localAttachment ->
                 attachmentRepository.updateMessageAttachment(
                     apiMessage.message.userId,

@@ -314,91 +314,96 @@ class UploadDraftTest {
         }
     }
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `Should match local and remote attachments by keyPackets, name and size when updating local ids`() = runTest {
-        // Given
-        val messageId = MessageIdSample.LocalDraft
-        val expectedLocalAttachments = listOf(
-            MessageAttachmentSample.embeddedImageAttachment.copy(
-                keyPackets = "keyPackets"
-            ),
-            MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
-                keyPackets = "keyPackets"
-            ),
-            MessageAttachmentSample.image.copy(
-                keyPackets = "keyPackets"
+    fun `Should match local and remote attachments by keyPackets, name and mimeType when updating local ids, despite different attachment sizes`() =
+        runTest {
+            // Given
+            val messageId = MessageIdSample.LocalDraft
+            val expectedLocalAttachments = listOf(
+                MessageAttachmentSample.embeddedImageAttachment.copy(
+                    keyPackets = "keyPackets"
+                ),
+                MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
+                    keyPackets = "keyPackets"
+                ),
+                MessageAttachmentSample.image.copy(
+                    keyPackets = "keyPackets"
+                )
             )
-        )
-        val expectedDraft = MessageWithBodySample.MessageWithInvoiceAttachment.copy(
-            messageBody = MessageWithBodySample.MessageWithInvoiceAttachment.messageBody.copy(
-                attachments = expectedLocalAttachments
+            val expectedDraft = MessageWithBodySample.MessageWithInvoiceAttachment.copy(
+                messageBody = MessageWithBodySample.MessageWithInvoiceAttachment.messageBody.copy(
+                    attachments = expectedLocalAttachments
+                )
             )
-        )
 
-        val expectedUpdatedAttachments = listOf(
-            MessageAttachmentSample.embeddedImageAttachment.copy(
-                attachmentId = AttachmentId("Api-defined-id-1"),
-                keyPackets = "keyPackets"
-            ),
-            MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
-                attachmentId = AttachmentId("Api-defined-id-2"),
-                keyPackets = "keyPackets"
-            ),
-            MessageAttachmentSample.image.copy(
-                attachmentId = AttachmentId("Api-defined-id-3"),
-                keyPackets = "keyPackets"
+            val expectedUpdatedAttachments = listOf(
+                MessageAttachmentSample.embeddedImageAttachment.copy(
+                    attachmentId = AttachmentId("Api-defined-id-1"),
+                    keyPackets = "keyPackets",
+                    size = 666
+                ),
+                MessageAttachmentSample.embeddedOctetStreamAttachment.copy(
+                    attachmentId = AttachmentId("Api-defined-id-2"),
+                    keyPackets = "keyPackets",
+                    size = 666
+                ),
+                MessageAttachmentSample.image.copy(
+                    attachmentId = AttachmentId("Api-defined-id-3"),
+                    keyPackets = "keyPackets",
+                    size = 666
+                )
             )
-        )
 
-        val expectedResponse = expectedDraft.copy(
-            messageBody = expectedDraft.messageBody.copy(attachments = expectedUpdatedAttachments)
-        )
-        val apiAssignedMessageId = expectedResponse.message.messageId
-        val apiAssignedConversationId = expectedResponse.message.conversationId
-        val expectedDraftState = DraftStateSample.LocalDraftWithForwardAction
-        expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
-        expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
-        expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedDraftState.action, expectedResponse)
-        expectStoreSyncedStateSuccess(userId, messageId, messageId)
-        expectIsDraftKnownToApi(expectedDraftState, false)
-        expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
-        expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
-        for (i in expectedLocalAttachments.indices) {
-            expectAttachmentUpdateSuccess(
-                userId,
-                apiAssignedMessageId,
-                expectedLocalAttachments[i].attachmentId,
-                expectedUpdatedAttachments[i]
+            val expectedResponse = expectedDraft.copy(
+                messageBody = expectedDraft.messageBody.copy(attachments = expectedUpdatedAttachments)
             )
-        }
-        expectStoreParentAttachmentSucceeds(
-            userId, apiAssignedMessageId, expectedUpdatedAttachments.map { it.attachmentId }
-        )
-
-        // When
-        val actual = draftRepository(userId, messageId)
-
-        // Then
-        assertEquals(Unit.right(), actual)
-        for (i in expectedLocalAttachments.indices) {
-            coVerify {
-                attachmentRepository.updateMessageAttachment(
+            val apiAssignedMessageId = expectedResponse.message.messageId
+            val apiAssignedConversationId = expectedResponse.message.conversationId
+            val expectedDraftState = DraftStateSample.LocalDraftWithForwardAction
+            expectGetDraftStateSucceeds(userId, messageId, expectedDraftState)
+            expectGetLocalMessageSucceeds(userId, messageId, expectedDraft)
+            expectRemoteDataSourceCreateSuccess(userId, expectedDraft, expectedDraftState.action, expectedResponse)
+            expectStoreSyncedStateSuccess(userId, messageId, messageId)
+            expectIsDraftKnownToApi(expectedDraftState, false)
+            expectStoreSyncedStateSuccess(userId, messageId, apiAssignedMessageId)
+            expectMessageUpdateSuccess(userId, messageId, apiAssignedMessageId, apiAssignedConversationId)
+            for (i in expectedLocalAttachments.indices) {
+                expectAttachmentUpdateSuccess(
                     userId,
                     apiAssignedMessageId,
                     expectedLocalAttachments[i].attachmentId,
                     expectedUpdatedAttachments[i]
                 )
             }
-        }
-
-        coVerify {
-            updatedAttachmentStates(
-                userId,
-                apiAssignedMessageId,
-                expectedUpdatedAttachments.map { it.attachmentId }
+            expectStoreParentAttachmentSucceeds(
+                userId, apiAssignedMessageId, expectedUpdatedAttachments.map { it.attachmentId }
             )
+
+            // When
+            val actual = draftRepository(userId, messageId)
+
+            // Then
+            assertEquals(Unit.right(), actual)
+            for (i in expectedLocalAttachments.indices) {
+                coVerify {
+                    attachmentRepository.updateMessageAttachment(
+                        userId,
+                        apiAssignedMessageId,
+                        expectedLocalAttachments[i].attachmentId,
+                        expectedUpdatedAttachments[i]
+                    )
+                }
+            }
+
+            coVerify {
+                updatedAttachmentStates(
+                    userId,
+                    apiAssignedMessageId,
+                    expectedUpdatedAttachments.map { it.attachmentId }
+                )
+            }
         }
-    }
 
     private fun expectAttachmentUpdateSuccess(
         userId: UserId,
