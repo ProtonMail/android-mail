@@ -34,6 +34,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
@@ -63,8 +66,10 @@ fun UpsellingMailButton(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun UpsellingMailButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
+
     Surface(
-        modifier = modifier,
+        modifier = modifier.semantics { contentDescription = accessibilityDescription },
         color = Color.Transparent,
         onClick = onClick,
         border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
