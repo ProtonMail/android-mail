@@ -26,10 +26,15 @@ import kotlin.math.roundToInt
 class GetDiscountRate @Inject constructor() {
 
     operator fun invoke(shorterInstance: DynamicPlanInstance, longerInstance: DynamicPlanInstance): Int? {
+        val longerInstancePrice = longerInstance.currentPrice
+        val shorterInstancePrice = shorterInstance.currentPrice
+
+        if (longerInstancePrice == null || shorterInstancePrice == null) return null
+
         val safeRatio = kotlin.runCatching {
             @Suppress("UnnecessaryParentheses")
-            (longerInstance.currentPrice / longerInstance.cycle) /
-                (shorterInstance.currentPrice / shorterInstance.cycle)
+            (longerInstancePrice / longerInstance.cycle) /
+                (shorterInstancePrice / shorterInstance.cycle)
         }
             .getOrNull()
             ?.takeIf { it > 0f && it <= 1f }

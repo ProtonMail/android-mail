@@ -24,6 +24,7 @@ import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import me.proton.core.plan.domain.entity.DynamicPlanPrice
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 internal class DynamicPlansInstanceExtensionsTest {
 
@@ -43,5 +44,22 @@ internal class DynamicPlansInstanceExtensionsTest {
 
         // Then
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return null if the price map is empty`() {
+        // Given
+        val instance = DynamicPlanInstance(
+            cycle = 12,
+            description = "",
+            periodEnd = Instant.now(),
+            price = mapOf()
+        )
+
+        // When
+        val actual = instance.currentPrice
+
+        // Then
+        assertNull(actual)
     }
 }

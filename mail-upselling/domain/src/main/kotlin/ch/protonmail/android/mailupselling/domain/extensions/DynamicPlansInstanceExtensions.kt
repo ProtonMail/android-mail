@@ -20,5 +20,5 @@ package ch.protonmail.android.mailupselling.domain.extensions
 
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
 
-internal val DynamicPlanInstance.currentPrice: Float
-    get() = price.values.first().current.toFloat()
+internal val DynamicPlanInstance.currentPrice: Float?
+    get() = price.values.firstOrNull()?.current?.toFloat()
