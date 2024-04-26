@@ -44,7 +44,7 @@ internal class UpsellingPaymentEventListener(
             ProtonPaymentEvent.Error.PurchaseNotFound,
             ProtonPaymentEvent.Error.UnrecoverableBillingError,
             ProtonPaymentEvent.Error.UnsupportedPaymentProvider -> {
-                Timber.w("Generic Error while performing 1 click upselling flow.")
+                Timber.w("Error while performing 1 click upselling flow - ${event::class.java}")
                 actions.onError(context.getString(R.string.upselling_snackbar_upgrade_error_generic))
                 actions.onDismiss()
             }
