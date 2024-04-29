@@ -99,10 +99,12 @@ fun ContactGroupFormScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactGroupFormViewModel.initialState).value
+    val selectionSubmitted = remember { mutableStateOf(false) }
 
-    if (state !is ContactGroupFormState.Data) {
+    if (!selectionSubmitted.value) {
         selectedContactEmailsIds?.value?.let {
             viewModel.submit(ContactGroupFormViewAction.OnUpdateMemberList(it))
+            selectionSubmitted.value = true
         }
     }
 
@@ -130,6 +132,7 @@ fun ContactGroupFormScreen(
                         actions = ContactGroupFormContent.Actions(
                             onAddMemberClick = {
                                 actions.manageMembers(state.contactGroup.members.map { it.id })
+                                selectionSubmitted.value = false
                             },
                             onRemoveMemberClick = {
                                 viewModel.submit(ContactGroupFormViewAction.OnRemoveMemberClick(it))
