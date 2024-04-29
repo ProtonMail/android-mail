@@ -29,9 +29,17 @@
   <string name="quick_reply_button_content_description">Reply</string>
   <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Više</string>
+  <string name="subject">Subject:</string>
+  <string name="from">From:</string>
   <string name="to">Za:</string>
   <string name="cc">Kopija:</string>
   <string name="bcc">Skrivena kopija:</string>
+  <string name="date">Date:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d Attachment</item>
+    <item quantity="few">%d Attachments</item>
+    <item quantity="other">%d Attachments</item>
+  </plurals>
   <string name="hide_details">Sakrij detalje</string>
   <string name="undisclosed_recipients">Nedefinirani primatelji</string>
   <string name="error_mark_as_unread_failed">Mark as unread operation failed. Please retry.</string>
@@ -95,4 +103,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
   <string name="open_on_protoncalendar_banner_title">Otvori u Proton Calendaru</string>
   <string name="open_on_protoncalendar_banner_description">Osiguraj šifrirani kalendar</string>
+  <string name="error_print_failed">Failed to print message</string>
 </resources>

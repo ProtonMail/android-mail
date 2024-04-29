@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Aplicar a palavra-passe</string>
   <string name="set_message_password_button_save_changes">Guardar as alterações</string>
   <string name="set_message_password_button_remove_password">Remover a palavra-passe</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

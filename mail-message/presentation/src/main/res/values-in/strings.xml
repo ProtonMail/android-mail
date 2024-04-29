@@ -48,4 +48,17 @@
   <string name="message_link_long_click_copy_description">Teks disalin dari Proton Mail</string>
   <string name="message_link_long_click_share">Bagikan tautan</string>
   <string name="message_link_long_click_share_via">Bagikan tautan melalui</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Salin alamat</string>
+  <string name="contact_actions_copy_address_description">Salin alamat kontak</string>
+  <string name="contact_actions_copy_address_performed">Alamat disalin ke papan klip</string>
+  <string name="contact_actions_copy_name">Salin nama</string>
+  <string name="contact_actions_copy_name_description">Salin nama kontak</string>
+  <string name="contact_actions_copy_name_performed">Nama disalin ke papan klip</string>
+  <string name="contact_actions_new_message">Pesan baru</string>
+  <string name="contact_actions_new_message_description">Mulai tulis pesan baru untuk kontak ini</string>
+  <string name="contact_actions_add_contact">Tambah kontak</string>
+  <string name="contact_actions_add_contact_description">Simpan penerima ini sebagai kontak</string>
+  <string name="contact_actions_view_contact_details">Lihat rincian kontak</string>
+  <string name="contact_actions_view_contact_details_description">Salin rincian kontak</string>
 </resources>

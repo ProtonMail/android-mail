@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Εφαρμογή κωδικού πρόσβασης</string>
   <string name="set_message_password_button_save_changes">Αποθήκευση αλλαγών</string>
   <string name="set_message_password_button_remove_password">Αφαίρεση κωδικού πρόσβασης</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

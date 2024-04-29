@@ -50,8 +50,8 @@
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
-  <string name="mail_settings_password_management">Password</string>
-  <string name="mail_settings_recovery_email">Email di recupero</string>
+  <string name="mail_settings_password_management">Gestione delle password</string>
+  <string name="mail_settings_recovery_email">Indirizzo email di recupero</string>
   <string name="mail_settings_mailbox_size">Spazio della casella di posta</string>
   <string name="mail_settings_addresses">Indirizzi</string>
   <string name="mail_settings_default_email_address">Indirizzo email predefinito</string>
@@ -67,8 +67,8 @@
   <string name="mail_settings_default_email_address_title">Indirizzo email predefinito</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Indirizzi non attivi</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">Nessun indirizzo inattivo</string>
-  <string name="mail_settings_default_email_address_error_loading">Errore nel caricamento delle impostazioni</string>
-  <string name="mail_settings_default_email_address_error_update">Errore nell\'aggiornamento delle impostazioni</string>
+  <string name="mail_settings_default_email_address_error_loading">Caricamento delle impostazioni non riuscito</string>
+  <string name="mail_settings_default_email_address_error_update">Aggiornamento delle impostazioni non riuscito</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Effettua l\'upgrade a un piano a pagamento per impostare questo indirizzo come predefinito</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Nome visualizzato e firma</string>
@@ -81,8 +81,8 @@
   <string name="mail_settings_identity_mobile_footer_subtext">Il piè di pagina viene aggiunto dopo la tua firma.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Piè di pagina mobile</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Inviato da Proton Mail Android</string>
-  <string name="mail_settings_identity_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
-  <string name="mail_settings_identity_error_loading">Errore nel caricamento delle impostazioni</string>
+  <string name="mail_settings_identity_error_updating">Aggiornamento delle impostazioni non riuscito</string>
+  <string name="mail_settings_identity_error_loading">Caricamento delle impostazioni non riuscito</string>
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Caricamento automatico dei contenuti remoti</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Caricamento automatico delle immagini incorporate</string>
@@ -90,8 +90,8 @@
   <string name="mail_settings_privacy_request_link_confirmation">Richiesta di conferma dei link</string>
   <string name="mail_settings_privacy_background_sync">Sincronizzazione in background</string>
   <string name="mail_settings_privacy_background_sync_description">Abilita questa opzione per sincronizzare l\'app con il server in background. Se questa opzione è disabilitata, sono disabilitate anche le notifiche push.</string>
-  <string name="mail_settings_privacy_error_updating">Errore nell\'aggiornamento delle impostazioni</string>
-  <string name="mail_settings_privacy_error_loading">Errore nel caricamento delle impostazioni</string>
+  <string name="mail_settings_privacy_error_updating">Aggiornamento delle impostazioni non riuscito</string>
+  <string name="mail_settings_privacy_error_loading">Caricamento delle impostazioni non riuscito</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Azioni di scorrimento</string>
   <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per accedere alle azioni più usate.</string>
@@ -113,8 +113,8 @@
   <string name="mail_settings_notifications_extended_notifications_summary">Abilita questa opzione per visualizzare i mittenti delle email nelle notifiche push.</string>
   <string name="mail_settings_notifications_notifications_settings">Impostazioni delle notifiche</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Vai alle impostazioni di notifica di sistema</string>
-  <string name="mail_settings_notifications_update_error">Errore nell\'aggiornamento delle impostazioni</string>
-  <string name="mail_settings_notifications_loading_error">Errore nel caricamento delle impostazioni</string>
+  <string name="mail_settings_notifications_update_error">Aggiornamento delle impostazioni non riuscito</string>
+  <string name="mail_settings_notifications_loading_error">Caricamento delle impostazioni non riuscito</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_title">Blocco automatico</string>
@@ -126,7 +126,7 @@
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuti</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 ora</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 giorno</string>
-  <string name="mail_settings_auto_lock_update_error">Errore nell\'aggiornamento delle impostazioni</string>
+  <string name="mail_settings_auto_lock_update_error">Aggiornamento delle impostazioni non riuscito</string>
   <string name="mail_settings_pin_insertion_input_title">Inserisci il codice PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Imposta il codice PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Conferma il codice PIN</string>
@@ -145,7 +145,7 @@
     <item quantity="one">%s tentativo rimasto prima della rimozione sicura dei dati</item>
     <item quantity="other">%s tentativi rimasti prima della rimozione sicura dei dati</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Errore nella verifica del codice PIN</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Verifica del codice PIN non riuscita</string>
   <string name="mail_settings_pin_insertion_signout_text">Esci</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Esci dall\'account</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler uscire dall\'account?</string>

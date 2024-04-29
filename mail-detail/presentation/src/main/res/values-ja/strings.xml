@@ -27,9 +27,15 @@
   <string name="quick_reply_button_content_description">返信</string>
   <string name="quick_reply_all_button_content_description">全員に返信</string>
   <string name="more_button_content_description">その他</string>
+  <string name="subject">Subject:</string>
+  <string name="from">差出人：</string>
   <string name="to">宛先:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
+  <string name="date">日時：</string>
+  <plurals name="attachment">
+    <item quantity="other">%d Attachments</item>
+  </plurals>
   <string name="hide_details">詳細を非表示</string>
   <string name="undisclosed_recipients">非公開の宛先</string>
   <string name="error_mark_as_unread_failed">未読にする操作に失敗しました。もう一度試してください。</string>
@@ -93,4 +99,5 @@
   <string name="message_report_phishing_dialog_cancel_button">キャンセル</string>
   <string name="open_on_protoncalendar_banner_title">Proton Calendar で開く</string>
   <string name="open_on_protoncalendar_banner_description">安全で暗号化されたカレンダー</string>
+  <string name="error_print_failed">Failed to print message</string>
 </resources>

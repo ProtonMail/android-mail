@@ -49,4 +49,17 @@
   <string name="message_link_long_click_copy_description">Testo copiato da Proton Mail</string>
   <string name="message_link_long_click_share">Condividi il link</string>
   <string name="message_link_long_click_share_via">Condividi il link tramite</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Copia l\'indirizzo</string>
+  <string name="contact_actions_copy_address_description">Copia l\'indirizzo del contatto</string>
+  <string name="contact_actions_copy_address_performed">Indirizzo copiato negli appunti</string>
+  <string name="contact_actions_copy_name">Copia il nome</string>
+  <string name="contact_actions_copy_name_description">Copia il nome del contatto</string>
+  <string name="contact_actions_copy_name_performed">Nome copiato negli appunti</string>
+  <string name="contact_actions_new_message">Scrivi un messaggio</string>
+  <string name="contact_actions_new_message_description">Scrivi un nuovo messaggio per questo contatto</string>
+  <string name="contact_actions_add_contact">Salva come contatto</string>
+  <string name="contact_actions_add_contact_description">Salva questo destinatario come contatto</string>
+  <string name="contact_actions_view_contact_details">Visualizza i dettagli</string>
+  <string name="contact_actions_view_contact_details_description">Visualizza i dettagli di questo contatto</string>
 </resources>

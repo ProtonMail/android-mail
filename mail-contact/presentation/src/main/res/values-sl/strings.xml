@@ -114,12 +114,12 @@
   <string name="contact_form_invalid_email_error">Napaka pri shranjevanju stika – vsebuje neveljaven e-poštni naslov</string>
   <string name="contact_group_details_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
   <string name="contact_group_details_deletion_success">Skupina stikov izbrisana</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_details_deletion_error">Napaka pri brisanju skupine stikov</string>
+  <string name="contact_group_delete_dialog_title">Odstraniti skupino %s iz Stikov?</string>
+  <string name="contact_group_delete_dialog_message">Skupina bo razpuščena, vendar dodeljeni kontakti ne bodo prizadeti.</string>
   <string name="contact_group_delete_dialog_confirm">Odstrani</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_delete_dialog_dismiss">Obdrži</string>
+  <string name="contact_group_delete_button_text">Izbriši skupino</string>
   <string name="contact_group_form_loading_error">Napaka pri nalaganju skupine stikov, poskusite znova pozneje</string>
   <string name="edit_contact_group_content_description">Uredi skupino stikov</string>
   <string name="delete_contact_group_content_description">Izbriši skupino stikov</string>

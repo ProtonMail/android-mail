@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">パスワードを適用</string>
   <string name="set_message_password_button_save_changes">変更を保存</string>
   <string name="set_message_password_button_remove_password">パスワードを削除</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

@@ -28,9 +28,16 @@
   <string name="quick_reply_button_content_description">Svara</string>
   <string name="quick_reply_all_button_content_description">Svara alla</string>
   <string name="more_button_content_description">Mer</string>
+  <string name="subject">Ämne:</string>
+  <string name="from">Från:</string>
   <string name="to">Till:</string>
   <string name="cc">Kopia:</string>
   <string name="bcc">Hemlig kopia:</string>
+  <string name="date">Datum:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d bilaga</item>
+    <item quantity="other">%d bilagor</item>
+  </plurals>
   <string name="hide_details">Dölj detaljer</string>
   <string name="undisclosed_recipients">Hemliga mottagare</string>
   <string name="error_mark_as_unread_failed">Åtgärd att markera som oläst misslyckades. Försök igen.</string>
@@ -94,4 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Avbryt</string>
   <string name="open_on_protoncalendar_banner_title">Öppna i Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Säker krypterad kalender</string>
+  <string name="error_print_failed">Misslyckades att skriva ut meddelande</string>
 </resources>

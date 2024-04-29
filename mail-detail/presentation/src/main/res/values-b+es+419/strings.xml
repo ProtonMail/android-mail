@@ -28,9 +28,16 @@
   <string name="quick_reply_button_content_description">Responder</string>
   <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Más</string>
+  <string name="subject">Asunto:</string>
+  <string name="from">Desde:</string>
   <string name="to">Para:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Cco:</string>
+  <string name="date">Fecha:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d archivo adjunto</item>
+    <item quantity="other">%d archivos adjuntos</item>
+  </plurals>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
   <string name="error_mark_as_unread_failed">Error al marcar como no leído. Intente otra vez.</string>
@@ -64,7 +71,7 @@
   <string name="message_phishing_banner_text">Nuestro sistema marcó este mensaje como un intento de suplantación. Compruebe que es legítimo.</string>
   <string name="message_expiration_banner_text">Este mensaje expirará en %1$s</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">Está a punto de abandonar la app y navegar hacia:</string>
+  <string name="external_link_confirmation_dialog_text">Está a punto de abandonar la aplicación y navegar hacia:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">No volver a preguntar</string>
   <string name="external_link_confirmation_dialog_cancel_button">Cancelar</string>
   <string name="external_link_confirmation_dialog_continue_button">Continuar</string>
@@ -94,4 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
   <string name="open_on_protoncalendar_banner_title">Abrir en Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendario seguro y cifrado</string>
+  <string name="error_print_failed">Error al imprimir el mensaje</string>
 </resources>

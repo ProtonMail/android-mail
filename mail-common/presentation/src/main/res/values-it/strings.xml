@@ -46,7 +46,7 @@
   <string name="action_print_description">Stampa</string>
   <string name="action_view_headers_description">Visualizza le intestazioni</string>
   <string name="action_view_html_description">Visualizza HTML</string>
-  <string name="action_report_phishing_description">Segnala phishing</string>
+  <string name="action_report_phishing_description">Segnala come phishing</string>
   <string name="action_remind_description">Ricordamelo</string>
   <string name="action_save_pdf_description">Salva come PDF</string>
   <string name="action_sender_emails_description">Imposta un\'azione per tutte le email future provenienti da questo mittente</string>
@@ -71,7 +71,7 @@
   <string name="action_print_content_description">Stampa</string>
   <string name="action_view_headers_content_description">Visualizza le intestazioni</string>
   <string name="action_view_html_content_description">Visualizza HTML</string>
-  <string name="action_report_phishing_content_description">Segnala phishing</string>
+  <string name="action_report_phishing_content_description">Segnala come phishing</string>
   <string name="action_remind_content_description">Ricordamelo</string>
   <string name="action_save_pdf_content_description">Salva come PDF</string>
   <string name="action_sender_emails_content_description">Imposta un\'azione per tutte le email future provenienti da questo mittente</string>
@@ -102,7 +102,7 @@
   <string name="color_copper">Rame</string>
   <string name="color_sahara">Sahara</string>
   <string name="color_soil">Terra</string>
-  <string name="color_slate_blue">Blu ardesia</string>
+  <string name="color_slate_blue">Ardesia</string>
   <string name="color_cobalt">Cobalto</string>
   <string name="color_pacific">Pacifico</string>
   <string name="color_ocean">Oceano</string>

@@ -28,9 +28,16 @@
   <string name="quick_reply_button_content_description">Svar</string>
   <string name="quick_reply_all_button_content_description">Svar alle</string>
   <string name="more_button_content_description">Mere</string>
+  <string name="subject">Emne:</string>
+  <string name="from">Fra:</string>
   <string name="to">Til:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
+  <string name="date">Dato:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d Attachment</item>
+    <item quantity="other">%d Attachments</item>
+  </plurals>
   <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">Ikke-oplyste modtagere</string>
   <string name="error_mark_as_unread_failed">Markering som ulæst mislykkedes. Prøv igen.</string>
@@ -94,4 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Annullér</string>
   <string name="open_on_protoncalendar_banner_title">Åbn i Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Sikker krypteret kalender</string>
+  <string name="error_print_failed">Failed to print message</string>
 </resources>

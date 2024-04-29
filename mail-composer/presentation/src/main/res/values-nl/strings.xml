@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Wachtwoord toepassen</string>
   <string name="set_message_password_button_save_changes">Wijzigingen opslaan</string>
   <string name="set_message_password_button_remove_password">Verwijder wachtwoord</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

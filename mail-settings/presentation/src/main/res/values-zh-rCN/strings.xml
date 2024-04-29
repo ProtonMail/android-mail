@@ -132,7 +132,7 @@
   <string name="mail_settings_pin_insertion_confirm_title">确认解锁密码</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">锁定图标</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin 点</string>
-  <string name="mail_settings_pin_insertion_backspace_description">后退键</string>
+  <string name="mail_settings_pin_insertion_backspace_description">退格</string>
   <string name="mail_settings_pin_insertion_biometric_description">生物识别认证</string>
   <string name="mail_settings_pin_insertion_button_create">创建</string>
   <string name="mail_settings_pin_insertion_button_confirm">确定</string>

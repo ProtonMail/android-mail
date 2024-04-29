@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_title">Tingkatkan ke</string>
+  <string name="upselling_description">Untuk memperoleh ruang penyimpanan tambahan dan berbagai fitur premium</string>
+  <!-- Mail Plus -->
+  <string name="upselling_plus_description_override">Untuk memperoleh ruang penyimpanan tambahan dan berbagai fitur premium</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Jadwalkan pengiriman dan penundaan</string>
+  <string name="upselling_plus_feature_custom_domain">1 domain email khusus</string>
+  <string name="upselling_plus_feature_folders_labels">Tanpa batasan jumlah folder, label, dan filter</string>
+  <string name="upselling_plus_feature_more">Dan 14 fitur premium lainnya</string>
+  <!-- Unlimited -->
+  <string name="upselling_unlimited_description_override">Langganan premium menyeluruh Anda</string>
+  <string name="upselling_unlimited_feature_storage">Ruang penyimpanan 500 GB</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Seluruh fitur Mail dan Calendar berbayar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
+  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
+  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <!-- Other UI Items -->
+  <string name="upselling_discount_tag">HEMAT %s%%</string>
+  <string name="upselling_month">/bulan</string>
+  <string name="upselling_get_button">Dapatkan %s</string>
+  <plurals name="upselling_month">
+    <item quantity="other">%d bulan</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Daftar opsi peningkatan tidak dapat diperoleh.</string>
+  <string name="upselling_snackbar_error_no_user_id">Terjadi kesalahan.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Daftar paket langganan tidak dapat diperoleh.</string>
+  <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Peningkatan paket langganan sedang berlangsung…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Terdapat kesalahan pada saat meningkatkan paket langganan Anda.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Terdapat suatu kesalahan. Silakan coba lagi.</string>
+</resources>

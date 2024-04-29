@@ -64,7 +64,7 @@
   <string name="folder_list_no_folders_found">Nessuna cartella trovata</string>
   <string name="folder_list_create_folder_placeholder_description">Crea una cartella per migliorare la tua esperienza con le email.</string>
   <string name="create_folder_content_description">Crea una cartella</string>
-  <string name="folder_settings_content_description">Impostazioni delle cartelle</string>
+  <string name="folder_settings_content_description">Impostazioni della cartella</string>
   <string name="folder_settings_title">Impostazioni</string>
   <string name="folder_settings_done_button">Fatto</string>
   <string name="folder_settings_folder_colors">Visualizzazione dei colori</string>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_title">Uppgradera till</string>
+  <string name="upselling_description">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
+  <!-- Mail Plus -->
+  <string name="upselling_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
+  <string name="upselling_plus_feature_custom_domain">1 anpassad e-postdomän</string>
+  <string name="upselling_plus_feature_folders_labels">Obegränsade mappar, etiketter och filter</string>
+  <string name="upselling_plus_feature_more">Och 14 fler premiumfunktioner</string>
+  <!-- Unlimited -->
+  <string name="upselling_unlimited_description_override">Din allt-i-ett premiumprenumeration</string>
+  <string name="upselling_unlimited_feature_storage">500 GB lagringsutrymme</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Alla betalda Mail och Calendar-funktioner</string>
+  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
+  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
+  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <!-- Other UI Items -->
+  <string name="upselling_discount_tag">SPARA %s %%</string>
+  <string name="upselling_month">/månad</string>
+  <string name="upselling_get_button">Skaffa %s</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d månad</item>
+    <item quantity="other">%d månader</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Kan inte hämta uppgraderingsalternativ.</string>
+  <string name="upselling_snackbar_error_no_user_id">Ett fel uppstod.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Kan inte hämta prenumerationer.</string>
+  <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Prenumerationsuppgradering pågår…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Ett fel uppstod vid uppgradering av din prenumeration.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Ett fel uppstod. Försök igen.</string>
+</resources>

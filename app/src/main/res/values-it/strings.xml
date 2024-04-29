@@ -22,7 +22,7 @@
   <string name="dialog_sign_out_account_confirm">Esci</string>
   <string name="dialog_sign_out_account_cancel">Annulla</string>
   <string name="dialog_remove_account_title">Rimuovi l\'account</string>
-  <string name="dialog_remove_account_description">Sei sicuro di voler rimuovere questo account e tutte le informazioni associate a esso?</string>
+  <string name="dialog_remove_account_description">Sei sicuro di voler rimuovere l\'account e tutte le informazioni associate a esso?</string>
   <string name="dialog_remove_account_confirm">Rimuovi</string>
   <string name="dialog_remove_account_cancel">Annulla</string>
   <string name="user_select_other_account_content_description">Seleziona un altro account</string>

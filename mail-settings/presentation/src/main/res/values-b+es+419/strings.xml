@@ -21,18 +21,18 @@
   <string name="mail_settings_toolbar_button_content_description">Atrás</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Ajustes de la cuenta</string>
-  <string name="mail_settings_app_settings">Ajustes de la app</string>
+  <string name="mail_settings_app_settings">Ajustes de la aplicación</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Notificaciones push</string>
   <string name="mail_settings_auto_lock">Bloqueo automático</string>
   <string name="mail_settings_alternative_routing">Ruta alternativa</string>
-  <string name="mail_settings_app_language">Idioma de la app</string>
+  <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_local_cache">Caché local</string>
   <string name="mail_settings_local_cache_hint">Espacio usado: %s</string>
   <string name="mail_settings_local_cache_clear_button">Limpiar los datos</string>
   <string name="mail_settings_swipe_actions">Acciones de deslizamiento</string>
-  <string name="mail_settings_combined_contacts_hint">Active esta función para completar automáticamente las direcciones usando los contactos de todas sus cuentas conectadas.</string>
+  <string name="mail_settings_combined_contacts_hint">Active esta función para completar automáticamente las direcciones usando los contactos de todas las cuentas conectadas.</string>
   <string name="mail_settings_alternative_routing_hint">En caso de que los sitios de Proton estén bloqueados, este ajuste permite a la aplicación probar rutas alternativas para llegar a Proton, lo que puede ser útil para evitar problemas de red o firewalls. Recomendamos mantener este ajuste activado para mayor confiabilidad.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Del sistema</string>
@@ -45,8 +45,8 @@
   <string name="mail_settings_allowed">Permitido</string>
   <string name="mail_settings_denied">Denegado</string>
   <string name="mail_settings_auto_detect">Detectar automáticamente</string>
-  <string name="mail_settings_app_information">Información de la app</string>
-  <string name="mail_settings_app_version">Versión de la app</string>
+  <string name="mail_settings_app_information">Información de la aplicación</string>
+  <string name="mail_settings_app_version">Versión de la aplicación</string>
   <string name="mail_settings_account">Cuenta</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Suscripción</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_folders">Carpetas</string>
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
   <string name="mail_settings_not_set">No definido</string>
-  <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en su bandeja de entrada o los muestra por separado</string>
+  <string name="mail_settings_conversation_mode_hint">Agrupa correos electrónicos en la misma conversación juntos en la bandeja de entrada o los muestra por separado</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Dirección de correo por defecto</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Direcciones inactivas</string>
@@ -78,7 +78,7 @@
   <string name="mail_settings_identity_signature">Firma</string>
   <string name="mail_settings_identity_signature_hint">Firma</string>
   <string name="mail_settings_identity_mobile_footer">Pie de página para móvil</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">El pie de página se añadirá después de su firma.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">El pie de página se añadirá después de la firma.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Pie de página para móvil</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Enviado desde Proton Mail para Android</string>
   <string name="mail_settings_identity_error_updating">Error al actualizar los ajustes</string>
@@ -117,8 +117,8 @@
   <string name="mail_settings_notifications_loading_error">Error al cargar los ajustes</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueo automático</string>
-  <string name="mail_settings_auto_lock_item_title">Bloqueo automático de la app</string>
-  <string name="mail_settings_auto_lock_item_description">Active esta función para bloquear automáticamente la app y usar un código PIN para desbloquearla.</string>
+  <string name="mail_settings_auto_lock_item_title">Bloqueo automático de la aplicación</string>
+  <string name="mail_settings_auto_lock_item_description">Active esta función para bloquear automáticamente la aplicación y usar un código PIN para desbloquearla.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambiar código PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Tiempo de bloqueo automático</string>
   <string name="mail_settings_auto_lock_immediately">Inmediatamente</string>
@@ -145,7 +145,7 @@
     <item quantity="one">%s intento restante antes de borrar los datos seguros.</item>
     <item quantity="other">%s intentos restantes antes de borrar los datos seguros.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Ocurrió un error al verificar su código PIN.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Ocurrió un error al verificar el código PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Cerrar sesión</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Cerrar sesión</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">¿Está seguro de que quiere la cerrar sesión?</string>
@@ -159,7 +159,7 @@
   <string name="mail_settings_generic_error_message">Ocurrió un error, intente de nuevo.</string>
   <!-- strings used for biometric enrollment -->
   <string name="no_biometric_data_enrolled">No hay datos biométricos inscritos</string>
-  <string name="log_in_using_biometric_credential">Desbloquear usando sus credenciales biométricas</string>
+  <string name="log_in_using_biometric_credential">Desbloquear usando las credenciales biométricas</string>
   <string name="unlock_using_biometrics">Desbloquear usando biométricas</string>
   <string name="biometric_error_hw_not_available">Hardware biométrico no disponible.</string>
 </resources>

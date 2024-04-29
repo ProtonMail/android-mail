@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Passwort übernehmen</string>
   <string name="set_message_password_button_save_changes">Änderungen speichern</string>
   <string name="set_message_password_button_remove_password">Passwort entfernen</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

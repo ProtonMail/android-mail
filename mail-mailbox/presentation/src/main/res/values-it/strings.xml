@@ -101,7 +101,7 @@
   <string name="mailbox_action_spam_message">Messaggio spostato in spam</string>
   <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
   <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
-  <string name="mailbox_search_no_results_explanation">Ricerca per data, nome, indirizzo email o oggetto del messaggio</string>
+  <string name="mailbox_search_no_results_explanation">Cerca per data, nome, indirizzo email o oggetto del messaggio</string>
   <string name="mailbox_action_button_clear_trash">Svuota il cestino</string>
   <string name="mailbox_action_button_clear_spam">Svuota la cartella spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Svuota il cestino</string>
@@ -119,6 +119,6 @@
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Avviso</string>
-  <string name="storage_quota_over_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno al 100%. Non potrai inviare o ricevere email a meno che non elimini definitivamente alcune email o effettui l\'upgrade per avere più spazio di archiviazione.</string>
+  <string name="storage_quota_over_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno al 100%. Non potrai inviare o ricevere email finché non elimini definitivamente alcune email o effettui l\'upgrade per avere più spazio di archiviazione.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

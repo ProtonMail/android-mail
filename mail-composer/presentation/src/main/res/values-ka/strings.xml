@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">პაროლის დაყენება</string>
   <string name="set_message_password_button_save_changes">ცვლილებების შენახვა</string>
   <string name="set_message_password_button_remove_password">პაროლის მოშლა</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

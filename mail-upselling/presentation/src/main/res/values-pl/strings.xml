@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!-- Upselling -->
+  <string name="upselling_title">Ulepsz konto, aby</string>
+  <string name="upselling_description">To unlock more storage and premium features</string>
+  <!-- Mail Plus -->
+  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Planowanie wysyłki i odkładanie wiadomości</string>
+  <string name="upselling_plus_feature_custom_domain">1 niestandardowa domena</string>
+  <string name="upselling_plus_feature_folders_labels">Nieograniczona liczba folderów, etykiet i filtrów</string>
+  <string name="upselling_plus_feature_more">I 14 więcej funkcje premium</string>
+  <!-- Unlimited -->
+  <string name="upselling_unlimited_description_override">Kompleksowa subskrypcja premium</string>
+  <string name="upselling_unlimited_feature_storage">500 GB przestrzeni dyskowej</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Wszystkie płatne funkcje usług Mail i Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
+  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
+  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <!-- Other UI Items -->
+  <string name="upselling_discount_tag">ZAOSZCZĘDŹ %s%%</string>
+  <string name="upselling_month">/ miesiąc</string>
+  <string name="upselling_get_button">Wybierz plan %s</string>
+  <plurals name="upselling_month">
+    <item quantity="one">%d miesiąc</item>
+    <item quantity="few">%d miesiące</item>
+    <item quantity="many">%d miesiący</item>
+    <item quantity="other">%d miesięca</item>
+  </plurals>
+  <!-- Errors -->
+  <string name="upselling_unable_retrieve_options">Nie można pobrać opcji ulepszenia.</string>
+  <string name="upselling_snackbar_error_no_user_id">Wystąpił błąd.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Nie można pobrać subskrypcji.</string>
+  <!-- Snackbar texts -->
+  <string name="upselling_snackbar_upgrade_in_progress">Ulepszanie subskrypcji w toku…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Wystąpił błąd podczas ulepszania subskrypcji.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Wystąpił błąd. Spróbuj ponownie.</string>
+</resources>

@@ -112,7 +112,7 @@
   <string name="color_forest">Gozdno zelena</string>
   <string name="color_olive">Olivno zelena</string>
   <string name="color_pickle">Kumarično zelena</string>
-  <string name="undo_button_label">Undo</string>
+  <string name="undo_button_label">Razveljavi</string>
   <string name="undo_success_message">Dejanje razveljavljeno</string>
-  <string name="undo_failure_message">Action revert failed</string>
+  <string name="undo_failure_message">Razveljavitev dejanja ni uspelo</string>
 </resources>

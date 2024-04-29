@@ -23,7 +23,7 @@
   </plurals>
   <string name="attachment_show_more_label">%1$d más</string>
   <string name="attachment_permission_dialog_title">Se necesita permiso</string>
-  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a su almacenamiento y descargar el archivo adjunto.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail necesita permiso para acceder a el almacenamiento y descargar el archivo adjunto.</string>
   <string name="attachment_permission_dialog_dismiss_button">Aceptar</string>
   <string name="attachment_permission_dialog_action_button">Ajustes</string>
   <string name="attachment_type_description">Tipo de archivo: %1$s</string>
@@ -49,4 +49,17 @@
   <string name="message_link_long_click_copy_description">Texto copiado desde Proton Mail</string>
   <string name="message_link_long_click_share">Compartir enlace</string>
   <string name="message_link_long_click_share_via">Compartir enlace por</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Copiar la dirección</string>
+  <string name="contact_actions_copy_address_description">Copiar la dirección del contacto</string>
+  <string name="contact_actions_copy_address_performed">La dirección fue copiada al portapapeles.</string>
+  <string name="contact_actions_copy_name">Copiar el nombre</string>
+  <string name="contact_actions_copy_name_description">Copiar el nombre del contacto</string>
+  <string name="contact_actions_copy_name_performed">El nombre fue copiado al portapapeles.</string>
+  <string name="contact_actions_new_message">Mensaje nuevo</string>
+  <string name="contact_actions_new_message_description">Comience a escribir un mensaje a este contacto.</string>
+  <string name="contact_actions_add_contact">Añadir un contacto</string>
+  <string name="contact_actions_add_contact_description">Guarde este destinatario como un contacto.</string>
+  <string name="contact_actions_view_contact_details">Ver los detalles del contacto</string>
+  <string name="contact_actions_view_contact_details_description">Vea los datos del contacto.</string>
 </resources>

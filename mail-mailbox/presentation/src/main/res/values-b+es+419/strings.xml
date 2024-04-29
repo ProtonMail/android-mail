@@ -20,7 +20,7 @@
   <string name="drawer_title_more">Más</string>
   <string name="drawer_title_contacts">Contactos</string>
   <string name="drawer_title_subscription">Suscripción</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Redactar mensaje nuevo</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Escribir mensaje nuevo</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Salir del modo de selección</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Buscar</string>
@@ -44,7 +44,7 @@
   <string name="mailbox_is_empty_description">Está al día.</string>
   <string name="mailbox_is_empty_no_unread_messages_title">No hay mensajes sin leer.</string>
   <string name="mailbox_is_empty_folder_description">Esta carpeta está vacía</string>
-  <string name="mailbox_is_empty_spam_description">Su carpeta de spam está vacía</string>
+  <string name="mailbox_is_empty_spam_description">La carpeta de spam está vacía</string>
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mensaje movido a la papelera</item>
@@ -80,8 +80,8 @@
   <string name="mailbox_action_move_messages_failed">Error con la operación de mover</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
   <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Le damos la bienvenida a la nueva app</string>
-  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva app de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
+  <string name="onboarding_headline_ga">Le damos la bienvenida a la nueva aplicación</string>
+  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva aplicación de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Privacidad para todos</string>
   <string name="onboarding_privacy_for_all_description">Invite a más personas a Proton Mail para beneficiarse del cifrado de extremo a extremo.</string>
@@ -90,7 +90,7 @@
   <string name="onboarding_easily_up_to_date_description">Revise rápidamente los mensajes hilados en el modo de conversación.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Limpio y ordenado</string>
-  <string name="onboarding_neat_and_tidy_description">Archive, etiquete y clasifique por colores los mensajes para crear su buzón personalizado y perfecto.</string>
+  <string name="onboarding_neat_and_tidy_description">Archive, etiquete y clasifique por colores los mensajes para crear el buzón personalizado y perfecto.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Siguiente</string>
   <string name="onboarding_get_started">Comenzar</string>
@@ -113,12 +113,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertencia</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de su cuenta Proton está lleno en más de un 80%. Libere espacio o mejore para obtener más almacenamiento.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">El almacenamiento de su cuenta Proton está lleno en más de un 90%. Libere espacio o mejore para obtener más almacenamiento.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está lleno en más de un 80%. Libere espacio o mejore para obtener más almacenamiento.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está lleno en más de un 90%. Libere espacio o mejore para obtener más almacenamiento.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">No volver a recordarme</string>
   <string name="storage_limit_warning_dialog_confirm_button">Aceptar</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advertencia</string>
-  <string name="storage_quota_over_dialog_text">El almacenamiento de su cuenta Proton está al 100%. No podrá enviar ni recibir correos a menos que elimine permanentemente algunos correos o mejore para obtener más almacenamiento.</string>
+  <string name="storage_quota_over_dialog_text">El almacenamiento de la cuenta Proton está al 100%. No podrá enviar ni recibir correos a menos que elimine permanentemente algunos correos o mejore para obtener más almacenamiento.</string>
   <string name="storage_quota_over_dialog_confirm_button">Aceptar</string>
 </resources>

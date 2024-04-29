@@ -49,4 +49,17 @@
   <string name="message_link_long_click_copy_description">Text kopierat från Proton Mail</string>
   <string name="message_link_long_click_share">Dela länk</string>
   <string name="message_link_long_click_share_via">Dela länk via</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Kopiera adress</string>
+  <string name="contact_actions_copy_address_description">Kopiera kontaktadress</string>
+  <string name="contact_actions_copy_address_performed">Adress kopierad till urklipp</string>
+  <string name="contact_actions_copy_name">Kopiera namn</string>
+  <string name="contact_actions_copy_name_description">Kopiera kontaktnamn</string>
+  <string name="contact_actions_copy_name_performed">Namn kopierat till urklipp</string>
+  <string name="contact_actions_new_message">Nytt meddelande</string>
+  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_add_contact">Lägg till kontakt</string>
+  <string name="contact_actions_add_contact_description">Spara denna mottagare som en kontakt</string>
+  <string name="contact_actions_view_contact_details">Visa kontaktdetaljer</string>
+  <string name="contact_actions_view_contact_details_description">Visa detaljer om kontakten</string>
 </resources>

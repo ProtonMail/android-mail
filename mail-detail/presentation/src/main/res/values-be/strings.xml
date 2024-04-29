@@ -30,9 +30,18 @@
   <string name="quick_reply_button_content_description">Адказаць</string>
   <string name="quick_reply_all_button_content_description">Адказаць усім</string>
   <string name="more_button_content_description">Больш</string>
+  <string name="subject">Тэма:</string>
+  <string name="from">Ад:</string>
   <string name="to">Каму:</string>
   <string name="cc">Копія:</string>
   <string name="bcc">Схаваная копія:</string>
+  <string name="date">Дата:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d далучэнне</item>
+    <item quantity="few">%d далучэнні</item>
+    <item quantity="many">%d далучэнняў</item>
+    <item quantity="other">%d далучэнняў</item>
+  </plurals>
   <string name="hide_details">Схаваць падрабязнасці</string>
   <string name="undisclosed_recipients">Схаваныя атрымальнікі</string>
   <string name="error_mark_as_unread_failed">Не ўдалося пазначыць як непрачытанае. Паўтарыце спробу.</string>
@@ -96,4 +105,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Скасаваць</string>
   <string name="open_on_protoncalendar_banner_title">Адкрыць у Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Бяспечны зашыфраваны каляндар</string>
+  <string name="error_print_failed">Не ўдалося надрукаваць паведамленне</string>
 </resources>

@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Tillämpa lösenord</string>
   <string name="set_message_password_button_save_changes">Spara ändringar</string>
   <string name="set_message_password_button_remove_password">Ta bort lösenord</string>
+  <string name="respondInline">Svara i tråd</string>
 </resources>

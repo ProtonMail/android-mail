@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Terapkan kata sandi</string>
   <string name="set_message_password_button_save_changes">Simpan perubahan</string>
   <string name="set_message_password_button_remove_password">Hapus kata sandi</string>
+  <string name="respondInline">Tanggapi secara in-line</string>
 </resources>

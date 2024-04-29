@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Parolayı uygula</string>
   <string name="set_message_password_button_save_changes">Değişiklikleri kaydet</string>
   <string name="set_message_password_button_remove_password">Parolayı kaldır</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

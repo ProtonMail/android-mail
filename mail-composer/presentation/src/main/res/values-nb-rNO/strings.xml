@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Anvend passord</string>
   <string name="set_message_password_button_save_changes">Lagre endringer</string>
   <string name="set_message_password_button_remove_password">Fjern passord</string>
+  <string name="respondInline">Svar direkte</string>
 </resources>

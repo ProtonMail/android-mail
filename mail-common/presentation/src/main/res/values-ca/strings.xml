@@ -112,7 +112,7 @@
   <string name="color_forest">Verd bosc</string>
   <string name="color_olive">Verd oliva</string>
   <string name="color_pickle">Verd cogombre</string>
-  <string name="undo_button_label">Undo</string>
+  <string name="undo_button_label">Desfer</string>
   <string name="undo_success_message">S\'ha desfet l\'acció</string>
-  <string name="undo_failure_message">Action revert failed</string>
+  <string name="undo_failure_message">No s\'ha pogut desfer l\'acció</string>
 </resources>

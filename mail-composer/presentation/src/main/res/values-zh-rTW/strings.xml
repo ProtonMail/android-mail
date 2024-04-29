@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">套用密碼</string>
   <string name="set_message_password_button_save_changes">儲存變更</string>
   <string name="set_message_password_button_remove_password">移除密碼</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

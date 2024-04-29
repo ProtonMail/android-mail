@@ -27,9 +27,15 @@
   <string name="quick_reply_button_content_description">回覆</string>
   <string name="quick_reply_all_button_content_description">回覆全部</string>
   <string name="more_button_content_description">更多詳情</string>
+  <string name="subject">Subject:</string>
+  <string name="from">From:</string>
   <string name="to">收件者：</string>
   <string name="cc">副本抄送：</string>
   <string name="bcc">密件副本：</string>
+  <string name="date">Date:</string>
+  <plurals name="attachment">
+    <item quantity="other">%d Attachments</item>
+  </plurals>
   <string name="hide_details">隱藏詳細資料</string>
   <string name="undisclosed_recipients">非公開收件者</string>
   <string name="error_mark_as_unread_failed">標記為未讀的操作失敗。請重試。</string>
@@ -93,4 +99,5 @@
   <string name="message_report_phishing_dialog_cancel_button">取消</string>
   <string name="open_on_protoncalendar_banner_title">在 Proton 行事曆開啟</string>
   <string name="open_on_protoncalendar_banner_description">安全加密行事曆</string>
+  <string name="error_print_failed">Failed to print message</string>
 </resources>

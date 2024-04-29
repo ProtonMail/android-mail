@@ -30,9 +30,18 @@
   <string name="quick_reply_button_content_description">Odpovědět</string>
   <string name="quick_reply_all_button_content_description">Odpovědět všem</string>
   <string name="more_button_content_description">Více</string>
+  <string name="subject">Předmět:</string>
+  <string name="from">Od:</string>
   <string name="to">Komu:</string>
   <string name="cc">Kopie:</string>
   <string name="bcc">Skrytá kopie:</string>
+  <string name="date">Datum:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d příloha</item>
+    <item quantity="few">%d přílohy</item>
+    <item quantity="many">%d příloh</item>
+    <item quantity="other">%d příloh</item>
+  </plurals>
   <string name="hide_details">Skrýt detaily</string>
   <string name="undisclosed_recipients">Nezveřejnění příjemci</string>
   <string name="error_mark_as_unread_failed">Nelze označit jako nepřečtené. Zkuste to znovu.</string>
@@ -96,4 +105,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Zrušit</string>
   <string name="open_on_protoncalendar_banner_title">Otevřít v Proton kalendáři</string>
   <string name="open_on_protoncalendar_banner_description">Zabezpečený šifrovaný kalendář</string>
+  <string name="error_print_failed">Chyba při tisknutí zprávy</string>
 </resources>

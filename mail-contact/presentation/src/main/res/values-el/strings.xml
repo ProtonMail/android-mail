@@ -110,9 +110,9 @@
   <string name="contact_form_invalid_email_error">Σφάλμα κατά την αποθήκευση επαφής, περιέχει μια μη έγκυρη διεύθυνση ηλεκτρονικού ταχυδρομείο</string>
   <string name="contact_group_details_loading_error">Σφάλμα φόρτωσης ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="contact_group_details_deletion_success">Η ομάδα επαφών διαγράφηκε</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_details_deletion_error">Σφάλμα κατά τη διαγραφή της ομάδας επαφών</string>
+  <string name="contact_group_delete_dialog_title">Κατάργηση ομάδας %s από τις Επαφές;</string>
+  <string name="contact_group_delete_dialog_message">Η ομάδα θα διαλυθεί, αλλά οι αντιστοιχισμένες επαφές θα παραμείνουν ανεπηρέαστες.</string>
   <string name="contact_group_delete_dialog_confirm">Αφαίρεση</string>
   <string name="contact_group_delete_dialog_dismiss">Διατήρηση</string>
   <string name="contact_group_delete_button_text">Διαγραφή ομάδας</string>

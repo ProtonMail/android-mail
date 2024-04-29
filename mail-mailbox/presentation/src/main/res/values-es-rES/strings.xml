@@ -20,7 +20,7 @@
   <string name="drawer_title_more">Más</string>
   <string name="drawer_title_contacts">Contactos</string>
   <string name="drawer_title_subscription">Suscripción</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Redactar un nuevo mensaje</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Escribir un nuevo mensaje</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Salir del modo de selección</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Buscar</string>

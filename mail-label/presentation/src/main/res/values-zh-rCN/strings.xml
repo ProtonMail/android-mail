@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">所有草稿</string>
   <string name="label_title_all_sent">所有已发送</string>
   <string name="label_title_all_scheduled">所有定时发送</string>
-  <string name="label_title_snoozed">已免打扰</string>
+  <string name="label_title_snoozed">已延迟通知</string>
   <string name="label_title_folders">文件夹</string>
   <string name="label_title_parent_folder">上级文件夹</string>
   <string name="label_title_labels">标签</string>

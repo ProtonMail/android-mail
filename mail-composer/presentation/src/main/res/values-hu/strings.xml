@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Jelszó alkalmazása</string>
   <string name="set_message_password_button_save_changes">Mentés</string>
   <string name="set_message_password_button_remove_password">Jelszó eltávolítása</string>
+  <string name="respondInline">Respond in-line</string>
 </resources>

@@ -51,4 +51,17 @@
   <string name="message_link_long_click_copy_description">Тэкст скапіяваны з Proton Mail</string>
   <string name="message_link_long_click_share">Абагуліць спасылку</string>
   <string name="message_link_long_click_share_via">Абагуліць спасылку праз</string>
+  <!-- Contact Actions Bottom Sheet -->
+  <string name="contact_actions_copy_address">Скапіяваць адрас</string>
+  <string name="contact_actions_copy_address_description">Скапіяваць адрас кантакту</string>
+  <string name="contact_actions_copy_address_performed">Адрас скапіяваны ў буфер абмену</string>
+  <string name="contact_actions_copy_name">Капіяваць імя</string>
+  <string name="contact_actions_copy_name_description">Скапіяваць імя кантакту</string>
+  <string name="contact_actions_copy_name_performed">Імя скапіявана ў буфер абмену</string>
+  <string name="contact_actions_new_message">Новае паведамленне</string>
+  <string name="contact_actions_new_message_description">Пачаць напісанне новага паведамлення для гэтага кантакту</string>
+  <string name="contact_actions_add_contact">Дадаць кантакт</string>
+  <string name="contact_actions_add_contact_description">Захаваць гэтага атрымальніка як кантакт</string>
+  <string name="contact_actions_view_contact_details">Паглядзець кантактныя звесткі</string>
+  <string name="contact_actions_view_contact_details_description">Паглядзець падрабязнасці кантакту</string>
 </resources>

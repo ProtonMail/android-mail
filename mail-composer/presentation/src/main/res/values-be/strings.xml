@@ -94,4 +94,5 @@
   <string name="set_message_password_button_apply">Ужыць пароль</string>
   <string name="set_message_password_button_save_changes">Захаваць змены</string>
   <string name="set_message_password_button_remove_password">Выдаліць пароль</string>
+  <string name="respondInline">Адказаць з цытаваннем</string>
 </resources>

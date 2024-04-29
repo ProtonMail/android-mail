@@ -26,7 +26,7 @@
   <string name="dialog_remove_account_confirm">Eliminar</string>
   <string name="dialog_remove_account_cancel">Cancelar</string>
   <string name="user_select_other_account_content_description">Seleccione otra cuenta</string>
-  <string name="you_are_offline">No está conectado</string>
+  <string name="you_are_offline">No está conectado.</string>
   <string name="feature_coming_soon">Próximamente...</string>
   <string name="mailbox_draft_saved">Borrador guardado</string>
   <string name="mailbox_message_sending">Enviando mensaje…</string>

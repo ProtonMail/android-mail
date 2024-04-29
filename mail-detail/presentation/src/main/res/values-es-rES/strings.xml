@@ -28,9 +28,16 @@
   <string name="quick_reply_button_content_description">Responder</string>
   <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Más</string>
+  <string name="subject">Asunto:</string>
+  <string name="from">De:</string>
   <string name="to">Para:</string>
   <string name="cc">CC:</string>
   <string name="bcc">Cco:</string>
+  <string name="date">Fecha:</string>
+  <plurals name="attachment">
+    <item quantity="one">%d archivo adjunto</item>
+    <item quantity="other">%d archivos adjuntos</item>
+  </plurals>
   <string name="hide_details">Ocultar detalles</string>
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
   <string name="error_mark_as_unread_failed">Error al marcar como no leído. Inténtalo de nuevo.</string>
@@ -94,4 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
   <string name="open_on_protoncalendar_banner_title">Abrir en Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendario seguro y cifrado</string>
+  <string name="error_print_failed">Error al imprimir el mensaje</string>
 </resources>

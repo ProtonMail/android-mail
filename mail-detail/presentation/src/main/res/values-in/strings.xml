@@ -27,9 +27,15 @@
   <string name="quick_reply_button_content_description">Balas</string>
   <string name="quick_reply_all_button_content_description">Balas Semua</string>
   <string name="more_button_content_description">Lainnya</string>
+  <string name="subject">Subjek:</string>
+  <string name="from">Dari:</string>
   <string name="to">Kepada:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Bcc:</string>
+  <string name="date">Tanggal:</string>
+  <plurals name="attachment">
+    <item quantity="other">%d Lampiran</item>
+  </plurals>
   <string name="hide_details">Sembunyikan rincian</string>
   <string name="undisclosed_recipients">Penerima yang dirahasiakan</string>
   <string name="error_mark_as_unread_failed">Tanda belum dibaca gagal disematkan. Silakan coba lagi.</string>
@@ -93,4 +99,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Batal</string>
   <string name="open_on_protoncalendar_banner_title">Buka di Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Kalender terenkripsi yang aman</string>
+  <string name="error_print_failed">Pesan gagal dicetak</string>
 </resources>

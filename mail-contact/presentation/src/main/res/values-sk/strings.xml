@@ -100,10 +100,10 @@
   <string name="all_contacts_tab">Kontakty</string>
   <string name="contact_groups_tab">Skupiny</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="few">%1$d members</item>
-    <item quantity="many">%1$d members</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d člen</item>
+    <item quantity="few">%1$d členovia</item>
+    <item quantity="many">%1$d členov</item>
+    <item quantity="other">%1$d členov</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Člen (%1$d)</item>
