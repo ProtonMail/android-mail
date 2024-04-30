@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -201,7 +202,8 @@ fun ChipsListTextField(
                     modifier = Modifier
                         .background(ProtonTheme.colors.backgroundNorm)
                         .width(textMaxWidth)
-                        .exposedDropdownSize(false),
+                        .exposedDropdownSize(false)
+                        .requiredSizeIn(maxHeight = 120.dp),
                     properties = PopupProperties(focusable = false),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
