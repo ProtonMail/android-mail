@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
@@ -56,7 +57,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
@@ -204,14 +204,10 @@ fun ContactGroupFormContent(
     state: ContactGroupFormState.Data,
     actions: ContactGroupFormContent.Actions
 ) {
-    ConstraintLayout(
-        modifier = modifier.fillMaxSize()
-    ) {
-        val (deleteButtonBox) = createRefs()
 
+    Column {
         LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
+            modifier = modifier.weight(1f)
         ) {
             item {
                 Column(modifier.fillMaxWidth()) {
@@ -318,14 +314,8 @@ fun ContactGroupFormContent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        color = ProtonTheme.colors.backgroundNorm
-                    )
-                    .constrainAs(deleteButtonBox) {
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    },
+                    .wrapContentHeight()
+                    .padding(top = ProtonDimens.ExtraSmallSpacing),
                 contentAlignment = Alignment.Center
             ) {
                 FormDeleteButton(

@@ -43,8 +43,7 @@ fun FormDeleteButton(
     ProtonButton(
         onClick = onClick,
         modifier = modifier
-            .heightIn(min = ButtonDefaults.MinHeight)
-            .padding(top = ProtonDimens.LargerSpacing),
+            .heightIn(min = ButtonDefaults.MinHeight),
         elevation = null,
         shape = ProtonTheme.shapes.medium,
         border = BorderStroke(

@@ -212,11 +212,13 @@ fun LabelFormContent(
         }
         if (state is LabelFormState.Data.Update) {
             FormDeleteButton(
-                modifier = Modifier.constrainAs(deleteButton) {
-                    bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
+                modifier = Modifier
+                    .constrainAs(deleteButton) {
+                        bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(top = ProtonDimens.LargerSpacing),
                 text = stringResource(id = R.string.label_form_delete),
                 onClick = actions.onDeleteClick
             )

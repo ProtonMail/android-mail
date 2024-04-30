@@ -227,11 +227,13 @@ fun FolderFormContent(
         }
         if (state is FolderFormState.Data.Update) {
             FormDeleteButton(
-                modifier = Modifier.constrainAs(deleteButton) {
-                    bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
+                modifier = Modifier
+                    .constrainAs(deleteButton) {
+                        bottom.linkTo(parent.bottom, margin = ProtonDimens.DefaultSpacing)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(top = ProtonDimens.LargerSpacing),
                 text = stringResource(id = R.string.folder_form_delete),
                 onClick = actions.onDeleteClick
             )
