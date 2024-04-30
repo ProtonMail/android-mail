@@ -26,6 +26,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.proton.core.plan.BuildConfig
 import me.proton.core.plan.domain.ClientPlanFilter
 import me.proton.core.plan.domain.ProductOnlyPaidPlans
 import me.proton.core.plan.domain.SupportSignupPaidPlans
@@ -37,19 +38,19 @@ object UpsellingModule {
 
     @Provides
     @SupportSignupPaidPlans
-    fun provideSupportSignupPaidPlans(isEnabled: IsSignupPaidPlanSupportEnabled) = isEnabled(null)
+    fun provideSupportSignupPaidPlans(isEnabled: IsSignupPaidPlanSupportEnabled) = BuildConfig.DEBUG
 
     @Provides
     @SupportUpgradePaidPlans
-    fun provideSupportUpgradePaidPlans(isEnabled: IsUpgradePaidPlanSupportEnabled) = isEnabled(null)
+    fun provideSupportUpgradePaidPlans(isEnabled: IsUpgradePaidPlanSupportEnabled) = BuildConfig.DEBUG
 
     @Provides
     @ProductOnlyPaidPlans
-    fun provideProductOnlyPaidPlans() = false
+    fun provideProductOnlyPaidPlans() = BuildConfig.DEBUG
 
     @Provides
     @ForceOneClickUpsellingDetailsOverride
-    fun provideOneClickOverrideEnabled(isEnabled: IsUpsellingOneClickOverrideEnabled) = isEnabled(null)
+    fun provideOneClickOverrideEnabled(isEnabled: IsUpsellingOneClickOverrideEnabled) = BuildConfig.DEBUG
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
