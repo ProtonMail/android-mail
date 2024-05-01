@@ -62,7 +62,8 @@ class ParentMessageToDraftFields @Inject constructor(
     private val observeUserAddresses: ObserveUserAddresses,
     private val formatExtendedTime: FormatExtendedTime,
     private val getAddressSignature: GetAddressSignature,
-    private val getMobileFooter: GetMobileFooter
+    private val getMobileFooter: GetMobileFooter,
+    private val subjectWithPrefixForAction: SubjectWithPrefixForAction
 ) {
 
     suspend operator fun invoke(
@@ -80,7 +81,7 @@ class ParentMessageToDraftFields @Inject constructor(
 
         return DraftFields(
             sender,
-            Subject("${subjectPrefixForAction(action)} ${message.subject}"),
+            Subject(subjectWithPrefixForAction(action, message.subject)),
             buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature, mobileFooter),
             RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody, sender)),
             RecipientsCc(ccRecipientsForAction(action, message)),
@@ -207,15 +208,6 @@ class ParentMessageToDraftFields @Inject constructor(
         is DraftAction.Reply -> emptyList()
 
         is DraftAction.ReplyAll -> message.ccList
-    }
-
-    private fun subjectPrefixForAction(action: DraftAction) = when (action) {
-        is DraftAction.Compose,
-        is DraftAction.PrefillForShare,
-        is DraftAction.ComposeToAddresses -> ""
-        is DraftAction.Forward -> "Fw:"
-        is DraftAction.Reply,
-        is DraftAction.ReplyAll -> "Re:"
     }
 
     companion object {

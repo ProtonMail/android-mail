@@ -69,6 +69,7 @@ class ParentMessageToDraftFieldsTest {
     private val formatTime = mockk<FormatExtendedTime>()
     private val getAddressSignatureMock = mockk<GetAddressSignature>()
     private val getMobileFooterMock = mockk<GetMobileFooter>()
+    private val subjectWithPrefixForAction = SubjectWithPrefixForAction()
 
     private val expectedOriginalMessageRes = expectStringRes(R.string.composer_original_message_quote) {
         "Original Message"
@@ -85,7 +86,8 @@ class ParentMessageToDraftFieldsTest {
         observeUserAddresses,
         formatTime,
         getAddressSignatureMock,
-        getMobileFooterMock
+        getMobileFooterMock,
+        subjectWithPrefixForAction
     )
 
     @After
