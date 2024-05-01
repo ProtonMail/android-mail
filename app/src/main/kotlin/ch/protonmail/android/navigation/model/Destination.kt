@@ -162,10 +162,14 @@ sealed class Destination(val route: String) {
             "contacts/addContact/${ContactFormContactNameKey.wrap()}/${ContactFormContactEmailKey.wrap()}/form"
         ) {
 
-            operator fun invoke(contactName: String, contactEmail: String) =
-                route.replace(ContactFormContactNameKey.wrap(), contactName.toUrlSafeBase64String()).replace(
+            operator fun invoke(contactName: String, contactEmail: String): String {
+                return route.replace(
+                    ContactFormContactNameKey.wrap(),
+                    if (contactName.trim().isNotBlank()) contactName.toUrlSafeBase64String() else "null"
+                ).replace(
                     ContactFormContactEmailKey.wrap(), contactEmail.toUrlSafeBase64String()
                 )
+            }
         }
 
         object EditContact : Destination("contacts/contact/${ContactFormContactIdKey.wrap()}/form") {

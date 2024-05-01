@@ -179,6 +179,26 @@ class ContactFormViewModelTest {
     }
 
     @Test
+    fun `given no contact name but address in SavedState, when init, then emits create state with data`() = runTest {
+        // Given
+        val contactName = ""
+        val contactEmail = "test@proton.me"
+        expectSavedStateContactId(null)
+        expectSavedStateBlankContactName()
+        expectSavedStateContactEmail(contactEmail)
+
+        // When
+        contactFormViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            assertTrue(actual is ContactFormState.Data)
+            assertEquals(contactName, actual.contact.displayName)
+            assertEquals(contactEmail, actual.contact.emails.first().value)
+        }
+    }
+
+    @Test
     fun `when OnCloseContactFormClick action is submitted, then CloseContactForm is emitted`() = runTest {
         // Given
         expectNoSavedState()
@@ -889,6 +909,12 @@ class ContactFormViewModelTest {
         every {
             savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactNameKey)
         } returns contactName?.toUrlSafeBase64String()
+    }
+
+    private fun expectSavedStateBlankContactName() {
+        every {
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactNameKey)
+        } returns "null"
     }
 
     private fun expectSavedStateContactEmail(contactEmail: String?) {

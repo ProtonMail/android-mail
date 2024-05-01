@@ -89,7 +89,10 @@ class ContactFormViewModel @Inject constructor(
             var contactData = emptyContactFormUiModelWithInitialFields()
 
             savedStateHandle.get<String>(ContactFormScreen.ContactFormContactNameKey)?.let { contactName ->
-                contactData = contactData.copy(displayName = contactName.fromUrlSafeBase64String())
+                contactData =
+                    contactData.copy(
+                        displayName = if (contactName == "null") "" else contactName.fromUrlSafeBase64String()
+                    )
             }
 
             savedStateHandle.get<String>(ContactFormScreen.ContactFormContactEmailKey)
