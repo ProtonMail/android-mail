@@ -46,7 +46,10 @@ class ContactFormReducer @Inject constructor() {
     ): ContactFormState {
         return when (currentState) {
             is ContactFormState.Data -> currentState.copy(contact = event.contactFormUiModel)
-            is ContactFormState.Loading -> ContactFormState.Data(contact = event.contactFormUiModel)
+            is ContactFormState.Loading -> ContactFormState.Data(
+                contact = event.contactFormUiModel,
+                isSaveEnabled = isSaveEnabled(event.contactFormUiModel)
+            )
         }
     }
 

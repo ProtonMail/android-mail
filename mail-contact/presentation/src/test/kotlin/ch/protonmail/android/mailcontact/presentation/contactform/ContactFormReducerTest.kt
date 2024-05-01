@@ -49,9 +49,31 @@ class ContactFormReducerTest(
 
         private val loadedContactFormUiModel = ContactFormPreviewData.contactFormSampleData()
 
+        // Data for testing isSaveEnabled
+        private val loadedDataWithEmptyNameFields = loadedContactFormUiModel.copy(
+            displayName = "",
+            firstName = "",
+            lastName = ""
+        )
+        private val loadedDataWithDisplayNameOnly = loadedContactFormUiModel.copy(
+            displayName = "Display Name",
+            firstName = "",
+            lastName = ""
+        )
+        private val loadedDataWithFirstNameOnly = loadedContactFormUiModel.copy(
+            displayName = "",
+            firstName = "First Name",
+            lastName = ""
+        )
+        private val loadedDataWithLastNameOnly = loadedContactFormUiModel.copy(
+            displayName = "",
+            firstName = "",
+            lastName = "Last Name"
+        )
         private val emptyLoadingState = ContactFormState.Loading()
         private val loadedCreateContactState = ContactFormState.Data(contact = emptyContactFormUiModel())
-        private val loadedUpdateContactState = ContactFormState.Data(contact = loadedContactFormUiModel)
+        private val loadedUpdateContactState =
+            ContactFormState.Data(contact = loadedContactFormUiModel, isSaveEnabled = true)
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
@@ -63,6 +85,37 @@ class ContactFormReducerTest(
                 currentState = emptyLoadingState,
                 event = ContactFormEvent.ContactLoaded(loadedContactFormUiModel),
                 expectedState = loadedUpdateContactState
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
+                event = ContactFormEvent.ContactLoaded(
+                    loadedDataWithEmptyNameFields
+                ),
+                expectedState = loadedUpdateContactState.copy(
+                    isSaveEnabled = false,
+                    contact = loadedDataWithEmptyNameFields
+                )
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
+                event = ContactFormEvent.ContactLoaded(
+                    loadedDataWithDisplayNameOnly
+                ),
+                expectedState = loadedUpdateContactState.copy(contact = loadedDataWithDisplayNameOnly)
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
+                event = ContactFormEvent.ContactLoaded(
+                    loadedDataWithFirstNameOnly
+                ),
+                expectedState = loadedUpdateContactState.copy(contact = loadedDataWithFirstNameOnly)
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
+                event = ContactFormEvent.ContactLoaded(
+                    loadedDataWithLastNameOnly
+                ),
+                expectedState = loadedUpdateContactState.copy(contact = loadedDataWithLastNameOnly)
             ),
             TestInput(
                 currentState = emptyLoadingState,

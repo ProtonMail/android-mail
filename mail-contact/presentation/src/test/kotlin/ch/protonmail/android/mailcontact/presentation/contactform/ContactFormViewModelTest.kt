@@ -150,7 +150,8 @@ class ContactFormViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = ContactFormState.Data(
-                contact = contactFormUiModel
+                contact = contactFormUiModel,
+                isSaveEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -291,6 +292,7 @@ class ContactFormViewModelTest {
             val actual = awaitItem()
             val expected = ContactFormState.Data(
                 contact = expectedContactFormUiModel,
+                isSaveEnabled = true,
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_invalid_email_error))
             )
 
