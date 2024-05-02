@@ -22,8 +22,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.model.BasicContactInfo
+import ch.protonmail.android.mailcommon.domain.model.decode
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.domain.util.fromUrlSafeBase64String
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContact
 import ch.protonmail.android.mailcontact.domain.usecase.EditContact
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveDecryptedContact
@@ -48,6 +49,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.presentation.utils.InputValidationResult
+import me.proton.core.util.kotlin.deserialize
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -88,18 +90,14 @@ class ContactFormViewModel @Inject constructor(
         } ?: run {
             var contactData = emptyContactFormUiModelWithInitialFields()
 
-            savedStateHandle.get<String>(ContactFormScreen.ContactFormContactNameKey)?.let { contactName ->
-                contactData =
-                    contactData.copy(
-                        displayName = if (contactName == "null") "" else contactName.fromUrlSafeBase64String()
-                    )
-            }
-
-            savedStateHandle.get<String>(ContactFormScreen.ContactFormContactEmailKey)
-                ?.let { contactEmail ->
+            savedStateHandle.get<String>(ContactFormScreen.ContactFormBasicContactInfoKey)
+                ?.deserialize<BasicContactInfo>()
+                ?.let { basicContactInfo ->
+                    val decodedInfo = basicContactInfo.decode()
                     val email = emptyEmailField(contactData.incrementalUniqueFieldId.toString())
                     contactData = contactData.copy(
-                        emails = listOf(email.copy(value = contactEmail.fromUrlSafeBase64String())),
+                        displayName = decodedInfo.contactName ?: "",
+                        emails = listOf(email.copy(value = decodedInfo.contactEmail)),
                         incrementalUniqueFieldId = contactData.incrementalUniqueFieldId.plus(1)
                     )
                 }

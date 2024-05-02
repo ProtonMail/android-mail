@@ -282,8 +282,8 @@ fun Home(
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
                         onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
                         onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
-                        onAddContact = { contactName, contactAddress ->
-                            navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        onAddContact = { basicContactInfo ->
+                            navController.navigate(Screen.AddContact(basicContactInfo))
                         },
                         onComposeNewMessage = {
                             navController.navigate(
@@ -327,8 +327,8 @@ fun Home(
                         onReplyAll = { navController.navigate(Screen.MessageActionComposer(DraftAction.ReplyAll(it))) },
                         onForward = { navController.navigate(Screen.MessageActionComposer(DraftAction.Forward(it))) },
                         onViewContactDetails = { navController.navigate(Screen.ContactDetails(it)) },
-                        onAddContact = { contactName, contactAddress ->
-                            navController.navigate(Screen.AddContact(contactName, contactAddress))
+                        onAddContact = { basicContactInfo ->
+                            navController.navigate(Screen.AddContact(basicContactInfo))
                         },
                         onComposeNewMessage = {
                             navController.navigate(

@@ -22,9 +22,10 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.model.BasicContactInfo
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
-import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
@@ -58,6 +59,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.serialize
 import org.junit.Test
 import kotlin.random.Random
 import kotlin.test.AfterTest
@@ -162,10 +164,9 @@ class ContactFormViewModelTest {
     fun `given contact name and address in SavedState, when init, then emits create state with data`() = runTest {
         // Given
         val contactName = "Test User"
-        val contactEmail = "test@proton.me"
+        val contactEmail = "testuser@proton.me"
         expectSavedStateContactId(null)
-        expectSavedStateContactName(contactName)
-        expectSavedStateContactEmail(contactEmail)
+        expectSavedStateBasicContactInfo(contactName, contactEmail)
 
         // When
         contactFormViewModel.state.test {
@@ -184,8 +185,7 @@ class ContactFormViewModelTest {
         val contactName = ""
         val contactEmail = "test@proton.me"
         expectSavedStateContactId(null)
-        expectSavedStateBlankContactName()
-        expectSavedStateContactEmail(contactEmail)
+        expectSavedStateBasicContactInfo(contactName, contactEmail)
 
         // When
         contactFormViewModel.state.test {
@@ -894,9 +894,7 @@ class ContactFormViewModelTest {
 
     private fun expectNoSavedState() {
         expectSavedStateContactId(null)
-        expectSavedStateContactName(null)
-        expectSavedStateContactEmail(null)
-
+        expectSavedStateNoBasicContactInfo()
     }
 
     private fun expectSavedStateContactId(contactId: ContactId?) {
@@ -905,22 +903,16 @@ class ContactFormViewModelTest {
         } returns contactId?.id
     }
 
-    private fun expectSavedStateContactName(contactName: String?) {
+    private fun expectSavedStateBasicContactInfo(contactName: String?, contactEmail: String) {
         every {
-            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactNameKey)
-        } returns contactName?.toUrlSafeBase64String()
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormBasicContactInfoKey)
+        } returns BasicContactInfo(contactName, contactEmail).encode().serialize()
     }
 
-    private fun expectSavedStateBlankContactName() {
+    private fun expectSavedStateNoBasicContactInfo() {
         every {
-            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactNameKey)
-        } returns "null"
-    }
-
-    private fun expectSavedStateContactEmail(contactEmail: String?) {
-        every {
-            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormContactEmailKey)
-        } returns contactEmail?.toUrlSafeBase64String()
+            savedStateHandleMock.get<String>(ContactFormScreen.ContactFormBasicContactInfoKey)
+        } returns null
     }
 
     private fun expectDecryptedContact(

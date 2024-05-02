@@ -740,8 +740,7 @@ fun ContactFormTopBar(
 object ContactFormScreen {
 
     const val ContactFormContactIdKey = "contact_form_contact_id"
-    const val ContactFormContactNameKey = "contact_form_contact_name"
-    const val ContactFormContactEmailKey = "contact_form_contact_email"
+    const val ContactFormBasicContactInfoKey = "contact_form_basic_contact_info"
 
     data class Actions(
         val onCloseClick: () -> Unit,

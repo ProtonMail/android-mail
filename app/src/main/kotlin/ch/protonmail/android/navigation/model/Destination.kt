@@ -19,8 +19,9 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
+import ch.protonmail.android.mailcommon.domain.model.BasicContactInfo
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
-import ch.protonmail.android.mailcommon.domain.util.toUrlSafeBase64String
+import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftActionForShareKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.DraftMessageIdKey
@@ -28,9 +29,8 @@ import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Seriali
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen.ContactGroupFormLabelIdKey
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen.ContactDetailsContactIdKey
-import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactEmailKey
+import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormBasicContactInfoKey
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
-import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactNameKey
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
@@ -159,15 +159,12 @@ sealed class Destination(val route: String) {
 
         object CreateContact : Destination("contacts/contact/form")
         object AddContact : Destination(
-            "contacts/addContact/${ContactFormContactNameKey.wrap()}/${ContactFormContactEmailKey.wrap()}/form"
+            "contacts/addContact/${ContactFormBasicContactInfoKey.wrap()}/form"
         ) {
-
-            operator fun invoke(contactName: String, contactEmail: String): String {
+            operator fun invoke(contactInfo: BasicContactInfo): String {
                 return route.replace(
-                    ContactFormContactNameKey.wrap(),
-                    if (contactName.trim().isNotBlank()) contactName.toUrlSafeBase64String() else "null"
-                ).replace(
-                    ContactFormContactEmailKey.wrap(), contactEmail.toUrlSafeBase64String()
+                    ContactFormBasicContactInfoKey.wrap(),
+                    contactInfo.encode().serialize()
                 )
             }
         }
