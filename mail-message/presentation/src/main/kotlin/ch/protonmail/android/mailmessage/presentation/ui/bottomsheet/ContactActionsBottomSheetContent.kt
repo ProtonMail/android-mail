@@ -24,7 +24,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -69,7 +71,7 @@ fun ContactActionsBottomSheetContent(
     dataState: ContactActionsBottomSheetState.Data,
     actions: ContactActionsBottomSheetContent.Actions
 ) {
-    Column {
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         ContactActionsBottomSheetHeader(
             dataState.participant, dataState.avatarUiModel
         )
@@ -218,6 +220,7 @@ fun ContactActionsBottomSheetContentPreview() {
 }
 
 object ContactActionsBottomSheetTestTags {
+
     const val Avatar = "Avatar"
     const val ContactActionsItem = "ContactActionsItem"
     const val ActionIcon = "ActionIcon"
