@@ -119,6 +119,8 @@ internal class MessageDetailLabelAsBottomSheetDismissalTests : MockedNetworkTest
         }
 
         messageDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+
             bottomBarSection {
                 openLabelAsBottomSheet()
 
