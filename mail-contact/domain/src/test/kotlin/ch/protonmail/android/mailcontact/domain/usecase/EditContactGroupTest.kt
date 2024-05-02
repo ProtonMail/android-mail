@@ -96,6 +96,30 @@ class EditContactGroupTest {
     }
 
     @Test
+    fun `should trim the whitespaces from contact group name`() = runTest {
+        // Given
+        val contactGroupNameWithWhitespaces = " $contactGroupName "
+        coEvery { labelRepositoryMock.updateLabel(userId, expectedLabel) } just Runs
+        expectGetLabel(expectedLabel.labelId, expectedLabel)
+        expectEditContactGroupMembersSuccess(expectedContactEmailIds)
+
+        // When
+        editContactGroup(
+            userId,
+            contactGroupLabelId,
+            contactGroupNameWithWhitespaces,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
+
+        // Then
+        coVerify {
+            labelRepositoryMock.updateLabel(userId, expectedLabel)
+            editContactGroupMembersMock(userId, contactGroupLabelId, expectedContactEmailIds.toSet())
+        }
+    }
+
+    @Test
     fun `should return error when getting label from repository fails`() = runTest {
         // Given
         expectGetLabel(contactGroupLabelId, null)

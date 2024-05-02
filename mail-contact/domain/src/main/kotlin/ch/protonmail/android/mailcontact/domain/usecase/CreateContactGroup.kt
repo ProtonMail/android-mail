@@ -42,7 +42,7 @@ class CreateContactGroup @Inject constructor(
     ): Either<CreateContactGroupError, Unit> = either {
 
         val label = NewLabel(
-            name = name,
+            name = name.trim(),
             color = color.hex,
             isNotified = null,
             isExpanded = null,

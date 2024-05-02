@@ -48,7 +48,7 @@ class EditContactGroup @Inject constructor(
         labelRepository.updateLabel(
             userId,
             contactGroupLabel.copy(
-                name = name,
+                name = name.trim(),
                 color = color.hex
             )
         )

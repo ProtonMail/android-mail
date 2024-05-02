@@ -103,6 +103,26 @@ class CreateContactGroupTest {
     }
 
     @Test
+    fun `should trim the whitespaces from contact group name`() = runTest {
+        // Given
+        val contactGroupNameWithWhitespaces = " $contactGroupName "
+        expectCreateLabelSuccess(expectedNewLabel)
+        expectGetLabelsSuccess(listOf(expectedCreatedLabel))
+        expectEditContactGroupMembersSuccess(expectedContactEmailIds)
+
+        // When
+        val actual = createContactGroup(
+            userId,
+            contactGroupNameWithWhitespaces,
+            ColorRgbHex(contactGroupColor),
+            expectedContactEmailIds
+        )
+
+        // Then
+        assertEquals(Unit.right(), actual)
+    }
+
+    @Test
     fun `should return error when creating ContactGroup throws exception`() = runTest {
         // Given
         expectCreateLabelThrows(expectedNewLabel)
