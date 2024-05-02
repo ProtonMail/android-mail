@@ -115,7 +115,7 @@ class MarkMessageAndConversationReadWorkerTest {
     @Test
     fun `worker should return failure if marking was failed`() = runTest {
         // Given
-        val error = MarkConversationReadError.ConversationAlreadyRead
+        val error = MarkConversationReadError.ConversationHasUnreadMessages
         coEvery { markMessageAndConversationRead.invoke(userId, messageId, conversationId) } returns error.left()
 
         // When

@@ -202,7 +202,7 @@ class MarkMessageAndConversationReadIfAllMessagesReadTest {
         val result = buildUseCase()(userId, sampleMessage.messageId, sampleConversation.conversationId)
 
         // then
-        assertEquals(MarkConversationReadError.ConversationAlreadyRead.left(), result)
+        assertEquals(Unit.right(), result)
         coVerify(exactly = 1) { markMessageAsRead.invoke(userId, sampleMessage.messageId) }
         coVerify { markConversationsAsRead wasNot Called }
     }
