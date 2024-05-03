@@ -26,26 +26,26 @@ import ch.protonmail.android.composer.data.local.converters.AttachmentStateConve
 import ch.protonmail.android.composer.data.local.converters.DraftStateConverters
 import ch.protonmail.android.composer.data.local.entity.MessageExpirationTimeEntity
 import ch.protonmail.android.composer.data.local.entity.MessagePasswordEntity
-import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailconversation.data.local.ConversationDatabase
 import ch.protonmail.android.mailconversation.data.local.converters.ConversationConverters
 import ch.protonmail.android.mailconversation.data.local.converters.MapConverters
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationEntity
 import ch.protonmail.android.mailconversation.data.local.entity.ConversationLabelEntity
 import ch.protonmail.android.mailconversation.data.local.entity.UnreadConversationsCountEntity
-import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import ch.protonmail.android.mailmessage.data.local.MessageConverters
 import ch.protonmail.android.mailmessage.data.local.MessageDatabase
 import ch.protonmail.android.mailmessage.data.local.SearchResultsDatabase
 import ch.protonmail.android.mailmessage.data.local.converters.AttachmentWorkerStatusConverters
 import ch.protonmail.android.mailmessage.data.local.converters.UriConverter
 import ch.protonmail.android.mailmessage.data.local.entity.AttachmentStateEntity
+import ch.protonmail.android.mailmessage.data.local.entity.DraftStateEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentMetadataEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageBodyEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
 import ch.protonmail.android.mailmessage.data.local.entity.MessageLabelEntity
 import ch.protonmail.android.mailmessage.data.local.entity.SearchResultEntity
+import ch.protonmail.android.mailmessage.data.local.entity.UnreadMessagesCountEntity
 import ch.protonmail.android.mailpagination.data.local.PageIntervalDatabase
 import ch.protonmail.android.mailpagination.data.local.entity.PageIntervalEntity
 import me.proton.core.account.data.db.AccountConverters
@@ -244,7 +244,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 32
+        const val version = 33
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -277,7 +277,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_28_29,
             AppDatabaseMigrations.MIGRATION_29_30,
             AppDatabaseMigrations.MIGRATION_30_31,
-            AppDatabaseMigrations.MIGRATION_31_32
+            AppDatabaseMigrations.MIGRATION_31_32,
+            AppDatabaseMigrations.MIGRATION_32_33
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
