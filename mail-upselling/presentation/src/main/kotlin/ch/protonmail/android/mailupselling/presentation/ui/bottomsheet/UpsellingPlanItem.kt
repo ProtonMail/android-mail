@@ -30,11 +30,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,9 +45,11 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
@@ -148,34 +152,40 @@ internal fun UpsellingPlanItem(
                 userId = planUiModel.userId.value,
                 actions
             )
-            val buttonHeight = UpsellingDimens.ButtonHeight
             val buttonCornerRadius = UpsellingDimens.ButtonCornerRadius
+            var maxWrappedViewSize by remember { mutableStateOf(IntSize.Zero) }
 
-            AndroidView(
+            Box(
                 modifier = Modifier
-                    .padding(ProtonDimens.DefaultSpacing)
-                    .fillMaxWidth(),
-                factory = { ctx ->
-                    ProtonPaymentButton(ContextThemeWrapper(ctx, R.style.ProtonTheme)).apply {
-                        this.id = planUiModel.viewId
-                    }
-                },
-                update = { button ->
-                    button.apply {
-                        this.cornerRadius = buttonCornerRadius
-                        this.height = buttonHeight
-                        this.userId = planUiModel.userId.value
-                        this.currency = planUiModel.currency
-                        this.cycle = planUiModel.cycle
-                        this.plan = planUiModel.dynamicPlan
-                        this.text = context.getString(R.string.upselling_get_button, planUiModel.name)
-                        if (!planUiModel.highlighted) {
-                            this.setBackgroundColor(UpsellingColors.SecondaryButtonBackground)
+                    .fillMaxWidth()
+                    .onGloballyPositioned { maxWrappedViewSize = it.size }
+            ) {
+                AndroidView(
+                    modifier = Modifier
+                        .widthIn(max = maxWrappedViewSize.width.pxToDp())
+                        .align(Alignment.Center)
+                        .padding(ProtonDimens.DefaultSpacing),
+                    factory = { ctx ->
+                        ProtonPaymentButton(ContextThemeWrapper(ctx, R.style.ProtonTheme)).apply {
+                            this.id = planUiModel.viewId
                         }
-                        setOnEventListener(eventListener)
+                    },
+                    update = { button ->
+                        button.apply {
+                            this.cornerRadius = buttonCornerRadius
+                            this.userId = planUiModel.userId.value
+                            this.currency = planUiModel.currency
+                            this.cycle = planUiModel.cycle
+                            this.plan = planUiModel.dynamicPlan
+                            this.text = context.getString(R.string.upselling_get_button, planUiModel.name)
+                            if (!planUiModel.highlighted) {
+                                this.setBackgroundColor(UpsellingColors.SecondaryButtonBackground)
+                            }
+                            setOnEventListener(eventListener)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

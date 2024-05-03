@@ -32,10 +32,6 @@ internal object UpsellingDimens {
         @Composable
         get() = 25.dp.dpToPx()
 
-    val ButtonHeight: Int
-        @Composable
-        get() = 36.dp.dpToPx()
-
     val EntitlementImageItemSize = 20.dp
 
     val DiscountTagVerticalOffset = (-8).dp
