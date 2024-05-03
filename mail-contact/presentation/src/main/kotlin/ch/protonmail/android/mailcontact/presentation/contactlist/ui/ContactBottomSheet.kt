@@ -37,14 +37,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupCreate
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
-internal fun ContactBottomSheetContent(modifier: Modifier = Modifier, actions: ContactBottomSheet.Actions) {
+internal fun ContactBottomSheetContent(
+    modifier: Modifier = Modifier,
+    isContactGroupsCrudEnabled: Boolean,
+    actions: ContactBottomSheet.Actions
+) {
     Column(
         modifier = modifier
             .padding(top = ProtonDimens.SmallSpacing)
@@ -58,7 +61,7 @@ internal fun ContactBottomSheetContent(modifier: Modifier = Modifier, actions: C
                 onClick = actions.onNewContactClick
             )
         }
-        if (ContactGroupCreate.value) {
+        if (isContactGroupsCrudEnabled) {
             ContactBottomSheetItem(
                 modifier = Modifier,
                 titleResId = R.string.new_group,
@@ -130,6 +133,7 @@ object ContactBottomSheet {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactBottomSheetScreenPreview() {
     ContactBottomSheetContent(
+        isContactGroupsCrudEnabled = true,
         actions = ContactBottomSheet.Actions.Empty
     )
 }

@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupLabelsError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
@@ -100,8 +101,11 @@ class ContactListViewModelTest {
     }
     private val observeContacts = mockk<ObserveContacts>()
     private val observeContactGroupLabels = mockk<ObserveContactGroupLabels>()
+    private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
+        every { this@mockk(any()) } returns true
+    }
 
-    private val reducer = ContactListReducer()
+    private val reducer = ContactListReducer(isContactGroupsCrudEnabledMock)
 
     private val isPaidUser = mockk<IsPaidUser>()
     private val getInitials = GetInitials()
@@ -168,7 +172,8 @@ class ContactListViewModelTest {
                 ),
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
-                )
+                ),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -220,6 +225,31 @@ class ContactListViewModelTest {
     }
 
     @Test
+    fun `when feature flag IsContactGroupsCrudEnabled is false then emit appropriate event`() = runTest {
+        // Given
+        expectContactsData()
+        every { isContactGroupsCrudEnabledMock.invoke(any()) } returns false
+
+        // When
+        contactListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactListState.Loaded.Data(
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
+                isContactGroupsCrudEnabled = false
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+
+    @Test
     fun `given contact list, when action open bottom sheet, then emits open state`() = runTest {
         // Given
         expectContactsData()
@@ -238,7 +268,8 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -264,7 +295,8 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -291,7 +323,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openContactForm = Effect.of(Unit)
+                openContactForm = Effect.of(Unit),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -319,7 +352,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openContactGroupForm = Effect.of(Unit)
+                openContactGroupForm = Effect.of(Unit),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -347,7 +381,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error))
+                subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error)),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -374,7 +409,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openImportContact = Effect.of(Unit)
+                openImportContact = Effect.of(Unit),
+                isContactGroupsCrudEnabled = true
             )
 
             assertEquals(expected, actual)

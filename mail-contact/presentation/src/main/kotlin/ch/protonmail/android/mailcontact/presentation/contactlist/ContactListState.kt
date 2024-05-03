@@ -44,7 +44,8 @@ sealed interface ContactListState {
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
             val contacts: List<ContactListItemUiModel>,
-            val contactGroups: List<ContactGroupItemUiModel>
+            val contactGroups: List<ContactGroupItemUiModel>,
+            val isContactGroupsCrudEnabled: Boolean
         ) : Loaded
 
         data class Empty(

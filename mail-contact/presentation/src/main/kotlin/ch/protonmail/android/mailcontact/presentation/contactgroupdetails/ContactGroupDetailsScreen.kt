@@ -64,9 +64,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsM
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.DeleteContactGroupDialog
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupDelete
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupEdit
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupSendMessage
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -202,7 +199,7 @@ fun ContactGroupDetailsContent(
                     ),
                     textAlign = TextAlign.Center
                 )
-                if (ContactGroupSendMessage.value) {
+                if (state.isContactGroupsCrudEnabled) {
                     ContactGroupDetailsSendTextButton(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         isEnabled = state.isSendEnabled,
@@ -330,7 +327,7 @@ fun ContactGroupDetailsTopBar(
         },
         actions = {
             if (state is ContactGroupDetailsState.Data) {
-                if (ContactGroupEdit.value) {
+                if (state.isContactGroupsCrudEnabled) {
                     IconButton(onClick = { actions.onEditClick(state.contactGroup.id) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_proton_pen),
@@ -339,7 +336,7 @@ fun ContactGroupDetailsTopBar(
                         )
                     }
                 }
-                if (ContactGroupDelete.value) {
+                if (state.isContactGroupsCrudEnabled) {
                     IconButton(onClick = onDeleteClick) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_proton_trash),
@@ -386,6 +383,7 @@ private fun ContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
+            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData,
             deleteDialogState = DeleteDialogState.Hidden
         ),
@@ -399,6 +397,7 @@ private fun EmptyContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
+            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData.copy(
                 memberCount = 0,
                 members = emptyList()
@@ -415,6 +414,7 @@ private fun ContactDetailsTopBarPreview() {
     ContactGroupDetailsTopBar(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
+            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData,
             deleteDialogState = DeleteDialogState.Hidden
         ),

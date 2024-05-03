@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
@@ -83,12 +84,17 @@ class HomeViewModelTest {
         every { this@mockk() } returns emptyFlow()
     }
 
+    private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
+        every { this@mockk(any()) } returns true
+    }
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
             selectedMailLabelId,
+            isContactGroupsCrudEnabledMock,
             observePrimaryUserMock,
             shareIntentObserver
         )
@@ -144,6 +150,24 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun `when feature flag IsContactGroupsCrudEnabled is false then emit appropriate event`() = runTest {
+        // Given
+        every { networkManager.observe() } returns emptyFlow()
+        every { isContactGroupsCrudEnabledMock.invoke(any()) } returns false
+
+        // When
+        homeViewModel.state.test {
+            val actualItem = awaitItem()
+            val expectedItem = HomeState.Initial.copy(
+                isContactGroupsCrudEnabled = false
+            )
+
+            // Then
+            assertEquals(expectedItem, actualItem)
+        }
+    }
+
+    @Test
     fun `when the status is disconnected and is still disconnected after 5 seconds then emit disconnected status`() =
         runTest {
             // Given
@@ -159,7 +183,8 @@ class HomeViewModelTest {
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
                     messageSendingStatusEffect = Effect.empty(),
                     navigateToEffect = Effect.empty(),
-                    startedFromLauncher = false
+                    startedFromLauncher = false,
+                    isContactGroupsCrudEnabled = true
                 )
 
                 // Then
@@ -182,7 +207,8 @@ class HomeViewModelTest {
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
                 navigateToEffect = Effect.empty(),
-                startedFromLauncher = false
+                startedFromLauncher = false,
+                isContactGroupsCrudEnabled = true
             )
 
             // Then
@@ -202,7 +228,8 @@ class HomeViewModelTest {
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
                 navigateToEffect = Effect.empty(),
-                startedFromLauncher = false
+                startedFromLauncher = false,
+                isContactGroupsCrudEnabled = true
             )
 
             // Then
@@ -224,7 +251,8 @@ class HomeViewModelTest {
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
                 navigateToEffect = Effect.empty(),
-                startedFromLauncher = false
+                startedFromLauncher = false,
+                isContactGroupsCrudEnabled = true
             )
             sendingMessageStatusFlow.emit(MessageSendingStatus.None)
 
@@ -249,7 +277,8 @@ class HomeViewModelTest {
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
                     messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
                     navigateToEffect = Effect.empty(),
-                    startedFromLauncher = false
+                    startedFromLauncher = false,
+                    isContactGroupsCrudEnabled = true
                 )
 
                 // Then

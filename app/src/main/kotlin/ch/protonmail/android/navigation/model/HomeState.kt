@@ -26,7 +26,8 @@ data class HomeState(
     val networkStatusEffect: Effect<NetworkStatus>,
     val messageSendingStatusEffect: Effect<MessageSendingStatus>,
     val navigateToEffect: Effect<String>,
-    val startedFromLauncher: Boolean
+    val startedFromLauncher: Boolean,
+    val isContactGroupsCrudEnabled: Boolean
 ) {
 
     companion object {
@@ -35,7 +36,8 @@ data class HomeState(
             networkStatusEffect = Effect.empty(),
             messageSendingStatusEffect = Effect.empty(),
             navigateToEffect = Effect.empty(),
-            startedFromLauncher = false
+            startedFromLauncher = false,
+            isContactGroupsCrudEnabled = true
         )
     }
 }

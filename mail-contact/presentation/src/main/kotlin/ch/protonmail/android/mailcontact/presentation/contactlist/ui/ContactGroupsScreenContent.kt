@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListState
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupCreate
 import me.proton.core.compose.theme.ProtonDimens
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -49,7 +48,8 @@ internal fun ContactGroupsScreenContent(
                 ContactListGroupItem(
                     modifier = Modifier.animateItemPlacement(),
                     contact = contactGroupItemUiModel,
-                    actions = actions
+                    actions = actions,
+                    isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled
                 )
             }
         }
@@ -59,7 +59,7 @@ internal fun ContactGroupsScreenContent(
             title = stringResource(R.string.no_contact_groups),
             description = stringResource(R.string.no_contact_groups_description),
             buttonText = stringResource(R.string.add_contact_group),
-            showAddButton = ContactGroupCreate.value,
+            showAddButton = state.isContactGroupsCrudEnabled,
             onAddClick = onNewGroupClick
         )
     }

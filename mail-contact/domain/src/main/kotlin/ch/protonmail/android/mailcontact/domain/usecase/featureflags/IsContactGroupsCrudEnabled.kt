@@ -16,24 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.presentation.utils
+package ch.protonmail.android.mailcontact.domain.usecase.featureflags
 
-import ch.protonmail.android.mailcontact.presentation.BuildConfig
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-enum class ContactFeatureFlags(val value: Boolean) {
+class IsContactGroupsCrudEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
 
-    // Contacts
-    ContactDetails(true),
-    ContactCreate(true),
-    ContactEdit(true),
-    ContactDelete(true),
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
 
-    // Send group message
-    ContactGroupSendMessage(BuildConfig.DEBUG),
+    private companion object {
 
-    // Contact import
-    ContactImport(false),
-
-    // Contact export
-    ContactExport(false)
+        const val FeatureFlagId = "MailAndroidContactGroupsCrud"
+    }
 }

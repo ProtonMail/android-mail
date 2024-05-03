@@ -20,10 +20,13 @@ package ch.protonmail.android.mailcontact.presentation.contactlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import javax.inject.Inject
 
-class ContactListReducer @Inject constructor() {
+class ContactListReducer @Inject constructor(
+    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled
+) {
 
     internal fun newStateFrom(currentState: ContactListState, event: ContactListEvent): ContactListState {
         return when (event) {
@@ -47,7 +50,8 @@ class ContactListReducer @Inject constructor() {
                 if (event.contactList.isNotEmpty()) {
                     ContactListState.Loaded.Data(
                         contacts = event.contactList,
-                        contactGroups = event.contactGroups
+                        contactGroups = event.contactGroups,
+                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
                     )
                 } else ContactListState.Loaded.Empty()
             }
@@ -57,7 +61,8 @@ class ContactListReducer @Inject constructor() {
                     ContactListState.Loaded.Data(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
                         contacts = event.contactList,
-                        contactGroups = event.contactGroups
+                        contactGroups = event.contactGroups,
+                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
                     )
                 } else {
                     ContactListState.Loaded.Empty(

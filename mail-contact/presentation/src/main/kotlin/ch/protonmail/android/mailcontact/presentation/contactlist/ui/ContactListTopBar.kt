@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactGroupCreate
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
@@ -41,7 +40,8 @@ import me.proton.core.compose.theme.ProtonTheme
 internal fun ContactListTopBar(
     modifier: Modifier = Modifier,
     actions: ContactListTopBar.Actions,
-    isAddButtonVisible: Boolean
+    isAddButtonVisible: Boolean,
+    isContactGroupsCrudEnabled: Boolean
 ) {
     ProtonTopAppBar(
         modifier = modifier.fillMaxWidth(),
@@ -59,7 +59,7 @@ internal fun ContactListTopBar(
         },
         actions = {
             // hasOneCreateOption can be deleted once we get rid of ContactFeatureFlags
-            val hasOneCreateOption = ContactCreate.value || ContactGroupCreate.value || ContactImport.value
+            val hasOneCreateOption = ContactCreate.value || isContactGroupsCrudEnabled || ContactImport.value
             if (isAddButtonVisible && hasOneCreateOption) {
                 IconButton(onClick = actions.onAddClick) {
                     Icon(
@@ -95,7 +95,8 @@ internal object ContactListTopBar {
 private fun ContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
-        isAddButtonVisible = true
+        isAddButtonVisible = true,
+        isContactGroupsCrudEnabled = true
     )
 }
 
@@ -104,6 +105,7 @@ private fun ContactListTopBarPreview() {
 private fun EmptyContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
-        isAddButtonVisible = false
+        isAddButtonVisible = false,
+        isContactGroupsCrudEnabled = true
     )
 }

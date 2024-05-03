@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsUiModelMapper
@@ -91,8 +92,11 @@ class ContactGroupDetailsViewModelTest {
     private val observeContactGroupMock = mockk<ObserveContactGroup>()
     private val savedStateHandleMock = mockk<SavedStateHandle>()
     private val deleteContactGroupMock = mockk<DeleteContactGroup>()
+    private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
+        every { this@mockk(any()) } returns true
+    }
 
-    private val reducer = ContactGroupDetailsReducer()
+    private val reducer = ContactGroupDetailsReducer(isContactGroupsCrudEnabledMock)
 
     private val contactGroupDetailsViewModel by lazy {
         ContactGroupDetailsViewModel(
@@ -154,6 +158,7 @@ class ContactGroupDetailsViewModelTest {
             val actual = awaitItem()
             val expected = ContactGroupDetailsState.Data(
                 isSendEnabled = false,
+                isContactGroupsCrudEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 deleteDialogState = DeleteDialogState.Hidden
             )
@@ -179,6 +184,36 @@ class ContactGroupDetailsViewModelTest {
                 val actual = awaitItem()
                 val expected = ContactGroupDetailsState.Data(
                     isSendEnabled = true,
+                    isContactGroupsCrudEnabled = true,
+                    contactGroup = expectedContactGroupDetailsUiModel,
+                    deleteDialogState = DeleteDialogState.Hidden
+                )
+
+                assertEquals(expected, actual)
+            }
+        }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when emits loaded contact group state, if feature flag IsContactGroupsCrudEnabled is false then state contains false`() =
+        runTest {
+            // Given
+            val expectedContactGroup = testEmptyContactGroup
+            val expectedContactGroupDetailsUiModel = ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
+            expectContactGroup(testUserId, testLabelId, expectedContactGroup)
+            expectContactGroupDetailsUiModel(expectedContactGroup, expectedContactGroupDetailsUiModel)
+
+            expectSavedStateLabelId(testLabelId)
+
+            every { isContactGroupsCrudEnabledMock.invoke(any()) } returns false
+
+            // When
+            contactGroupDetailsViewModel.state.test {
+                // Then
+                val actual = awaitItem()
+                val expected = ContactGroupDetailsState.Data(
+                    isSendEnabled = true,
+                    isContactGroupsCrudEnabled = false,
                     contactGroup = expectedContactGroupDetailsUiModel,
                     deleteDialogState = DeleteDialogState.Hidden
                 )
@@ -208,6 +243,7 @@ class ContactGroupDetailsViewModelTest {
 
             val expected = ContactGroupDetailsState.Data(
                 isSendEnabled = true,
+                isContactGroupsCrudEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 close = Effect.of(Unit),
                 deleteDialogState = DeleteDialogState.Hidden
@@ -238,6 +274,7 @@ class ContactGroupDetailsViewModelTest {
 
             val expected = ContactGroupDetailsState.Data(
                 isSendEnabled = true,
+                isContactGroupsCrudEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 openComposer = Effect.of(
                     expectedContactGroupDetailsUiModel.members.map { it.email }
@@ -270,6 +307,7 @@ class ContactGroupDetailsViewModelTest {
 
             val expected = ContactGroupDetailsState.Data(
                 isSendEnabled = true,
+                isContactGroupsCrudEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 openComposer = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Shown(
@@ -306,6 +344,7 @@ class ContactGroupDetailsViewModelTest {
 
                 val expected = ContactGroupDetailsState.Data(
                     isSendEnabled = true,
+                    isContactGroupsCrudEnabled = true,
                     contactGroup = expectedContactGroupDetailsUiModel,
                     openComposer = Effect.empty(),
                     deleteDialogState = DeleteDialogState.Hidden,
@@ -341,6 +380,7 @@ class ContactGroupDetailsViewModelTest {
 
                 val expected = ContactGroupDetailsState.Data(
                     isSendEnabled = true,
+                    isContactGroupsCrudEnabled = true,
                     contactGroup = expectedContactGroupDetailsUiModel,
                     openComposer = Effect.empty(),
                     deleteDialogState = DeleteDialogState.Hidden,
@@ -378,6 +418,7 @@ class ContactGroupDetailsViewModelTest {
 
             val expected = ContactGroupDetailsState.Data(
                 isSendEnabled = true,
+                isContactGroupsCrudEnabled = true,
                 contactGroup = expectedContactGroupDetailsUiModel,
                 openComposer = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,

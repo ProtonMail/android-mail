@@ -21,10 +21,13 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import javax.inject.Inject
 
-class ContactGroupDetailsReducer @Inject constructor() {
+class ContactGroupDetailsReducer @Inject constructor(
+    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled
+) {
 
     internal fun newStateFrom(
         currentState: ContactGroupDetailsState,
@@ -54,6 +57,7 @@ class ContactGroupDetailsReducer @Inject constructor() {
 
             is ContactGroupDetailsState.Loading -> ContactGroupDetailsState.Data(
                 isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
+                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null),
                 contactGroup = event.contactGroupDetailsUiModel,
                 deleteDialogState = DeleteDialogState.Hidden
             )
