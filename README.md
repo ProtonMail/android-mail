@@ -1,15 +1,15 @@
-ProtonMail for Android
+Proton Mail for Android
 =======================
-Copyright (c) 2023 Proton Technologies AG
+Copyright (c) 2024 Proton Technologies AG
 
 ## Build instructions
 - Install and configure the environment (two options available)
   - [Android Studio bundle](https://developer.android.com/studio/install)
-  - [Standalone Android SDK](https://android-doc.github.io/sdk/installing/index.html?pkg=tools)
+  - [Standalone Android tools](https://developer.android.com/tools)
 - Install and configure Java 17+ (not needed for Android Studio bundle as it's included)
   - Install Java 17 with `brew install openjdk@17` | `apt install openjdk-17-jdk`
   - Set Java 17 as the current version by using the `JAVA_HOME` environment variable
-- Clone this repository (Use `git clone [url]`.)
+- Clone this repository (Use `git clone git@github.com:ProtonMail/android-mail.git`.)
 - Setup `google-services.json` file by running `./scripts/setup_google_services.sh`
 - Build with any of the following:
   - Execute `./gradlew assembleDevDebug` in a terminal
@@ -33,12 +33,8 @@ UI tests are executed on Firebase Test Lab through the CI. UI tests must run on 
 
 While instrumented tests can be run locally with no additional setup, in order to run the tests located in the `app/src/uiTest` folder, some assets (`users.json` and `internal_api.json` for instance) might need to be downloaded and configured.
 
-For more information, head over to **Confluence** -> **MAILAND space** -> **ProtonMail UI Tests setup**. 
-
 ## Deploy
 Each merge to `master` branch builds the branch's HEAD and deploys it to [Firebase App Distribution](https://firebase.google.com/docs/app-distribution).
-
-In order to invite someone as a tester for such builds, their email address needs to be added to the `v6-internal-alpha-testers` group on Firebase.
 
 ## Signing
 All `release` builds done on CI are automatically signed with ProtonMail's keystore. In order to perform signing locally, the keystore will need to be placed into the `keystore/` directory and the credentials will be read from `private.properties` file.
@@ -54,7 +50,6 @@ It is possible to run the application getting the "core" libraries from the loca
 ```
 useCoreGitSubmodule=true
 ```
-
 
 ## Code style
 This project's code style and formatting is checked by detekt. The rule set is [ktlint's default one](https://github.com/pinterest/ktlint)
