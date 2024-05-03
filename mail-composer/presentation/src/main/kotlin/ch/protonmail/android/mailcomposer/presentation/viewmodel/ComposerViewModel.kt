@@ -41,7 +41,6 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.ClearMessageSendingError
-import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlainText
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAllAttachments
 import ch.protonmail.android.mailcomposer.domain.usecase.DeleteAttachment
 import ch.protonmail.android.mailcomposer.domain.usecase.DraftUploader
@@ -82,6 +81,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.reducer.ComposerReducer
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlainText
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
@@ -403,6 +403,7 @@ class ComposerViewModel @Inject constructor(
                     is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
                         onSendMessage(action)
                     )
+
                     is ComposerAction.RespondInlineRequested -> onRespondInline()
                 }
                 composerIdlingResource.decrement()
@@ -661,23 +662,32 @@ class ComposerViewModel @Inject constructor(
 
     private fun currentMessageId() = state.value.fields.draftId
 
-    private suspend fun currentValidRecipientsTo() = RecipientsTo(
-        state.value.fields.to.filterIsInstance<RecipientUiModel.Valid>().map {
-            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
-        }
-    )
+    private suspend fun currentValidRecipientsTo(): RecipientsTo {
+        val contacts = contactsOrEmpty()
+        return RecipientsTo(
+            state.value.fields.to.filterIsInstance<RecipientUiModel.Valid>().map {
+                participantMapper.recipientUiModelToParticipant(it, contacts)
+            }
+        )
+    }
 
-    private suspend fun currentValidRecipientsCc() = RecipientsCc(
-        state.value.fields.cc.filterIsInstance<RecipientUiModel.Valid>().map {
-            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
-        }
-    )
+    private suspend fun currentValidRecipientsCc(): RecipientsCc {
+        val contacts = contactsOrEmpty()
+        return RecipientsCc(
+            state.value.fields.cc.filterIsInstance<RecipientUiModel.Valid>().map {
+                participantMapper.recipientUiModelToParticipant(it, contacts)
+            }
+        )
+    }
 
-    private suspend fun currentValidRecipientsBcc() = RecipientsBcc(
-        state.value.fields.bcc.filterIsInstance<RecipientUiModel.Valid>().map {
-            participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty())
-        }
-    )
+    private suspend fun currentValidRecipientsBcc(): RecipientsBcc {
+        val contacts = contactsOrEmpty()
+        return RecipientsBcc(
+            state.value.fields.bcc.filterIsInstance<RecipientUiModel.Valid>().map {
+                participantMapper.recipientUiModelToParticipant(it, contacts)
+            }
+        )
+    }
 
     private suspend fun contactsOrEmpty() = getContacts(primaryUserId()).getOrElse { emptyList() }
 
@@ -694,44 +704,52 @@ class ComposerViewModel @Inject constructor(
         }
     )
 
-    private suspend fun onToChanged(action: ComposerAction.RecipientsToChanged): ComposerOperation =
-        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+    private suspend fun onToChanged(action: ComposerAction.RecipientsToChanged): ComposerOperation {
+        val contacts = contactsOrEmpty()
+        return action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
             storeDraftWithRecipients(
                 primaryUserId(),
                 currentMessageId(),
                 currentSenderEmail(),
-                to = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
+                to = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contacts) }
             ).fold(
                 ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
                 ifRight = { action }
             )
         } ?: action
+    }
 
-    private suspend fun onCcChanged(action: ComposerAction.RecipientsCcChanged): ComposerOperation =
-        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
-            storeDraftWithRecipients(
-                primaryUserId(),
-                currentMessageId(),
-                currentSenderEmail(),
-                cc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
-            ).fold(
-                ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
-                ifRight = { action }
-            )
-        } ?: action
 
-    private suspend fun onBccChanged(action: ComposerAction.RecipientsBccChanged): ComposerOperation =
-        action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+    private suspend fun onCcChanged(action: ComposerAction.RecipientsCcChanged): ComposerOperation {
+        val contacts = contactsOrEmpty()
+        return action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
             storeDraftWithRecipients(
                 primaryUserId(),
                 currentMessageId(),
                 currentSenderEmail(),
-                bcc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contactsOrEmpty()) }
+                cc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contacts) }
             ).fold(
                 ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
                 ifRight = { action }
             )
         } ?: action
+    }
+
+
+    private suspend fun onBccChanged(action: ComposerAction.RecipientsBccChanged): ComposerOperation {
+        val contacts = contactsOrEmpty()
+        return action.recipients.filterIsInstance<RecipientUiModel.Valid>().takeIfNotEmpty()?.let { validRecipients ->
+            storeDraftWithRecipients(
+                primaryUserId(),
+                currentMessageId(),
+                currentSenderEmail(),
+                bcc = validRecipients.map { participantMapper.recipientUiModelToParticipant(it, contacts) }
+            ).fold(
+                ifLeft = { ComposerEvent.ErrorStoringDraftRecipients },
+                ifRight = { action }
+            )
+        } ?: action
+    }
 
     private suspend fun onSearchTermChanged(searchTerm: String, suggestionsField: ContactSuggestionsField) {
 
