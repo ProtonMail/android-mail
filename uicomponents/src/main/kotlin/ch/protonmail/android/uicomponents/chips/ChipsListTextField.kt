@@ -233,7 +233,7 @@ fun ChipsListTextField(
 
                             },
                             onClick = {
-                                selectionOption.emails.forEach {
+                                selectionOption.emails.joinToString(separator = " ").takeIfNotBlank()?.let {
                                     state.typeWord(it)
                                 }
                                 actions.onSuggestionsDismissed()
