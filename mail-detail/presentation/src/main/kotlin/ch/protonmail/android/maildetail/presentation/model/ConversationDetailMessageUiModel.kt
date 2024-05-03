@@ -43,7 +43,8 @@ sealed interface ConversationDetailMessageUiModel {
         val repliedIcon: RepliedIcon,
         val sender: ParticipantUiModel,
         val shortTime: TextUiModel,
-        val labels: ImmutableList<LabelUiModel>
+        val labels: ImmutableList<LabelUiModel>,
+        val isDraft: Boolean
     ) : ConversationDetailMessageUiModel
 
     data class Expanding(

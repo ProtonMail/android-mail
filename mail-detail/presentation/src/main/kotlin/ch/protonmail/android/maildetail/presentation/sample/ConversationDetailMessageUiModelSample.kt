@@ -209,7 +209,8 @@ object ConversationDetailMessageUiModelSample {
         sender = ParticipantUiModel(message.sender.name, message.sender.address, R.drawable.ic_proton_lock, false),
         shortTime = TextUiModel("10:00"),
         labels = emptyList<LabelUiModel>().toImmutableList(),
-        messageId = MessageIdUiModel(message.messageId.id)
+        messageId = MessageIdUiModel(message.messageId.id),
+        isDraft = message.isDraft()
     )
 
     private fun buildExpanded(

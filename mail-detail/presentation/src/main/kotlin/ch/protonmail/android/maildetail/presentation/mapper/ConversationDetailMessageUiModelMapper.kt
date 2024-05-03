@@ -81,7 +81,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             sender = participantUiModelMapper.senderToUiModel(message.sender, contacts),
             shortTime = formatShortTime(message.time.seconds),
             labels = toLabelUiModels(messageWithLabels.labels),
-            messageId = messageIdUiModelMapper.toUiModel(message.messageId)
+            messageId = messageIdUiModelMapper.toUiModel(message.messageId),
+            isDraft = message.isDraft()
         )
     }
 

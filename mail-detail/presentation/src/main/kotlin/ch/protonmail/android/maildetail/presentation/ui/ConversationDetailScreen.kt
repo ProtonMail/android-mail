@@ -60,6 +60,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.domain.model.BasicContactInfo
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -109,7 +110,6 @@ import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -123,7 +123,7 @@ fun ConversationDetailScreen(
     actions: ConversationDetail.Actions,
     viewModel: ConversationDetailViewModel = hiltViewModel()
 ) {
-    val state by rememberAsState(flow = viewModel.state, initial = ConversationDetailViewModel.initialState)
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -308,6 +308,7 @@ fun ConversationDetailScreen(
                         )
                     )
                 },
+                onOpenComposer = { actions.openComposerForDraftMessage(MessageId(it.id)) },
                 onParticipantClicked = { participantUiModel, avatarUiModel ->
                     viewModel.submit(
                         ConversationDetailViewAction.RequestContactActionsBottomSheet(
@@ -477,6 +478,7 @@ fun ConversationDetailScreen(
                 val conversationDetailItemActions = ConversationDetailItem.Actions(
                     onExpand = actions.onExpandMessage,
                     onCollapse = actions.onCollapseMessage,
+                    onOpenComposer = actions.onOpenComposer,
                     onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                     onOpenMessageBodyLink = actions.onOpenMessageBodyLink,
                     onShowAllAttachmentsForMessage = actions.onShowAllAttachmentsForMessage,
@@ -701,6 +703,7 @@ object ConversationDetail {
         val onViewContactDetails: (ContactId) -> Unit,
         val onAddContact: (basicContactInfo: BasicContactInfo) -> Unit,
         val onComposeNewMessage: (recipientAddress: String) -> Unit,
+        val openComposerForDraftMessage: (messageId: MessageId) -> Unit,
         val showSnackbar: (message: String) -> Unit
     )
 }
@@ -743,6 +746,7 @@ object ConversationDetailScreen {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
+        val onOpenComposer: (MessageIdUiModel) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
@@ -781,6 +785,7 @@ object ConversationDetailScreen {
                 onLoadEmbeddedImages = {},
                 onLoadRemoteAndEmbeddedContent = {},
                 onOpenInProtonCalendar = {},
+                onOpenComposer = {},
                 onPrint = { _ -> },
                 onAvatarClicked = { _, _ -> },
                 onParticipantClicked = { _, _ -> }

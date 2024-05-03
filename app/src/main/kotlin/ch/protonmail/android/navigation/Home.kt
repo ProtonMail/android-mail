@@ -294,6 +294,7 @@ fun Home(
                                 )
                             )
                         },
+                        openComposerForDraftMessage = { navController.navigate(Screen.EditDraftComposer(it)) },
                         showSnackbar = { message ->
                             scope.launch {
                                 snackbarHostNormState.showSnackbar(

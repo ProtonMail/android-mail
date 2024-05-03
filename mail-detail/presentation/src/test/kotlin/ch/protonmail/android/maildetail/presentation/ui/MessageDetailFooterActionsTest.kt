@@ -87,7 +87,8 @@ internal class MessageDetailFooterActionsTest {
             onScrollRequestCompleted = {},
             onPrint = {},
             onAvatarClicked = { _, _ -> },
-            onParticipantClicked = { _, _ -> }
+            onParticipantClicked = { _, _ -> },
+            onOpenComposer = {}
         )
 
         // When

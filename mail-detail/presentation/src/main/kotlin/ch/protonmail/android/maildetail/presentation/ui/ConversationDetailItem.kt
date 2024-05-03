@@ -66,7 +66,10 @@ fun ConversationDetailItem(
                 ConversationDetailCollapsedMessageHeader(
                     uiModel = uiModel,
                     modifier = Modifier.clickable {
-                        actions.onExpand(uiModel.messageId)
+                        when (uiModel.isDraft) {
+                            true -> actions.onOpenComposer(uiModel.messageId)
+                            else -> actions.onExpand(uiModel.messageId)
+                        }
                     }
                 )
             }
@@ -160,6 +163,7 @@ object ConversationDetailItem {
     data class Actions(
         val onCollapse: (MessageIdUiModel) -> Unit,
         val onExpand: (MessageIdUiModel) -> Unit,
+        val onOpenComposer: (MessageIdUiModel) -> Unit,
         val onMessageBodyLinkClicked: (messageId: MessageIdUiModel, url: Uri) -> Unit,
         val onOpenMessageBodyLink: (url: Uri) -> Unit,
         val onShowAllAttachmentsForMessage: (MessageIdUiModel) -> Unit,
