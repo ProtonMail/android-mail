@@ -52,20 +52,24 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
 
         val PlusOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_schedule_send_snooze),
-                localResource = R.drawable.ic_upselling_clock
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
+                localResource = R.drawable.ic_upselling_storage
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+                localResource = R.drawable.ic_upselling_inbox
             ),
             DynamicEntitlementUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
                 localResource = R.drawable.ic_upselling_globe
             ),
             DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
-                localResource = R.drawable.ic_upselling_tag
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
+                localResource = R.drawable.ic_upselling_rocket
             ),
             DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_more),
-                localResource = R.drawable.ic_upselling_gift
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
+                localResource = R.drawable.ic_upselling_tag
             )
         )
 

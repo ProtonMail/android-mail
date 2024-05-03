@@ -22,10 +22,12 @@
     <string name="upselling_title">Upgrade to</string>
     <!-- Mail Plus -->
     <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-    <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-    <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-    <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
-    <string name="upselling_plus_feature_more">And 14 more premium features</string>
+    <string name="upselling_plus_feature_storage">15 GB storage</string>
+    <string name="upselling_plus_feature_email_addresses">10 email addresses</string>
+    <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
+    <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+    <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
+
     <!-- Unlimited -->
     <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
     <string name="upselling_unlimited_feature_storage">500 GB storage</string>
