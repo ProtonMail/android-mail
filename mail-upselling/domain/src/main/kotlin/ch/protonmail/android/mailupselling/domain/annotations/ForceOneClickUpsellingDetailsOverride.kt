@@ -18,8 +18,11 @@
 
 package ch.protonmail.android.mailupselling.domain.annotations
 
+import javax.inject.Qualifier
+
 /**
  * Indicates whether the entitlements shown in the 1-click flow should be replaced
  * with the entitlements hardcoded in the current app version.
  */
+@Qualifier
 annotation class ForceOneClickUpsellingDetailsOverride
