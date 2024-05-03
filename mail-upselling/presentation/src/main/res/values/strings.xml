@@ -30,11 +30,11 @@
 
     <!-- Unlimited -->
     <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-    <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-    <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
-    <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-    <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-    <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+    <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+    <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and Calendar features</string>
+    <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+    <string name="upselling_unlimited_feature_drive">Secure cloud storage</string>
+    <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
     <!-- Other UI Items -->
     <string name="upselling_discount_tag">SAVE %s%%</string>
     <string name="upselling_month">/month</string>
