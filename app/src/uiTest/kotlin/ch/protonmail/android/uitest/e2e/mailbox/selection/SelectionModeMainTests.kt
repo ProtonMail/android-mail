@@ -65,7 +65,7 @@ internal class SelectionModeMainTests : MockedNetworkTest(
                     respondWith "/mail/v4/settings/mail-v4-settings_placeholder_conversation.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations")
-                    respondWith "/mail/v4/conversations/conversations_base_placeholder_multiple.json"
+                    respondWith "/mail/v4/conversations/conversations_215427.json"
                     withStatusCode 200 ignoreQueryParams true
             )
         }

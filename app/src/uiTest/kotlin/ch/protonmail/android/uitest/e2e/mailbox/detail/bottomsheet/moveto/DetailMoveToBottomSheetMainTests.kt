@@ -71,10 +71,16 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     @Test
     @TestId("185411")
     fun checkMoveToBottomSheetComponentsWithNoCustomFolders() {
-        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(
+            useDefaultMailSettings = false,
+            useDefaultCustomFolders = false
+        ) {
             addMockRequests(
                 get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185411.json"
+                    withStatusCode 200,
+                get("/core/v4/labels?Type=3")
+                    respondWith "/core/v4/labels/labels-type3_base_placeholder_empty.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
@@ -150,11 +156,14 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     fun checkMoveToBottomSheetComponentsSelection() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
-            useDefaultMailReadResponses = true
+            useDefaultCustomFolders = false
         ) {
             addMockRequests(
                 get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185414.json"
+                    withStatusCode 200,
+                get("/core/v4/labels?Type=3")
+                    respondWith "/core/v4/labels/labels-type3_base_placeholder_empty.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"
@@ -195,11 +204,14 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     fun checkMoveToBottomSheetSelectionIsGoneAfterDismissal() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
-            useDefaultMailReadResponses = true
+            useDefaultCustomFolders = false
         ) {
             addMockRequests(
                 get("/mail/v4/settings")
                     respondWith "/mail/v4/settings/mail-v4-settings_185415.json"
+                    withStatusCode 200,
+                get("/core/v4/labels?Type=3")
+                    respondWith "/core/v4/labels/labels-type3_base_placeholder_empty.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations")
                     respondWith "/mail/v4/conversations/conversations_base_placeholder.json"

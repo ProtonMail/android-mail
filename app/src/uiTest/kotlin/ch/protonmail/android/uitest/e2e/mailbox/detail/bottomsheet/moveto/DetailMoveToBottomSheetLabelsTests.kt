@@ -77,6 +77,7 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
             useDefaultLabels = false,
+            useDefaultCustomFolders = false,
             useDefaultMailReadResponses = true
         ) {
             addMockRequests(
@@ -85,6 +86,9 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
                     withStatusCode 200,
                 get("/core/v4/labels?Type=1")
                     respondWith "/core/v4/labels/labels-type1_185425.json"
+                    withStatusCode 200,
+                get("/core/v4/labels?Type=3")
+                    respondWith "/core/v4/labels/labels-type3_base_placeholder_empty.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425.json"
@@ -139,7 +143,8 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
     fun checkMoveToBottomSheetMoveToSpamFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
             useDefaultMailSettings = false,
-            useDefaultLabels = false
+            useDefaultLabels = false,
+            useDefaultCustomFolders = false
         ) {
             addMockRequests(
                 get("/mail/v4/settings")
@@ -147,6 +152,9 @@ internal class DetailMoveToBottomSheetLabelsTests : MockedNetworkTest() {
                     withStatusCode 200,
                 get("/core/v4/labels?Type=1")
                     respondWith "/core/v4/labels/labels-type1_185425.json"
+                    withStatusCode 200,
+                get("/core/v4/labels?Type=3")
+                    respondWith "/core/v4/labels/labels-type3_base_placeholder_empty.json"
                     withStatusCode 200,
                 get("/mail/v4/conversations?Page=0&PageSize=75&Limit=75&LabelID=0&Sort=Time&Desc=1")
                     respondWith "/mail/v4/conversations/conversations_185425.json"
