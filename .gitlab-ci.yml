@@ -296,6 +296,7 @@ tag_release:
       when: never
     - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($INTERNAL_ALPHA_RELEASE != "true")
       when: manual
+      allow_failure: true
     - if: ('$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH') && ($INTERNAL_ALPHA_RELEASE == "true")
 
 deploy_to_firebase_dev:
@@ -350,6 +351,7 @@ deploy_play_store_internal:
       when: never
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
       when: manual
+      allow_failure: true
   script:
     - base64 -d - < "$PLAY_STORE_SERVICE_ACCOUNT_JSON" > /tmp/play_store_service_account.json
     - bundle exec fastlane deployToPlayStoreInternal
