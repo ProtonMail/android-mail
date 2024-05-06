@@ -57,8 +57,6 @@ fun MessageDetailFooter(
     uiModel: MessageDetailFooterUiModel,
     actions: MessageDetailFooter.Actions
 ) {
-    if (!uiModel.shouldShowButtons) return
-
     Row(
         modifier = modifier
             .testTag(MessageBodyTestTags.MessageActionsRootItem)

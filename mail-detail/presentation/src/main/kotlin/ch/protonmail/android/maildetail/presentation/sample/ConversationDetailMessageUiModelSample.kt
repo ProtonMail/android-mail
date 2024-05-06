@@ -243,7 +243,6 @@ object ConversationDetailMessageUiModelSample {
         ),
         messageDetailFooterUiModel = MessageDetailFooterUiModel(
             messageId = MessageIdUiModel(message.messageId.id),
-            shouldShowButtons = false,
             shouldShowReplyAll = false
         ),
         messageBannersUiModel = MessageBannersUiModel(

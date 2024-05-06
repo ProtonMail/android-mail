@@ -26,11 +26,9 @@ import javax.inject.Inject
 class MessageDetailFooterUiModelMapper @Inject constructor() {
 
     fun toUiModel(messageWithLabels: MessageWithLabels): MessageDetailFooterUiModel {
-        val shouldShowButtons = !messageWithLabels.message.isDraft()
         val shouldShowReplyAll = messageWithLabels.message.allRecipients.size > 1
         return MessageDetailFooterUiModel(
             MessageIdUiModel(messageWithLabels.message.messageId.id),
-            shouldShowButtons = shouldShowButtons,
             shouldShowReplyAll = shouldShowReplyAll
         )
     }

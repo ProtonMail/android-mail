@@ -26,19 +26,11 @@ internal object MessageDetailFooterPreviewData {
 
     val ReplyAll = MessageDetailFooterUiModel(
         MessageIdUiModel("id"),
-        shouldShowButtons = true,
         shouldShowReplyAll = true
     )
 
     val Reply = MessageDetailFooterUiModel(
         MessageIdUiModel("id"),
-        shouldShowButtons = true,
-        shouldShowReplyAll = false
-    )
-
-    val NoButtons = MessageDetailFooterUiModel(
-        MessageIdUiModel("id"),
-        shouldShowButtons = false,
         shouldShowReplyAll = false
     )
 }
@@ -55,9 +47,6 @@ internal class MessageDetailFooterPreviewProvider : PreviewParameterProvider<Mes
         ),
         MessageDetailFooterPreview(
             uiModel = MessageDetailFooterPreviewData.Reply
-        ),
-        MessageDetailFooterPreview(
-            uiModel = MessageDetailFooterPreviewData.NoButtons
         )
     )
 }

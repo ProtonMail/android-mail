@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
-import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailFooterUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -42,7 +41,6 @@ internal class MessageDetailFooterUiModelMapperTest {
 
         val expected = MessageDetailFooterUiModel(
             messageId = MessageIdUiModel(multipleRecipientsMessage.message.messageId.id),
-            shouldShowButtons = true,
             shouldShowReplyAll = true
         )
 
@@ -62,32 +60,11 @@ internal class MessageDetailFooterUiModelMapperTest {
 
         val expected = MessageDetailFooterUiModel(
             messageId = MessageIdUiModel(singleRecipientMessage.message.messageId.id),
-            shouldShowButtons = true,
             shouldShowReplyAll = false
         )
 
         // When
         val actual = mapper.toUiModel(singleRecipientMessage)
-
-        // Then
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `should not show buttons at all if the message is a draft`() {
-        // Given
-        val draftMessage = MessageWithLabelsSample.build(
-            message = MessageSample.build(labelIds = listOf(LabelSample.AllDrafts.labelId))
-        )
-
-        val expected = MessageDetailFooterUiModel(
-            messageId = MessageIdUiModel(draftMessage.message.messageId.id),
-            shouldShowButtons = false,
-            shouldShowReplyAll = false
-        )
-
-        // When
-        val actual = mapper.toUiModel(draftMessage)
 
         // Then
         assertEquals(expected, actual)
