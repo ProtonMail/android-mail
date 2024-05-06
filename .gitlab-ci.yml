@@ -402,6 +402,9 @@ release_publish_github:
   extends: .release-sync-commit-shared
 
 release_publish_github_tags:
+  only:
+    variables:
+      - $RELEASE_SYNC_FROM_BRANCH == $CI_COMMIT_BRANCH
   stage: publish
   when: manual
   variables:
