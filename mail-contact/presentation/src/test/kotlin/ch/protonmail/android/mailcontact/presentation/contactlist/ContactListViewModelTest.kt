@@ -105,7 +105,7 @@ class ContactListViewModelTest {
         every { this@mockk(any()) } returns true
     }
 
-    private val reducer = ContactListReducer(isContactGroupsCrudEnabledMock)
+    private val reducer = ContactListReducer()
 
     private val isPaidUser = mockk<IsPaidUser>()
     private val getInitials = GetInitials()
@@ -120,6 +120,7 @@ class ContactListViewModelTest {
             reducer,
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
+            isContactGroupsCrudEnabledMock,
             observePrimaryUserId
         )
     }

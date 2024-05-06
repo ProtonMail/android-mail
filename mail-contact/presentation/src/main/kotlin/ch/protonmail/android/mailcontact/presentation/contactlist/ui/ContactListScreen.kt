@@ -62,9 +62,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
             ContactBottomSheetContent(
-                isContactGroupsCrudEnabled = if (state is ContactListState.Loaded) {
-                    state.isContactGroupsCrudEnabled
-                } else false,
+                isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled,
                 actions = ContactBottomSheet.Actions(
                     onNewContactClick = {
                         viewModel.submit(ContactListViewAction.OnNewContactClick)
@@ -89,9 +87,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                         }
                     ),
                     isAddButtonVisible = state is ContactListState.Loaded.Data,
-                    isContactGroupsCrudEnabled = if (state is ContactListState.Loaded) {
-                        state.isContactGroupsCrudEnabled
-                    } else false
+                    isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled
                 )
             },
             content = { paddingValues ->

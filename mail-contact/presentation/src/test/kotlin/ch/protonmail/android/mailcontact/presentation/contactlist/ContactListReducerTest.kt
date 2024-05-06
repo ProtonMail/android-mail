@@ -45,7 +45,7 @@ internal class ContactListReducerTest(
         every { this@mockk(any()) } returns true
     }
 
-    private val reducer = ContactListReducer(isContactGroupsCrudEnabledMock)
+    private val reducer = ContactListReducer()
 
     @Test
     fun `should produce the expected state`() = with(testInput) {
@@ -102,7 +102,8 @@ internal class ContactListReducerTest(
                 currentState = emptyLoadingState,
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
-                    loadedContactGroupItemUiModels
+                    loadedContactGroupItemUiModels,
+                    isContactGroupsCrudEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -110,7 +111,8 @@ internal class ContactListReducerTest(
                 currentState = emptyLoadingState,
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
-                    emptyList()
+                    emptyList(),
+                    isContactGroupsCrudEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),
@@ -151,7 +153,8 @@ internal class ContactListReducerTest(
                 currentState = emptyLoadedState,
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
-                    loadedContactGroupItemUiModels
+                    loadedContactGroupItemUiModels,
+                    isContactGroupsCrudEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -161,7 +164,8 @@ internal class ContactListReducerTest(
                 ),
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
-                    emptyList()
+                    emptyList(),
+                    isContactGroupsCrudEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty().copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
@@ -225,7 +229,8 @@ internal class ContactListReducerTest(
                 currentState = dataLoadedState,
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
-                    loadedContactGroupItemUiModels
+                    loadedContactGroupItemUiModels,
+                    isContactGroupsCrudEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -233,7 +238,8 @@ internal class ContactListReducerTest(
                 currentState = dataLoadedState,
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
-                    emptyList()
+                    emptyList(),
+                    isContactGroupsCrudEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),

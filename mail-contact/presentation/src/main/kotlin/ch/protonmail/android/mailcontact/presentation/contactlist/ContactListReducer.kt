@@ -20,13 +20,10 @@ package ch.protonmail.android.mailcontact.presentation.contactlist
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import javax.inject.Inject
 
-class ContactListReducer @Inject constructor(
-    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled
-) {
+class ContactListReducer @Inject constructor() {
 
     internal fun newStateFrom(currentState: ContactListState, event: ContactListEvent): ContactListState {
         return when (event) {
@@ -51,11 +48,9 @@ class ContactListReducer @Inject constructor(
                     ContactListState.Loaded.Data(
                         contacts = event.contactList,
                         contactGroups = event.contactGroups,
-                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
                     )
-                } else ContactListState.Loaded.Empty(
-                    isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
-                )
+                } else ContactListState.Loaded.Empty()
             }
 
             is ContactListState.Loaded -> {
@@ -64,12 +59,12 @@ class ContactListReducer @Inject constructor(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
                         contacts = event.contactList,
                         contactGroups = event.contactGroups,
-                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
                     )
                 } else {
                     ContactListState.Loaded.Empty(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
                     )
                 }
             }

@@ -34,7 +34,8 @@ internal sealed interface ContactListViewAction : ContactListOperation {
 internal sealed interface ContactListEvent : ContactListOperation {
     data class ContactListLoaded(
         val contactList: List<ContactListItemUiModel>,
-        val contactGroups: List<ContactGroupItemUiModel>
+        val contactGroups: List<ContactGroupItemUiModel>,
+        val isContactGroupsCrudEnabled: Boolean
     ) : ContactListEvent
     data object ErrorLoadingContactList : ContactListEvent
     data object SubscriptionUpgradeRequiredError : ContactListEvent

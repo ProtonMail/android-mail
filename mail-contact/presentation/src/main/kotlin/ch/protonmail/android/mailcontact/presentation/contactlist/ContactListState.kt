@@ -25,8 +25,11 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiMod
 
 sealed interface ContactListState {
 
+    val isContactGroupsCrudEnabled: Boolean
+
     data class Loading(
-        val errorLoading: Effect<TextUiModel> = Effect.empty()
+        val errorLoading: Effect<TextUiModel> = Effect.empty(),
+        override val isContactGroupsCrudEnabled: Boolean = false
     ) : ContactListState
 
     sealed interface Loaded : ContactListState {
@@ -36,7 +39,6 @@ sealed interface ContactListState {
         val openContactGroupForm: Effect<Unit>
         val openImportContact: Effect<Unit>
         val subscriptionError: Effect<TextUiModel>
-        val isContactGroupsCrudEnabled: Boolean
 
         data class Data(
             override val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
@@ -44,7 +46,7 @@ sealed interface ContactListState {
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
-            override val isContactGroupsCrudEnabled: Boolean,
+            override val isContactGroupsCrudEnabled: Boolean = false,
             val contacts: List<ContactListItemUiModel>,
             val contactGroups: List<ContactGroupItemUiModel>
         ) : Loaded
@@ -55,7 +57,7 @@ sealed interface ContactListState {
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
-            override val isContactGroupsCrudEnabled: Boolean = true
+            override val isContactGroupsCrudEnabled: Boolean = false
         ) : Loaded
     }
 }

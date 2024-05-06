@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +52,7 @@ class ContactListViewModel @Inject constructor(
     private val reducer: ContactListReducer,
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
+    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -94,6 +96,7 @@ class ContactListViewModel @Inject constructor(
             observeContacts(userId),
             observeContactGroupLabels(userId)
         ) { contacts, contactGroups ->
+            val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(userId)
             val contactList = contacts.getOrElse {
                 Timber.e("Error while observing contacts")
                 return@combine ContactListEvent.ErrorLoadingContactList
@@ -108,7 +111,8 @@ class ContactListViewModel @Inject constructor(
                         Timber.e("Error while observing contact groups")
                         return@combine ContactListEvent.ErrorLoadingContactList
                     }
-                )
+                ),
+                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled
             )
         }
     }
