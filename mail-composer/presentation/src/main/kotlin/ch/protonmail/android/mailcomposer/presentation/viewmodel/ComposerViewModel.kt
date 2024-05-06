@@ -755,12 +755,8 @@ class ComposerViewModel @Inject constructor(
                     }
                 } ?: emptySequence()
 
-                val fromContactGroups = contactGroups.getOrNull()?.asSequence()?.map { contactGroup ->
-                    ContactSuggestionUiModel.ContactGroup(
-                        name = contactGroup.name,
-                        emails = contactGroup.members.map { it.email }
-                    )
-                } ?: emptySequence()
+                // revert this dummy code when we unhide ContactGroup suggestions + enable test
+                val fromContactGroups = emptySequence<ContactSuggestionUiModel.ContactGroup>()
 
                 val suggestions = (fromContacts + fromContactGroups).sortedBy {
                     it.name
