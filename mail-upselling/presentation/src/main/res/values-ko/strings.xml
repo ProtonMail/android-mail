@@ -18,34 +18,34 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_title">Upgrade to</string>
-  <string name="upselling_description">To unlock more storage and premium features</string>
+  <string name="upselling_button_item_content_description">업그레이드 버튼</string>
+  <string name="upselling_title">업그레이드하기</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">스케쥴 전송과 방해 금지</string>
+  <string name="upselling_plus_feature_custom_domain">커스텀 이메일 도메인 1개</string>
+  <string name="upselling_plus_feature_folders_labels">무제한 폴더, 라벨, 필터</string>
+  <string name="upselling_plus_feature_more">그리고 14개의 프리미엄 기능</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_description_override">올인원 프리미엄 구독</string>
+  <string name="upselling_unlimited_feature_storage">저장공간 500GB</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Mail과 Calendar의 모든 유료 기능</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">%s%% 절약</string>
+  <string name="upselling_month">/월</string>
+  <string name="upselling_get_button">%s 받기</string>
   <plurals name="upselling_month">
-    <item quantity="other">%d months</item>
+    <item quantity="other">%d개월</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
-  <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_unable_retrieve_options">업그레이드 옵션을 불러올 수 없습니다.</string>
+  <string name="upselling_snackbar_error_no_user_id">오류가 발생했습니다.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">구독을 가져올 수 없습니다.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">구독을 업그레이드 중입니다…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">구독을 업그레이드하던 중 오류가 발생했습니다.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">오류가 발생했습니다. 다시 시도해 주십시오.</string>
 </resources>

@@ -129,6 +129,7 @@
   <string name="contact_group_form_update_success">Kişi grubu güncellendi</string>
   <string name="contact_group_form_save_error">Kişi grubu kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="contact_group_form_save_error_already_exists">Aynı adlı bir grup zaten var</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Üyeler yüklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="members_done">Tamam</string>
   <string name="add_members_error">Üyeler eklenirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>

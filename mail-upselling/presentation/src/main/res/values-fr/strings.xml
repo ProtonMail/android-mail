@@ -18,8 +18,8 @@
   -->
 <resources>
   <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Bouton de changement d\'abonnement</string>
   <string name="upselling_title">Passer à</string>
-  <string name="upselling_description">Pour débloquer plus d\'espace de stockage et des fonctionnalités premium</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Pour débloquer plus d\'espace de stockage et des fonctionnalités premium</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Planification de l\'envoi et mise en attente</string>

@@ -94,5 +94,11 @@
   <string name="set_message_password_button_apply">Použít heslo</string>
   <string name="set_message_password_button_save_changes">Uložit změny</string>
   <string name="set_message_password_button_remove_password">Odstranit heslo</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Odpovědět v řádku</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contact</item>
+    <item quantity="few">%d contacts</item>
+    <item quantity="many">%d contacts</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

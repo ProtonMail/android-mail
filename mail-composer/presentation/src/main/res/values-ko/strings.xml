@@ -95,4 +95,7 @@
   <string name="set_message_password_button_save_changes">변경 사항 저장</string>
   <string name="set_message_password_button_remove_password">비밀번호 제거</string>
   <string name="respondInline">본문 포함 회신</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

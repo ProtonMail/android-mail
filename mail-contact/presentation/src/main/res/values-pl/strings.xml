@@ -133,6 +133,7 @@
   <string name="contact_group_form_update_success">Grupa kontaktów została zaktualizowana</string>
   <string name="contact_group_form_save_error">Wystąpił błąd podczas zapisywania grupy kontaktów. Spróbuj ponownie później</string>
   <string name="contact_group_form_save_error_already_exists">Grupa o tej nazwie już istnieje</string>
+  <string name="contact_group_form_subscription_error">Ulepsz do płatnego planu, aby utworzyć grupy kontaktów</string>
   <string name="members_loading_error">Wystąpił błąd podczas ładowania członków. Spróbuj ponownie później</string>
   <string name="members_done">Gotowe</string>
   <string name="add_members_error">Wystąpił błąd podczas dodawania członków. Spróbuj ponownie później</string>

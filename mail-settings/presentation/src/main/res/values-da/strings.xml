@@ -145,7 +145,7 @@
     <item quantity="one">%s resterende forsøg indtil sikker datasletning.</item>
     <item quantity="other">%s resterende forsøg indtil sikker datasletning.</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Der opstod en fejl ved verificeringen af din pinkode.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Der opstod en fejl ved bekræftelsen af din pinkode.</string>
   <string name="mail_settings_pin_insertion_signout_text">Log ud</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Log ud</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Er du sikker på, at du vil logge ud?</string>

@@ -28,15 +28,15 @@
   <string name="quick_reply_button_content_description">Yanıtla</string>
   <string name="quick_reply_all_button_content_description">Tümünü yanıtla</string>
   <string name="more_button_content_description">Diğer</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Konu:</string>
+  <string name="from">Kimden:</string>
   <string name="to">Kime:</string>
   <string name="cc">Kopya:</string>
   <string name="bcc">Gizli kopya:</string>
-  <string name="date">Date:</string>
+  <string name="date">Tarih:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d Ek dosya</item>
+    <item quantity="other">%d Ek dosya</item>
   </plurals>
   <string name="hide_details">Bilgileri gizle</string>
   <string name="undisclosed_recipients">Gizli alıcılar</string>

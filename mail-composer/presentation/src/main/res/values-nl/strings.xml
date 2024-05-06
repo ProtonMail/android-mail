@@ -95,4 +95,8 @@
   <string name="set_message_password_button_save_changes">Wijzigingen opslaan</string>
   <string name="set_message_password_button_remove_password">Verwijder wachtwoord</string>
   <string name="respondInline">Respond in-line</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contact</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

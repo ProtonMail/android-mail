@@ -112,7 +112,7 @@
   <string name="color_forest">Лесной</string>
   <string name="color_olive">Оливковый</string>
   <string name="color_pickle">Огуречный</string>
-  <string name="undo_button_label">Undo</string>
+  <string name="undo_button_label">Отменить</string>
   <string name="undo_success_message">Действие отменено</string>
-  <string name="undo_failure_message">Action revert failed</string>
+  <string name="undo_failure_message">Не удалось отменить действие</string>
 </resources>

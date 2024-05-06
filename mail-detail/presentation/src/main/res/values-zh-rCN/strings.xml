@@ -25,7 +25,7 @@
     <item quantity="other">%d 封邮件</item>
   </plurals>
   <string name="quick_reply_button_content_description">回复</string>
-  <string name="quick_reply_all_button_content_description">回复全部</string>
+  <string name="quick_reply_all_button_content_description">回复所有人</string>
   <string name="more_button_content_description">更多</string>
   <string name="subject">Subject:</string>
   <string name="from">From:</string>
@@ -69,14 +69,14 @@
   <string name="message_phishing_banner_text">我们的系统已将此邮件认定为欺诈邮件，请确认其内容真实性。</string>
   <string name="message_expiration_banner_text">此邮件将在%1$s后过期</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">您即将在浏览器中打开:</string>
+  <string name="external_link_confirmation_dialog_text">您即将离开本应用并前往：</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">不再询问</string>
   <string name="external_link_confirmation_dialog_cancel_button">关闭</string>
   <string name="external_link_confirmation_dialog_continue_button">继续</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">警告：疑似虚假网站</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">此链接指向的网站可能会窃取您的密码、信用卡等信息。</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">为了您的安全，不要继续。</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">为了您的安全，请不要继续操作。</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">返回（推荐）</string>
   <string name="phishing_link_confirmation_dialog_button_continue">忽视警告并继续</string>
   <string name="message_delete_dialog_title">删除邮件</string>

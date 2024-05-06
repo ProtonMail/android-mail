@@ -133,6 +133,7 @@
   <string name="contact_group_form_update_success">Skupina stikov posodobljena</string>
   <string name="contact_group_form_save_error">Napaka pri shranjevanju skupine stikov, poskusite znova pozneje</string>
   <string name="contact_group_form_save_error_already_exists">Skupina z enakim imenom že obstaja</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Napaka pri nalaganju članov, poskusite znova pozneje</string>
   <string name="members_done">Končano</string>
   <string name="add_members_error">Napaka pri dodajanju članov, poskusite znova pozneje</string>

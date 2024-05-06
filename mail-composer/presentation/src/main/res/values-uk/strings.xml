@@ -94,5 +94,11 @@
   <string name="set_message_password_button_apply">Застосувати пароль</string>
   <string name="set_message_password_button_save_changes">Зберегти зміни</string>
   <string name="set_message_password_button_remove_password">Вилучити пароль</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Відповісти всередині тексту</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contact</item>
+    <item quantity="few">%d contacts</item>
+    <item quantity="many">%d contacts</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

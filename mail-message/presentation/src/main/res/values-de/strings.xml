@@ -52,7 +52,7 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copy address</string>
   <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
+  <string name="contact_actions_copy_address_performed">Adresse in die Zwischenablage kopiert</string>
   <string name="contact_actions_copy_name">Copy name</string>
   <string name="contact_actions_copy_name_description">Copy contact name</string>
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>

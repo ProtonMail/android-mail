@@ -131,6 +131,7 @@
   <string name="contact_group_form_update_success">Grup de contacte actualizat</string>
   <string name="contact_group_form_save_error">Eroare la salvarea grupului de contacte. Reîncercați mai târziu.</string>
   <string name="contact_group_form_save_error_already_exists">Un grup cu acest nume există deja.</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Eroare la încărcarea membrilor. Reîncercați mai târziu.</string>
   <string name="members_done">Gata</string>
   <string name="add_members_error">Eroare la adăugarea membrilor. Reîncercați mai târziu.</string>

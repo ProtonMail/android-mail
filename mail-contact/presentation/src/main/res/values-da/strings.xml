@@ -110,9 +110,9 @@
   <string name="contact_form_invalid_email_error">Fejl ved lagring af kontakt, den indeholder en ugyldig e-mailadresse</string>
   <string name="contact_group_details_loading_error">Fejl ved indlæsning af kontaktgruppe, prøv igen senere</string>
   <string name="contact_group_details_deletion_success">Kontaktgruppe slettet</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_details_deletion_error">Fejl ved sletning af kontaktgruppe</string>
+  <string name="contact_group_delete_dialog_title">Fjern %s gruppe fra kontakter?</string>
+  <string name="contact_group_delete_dialog_message">Gruppen opløses, men de tildelte kontakter forbliver upåvirkede.</string>
   <string name="contact_group_delete_dialog_confirm">Fjern</string>
   <string name="contact_group_delete_dialog_dismiss">Behold den</string>
   <string name="contact_group_delete_button_text">Slet gruppe</string>
@@ -129,6 +129,7 @@
   <string name="contact_group_form_update_success">Kontaktgruppe opdateret</string>
   <string name="contact_group_form_save_error">Fejl ved lagring af kontaktgruppe. Prøv igen senere</string>
   <string name="contact_group_form_save_error_already_exists">En gruppe med dette navn findes allerede</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Fejl ved indlæsning af medlemmer. Prøv igen senere.</string>
   <string name="members_done">Udført</string>
   <string name="add_members_error">Fejl ved tilføjelse af medlemmer, prøv igen senere</string>

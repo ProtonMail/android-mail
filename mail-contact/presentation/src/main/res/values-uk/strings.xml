@@ -114,12 +114,12 @@
   <string name="contact_form_invalid_email_error">Помилка збереження контакту, він містить невірну поштову адресу</string>
   <string name="contact_group_details_loading_error">Помилка при завантаженні групи контактів, спробуйте пізніше</string>
   <string name="contact_group_details_deletion_success">Групу контактів видалено</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_details_deletion_error">Помилка видалення групи контактів</string>
+  <string name="contact_group_delete_dialog_title">Вилучити групу %s з Контактів?</string>
+  <string name="contact_group_delete_dialog_message">Група буде розформована, але призначені контакти залишатимуться незмінними.</string>
+  <string name="contact_group_delete_dialog_confirm">Вилучити</string>
+  <string name="contact_group_delete_dialog_dismiss">Залишити це</string>
+  <string name="contact_group_delete_button_text">Видалити групу</string>
   <string name="contact_group_form_loading_error">Помилка при завантаженні групи контактів, спробуйте пізніше</string>
   <string name="edit_contact_group_content_description">Редагувати групу контактів</string>
   <string name="delete_contact_group_content_description">Видалити групу контактів</string>
@@ -133,6 +133,7 @@
   <string name="contact_group_form_update_success">Групу контактів оновлено</string>
   <string name="contact_group_form_save_error">Помилка збереження групи контактів, будь ласка, повторіть спробу пізніше</string>
   <string name="contact_group_form_save_error_already_exists">Група з цією назвою вже існує</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Помилка завантаження учасників, будь ласка, повторіть спробу пізніше</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Помилка додавання учасників, будь ласка, спробуйте пізніше</string>

@@ -129,6 +129,7 @@
   <string name="contact_group_form_update_success">Contactgroep bijgewerkt</string>
   <string name="contact_group_form_save_error">Fout bij opslaan van contactgroep, probeer het later opnieuw</string>
   <string name="contact_group_form_save_error_already_exists">Er bestaat al een groep met deze naam</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Fout bij het laden van de leden, probeer het later opnieuw</string>
   <string name="members_done">Klaar</string>
   <string name="add_members_error">Fout bij het toevoegen van leden, probeer het later opnieuw</string>

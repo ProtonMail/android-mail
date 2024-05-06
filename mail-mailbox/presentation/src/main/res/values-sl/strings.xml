@@ -121,13 +121,13 @@
   <string name="mailbox_search_no_results_title">Ni najdenih rezultatov</string>
   <string name="mailbox_search_no_results_explanation">Iskanje datuma, imena, e-poštnega naslova ali zadeve sporočila</string>
   <string name="mailbox_action_button_clear_trash">Izprazni smetnjak</string>
-  <string name="mailbox_action_button_clear_spam">Izprazni Vsiljeno pošto</string>
+  <string name="mailbox_action_button_clear_spam">Izprazni Neželeno pošto</string>
   <string name="mailbox_action_clear_trash_dialog_title">Izprazni mapo Smetnjak</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Izprazni mapo Vsiljena pošta</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Izprazni mapo Neželena pošta</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Smetnjaku«?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Vsiljeni pošti«?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Neželeni pošti«?</string>
   <string name="mailbox_action_clear_trash_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Smetnjaku«?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Vsiljeni pošti«?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Neželeni pošti«?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Načrtovana je operacija za čiščenje"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Opozorilo</string>

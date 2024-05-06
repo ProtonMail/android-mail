@@ -95,4 +95,10 @@
   <string name="set_message_password_button_save_changes">Shrani spremembe</string>
   <string name="set_message_password_button_remove_password">Odstrani geslo</string>
   <string name="respondInline">Respond in-line</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contact</item>
+    <item quantity="two">%d contacts</item>
+    <item quantity="few">%d contacts</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

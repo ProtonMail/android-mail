@@ -52,16 +52,16 @@
   <string name="message_link_long_click_share">Zdieľať odkaz</string>
   <string name="message_link_long_click_share_via">Zdieľať odkaz cez</string>
   <!-- Contact Actions Bottom Sheet -->
-  <string name="contact_actions_copy_address">Copy address</string>
+  <string name="contact_actions_copy_address">Kopírovať adresu</string>
   <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
-  <string name="contact_actions_copy_name">Copy name</string>
+  <string name="contact_actions_copy_address_performed">Adresa bola skopírovaná do schránky</string>
+  <string name="contact_actions_copy_name">Názov kópie</string>
   <string name="contact_actions_copy_name_description">Copy contact name</string>
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
-  <string name="contact_actions_new_message">New message</string>
+  <string name="contact_actions_new_message">Nová správa</string>
   <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
-  <string name="contact_actions_add_contact">Add contact</string>
+  <string name="contact_actions_add_contact">Pridať kontakt</string>
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
+  <string name="contact_actions_view_contact_details">Zobraziť detaily kontaktu</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>
 </resources>

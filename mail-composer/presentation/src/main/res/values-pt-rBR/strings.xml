@@ -57,7 +57,7 @@
   <string name="composer_bottom_bar_expiration_time_three_days">3 dias</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 semana</string>
   <string name="composer_bottom_bar_expiration_time_custom">Personalizar</string>
-  <string name="composer_error_setting_expiration_time">O ajuste da data de expiração falhou</string>
+  <string name="composer_error_setting_expiration_time">Falha ao configurar o tempo de expiração</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Expiração não suportada</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomendamos configurar uma senha para os seguintes destinatários:</string>
@@ -86,7 +86,7 @@
   <string name="set_message_password_label_repeat">Repetir senha</string>
   <string name="set_message_password_label_hint">Dica de senha (opcional)</string>
   <string name="set_message_password_supporting_text">de 4 a 21 caracteres</string>
-  <string name="set_message_password_supporting_error_text">A sua senha deve ter entre 4 e 21 caracteres.</string>
+  <string name="set_message_password_supporting_error_text">A sua senha deve ter entre 4 e 21 caracteres</string>
   <string name="set_message_password_supporting_text_repeat">As senhas devem ser iguais.</string>
   <string name="set_message_password_supporting_error_text_repeat">As senhas não correspondem.</string>
   <string name="set_message_password_button_show">Mostrar senha</string>
@@ -94,5 +94,9 @@
   <string name="set_message_password_button_apply">Aplicar senha</string>
   <string name="set_message_password_button_save_changes">Salvar alterações</string>
   <string name="set_message_password_button_remove_password">Remover senha</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Responder no corpo</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contato</item>
+    <item quantity="other">%d contatos</item>
+  </plurals>
 </resources>

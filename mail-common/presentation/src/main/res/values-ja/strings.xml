@@ -47,7 +47,7 @@
   <string name="action_view_headers_description">ヘッダーを表示する</string>
   <string name="action_view_html_description">HTMLで表示する</string>
   <string name="action_report_phishing_description">フィッシングを報告</string>
-  <string name="action_remind_description">Remind me</string>
+  <string name="action_remind_description">後で通知</string>
   <string name="action_save_pdf_description">PDFとして保存</string>
   <string name="action_sender_emails_description">この送信者からのメールに既定の動作を設定</string>
   <string name="action_save_attachments_description">添付ファイルを保存</string>
@@ -93,14 +93,14 @@
   <string name="mailbox_action_delete_dialog_button_delete">削除</string>
   <string name="picker_dialog_cancel">キャンセル</string>
   <string name="color_purple">パープル</string>
-  <string name="color_enzian">Enzian</string>
+  <string name="color_enzian">エンツィアン</string>
   <string name="color_pink">ピンク</string>
   <string name="color_plum">プラム</string>
   <string name="color_strawberry">ストロベリー</string>
-  <string name="color_cerise">Cerise</string>
+  <string name="color_cerise">セリース</string>
   <string name="color_carrot">キャロット</string>
-  <string name="color_copper">Copper</string>
-  <string name="color_sahara">Sahara</string>
+  <string name="color_copper">コパー</string>
+  <string name="color_sahara">サハラ</string>
   <string name="color_soil">ソイル</string>
   <string name="color_slate_blue">Slate blue</string>
   <string name="color_cobalt">コバルト</string>
@@ -111,7 +111,7 @@
   <string name="color_fern">ファーン</string>
   <string name="color_forest">フォレスト</string>
   <string name="color_olive">オリーブ</string>
-  <string name="color_pickle">Pickle</string>
+  <string name="color_pickle">ピックル</string>
   <string name="undo_button_label">取り消し</string>
   <string name="undo_success_message">操作を取り消しました</string>
   <string name="undo_failure_message">Action revert failed</string>

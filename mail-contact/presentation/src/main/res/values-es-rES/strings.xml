@@ -129,6 +129,7 @@
   <string name="contact_group_form_update_success">El grupo de contactos ha sido actualizado.</string>
   <string name="contact_group_form_save_error">Error al guardar el grupo de contactos. Intenta de nuevo más tarde.</string>
   <string name="contact_group_form_save_error_already_exists">Ya existe un grupo con este nombre</string>
+  <string name="contact_group_form_subscription_error">Mejora a un plan de pago para crear grupos de contactos.</string>
   <string name="members_loading_error">Error al cargar los miembros. Inténtalo de nuevo más tarde.</string>
   <string name="members_done">Terminado</string>
   <string name="add_members_error">Error al añadir los miembros. Inténtalo de nuevo más tarde.</string>

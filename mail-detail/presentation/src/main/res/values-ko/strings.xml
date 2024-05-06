@@ -99,5 +99,5 @@
   <string name="message_report_phishing_dialog_cancel_button">취소</string>
   <string name="open_on_protoncalendar_banner_title">Proton Calendar에서 열기</string>
   <string name="open_on_protoncalendar_banner_description">안전하게 암호화된 캘린더</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">메시지 표기에 실패했습니다</string>
 </resources>

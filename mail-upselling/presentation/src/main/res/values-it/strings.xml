@@ -18,8 +18,8 @@
   -->
 <resources>
   <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Effettua l\'upgrade</string>
   <string name="upselling_title">Effettua l\'upgrade a</string>
-  <string name="upselling_description">Per sbloccare più spazio di archiviazione e funzionalità premium</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Per sbloccare più spazio di archiviazione e funzionalità premium</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Programma gli invii e posticipa i messaggi</string>

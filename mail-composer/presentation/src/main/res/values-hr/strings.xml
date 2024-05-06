@@ -95,4 +95,9 @@
   <string name="set_message_password_button_save_changes">Save changes</string>
   <string name="set_message_password_button_remove_password">Ukloni lozinku</string>
   <string name="respondInline">Respond in-line</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contact</item>
+    <item quantity="few">%d contacts</item>
+    <item quantity="other">%d contacts</item>
+  </plurals>
 </resources>

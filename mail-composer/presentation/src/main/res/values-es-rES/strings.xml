@@ -95,4 +95,8 @@
   <string name="set_message_password_button_save_changes">Guardar los cambios</string>
   <string name="set_message_password_button_remove_password">Borrar la contraseña</string>
   <string name="respondInline">Responder en línea</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contacto</item>
+    <item quantity="other">%d contactos</item>
+  </plurals>
 </resources>

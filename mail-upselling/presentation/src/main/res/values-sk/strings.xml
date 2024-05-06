@@ -18,13 +18,13 @@
   -->
 <resources>
   <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Upgrade button</string>
   <string name="upselling_title">Upgrade to</string>
-  <string name="upselling_description">To unlock more storage and premium features</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Plánovanie odoslania a odloženia</string>
   <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
+  <string name="upselling_plus_feature_folders_labels">Neobmedzený počet priečinkov, štítkov a filtrov</string>
   <string name="upselling_plus_feature_more">And 14 more premium features</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
@@ -35,7 +35,7 @@
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
+  <string name="upselling_month">/mesiac</string>
   <string name="upselling_get_button">Get %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d month</item>
@@ -45,7 +45,7 @@
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
-  <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
+  <string name="upselling_snackbar_error_no_user_id">Vyskytla sa chyba.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>

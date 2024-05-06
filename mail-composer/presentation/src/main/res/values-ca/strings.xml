@@ -94,5 +94,9 @@
   <string name="set_message_password_button_apply">Aplica la contrasenya</string>
   <string name="set_message_password_button_save_changes">Desa els canvis</string>
   <string name="set_message_password_button_remove_password">Esborra la contrasenya</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Respon en línia</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d contacte</item>
+    <item quantity="other">%d contactes</item>
+  </plurals>
 </resources>

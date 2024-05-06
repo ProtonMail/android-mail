@@ -95,4 +95,10 @@
   <string name="set_message_password_button_save_changes">Zapisz zmiany</string>
   <string name="set_message_password_button_remove_password">Usuń hasło</string>
   <string name="respondInline">Respond in-line</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d kontakt</item>
+    <item quantity="few">%d kontakty</item>
+    <item quantity="many">%d kontaktów</item>
+    <item quantity="other">%d kontaktów</item>
+  </plurals>
 </resources>

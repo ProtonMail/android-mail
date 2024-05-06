@@ -155,8 +155,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_description">Ali ste prepričani, da se želite izpisati?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>
-  <string name="mail_settings_pin_insertion_created_success">Koda PIN je bila uspešno ustvarjena.</string>
-  <string name="mail_settings_pin_insertion_changed_success">PIN koda je bila uspešno spremenjena.</string>
+  <string name="mail_settings_pin_insertion_created_success">Koda PIN je bila ustvarjena.</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN koda je bila spremenjena.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Brisanje lokalnih predpomnjenih podatkov …</string>
   <!-- Error messages -->

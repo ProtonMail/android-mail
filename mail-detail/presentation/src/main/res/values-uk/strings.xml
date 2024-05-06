@@ -30,12 +30,12 @@
   <string name="quick_reply_button_content_description">Відповісти</string>
   <string name="quick_reply_all_button_content_description">Відповісти всім</string>
   <string name="more_button_content_description">Докладніше</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Тема:</string>
+  <string name="from">Від:</string>
   <string name="to">Кому:</string>
   <string name="cc">Копія:</string>
   <string name="bcc">Прихована копія:</string>
-  <string name="date">Date:</string>
+  <string name="date">Дата:</string>
   <plurals name="attachment">
     <item quantity="one">%d Attachment</item>
     <item quantity="few">%d Attachments</item>

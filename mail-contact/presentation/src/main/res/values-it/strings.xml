@@ -112,7 +112,7 @@
   <string name="contact_group_details_deletion_success">Gruppo eliminato</string>
   <string name="contact_group_details_deletion_error">Eliminazione del gruppo non riuscita</string>
   <string name="contact_group_delete_dialog_title">Elimina il gruppo %s</string>
-  <string name="contact_group_delete_dialog_message">Sei sicuro di voler eliminare il gruppo?
+  <string name="contact_group_delete_dialog_message">Sei sicuro di voler eliminare questo gruppo?
 I contatti non verranno eliminati.</string>
   <string name="contact_group_delete_dialog_confirm">Elimina</string>
   <string name="contact_group_delete_dialog_dismiss">Annulla</string>
@@ -130,6 +130,7 @@ I contatti non verranno eliminati.</string>
   <string name="contact_group_form_update_success">Gruppo aggiornato</string>
   <string name="contact_group_form_save_error">Salvataggio del gruppo non riuscito. Riprova più tardi.</string>
   <string name="contact_group_form_save_error_already_exists">Esiste già un gruppo con questo nome</string>
+  <string name="contact_group_form_subscription_error">Effettua l\'upgrade per creare i gruppi</string>
   <string name="members_loading_error">Caricamento dei membri non riuscito. Riprova più tardi.</string>
   <string name="members_done">Fatto</string>
   <string name="add_members_error">Aggiunta dei membri non riuscita. Riprova più tardi.</string>

@@ -158,8 +158,8 @@
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Ocurrió un error, intente de nuevo.</string>
   <!-- strings used for biometric enrollment -->
-  <string name="no_biometric_data_enrolled">No hay datos biométricos inscritos</string>
+  <string name="no_biometric_data_enrolled">No hay datos biométricos registrados.</string>
   <string name="log_in_using_biometric_credential">Desbloquear usando las credenciales biométricas</string>
-  <string name="unlock_using_biometrics">Desbloquear usando biométricas</string>
-  <string name="biometric_error_hw_not_available">Hardware biométrico no disponible.</string>
+  <string name="unlock_using_biometrics">Desbloquear usando los datos biométricos</string>
+  <string name="biometric_error_hw_not_available">El sensor biométrico no está disponible.</string>
 </resources>

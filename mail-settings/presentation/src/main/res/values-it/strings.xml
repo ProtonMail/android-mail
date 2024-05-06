@@ -148,7 +148,7 @@
   <string name="mail_settings_pin_insertion_error_unknown">Verifica del codice PIN non riuscita</string>
   <string name="mail_settings_pin_insertion_signout_text">Esci</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Esci dall\'account</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler uscire dall\'account?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler uscire da tutti gli account?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Esci</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Annulla</string>
   <string name="mail_settings_pin_insertion_created_success">Codice PIN applicato</string>
@@ -158,7 +158,7 @@
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">Si è verificato un errore. Riprova.</string>
   <!-- strings used for biometric enrollment -->
-  <string name="no_biometric_data_enrolled">Nessun dato biometrico registrato</string>
+  <string name="no_biometric_data_enrolled">Nessuna biometria registrata</string>
   <string name="log_in_using_biometric_credential">Sblocca con le credenziali biometriche</string>
   <string name="unlock_using_biometrics">Sblocco con la biometria</string>
   <string name="biometric_error_hw_not_available">Hardware biometrico non disponibile</string>

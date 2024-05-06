@@ -20,13 +20,13 @@
   <string name="drawer_title_more">Más</string>
   <string name="drawer_title_contacts">Contactos</string>
   <string name="drawer_title_subscription">Suscripción</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Escribir mensaje nuevo</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Escribir un mensaje nuevo</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Salir del modo de selección</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Buscar</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Salir del modo de búsqueda</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Borrar consulta de búsqueda</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ingresar consulta de búsqueda</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Borrar la consulta de búsqueda</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Ingresar la consulta de búsqueda</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d seleccionado</item>
     <item quantity="other">%d seleccionados</item>
@@ -37,25 +37,25 @@
   </plurals>
   <string name="mailbox_default_recipient">(Sin destinatario)</string>
   <string name="mailbox_default_sender">(Sin remitente)</string>
-  <string name="mailbox_error_message_offline">No hay conexión, no se pueden recuperar los elementos</string>
+  <string name="mailbox_error_message_offline">No hay conexión. No se pueden recuperar los elementos.</string>
   <string name="mailbox_error_message_generic">Error al cargar el buzón</string>
-  <string name="mailbox_error_message_unexpected">Se produjo un error imprevisto</string>
+  <string name="mailbox_error_message_unexpected">Se produjo un error imprevisto.</string>
   <string name="mailbox_is_empty_title">Ningún mensaje</string>
   <string name="mailbox_is_empty_description">Está al día.</string>
   <string name="mailbox_is_empty_no_unread_messages_title">No hay mensajes sin leer.</string>
-  <string name="mailbox_is_empty_folder_description">Esta carpeta está vacía</string>
-  <string name="mailbox_is_empty_spam_description">La carpeta de spam está vacía</string>
+  <string name="mailbox_is_empty_folder_description">Esta carpeta está vacía.</string>
+  <string name="mailbox_is_empty_spam_description">La carpeta de spam está vacía.</string>
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensaje movido a la papelera</item>
-    <item quantity="other">%d mensajes movidos a la papelera</item>
+    <item quantity="one">El mensaje fue movido a la papelera.</item>
+    <item quantity="other">%d mensajes fueron movidos a la papelera.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="one">Eliminar conversación</item>
+    <item quantity="one">Eliminar la conversación</item>
     <item quantity="other">Eliminar %d conversaciones</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
-    <item quantity="one">Eliminar mensaje</item>
+    <item quantity="one">Eliminar el mensaje</item>
     <item quantity="other">Eliminar %d mensajes</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
@@ -67,17 +67,17 @@
     <item quantity="other">¿Está seguro de que quiere eliminar permanentemente estos mensajes?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Mensaje eliminado permanentemente</item>
-    <item quantity="other">%d mensajes eliminados permanentemente</item>
+    <item quantity="one">El mensaje fue eliminado permanentemente.</item>
+    <item quantity="other">%d mensajes fueron eliminados permanentemente.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversación eliminada permanentemente</item>
-    <item quantity="other">%d conversaciones eliminadas permanentemente</item>
+    <item quantity="one">La conversación fue eliminada permanentemente.</item>
+    <item quantity="other">%d conversaciones fueron eliminadas permanentemente.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Error con la operación sobre la etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Error al obtener las etiquetas</string>
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
-  <string name="mailbox_action_move_messages_failed">Error con la operación de mover</string>
+  <string name="mailbox_action_move_messages_failed">Error en la operación de movimiento</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Le damos la bienvenida a la nueva aplicación</string>
@@ -87,20 +87,20 @@
   <string name="onboarding_privacy_for_all_description">Invite a más personas a Proton Mail para beneficiarse del cifrado de extremo a extremo.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Estar al día es más fácil</string>
-  <string name="onboarding_easily_up_to_date_description">Revise rápidamente los mensajes hilados en el modo de conversación.</string>
+  <string name="onboarding_easily_up_to_date_description">Consulte rápidamente los mensajes hilados en el modo de conversación.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Limpio y ordenado</string>
-  <string name="onboarding_neat_and_tidy_description">Archive, etiquete y clasifique por colores los mensajes para crear el buzón personalizado y perfecto.</string>
+  <string name="onboarding_neat_and_tidy_description">Archive, etiquete y clasifique por colores los mensajes para crear la bandeja de entrada personalizada y perfecta.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Siguiente</string>
   <string name="onboarding_get_started">Comenzar</string>
-  <string name="onboarding_illustration_content_description">Ilustración de incorporación</string>
+  <string name="onboarding_illustration_content_description">Ilustración de bienvenida</string>
   <string name="onboarding_close_content_description">Cerrar</string>
   <string name="mailbox_action_trash_message">El mensaje fue movido a la carpeta Papelera.</string>
   <string name="mailbox_action_archive_message">El mensaje fue movido a la carpeta Archivo.</string>
   <string name="mailbox_action_spam_message">El mensaje fue movido a la carpeta Spam.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
-  <string name="mailbox_search_no_results_title">No se encontraron resultados</string>
+  <string name="mailbox_search_no_results_title">No se encontraron resultados.</string>
   <string name="mailbox_search_no_results_explanation">Búsqueda por fecha, nombre, dirección de correo o asunto</string>
   <string name="mailbox_action_button_clear_trash">Vaciar papelera</string>
   <string name="mailbox_action_button_clear_spam">Vaciar spam</string>

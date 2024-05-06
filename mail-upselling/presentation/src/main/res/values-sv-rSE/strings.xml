@@ -18,8 +18,8 @@
   -->
 <resources>
   <!-- Upselling -->
+  <string name="upselling_button_item_content_description">Upgrade button</string>
   <string name="upselling_title">Uppgradera till</string>
-  <string name="upselling_description">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>

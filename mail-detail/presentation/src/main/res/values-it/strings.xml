@@ -71,7 +71,7 @@
   <string name="message_phishing_banner_text">Il nostro sistema ha segnalato questo messaggio come tentativo di phishing. Verifica che sia legittimo.</string>
   <string name="message_expiration_banner_text">Questo messaggio scadrà tra %1$s</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">Vuoi uscire dall\'app e continuare nel seguente sito?</string>
+  <string name="external_link_confirmation_dialog_text">Sei sicuro di voler uscire dall\'app e continuare nel seguente sito?</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Non chiederlo di nuovo</string>
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>

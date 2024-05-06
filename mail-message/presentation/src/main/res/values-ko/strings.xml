@@ -49,16 +49,16 @@
   <string name="message_link_long_click_share">링크 공유하기</string>
   <string name="message_link_long_click_share_via">이 방법으로 링크 공유하기</string>
   <!-- Contact Actions Bottom Sheet -->
-  <string name="contact_actions_copy_address">Copy address</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
-  <string name="contact_actions_copy_name">Copy name</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
-  <string name="contact_actions_new_message">New message</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
-  <string name="contact_actions_add_contact">Add contact</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_copy_address">주소 복사하기</string>
+  <string name="contact_actions_copy_address_description">연락처 주소를 복사합니다</string>
+  <string name="contact_actions_copy_address_performed">주소를 클립보드에 복사했습니다</string>
+  <string name="contact_actions_copy_name">이름 복사하기</string>
+  <string name="contact_actions_copy_name_description">연락처 이름을 복사합니다</string>
+  <string name="contact_actions_copy_name_performed">이름을 클립보드에 복사했습니다</string>
+  <string name="contact_actions_new_message">새 메시지</string>
+  <string name="contact_actions_new_message_description">이 연락처에 대한 새 메시지 작성을 시작합니다</string>
+  <string name="contact_actions_add_contact">연락처 추가하기</string>
+  <string name="contact_actions_add_contact_description">이 받는 이를 연락처에 저장합니다</string>
+  <string name="contact_actions_view_contact_details">연락처 세부 정보 보기</string>
+  <string name="contact_actions_view_contact_details_description">연락처의 세부 정보를 봅니다</string>
 </resources>

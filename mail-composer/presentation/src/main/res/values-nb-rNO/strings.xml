@@ -95,4 +95,8 @@
   <string name="set_message_password_button_save_changes">Lagre endringer</string>
   <string name="set_message_password_button_remove_password">Fjern passord</string>
   <string name="respondInline">Svar direkte</string>
+  <plurals name="composer_recipient_suggestion_contacts">
+    <item quantity="one">%d kontakt</item>
+    <item quantity="other">%d kontakter</item>
+  </plurals>
 </resources>

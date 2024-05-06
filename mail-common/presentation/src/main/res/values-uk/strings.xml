@@ -112,7 +112,7 @@
   <string name="color_forest">Лісовий</string>
   <string name="color_olive">Оливковий</string>
   <string name="color_pickle">Огірочний</string>
-  <string name="undo_button_label">Undo</string>
+  <string name="undo_button_label">Скасувати</string>
   <string name="undo_success_message">Дію скасовано</string>
-  <string name="undo_failure_message">Action revert failed</string>
+  <string name="undo_failure_message">Не вдалося повернути дію</string>
 </resources>

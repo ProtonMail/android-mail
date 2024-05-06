@@ -111,7 +111,7 @@
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_confirm">削除</string>
   <string name="contact_group_delete_dialog_dismiss">Keep it</string>
   <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
@@ -127,6 +127,7 @@
   <string name="contact_group_form_update_success">連絡先グループが更新されました</string>
   <string name="contact_group_form_save_error">Error saving contact group, please try again later</string>
   <string name="contact_group_form_save_error_already_exists">この名前のグループは既に存在します</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
   <string name="members_done">完了</string>
   <string name="add_members_error">Error adding members, please try again later</string>

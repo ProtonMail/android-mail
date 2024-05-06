@@ -20,7 +20,7 @@
   <string name="drawer_title_more">Докладніше</string>
   <string name="drawer_title_contacts">Контакти</string>
   <string name="drawer_title_subscription">Передплата</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Створити повідомлення</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Нове повідомлення</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Вийти з режиму вибору</string>
   <string name="mailbox_toolbar_menu_button_content_description">Меню</string>
   <string name="mailbox_toolbar_search_button_content_description">Пошук</string>

@@ -161,5 +161,5 @@
   <string name="no_biometric_data_enrolled">Nenhum dado biométrico registrado</string>
   <string name="log_in_using_biometric_credential">Desbloqueie usando as suas credenciais biométricas</string>
   <string name="unlock_using_biometrics">Desbloquear usando a biometria</string>
-  <string name="biometric_error_hw_not_available">Hardware biométrico não disponível.</string>
+  <string name="biometric_error_hw_not_available">O sensor biométrico não está disponível.</string>
 </resources>
