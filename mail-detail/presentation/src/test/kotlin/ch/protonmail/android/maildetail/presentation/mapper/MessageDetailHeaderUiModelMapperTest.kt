@@ -56,8 +56,6 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 
 class MessageDetailHeaderUiModelMapperTest {
@@ -96,7 +94,6 @@ class MessageDetailHeaderUiModelMapperTest {
         time = shortTimeTextUiModel,
         extendedTime = extendedTimeTestUiModel,
         shouldShowUndisclosedRecipients = false,
-        shouldShowActions = true,
         allRecipients = TextUiModel.Text("Recipient1, Recipient2, Recipient3"),
         toRecipients = listOf(participant1UiModel, participant2UiModel).toImmutableList(),
         ccRecipients = listOf(participant3UiModel).toImmutableList(),
@@ -232,42 +229,6 @@ class MessageDetailHeaderUiModelMapperTest {
         )
         // Then
         assertEquals(expectedResult, result)
-    }
-
-    @Test
-    fun `when labels contain all drafts, the header should not show header actions`() = runTest {
-        // Given
-        val messageWithLabels = messageWithLabels.copy(
-            message = message.copy(labelIds = listOf(LabelSample.AllDrafts.labelId))
-        )
-
-        // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(
-            messageWithLabels = messageWithLabels,
-            contacts = ContactTestData.contacts,
-            folderColorSettings = folderColorSettings
-        )
-
-        // Then
-        assertFalse(result.shouldShowActions)
-    }
-
-    @Test
-    fun `when labels do not contain all drafts, the header should show header actions`() = runTest {
-        // Given
-        val messageWithLabels = messageWithLabels.copy(
-            message = message.copy(labelIds = listOf(LabelSample.Starred.labelId))
-        )
-
-        // When
-        val result = messageDetailHeaderUiModelMapper.toUiModel(
-            messageWithLabels = messageWithLabels,
-            contacts = ContactTestData.contacts,
-            folderColorSettings = folderColorSettings
-        )
-
-        // Then
-        assertTrue(result.shouldShowActions)
     }
 
     @Test

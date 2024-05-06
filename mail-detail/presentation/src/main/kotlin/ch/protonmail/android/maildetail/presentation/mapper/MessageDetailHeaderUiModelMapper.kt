@@ -63,14 +63,12 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
         folderColorSettings: FolderColorSettings
     ): MessageDetailHeaderUiModel {
         val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)
-        val shouldShowActions = !messageWithLabels.message.isDraft()
         return MessageDetailHeaderUiModel(
             avatar = detailAvatarUiModelMapper(messageWithLabels.message, senderResolvedName.name),
             sender = participantUiModelMapper.senderToUiModel(messageWithLabels.message.sender, contacts),
             shouldShowTrackerProtectionIcon = true,
             shouldShowAttachmentIcon = messageWithLabels.message.hasNonCalendarAttachments(),
             shouldShowStar = messageWithLabels.message.isStarred(),
-            shouldShowActions = shouldShowActions,
             location = messageLocationUiModelMapper(
                 messageWithLabels.message.labelIds,
                 messageWithLabels.labels,

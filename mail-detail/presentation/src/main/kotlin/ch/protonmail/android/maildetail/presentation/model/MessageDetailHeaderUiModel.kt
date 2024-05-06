@@ -30,7 +30,6 @@ data class MessageDetailHeaderUiModel(
     val shouldShowTrackerProtectionIcon: Boolean,
     val shouldShowAttachmentIcon: Boolean,
     val shouldShowStar: Boolean,
-    val shouldShowActions: Boolean,
     val location: MessageLocationUiModel,
     val time: TextUiModel,
     val extendedTime: TextUiModel,

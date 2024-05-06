@@ -33,8 +33,6 @@ fun MessageDetailHeaderActions(
     actions: MessageDetailHeader.Actions
 ) {
     Row(modifier = modifier) {
-        if (!uiModel.shouldShowActions) return
-
         if (uiModel.recipientsCount > 1) {
             ReplyAllActionButton(action = { actions.onReplyAll(MessageId(uiModel.messageIdUiModel.id)) })
         } else {

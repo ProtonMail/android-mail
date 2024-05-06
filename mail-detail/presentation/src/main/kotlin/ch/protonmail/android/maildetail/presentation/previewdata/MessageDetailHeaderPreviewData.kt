@@ -47,7 +47,6 @@ object MessageDetailHeaderPreviewData {
         time = TextUiModel.Text("11:48"),
         extendedTime = TextUiModel.Text("19-10-2022 at 11:48AM"),
         shouldShowUndisclosedRecipients = false,
-        shouldShowActions = true,
         allRecipients = TextUiModel.Text("Recipient One, Recipient Two, Recipient Three, Recipient Four"),
         toRecipients = listOf(
             ParticipantUiModel(
