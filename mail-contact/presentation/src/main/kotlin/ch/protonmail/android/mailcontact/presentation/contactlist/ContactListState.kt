@@ -36,6 +36,7 @@ sealed interface ContactListState {
         val openContactGroupForm: Effect<Unit>
         val openImportContact: Effect<Unit>
         val subscriptionError: Effect<TextUiModel>
+        val isContactGroupsCrudEnabled: Boolean
 
         data class Data(
             override val bottomSheetVisibilityEffect: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
@@ -43,9 +44,9 @@ sealed interface ContactListState {
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
+            override val isContactGroupsCrudEnabled: Boolean,
             val contacts: List<ContactListItemUiModel>,
-            val contactGroups: List<ContactGroupItemUiModel>,
-            val isContactGroupsCrudEnabled: Boolean
+            val contactGroups: List<ContactGroupItemUiModel>
         ) : Loaded
 
         data class Empty(
@@ -53,7 +54,8 @@ sealed interface ContactListState {
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
-            override val subscriptionError: Effect<TextUiModel> = Effect.empty()
+            override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
+            override val isContactGroupsCrudEnabled: Boolean = true
         ) : Loaded
     }
 }

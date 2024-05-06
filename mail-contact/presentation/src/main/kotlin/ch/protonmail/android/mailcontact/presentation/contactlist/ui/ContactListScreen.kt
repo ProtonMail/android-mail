@@ -31,11 +31,7 @@ import me.proton.core.label.domain.entity.LabelId
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ContactListScreen(
-    isContactGroupsCrudEnabled: Boolean,
-    listActions: ContactListScreen.Actions,
-    viewModel: ContactListViewModel = hiltViewModel()
-) {
+fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
@@ -66,7 +62,9 @@ fun ContactListScreen(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
             ContactBottomSheetContent(
-                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled,
+                isContactGroupsCrudEnabled = if (state is ContactListState.Loaded) {
+                    state.isContactGroupsCrudEnabled
+                } else false,
                 actions = ContactBottomSheet.Actions(
                     onNewContactClick = {
                         viewModel.submit(ContactListViewAction.OnNewContactClick)
@@ -91,7 +89,9 @@ fun ContactListScreen(
                         }
                     ),
                     isAddButtonVisible = state is ContactListState.Loaded.Data,
-                    isContactGroupsCrudEnabled = isContactGroupsCrudEnabled
+                    isContactGroupsCrudEnabled = if (state is ContactListState.Loaded) {
+                        state.isContactGroupsCrudEnabled
+                    } else false
                 )
             },
             content = { paddingValues ->

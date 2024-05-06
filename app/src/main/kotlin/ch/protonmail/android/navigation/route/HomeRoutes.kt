@@ -343,8 +343,7 @@ internal fun NavGraphBuilder.addContacts(
     navController: NavHostController,
     showErrorSnackbar: (message: String) -> Unit,
     showNormalSnackbar: (message: String) -> Unit,
-    showFeatureMissingSnackbar: () -> Unit,
-    isContactGroupsCrudEnabled: Boolean
+    showFeatureMissingSnackbar: () -> Unit
 ) {
     composable(route = Destination.Screen.Contacts.route) {
         ContactListScreen(
@@ -377,8 +376,7 @@ internal fun NavGraphBuilder.addContacts(
                     navController.navigateBack()
                     showErrorSnackbar(message)
                 }
-            ),
-            isContactGroupsCrudEnabled = isContactGroupsCrudEnabled
+            )
         )
     }
 }

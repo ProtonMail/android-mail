@@ -428,8 +428,7 @@ fun Home(
                     },
                     showFeatureMissingSnackbar = {
                         showFeatureMissingSnackbar()
-                    },
-                    isContactGroupsCrudEnabled = state.value.isContactGroupsCrudEnabled
+                    }
                 )
                 addContactDetails(
                     navController,

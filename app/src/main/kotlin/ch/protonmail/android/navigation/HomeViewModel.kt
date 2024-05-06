@@ -33,7 +33,6 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
@@ -61,7 +60,6 @@ class HomeViewModel @Inject constructor(
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
-    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
@@ -73,8 +71,6 @@ class HomeViewModel @Inject constructor(
     val state: StateFlow<HomeState> = mutableState
 
     init {
-        emitNewStateForContactGroupsCrud(isContactGroupsCrudEnabled(null))
-
         observeNetworkStatus().onEach { networkStatus ->
             if (networkStatus == NetworkStatus.Disconnected) {
                 delay(NetworkStatusUpdateDelay)
@@ -155,11 +151,6 @@ class HomeViewModel @Inject constructor(
     private fun emitNewStateFor(networkStatus: NetworkStatus) {
         val currentState = state.value
         mutableState.value = currentState.copy(networkStatusEffect = Effect.of(networkStatus))
-    }
-
-    private fun emitNewStateForContactGroupsCrud(enabled: Boolean) {
-        val currentState = state.value
-        mutableState.value = currentState.copy(isContactGroupsCrudEnabled = enabled)
     }
 
     private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()

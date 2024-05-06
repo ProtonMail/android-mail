@@ -53,7 +53,9 @@ class ContactListReducer @Inject constructor(
                         contactGroups = event.contactGroups,
                         isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
                     )
-                } else ContactListState.Loaded.Empty()
+                } else ContactListState.Loaded.Empty(
+                    isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
+                )
             }
 
             is ContactListState.Loaded -> {
@@ -66,7 +68,8 @@ class ContactListReducer @Inject constructor(
                     )
                 } else {
                     ContactListState.Loaded.Empty(
-                        bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect
+                        bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
+                        isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
                     )
                 }
             }
