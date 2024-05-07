@@ -102,7 +102,7 @@ class ContactListViewModelTest {
     private val observeContacts = mockk<ObserveContacts>()
     private val observeContactGroupLabels = mockk<ObserveContactGroupLabels>()
     private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
-        every { this@mockk(any()) } returns true
+        every { this@mockk(null) } returns true
     }
 
     private val reducer = ContactListReducer()
@@ -229,7 +229,7 @@ class ContactListViewModelTest {
     fun `when feature flag IsContactGroupsCrudEnabled is false then emit appropriate event`() = runTest {
         // Given
         expectContactsData()
-        every { isContactGroupsCrudEnabledMock.invoke(any()) } returns false
+        every { isContactGroupsCrudEnabledMock.invoke(null) } returns false
 
         // When
         contactListViewModel.state.test {
