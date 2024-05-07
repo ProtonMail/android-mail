@@ -89,6 +89,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
+import ch.protonmail.android.mailcontact.domain.usecase.SearchDeviceContacts
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
@@ -127,6 +128,7 @@ class ComposerViewModel @Inject constructor(
     private val storeExternalAttachments: StoreExternalAttachments,
     private val getContacts: GetContacts,
     private val searchContacts: SearchContacts,
+    private val searchDeviceContacts: SearchDeviceContacts,
     private val searchContactGroups: SearchContactGroups,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
@@ -762,6 +764,15 @@ class ComposerViewModel @Inject constructor(
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
+                val deviceContacts = searchDeviceContacts(primaryUserId(), searchTerm)
+
+                val fromDeviceContacts = deviceContacts.getOrNull()?.map {
+                    ContactSuggestionUiModel.Contact(
+                        name = it.name,
+                        email = it.email
+                    )
+                } ?: emptyList()
+
                 val fromContacts = contacts.getOrNull()?.asSequence()?.flatMap { contact ->
                     contact.contactEmails.map { contactEmail ->
                         ContactSuggestionUiModel.Contact(
@@ -780,7 +791,7 @@ class ComposerViewModel @Inject constructor(
                     )
                 } ?: emptySequence()
 
-                val suggestions = (fromContacts + fromContactGroups).sortedBy {
+                val suggestions = (fromDeviceContacts + fromContacts + fromContactGroups).sortedBy {
                     it.name
                 }.take(maxContactAutocompletionCount)
 
