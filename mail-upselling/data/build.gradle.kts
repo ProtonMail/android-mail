@@ -41,4 +41,18 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+
+    dependencies {
+        implementation(AndroidX.DataStore.preferences)
+        implementation(Arrow.core)
+
+        implementation(project(":mail-upselling:domain"))
+        implementation(project(":mail-common:data"))
+        implementation(project(":mail-common:domain"))
+
+        testImplementation(Cash.turbine)
+        testImplementation(Kotlin.test)
+        testImplementation(Mockk.mockk)
+        testImplementation(KotlinX.coroutinesTest)
+    }
 }

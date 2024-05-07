@@ -18,18 +18,26 @@
 
 package ch.protonmail.android.mailupselling.dagger
 
+import android.content.Context
+import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
+import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupPaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingOneClickOverrideEnabled
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.plan.domain.ClientPlanFilter
 import me.proton.core.plan.domain.ProductOnlyPaidPlans
 import me.proton.core.plan.domain.SupportSignupPaidPlans
 import me.proton.core.plan.domain.SupportUpgradePaidPlans
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -53,4 +61,23 @@ object UpsellingModule {
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface UpsellingLocalDataModule {
+
+    @Binds
+    @Reusable
+    fun provideUpsellingVisibilityRepository(impl: UpsellingVisibilityRepositoryImpl): UpsellingVisibilityRepository
+
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object Providers {
+
+        @Provides
+        @Singleton
+        fun provideDataStoreProvider(@ApplicationContext context: Context): UpsellingDataStoreProvider =
+            UpsellingDataStoreProvider(context)
+    }
 }

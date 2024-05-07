@@ -16,36 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.domain.repository
 
-setAsHiltModule()
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailupselling.domain.model.OneClickUpsellingLastSeenPreference
+import kotlinx.coroutines.flow.Flow
 
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
+interface UpsellingVisibilityRepository {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
-    }
+    fun observe(): Flow<Either<PreferencesError, OneClickUpsellingLastSeenPreference>>
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(Proton.Core.plan)
-
-    implementation(project(":mail-upselling:data"))
-    implementation(project(":mail-upselling:domain"))
+    suspend fun update(value: Long): Either<PreferencesError, Unit>
 }

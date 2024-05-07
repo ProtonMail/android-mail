@@ -16,36 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.data
 
-setAsHiltModule()
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import javax.inject.Inject
+import javax.inject.Singleton
 
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
+@Singleton
+class UpsellingDataStoreProvider @Inject constructor(context: Context) {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
-    }
+    private val Context.upsellingDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "upsellingDataStore"
+    )
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(Proton.Core.plan)
-
-    implementation(project(":mail-upselling:data"))
-    implementation(project(":mail-upselling:domain"))
+    val upsellingDataStore = context.upsellingDataStore
 }

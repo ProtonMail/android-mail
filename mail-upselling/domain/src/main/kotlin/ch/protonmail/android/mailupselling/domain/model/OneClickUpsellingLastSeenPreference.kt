@@ -16,36 +16,6 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.domain.model
 
-setAsHiltModule()
-
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
-
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(Proton.Core.plan)
-
-    implementation(project(":mail-upselling:data"))
-    implementation(project(":mail-upselling:domain"))
-}
+data class OneClickUpsellingLastSeenPreference(val timestamp: Long)
