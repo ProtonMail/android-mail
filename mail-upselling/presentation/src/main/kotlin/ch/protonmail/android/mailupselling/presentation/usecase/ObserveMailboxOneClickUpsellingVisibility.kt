@@ -33,6 +33,7 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     private val observePrimaryUser: ObservePrimaryUser,
     private val purchaseManager: PurchaseManager,
     private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
+    private val observeUpsellingOneClickOnCooldown: ObserveUpsellingOneClickOnCooldown,
     private val userHasAvailablePlans: UserHasAvailablePlans,
     private val userHasPendingPurchases: UserHasPendingPurchases,
     @SupportUpgradePaidPlans private val isUpgradePaidPlanSupportEnabled: Boolean
@@ -41,11 +42,13 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     operator fun invoke(): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases(),
+        observeUpsellingOneClickOnCooldown(),
         observeOneClickUpsellingEnabled(null)
-    ) { user, purchases, isOneClickUpsellingEnabled ->
+    ) { user, purchases, isOneClickOnCooldown, isOneClickUpsellingEnabled ->
         if (user == null) return@combine false
         if (!isUpgradePaidPlanSupportEnabled) return@combine false
         if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value) return@combine false
+        if (isOneClickOnCooldown) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
         userHasAvailablePlans(user.userId)
