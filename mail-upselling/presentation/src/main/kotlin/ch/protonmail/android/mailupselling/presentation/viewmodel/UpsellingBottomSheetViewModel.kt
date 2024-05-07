@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.viewmodel
 
+import java.time.Instant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
@@ -27,6 +28,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomShe
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation.UpsellingBottomSheetContentEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
+import ch.protonmail.android.mailupselling.presentation.usecase.UpdateUpsellingOneClickLastTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +44,7 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
     private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
+    private val updateUpsellingOneClickLastTimestamp: UpdateUpsellingOneClickLastTimestamp,
     private val upsellingBottomSheetContentReducer: UpsellingBottomSheetContentReducer
 ) : ViewModel() {
 
@@ -62,6 +65,10 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
 
             emitNewStateFrom(UpsellingBottomSheetContentEvent.DataLoaded(userId, dynamicPlan))
         }.launchIn(viewModelScope)
+    }
+
+    suspend fun updateLastSeenTimestamp() {
+        updateUpsellingOneClickLastTimestamp(Instant.now().toEpochMilli())
     }
 
     private fun emitNewStateFrom(operation: UpsellingBottomSheetContentOperation) {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.upselling.presentation.viewmodel
 
+import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
@@ -25,10 +26,13 @@ import ch.protonmail.android.mailupselling.domain.usecase.FilterDynamicPlansByUs
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
+import ch.protonmail.android.mailupselling.presentation.usecase.UpdateUpsellingOneClickLastTimestamp
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
@@ -53,11 +57,13 @@ internal class UpsellingBottomSheetViewModelTest {
     private val filterDynamicPlansByUserSubscription = mockk<FilterDynamicPlansByUserSubscription>()
     private val dynamicPlanUiMapper = mockk<DynamicPlanUiMapper>(relaxed = true)
     private val upsellingBottomSheetContentReducer = UpsellingBottomSheetContentReducer(dynamicPlanUiMapper)
+    private val updateLastSeenUpsellingTimestamp = mockk<UpdateUpsellingOneClickLastTimestamp>(relaxUnitFun = true)
     private val viewModel: UpsellingBottomSheetViewModel by lazy {
         UpsellingBottomSheetViewModel(
             observePrimaryUser,
             getDynamicPlansAdjustedPrices,
             filterDynamicPlansByUserSubscription,
+            updateLastSeenUpsellingTimestamp,
             upsellingBottomSheetContentReducer
         )
     }
@@ -69,6 +75,7 @@ internal class UpsellingBottomSheetViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        mockkStatic(Instant::class)
     }
 
     @After
@@ -135,6 +142,22 @@ internal class UpsellingBottomSheetViewModelTest {
         }
     }
 
+    @Test
+    fun `should call the UC with the expected value when updating the last seen timestamp`() = runTest {
+        // Given
+        val expectedInstantLongValue = 1L
+        mockInstant(expectedInstantLongValue)
+        expectPrimaryUser(user)
+        expectDynamicPlans(user.userId, dynamicPlans)
+        expectSubscriptionOptions(user.userId, dynamicPlans, listOf(expectedDynamicPlan))
+
+        // When
+        viewModel.updateLastSeenTimestamp()
+
+        // Then
+        coVerify { updateLastSeenUpsellingTimestamp.invoke(expectedInstantLongValue) }
+    }
+
     private fun expectPrimaryUser(user: User?) {
         every { observePrimaryUser() } returns flowOf(user)
     }
@@ -157,5 +180,9 @@ internal class UpsellingBottomSheetViewModelTest {
         expectedSubs: List<DynamicPlan>
     ) {
         coEvery { filterDynamicPlansByUserSubscription(userId, plans) } returns expectedSubs
+    }
+
+    private fun mockInstant(instant: Long) {
+        every { Instant.now() } returns mockk { every { toEpochMilli() } returns instant }
     }
 }

@@ -84,7 +84,7 @@ private fun UpsellingItem() {
         UpsellingPlansList(
             modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
             dynamicPlansModel = UpsellingBottomSheetContentPreviewData.Base.plans,
-            actions = UpsellingBottomSheet.Actions(onDismiss = {}, onUpgrade = {}, onError = {})
+            actions = UpsellingBottomSheet.Actions(onDisplayed = {}, onDismiss = {}, onUpgrade = {}, onError = {})
         )
     }
 }

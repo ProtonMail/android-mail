@@ -26,8 +26,9 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomShe
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 
 @Composable
-fun UpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
+fun UpsellingBottomSheet(modifier: Modifier = Modifier, bottomSheetActions: UpsellingBottomSheet.Actions) {
     val viewModel: UpsellingBottomSheetViewModel = hiltViewModel()
+    val actions = bottomSheetActions.copy(onDisplayed = { viewModel.updateLastSeenTimestamp() })
 
     when (val state = viewModel.state.collectAsState().value) {
         UpsellingBottomSheetContentState.Loading -> Unit
@@ -38,6 +39,7 @@ fun UpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottom
 
 object UpsellingBottomSheet {
     data class Actions(
+        val onDisplayed: suspend () -> Unit,
         val onError: (String) -> Unit,
         val onUpgrade: (String) -> Unit,
         val onDismiss: () -> Unit
@@ -46,6 +48,7 @@ object UpsellingBottomSheet {
         companion object {
 
             val Empty = Actions(
+                onDisplayed = {},
                 onError = {},
                 onUpgrade = {},
                 onDismiss = {}

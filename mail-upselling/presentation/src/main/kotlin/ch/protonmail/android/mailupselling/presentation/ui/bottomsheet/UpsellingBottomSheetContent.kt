@@ -28,6 +28,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -116,6 +117,10 @@ internal fun UpsellingBottomSheetContent(
 
         item { UpsellingPlansList(modifier = Modifier.padding(ProtonDimens.DefaultSpacing), state.plans, actions) }
     }
+
+    LaunchedEffect(key1 = Unit) {
+        actions.onDisplayed()
+    }
 }
 
 @AdaptivePreviews
@@ -124,7 +129,7 @@ private fun BottomSheetPreview() {
     ProtonTheme3 {
         UpsellingBottomSheetContent(
             state = UpsellingBottomSheetContentPreviewData.Base,
-            actions = UpsellingBottomSheet.Actions(onDismiss = {}, onError = {}, onUpgrade = {})
+            actions = UpsellingBottomSheet.Actions(onDisplayed = {}, onDismiss = {}, onError = {}, onUpgrade = {})
         )
     }
 }

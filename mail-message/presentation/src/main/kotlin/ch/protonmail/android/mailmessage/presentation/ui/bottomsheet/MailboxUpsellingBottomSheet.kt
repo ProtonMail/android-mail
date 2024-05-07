@@ -24,5 +24,5 @@ import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.Upselling
 
 @Composable
 fun MailboxUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
-    UpsellingBottomSheet(modifier, actions = actions)
+    UpsellingBottomSheet(modifier, bottomSheetActions = actions)
 }
