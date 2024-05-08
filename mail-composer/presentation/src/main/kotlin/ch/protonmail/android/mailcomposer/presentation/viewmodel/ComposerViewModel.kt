@@ -764,7 +764,7 @@ class ComposerViewModel @Inject constructor(
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
-                val deviceContacts = searchDeviceContacts(primaryUserId(), searchTerm)
+                val deviceContacts = searchDeviceContacts(searchTerm)
 
                 val fromDeviceContacts = deviceContacts.getOrNull()?.map {
                     ContactSuggestionUiModel.Contact(

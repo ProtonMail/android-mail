@@ -629,7 +629,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
-        expectSearchDeviceContacts(expectedUserId, expectedSearchTerm, expectedDeviceContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
         expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
@@ -694,7 +694,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
-        expectSearchDeviceContacts(expectedUserId, expectedSearchTerm, expectedDeviceContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
         expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
@@ -758,7 +758,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
-        expectSearchDeviceContacts(expectedUserId, expectedSearchTerm, expectedDeviceContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
         expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
@@ -818,7 +818,7 @@ class ComposerViewModelTest {
         expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
         expectObserveMessageSendingError(expectedUserId, expectedMessageId)
         expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContactsExceedingLimit)
-        expectSearchDeviceContacts(expectedUserId, expectedSearchTerm, expectedDeviceContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
         expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
@@ -2824,12 +2824,11 @@ class ComposerViewModelTest {
     }
 
     private fun expectSearchDeviceContacts(
-        expectedUserId: UserId,
         expectedSearchTerm: String,
         expectedDeviceContacts: List<DeviceContact>
     ): List<DeviceContact> {
         coEvery {
-            searchDeviceContactsMock.invoke(expectedUserId, expectedSearchTerm)
+            searchDeviceContactsMock.invoke(expectedSearchTerm)
         } returns expectedDeviceContacts.right()
         return expectedDeviceContacts
     }

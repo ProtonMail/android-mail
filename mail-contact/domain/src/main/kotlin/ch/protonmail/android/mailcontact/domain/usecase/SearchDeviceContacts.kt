@@ -25,7 +25,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import dagger.hilt.android.qualifiers.ApplicationContext
-import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,7 +32,7 @@ class SearchDeviceContacts @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    operator fun invoke(userId: UserId, query: String): Either<GetContactError, List<DeviceContact>> {
+    operator fun invoke(query: String): Either<GetContactError, List<DeviceContact>> {
 
         val contentResolver = context.contentResolver
 
