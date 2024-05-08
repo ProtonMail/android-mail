@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcontact.domain.model.DeviceContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import dagger.hilt.android.qualifiers.ApplicationContext
 import me.proton.core.domain.entity.UserId
+import timber.log.Timber
 import javax.inject.Inject
 
 class SearchDeviceContacts @Inject constructor(
@@ -38,13 +39,19 @@ class SearchDeviceContacts @Inject constructor(
 
         val selectionArgs = arrayOf("%$query%", "%$query%", "%$query%")
 
-        val contactEmails = contentResolver.query(
-            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-            ANDROID_PROJECTION,
-            ANDROID_SELECTION,
-            selectionArgs,
-            ANDROID_ORDER_BY
-        )
+        @Suppress("SwallowedException")
+        val contactEmails = try {
+            contentResolver.query(
+                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                ANDROID_PROJECTION,
+                ANDROID_SELECTION,
+                selectionArgs,
+                ANDROID_ORDER_BY
+            )
+        } catch (e: SecurityException) {
+            Timber.d("SearchDeviceContacts: contact permission is not granted")
+            null
+        }
 
         val deviceContacts = mutableListOf<DeviceContact>()
 
@@ -80,6 +87,7 @@ class SearchDeviceContacts @Inject constructor(
 
         @Suppress("MaxLineLength")
         private const val ANDROID_SELECTION = "${ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY} LIKE ? OR ${ContactsContract.CommonDataKinds.Email.ADDRESS} LIKE ? OR ${ContactsContract.CommonDataKinds.Email.DATA} LIKE ?"
+
         private val ANDROID_PROJECTION = arrayOf(
             ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY,
             ContactsContract.CommonDataKinds.Email.ADDRESS,
