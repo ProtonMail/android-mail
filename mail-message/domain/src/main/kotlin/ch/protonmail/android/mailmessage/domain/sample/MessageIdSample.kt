@@ -41,6 +41,11 @@ object MessageIdSample {
     val MessageWithAttachments = MessageId("Message_with_attachments")
     val PgpMimeMessage = MessageId("pgp_mime_message")
     val CalendarInvite = MessageId("calendar_invite")
+    val ReadMessageMayFirst = MessageId("ReadMessageMayFirst")
+    val ReadMessageMaySecond = MessageId("ReadMessageMaySecond")
+    val UnreadMessageMayFirst = MessageId("UnreadMessageMayFirst")
+    val UnreadMessageMaySecond = MessageId("UnreadMessageMaySecond")
+    val UnreadMessageMayThird = MessageId("UnreadMessageMayThird")
 
     fun build() = MessageId("message")
 }

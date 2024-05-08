@@ -101,6 +101,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -313,6 +314,9 @@ class ConversationDetailViewModelTest {
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
+    private val getMessageIdToExpand = mockk<GetMessageIdToExpand> {
+        coEvery { this@mockk.invoke(any()) } returns MessageIdSample.build()
+    }
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -354,7 +358,8 @@ class ConversationDetailViewModelTest {
             isProtonCalendarInstalled = isProtonCalendarInstalled,
             printMessage = printMessage,
             markMessageAsUnread = markMessageAsUnread,
-            findContactByEmail = findContactByEmail
+            findContactByEmail = findContactByEmail,
+            getMessageIdToExpand = getMessageIdToExpand
         )
     }
 

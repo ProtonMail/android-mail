@@ -104,6 +104,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
+import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -184,7 +185,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val printMessage: PrintMessage,
     private val markMessageAsUnread: MarkMessageAsUnread,
-    private val findContactByEmail: FindContactByEmail
+    private val findContactByEmail: FindContactByEmail,
+    private val getMessageIdToExpand: GetMessageIdToExpand
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -322,7 +324,9 @@ class ConversationDetailViewModel @Inject constructor(
                         currentViewState = conversationViewState
                     ).toImmutableList()
 
-                    val initialScrollTo = initialScrollToMessageId ?: getFirstNonDraftMessageId(messages)
+                    val initialScrollTo = initialScrollToMessageId
+                        ?: getMessageIdToExpand(messages)
+                            ?.let { messageIdUiModelMapper.toUiModel(it) }
                     if (stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState)) {
                         ConversationDetailEvent.MessagesData(messagesUiModels, initialScrollTo)
                     } else {
@@ -344,17 +348,6 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun allCollapsed(viewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>): Boolean =
         viewState.values.all { it == InMemoryConversationStateRepository.MessageState.Collapsed }
-
-    private fun getFirstNonDraftMessageId(messages: List<MessageWithLabels>): MessageIdUiModel? {
-        val messageId = messages
-            .filterNot { it.message.isDraft() }
-            .sortedByDescending { it.message.order }
-            .maxByOrNull { it.message.time }
-            ?.message
-            ?.messageId
-
-        return messageId?.let { messageIdUiModelMapper.toUiModel(it) }
-    }
 
     private suspend fun buildMessagesUiModels(
         messages: NonEmptyList<MessageWithLabels>,
