@@ -394,24 +394,14 @@ distribute_debug_post_merge:
 
 release_publish_github:
   stage: publish
-  when: manual
-  variables:
-    RELEASE_SYNC_PUBLIC_URL: git@github.com:ProtonMail/android-mail.git
-    RELEASE_SYNC_TO_BRANCH: 'master'
-    RELEASE_SYNC_FROM_BRANCH: 'master'
-  extends: .release-sync-commit-shared
-
-release_publish_github_tags:
-  only:
-    variables:
-      - $RELEASE_SYNC_FROM_BRANCH == $CI_COMMIT_BRANCH
-  stage: publish
-  when: manual
-  variables:
-    RELEASE_SYNC_PUBLIC_URL: git@github.com:ProtonMail/android-mail.git
-    RELEASE_SYNC_TO_BRANCH: 'master'
-    RELEASE_SYNC_FROM_BRANCH: 'master'
-  extends: .release-sync-tags-shared
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: manual
+    - when: never
+  script:
+    - ./tools/private/publish/publish-to-github.sh
+  tags:
+    - shared-medium
 
 include:
   # Push the cache if it's the default branch
@@ -431,10 +421,6 @@ include:
   - component: gitlab.protontech.ch/proton/devops/cicd-components/community/gradle-wrapper/validate@0.0.2
     inputs:
       stage: analyse
-
-  - project: 'agarroux/publish-github'
-    ref: master
-    file: '/jobs/release.gitlab-ci.yml'
 
   - project: 'translations/generator'
     ref: master
