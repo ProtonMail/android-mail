@@ -187,39 +187,6 @@ object MessageSample {
         toList = listOf(RecipientSample.Bob)
     )
 
-    val ReadMessageMayFirst = build(
-        messageId = MessageIdSample.ReadMessageMayFirst,
-        unread = false,
-        time = MayFirst2023
-    )
-
-    val ReadMessageMaySecond = build(
-        messageId = MessageIdSample.ReadMessageMaySecond,
-        unread = false,
-        time = MaySecond2023
-    )
-
-    val UnreadMessageMayFirst = build(
-        messageId = MessageIdSample.UnreadMessageMayFirst,
-        unread = true,
-        time = MayFirst2023
-    )
-
-    val UnreadMessageMaySecond = build(
-        messageId = MessageIdSample.UnreadMessageMaySecond,
-        unread = true,
-        time = MaySecond2023
-    )
-
-    val UnreadMessageMayThird = build(
-        messageId = MessageIdSample.UnreadMessageMayThird,
-        unread = true,
-        time = MayThird2023
-    )
-
-    private val MayFirst2023 get() = 1_682_899_200L
-    private val MaySecond2023 get() = 1_682_985_600L
-    private val MayThird2023 get() = 1_683_072_000L
     private val Aug2022 get() = 1_659_312_000L
     private val Oct2022 get() = 1_664_582_400L
     private val Sep2022 get() = 1_661_990_400L

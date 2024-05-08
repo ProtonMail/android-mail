@@ -80,7 +80,6 @@ import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowRemoteContent
-import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
@@ -304,7 +303,6 @@ class ConversationDetailViewModelIntegrationTest {
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
 
-    private val getMessageToExpand = GetMessageIdToExpand()
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
@@ -1876,8 +1874,7 @@ class ConversationDetailViewModelIntegrationTest {
         networkManager = networkMgmt,
         printMessage = printMessage,
         markMessageAsUnread = markMessageAsUnread,
-        findContactByEmail = findContactByEmailAddress,
-        getMessageIdToExpand = getMessageToExpand
+        findContactByEmail = findContactByEmailAddress
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
