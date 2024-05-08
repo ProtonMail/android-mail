@@ -21,6 +21,7 @@ package ch.protonmail.android
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
@@ -63,12 +64,15 @@ class MainActivity : AppCompatActivity() {
             launcherViewModel.state.value == LauncherState.Processing
         }
         super.onCreate(savedInstanceState)
+
         deeplinkManager.onActivityCreate(this, savedInstanceState)
 
         // Register activities for result.
         launcherViewModel.register(this)
 
         shareIntentObserver.onNewIntent(intent)
+
+        disableRecentAppsScreenshotPreview()
 
         setContent {
             ProtonTheme {
@@ -86,6 +90,12 @@ class MainActivity : AppCompatActivity() {
                     )
                 }
             }
+        }
+    }
+
+    private fun disableRecentAppsScreenshotPreview() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setRecentsScreenshotEnabled(BuildConfig.DEBUG)
         }
     }
 
