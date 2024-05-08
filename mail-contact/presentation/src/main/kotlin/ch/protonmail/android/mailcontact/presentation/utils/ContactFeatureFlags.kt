@@ -30,6 +30,7 @@ enum class ContactFeatureFlags(val value: Boolean) {
 
     // Send group message
     ContactGroupSendMessage(BuildConfig.DEBUG),
+    ContactGroupDetails(true),
 
     // Contact import
     ContactImport(false),

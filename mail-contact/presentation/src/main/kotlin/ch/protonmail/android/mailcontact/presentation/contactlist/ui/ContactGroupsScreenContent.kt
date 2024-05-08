@@ -48,8 +48,7 @@ internal fun ContactGroupsScreenContent(
                 ContactListGroupItem(
                     modifier = Modifier.animateItemPlacement(),
                     contact = contactGroupItemUiModel,
-                    actions = actions,
-                    isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled
+                    actions = actions
                 )
             }
         }

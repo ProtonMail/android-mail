@@ -40,6 +40,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -49,7 +50,6 @@ import me.proton.core.compose.theme.defaultSmallWeak
 internal fun ContactListGroupItem(
     modifier: Modifier = Modifier,
     contact: ContactGroupItemUiModel,
-    isContactGroupsCrudEnabled: Boolean,
     actions: ContactListScreen.Actions
 ) {
     Row(
@@ -57,7 +57,7 @@ internal fun ContactListGroupItem(
             .fillMaxWidth()
             .clickable(
                 role = Role.Button,
-                enabled = isContactGroupsCrudEnabled,
+                enabled = ContactFeatureFlags.ContactGroupDetails.value,
                 onClick = {
                     actions.onContactGroupSelected(contact.labelId)
                 }
