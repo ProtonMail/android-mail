@@ -81,12 +81,16 @@ android {
     }
 
     signingConfigs {
-        // Signing config for debug uses a dummy shared keystore to allow Firebase to work on any internal machine.
         getByName("debug") {
-            storeFile = file("$rootDir/keystore/debug.keystore")
-            storePassword = "android"
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
+            val debugKeystore = file("$rootDir/keystore/debug.keystore")
+
+            // Use the shared keystore if present (either CI or internal usage).
+            if (debugKeystore.exists()) {
+                storeFile = file("$rootDir/keystore/debug.keystore")
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
 
         register("release") {
