@@ -27,9 +27,11 @@ import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
@@ -83,12 +85,15 @@ class HomeViewModelTest {
         every { this@mockk() } returns emptyFlow()
     }
 
+    private val discardDraft = mockk<DiscardDraft>(relaxUnitFun = true)
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
             resetSendingMessageStatus,
             selectedMailLabelId,
+            discardDraft,
             observePrimaryUserMock,
             shareIntentObserver
         )
@@ -353,6 +358,20 @@ class HomeViewModelTest {
             val actualItem = awaitItem()
             assertNull(actualItem.navigateToEffect.consume())
         }
+    }
+
+    @Test
+    fun `should discard draft when discard draft is called`() = runTest {
+        // Given
+        val messageId = MessageIdSample.LocalDraft
+
+        every { networkManager.observe() } returns flowOf()
+
+        // When
+        homeViewModel.discardDraft(messageId)
+
+        // Then
+        coVerify { discardDraft(user.userId, messageId) }
     }
 
     private fun mockIntent(action: String, data: Uri?): Intent {

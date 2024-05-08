@@ -52,6 +52,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
@@ -158,8 +159,18 @@ fun Home(
     }
 
     val draftSavedText = stringResource(id = R.string.mailbox_draft_saved)
-    fun showDraftSavedSnackbar() = scope.launch {
-        snackbarHostSuccessState.showSnackbar(message = draftSavedText, type = ProtonSnackbarType.SUCCESS)
+    val draftSavedDiscardText = stringResource(id = R.string.mailbox_draft_discard)
+    fun showDraftSavedSnackbar(messageId: MessageId) = scope.launch {
+        val result = snackbarHostSuccessState.showSnackbar(
+            message = draftSavedText,
+            type = ProtonSnackbarType.SUCCESS,
+            actionLabel = draftSavedDiscardText
+
+        )
+        when (result) {
+            SnackbarResult.ActionPerformed -> viewModel.discardDraft(messageId)
+            SnackbarResult.Dismissed -> Unit
+        }
     }
 
     val sendingMessageText = stringResource(id = R.string.mailbox_message_sending)
@@ -353,7 +364,7 @@ fun Home(
                 addComposer(
                     navController,
                     activityActions,
-                    showDraftSavedSnackbar = { showDraftSavedSnackbar() },
+                    showDraftSavedSnackbar = { showDraftSavedSnackbar(it) },
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
                     showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
                 )

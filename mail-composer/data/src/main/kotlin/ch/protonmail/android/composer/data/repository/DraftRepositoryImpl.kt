@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
@@ -31,6 +32,7 @@ import javax.inject.Inject
 
 class DraftRepositoryImpl @Inject constructor(
     private val enqueuer: Enqueuer,
+    private val workerManager: WorkManager,
     private val draftUploadTracker: DraftUploadTracker
 ) : DraftRepository {
 
@@ -60,5 +62,10 @@ class DraftRepositoryImpl @Inject constructor(
             params2 = UploadAttachmentsWorker.params(userId, messageId),
             existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
         )
+    }
+
+    override fun cancelUploadDraft(messageId: MessageId) {
+        val uniqueWorkId = UploadDraftWorker.id(messageId)
+        workerManager.cancelUniqueWork(uniqueWorkId)
     }
 }

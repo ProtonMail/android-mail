@@ -35,4 +35,10 @@ interface DraftRepository {
      * a new job will be chained to happen afterwards, independently of the outcome of the existing one.
      */
     suspend fun forceUpload(userId: UserId, messageId: MessageId)
+
+    /**
+     * Cancels the upload of the message with the given messageId.
+     * In case a job to upload this message is already ongoing or enqueued, it will be cancelled.
+     */
+    fun cancelUploadDraft(messageId: MessageId)
 }

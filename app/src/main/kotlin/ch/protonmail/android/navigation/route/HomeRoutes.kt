@@ -110,7 +110,7 @@ internal fun NavGraphBuilder.addMessageDetail(actions: MessageDetail.Actions) {
 internal fun NavGraphBuilder.addComposer(
     navController: NavHostController,
     activityActions: MainActivity.Actions,
-    showDraftSavedSnackbar: () -> Unit,
+    showDraftSavedSnackbar: (messasgeId: MessageId) -> Unit,
     showMessageSendingSnackbar: () -> Unit,
     showMessageSendingOfflineSnackbar: () -> Unit
 ) {

@@ -31,11 +31,13 @@ import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
+import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
@@ -46,9 +48,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
@@ -60,6 +64,7 @@ class HomeViewModel @Inject constructor(
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
+    private val discardDraft: DiscardDraft,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
@@ -113,6 +118,14 @@ class HomeViewModel @Inject constructor(
             navController.popBackStack(Destination.Screen.Mailbox.route, inclusive = false)
         }
         selectedMailLabelId.set(MailLabelId.System.Drafts)
+    }
+
+    fun discardDraft(messageId: MessageId) {
+        viewModelScope.launch {
+            primaryUser.firstOrNull()?.let {
+                discardDraft(it.userId, messageId)
+            } ?: Timber.e("Primary user is not available!")
+        }
     }
 
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {

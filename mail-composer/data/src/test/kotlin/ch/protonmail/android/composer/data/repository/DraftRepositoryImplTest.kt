@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.repository
 
 import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import ch.protonmail.android.composer.data.remote.UploadAttachmentsWorker
 import ch.protonmail.android.composer.data.remote.UploadDraftWorker
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
@@ -38,8 +39,9 @@ class DraftRepositoryImplTest {
 
     private val enqueuer = mockk<Enqueuer>()
     private val draftUploadTracker = mockk<DraftUploadTracker>()
+    private val workManager = mockk<WorkManager>()
 
-    private val draftRepository = DraftRepositoryImpl(enqueuer, draftUploadTracker)
+    private val draftRepository = DraftRepositoryImpl(enqueuer, workManager, draftUploadTracker)
 
     @Test
     fun `upload enqueue upload draft work when not already enqueued and upload tracker requires upload`() = runTest {
@@ -115,6 +117,20 @@ class DraftRepositoryImplTest {
                 existingWorkPolicy = expectedWorkPolicy
             )
         }
+    }
+
+    @Test
+    fun `cancel upload draft work`() = runTest {
+        // Given
+        val messageId = MessageIdSample.LocalDraft
+        val uniqueWorkId = UploadDraftWorker.id(messageId)
+        every { workManager.cancelUniqueWork(uniqueWorkId) } returns mockk()
+
+        // When
+        draftRepository.cancelUploadDraft(messageId)
+
+        // Then
+        verify { workManager.cancelUniqueWork(uniqueWorkId) }
     }
 
     private fun givenUploadTrackerRequiresUpload(userId: UserId, messageId: MessageId) {
