@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailconversation.data.local.converters
 
 import androidx.room.TypeConverter
-import kotlinx.serialization.json.JsonElement
 import me.proton.core.util.kotlin.deserializeMap
 import me.proton.core.util.kotlin.serialize
 
@@ -30,12 +29,4 @@ class MapConverters {
 
     @TypeConverter
     fun fromStringToMap(value: String): Map<String, String> = value.deserializeMap()
-
-    @TypeConverter
-    fun fromMapOfJsonElementToMapOfString(value: Map<String, JsonElement>): Map<String, String> = value.mapValues {
-        it.value.serialize()
-    }
-
-    @TypeConverter
-    fun fromStringToMapOfJsonElement(value: String): Map<String, JsonElement> = value.deserializeMap()
 }

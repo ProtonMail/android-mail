@@ -42,7 +42,6 @@ android {
 
 dependencies {
     implementation(KotlinX.immutableCollections)
-    implementation(KotlinX.serializationJson)
 
     implementation(Proton.Core.account)
     implementation(Proton.Core.contact)

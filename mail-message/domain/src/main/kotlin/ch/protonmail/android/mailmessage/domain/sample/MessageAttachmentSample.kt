@@ -20,8 +20,6 @@ package ch.protonmail.android.mailmessage.domain.sample
 
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 
 object MessageAttachmentSample {
 
@@ -106,12 +104,7 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = JsonObject(
-            mapOf(
-                "content-id" to JsonPrimitive("embeddedImageContentId"),
-                "content-disposition" to JsonPrimitive("inline")
-            )
-        )
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val embeddedOctetStreamAttachment = MessageAttachment(
@@ -123,12 +116,7 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = JsonObject(
-            mapOf(
-                "content-id" to JsonPrimitive("embeddedImageContentId"),
-                "content-disposition" to JsonPrimitive("inline")
-            )
-        )
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val invalidEmbeddedImageAttachment = MessageAttachment(
@@ -140,12 +128,7 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = JsonObject(
-            mapOf(
-                "content-id" to JsonPrimitive("embeddedImageContentId"),
-                "content-disposition" to JsonPrimitive("inline")
-            )
-        )
+        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val signedDocument = MessageAttachment(
@@ -171,4 +154,5 @@ object MessageAttachmentSample {
         encSignature = null,
         headers = emptyMap()
     )
+
 }

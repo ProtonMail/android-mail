@@ -159,7 +159,7 @@ data class AttachmentResource(
     @SerialName("EncSignature")
     val encSignature: String? = null,
     @SerialName("Headers")
-    val headers: Map<String, JsonElement>
+    val headers: Map<String, String>
 ) {
     fun toMessageAttachment() = MessageAttachment(
         attachmentId = AttachmentId(id),

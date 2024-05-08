@@ -23,7 +23,6 @@ import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEnti
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 
 object MessageAttachmentEntityTestData {
@@ -70,7 +69,7 @@ object MessageAttachmentEntityTestData {
         keyPackets: String? = null,
         signature: String? = null,
         encSignature: String? = null,
-        headers: Map<String, JsonElement> = emptyMap()
+        headers: Map<String, String> = emptyMap()
     ) = MessageAttachmentEntity(
         userId = userId,
         messageId = messageId,

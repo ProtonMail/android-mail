@@ -47,7 +47,6 @@ dependencies {
 
     implementation(Dependencies.moduleDataLibs)
     implementation(Dagger.hiltAndroid)
-    implementation(KotlinX.serializationJson)
     implementation(Proton.Core.user)
     implementation(Proton.Core.label)
     implementation(Proton.Core.eventManager)

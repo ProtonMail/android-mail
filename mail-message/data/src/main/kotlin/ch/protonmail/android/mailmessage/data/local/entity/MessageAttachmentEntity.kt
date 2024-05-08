@@ -23,7 +23,6 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.serialization.json.JsonElement
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
 
@@ -62,5 +61,5 @@ data class MessageAttachmentEntity(
     val keyPackets: String?,
     val signature: String?,
     val encSignature: String?,
-    val headers: Map<String, JsonElement>
+    val headers: Map<String, String>
 )
