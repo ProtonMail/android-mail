@@ -96,6 +96,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchDeviceContacts
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsDeviceContactsSuggestionsEnabled
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -166,6 +167,9 @@ class ComposerViewModelTest {
     private val getContactsMock = mockk<GetContacts>()
     private val searchContactsMock = mockk<SearchContacts>()
     private val searchDeviceContactsMock = mockk<SearchDeviceContacts>()
+    private val isDeviceContactsSuggestionsEnabledMock = mockk<IsDeviceContactsSuggestionsEnabled> {
+        every { this@mockk.invoke(null) } returns false
+    }
     private val searchContactGroupsMock = mockk<SearchContactGroups>()
     private val participantMapperMock = mockk<ParticipantMapper>()
     private val observePrimaryUserIdMock = mockk<ObservePrimaryUserId>()
@@ -217,6 +221,7 @@ class ComposerViewModelTest {
             getContactsMock,
             searchContactsMock,
             searchDeviceContactsMock,
+            isDeviceContactsSuggestionsEnabledMock,
             searchContactGroupsMock,
             participantMapperMock,
             reducer,
@@ -699,6 +704,7 @@ class ComposerViewModelTest {
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
 
         // When
         viewModel.submit(action)
@@ -763,6 +769,7 @@ class ComposerViewModelTest {
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
 
         // When
         viewModel.submit(action)
@@ -2614,7 +2621,8 @@ class ComposerViewModelTest {
             replaceDraftBody = Effect.empty(),
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isDeviceContactsSuggestionsEnabled = false
         )
 
         mockkObject(ComposerDraftState.Companion)

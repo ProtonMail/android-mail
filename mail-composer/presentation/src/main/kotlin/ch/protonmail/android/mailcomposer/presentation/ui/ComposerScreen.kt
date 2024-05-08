@@ -123,7 +123,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
 
     @Suppress("VariableMaxLength")
     val shouldShowReadContactsPermissionRationaleDialog = remember { mutableStateOf(false) }
-    if (shouldShowReadContactsPermissionRationaleDialog.value) {
+    if (state.isDeviceContactsSuggestionsEnabled && shouldShowReadContactsPermissionRationaleDialog.value) {
         ProtonAlertDialog(
             title = stringResource(id = R.string.device_contacts_permission_dialog_title),
             text = { ProtonAlertDialogText(R.string.device_contacts_permission_dialog_message) },
@@ -148,8 +148,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     }
 
     LaunchedEffect(readContactsPermission.status.isGranted) {
-        Timber.e("status: ${readContactsPermission.status}")
-        if (!readContactsPermission.status.isGranted) {
+        if (state.isDeviceContactsSuggestionsEnabled && !readContactsPermission.status.isGranted) {
             if (readContactsPermission.status.shouldShowRationale) {
                 shouldShowReadContactsPermissionRationaleDialog.value = true
             } else {

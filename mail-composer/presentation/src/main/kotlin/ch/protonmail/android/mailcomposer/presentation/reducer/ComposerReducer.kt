@@ -152,6 +152,10 @@ class ComposerReducer @Inject constructor(
         is ComposerEvent.ErrorAttachmentsExceedSizeLimit -> updateStateForAttachmentsExceedSizeLimit(currentState)
         is ComposerEvent.ErrorAttachmentsReEncryption -> updateStateForDeleteAllAttachment(currentState)
         is ComposerEvent.OnSendingError -> updateSendingErrorState(currentState, sendingError)
+        is ComposerEvent.OnIsDeviceContactsSuggestionsEnabled -> updateIsDeviceContactsSuggestionsEnabledState(
+            currentState,
+            this.enabled
+        )
         is ComposerEvent.UpdateContactSuggestions -> updateStateForContactSuggestions(
             currentState,
             this.contactSuggestions,
@@ -238,6 +242,10 @@ class ComposerReducer @Inject constructor(
 
     private fun updateSendingErrorState(currentState: ComposerDraftState, sendingError: TextUiModel) =
         currentState.copy(sendingErrorEffect = Effect.of(sendingError))
+
+    @Suppress("FunctionMaxLength")
+    private fun updateIsDeviceContactsSuggestionsEnabledState(currentState: ComposerDraftState, enabled: Boolean) =
+        currentState.copy(isDeviceContactsSuggestionsEnabled = enabled)
 
     private fun updateCloseComposerState(currentState: ComposerDraftState, isDraftSaved: Boolean) = if (isDraftSaved) {
         currentState.copy(closeComposerWithDraftSaved = Effect.of(Unit))

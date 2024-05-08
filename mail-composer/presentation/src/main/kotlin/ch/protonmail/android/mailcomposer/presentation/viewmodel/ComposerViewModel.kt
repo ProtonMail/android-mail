@@ -90,6 +90,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchDeviceContacts
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsDeviceContactsSuggestionsEnabled
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
@@ -129,6 +130,7 @@ class ComposerViewModel @Inject constructor(
     private val getContacts: GetContacts,
     private val searchContacts: SearchContacts,
     private val searchDeviceContacts: SearchDeviceContacts,
+    private val isDeviceContactsSuggestionsEnabled: IsDeviceContactsSuggestionsEnabled,
     private val searchContactGroups: SearchContactGroups,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
@@ -210,6 +212,8 @@ class ComposerViewModel @Inject constructor(
         observeSendingError()
         observeMessagePassword()
         observeMessageExpirationTime()
+
+        emitNewStateFor(ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(isDeviceContactsSuggestionsEnabled(null)))
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
@@ -764,14 +768,16 @@ class ComposerViewModel @Inject constructor(
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
-                val deviceContacts = searchDeviceContacts(searchTerm)
+                val fromDeviceContacts = if (state.value.isDeviceContactsSuggestionsEnabled) {
+                    val deviceContacts = searchDeviceContacts(searchTerm)
 
-                val fromDeviceContacts = deviceContacts.getOrNull()?.map {
-                    ContactSuggestionUiModel.Contact(
-                        name = it.name,
-                        email = it.email
-                    )
-                } ?: emptyList()
+                    deviceContacts.getOrNull()?.map {
+                        ContactSuggestionUiModel.Contact(
+                            name = it.name,
+                            email = it.email
+                        )
+                    } ?: emptyList()
+                } else emptyList()
 
                 val fromContacts = contacts.getOrNull()?.asSequence()?.flatMap { contact ->
                     contact.contactEmails.map { contactEmail ->

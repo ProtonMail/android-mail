@@ -848,6 +848,18 @@ class ComposerReducerTest(
             expectedState = ComposerDraftState.initial(messageId).copy(messageExpiresIn = 1.days)
         )
 
+        @Suppress("VariableMaxLength")
+        private val EmptyToOnIsDeviceContactsSuggestionsEnabled = TestTransition(
+            name = "Should update state with a flag when feature flag is fetched",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(
+                true
+            ),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                isDeviceContactsSuggestionsEnabled = true
+            )
+        )
+
         private val EmptyToConfirmSendExpiringMessage = TestTransition(
             name = "Should update state with an effect when sending an expiring message to external recipients",
             currentState = ComposerDraftState.initial(messageId),
@@ -942,6 +954,7 @@ class ComposerReducerTest(
             EmptyToExpirationTimeSet,
             EmptyToErrorSettingExpirationTime,
             EmptyToMessageExpirationTimeUpdated,
+            EmptyToOnIsDeviceContactsSuggestionsEnabled,
             EmptyToConfirmSendExpiringMessage
         )
 
@@ -993,7 +1006,8 @@ class ComposerReducerTest(
             replaceDraftBody = replaceDraftBody,
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isDeviceContactsSuggestionsEnabled = false
         )
 
         private fun aNotSubmittableState(
@@ -1049,7 +1063,8 @@ class ComposerReducerTest(
             isMessagePasswordSet = false,
             senderChangedNotice = senderChangedNotice,
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isDeviceContactsSuggestionsEnabled = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

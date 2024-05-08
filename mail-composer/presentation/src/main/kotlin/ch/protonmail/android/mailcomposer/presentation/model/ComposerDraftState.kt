@@ -32,6 +32,7 @@ data class ComposerDraftState(
     val premiumFeatureMessage: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
+    val isDeviceContactsSuggestionsEnabled: Boolean,
     val senderAddresses: List<SenderUiModel>,
     val changeBottomSheetVisibility: Effect<Boolean>,
     val closeComposer: Effect<Unit>,
@@ -96,7 +97,8 @@ data class ComposerDraftState(
             isMessagePasswordSet = false,
             senderChangedNotice = Effect.empty(),
             messageExpiresIn = Duration.ZERO,
-            confirmSendExpiringMessage = Effect.empty()
+            confirmSendExpiringMessage = Effect.empty(),
+            isDeviceContactsSuggestionsEnabled = false
         )
     }
 }
