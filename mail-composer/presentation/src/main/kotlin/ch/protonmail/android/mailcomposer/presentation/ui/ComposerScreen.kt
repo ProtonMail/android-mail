@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,6 +70,10 @@ import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import kotlinx.coroutines.delay
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
@@ -80,7 +87,7 @@ import timber.log.Timber
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @Suppress("UseComposableActions")
 @Composable
 fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel = hiltViewModel()) {
@@ -110,6 +117,47 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         }
     )
 
+    val readContactsPermission = rememberPermissionState(
+        permission = Manifest.permission.READ_CONTACTS
+    )
+
+    @Suppress("VariableMaxLength")
+    val shouldShowReadContactsPermissionRationaleDialog = remember { mutableStateOf(false) }
+    if (shouldShowReadContactsPermissionRationaleDialog.value) {
+        ProtonAlertDialog(
+            title = stringResource(id = R.string.device_contacts_permission_dialog_title),
+            text = { ProtonAlertDialogText(R.string.device_contacts_permission_dialog_message) },
+            dismissButton = {},
+            confirmButton = {
+                ProtonAlertDialogButton(R.string.device_contacts_permission_dialog_action_button) {
+                    shouldShowReadContactsPermissionRationaleDialog.value = false
+                    if (readContactsPermission.status.shouldShowRationale) {
+                        readContactsPermission.launchPermissionRequest()
+                    } else {
+                        context.startActivity(
+                            Intent().apply {
+                                action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                data = Uri.fromParts("package", context.packageName, null)
+                            }
+                        )
+                    }
+                }
+            },
+            onDismissRequest = { shouldShowReadContactsPermissionRationaleDialog.value = false }
+        )
+    }
+
+    LaunchedEffect(readContactsPermission.status.isGranted) {
+        Timber.e("status: ${readContactsPermission.status}")
+        if (!readContactsPermission.status.isGranted) {
+            if (readContactsPermission.status.shouldShowRationale) {
+                shouldShowReadContactsPermissionRationaleDialog.value = true
+            } else {
+                readContactsPermission.launchPermissionRequest()
+            }
+        }
+    }
+
     ProtonModalBottomSheetLayout(
         sheetContent = bottomSheetHeightConstrainedContent {
             when (bottomSheetType.value) {
@@ -119,10 +167,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                         imagePicker.launch("*/*")
                     }
                 )
+
                 BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
                     state.senderAddresses,
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
                 )
+
                 BottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
                     expirationTime = state.messageExpiresIn,
                     onDoneClick = { viewModel.submit(ComposerAction.ExpirationTimeSet(it)) }
