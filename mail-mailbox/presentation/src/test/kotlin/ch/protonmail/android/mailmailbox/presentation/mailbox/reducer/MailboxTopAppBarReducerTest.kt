@@ -211,12 +211,12 @@ internal class MailboxTopAppBarReducerTest(
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxEvent.EnterSelectionMode(readMailboxItemUiModel),
-                expectedState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 1)
+                expectedState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING)
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),
                 operation = MailboxViewAction.ExitSelectionMode,
-                expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
+                expectedState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING)
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SearchMode(inboxLabel.text(), searchQuery = EMPTY_STRING),

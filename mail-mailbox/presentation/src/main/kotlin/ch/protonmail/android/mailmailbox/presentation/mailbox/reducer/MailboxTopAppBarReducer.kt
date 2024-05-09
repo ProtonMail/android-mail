@@ -76,27 +76,33 @@ class MailboxTopAppBarReducer @Inject constructor() {
     private fun MailboxTopAppBarState.toNewStateForEnterSearchMode() = when (this) {
         is MailboxTopAppBarState.Data.DefaultMode ->
             MailboxTopAppBarState.Data.SearchMode(currentLabelName, "")
+
         else -> this
     }
 
     private fun MailboxTopAppBarState.toNewStateForExitSearchMode() = when (this) {
         is MailboxTopAppBarState.Data.SearchMode ->
             MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+
         else -> this
     }
 
     private fun MailboxTopAppBarState.toNewStateForEnterSelectionMode() = when (this) {
+
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data -> MailboxTopAppBarState.Data.SelectionMode(
-            currentLabelName,
-            selectedCount = 1
-        )
+        is MailboxTopAppBarState.Data -> if (this !is MailboxTopAppBarState.Data.SearchMode)
+            MailboxTopAppBarState.Data.SelectionMode(
+                currentLabelName, selectedCount = 1
+            ) else this
     }
 
     private fun MailboxTopAppBarState.toNewStateForExitSelectionMode() = when (this) {
         is MailboxTopAppBarState.Loading -> this
-        is MailboxTopAppBarState.Data ->
-            MailboxTopAppBarState.Data.DefaultMode(currentLabelName)
+        is MailboxTopAppBarState.Data -> if (this !is MailboxTopAppBarState.Data.SearchMode)
+            MailboxTopAppBarState.Data.DefaultMode(
+                currentLabelName
+            )
+        else this
     }
 
     private fun MailboxTopAppBarState.toNewStateForItemAddedToSelection() = when (this) {
