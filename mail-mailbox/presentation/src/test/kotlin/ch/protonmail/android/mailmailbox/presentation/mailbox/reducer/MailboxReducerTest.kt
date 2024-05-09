@@ -34,7 +34,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingDeleteDialog
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -42,6 +41,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingSt
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -192,7 +192,7 @@ internal class MailboxReducerTest(
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(

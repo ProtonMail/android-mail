@@ -88,7 +88,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -97,6 +96,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimit
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
@@ -686,7 +686,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -703,7 +703,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -716,7 +716,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Visible.Button(TextUiModel("Clear All"))
             )
         )
@@ -772,7 +772,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1336,7 +1336,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1367,7 +1367,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1398,7 +1398,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = true,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3591,7 +3591,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             ),
             unreadFilterState = UnreadFilterState.Data(
@@ -3670,7 +3670,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.NewSearch,
+                searchState = MailboxSearchStateSampleData.NewSearch,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3702,7 +3702,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3737,7 +3737,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.NewSearchLoading,
+                searchState = MailboxSearchStateSampleData.SearchLoading,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3769,7 +3769,7 @@ class MailboxViewModelTest {
                 refreshErrorEffect = Effect.of(Unit),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.SearchData,
+                searchState = MailboxSearchStateSampleData.SearchData,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3792,20 +3792,30 @@ class MailboxViewModelTest {
     @Test
     fun `search will be performed in AllMail label independent from current label`() = runTest {
         // Given
-        val queryText = "query"
+        val queryText = MailboxSearchStateSampleData.QueryString
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
         val initialMailboxState = createMailboxDataState()
+        val mailboxSearchQueryState = initialMailboxState.copy(
+            mailboxListState = (initialMailboxState.mailboxListState as MailboxListState.Data.ViewMode).copy(
+                searchState = MailboxSearchStateSampleData.SearchLoading
+            )
+        )
         val userIds = listOf(userId)
         every { selectedMailLabelId.flow } returns currentLocationFlow
         every { pagerFactory.create(userIds, any(), false, any(), any()) } returns mockk mockPager@{
             every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
         }
         every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.SearchQuery(queryText)
+            )
+        } returns mailboxSearchQueryState
         coEvery { deleteSearchResults.invoke(any(), any()) } just runs
 
         mailboxViewModel.items.test {
             // Then
-            awaitItem()
             verify { pagerFactory.create(userIds, initialLocationMailLabelId, false, any(), any()) }
 
             // When

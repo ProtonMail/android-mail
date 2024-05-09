@@ -40,18 +40,18 @@ sealed interface MailboxListState {
         val currentMailLabel: MailLabel
         val swipeActions: SwipeActionsUiModel?
         val clearState: ClearState
-
+        val searchState: MailboxSearchState
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
+            override val searchState: MailboxSearchState,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
             val offlineEffect: Effect<Unit>,
             val refreshErrorEffect: Effect<Unit>,
-            val refreshRequested: Boolean,
-            val searchMode: MailboxSearchMode
+            val refreshRequested: Boolean
         ) : Data {
 
             fun isInInboxLabel() = currentMailLabel.id == MailLabelId.System.Inbox
@@ -61,6 +61,7 @@ sealed interface MailboxListState {
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
+            override val searchState: MailboxSearchState,
             val selectedMailboxItems: Set<SelectedMailboxItem>
         ) : Data {
 

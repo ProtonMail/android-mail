@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListS
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data.SelectionMode.SelectedMailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
@@ -74,7 +75,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.Star -> reduceStar(currentState)
             is MailboxViewAction.UnStar -> reduceUnStar(currentState)
             is MailboxViewAction.EnterSearchMode -> reduceEnterSearchMode(currentState)
-            is MailboxViewAction.SearchQuery -> reduceSearchQuery(currentState)
+            is MailboxViewAction.SearchQuery -> reduceSearchQuery(operation, currentState)
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
@@ -84,19 +85,37 @@ class MailboxListReducer @Inject constructor() {
     private fun reduceEnterSearchMode(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchMode = MailboxSearchMode.NewSearch
+                searchState = MailboxSearchState(
+                    searchMode = MailboxSearchMode.NewSearch,
+                    searchQuery = ""
+                )
             )
+
             else -> currentState
         }
     }
 
-    private fun reduceSearchQuery(currentState: MailboxListState): MailboxListState {
+    private fun reduceSearchQuery(
+        operation: MailboxViewAction.SearchQuery,
+        currentState: MailboxListState
+    ): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode ->
-                if (currentState.searchMode == MailboxSearchMode.NewSearch)
-                    currentState.copy(searchMode = MailboxSearchMode.NewSearchLoading)
+                if (currentState.searchState.searchMode == MailboxSearchMode.NewSearch)
+                    currentState.copy(
+                        searchState = currentState.searchState.copy(
+                            searchQuery = operation.query,
+                            searchMode = MailboxSearchMode.NewSearchLoading
+                        )
+                    )
                 else
-                    currentState.copy(searchMode = MailboxSearchMode.SearchData)
+                    currentState.copy(
+                        searchState = currentState.searchState.copy(
+                            searchQuery = operation.query,
+                            searchMode = MailboxSearchMode.SearchData
+                        )
+                    )
+
             else -> currentState
         }
     }
@@ -104,8 +123,11 @@ class MailboxListReducer @Inject constructor() {
     private fun reduceSearchResult(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchMode = MailboxSearchMode.SearchData
+                searchState = currentState.searchState.copy(
+                    searchMode = MailboxSearchMode.SearchData
+                )
             )
+
             else -> currentState
         }
     }
@@ -113,8 +135,9 @@ class MailboxListReducer @Inject constructor() {
     private fun reduceExitSearchMode(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
-                searchMode = MailboxSearchMode.None
+                searchState = MailboxSearchState.NotSearching
             )
+
             else -> currentState
         }
     }
@@ -133,7 +156,7 @@ class MailboxListReducer @Inject constructor() {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchState.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
 
@@ -163,7 +186,7 @@ class MailboxListReducer @Inject constructor() {
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
                 swipeActions = null,
-                searchMode = MailboxSearchMode.None,
+                searchState = MailboxSearchState.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
 
@@ -200,7 +223,7 @@ class MailboxListReducer @Inject constructor() {
             ViewMode.ConversationGrouping -> {
                 // in search mode, subItemId is set to scroll to the searched item
                 val searchedItemId =
-                    if (currentState is MailboxListState.Data.ViewMode && currentState.searchMode.isInSearch()) {
+                    if (currentState is MailboxListState.Data.ViewMode && currentState.searchState.isInSearch()) {
                         MailboxItemId(operation.item.id)
                     } else {
                         null
@@ -279,7 +302,8 @@ class MailboxListReducer @Inject constructor() {
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 swipeActions = currentState.swipeActions,
-                clearState = currentState.clearState
+                clearState = currentState.clearState,
+                searchState = currentState.searchState
             )
 
             else -> currentState
@@ -294,7 +318,7 @@ class MailboxListReducer @Inject constructor() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = currentState.swipeActions,
-            searchMode = MailboxSearchMode.None,
+            searchState = currentState.searchState,
             clearState = currentState.clearState
         )
 

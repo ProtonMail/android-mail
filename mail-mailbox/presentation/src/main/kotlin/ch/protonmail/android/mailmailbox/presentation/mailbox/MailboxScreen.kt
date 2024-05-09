@@ -481,7 +481,7 @@ private fun MailboxSwipeRefresh(
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
     var loadingWithDataCount by remember { mutableStateOf(0) }
     val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
-    val searchMode = (state as? MailboxListState.Data.ViewMode)?.searchMode ?: MailboxSearchMode.None
+    val searchMode = (state as? MailboxListState.Data)?.searchState?.searchMode ?: MailboxSearchMode.None
 
     var lastViewState by remember { mutableStateOf<MailboxScreenState>(MailboxScreenState.Loading) }
 
@@ -608,7 +608,7 @@ private fun MailboxItemsList(
         onAvatarClicked = actions.onAvatarClicked
     )
 
-    val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchMode.isInSearch()
+    val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchState.isInSearch()
 
     // Detect if user manually scrolled the list
     var mailboxScrolled by rememberSaveable { mutableStateOf(false) }

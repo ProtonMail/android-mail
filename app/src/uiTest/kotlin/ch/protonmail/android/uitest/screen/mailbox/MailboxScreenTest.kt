@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingSt
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
@@ -94,7 +95,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None,
+            searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -118,7 +119,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None,
+            searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -152,7 +153,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None,
+            searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -172,7 +173,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
             swipeActions = null,
-            searchMode = MailboxSearchMode.None,
+            searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
@@ -206,7 +207,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
                     swipeActions = null,
-                    searchMode = MailboxSearchMode.None,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(

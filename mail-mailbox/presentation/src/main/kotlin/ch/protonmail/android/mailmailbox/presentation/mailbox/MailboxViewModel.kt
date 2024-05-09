@@ -192,8 +192,6 @@ class MailboxViewModel @Inject constructor(
     val state: StateFlow<MailboxState> = mutableState.asStateFlow()
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
-    private val searchQuery = MutableStateFlow("")
-
     init {
         viewModelScope.launch {
             if (shouldDisplayOnboarding()) {
@@ -352,9 +350,9 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.UnStar -> handleUnStarAction(viewAction)
                 is MailboxViewAction.MoveToArchive,
                 is MailboxViewAction.MoveToSpam -> handleMoveToAction(viewAction)
-                is MailboxViewAction.EnterSearchMode -> handleEnterSearchMode(viewAction)
+                is MailboxViewAction.EnterSearchMode -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
-                is MailboxViewAction.SearchQuery -> handleSearchQuery(viewAction)
+                is MailboxViewAction.SearchQuery -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.SearchResult -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.DeleteAll -> handleClearAllAction()
                 is MailboxViewAction.DeleteAllConfirmed -> handleClearAllConfirmedAction()
@@ -405,25 +403,11 @@ class MailboxViewModel @Inject constructor(
 
     }
 
-    private fun handleEnterSearchMode(viewAction: MailboxViewAction) {
-        emitNewStateFrom(viewAction)
-
-        searchQuery.value = ""
-    }
-
     private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {
-        emitNewStateFrom(viewAction)
-
         val user = primaryUserId.filterNotNull().first()
-        deleteSearchResults(user, searchQuery.value)
+        deleteSearchResults(user, state.value.getSearchQuery())
 
-        searchQuery.value = ""
-    }
-
-    private fun handleSearchQuery(searchQueryViewAction: MailboxViewAction.SearchQuery) {
-        emitNewStateFrom(searchQueryViewAction)
-
-        searchQuery.value = searchQueryViewAction.query
+        emitNewStateFrom(viewAction)
     }
 
     private suspend fun handleMailboxItemChanged(updatedItemIds: List<String>) {
@@ -518,7 +502,7 @@ class MailboxViewModel @Inject constructor(
                 state.observeMailLabelChanges(),
                 state.observeUnreadFilterState(),
                 observeViewModeByLocation(),
-                searchQuery.asStateFlow()
+                state.observeSearchQuery()
             ) { selectedMailLabel, unreadFilterEnabled, viewMode, query ->
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
@@ -1212,6 +1196,15 @@ class MailboxViewModel @Inject constructor(
         this.map { it.mailboxListState as? MailboxListState.Data.ViewMode }
             .mapNotNull { it?.currentMailLabel }
             .distinctUntilChanged()
+
+    private fun Flow<MailboxState>.observeSearchQuery() = this.map { it.mailboxListState as? MailboxListState.Data }
+        .mapNotNull { it?.searchState?.searchQuery }
+        .distinctUntilChanged()
+
+    private fun MailboxState.getSearchQuery() = (this.mailboxListState as? MailboxListState.Data)
+        ?.searchState
+        ?.searchQuery
+        ?: ""
 
     private fun Flow<MailboxState>.observeSelectedMailboxItems() =
         this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
