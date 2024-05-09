@@ -46,6 +46,9 @@
             tools:targetApi="29" />
 
         <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
+        <meta-data
             android:name="firebase_analytics_collection_deactivated"
             android:value="true" />
         <meta-data

@@ -16,6 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import com.android.build.api.dsl.VariantDimension
 import java.util.Properties
 import configuration.extensions.protonEnvironment
 
@@ -74,6 +75,8 @@ android {
         buildConfigField("String", "SENTRY_DSN", sentryDSN.toBuildConfigValue())
         buildConfigField("String", "ACCOUNT_SENTRY_DSN", accountSentryDSN.toBuildConfigValue())
         buildConfigField("String", "PROXY_TOKEN", proxyToken.toBuildConfigValue())
+
+        setAssetLinksResValue("proton.me")
     }
 
     testOptions {
@@ -151,10 +154,12 @@ android {
             versionNameSuffix = "-dev+$gitHash"
             buildConfigField("Boolean", "USE_DEFAULT_PINS", "false")
 
+            val protonHost = "proton.black"
             protonEnvironment {
-                host = "proton.black"
+                host = protonHost
                 apiPrefix = "mail-api"
             }
+            setAssetLinksResValue(protonHost)
         }
         create("alpha") {
             applicationIdSuffix = ".alpha"
@@ -283,3 +288,15 @@ dependencies {
 }
 
 fun String?.toBuildConfigValue() = if (this != null) "\"$this\"" else "null"
+
+fun VariantDimension.setAssetLinksResValue(host: String) {
+    resValue(
+        type = "string", name = "asset_statements",
+        value = """
+            [{
+              "relation": ["delegate_permission/common.handle_all_urls", "delegate_permission/common.get_login_creds"],
+              "target": { "namespace": "web", "site": "https://$host" }
+            }]
+        """.trimIndent()
+    )
+}
