@@ -54,24 +54,23 @@ class SearchDeviceContacts @Inject constructor(
 
         val deviceContacts = mutableListOf<DeviceContact>()
 
+        val displayNameColumnIndex = contactEmails?.getColumnIndex(
+            ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY
+        )?.takeIf {
+            it >= 0
+        } ?: 0
+
+        val emailColumnIndex = contactEmails?.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)?.takeIf {
+            it >= 0
+        } ?: 0
+
         contactEmails?.use { cursor ->
-            while (cursor.moveToNext()) {
-
-                val name = contactEmails.getString(
-                    contactEmails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY).takeIf {
-                        it >= 0
-                    } ?: 0
-                )
-                val email = contactEmails.getString(
-                    contactEmails.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS).takeIf {
-                        it >= 0
-                    } ?: 0
-                )
-
+            for (position in 0 until cursor.count) {
+                cursor.moveToPosition(position)
                 deviceContacts.add(
                     DeviceContact(
-                        name = name,
-                        email = email
+                        name = contactEmails.getString(displayNameColumnIndex),
+                        email = contactEmails.getString(emailColumnIndex)
                     )
                 )
             }
