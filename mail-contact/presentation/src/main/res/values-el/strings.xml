@@ -129,7 +129,7 @@
   <string name="contact_group_form_update_success">Η ομάδα επαφών ενημερώθηκε</string>
   <string name="contact_group_form_save_error">Σφάλμα κατά την αποθήκευση της ομάδας επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="contact_group_form_save_error_already_exists">Υπάρχει ήδη μια ομάδα με αυτό το όνομα</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Αναβάθμιση σε πρόγραμμα επί πληρωμή για τη δημιουργία ομάδων επαφών</string>
   <string name="members_loading_error">Σφάλμα φόρτωσης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="members_done">Ολοκληρώθηκε</string>
   <string name="add_members_error">Σφάλμα προσθήκης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>

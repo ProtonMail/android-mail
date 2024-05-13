@@ -34,7 +34,7 @@
   <string name="bcc">密送：</string>
   <string name="date">Date:</string>
   <plurals name="attachment">
-    <item quantity="other">%d Attachments</item>
+    <item quantity="other">%d 个附件</item>
   </plurals>
   <string name="hide_details">隐藏详情</string>
   <string name="undisclosed_recipients">匿名收件人</string>

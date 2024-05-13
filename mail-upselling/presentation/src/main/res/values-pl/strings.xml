@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Przycisk ulepszenia</string>
   <string name="upselling_title">Ulepsz konto, aby</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_plus_description_override">Odblokuj więcej przestrzeni dyskowej i funkcje premium</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Planowanie wysyłki i odkładanie wiadomości</string>
   <string name="upselling_plus_feature_custom_domain">1 niestandardowa domena</string>
   <string name="upselling_plus_feature_folders_labels">Nieograniczona liczba folderów, etykiet i filtrów</string>

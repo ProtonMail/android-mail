@@ -18,7 +18,7 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
+  <string name="upselling_button_item_content_description">Uppgraderingsknapp</string>
   <string name="upselling_title">Uppgradera till</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>

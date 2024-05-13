@@ -51,12 +51,12 @@
   <string name="composer_button_set_expiration">Nastaviť čas pre vypršanie platnosti</string>
   <string name="composer_expiration_time_bottom_sheet_title">Platnosť správy</string>
   <string name="composer_expiration_time_bottom_sheet_done">Nastaviť</string>
-  <string name="composer_bottom_bar_expiration_time_none">Nezamykať</string>
+  <string name="composer_bottom_bar_expiration_time_none">Neobmedzená</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hodina</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 deň</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dni</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 týždeň</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Vlastné</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Vlastná</string>
   <string name="composer_error_setting_expiration_time">Nastavenie doby platnosti zlyhalo</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Expirácia nie je podporovaná</string>
@@ -94,11 +94,11 @@
   <string name="set_message_password_button_apply">Použiť heslo</string>
   <string name="set_message_password_button_save_changes">Uložiť zmeny</string>
   <string name="set_message_password_button_remove_password">Odstrániť heslo</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Odpovedať v riadku</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="few">%d contacts</item>
-    <item quantity="many">%d contacts</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d kontakt</item>
+    <item quantity="few">%d kontakty</item>
+    <item quantity="many">%d kontaktov</item>
+    <item quantity="other">%d kontaktov</item>
   </plurals>
 </resources>

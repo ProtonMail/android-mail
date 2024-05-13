@@ -118,7 +118,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Autolås</string>
   <string name="mail_settings_auto_lock_item_title">Autolås app</string>
-  <string name="mail_settings_auto_lock_item_description">Slå denne funktion til for at autolåse din app og benytte en pinkode eller til oplåsning af den.</string>
+  <string name="mail_settings_auto_lock_item_description">Slå denne funktion til at låse din app automatisk, og brug en pinkode til at låse den op.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Skift pinkode</string>
   <string name="mail_settings_auto_lock_item_timer_title">Autolås-timer</string>
   <string name="mail_settings_auto_lock_immediately">Straks</string>

@@ -37,10 +37,10 @@
   <string name="bcc">Прихована копія:</string>
   <string name="date">Дата:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="few">%d Attachments</item>
-    <item quantity="many">%d Attachments</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d вкладення</item>
+    <item quantity="few">%d вкладення</item>
+    <item quantity="many">%d вкладень</item>
+    <item quantity="other">%d вкладень</item>
   </plurals>
   <string name="hide_details">Сховати подробиці</string>
   <string name="undisclosed_recipients">Приховані отримувачі</string>
@@ -105,5 +105,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Скасувати</string>
   <string name="open_on_protoncalendar_banner_title">Відкрити у Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Захищений шифруванням календар</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Не вдалося надрукувати повідомлення</string>
 </resources>

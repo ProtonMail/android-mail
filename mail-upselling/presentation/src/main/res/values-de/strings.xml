@@ -21,25 +21,25 @@
   <string name="upselling_button_item_content_description">Upgrade button</string>
   <string name="upselling_title">Upgrade to</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
+  <string name="upselling_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Zeitplan aufschieben und senden</string>
+  <string name="upselling_plus_feature_custom_domain">1 eigene E-Mail-Domain</string>
+  <string name="upselling_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.</string>
   <string name="upselling_plus_feature_more">Und 14 weitere Premium-Funktionen</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
   <string name="upselling_unlimited_feature_storage">500 GB Speicherplatz</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Alle kostenpflichtigen Mail- und Calendar-Funktionen</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
+  <string name="upselling_discount_tag">SPARE %s%%</string>
+  <string name="upselling_month">/Monat</string>
   <string name="upselling_get_button">%s holen</string>
   <plurals name="upselling_month">
-    <item quantity="one">%d month</item>
-    <item quantity="other">%d months</item>
+    <item quantity="one">%d Monat</item>
+    <item quantity="other">%d Monate</item>
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>

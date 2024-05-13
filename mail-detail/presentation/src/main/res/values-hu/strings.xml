@@ -35,8 +35,8 @@
   <string name="bcc">Titkos másolat:</string>
   <string name="date">Date:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d melléklet</item>
+    <item quantity="other">%d melléklet</item>
   </plurals>
   <string name="hide_details">Részletek elrejtése</string>
   <string name="undisclosed_recipients">Meg nem nevezett címzettek</string>

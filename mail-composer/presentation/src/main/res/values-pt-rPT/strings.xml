@@ -94,7 +94,7 @@
   <string name="set_message_password_button_apply">Aplicar a palavra-passe</string>
   <string name="set_message_password_button_save_changes">Guardar as alterações</string>
   <string name="set_message_password_button_remove_password">Remover a palavra-passe</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Responder em linha</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d contact</item>
     <item quantity="other">%d contacts</item>

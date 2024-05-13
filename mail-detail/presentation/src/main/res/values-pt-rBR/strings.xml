@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
   <string name="open_on_protoncalendar_banner_title">Abrir no Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendário criptografado seguro</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Falha ao imprimir a mensagem</string>
 </resources>

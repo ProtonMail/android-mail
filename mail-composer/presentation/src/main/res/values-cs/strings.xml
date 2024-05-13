@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Odstranit heslo</string>
   <string name="respondInline">Odpovědět v řádku</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="few">%d contacts</item>
-    <item quantity="many">%d contacts</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d kontakt</item>
+    <item quantity="few">%d kontakty</item>
+    <item quantity="many">%d kontaktů</item>
+    <item quantity="other">%d kontaktů</item>
   </plurals>
 </resources>

@@ -36,9 +36,9 @@
   <string name="bcc">Skrivena kopija:</string>
   <string name="date">Date:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="few">%d Attachments</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d privitak</item>
+    <item quantity="few">%d privitka</item>
+    <item quantity="other">%d privitaka</item>
   </plurals>
   <string name="hide_details">Sakrij detalje</string>
   <string name="undisclosed_recipients">Nedefinirani primatelji</string>

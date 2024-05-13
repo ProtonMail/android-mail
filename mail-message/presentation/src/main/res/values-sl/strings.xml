@@ -52,16 +52,16 @@
   <string name="message_link_long_click_share">Deli povezavo</string>
   <string name="message_link_long_click_share_via">Delite povezavo prek</string>
   <!-- Contact Actions Bottom Sheet -->
-  <string name="contact_actions_copy_address">Copy address</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
-  <string name="contact_actions_copy_name">Copy name</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
-  <string name="contact_actions_new_message">New message</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
-  <string name="contact_actions_add_contact">Add contact</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_copy_address">Kopiraj naslov</string>
+  <string name="contact_actions_copy_address_description">Kopiraj kontaktni naslov</string>
+  <string name="contact_actions_copy_address_performed">Naslov kopiran v odložišče</string>
+  <string name="contact_actions_copy_name">Kopiraj ime</string>
+  <string name="contact_actions_copy_name_description">Kopirajte ime stika</string>
+  <string name="contact_actions_copy_name_performed">Ime kopirano v odložišče</string>
+  <string name="contact_actions_new_message">Novo sporočilo</string>
+  <string name="contact_actions_new_message_description">Začnite sestavljati novo sporočilo za ta stik</string>
+  <string name="contact_actions_add_contact">Dodaj kontakt</string>
+  <string name="contact_actions_add_contact_description">Shrani tega prejemnika kot kontakt</string>
+  <string name="contact_actions_view_contact_details">Ogled podrobnosti stika</string>
+  <string name="contact_actions_view_contact_details_description">Oglejte si podrobnosti kontakta</string>
 </resources>

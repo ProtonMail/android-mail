@@ -18,35 +18,35 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">Upgrade knop</string>
+  <string name="upselling_title">Upgraden naar</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_description_override">Om meer opslag- en premiumfuncties te ontgrendelen</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Geplande verzenden en snoozen</string>
+  <string name="upselling_plus_feature_custom_domain">1 aangepast e-maildomein</string>
+  <string name="upselling_plus_feature_folders_labels">Ongelimiteerde mappen, labels en filters</string>
+  <string name="upselling_plus_feature_more">En 14 meer premium functies</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_description_override">Uw all-in-één Premium-abonnement</string>
+  <string name="upselling_unlimited_feature_storage">500 GB opslagruimte</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Alle betaalde Mail- en Calendar-kenmerken</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">BESPAAR %s%%</string>
+  <string name="upselling_month">/maand</string>
+  <string name="upselling_get_button">Kies %s</string>
   <plurals name="upselling_month">
-    <item quantity="one">%d month</item>
-    <item quantity="other">%d months</item>
+    <item quantity="one">%d maand</item>
+    <item quantity="other">%d maanden</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
-  <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_unable_retrieve_options">Kan upgrade opties niet ophalen.</string>
+  <string name="upselling_snackbar_error_no_user_id">Er is iets fout gegaan.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Abonnementen kunnen niet worden opgehaald.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Abonnement upgrade is bezig…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Er is een fout opgetreden tijdens het updaten van uw abonnement.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Er is een fout opgetreden. Probeer het nog eens.</string>
 </resources>

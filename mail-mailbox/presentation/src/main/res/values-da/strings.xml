@@ -41,7 +41,7 @@
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
   <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen beskeder</string>
-  <string name="mailbox_is_empty_description">Du er ajour</string>
+  <string name="mailbox_is_empty_description">Du er ajourført</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Ingen ulæste beskeder</string>
   <string name="mailbox_is_empty_folder_description">Denne mappe er tom</string>
   <string name="mailbox_is_empty_spam_description">Din spam-mappe er tom</string>
@@ -86,17 +86,17 @@
   <string name="onboarding_privacy_for_all_headline">Privatliv for alle</string>
   <string name="onboarding_privacy_for_all_description">Inviter andre til Proton Mail, så I alle kan drage fordel af end-to-end-kryptering.</string>
   <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Nemt up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Gå hurtigt gennem tråd af meddelelser i samtaletilstand.</string>
+  <string name="onboarding_easily_up_to_date_headline">Nem opdatering</string>
+  <string name="onboarding_easily_up_to_date_description">Gå hurtigt gennem trådede beskeder i samtaletilstand.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Pæn og ryddelig</string>
-  <string name="onboarding_neat_and_tidy_description">Arkivér, kategorisér og farvemarkér beskeder for at skabe din perfekte, brugerdefinerede indbakke.</string>
+  <string name="onboarding_neat_and_tidy_description">Inddel beskeder i arkiver, etiketter og farvekoder for at skabe din egen perfekte indbakke.</string>
   <!--  Onboarding actions  -->
   <string name="onboarding_next">Næste</string>
   <string name="onboarding_get_started">Kom godt i gang</string>
   <string name="onboarding_illustration_content_description">Introduktion-illustration</string>
   <string name="onboarding_close_content_description">Luk</string>
-  <string name="mailbox_action_trash_message">Besked flyttet til Papirkurv</string>
+  <string name="mailbox_action_trash_message">Besked flyttet til papirkurv</string>
   <string name="mailbox_action_archive_message">Besked flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Besked flyttet til spam</string>
   <string name="mailbox_search_placeholder_text">Søg i beskeder</string>

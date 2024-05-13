@@ -48,7 +48,7 @@
   <string name="message_link_long_click_copy">Copier le lien</string>
   <string name="message_link_long_click_copy_description">Texte copié depuis Proton Mail</string>
   <string name="message_link_long_click_share">Partager le lien</string>
-  <string name="message_link_long_click_share_via">Partager le lien via</string>
+  <string name="message_link_long_click_share_via">Partager le lien par</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copier l\'adresse</string>
   <string name="contact_actions_copy_address_description">Copier l\'adresse du contact</string>

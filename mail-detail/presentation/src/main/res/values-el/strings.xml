@@ -28,15 +28,15 @@
   <string name="quick_reply_button_content_description">Απάντηση</string>
   <string name="quick_reply_all_button_content_description">Απάντηση σε όλους</string>
   <string name="more_button_content_description">Περισσότερα</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Θέμα:</string>
+  <string name="from">Από:</string>
   <string name="to">Προς:</string>
   <string name="cc">Κοιν:</string>
   <string name="bcc">Κρυφή κοιν:</string>
-  <string name="date">Date:</string>
+  <string name="date">Ημερομηνία:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d Συνημμένο</item>
+    <item quantity="other">%d Συνημμένα</item>
   </plurals>
   <string name="hide_details">Απόκρυψη λεπτομερειών</string>
   <string name="undisclosed_recipients">Μη κοινοποιημένοι παραλήπτες</string>
@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Ακύρωση</string>
   <string name="open_on_protoncalendar_banner_title">Άνοιγμα στο Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Ασφαλές κρυπτογραφημένο ημερολόγιο</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Αποτυχία εκτύπωσης μηνύματος</string>
 </resources>

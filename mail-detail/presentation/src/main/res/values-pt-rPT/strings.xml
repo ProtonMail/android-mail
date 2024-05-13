@@ -35,8 +35,8 @@
   <string name="bcc">BCC:</string>
   <string name="date">Date:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d Anexo</item>
+    <item quantity="other">%d Anexos</item>
   </plurals>
   <string name="hide_details">Ocultar detalhes</string>
   <string name="undisclosed_recipients">Destinatários não revelados</string>

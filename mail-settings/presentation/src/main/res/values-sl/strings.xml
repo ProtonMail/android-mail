@@ -104,7 +104,7 @@
   <string name="mail_settings_swipe_action_trash_title">Smetnjak</string>
   <string name="mail_settings_swipe_action_archive_description">Premakni v arhiv</string>
   <string name="mail_settings_swipe_action_read_description">Označi kot neprebrano/prebrano</string>
-  <string name="mail_settings_swipe_action_spam_description">Premakni v nezaželeno pošto</string>
+  <string name="mail_settings_swipe_action_spam_description">Premakni v neželeno pošto</string>
   <string name="mail_settings_swipe_action_star_description">Dodaj/odstrani zvezdico</string>
   <string name="mail_settings_swipe_action_trash_description">Premakni v smetnjak</string>
   <!-- Notification settings -->

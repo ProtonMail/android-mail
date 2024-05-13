@@ -133,7 +133,7 @@
   <string name="contact_group_form_update_success">Групу контактів оновлено</string>
   <string name="contact_group_form_save_error">Помилка збереження групи контактів, будь ласка, повторіть спробу пізніше</string>
   <string name="contact_group_form_save_error_already_exists">Група з цією назвою вже існує</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Перейдіть на платний тариф для створення контактних груп</string>
   <string name="members_loading_error">Помилка завантаження учасників, будь ласка, повторіть спробу пізніше</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Помилка додавання учасників, будь ласка, спробуйте пізніше</string>

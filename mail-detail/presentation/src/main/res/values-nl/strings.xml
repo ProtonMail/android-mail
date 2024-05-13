@@ -28,15 +28,15 @@
   <string name="quick_reply_button_content_description">Antwoord</string>
   <string name="quick_reply_all_button_content_description">Allen beantwoorden</string>
   <string name="more_button_content_description">Meer</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Onderwerp:</string>
+  <string name="from">Van:</string>
   <string name="to">Aan:</string>
   <string name="cc">Cc:</string>
   <string name="bcc">Bcc:</string>
-  <string name="date">Date:</string>
+  <string name="date">Datum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d bijlage</item>
+    <item quantity="other">%d bijlagen</item>
   </plurals>
   <string name="hide_details">Details verbergen</string>
   <string name="undisclosed_recipients">Niet-openbaar gemaakte ontvangers</string>
@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Annuleren</string>
   <string name="open_on_protoncalendar_banner_title">Openen in Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Veilig versleutelde agenda</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Bericht afdrukken mislukt</string>
 </resources>

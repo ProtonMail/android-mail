@@ -37,10 +37,10 @@
   <string name="bcc">Скрытая копия:</string>
   <string name="date">Дата:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="few">%d Attachments</item>
-    <item quantity="many">%d Attachments</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d вложение</item>
+    <item quantity="few">%d вложения</item>
+    <item quantity="many">%d вложений</item>
+    <item quantity="other">%d вложений</item>
   </plurals>
   <string name="hide_details">Скрыть подробности</string>
   <string name="undisclosed_recipients">Неразглашаемые получатели</string>
@@ -105,5 +105,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Отменить</string>
   <string name="open_on_protoncalendar_banner_title">Открыть в Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Защищенный зашифрованный календарь</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Не удалось распечатать сообщение</string>
 </resources>

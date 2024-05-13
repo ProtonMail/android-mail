@@ -94,7 +94,7 @@
   <string name="set_message_password_button_apply">Nastavi geslo</string>
   <string name="set_message_password_button_save_changes">Shrani spremembe</string>
   <string name="set_message_password_button_remove_password">Odstrani geslo</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Odgovori v vrstici</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d contact</item>
     <item quantity="two">%d contacts</item>

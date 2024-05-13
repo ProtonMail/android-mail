@@ -51,7 +51,7 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">アドレスをコピー</string>
   <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
+  <string name="contact_actions_copy_address_performed">住所がクリップボードにコピーされました</string>
   <string name="contact_actions_copy_name">名前をコピー</string>
   <string name="contact_actions_copy_name_description">Copy contact name</string>
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
@@ -59,6 +59,6 @@
   <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
   <string name="contact_actions_add_contact">連絡先を追加</string>
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
+  <string name="contact_actions_view_contact_details">連絡先の詳細を表示</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>
 </resources>

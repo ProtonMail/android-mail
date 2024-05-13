@@ -133,7 +133,7 @@
   <string name="contact_group_form_update_success">Skupina kontaktov bola aktualizovaná</string>
   <string name="contact_group_form_save_error">Chyba pri ukladaní skupiny kontaktov, skúste to neskôr, prosím</string>
   <string name="contact_group_form_save_error_already_exists">Skupina s týmto názvom už existuje</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Pre vytvorenie skupín kontaktov prejdite na platený plán</string>
   <string name="members_loading_error">Chyba pri načítaní členov, skúste to neskôr, prosím</string>
   <string name="members_done">Hotovo</string>
   <string name="add_members_error">Chyba pri pridávaní členov, skúste to neskôr, prosím</string>

@@ -30,17 +30,17 @@
   <string name="quick_reply_button_content_description">Odgovori</string>
   <string name="quick_reply_all_button_content_description">Odgovori vsem</string>
   <string name="more_button_content_description">Več</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Zadeva:</string>
+  <string name="from">Od:</string>
   <string name="to">Za:</string>
   <string name="cc">Kp:</string>
   <string name="bcc">Skp:</string>
-  <string name="date">Date:</string>
+  <string name="date">Datum:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="two">%d Attachments</item>
-    <item quantity="few">%d Attachments</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d priloga</item>
+    <item quantity="two">%d prilogi</item>
+    <item quantity="few">%d priloge</item>
+    <item quantity="other">%d prilog</item>
   </plurals>
   <string name="hide_details">Skrij podrobnosti</string>
   <string name="undisclosed_recipients">Skriti prejemniki</string>
@@ -105,5 +105,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Prekliči</string>
   <string name="open_on_protoncalendar_banner_title">Odpri v Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Varen šifriran koledar</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Natis sporočila ni uspel</string>
 </resources>

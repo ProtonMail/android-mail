@@ -53,15 +53,15 @@
   <string name="message_link_long_click_share_via">Sdílet odkaz skrze</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Kopírovat adresu</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
+  <string name="contact_actions_copy_address_description">Kopírovat adresu kontaktu</string>
+  <string name="contact_actions_copy_address_performed">Adresa zkopírována do schránky</string>
   <string name="contact_actions_copy_name">Kopírovat jméno</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
+  <string name="contact_actions_copy_name_description">Kopírovat jméno kontaktu</string>
+  <string name="contact_actions_copy_name_performed">Jméno zkopírováno do schránky</string>
   <string name="contact_actions_new_message">Nová zpráva</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">Napište novou zprávu pro tento kontakt</string>
   <string name="contact_actions_add_contact">Přidat kontakt</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_add_contact_description">Uložte tohoto příjemce jako kontakt</string>
+  <string name="contact_actions_view_contact_details">Zobrazit detaily kontaktu</string>
+  <string name="contact_actions_view_contact_details_description">Zobrazit detaily kontaktu</string>
 </resources>

@@ -18,37 +18,37 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">Tlačidlo aktualizácie</string>
+  <string name="upselling_title">Upgradujte na</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_plus_description_override">Na získanie väčšieho úložiska a prémiových funkcií</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Plánovanie odoslania a odloženia</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
+  <string name="upselling_plus_feature_custom_domain">1 vlastná emailová doména</string>
   <string name="upselling_plus_feature_folders_labels">Neobmedzený počet priečinkov, štítkov a filtrov</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_feature_more">A ďalších 14 prémiových funkcií</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_description_override">Vaše komplexné prémiové predplatné</string>
+  <string name="upselling_unlimited_feature_storage">500 GB úložisko</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Všetky platené funkcie kalendára</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">UŠETRÍTE %s%%</string>
   <string name="upselling_month">/mesiac</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_get_button">Získať %s</string>
   <plurals name="upselling_month">
-    <item quantity="one">%d month</item>
-    <item quantity="few">%d months</item>
-    <item quantity="many">%d months</item>
-    <item quantity="other">%d months</item>
+    <item quantity="one">%d mesiac</item>
+    <item quantity="few">%d mesiacov</item>
+    <item quantity="many">%d mesiace</item>
+    <item quantity="other">%d mesiace</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">Nie je možné načítať možnosti aktualizácie.</string>
   <string name="upselling_snackbar_error_no_user_id">Vyskytla sa chyba.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Nie je možné načítať predplatné.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Prebieha aktualizácia predplatného...</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Počas aktualizácie vášho predplatného došlo k chybe.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Vyskytla sa chyba. Skúste to znova, prosím.</string>
 </resources>

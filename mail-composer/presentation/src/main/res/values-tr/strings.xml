@@ -94,9 +94,9 @@
   <string name="set_message_password_button_apply">Parolayı uygula</string>
   <string name="set_message_password_button_save_changes">Değişiklikleri kaydet</string>
   <string name="set_message_password_button_remove_password">Parolayı kaldır</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Satır arasında yanıtla</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d kişi</item>
+    <item quantity="other">%d kişi</item>
   </plurals>
 </resources>

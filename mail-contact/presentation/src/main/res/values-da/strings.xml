@@ -129,7 +129,7 @@
   <string name="contact_group_form_update_success">Kontaktgruppe opdateret</string>
   <string name="contact_group_form_save_error">Fejl ved lagring af kontaktgruppe. Prøv igen senere</string>
   <string name="contact_group_form_save_error_already_exists">En gruppe med dette navn findes allerede</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Opgrader til en betalingsløsning for at oprette kontaktgrupper</string>
   <string name="members_loading_error">Fejl ved indlæsning af medlemmer. Prøv igen senere.</string>
   <string name="members_done">Udført</string>
   <string name="add_members_error">Fejl ved tilføjelse af medlemmer, prøv igen senere</string>

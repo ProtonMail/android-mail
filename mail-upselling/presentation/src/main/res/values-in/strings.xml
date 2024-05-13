@@ -18,7 +18,7 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
+  <string name="upselling_button_item_content_description">Tombol tingkatkan</string>
   <string name="upselling_title">Tingkatkan ke</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Untuk memperoleh ruang penyimpanan tambahan dan berbagai fitur premium</string>

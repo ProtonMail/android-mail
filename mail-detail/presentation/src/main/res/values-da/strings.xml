@@ -35,8 +35,8 @@
   <string name="bcc">BCC:</string>
   <string name="date">Dato:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d Vedhæftning</item>
+    <item quantity="other">%d Vedhæftninger</item>
   </plurals>
   <string name="hide_details">Skjul detaljer</string>
   <string name="undisclosed_recipients">Ikke-oplyste modtagere</string>
@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Annullér</string>
   <string name="open_on_protoncalendar_banner_title">Åbn i Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Sikker krypteret kalender</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Besked kunne ikke udskrives</string>
 </resources>

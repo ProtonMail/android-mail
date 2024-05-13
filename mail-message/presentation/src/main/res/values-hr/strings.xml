@@ -53,7 +53,7 @@
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Copy address</string>
   <string name="contact_actions_copy_address_description">Copy contact address</string>
-  <string name="contact_actions_copy_address_performed">Address copied to clipboard</string>
+  <string name="contact_actions_copy_address_performed">Adresa je kopirana u međuspremnik</string>
   <string name="contact_actions_copy_name">Copy name</string>
   <string name="contact_actions_copy_name_description">Copy contact name</string>
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
@@ -61,6 +61,6 @@
   <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
   <string name="contact_actions_add_contact">Add contact</string>
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
-  <string name="contact_actions_view_contact_details">View contact details</string>
+  <string name="contact_actions_view_contact_details">Vidi pojedinosti o kontaktu</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>
 </resources>

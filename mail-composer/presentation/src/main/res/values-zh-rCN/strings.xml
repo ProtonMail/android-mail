@@ -53,7 +53,7 @@
   <string name="composer_expiration_time_bottom_sheet_done">Set</string>
   <string name="composer_bottom_bar_expiration_time_none">None</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 天</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
   <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
@@ -94,7 +94,7 @@
   <string name="set_message_password_button_apply">Apply password</string>
   <string name="set_message_password_button_save_changes">Save changes</string>
   <string name="set_message_password_button_remove_password">移除密码</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">纯文本引用</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="other">%d contacts</item>
   </plurals>

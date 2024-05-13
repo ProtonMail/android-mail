@@ -41,7 +41,7 @@
   </plurals>
   <string name="mailbox_default_recipient">(brez prejemnika)</string>
   <string name="mailbox_default_sender">(brez pošiljatelja)</string>
-  <string name="mailbox_error_message_offline">Ste brez povezave, elementov ni mogoče naložiti</string>
+  <string name="mailbox_error_message_offline">Ste brez povezave, predmetov ni mogoče naložiti</string>
   <string name="mailbox_error_message_generic">Nalaganje poštnega predala ni uspelo</string>
   <string name="mailbox_error_message_unexpected">Prišlo je do nepričakovane napake</string>
   <string name="mailbox_is_empty_title">Ni sporočil</string>

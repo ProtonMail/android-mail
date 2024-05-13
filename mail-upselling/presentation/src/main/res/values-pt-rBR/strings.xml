@@ -23,7 +23,7 @@
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Obtenha mais armazenamento e recursos premium</string>
   <string name="upselling_plus_feature_schedule_send_snooze">Agendamento de envio e adiamento</string>
-  <string name="upselling_plus_feature_custom_domain">1 domínio de e-mail personalizado</string>
+  <string name="upselling_plus_feature_custom_domain">Um domínio de e-mail personalizado</string>
   <string name="upselling_plus_feature_folders_labels">Pastas ilimitadas, marcadores e filtros</string>
   <string name="upselling_plus_feature_more">E mais 14 recursos premium</string>
   <!-- Unlimited -->

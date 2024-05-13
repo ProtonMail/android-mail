@@ -35,8 +35,8 @@
   <string name="bcc">Anɣ. Uff. I:</string>
   <string name="date">Date:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Attachment</item>
-    <item quantity="other">%d Attachments</item>
+    <item quantity="one">%d umedday</item>
+    <item quantity="other">%d n yimeddayen</item>
   </plurals>
   <string name="hide_details">Ffer ifutas</string>
   <string name="undisclosed_recipients">Iɣerwaḍen ur ttwaskanen ara</string>

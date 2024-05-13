@@ -18,37 +18,37 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">Gumb za nadgradnjo</string>
+  <string name="upselling_title">Nadgradi na .</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_description_override">Nadgradite za več prostora za shranjevanje in premijskih funkcij</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Načrtujte pošiljanje in dremež</string>
+  <string name="upselling_plus_feature_custom_domain">1 e-poštna domena po meri</string>
+  <string name="upselling_plus_feature_folders_labels">Neomejeno število map, oznak in filtrov</string>
+  <string name="upselling_plus_feature_more">In še 14 vrhunskih funkcij</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_description_override">Vaša premijska naročnina vse v enem</string>
+  <string name="upselling_unlimited_feature_storage">500 GB prostora</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Vse plačljive funkcije Mail in Colender</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">SHRANI %s%%</string>
+  <string name="upselling_month">/mesec</string>
+  <string name="upselling_get_button">Pridobi %s</string>
   <plurals name="upselling_month">
-    <item quantity="one">%d month</item>
-    <item quantity="two">%d months</item>
-    <item quantity="few">%d months</item>
-    <item quantity="other">%d months</item>
+    <item quantity="one">%d mesec</item>
+    <item quantity="two">%d meseci</item>
+    <item quantity="few">%d meseci</item>
+    <item quantity="other">%d meseci</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
-  <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_unable_retrieve_options">Možnosti nadgradnje ni mogoče pridobiti.</string>
+  <string name="upselling_snackbar_error_no_user_id">Prišlo je do napake.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Ni mogoče pridobiti naročnin.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Nadgradnja naročnine v teku …</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Med nadgradnjo vaše naročnine je prišlo do napake.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Prišlo je do napake. Prosimo, poskusite znova.</string>
 </resources>

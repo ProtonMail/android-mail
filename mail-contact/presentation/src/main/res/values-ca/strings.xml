@@ -129,7 +129,7 @@
   <string name="contact_group_form_update_success">S\'ha actualitzat el grup de contactes</string>
   <string name="contact_group_form_save_error">S\'ha produït un error en desar el grup de contactes. Torneu-ho a provar més tard</string>
   <string name="contact_group_form_save_error_already_exists">Ja existeix un grup amb aquest nom</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Millori a un pla de pagament per crear grups de contacte</string>
   <string name="members_loading_error">S\'ha produït un error en carregar els membres. Proveu de nou més tard.</string>
   <string name="members_done">Fet</string>
   <string name="add_members_error">S\'ha produït un error en afegir membres. Torni-ho a provar més tard</string>

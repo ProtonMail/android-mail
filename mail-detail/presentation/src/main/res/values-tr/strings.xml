@@ -35,8 +35,8 @@
   <string name="bcc">Gizli kopya:</string>
   <string name="date">Tarih:</string>
   <plurals name="attachment">
-    <item quantity="one">%d Ek dosya</item>
-    <item quantity="other">%d Ek dosya</item>
+    <item quantity="one">%d ek dosya</item>
+    <item quantity="other">%d ek dosya</item>
   </plurals>
   <string name="hide_details">Bilgileri gizle</string>
   <string name="undisclosed_recipients">Gizli alıcılar</string>
@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">İptal</string>
   <string name="open_on_protoncalendar_banner_title">Proton Calendar ile aç</string>
   <string name="open_on_protoncalendar_banner_description">Güvenli şifrelenmiş takvim</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">İleti yazdırılamadı</string>
 </resources>

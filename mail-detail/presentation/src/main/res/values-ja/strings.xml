@@ -34,7 +34,7 @@
   <string name="bcc">BCC:</string>
   <string name="date">日時：</string>
   <plurals name="attachment">
-    <item quantity="other">%d Attachments</item>
+    <item quantity="other">%d 件の添付ファイル</item>
   </plurals>
   <string name="hide_details">詳細を非表示</string>
   <string name="undisclosed_recipients">非公開の宛先</string>

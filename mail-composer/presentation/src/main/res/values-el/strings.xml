@@ -94,9 +94,9 @@
   <string name="set_message_password_button_apply">Εφαρμογή κωδικού πρόσβασης</string>
   <string name="set_message_password_button_save_changes">Αποθήκευση αλλαγών</string>
   <string name="set_message_password_button_remove_password">Αφαίρεση κωδικού πρόσβασης</string>
-  <string name="respondInline">Respond in-line</string>
+  <string name="respondInline">Απάντηση μέσα στην γραμμή</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d επαφή</item>
+    <item quantity="other">%d επαφές</item>
   </plurals>
 </resources>

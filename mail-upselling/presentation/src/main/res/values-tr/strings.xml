@@ -18,35 +18,35 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">Yükseltme düğmesi</string>
+  <string name="upselling_title">Şuna yükselt</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, and filters</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_description_override">Daha fazla depolama alanı ve ücretli özellikler alın</string>
+  <string name="upselling_plus_feature_schedule_send_snooze">Gönderimi zamanla ve sustur</string>
+  <string name="upselling_plus_feature_custom_domain">1 özel e-posta etki alanı</string>
+  <string name="upselling_plus_feature_folders_labels">Sınırsız sayıda klasör, etiket, süzgeç</string>
+  <string name="upselling_plus_feature_more">Ve 14 ücretli özellik daha</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
+  <string name="upselling_unlimited_description_override">Tümünü bir arada sunan ücretli abonelik</string>
+  <string name="upselling_unlimited_feature_storage">500 GB depolama alanı</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Tüm ücretli Mail ve Calendar özellikleri</string>
   <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
   <string name="upselling_unlimited_feature_drive">Drive Plus</string>
   <string name="upselling_unlimited_feature_pass">Pass Plus</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">%s%% indirim</string>
+  <string name="upselling_month">/ay</string>
+  <string name="upselling_get_button">%s alın</string>
   <plurals name="upselling_month">
-    <item quantity="one">%d month</item>
-    <item quantity="other">%d months</item>
+    <item quantity="one">%d ay</item>
+    <item quantity="other">%d ay</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
-  <string name="upselling_snackbar_error_no_user_id">An error occurred.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_unable_retrieve_options">Yükseltme seçenekleri alınamadı.</string>
+  <string name="upselling_snackbar_error_no_user_id">Bir sorun çıktı.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Abonelikler alınamadı.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Abonelik yükseltme işlemi sürüyor...</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Aboneliğiniz yükseltilirken bir sorun çıktı.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
 </resources>
