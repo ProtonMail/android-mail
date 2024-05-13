@@ -138,6 +138,12 @@ class MailboxListReducer @Inject constructor() {
                 searchState = MailboxSearchState.NotSearching
             )
 
+            is MailboxListState.Data.SelectionMode -> reduceExitSelectionMode(
+                currentState.copy(
+                    searchState = MailboxSearchState.NotSearching
+                )
+            )
+
             else -> currentState
         }
     }

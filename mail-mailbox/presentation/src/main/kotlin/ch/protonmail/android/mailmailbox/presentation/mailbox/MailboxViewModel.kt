@@ -405,6 +405,7 @@ class MailboxViewModel @Inject constructor(
 
     private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {
         val user = primaryUserId.filterNotNull().first()
+
         deleteSearchResults(user, state.value.getSearchQuery())
 
         emitNewStateFrom(viewAction)
@@ -526,7 +527,7 @@ class MailboxViewModel @Inject constructor(
             ) { pagingData, folderColorSettings ->
                 pagingData.map {
                     withContext(dispatchersProvider.Comp) {
-                        mailboxItemMapper.toUiModel(it, contacts, folderColorSettings)
+                        mailboxItemMapper.toUiModel(it, contacts, folderColorSettings, state.value.isInSearchMode())
                     }
                 }
             }
@@ -1163,7 +1164,7 @@ class MailboxViewModel @Inject constructor(
     private suspend fun getViewModeForCurrentLocation(currentMailLabel: MailLabelId): ViewMode {
         val userId = primaryUserId.firstOrNull()
 
-        return if (userId == null) {
+        return if (userId == null || state.value.isInSearchMode()) {
             ObserveCurrentViewMode.DefaultViewMode
         } else {
             observeCurrentViewMode(userId, currentMailLabel).first()
@@ -1200,6 +1201,9 @@ class MailboxViewModel @Inject constructor(
     private fun Flow<MailboxState>.observeSearchQuery() = this.map { it.mailboxListState as? MailboxListState.Data }
         .mapNotNull { it?.searchState?.searchQuery }
         .distinctUntilChanged()
+
+    private fun MailboxState.isInSearchMode() =
+        this.mailboxListState is MailboxListState.Data && this.mailboxListState.searchState.isInSearch()
 
     private fun MailboxState.getSearchQuery() = (this.mailboxListState as? MailboxListState.Data)
         ?.searchState

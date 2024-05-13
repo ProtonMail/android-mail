@@ -1176,10 +1176,10 @@ class MailboxViewModelTest {
     fun `mailbox items are mapped to mailbox item ui models`() = runTest {
         // Given
         coEvery {
-            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings, false)
         } returns unreadMailboxItemUiModel
         coEvery {
-            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings, false)
         } returns readMailboxItemUiModel
         every { pagerFactory.create(any(), any(), any(), any(), any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
@@ -1209,14 +1209,16 @@ class MailboxViewModelTest {
             mailboxItemMapper.toUiModel(
                 mailboxItem = unreadMailboxItemWithLabel,
                 contacts = ContactTestData.contacts,
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                isShowingSearchResults = false
             )
         } returns unreadMailboxItemUiModelWithLabelColored
         coEvery {
             mailboxItemMapper.toUiModel(
                 unreadMailboxItemWithLabel,
                 ContactTestData.contacts,
-                updatedFolderColorSetting
+                updatedFolderColorSetting,
+                false
             )
         } returns unreadMailboxItemUiModelWithLabel
 
@@ -1252,10 +1254,10 @@ class MailboxViewModelTest {
     fun `user contacts are used to map mailbox items to ui models`() = runTest {
         // Given
         coEvery {
-            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+            mailboxItemMapper.toUiModel(unreadMailboxItem, ContactTestData.contacts, defaultFolderColorSettings, false)
         } returns unreadMailboxItemUiModel
         coEvery {
-            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings)
+            mailboxItemMapper.toUiModel(readMailboxItem, ContactTestData.contacts, defaultFolderColorSettings, false)
         } returns readMailboxItemUiModel
         every { pagerFactory.create(any(), any(), any(), any(), any()) } returns mockk {
             val pagingData = PagingData.from(listOf(unreadMailboxItem, readMailboxItem))
@@ -1269,7 +1271,7 @@ class MailboxViewModelTest {
             val pagingData = awaitItem()
             differ.submitData(pagingData)
 
-            coVerify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts, defaultFolderColorSettings) }
+            coVerify { mailboxItemMapper.toUiModel(any(), ContactTestData.contacts, defaultFolderColorSettings, false) }
         }
     }
 
@@ -3661,9 +3663,9 @@ class MailboxViewModelTest {
     @Test
     fun `when enter search mode action is submitted, search mode is updated and emitted`() = runTest {
         // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
+        val expectedState = MailboxStateSampleData.Inbox.copy(
             mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                currentMailLabel = MailLabel.System(MailLabelId.System.AllMail),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
@@ -3693,9 +3695,9 @@ class MailboxViewModelTest {
     @Test
     fun `when exit search mode action is submitted, search mode is updated and emitted`() = runTest {
         // Given
-        val expectedState = MailboxStateSampleData.Loading.copy(
+        val expectedState = MailboxStateSampleData.Inbox.copy(
             mailboxListState = MailboxListState.Data.ViewMode(
-                currentMailLabel = MailLabel.System(initialLocationMailLabelId),
+                currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
                 offlineEffect = Effect.empty(),
@@ -3805,6 +3807,7 @@ class MailboxViewModelTest {
         every { pagerFactory.create(userIds, any(), false, any(), any()) } returns mockk mockPager@{
             every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
         }
+        every { selectedMailLabelId.set(any()) } returns Unit
         every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
         every {
             mailboxReducer.newStateFrom(

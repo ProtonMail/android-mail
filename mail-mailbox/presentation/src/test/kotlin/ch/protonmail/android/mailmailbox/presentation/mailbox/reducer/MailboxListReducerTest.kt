@@ -63,7 +63,7 @@ internal class MailboxListReducerTest(
     companion object {
 
         private val listStateWithSearchModeNone = MailboxListState.Data.ViewMode(
-            currentMailLabel = MailLabelTestData.customLabelOne,
+            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
             openItemEffect = Effect.empty(),
             scrollToMailboxTop = Effect.empty(),
             offlineEffect = Effect.empty(),
@@ -81,6 +81,29 @@ internal class MailboxListReducerTest(
         )
         private val listStateWithSearchModeSearchData = listStateWithSearchModeNone.copy(
             searchState = MailboxSearchStateSampleData.SearchData
+        )
+
+        private val listStateWithSearchSelectionMode = MailboxListState.Data.SelectionMode(
+            currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
+            selectedMailboxItems = setOf(
+                SelectedMailboxItem(
+                    userId = UserIdTestData.userId,
+                    id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                    isRead = true,
+                    isStarred = false
+                )
+            ),
+            swipeActions = null,
+            searchState = MailboxSearchStateSampleData.SearchData,
+            clearState = MailboxListState.Data.ClearState.Hidden
+        )
+
+        private val listStateSearchSelectionInCustomFolder = listStateWithSearchSelectionMode.copy(
+            currentMailLabel = MailLabelTestData.customLabelOne
+        )
+
+        private val listStateSearchDataInCustomFolder = listStateWithSearchModeSearchData.copy(
+            currentMailLabel = MailLabelTestData.customLabelOne
         )
 
         private const val UNREAD_COUNT = 42
@@ -1186,6 +1209,21 @@ internal class MailboxListReducerTest(
                 currentState = listStateWithSearchModeSearchData,
                 operation = MailboxViewAction.SearchQuery(MailboxSearchStateSampleData.QueryString),
                 expectedState = listStateWithSearchModeSearchData
+            ),
+            TestInput(
+                currentState = listStateWithSearchModeSearchData,
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = listStateWithSearchSelectionMode
+            ),
+            TestInput(
+                currentState = listStateWithSearchSelectionMode,
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = listStateWithSearchModeSearchData
+            ),
+            TestInput(
+                currentState = listStateSearchSelectionInCustomFolder,
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = listStateSearchDataInCustomFolder
             )
         )
 

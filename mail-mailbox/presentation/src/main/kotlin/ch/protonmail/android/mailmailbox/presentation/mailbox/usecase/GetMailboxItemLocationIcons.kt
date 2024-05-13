@@ -45,8 +45,12 @@ class GetMailboxItemLocationIcons @Inject constructor(
     private val getRootLabel: GetRootLabel
 ) {
 
-    suspend operator fun invoke(mailboxItem: MailboxItem, folderColorSettings: FolderColorSettings): Result {
-        if (!currentLocationShouldShowIcons()) {
+    suspend operator fun invoke(
+        mailboxItem: MailboxItem,
+        folderColorSettings: FolderColorSettings,
+        isShowingSearchResults: Boolean
+    ): Result {
+        if (!currentLocationShouldShowIcons() && !isShowingSearchResults) {
             return Result.None
         }
 

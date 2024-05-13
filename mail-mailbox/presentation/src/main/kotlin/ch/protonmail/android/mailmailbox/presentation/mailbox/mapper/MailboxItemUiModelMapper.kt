@@ -56,7 +56,8 @@ class MailboxItemUiModelMapper @Inject constructor(
     suspend fun toUiModel(
         mailboxItem: MailboxItem,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        isShowingSearchResults: Boolean
     ): MailboxItemUiModel {
         val participantsResolvedNamesResult = getParticipantsResolvedNames(mailboxItem, contacts)
 
@@ -76,7 +77,7 @@ class MailboxItemUiModelMapper @Inject constructor(
             shouldShowForwardedIcon = shouldShowForwardedIcon(mailboxItem),
             numMessages = mailboxItem.numMessages.takeIf { it >= 2 },
             showStar = mailboxItem.labelIds.contains(SystemLabelId.Starred.labelId),
-            locations = getLocationIconsToDisplay(mailboxItem, folderColorSettings),
+            locations = getLocationIconsToDisplay(mailboxItem, folderColorSettings, isShowingSearchResults),
             shouldShowAttachmentIcon = mailboxItem.hasNonCalendarAttachments,
             shouldShowExpirationLabel = hasExpirationTime(mailboxItem),
             shouldShowCalendarIcon = hasCalendarAttachment(mailboxItem),
@@ -85,11 +86,14 @@ class MailboxItemUiModelMapper @Inject constructor(
         )
     }
 
-    private suspend fun getLocationIconsToDisplay(mailboxItem: MailboxItem, folderColorSettings: FolderColorSettings) =
-        when (val icons = getMailboxItemLocationIcons(mailboxItem, folderColorSettings)) {
-            is GetMailboxItemLocationIcons.Result.None -> emptyList()
-            is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
-        }.toImmutableList()
+    private suspend fun getLocationIconsToDisplay(
+        mailboxItem: MailboxItem,
+        folderColorSettings: FolderColorSettings,
+        isShowingSearchResults: Boolean
+    ) = when (val icons = getMailboxItemLocationIcons(mailboxItem, folderColorSettings, isShowingSearchResults)) {
+        is GetMailboxItemLocationIcons.Result.None -> emptyList()
+        is GetMailboxItemLocationIcons.Result.Icons -> listOfNotNull(icons.first, icons.second, icons.third)
+    }.toImmutableList()
 
     private fun hasCalendarAttachment(mailboxItem: MailboxItem) = mailboxItem.calendarAttachmentCount > 0
 

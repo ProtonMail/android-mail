@@ -105,6 +105,7 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.MessageBottomBarEvent -> operation.bottomBarEvent
                 is MailboxEvent.DeleteConfirmed,
                 is MailboxEvent.Trash,
+                is MailboxViewAction.ExitSearchMode,
                 is MailboxViewAction.MoveToConfirmed,
                 is MailboxViewAction.MoveToArchive,
                 is MailboxViewAction.MoveToSpam,

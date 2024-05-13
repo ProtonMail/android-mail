@@ -248,6 +248,17 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
+                MailboxViewAction.ExitSearchMode,
+                shouldReduceMailboxListState = true,
+                shouldReduceTopAppBarState = true,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = true,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
                 MailboxViewAction.ItemClicked(MailboxItemUiModelTestData.readMailboxItemUiModel),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,

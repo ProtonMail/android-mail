@@ -491,7 +491,9 @@ private fun MailboxSwipeRefresh(
     }
     lastViewState = currentViewState
 
-    BackHandler(searchMode.isInSearch()) {
+    BackHandler(
+        state is MailboxListState.Data.ViewMode && searchMode.isInSearch()
+    ) {
         actions.onExitSearchMode()
     }
 

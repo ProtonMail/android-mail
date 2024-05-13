@@ -60,15 +60,29 @@ class GetMailboxItemLocationIconsTest {
         GetMailboxItemLocationIcons(selectedMailLabelId, colorMapper, getRootLabel)
 
     @Test
-    fun `location icons are only displayed when current location is 'starred' 'all mail' or 'custom label'`() =
-        runTest {
-            givenCurrentLocationIs(MailLabelId.System.Inbox)
-            val mailboxItem = buildMailboxItem()
+    fun `location icons are displayed when current location is 'starred' 'all mail' or 'custom label'`() = runTest {
+        givenCurrentLocationIs(MailLabelId.System.Inbox)
+        val mailboxItem = buildMailboxItem()
 
-            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
-            assertEquals(Result.None, actual)
-        }
+        assertEquals(Result.None, actual)
+    }
+
+    @Test
+    fun `location icons are displayed when showing search results independent from current location`() = runTest {
+        givenCurrentLocationIs(MailLabelId.System.Sent)
+        val itemLabels = listOf(MailLabelId.System.Drafts.labelId, MailLabelId.System.Sent.labelId)
+        val mailboxItem = buildMailboxItem(labelIds = itemLabels)
+
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, true)
+
+        val expected = Result.Icons(
+            MailboxItemLocationUiModel(R.drawable.ic_proton_file_lines),
+            MailboxItemLocationUiModel(R.drawable.ic_proton_paper_plane)
+        )
+        assertEquals(expected, actual)
+    }
 
     @Test
     fun `when location is custom label and mailbox item is in inbox show Inbox icon`() = runTest {
@@ -77,7 +91,7 @@ class GetMailboxItemLocationIconsTest {
         val itemLabels = listOf(customLabelId, MailLabelId.System.Inbox.labelId)
         val mailboxItem = buildMailboxItem(labelIds = itemLabels)
 
-        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
         assertEquals(Result.Icons(MailboxItemLocationUiModel(R.drawable.ic_proton_inbox)), actual)
     }
@@ -89,7 +103,7 @@ class GetMailboxItemLocationIconsTest {
         val itemLabels = listOf(customLabelId, MailLabelId.System.Spam.labelId)
         val mailboxItem = buildMailboxItem(labelIds = itemLabels)
 
-        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
         assertEquals(Result.Icons(MailboxItemLocationUiModel(R.drawable.ic_proton_fire)), actual)
     }
@@ -101,7 +115,7 @@ class GetMailboxItemLocationIconsTest {
             val itemLabels = listOf(MailLabelId.System.Archive.labelId, MailLabelId.System.Inbox.labelId)
             val mailboxItem = buildMailboxItem(labelIds = itemLabels)
 
-            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
             val expected = Result.Icons(
                 MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
@@ -117,7 +131,7 @@ class GetMailboxItemLocationIconsTest {
             val itemLabels = listOf(MailLabelId.System.Drafts.labelId, MailLabelId.System.Sent.labelId)
             val mailboxItem = buildMailboxItem(labelIds = itemLabels)
 
-            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
             val expected = Result.Icons(
                 MailboxItemLocationUiModel(R.drawable.ic_proton_file_lines),
@@ -143,7 +157,7 @@ class GetMailboxItemLocationIconsTest {
             )
             val mailboxItem = buildMailboxItem(labelIds = itemLabelIds, labels = labels)
 
-            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
             val expected = Result.Icons(
                 MailboxItemLocationUiModel(R.drawable.ic_proton_fire),
@@ -165,7 +179,7 @@ class GetMailboxItemLocationIconsTest {
         )
         val mailboxItem = buildMailboxItem(labelIds = itemLabelIds, labels = labels)
 
-        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
         val expected = Result.Icons(
             MailboxItemLocationUiModel(R.drawable.ic_proton_folder_filled, Color.Red)
@@ -179,7 +193,7 @@ class GetMailboxItemLocationIconsTest {
             givenCurrentLocationIs(MailLabelId.System.AllMail)
             val mailboxItem = buildMailboxItem(labelIds = emptyList())
 
-            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings)
+            val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
 
             assertEquals(Result.None, actual)
         }
