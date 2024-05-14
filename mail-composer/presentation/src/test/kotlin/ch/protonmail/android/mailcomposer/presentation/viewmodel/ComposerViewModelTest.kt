@@ -135,7 +135,6 @@ import me.proton.core.network.domain.NetworkManager
 import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.util.kotlin.serialize
 import org.junit.Assert.assertNull
-import org.junit.Ignore
 import org.junit.Rule
 import kotlin.test.AfterTest
 import kotlin.test.Test
@@ -640,7 +639,6 @@ class ComposerViewModelTest {
         }
     }
 
-    @Ignore
     @Test
     fun `should emit UpdateContactSuggestions when contact suggestions are found`() = runTest {
         // Given
