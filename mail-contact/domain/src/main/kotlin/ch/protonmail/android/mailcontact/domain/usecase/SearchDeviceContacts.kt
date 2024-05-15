@@ -25,14 +25,17 @@ import arrow.core.right
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.withContext
+import me.proton.core.util.kotlin.DispatcherProvider
 import timber.log.Timber
 import javax.inject.Inject
 
 class SearchDeviceContacts @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val dispatcherProvider: DispatcherProvider
 ) {
 
-    operator fun invoke(query: String): Either<GetContactError, List<DeviceContact>> {
+    suspend operator fun invoke(query: String): Either<GetContactError, List<DeviceContact>> {
 
         val contentResolver = context.contentResolver
 
@@ -40,13 +43,15 @@ class SearchDeviceContacts @Inject constructor(
 
         @Suppress("SwallowedException")
         val contactEmails = try {
-            contentResolver.query(
-                ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                ANDROID_PROJECTION,
-                ANDROID_SELECTION,
-                selectionArgs,
-                ANDROID_ORDER_BY
-            )
+            withContext(dispatcherProvider.Io) {
+                contentResolver.query(
+                    ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+                    ANDROID_PROJECTION,
+                    ANDROID_SELECTION,
+                    selectionArgs,
+                    ANDROID_ORDER_BY
+                )
+            }
         } catch (e: SecurityException) {
             Timber.d("SearchDeviceContacts: contact permission is not granted")
             null

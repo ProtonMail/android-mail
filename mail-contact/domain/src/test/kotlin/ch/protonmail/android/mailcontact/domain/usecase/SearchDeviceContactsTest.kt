@@ -28,6 +28,7 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
+import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.test.assertNotNull
@@ -53,8 +54,12 @@ class SearchDeviceContactsTest {
     private val contextMock = mockk<Context> {
         every { contentResolver } returns contentResolverMock
     }
+    private val testDispatcherProvider = TestDispatcherProvider()
 
-    private val searchDeviceContacts = SearchDeviceContacts(contextMock)
+    private val searchDeviceContacts = SearchDeviceContacts(
+        contextMock,
+        testDispatcherProvider
+    )
 
     private fun expectCursorQuery(query: String) {
         every {
@@ -73,7 +78,7 @@ class SearchDeviceContactsTest {
     }
 
     @Test
-    fun `when there are multiple matching contacts, they are emitted`() = runTest {
+    fun `when there are multiple matching contacts, they are emitted`() = runTest(testDispatcherProvider.Main) {
         // Given
         val query = "cont"
 
@@ -91,7 +96,7 @@ class SearchDeviceContactsTest {
     }
 
     @Test
-    fun `when there are no matching contacts, empty list is emitted`() = runTest {
+    fun `when there are no matching contacts, empty list is emitted`() = runTest(testDispatcherProvider.Main) {
         // Given
         val query = "cont"
 
@@ -109,20 +114,21 @@ class SearchDeviceContactsTest {
     }
 
     @Test
-    fun `when content resolver throws SecurityException, empty list is emitted`() = runTest {
-        // Given
-        val query = "cont"
+    fun `when content resolver throws SecurityException, empty list is emitted`() =
+        runTest(testDispatcherProvider.Main) {
+            // Given
+            val query = "cont"
 
-        expectCursorQueryThrowsSecurityException()
-        expectContactsCount(0)
+            expectCursorQueryThrowsSecurityException()
+            expectContactsCount(0)
 
-        // When
-        val actual = searchDeviceContacts(query).getOrNull()
+            // When
+            val actual = searchDeviceContacts(query).getOrNull()
 
-        // Then
-        assertNotNull(actual)
-        assertTrue(actual.size == 0)
-        verify(exactly = 0) { cursorMock.getString(columnIndexDisplayName) }
-        verify(exactly = 0) { cursorMock.getString(columnIndexEmail) }
-    }
+            // Then
+            assertNotNull(actual)
+            assertTrue(actual.size == 0)
+            verify(exactly = 0) { cursorMock.getString(columnIndexDisplayName) }
+            verify(exactly = 0) { cursorMock.getString(columnIndexEmail) }
+        }
 }
