@@ -26,10 +26,12 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiMod
 sealed interface ContactListState {
 
     val isContactGroupsCrudEnabled: Boolean
+    val isContactSearchEnabled: Boolean
 
     data class Loading(
         val errorLoading: Effect<TextUiModel> = Effect.empty(),
-        override val isContactGroupsCrudEnabled: Boolean = false
+        override val isContactGroupsCrudEnabled: Boolean = false,
+        override val isContactSearchEnabled: Boolean = false
     ) : ContactListState
 
     sealed interface Loaded : ContactListState {
@@ -38,6 +40,7 @@ sealed interface ContactListState {
         val openContactForm: Effect<Unit>
         val openContactGroupForm: Effect<Unit>
         val openImportContact: Effect<Unit>
+        val openContactSearch: Effect<Boolean>
         val subscriptionError: Effect<TextUiModel>
 
         data class Data(
@@ -45,8 +48,10 @@ sealed interface ContactListState {
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
+            override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
             override val isContactGroupsCrudEnabled: Boolean = false,
+            override val isContactSearchEnabled: Boolean = false,
             val contacts: List<ContactListItemUiModel>,
             val contactGroups: List<ContactGroupItemUiModel>
         ) : Loaded
@@ -56,8 +61,10 @@ sealed interface ContactListState {
             override val openContactForm: Effect<Unit> = Effect.empty(),
             override val openContactGroupForm: Effect<Unit> = Effect.empty(),
             override val openImportContact: Effect<Unit> = Effect.empty(),
+            override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
-            override val isContactGroupsCrudEnabled: Boolean = false
+            override val isContactGroupsCrudEnabled: Boolean = false,
+            override val isContactSearchEnabled: Boolean = false
         ) : Loaded
     }
 }

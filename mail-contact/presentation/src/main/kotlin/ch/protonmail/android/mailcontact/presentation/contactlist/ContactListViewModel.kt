@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactSearchEnabled
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,6 +54,7 @@ class ContactListViewModel @Inject constructor(
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
     private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled,
+    private val isContactSearchEnabled: IsContactSearchEnabled,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
 
@@ -73,6 +75,7 @@ class ContactListViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 ContactListViewAction.OnOpenBottomSheet -> emitNewStateFor(ContactListEvent.OpenBottomSheet)
+                ContactListViewAction.OnOpenContactSearch -> emitNewStateFor(ContactListEvent.OpenContactSearch)
                 ContactListViewAction.OnDismissBottomSheet -> emitNewStateFor(ContactListEvent.DismissBottomSheet)
                 ContactListViewAction.OnNewContactClick -> emitNewStateFor(ContactListEvent.OpenContactForm)
                 ContactListViewAction.OnNewContactGroupClick -> handleOnNewContactGroupClick()
@@ -97,6 +100,7 @@ class ContactListViewModel @Inject constructor(
             observeContactGroupLabels(userId)
         ) { contacts, contactGroups ->
             val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
+            val isContactSearchEnabled = isContactSearchEnabled(null)
             val contactList = contacts.getOrElse {
                 Timber.e("Error while observing contacts")
                 return@combine ContactListEvent.ErrorLoadingContactList
@@ -112,7 +116,8 @@ class ContactListViewModel @Inject constructor(
                         return@combine ContactListEvent.ErrorLoadingContactList
                     }
                 ),
-                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled
+                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled,
+                isContactSearchEnabled = isContactSearchEnabled
             )
         }
     }

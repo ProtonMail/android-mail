@@ -33,6 +33,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupLabelsErr
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
 import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
+import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactSearchEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
@@ -104,6 +105,9 @@ class ContactListViewModelTest {
     private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
         every { this@mockk(null) } returns true
     }
+    private val isContactSearchEnabledMock = mockk<IsContactSearchEnabled> {
+        every { this@mockk(null) } returns true
+    }
 
     private val reducer = ContactListReducer()
 
@@ -121,6 +125,7 @@ class ContactListViewModelTest {
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
             isContactGroupsCrudEnabledMock,
+            isContactSearchEnabledMock,
             observePrimaryUserId
         )
     }
@@ -174,7 +179,8 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -242,13 +248,38 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                isContactGroupsCrudEnabled = false
+                isContactGroupsCrudEnabled = false,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
         }
     }
 
+    @Test
+    fun `when feature flag IsContactSearchEnabled is false then emit appropriate event`() = runTest {
+        // Given
+        expectContactsData()
+        every { isContactSearchEnabledMock.invoke(null) } returns false
+
+        // When
+        contactListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactListState.Loaded.Data(
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = false
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
 
     @Test
     fun `given contact list, when action open bottom sheet, then emits open state`() = runTest {
@@ -270,7 +301,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -297,7 +329,8 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -325,7 +358,8 @@ class ContactListViewModelTest {
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactForm = Effect.of(Unit),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -354,7 +388,8 @@ class ContactListViewModelTest {
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openContactGroupForm = Effect.of(Unit),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -383,7 +418,8 @@ class ContactListViewModelTest {
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error)),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)
@@ -411,7 +447,8 @@ class ContactListViewModelTest {
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 openImportContact = Effect.of(Unit),
-                isContactGroupsCrudEnabled = true
+                isContactGroupsCrudEnabled = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)

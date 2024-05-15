@@ -78,7 +78,8 @@ private fun ContactListScreenPreview() {
                 contactGroupSampleData,
                 contactGroupSampleData
             ),
-            isContactGroupsCrudEnabled = true
+            isContactGroupsCrudEnabled = true,
+            isContactSearchEnabled = true
         ),
         actions = ContactListScreen.Actions.Empty
     )

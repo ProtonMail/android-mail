@@ -25,6 +25,7 @@ sealed interface ContactListOperation
 
 internal sealed interface ContactListViewAction : ContactListOperation {
     data object OnOpenBottomSheet : ContactListViewAction
+    data object OnOpenContactSearch : ContactListViewAction
     data object OnDismissBottomSheet : ContactListViewAction
     data object OnNewContactClick : ContactListViewAction
     data object OnNewContactGroupClick : ContactListViewAction
@@ -35,7 +36,8 @@ internal sealed interface ContactListEvent : ContactListOperation {
     data class ContactListLoaded(
         val contactList: List<ContactListItemUiModel>,
         val contactGroups: List<ContactGroupItemUiModel>,
-        val isContactGroupsCrudEnabled: Boolean
+        val isContactGroupsCrudEnabled: Boolean,
+        val isContactSearchEnabled: Boolean
     ) : ContactListEvent
     data object ErrorLoadingContactList : ContactListEvent
     data object SubscriptionUpgradeRequiredError : ContactListEvent
@@ -43,5 +45,6 @@ internal sealed interface ContactListEvent : ContactListOperation {
     data object OpenContactGroupForm : ContactListEvent
     data object OpenImportContact : ContactListEvent
     data object OpenBottomSheet : ContactListEvent
+    data object OpenContactSearch : ContactListEvent
     data object DismissBottomSheet : ContactListEvent
 }

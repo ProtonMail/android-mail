@@ -94,7 +94,8 @@ internal class ContactListReducerTest(
         private val dataLoadedState = ContactListState.Loaded.Data(
             contacts = loadedContactListItemUiModels,
             contactGroups = loadedContactGroupItemUiModels,
-            isContactGroupsCrudEnabled = true
+            isContactGroupsCrudEnabled = true,
+            isContactSearchEnabled = true
         )
 
         private val transitionsFromLoadingState = listOf(
@@ -103,7 +104,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true
+                    isContactGroupsCrudEnabled = true,
+                    isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -112,7 +114,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false
+                    isContactGroupsCrudEnabled = false,
+                    isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),
@@ -143,6 +146,11 @@ internal class ContactListReducerTest(
             ),
             TestInput(
                 currentState = emptyLoadingState,
+                event = ContactListEvent.OpenContactSearch,
+                expectedState = emptyLoadingState
+            ),
+            TestInput(
+                currentState = emptyLoadingState,
                 event = ContactListEvent.DismissBottomSheet,
                 expectedState = emptyLoadingState
             )
@@ -154,7 +162,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true
+                    isContactGroupsCrudEnabled = true,
+                    isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -165,7 +174,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false
+                    isContactGroupsCrudEnabled = false,
+                    isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty().copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
@@ -209,6 +219,13 @@ internal class ContactListReducerTest(
             ),
             TestInput(
                 currentState = emptyLoadedState,
+                event = ContactListEvent.OpenContactSearch,
+                expectedState = emptyLoadedState.copy(
+                    openContactSearch = Effect.of(true)
+                )
+            ),
+            TestInput(
+                currentState = emptyLoadedState,
                 event = ContactListEvent.DismissBottomSheet,
                 expectedState = emptyLoadedState.copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
@@ -230,7 +247,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true
+                    isContactGroupsCrudEnabled = true,
+                    isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -239,7 +257,8 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false
+                    isContactGroupsCrudEnabled = false,
+                    isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),
@@ -277,6 +296,13 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.OpenBottomSheet,
                 expectedState = dataLoadedState.copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                )
+            ),
+            TestInput(
+                currentState = dataLoadedState,
+                event = ContactListEvent.OpenContactSearch,
+                expectedState = dataLoadedState.copy(
+                    openContactSearch = Effect.of(true)
                 )
             ),
             TestInput(

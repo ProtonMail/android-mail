@@ -34,6 +34,7 @@ class ContactListReducer @Inject constructor() {
             is ContactListEvent.OpenImportContact -> reduceOpenImportContact(currentState)
             is ContactListEvent.DismissBottomSheet -> reduceDismissBottomSheet(currentState)
             is ContactListEvent.OpenBottomSheet -> reduceOpenBottomSheet(currentState)
+            is ContactListEvent.OpenContactSearch -> reduceOpenContactSearch(currentState)
             is ContactListEvent.SubscriptionUpgradeRequiredError -> reduceErrorSubscriptionUpgradeRequired(currentState)
         }
     }
@@ -48,7 +49,8 @@ class ContactListReducer @Inject constructor() {
                     ContactListState.Loaded.Data(
                         contacts = event.contactList,
                         contactGroups = event.contactGroups,
-                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled,
+                        isContactSearchEnabled = event.isContactSearchEnabled
                     )
                 } else ContactListState.Loaded.Empty()
             }
@@ -59,12 +61,14 @@ class ContactListReducer @Inject constructor() {
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
                         contacts = event.contactList,
                         contactGroups = event.contactGroups,
-                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled,
+                        isContactSearchEnabled = event.isContactSearchEnabled
                     )
                 } else {
                     ContactListState.Loaded.Empty(
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
-                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled
+                        isContactGroupsCrudEnabled = event.isContactGroupsCrudEnabled,
+                        isContactSearchEnabled = event.isContactSearchEnabled
                     )
                 }
             }
@@ -142,6 +146,19 @@ class ContactListReducer @Inject constructor() {
 
             is ContactListState.Loaded.Empty -> currentState.copy(
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+            )
+        }
+    }
+
+    private fun reduceOpenContactSearch(currentState: ContactListState): ContactListState {
+        return when (currentState) {
+            is ContactListState.Loading -> currentState
+            is ContactListState.Loaded.Data -> currentState.copy(
+                openContactSearch = Effect.of(true)
+            )
+
+            is ContactListState.Loaded.Empty -> currentState.copy(
+                openContactSearch = Effect.of(true)
             )
         }
     }

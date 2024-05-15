@@ -84,10 +84,14 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                         onBackClick = actions.onBackClick,
                         onAddClick = {
                             viewModel.submit(ContactListViewAction.OnOpenBottomSheet)
+                        },
+                        onSearchClick = {
+                            viewModel.submit(ContactListViewAction.OnOpenContactSearch)
                         }
                     ),
                     isAddButtonVisible = state is ContactListState.Loaded.Data,
-                    isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled
+                    isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled,
+                    isContactSearchEnabled = state.isContactSearchEnabled
                 )
             },
             content = { paddingValues ->
