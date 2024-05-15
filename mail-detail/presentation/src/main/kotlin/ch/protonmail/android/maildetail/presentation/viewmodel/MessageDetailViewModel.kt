@@ -42,7 +42,6 @@ import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
-import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -54,15 +53,13 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
-import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
-import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -102,7 +99,6 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
@@ -121,7 +117,6 @@ class MessageDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveMessageDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
-    private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val markUnread: MarkMessageAsUnread,
     private val markRead: MarkMessageAsRead,
@@ -131,7 +126,6 @@ class MessageDetailViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val moveMessage: MoveMessage,
-    private val relabelMessage: RelabelMessage,
     private val deleteMessages: DeleteMessages,
     private val getAttachmentIntentValues: GetAttachmentIntentValues,
     private val getDownloadingAttachmentsForMessages: GetDownloadingAttachmentsForMessages,
@@ -143,7 +137,9 @@ class MessageDetailViewModel @Inject constructor(
     private val isProtonCalendarInstalled: IsProtonCalendarInstalled,
     private val networkManager: NetworkManager,
     private val printMessage: PrintMessage,
-    private val findContactByEmail: FindContactByEmail
+    private val findContactByEmail: FindContactByEmail,
+    private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
+    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed
 ) : ViewModel() {
 
     private val messageId = requireMessageId()
@@ -521,29 +517,8 @@ class MessageDetailViewModel @Inject constructor(
             emitNewStateFrom(initialEvent)
 
             val userId = primaryUserId.first()
-            val labels = observeCustomMailLabels(userId).first()
-            val color = observeFolderColor(userId).first()
-            val message = observeMessageWithLabels(userId, messageId).first()
-
-            val mappedLabels = labels.onLeft {
-                Timber.e("Error while observing custom labels")
-            }.getOrElse { emptyList() }
-
-            val selectedLabels = message.fold(
-                ifLeft = { emptyList() },
-                ifRight = { messageWithLabels ->
-                    messageWithLabels.labels
-                        .filter { it.type == LabelType.MessageLabel && !it.labelId.isReservedSystemLabelId() }
-                        .map { it.labelId }
-                }
-            )
-
             val event = MessageDetailEvent.MessageBottomSheetEvent(
-                LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
-                        .toImmutableList(),
-                    selectedLabels = selectedLabels.toImmutableList()
-                )
+                loadDataForMessageLabelAsBottomSheet(userId, messageId)
             )
             emitNewStateFrom(event)
         }
@@ -552,36 +527,17 @@ class MessageDetailViewModel @Inject constructor(
     private fun onLabelAsConfirmed(archiveSelected: Boolean) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
-            val messageWithLabels = checkNotNull(
-                observeMessageWithLabels(userId, messageId).first().getOrNull()
-            ) { "Message not found" }
-
-            val previousSelectedLabels = messageWithLabels.labels
-                .filter { it.type == LabelType.MessageLabel }
-                .map { it.labelId }
 
             val labelAsData =
                 mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
                     ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
-            val newSelectedLabels = labelAsData.labelUiModelsWithSelectedState
-                .filter { it.selectedState == LabelSelectedState.Selected }
-                .map { it.labelUiModel.id.labelId }
-
-            if (archiveSelected) {
-                moveMessage(
-                    userId,
-                    messageId,
-                    SystemLabelId.Archive.labelId
-                ).onLeft { Timber.e("Move message failed: $it") }
-            }
-
             val operation =
-                relabelMessage(
+                onMessageLabelAsConfirmed(
                     userId = userId,
                     messageId = messageId,
-                    currentLabelIds = previousSelectedLabels,
-                    updatedLabelIds = newSelectedLabels
+                    labelUiModelsWithSelectedState = labelAsData.labelUiModelsWithSelectedState,
+                    archiveSelected = archiveSelected
                 ).fold(
                     ifLeft = {
                         Timber.e("Relabel message failed: $it")

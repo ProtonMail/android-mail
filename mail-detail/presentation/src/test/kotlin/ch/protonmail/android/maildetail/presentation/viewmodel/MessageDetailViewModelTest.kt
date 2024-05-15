@@ -57,7 +57,6 @@ import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
-import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBannersUiModelMapper
@@ -82,14 +81,17 @@ import ch.protonmail.android.maildetail.presentation.reducer.MessageReportPhishi
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
-import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
+import ch.protonmail.android.maillabel.presentation.toUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -149,7 +151,6 @@ import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
-import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -166,6 +167,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import org.junit.After
@@ -247,14 +249,6 @@ class MessageDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(userId) } returns flowOf(defaultFolderColorSettings)
         }
-    private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
-        every { this@mockk.invoke(userId) } returns flowOf(
-            listOf(
-                MailLabelTestData.customLabelOne,
-                MailLabelTestData.customLabelTwo
-            ).right()
-        )
-    }
     private val observeAttachmentWorkerStatus = mockk<ObserveMessageAttachmentStatus>()
     private val markUnread = mockk<MarkMessageAsUnread> {
         coEvery { this@mockk(userId, messageId) } returns MessageSample.Invoice.right()
@@ -307,23 +301,6 @@ class MessageDetailViewModelTest {
             )
         } returns Unit.right()
     }
-    private val relabelMessage: RelabelMessage = mockk {
-        coEvery {
-            this@mockk.invoke(
-                userId = userId,
-                messageId = messageId,
-                currentLabelIds = any(),
-                updatedLabelIds = any()
-            )
-        } returns with(MessageSample) {
-            Invoice.labelAs(
-                listOf(
-                    MailLabelTestData.customLabelOne.id.labelId,
-                    MailLabelTestData.customLabelTwo.id.labelId
-                )
-            )
-        }.right()
-    }
     private val resolveParticipantName = mockk<ResolveParticipantName> {
         every { this@mockk(any(), any()) } returns ResolveParticipantNameResult("Sender", isProton = false)
     }
@@ -365,6 +342,21 @@ class MessageDetailViewModelTest {
         } returns MessageBodyUiModelTestData.plainTextMessageBodyUiModel.messageBody
     }
     private val printMessage = mockk<PrintMessage>()
+    private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet> {
+        coEvery {
+            this@mockk.invoke(userId, messageId)
+        } returns LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
+            customLabelList = listOf(
+                MailLabelTestData.customLabelOne, MailLabelTestData.customLabelTwo
+            ).map {
+                it.toUiModel(
+                    FolderColorSettings(), emptyMap(), MailLabelTestData.customLabelOne.id
+                ) as MailLabelUiModel.Custom
+            }.toImmutableList(),
+            selectedLabels = emptyList<LabelId>().toImmutableList()
+        )
+    }
+    private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
 
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(
@@ -398,7 +390,6 @@ class MessageDetailViewModelTest {
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
-            observeCustomMailLabels = observeCustomMailLabels,
             observeMessage = observeMessage,
             observeMessageAttachmentStatus = observeAttachmentWorkerStatus,
             markUnread = markUnread,
@@ -409,7 +400,6 @@ class MessageDetailViewModelTest {
             savedStateHandle = savedStateHandle,
             messageBodyUiModelMapper = messageBodyUiModelMapper,
             moveMessage = moveMessage,
-            relabelMessage = relabelMessage,
             deleteMessages = deleteMessages,
             getAttachmentIntentValues = getAttachmentIntentValues,
             getDownloadingAttachmentsForMessages = getDownloadingAttachmentsForMessages,
@@ -421,7 +411,9 @@ class MessageDetailViewModelTest {
             isProtonCalendarInstalled = isProtonCalendarInstalled,
             networkManager = networkManager,
             printMessage = printMessage,
-            findContactByEmail = findContactByEmail
+            findContactByEmail = findContactByEmail,
+            loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
+            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
         )
     }
 
@@ -968,19 +960,18 @@ class MessageDetailViewModelTest {
     }
 
     @Test
-    fun `verify relabel message is called when destination gets confirmed`() = runTest {
+    fun `verify use case is called when destination gets confirmed without archive selected`() = runTest {
         // Given
         coEvery {
-            relabelMessage(
-                userId = userId,
-                messageId = messageId,
-                currentLabelIds = listOf(),
-                updatedLabelIds = listOf(
+            onMessageLabelAsConfirmed(userId, messageId, any(), false)
+        } returns with(MessageSample) {
+            Invoice.labelAs(
+                listOf(
                     MailLabelTestData.customLabelOne.id.labelId,
                     MailLabelTestData.customLabelTwo.id.labelId
                 )
             )
-        } returns MessageSample.Invoice.right()
+        }.right()
 
         // When
         viewModel.state.test {
@@ -995,17 +986,7 @@ class MessageDetailViewModelTest {
 
             // Then
             assertNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
-            coVerify {
-                relabelMessage.invoke(
-                    userId = userId,
-                    messageId = messageId,
-                    currentLabelIds = listOf(),
-                    updatedLabelIds = listOf(
-                        MailLabelTestData.customLabelOne.id.labelId,
-                        MailLabelTestData.customLabelTwo.id.labelId
-                    )
-                )
-            }
+            coVerify { onMessageLabelAsConfirmed(userId, messageId, any(), false) }
         }
     }
 
@@ -1046,21 +1027,18 @@ class MessageDetailViewModelTest {
         }
 
     @Test
-    fun `verify relabel message and move to is called and dismiss is set when destination gets confirmed`() = runTest {
+    fun `verify use case is called when destination gets confirmed with archive selected`() = runTest {
         // Given
-        coEvery { moveMessage(userId, messageId, any()) } returns Unit.right()
-
         coEvery {
-            relabelMessage(
-                userId = userId,
-                messageId = messageId,
-                currentLabelIds = listOf(),
-                updatedLabelIds = listOf(
+            onMessageLabelAsConfirmed(userId, messageId, any(), true)
+        } returns with(MessageSample) {
+            Invoice.labelAs(
+                listOf(
                     MailLabelTestData.customLabelOne.id.labelId,
                     MailLabelTestData.customLabelTwo.id.labelId
                 )
             )
-        } returns MessageSample.Invoice.right()
+        }.right()
 
         // When
         viewModel.state.test {
@@ -1075,17 +1053,8 @@ class MessageDetailViewModelTest {
 
             // Then
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
-            coVerifySequence {
-                moveMessage(userId, messageId, MailLabelId.System.Archive.labelId)
-                relabelMessage.invoke(
-                    userId = userId,
-                    messageId = messageId,
-                    currentLabelIds = listOf(),
-                    updatedLabelIds = listOf(
-                        MailLabelTestData.customLabelOne.id.labelId,
-                        MailLabelTestData.customLabelTwo.id.labelId
-                    )
-                )
+            coVerify {
+                onMessageLabelAsConfirmed(userId, messageId, any(), true)
             }
         }
     }
@@ -1094,12 +1063,7 @@ class MessageDetailViewModelTest {
     fun `when error relabeling a message, error is emitted`() = runTest {
         // Given
         coEvery {
-            relabelMessage(
-                userId = userId,
-                messageId = messageId,
-                currentLabelIds = any(),
-                updatedLabelIds = any()
-            )
+            onMessageLabelAsConfirmed(userId, messageId, any(), false)
         } returns DataError.Local.NoDataCached.left()
 
         // When
