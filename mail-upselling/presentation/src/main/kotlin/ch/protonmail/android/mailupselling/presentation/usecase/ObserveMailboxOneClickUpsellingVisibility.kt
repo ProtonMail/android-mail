@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import me.proton.core.payment.domain.PurchaseManager
-import me.proton.core.plan.domain.SupportUpgradePaidPlans
+import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import javax.inject.Inject
 
 class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
@@ -34,9 +34,9 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     private val purchaseManager: PurchaseManager,
     private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
     private val observeUpsellingOneClickOnCooldown: ObserveUpsellingOneClickOnCooldown,
+    private val canUpgradeFromMobile: CanUpgradeFromMobile,
     private val userHasAvailablePlans: UserHasAvailablePlans,
-    private val userHasPendingPurchases: UserHasPendingPurchases,
-    @SupportUpgradePaidPlans private val isUpgradePaidPlanSupportEnabled: Boolean
+    private val userHasPendingPurchases: UserHasPendingPurchases
 ) {
 
     operator fun invoke(): Flow<Boolean> = combine(
@@ -46,7 +46,7 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
         observeOneClickUpsellingEnabled(null)
     ) { user, purchases, isOneClickOnCooldown, isOneClickUpsellingEnabled ->
         if (user == null) return@combine false
-        if (!isUpgradePaidPlanSupportEnabled) return@combine false
+        if (!canUpgradeFromMobile()) return@combine false
         if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value) return@combine false
         if (isOneClickOnCooldown) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false

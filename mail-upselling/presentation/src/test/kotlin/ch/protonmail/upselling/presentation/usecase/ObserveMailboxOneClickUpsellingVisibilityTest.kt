@@ -39,8 +39,8 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
+import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import me.proton.core.user.domain.entity.User
-import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -53,7 +53,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     private val purchaseManager = mockk<PurchaseManager>()
     private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
     private val userHasPendingPurchases = mockk<UserHasPendingPurchases>()
-    private val isUpgradePaidPlanSupportEnabled = mockk<Provider<Boolean>>()
+    private val canUpgradeFromMobile = mockk<CanUpgradeFromMobile>()
     private val observeUpsellingOneClickOnCooldown = mockk<ObserveUpsellingOneClickOnCooldown>()
     private val sut: ObserveMailboxOneClickUpsellingVisibility
         get() = ObserveMailboxOneClickUpsellingVisibility(
@@ -61,9 +61,9 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             purchaseManager,
             observeOneClickUpsellingEnabled,
             observeUpsellingOneClickOnCooldown,
+            canUpgradeFromMobile,
             userHasAvailablePlans,
-            userHasPendingPurchases,
-            isUpgradePaidPlanSupportEnabled.get()
+            userHasPendingPurchases
         )
 
 
@@ -84,7 +84,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(emptyList())
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
 
         // When + Then
         sut().test {
@@ -100,7 +100,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(false)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(emptyList())
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
 
         // When + Then
         sut().test {
@@ -116,7 +116,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(null)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(emptyList())
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
 
         // When + Then
         sut().test {
@@ -126,13 +126,13 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     }
 
     @Test
-    fun `should return false if upgrade paid plans support is disabled`() = runTest {
+    fun `should return false if user can not upgrade from mobile`() = runTest {
         // Given
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(emptyList())
-        expectedPaidPlanSupportEnabled(false)
+        expectCanUpgradeFromMobile(false)
 
         // When + Then
         sut().test {
@@ -148,7 +148,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(listOf(mockk<Purchase>()))
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
 
         // When + Then
@@ -165,7 +165,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(listOf(mockk<Purchase>()))
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
 
@@ -183,7 +183,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(listOf(mockk<Purchase>()))
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -201,7 +201,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOnCooldown()
         expectPurchases(listOf(mockk<Purchase>()))
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
 
         // When + Then
         sut().test {
@@ -217,7 +217,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
         expectPurchases(listOf(mockk<Purchase>()))
-        expectedPaidPlanSupportEnabled(true)
+        expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -265,7 +265,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         coEvery { userHasPendingPurchases(any(), userId) } returns value
     }
 
-    private fun expectedPaidPlanSupportEnabled(value: Boolean) {
-        every { isUpgradePaidPlanSupportEnabled.get() } returns value
+    private fun expectCanUpgradeFromMobile(value: Boolean) {
+        coEvery { canUpgradeFromMobile() } returns value
     }
 }
