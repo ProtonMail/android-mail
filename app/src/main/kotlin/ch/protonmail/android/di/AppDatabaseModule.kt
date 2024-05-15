@@ -49,6 +49,7 @@ import me.proton.core.push.data.local.db.PushDatabase
 import me.proton.core.telemetry.data.db.TelemetryDatabase
 import me.proton.core.user.data.db.AddressDatabase
 import me.proton.core.user.data.db.UserDatabase
+import me.proton.core.userrecovery.data.db.DeviceRecoveryDatabase
 import me.proton.core.usersettings.data.db.OrganizationDatabase
 import me.proton.core.usersettings.data.db.UserSettingsDatabase
 import javax.inject.Singleton
@@ -63,6 +64,7 @@ object AppDatabaseModule {
 
 @Module
 @InstallIn(SingletonComponent::class)
+@Suppress("TooManyFunctions")
 abstract class AppDatabaseBindsModule {
     @Binds
     abstract fun provideRoomDatabase(appDatabase: AppDatabase): RoomDatabase
@@ -138,4 +140,7 @@ abstract class AppDatabaseBindsModule {
 
     @Binds
     abstract fun provideSearchResultsDatabase(appDatabase: AppDatabase): SearchResultsDatabase
+
+    @Binds
+    abstract fun provideDeviceRecoveryDatabase(appDatabase: AppDatabase): DeviceRecoveryDatabase
 }

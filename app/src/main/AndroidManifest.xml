@@ -150,6 +150,11 @@
                 tools:node="remove"/>
 
             <meta-data
+                android:name="me.proton.core.userrecovery.presentation.compose.DeviceRecoveryInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+
+            <meta-data
                 android:name="ch.protonmail.android.initializer.OutboxInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

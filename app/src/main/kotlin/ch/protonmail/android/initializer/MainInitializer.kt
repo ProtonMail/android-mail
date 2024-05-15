@@ -34,6 +34,7 @@ import me.proton.core.network.presentation.init.UnAuthSessionFetcherInitializer
 import me.proton.core.paymentiap.presentation.GooglePurchaseHandlerInitializer
 import me.proton.core.plan.presentation.PurchaseHandlerInitializer
 import me.proton.core.plan.presentation.UnredeemedPurchaseInitializer
+import me.proton.core.userrecovery.presentation.compose.DeviceRecoveryInitializer
 
 class MainInitializer : Initializer<Unit> {
 
@@ -63,6 +64,7 @@ class MainInitializer : Initializer<Unit> {
 
     private fun coreDependencies() = listOf(
         CryptoValidatorInitializer::class.java,
+        DeviceRecoveryInitializer::class.java,
         PurchaseHandlerInitializer::class.java,
         GooglePurchaseHandlerInitializer::class.java,
         HumanVerificationInitializer::class.java,

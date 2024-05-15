@@ -360,6 +360,8 @@ object Proton {
         val reportTest = coreArtifact("report-test", Versions.Proton.core)
         val telemetry = coreArtifact("telemetry", Versions.Proton.core)
         val user = coreArtifact("user", Versions.Proton.core)
+        val userRecovery = coreArtifact("user-recovery", Versions.Proton.core)
+        val userRecoveryTest = coreArtifact("user-recovery-test", Versions.Proton.core)
         val userSettings = coreArtifact("user-settings", Versions.Proton.core)
         val configData = coreArtifact("configuration-data", Versions.Proton.core)
         val configDaggerStatic = coreArtifact("configuration-dagger-staticdefaults", Versions.Proton.core)

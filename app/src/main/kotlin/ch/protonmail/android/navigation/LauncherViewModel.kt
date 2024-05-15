@@ -46,7 +46,6 @@ import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
-import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.auth.presentation.onAddAccountResult
@@ -54,7 +53,6 @@ import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
-import me.proton.core.user.domain.UserManager
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import javax.inject.Inject
 
@@ -63,7 +61,6 @@ class LauncherViewModel @Inject constructor(
     private val product: Product,
     private val requiredAccountType: AccountType,
     private val accountManager: AccountManager,
-    private val userManager: UserManager,
     private val authOrchestrator: AuthOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
@@ -112,7 +109,6 @@ class LauncherViewModel @Inject constructor(
         }
 
         accountManager.observe(context.lifecycle, Lifecycle.State.CREATED)
-            .onSessionForceLogout { userManager.lock(it.userId) }
             .onAccountTwoPassModeFailed { accountManager.disableAccount(it.userId) }
             .onAccountCreateAddressFailed { accountManager.disableAccount(it.userId) }
             .onSessionSecondFactorNeeded { authOrchestrator.startSecondFactorWorkflow(it) }

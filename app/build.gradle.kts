@@ -268,6 +268,7 @@ dependencies {
     androidTestImplementation(Proton.Core.authTest)
     androidTestImplementation(Proton.Core.planTest)
     androidTestImplementation(Proton.Core.reportTest)
+    androidTestImplementation(Proton.Core.userRecoveryTest)
     androidTestImplementation(project(":test:annotations"))
     androidTestImplementation(project(":test:idlingresources"))
     androidTestImplementation(project(":test:robot:core"))

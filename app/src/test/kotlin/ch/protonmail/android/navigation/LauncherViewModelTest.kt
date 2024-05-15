@@ -58,7 +58,6 @@ import me.proton.core.domain.entity.Product.Mail
 import me.proton.core.humanverification.presentation.HumanVerificationManagerObserver
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
-import me.proton.core.user.domain.UserManager
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -75,8 +74,6 @@ class LauncherViewModelTest {
         mockk<NotificationsPermissionsOrchestrator>(relaxUnitFun = true) {
             every { permissionResult() } returns MutableStateFlow(GRANTED)
         }
-
-    private val userManager = mockk<UserManager>()
 
     private val accountListFlow = MutableStateFlow<List<Account>>(emptyList())
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
@@ -253,7 +250,6 @@ class LauncherViewModelTest {
         verify(exactly = 1) { amObserver.onAccountCreateAddressNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountTwoPassModeFailed(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountTwoPassModeNeeded(any(), any()) }
-        verify(exactly = 1) { amObserver.onSessionForceLogout(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionSecondFactorNeeded(any(), any()) }
     }
 
@@ -397,7 +393,6 @@ class LauncherViewModelTest {
         Mail,
         Internal,
         accountManager,
-        userManager,
         authOrchestrator,
         plansOrchestrator,
         reportOrchestrator,

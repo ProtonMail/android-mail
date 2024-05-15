@@ -107,6 +107,8 @@ import me.proton.core.user.data.entity.AddressEntity
 import me.proton.core.user.data.entity.AddressKeyEntity
 import me.proton.core.user.data.entity.UserEntity
 import me.proton.core.user.data.entity.UserKeyEntity
+import me.proton.core.userrecovery.data.db.DeviceRecoveryDatabase
+import me.proton.core.userrecovery.data.entity.RecoveryFileEntity
 import me.proton.core.usersettings.data.db.OrganizationDatabase
 import me.proton.core.usersettings.data.db.UserSettingsConverters
 import me.proton.core.usersettings.data.db.UserSettingsDatabase
@@ -126,6 +128,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         UserKeyEntity::class,
         AddressEntity::class,
         AddressKeyEntity::class,
+        // user-recovery
+        RecoveryFileEntity::class,
         // key-data
         KeySaltEntity::class,
         PublicAddressEntity::class,
@@ -239,12 +243,13 @@ abstract class AppDatabase :
     PushDatabase,
     TelemetryDatabase,
     DraftStateDatabase,
-    SearchResultsDatabase {
+    SearchResultsDatabase,
+    DeviceRecoveryDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 33
+        const val version = 34
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -278,7 +283,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_29_30,
             AppDatabaseMigrations.MIGRATION_30_31,
             AppDatabaseMigrations.MIGRATION_31_32,
-            AppDatabaseMigrations.MIGRATION_32_33
+            AppDatabaseMigrations.MIGRATION_32_33,
+            AppDatabaseMigrations.MIGRATION_33_34
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
