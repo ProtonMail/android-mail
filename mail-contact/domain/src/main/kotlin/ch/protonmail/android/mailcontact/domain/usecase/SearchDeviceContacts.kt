@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import android.content.Context
 import android.provider.ContactsContract
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
@@ -55,21 +56,21 @@ class SearchDeviceContacts @Inject constructor(
         } catch (e: SecurityException) {
             Timber.d("SearchDeviceContacts: contact permission is not granted")
             null
-        }
+        } ?: return GetContactError.left()
 
         val deviceContacts = mutableListOf<DeviceContact>()
 
-        val displayNameColumnIndex = contactEmails?.getColumnIndex(
+        val displayNameColumnIndex = contactEmails.getColumnIndex(
             ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY
-        )?.takeIf {
+        ).takeIf {
             it >= 0
         } ?: 0
 
-        val emailColumnIndex = contactEmails?.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS)?.takeIf {
+        val emailColumnIndex = contactEmails.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS).takeIf {
             it >= 0
         } ?: 0
 
-        contactEmails?.use { cursor ->
+        contactEmails.use { cursor ->
             for (position in 0 until cursor.count) {
                 cursor.moveToPosition(position)
                 deviceContacts.add(

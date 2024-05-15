@@ -22,6 +22,8 @@ import android.content.ContentResolver
 import android.content.Context
 import android.database.Cursor
 import android.provider.ContactsContract
+import arrow.core.left
+import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -31,6 +33,7 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class SearchDeviceContactsTest {
@@ -114,21 +117,19 @@ class SearchDeviceContactsTest {
     }
 
     @Test
-    fun `when content resolver throws SecurityException, empty list is emitted`() =
-        runTest(testDispatcherProvider.Main) {
-            // Given
-            val query = "cont"
+    fun `when content resolver throws SecurityException, left is emitted`() = runTest(testDispatcherProvider.Main) {
+        // Given
+        val query = "cont"
 
-            expectCursorQueryThrowsSecurityException()
-            expectContactsCount(0)
+        expectCursorQueryThrowsSecurityException()
+        expectContactsCount(0)
 
-            // When
-            val actual = searchDeviceContacts(query).getOrNull()
+        // When
+        val actual = searchDeviceContacts(query)
 
-            // Then
-            assertNotNull(actual)
-            assertTrue(actual.size == 0)
-            verify(exactly = 0) { cursorMock.getString(columnIndexDisplayName) }
-            verify(exactly = 0) { cursorMock.getString(columnIndexEmail) }
-        }
+        // Then
+        assertEquals(GetContactError.left(), actual)
+        verify(exactly = 0) { cursorMock.getString(columnIndexDisplayName) }
+        verify(exactly = 0) { cursorMock.getString(columnIndexEmail) }
+    }
 }
