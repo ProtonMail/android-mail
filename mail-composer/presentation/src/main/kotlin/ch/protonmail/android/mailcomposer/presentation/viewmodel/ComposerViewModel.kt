@@ -809,6 +809,12 @@ class ComposerViewModel @Inject constructor(
                 )
 
             }.launchIn(viewModelScope)
+        } else {
+            emitNewStateFor(
+                ComposerAction.ContactSuggestionsDismissed(
+                    suggestionsField
+                )
+            )
         }
 
     }

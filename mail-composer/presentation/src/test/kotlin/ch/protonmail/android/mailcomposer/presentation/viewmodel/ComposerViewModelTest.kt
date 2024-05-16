@@ -651,6 +651,49 @@ class ComposerViewModelTest {
     }
 
     @Test
+    fun `should emit ContactSuggestionsDismissed when searchTerm is blank`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSearchTerm = ""
+        val suggestionField = ContactSuggestionsField.BCC
+
+        val expectedContacts = emptyList<Contact>()
+
+        val expectedDeviceContacts = emptyList<DeviceContact>()
+
+        val expectedContactGroups = emptyList<ContactGroup>()
+        val action = ComposerAction.ContactSuggestionTermChanged(expectedSearchTerm, suggestionField)
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
+        expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
+        expectMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
+
+        // When
+        viewModel.submit(action)
+        val actual = viewModel.state.value
+
+        // Then
+        assertEquals(
+            emptyMap(),
+            actual.contactSuggestions
+        )
+        assertEquals(mapOf(ContactSuggestionsField.BCC to false), actual.areContactSuggestionsExpanded)
+    }
+
+    @Test
     fun `should emit UpdateContactSuggestions when contact suggestions are found`() = runTest {
         // Given
         val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
