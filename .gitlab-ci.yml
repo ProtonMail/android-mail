@@ -122,9 +122,7 @@ i18n-send-crowdin:
   variables:
     I18N_FILTER_OUT_ITEMS: 'proton-libs'
     I18N_SYNC_CROWDIN_PROJECT: 'android-mail-new'
-    I18N_SYNC_BRANCH: $CI_DEFAULT_BRANCH
-  only:
-    - $CI_DEFAULT_BRANCH
+    I18N_SYNC_BRANCH: 'main'
 
 i18n-commit-locales:
   stage: localise
@@ -133,8 +131,8 @@ i18n-commit-locales:
     - shared-small
   variables:
     I18N_COMMIT_CROWDIN_PROJECT: 'android-mail-new'
-    I18N_COMMIT_BRANCH_PUSH: $CI_DEFAULT_BRANCH
-    I18N_COMMIT_BRANCH_ALLOWED: $CI_DEFAULT_BRANCH
+    I18N_COMMIT_BRANCH_PUSH: 'main'
+    I18N_COMMIT_BRANCH_ALLOWED: 'main'
 
 build_dev_debug:
   extends: .build_job
