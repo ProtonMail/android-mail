@@ -19,9 +19,12 @@
 package ch.protonmail.upselling.presentation.viewmodel
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Base
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingButtonViewModel
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -38,8 +41,10 @@ import kotlin.test.assertEquals
 internal class UpsellingButtonViewModelTest {
 
     private val oneClickUpsellingVisibility = mockk<ObserveMailboxOneClickUpsellingVisibility>()
+    private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
+
     private val viewModel: UpsellingButtonViewModel by lazy {
-        UpsellingButtonViewModel(oneClickUpsellingVisibility)
+        UpsellingButtonViewModel(oneClickUpsellingVisibility, upsellingTelemetryRepository)
     }
 
     @Before
@@ -74,5 +79,17 @@ internal class UpsellingButtonViewModelTest {
         viewModel.state.test {
             assertEquals(expected, awaitItem())
         }
+    }
+
+    @Test
+    fun `should call the UC with the expected event when tracking the upselling button tap`() = runTest {
+        // Given
+        every { oneClickUpsellingVisibility.invoke() } returns flowOf(true)
+
+        // When
+        viewModel.trackButtonInteraction()
+
+        // Then
+        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap) }
     }
 }

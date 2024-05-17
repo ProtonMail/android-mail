@@ -54,24 +54,29 @@ fun UpsellingMailButton(
 ) {
     val state = viewModel.state.collectAsState()
 
+    val onButtonClick = {
+        onClick()
+        viewModel.trackButtonInteraction()
+    }
+
     AnimatedVisibility(
         visible = state.value.isShown,
         enter = scaleIn(),
         exit = scaleOut()
     ) {
-        UpsellingMailButton(modifier = modifier, onClick = onClick)
+        UpsellingMailButton(modifier = modifier, onButtonClick = onButtonClick)
     }
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun UpsellingMailButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun UpsellingMailButton(onButtonClick: () -> Unit, modifier: Modifier = Modifier) {
     val accessibilityDescription = stringResource(id = R.string.upselling_button_item_content_description)
 
     Surface(
         modifier = modifier.semantics { contentDescription = accessibilityDescription },
         color = Color.Transparent,
-        onClick = onClick,
+        onClick = onButtonClick,
         border = BorderStroke(MailDimens.DefaultBorder, ProtonTheme.colors.separatorNorm),
         shape = ProtonTheme.shapes.large
     ) {
@@ -99,6 +104,6 @@ private fun UpsellingMailButton(onClick: () -> Unit, modifier: Modifier = Modifi
 @Composable
 fun UpsellingMailButtonPreview() {
     ProtonTheme {
-        UpsellingMailButton(onClick = {})
+        UpsellingMailButton(onButtonClick = {})
     }
 }

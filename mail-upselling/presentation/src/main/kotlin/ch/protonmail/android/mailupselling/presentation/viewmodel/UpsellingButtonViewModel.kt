@@ -20,6 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveMailboxOneClickUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpsellingButtonViewModel @Inject constructor(
-    observeMailboxOneClickUpsellingVisibility: ObserveMailboxOneClickUpsellingVisibility
+    observeMailboxOneClickUpsellingVisibility: ObserveMailboxOneClickUpsellingVisibility,
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(initialState)
@@ -43,6 +46,10 @@ class UpsellingButtonViewModel @Inject constructor(
         observeMailboxOneClickUpsellingVisibility()
             .onEach { visibility -> mutableState.update { UpsellingButtonState(visibility) } }
             .launchIn(viewModelScope)
+    }
+
+    fun trackButtonInteraction() {
+        upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.MailboxButtonTap)
     }
 
     companion object {
