@@ -48,6 +48,7 @@ dependencies {
 
     implementation(Arrow.core)
     implementation(Proton.Core.plan)
+    implementation(Proton.Core.telemetry)
 
     testImplementation(project(":test:test-data"))
 
@@ -56,4 +57,5 @@ dependencies {
     testImplementation(Kotlin.testJunit)
     testImplementation(KotlinX.coroutinesTest)
     testImplementation(Mockk.mockk)
+    testImplementation(Proton.Core.testKotlin)
 }
