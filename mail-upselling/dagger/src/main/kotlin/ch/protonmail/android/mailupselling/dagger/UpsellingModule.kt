@@ -22,6 +22,8 @@ import android.content.Context
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
 import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupPaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
@@ -61,6 +63,15 @@ object UpsellingModule {
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface UpsellingModuleBindings {
+
+    @Binds
+    @Reusable
+    fun provideTelemetryRepository(impl: UpsellingTelemetryRepositoryImpl): UpsellingTelemetryRepository
 }
 
 @Module

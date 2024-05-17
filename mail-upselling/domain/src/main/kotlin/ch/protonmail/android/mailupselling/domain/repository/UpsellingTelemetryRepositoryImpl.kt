@@ -1,0 +1,103 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailupselling.domain.repository
+
+import arrow.core.getOrElse
+import arrow.core.raise.either
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Base
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Upgrade
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
+import ch.protonmail.android.mailupselling.domain.model.telemetry.data.toUpsellingTelemetryDimensionValue
+import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
+import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName
+import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.launch
+import me.proton.core.auth.domain.usecase.GetPrimaryUser
+import me.proton.core.telemetry.domain.TelemetryManager
+import me.proton.core.telemetry.domain.entity.TelemetryPriority
+import me.proton.core.user.domain.entity.User
+import me.proton.core.util.kotlin.CoroutineScopeProvider
+import javax.inject.Inject
+
+@ViewModelScoped
+class UpsellingTelemetryRepositoryImpl @Inject constructor(
+    private val getAccountAgeInDays: GetAccountAgeInDays,
+    private val getPrimaryUser: GetPrimaryUser,
+    private val getSubscriptionName: GetSubscriptionName,
+    private val telemetryManager: TelemetryManager,
+    private val scopeProvider: CoroutineScopeProvider
+) : UpsellingTelemetryRepository {
+
+    // Note that the user preference check is delegated to the TelemetryManager from core.
+    // If the user has opted out, we will discard the event and not send it.
+    override fun trackEvent(eventType: UpsellingTelemetryEventType) = onSupervisedScope {
+        val user = getPrimaryUser() ?: return@onSupervisedScope
+
+        val event = when (eventType) {
+            is Base -> createBaseEvent(eventType, user)
+            is Upgrade -> createUpgradeEvent(eventType, user)
+        }.getOrElse { return@onSupervisedScope }
+
+        telemetryManager.enqueue(user.userId, event, TelemetryPriority.Immediate)
+    }
+
+    private suspend fun createBaseEvent(event: Base, user: User) = either {
+        val dimensions = buildTelemetryDimensions(user).getOrElse { raise(CreateTelemetryEventError) }
+
+        when (event) {
+            Base.MailboxButtonTap -> UpsellingTelemetryEvent.UpsellButtonTapped(dimensions).toTelemetryEvent()
+        }
+    }
+
+    private suspend fun createUpgradeEvent(event: Upgrade, user: User) = either {
+        val dimensions = buildTelemetryDimensions(user, event.payload).getOrElse { raise(CreateTelemetryEventError) }
+
+        when (event) {
+            is Upgrade.PurchaseCompleted -> UpsellingTelemetryEvent.PurchaseCompleted(dimensions)
+            is Upgrade.UpgradeAttempt -> UpsellingTelemetryEvent.UpgradeAttempt(dimensions)
+        }.toTelemetryEvent()
+    }
+
+    private suspend fun buildTelemetryDimensions(user: User) = either {
+        val accountAgeInDays = getAccountAgeInDays(user).toUpsellingTelemetryDimensionValue()
+        val subscriptionName = getSubscriptionName(user.userId).bind()
+
+        UpsellingTelemetryEventDimensions().apply {
+            addPlanBeforeUpgrade(subscriptionName.value)
+            addDaysSinceAccountCreation(accountAgeInDays)
+            addUpsellModalVersion()
+        }
+    }
+
+    private suspend fun buildTelemetryDimensions(user: User, payload: UpsellingTelemetryTargetPlanPayload) = either {
+        buildTelemetryDimensions(user).bind().apply {
+            addSelectedPlan(payload.planName)
+            addSelectedPlanCycle(payload.planCycle)
+        }
+    }
+
+    private fun onSupervisedScope(block: suspend () -> Unit) {
+        scopeProvider.GlobalDefaultSupervisedScope.launch { block() }
+    }
+}
+
+data object CreateTelemetryEventError

@@ -16,37 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-plugins {
-    id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-}
+package ch.protonmail.android.mailupselling.domain.repository
 
-setAsHiltModule()
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 
-android {
-    namespace = "ch.protonmail.android.mailupselling.dagger"
-    compileSdk = Config.compileSdk
+interface UpsellingTelemetryRepository {
 
-    defaultConfig {
-        minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-}
-
-dependencies {
-    implementation(Proton.Core.plan)
-
-    implementation(project(":mail-upselling:data"))
-    implementation(project(":mail-upselling:domain"))
-    implementation(project(":mail-upselling:presentation"))
+    fun trackEvent(eventType: UpsellingTelemetryEventType)
 }
