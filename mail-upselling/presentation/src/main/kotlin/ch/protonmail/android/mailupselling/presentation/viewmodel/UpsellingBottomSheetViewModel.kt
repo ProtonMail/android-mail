@@ -22,6 +22,9 @@ import java.time.Instant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Upgrade
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.usecase.FilterDynamicPlansByUserSubscription
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.Loading
@@ -45,6 +48,7 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
     private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
     private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
     private val updateUpsellingOneClickLastTimestamp: UpdateUpsellingOneClickLastTimestamp,
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
     private val upsellingBottomSheetContentReducer: UpsellingBottomSheetContentReducer
 ) : ViewModel() {
 
@@ -69,6 +73,14 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
 
     suspend fun updateLastSeenTimestamp() {
         updateUpsellingOneClickLastTimestamp(Instant.now().toEpochMilli())
+    }
+
+    fun trackUpgradeAttempt(payload: UpsellingTelemetryTargetPlanPayload) {
+        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeAttempt(payload))
+    }
+
+    fun trackPurchaseCompleted(payload: UpsellingTelemetryTargetPlanPayload) {
+        upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(payload))
     }
 
     private fun emitNewStateFrom(operation: UpsellingBottomSheetContentOperation) {

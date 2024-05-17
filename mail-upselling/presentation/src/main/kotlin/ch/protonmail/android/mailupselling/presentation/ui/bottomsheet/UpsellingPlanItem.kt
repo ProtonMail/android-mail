@@ -53,6 +53,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
 import ch.protonmail.android.uicomponents.chips.thenIf
@@ -150,6 +151,7 @@ internal fun UpsellingPlanItem(
             val eventListener = UpsellingPaymentEventListener(
                 context = LocalContext.current,
                 userId = planUiModel.userId.value,
+                telemetryPayload = planUiModel.toTelemetryPayload(),
                 actions
             )
             val buttonCornerRadius = UpsellingDimens.ButtonCornerRadius

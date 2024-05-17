@@ -22,13 +22,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 
 @Composable
 fun UpsellingBottomSheet(modifier: Modifier = Modifier, bottomSheetActions: UpsellingBottomSheet.Actions) {
     val viewModel: UpsellingBottomSheetViewModel = hiltViewModel()
-    val actions = bottomSheetActions.copy(onDisplayed = { viewModel.updateLastSeenTimestamp() })
+    val actions = bottomSheetActions.copy(
+        onDisplayed = { viewModel.updateLastSeenTimestamp() },
+        onPlanSelected = { viewModel.trackUpgradeAttempt(it) },
+        onSuccess = { viewModel.trackPurchaseCompleted(it) }
+    )
 
     when (val state = viewModel.state.collectAsState().value) {
         UpsellingBottomSheetContentState.Loading -> Unit
@@ -41,6 +46,8 @@ object UpsellingBottomSheet {
     data class Actions(
         val onDisplayed: suspend () -> Unit,
         val onError: (String) -> Unit,
+        val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         val onUpgrade: (String) -> Unit,
         val onDismiss: () -> Unit
     ) {
@@ -49,8 +56,10 @@ object UpsellingBottomSheet {
 
             val Empty = Actions(
                 onDisplayed = {},
+                onPlanSelected = {},
                 onError = {},
                 onUpgrade = {},
+                onSuccess = {},
                 onDismiss = {}
             )
         }

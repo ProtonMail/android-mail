@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import me.proton.core.plan.domain.entity.DynamicPlan
 
 internal data class DynamicPlanInstanceUiModel(
@@ -32,3 +33,6 @@ internal data class DynamicPlanInstanceUiModel(
     val viewId: Int,
     val dynamicPlan: DynamicPlan
 )
+
+internal fun DynamicPlanInstanceUiModel.toTelemetryPayload() =
+    UpsellingTelemetryTargetPlanPayload(dynamicPlan.name ?: "", cycle)

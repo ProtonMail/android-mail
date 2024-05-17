@@ -129,7 +129,14 @@ private fun BottomSheetPreview() {
     ProtonTheme3 {
         UpsellingBottomSheetContent(
             state = UpsellingBottomSheetContentPreviewData.Base,
-            actions = UpsellingBottomSheet.Actions(onDisplayed = {}, onDismiss = {}, onError = {}, onUpgrade = {})
+            actions = UpsellingBottomSheet.Actions(
+                onDisplayed = {},
+                onDismiss = {},
+                onError = {},
+                onPlanSelected = {},
+                onUpgrade = {},
+                onSuccess = {}
+            )
         )
     }
 }

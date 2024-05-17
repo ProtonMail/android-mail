@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.R
 import me.proton.core.domain.entity.UserId
 import me.proton.core.payment.presentation.view.ProtonPaymentEventListener
@@ -33,6 +34,7 @@ import timber.log.Timber
 internal class UpsellingPaymentEventListener(
     private val context: Context,
     private val userId: UserId,
+    private val telemetryPayload: UpsellingTelemetryTargetPlanPayload,
     private val actions: UpsellingBottomSheet.Actions
 ) : ProtonPaymentEventListener {
 
@@ -51,6 +53,7 @@ internal class UpsellingPaymentEventListener(
 
             is ProtonPaymentEvent.GiapSuccess -> {
                 actions.onUpgrade(context.getString(R.string.upselling_snackbar_upgrade_in_progress))
+                actions.onSuccess(telemetryPayload)
                 actions.onDismiss()
             }
 
@@ -81,8 +84,11 @@ internal class UpsellingPaymentEventListener(
                 context.startActivity(intent)
             }
 
-            ProtonPaymentEvent.Error.UserCancelled,
-            ProtonPaymentEvent.Loading -> Unit
+            ProtonPaymentEvent.Loading -> {
+                actions.onPlanSelected(telemetryPayload)
+            }
+
+            ProtonPaymentEvent.Error.UserCancelled -> Unit
         }
     }
 }

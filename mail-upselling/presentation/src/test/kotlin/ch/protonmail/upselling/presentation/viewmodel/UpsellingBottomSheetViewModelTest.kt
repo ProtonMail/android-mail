@@ -22,6 +22,9 @@ import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Upgrade
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.usecase.FilterDynamicPlansByUserSubscription
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
@@ -58,12 +61,14 @@ internal class UpsellingBottomSheetViewModelTest {
     private val dynamicPlanUiMapper = mockk<DynamicPlanUiMapper>(relaxed = true)
     private val upsellingBottomSheetContentReducer = UpsellingBottomSheetContentReducer(dynamicPlanUiMapper)
     private val updateLastSeenUpsellingTimestamp = mockk<UpdateUpsellingOneClickLastTimestamp>(relaxUnitFun = true)
+    private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
     private val viewModel: UpsellingBottomSheetViewModel by lazy {
         UpsellingBottomSheetViewModel(
             observePrimaryUser,
             getDynamicPlansAdjustedPrices,
             filterDynamicPlansByUserSubscription,
             updateLastSeenUpsellingTimestamp,
+            upsellingTelemetryRepository,
             upsellingBottomSheetContentReducer
         )
     }
@@ -156,6 +161,40 @@ internal class UpsellingBottomSheetViewModelTest {
 
         // Then
         coVerify { updateLastSeenUpsellingTimestamp.invoke(expectedInstantLongValue) }
+    }
+
+    @Test
+    fun `should call the UC with the expected event when tracking the upgrade attempt`() = runTest {
+        // Given
+        val expectedInstantLongValue = 1L
+        mockInstant(expectedInstantLongValue)
+        expectPrimaryUser(user)
+        expectDynamicPlans(user.userId, dynamicPlans)
+        expectSubscriptionOptions(user.userId, dynamicPlans, listOf(expectedDynamicPlan))
+        val expectedPayload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+
+        // When
+        viewModel.trackUpgradeAttempt(expectedPayload)
+
+        // Then
+        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeAttempt(expectedPayload)) }
+    }
+
+    @Test
+    fun `should call the UC with the expected event when tracking the purchase complete event`() = runTest {
+        // Given
+        val expectedInstantLongValue = 1L
+        mockInstant(expectedInstantLongValue)
+        expectPrimaryUser(user)
+        expectDynamicPlans(user.userId, dynamicPlans)
+        expectSubscriptionOptions(user.userId, dynamicPlans, listOf(expectedDynamicPlan))
+        val expectedPayload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+
+        // When
+        viewModel.trackPurchaseCompleted(expectedPayload)
+
+        // Then
+        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(expectedPayload)) }
     }
 
     private fun expectPrimaryUser(user: User?) {
