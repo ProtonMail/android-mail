@@ -191,6 +191,9 @@ fun ConversationDetailScreen(
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
                         onMarkUnread = { viewModel.submit(ConversationDetailViewAction.MarkMessageUnread(it)) },
+                        onLabel = {
+                            viewModel.submit(ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(it))
+                        },
                         onViewInLightMode = {
                             viewModel.submit(
                                 ConversationDetailViewAction.SwitchViewMode(it, ViewModePreference.LightMode)
@@ -252,7 +255,9 @@ fun ConversationDetailScreen(
                 onUnStarClick = { viewModel.submit(ConversationDetailViewAction.UnStar) },
                 onUnreadClick = { viewModel.submit(ConversationDetailViewAction.MarkUnread) },
                 onMoveToClick = { viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet) },
-                onLabelAsClick = { viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet) },
+                onLabelAsClick = {
+                    viewModel.submit(ConversationDetailViewAction.RequestConversationLabelAsBottomSheet)
+                },
                 onExpandMessage = { viewModel.submit(ConversationDetailViewAction.ExpandMessage(it)) },
                 onCollapseMessage = { viewModel.submit(ConversationDetailViewAction.CollapseMessage(it)) },
                 onMessageBodyLinkClicked = { messageId, uri ->

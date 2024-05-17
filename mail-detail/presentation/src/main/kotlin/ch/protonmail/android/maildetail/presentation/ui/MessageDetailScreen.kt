@@ -180,6 +180,7 @@ fun MessageDetailScreen(
                         onReplyAll = actions.onReplyAll,
                         onForward = actions.onForward,
                         onMarkUnread = { viewModel.submit(MessageViewAction.MarkUnread) },
+                        onLabel = { viewModel.submit(MessageViewAction.RequestLabelAsBottomSheet) },
                         onViewInLightMode = {
                             viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.LightMode))
                         },

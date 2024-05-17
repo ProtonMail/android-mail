@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModelWithSelectedState
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -75,7 +76,8 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
 sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
     data class Data(
-        val labelUiModelsWithSelectedState: ImmutableList<LabelUiModelWithSelectedState>
+        val labelUiModelsWithSelectedState: ImmutableList<LabelUiModelWithSelectedState>,
+        val messageIdInConversation: MessageId?
     ) : LabelAsBottomSheetState
 
     object Loading : LabelAsBottomSheetState
@@ -86,7 +88,8 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
         data class ActionData(
             val customLabelList: ImmutableList<MailLabelUiModel.Custom>,
             val selectedLabels: ImmutableList<LabelId>,
-            val partiallySelectedLabels: ImmutableList<LabelId> = emptyList<LabelId>().toImmutableList()
+            val partiallySelectedLabels: ImmutableList<LabelId> = emptyList<LabelId>().toImmutableList(),
+            val messageIdInConversation: MessageId? = null
         ) : LabelAsBottomSheetEvent
     }
 

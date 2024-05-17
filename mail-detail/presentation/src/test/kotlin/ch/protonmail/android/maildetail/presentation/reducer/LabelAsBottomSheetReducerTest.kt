@@ -63,7 +63,7 @@ class LabelAsBottomSheetReducerTest(
                     selectedLabels = emptyList<LabelId>().toImmutableList()
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithoutSelection)
+                    LabelAsBottomSheetState.Data(labelListWithoutSelection, null)
                 )
             ),
             TestInput(
@@ -76,7 +76,7 @@ class LabelAsBottomSheetReducerTest(
                         .toImmutableList()
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithSelection)
+                    LabelAsBottomSheetState.Data(labelListWithSelection, null)
                 )
             ),
             TestInput(
@@ -98,31 +98,34 @@ class LabelAsBottomSheetReducerTest(
                         .toImmutableList()
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithPartialSelection)
+                    LabelAsBottomSheetState.Data(labelListWithPartialSelection, null)
                 )
             )
         )
 
         private val transitionFromDataState = listOf(
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithoutSelection)),
+                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithoutSelection, null)),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection)
+                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection, null)
                 )
             ),
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithSelection)),
+                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithSelection, null)),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection)
+                    LabelAsBottomSheetState.Data(
+                        LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
+                        null
+                    )
                 )
             ),
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithPartialSelection)),
+                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithPartialSelection, null)),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection)
+                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection, null)
                 )
             )
         )

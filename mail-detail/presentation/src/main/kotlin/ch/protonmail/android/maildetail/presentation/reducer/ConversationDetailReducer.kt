@@ -115,14 +115,16 @@ class ConversationDetailReducer @Inject constructor(
         if (operation is ConversationDetailOperation.AffectingBottomSheet) {
             val bottomSheetOperation = when (operation) {
                 is ConversationBottomSheetEvent -> operation.bottomSheetOperation
+                is ConversationDetailEvent.MessageBottomSheetEvent -> operation.bottomSheetOperation
                 is ConversationDetailViewAction.MoveToDestinationSelected ->
                     MoveToDestinationSelected(operation.mailLabelId)
 
                 is ConversationDetailViewAction.LabelAsToggleAction -> LabelToggled(operation.labelId)
-                is ConversationDetailViewAction.RequestLabelAsBottomSheet,
+                is ConversationDetailViewAction.RequestConversationLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMoreActionsBottomSheet,
                 is ConversationDetailViewAction.RequestContactActionsBottomSheet,
-                is ConversationDetailViewAction.RequestMoveToBottomSheet -> BottomSheetOperation.Requested
+                is ConversationDetailViewAction.RequestMoveToBottomSheet,
+                is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> BottomSheetOperation.Requested
 
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailEvent.ReportPhishingRequested,

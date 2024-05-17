@@ -63,7 +63,8 @@ class LoadDataForMessageLabelAsBottomSheet @Inject constructor(
         return LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
                 .toImmutableList(),
-            selectedLabels = selectedLabels.toImmutableList()
+            selectedLabels = selectedLabels.toImmutableList(),
+            messageIdInConversation = messageId
         )
     }
 }

@@ -132,6 +132,7 @@ private fun callbackForAction(
     Action.ReplyAll -> actionCallbacks.onReplyAll
     Action.Forward -> actionCallbacks.onForward
     Action.MarkUnread -> actionCallbacks.onMarkUnread
+    Action.Label -> actionCallbacks.onLabel
     Action.ViewInLightMode -> actionCallbacks.onViewInLightMode
     Action.ViewInDarkMode -> actionCallbacks.onViewInDarkMode
     Action.Print -> actionCallbacks.onPrint
@@ -152,6 +153,7 @@ object DetailMoreActionsBottomSheetContent {
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onMarkUnread: (MessageId) -> Unit,
+        val onLabel: (MessageId) -> Unit,
         val onViewInLightMode: (MessageId) -> Unit,
         val onViewInDarkMode: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
@@ -182,6 +184,7 @@ private fun BottomSheetContentPreview() {
                 onReplyAll = {},
                 onForward = {},
                 onMarkUnread = {},
+                onLabel = {},
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
                 onPrint = {},

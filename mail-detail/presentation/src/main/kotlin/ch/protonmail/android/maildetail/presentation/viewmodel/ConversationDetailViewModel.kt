@@ -72,7 +72,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MessageBodyLinkClicked
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationConfirmed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationSelected
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestConversationLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestContactActionsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestMoveToBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
@@ -105,6 +105,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -186,7 +187,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val printMessage: PrintMessage,
     private val markMessageAsUnread: MarkMessageAsUnread,
     private val findContactByEmail: FindContactByEmail,
-    private val getMessageIdToExpand: GetMessageIdToExpand
+    private val getMessageIdToExpand: GetMessageIdToExpand,
+    private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -215,11 +217,13 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
             is MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
-            is RequestLabelAsBottomSheet -> showLabelAsBottomSheetAndLoadData(action)
+            is RequestConversationLabelAsBottomSheet -> showConversationLabelAsBottomSheet(action)
             is RequestContactActionsBottomSheet -> showContactActionsBottomSheetAndLoadData(action)
             is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
+            is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet ->
+                showMessageLabelAsBottomSheet(action)
 
             is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
@@ -493,7 +497,7 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun showLabelAsBottomSheetAndLoadData(initialEvent: ConversationDetailViewAction) {
+    private fun showConversationLabelAsBottomSheet(initialEvent: ConversationDetailViewAction) {
         viewModelScope.launch {
             emitNewStateFrom(initialEvent)
 
@@ -519,6 +523,20 @@ class ConversationDetailViewModel @Inject constructor(
                     selectedLabels = selectedLabels.toImmutableList(),
                     partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
                 )
+            )
+            emitNewStateFrom(event)
+        }
+    }
+
+    private fun showMessageLabelAsBottomSheet(
+        initialEvent: ConversationDetailViewAction.RequestMessageLabelAsBottomSheet
+    ) {
+        viewModelScope.launch {
+            emitNewStateFrom(initialEvent)
+
+            val userId = primaryUserId.first()
+            val event = ConversationDetailEvent.MessageBottomSheetEvent(
+                loadDataForMessageLabelAsBottomSheet(userId, initialEvent.messageId)
             )
             emitNewStateFrom(event)
         }

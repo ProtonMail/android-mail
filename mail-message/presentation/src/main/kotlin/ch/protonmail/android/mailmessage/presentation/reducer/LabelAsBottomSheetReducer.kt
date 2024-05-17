@@ -51,7 +51,8 @@ class LabelAsBottomSheetReducer @Inject constructor() {
                         labelUiModel = label,
                         selectedState = label.id.toLabelSelectedState(selectedLabels, partiallySelectedLabels)
                     )
-                }.toImmutableList()
+                }.toImmutableList(),
+                messageIdInConversation = messageIdInConversation
             ),
             bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
         )
@@ -74,7 +75,7 @@ class LabelAsBottomSheetReducer @Inject constructor() {
                     }
                 }.toImmutableList()
                 BottomSheetState(
-                    contentState = Data(newLabelList),
+                    contentState = Data(newLabelList, contentState.messageIdInConversation),
                     bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect
                 )
             }

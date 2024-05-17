@@ -212,6 +212,51 @@ object LabelUiModelWithSelectedStateSample {
         )
     ).toImmutableList()
 
+    val customLabelListWithFirstTwoSelected = listOf(
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Document),
+                text = TextUiModel.Text("document"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Transparent,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Label2021),
+                text = TextUiModel.Text("Label2021"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Transparent,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.Selected
+        ),
+        LabelUiModelWithSelectedState(
+            labelUiModel = MailLabelUiModel.Custom(
+                id = MailLabelId.Custom.Label(LabelIdSample.Label2022),
+                text = TextUiModel.Text("Label2022"),
+                icon = R.drawable.ic_proton_circle_filled,
+                iconTint = Color.Transparent,
+                isSelected = false,
+                count = null,
+                isVisible = true,
+                isExpanded = true,
+                iconPaddingStart = 0.dp
+            ),
+            selectedState = LabelSelectedState.NotSelected
+        )
+    ).toImmutableList()
+
     val customLabelListWithVariousStates = listOf(
         LabelUiModelWithSelectedState(
             labelUiModel = MailLabelUiModel.Custom(

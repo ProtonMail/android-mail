@@ -200,7 +200,8 @@ internal class BottomSheetReducerTest(
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
-                            .toImmutableList()
+                            .toImmutableList(),
+                        null
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,
@@ -214,14 +215,16 @@ internal class BottomSheetReducerTest(
                 currentState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
-                            .toImmutableList()
+                            .toImmutableList(),
+                        null
                     )
                 ),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("labelId")),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
-                            .toImmutableList()
+                            .toImmutableList(),
+                        null
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,

@@ -102,6 +102,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -317,6 +318,7 @@ class ConversationDetailViewModelTest {
     private val getMessageIdToExpand = mockk<GetMessageIdToExpand> {
         coEvery { this@mockk.invoke(any()) } returns MessageIdSample.build()
     }
+    private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -359,7 +361,8 @@ class ConversationDetailViewModelTest {
             printMessage = printMessage,
             markMessageAsUnread = markMessageAsUnread,
             findContactByEmail = findContactByEmail,
-            getMessageIdToExpand = getMessageIdToExpand
+            getMessageIdToExpand = getMessageIdToExpand,
+            loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet
         )
     }
 
@@ -1060,7 +1063,8 @@ class ConversationDetailViewModelTest {
         val expectedResult = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
-                    LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection.toImmutableList()
+                    LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection.toImmutableList(),
+                    null
                 )
             )
         )
@@ -1081,7 +1085,7 @@ class ConversationDetailViewModelTest {
 
         // When
         viewModel.state.test {
-            viewModel.submit(ConversationDetailViewAction.RequestLabelAsBottomSheet)
+            viewModel.submit(ConversationDetailViewAction.RequestConversationLabelAsBottomSheet)
             // Request bottom Sheet call, we can ignore that
             awaitItem()
 
@@ -1113,7 +1117,7 @@ class ConversationDetailViewModelTest {
 
         val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection)
+                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection, null)
             )
         )
 
@@ -1152,7 +1156,10 @@ class ConversationDetailViewModelTest {
             )
         } returns dataState.copy(
             bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected)
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected,
+                    null
+                )
             )
         )
 
@@ -1206,7 +1213,10 @@ class ConversationDetailViewModelTest {
 
             val dataState = ConversationDetailState.Loading.copy(
                 bottomSheetState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection)
+                    LabelAsBottomSheetState.Data(
+                        LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
+                        null
+                    )
                 )
             )
 
@@ -1254,7 +1264,8 @@ class ConversationDetailViewModelTest {
             } returns dataState.copy(
                 bottomSheetState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
-                        LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected
+                        LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected,
+                        null
                     )
                 )
             )
@@ -1317,7 +1328,8 @@ class ConversationDetailViewModelTest {
         val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
-                    LabelUiModelWithSelectedStateSample.customLabelListWithVariousStates
+                    LabelUiModelWithSelectedStateSample.customLabelListWithVariousStates,
+                    null
                 )
             )
         )
@@ -1361,7 +1373,7 @@ class ConversationDetailViewModelTest {
             )
         } returns dataState.copy(
             bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListAllSelected)
+                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListAllSelected, null)
             )
         )
 

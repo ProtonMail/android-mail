@@ -63,6 +63,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
 
             add(ActionUiModel(Action.Forward))
             add(ActionUiModel(Action.MarkUnread))
+            add(ActionUiModel(Action.Label))
             add(ActionUiModel(Action.ViewInLightMode))
             add(ActionUiModel(Action.ViewInDarkMode))
             add(ActionUiModel(Action.Print))

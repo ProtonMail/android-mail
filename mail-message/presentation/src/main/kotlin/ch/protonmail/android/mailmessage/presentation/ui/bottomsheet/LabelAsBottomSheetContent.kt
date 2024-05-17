@@ -51,6 +51,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
@@ -203,7 +204,8 @@ fun LabelAsBottomSheetContentPreview() {
         LabelAsBottomSheetContent(
             labelAsDataState = LabelAsBottomSheetState.Data(
                 labelUiModelsWithSelectedState = LabelUiModelWithSelectedStateSample.customLabelListWithSelection
-                    .toImmutableList()
+                    .toImmutableList(),
+                messageIdInConversation = null
             ),
             actions = LabelAsBottomSheetContent.Actions(
                 onAddLabelClick = {},

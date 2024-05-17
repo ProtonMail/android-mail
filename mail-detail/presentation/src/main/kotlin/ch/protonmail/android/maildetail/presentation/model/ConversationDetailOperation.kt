@@ -71,6 +71,10 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val bottomSheetOperation: BottomSheetOperation
     ) : ConversationDetailEvent, AffectingBottomSheet
 
+    data class MessageBottomSheetEvent(
+        val bottomSheetOperation: BottomSheetOperation
+    ) : ConversationDetailEvent, AffectingBottomSheet
+
     object ErrorAddStar : ConversationDetailEvent, AffectingErrorBar
     object ErrorRemoveStar : ConversationDetailEvent, AffectingErrorBar
     object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
@@ -143,7 +147,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data class MoveToDestinationConfirmed(val mailLabelText: String) : ConversationDetailViewAction
-    object RequestLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
+    object RequestConversationLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :
@@ -195,4 +199,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction,
         AffectingBottomSheet
 
+    data class RequestMessageLabelAsBottomSheet(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
 }

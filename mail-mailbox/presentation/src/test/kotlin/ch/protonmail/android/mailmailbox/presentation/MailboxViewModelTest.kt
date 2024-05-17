@@ -4237,7 +4237,8 @@ class MailboxViewModelTest {
                             else -> LabelSelectedState.NotSelected
                         }
                     )
-                ).toPersistentList()
+                ).toPersistentList(),
+                messageIdInConversation = null
             )
         )
     )

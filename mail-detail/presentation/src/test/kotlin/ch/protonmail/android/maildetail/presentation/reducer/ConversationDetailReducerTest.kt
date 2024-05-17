@@ -186,7 +186,7 @@ class ConversationDetailReducerTest(
                 UndoableActionResult(TextUiModel(string.conversation_moved_to_trash))
             ),
             ConversationDetailViewAction.UnStar affects Conversation,
-            ConversationDetailViewAction.RequestLabelAsBottomSheet affects BottomSheet,
+            ConversationDetailViewAction.RequestConversationLabelAsBottomSheet affects BottomSheet,
             ConversationDetailViewAction.RequestContactActionsBottomSheet(participant, avatar) affects BottomSheet,
             ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
             ConversationDetailViewAction.LabelAsConfirmed(false) affects BottomSheet,
@@ -204,7 +204,8 @@ class ConversationDetailReducerTest(
                 MessageId(messageId.id), ViewModePreference.LightMode
             ) affects listOf(BottomSheet, Messages),
             ConversationDetailViewAction.PrintRequested(MessageId(messageId.id)) affects listOf(BottomSheet, Messages),
-            ConversationDetailViewAction.MarkMessageUnread(MessageId(messageId.id)) affects listOf(BottomSheet)
+            ConversationDetailViewAction.MarkMessageUnread(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(MessageId(messageId.id)) affects BottomSheet
         )
 
         val events = listOf(

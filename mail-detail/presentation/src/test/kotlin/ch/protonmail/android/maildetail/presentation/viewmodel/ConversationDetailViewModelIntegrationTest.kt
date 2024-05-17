@@ -75,6 +75,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetail
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
+import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
@@ -113,6 +114,7 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -120,6 +122,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -141,6 +144,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCol
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
@@ -303,12 +307,16 @@ class ConversationDetailViewModelIntegrationTest {
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
+    private val observeMessageWithLabels = mockk<ObserveMessageWithLabels>()
 
     private val getMessageToExpand = GetMessageIdToExpand()
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val doesMessageBodyHaveEmbeddedImages = DoesMessageBodyHaveEmbeddedImages()
     private val doesMessageBodyHaveRemoteContent = DoesMessageBodyHaveRemoteContent()
+    private val loadDataForMessageLabelAsBottomSheet = LoadDataForMessageLabelAsBottomSheet(
+        observeCustomMailLabelsUseCase, observeFolderColorSettings, observeMessageWithLabels
+    )
     // endregion
 
     // region mappers
@@ -1805,6 +1813,64 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should show message label as bottom sheet and load data when it is requested`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery {
+            observeMessageWithLabels(userId, MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(
+                ConversationDetailViewAction.RequestMoreActionsBottomSheet(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+            skipItems(2)
+            viewModel.submit(
+                ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+
+            // then
+            assertEquals(
+                BottomSheetVisibilityEffect.Show, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+
+            val bottomSheetContentState = awaitItem().bottomSheetState?.contentState as LabelAsBottomSheetState.Data
+            assertEquals(
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListWithFirstTwoSelected,
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                ),
+                bottomSheetContentState
+            )
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1877,7 +1943,8 @@ class ConversationDetailViewModelIntegrationTest {
         printMessage = printMessage,
         markMessageAsUnread = markMessageAsUnread,
         findContactByEmail = findContactByEmailAddress,
-        getMessageIdToExpand = getMessageToExpand
+        getMessageIdToExpand = getMessageToExpand,
+        loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
