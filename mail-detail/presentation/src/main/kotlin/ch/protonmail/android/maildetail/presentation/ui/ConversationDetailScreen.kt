@@ -180,7 +180,11 @@ fun ConversationDetailScreen(
                     actions = LabelAsBottomSheetContent.Actions(
                         onAddLabelClick = actions.onAddLabel,
                         onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
-                        onDoneClick = { viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(it)) }
+                        onDoneClick = { archiveSelected, messageIdInConversation ->
+                            viewModel.submit(
+                                ConversationDetailViewAction.LabelAsConfirmed(archiveSelected, messageIdInConversation)
+                            )
+                        }
                     )
                 )
 

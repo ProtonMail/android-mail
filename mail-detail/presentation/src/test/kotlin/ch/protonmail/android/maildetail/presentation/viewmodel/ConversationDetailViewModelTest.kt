@@ -103,6 +103,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -319,6 +320,7 @@ class ConversationDetailViewModelTest {
         coEvery { this@mockk.invoke(any()) } returns MessageIdSample.build()
     }
     private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet>()
+    private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -362,7 +364,8 @@ class ConversationDetailViewModelTest {
             markMessageAsUnread = markMessageAsUnread,
             findContactByEmail = findContactByEmail,
             getMessageIdToExpand = getMessageIdToExpand,
-            loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet
+            loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
+            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
         )
     }
 
@@ -1168,7 +1171,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false))
+            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false, null))
             advanceUntilIdle()
 
             // Then
@@ -1271,7 +1274,7 @@ class ConversationDetailViewModelTest {
             )
 
             coEvery {
-                reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true))
+                reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true, null))
             } returns ConversationDetailState.Loading.copy(
                 exitScreenWithMessageEffect = Effect.of(
                     ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_archive))
@@ -1283,7 +1286,7 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
                 viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
                 advanceUntilIdle()
-                viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(true))
+                viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(true, null))
                 advanceUntilIdle()
 
                 // Then
@@ -1382,7 +1385,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Label2022.labelId))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false))
+            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false, null))
             advanceUntilIdle()
 
             // Then

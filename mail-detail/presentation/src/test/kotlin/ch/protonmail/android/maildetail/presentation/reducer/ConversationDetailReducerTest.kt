@@ -189,11 +189,14 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.RequestConversationLabelAsBottomSheet affects BottomSheet,
             ConversationDetailViewAction.RequestContactActionsBottomSheet(participant, avatar) affects BottomSheet,
             ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
-            ConversationDetailViewAction.LabelAsConfirmed(false) affects BottomSheet,
-            ConversationDetailViewAction.LabelAsConfirmed(true) affects listOf(
+            ConversationDetailViewAction.LabelAsConfirmed(false, null) affects BottomSheet,
+            ConversationDetailViewAction.LabelAsConfirmed(true, null) affects listOf(
                 BottomSheet,
                 ExitWithResult(DefinitiveActionResult(TextUiModel(string.conversation_moved_to_archive)))
             ),
+            ConversationDetailViewAction.LabelAsConfirmed(
+                true, MessageId(messageId.id)
+            ) affects BottomSheet,
             ConversationDetailViewAction.MessageBodyLinkClicked(messageId, mockk()) affects LinkClick,
             ConversationDetailViewAction.RequestScrollTo(messageId) affects MessageScroll,
             ConversationDetailViewAction.DeleteConfirmed affects listOf(

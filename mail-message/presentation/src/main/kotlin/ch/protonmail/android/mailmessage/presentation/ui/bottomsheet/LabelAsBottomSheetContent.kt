@@ -99,7 +99,7 @@ fun LabelAsBottomSheetContent(
             Text(
                 modifier = Modifier
                     .testTag(LabelAsBottomSheetTestTags.DoneButton)
-                    .clickable { actions.onDoneClick(archiveSelectedState) },
+                    .clickable { actions.onDoneClick(archiveSelectedState, labelAsDataState.messageIdInConversation) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm()
@@ -193,7 +193,7 @@ object LabelAsBottomSheetContent {
     data class Actions(
         val onAddLabelClick: () -> Unit,
         val onLabelAsSelected: (LabelId) -> Unit,
-        val onDoneClick: (archiveSelected: Boolean) -> Unit
+        val onDoneClick: (archiveSelected: Boolean, messageIdInConversation: MessageId?) -> Unit
     )
 }
 
@@ -210,7 +210,7 @@ fun LabelAsBottomSheetContentPreview() {
             actions = LabelAsBottomSheetContent.Actions(
                 onAddLabelClick = {},
                 onLabelAsSelected = {},
-                onDoneClick = {}
+                onDoneClick = { _, _ -> }
             )
         )
     }

@@ -262,7 +262,9 @@ fun MailboxScreen(
                         actions = LabelAsBottomSheetContent.Actions(
                             onAddLabelClick = actions.onAddLabel,
                             onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
-                            onDoneClick = { viewModel.submit(MailboxViewAction.LabelAsConfirmed(it)) }
+                            onDoneClick = { archiveSelected, _ ->
+                                viewModel.submit(MailboxViewAction.LabelAsConfirmed(archiveSelected))
+                            }
                         )
                     )
 

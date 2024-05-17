@@ -71,12 +71,14 @@ import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.RelabelMessage
 import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -115,6 +117,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -168,6 +171,7 @@ import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -308,6 +312,8 @@ class ConversationDetailViewModelIntegrationTest {
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
     private val observeMessageWithLabels = mockk<ObserveMessageWithLabels>()
+    private val moveMessage = mockk<MoveMessage>()
+    private val relabelMessage = mockk<RelabelMessage>()
 
     private val getMessageToExpand = GetMessageIdToExpand()
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
@@ -316,6 +322,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val doesMessageBodyHaveRemoteContent = DoesMessageBodyHaveRemoteContent()
     private val loadDataForMessageLabelAsBottomSheet = LoadDataForMessageLabelAsBottomSheet(
         observeCustomMailLabelsUseCase, observeFolderColorSettings, observeMessageWithLabels
+    )
+    private val onMessageLabelAsConfirmed = OnMessageLabelAsConfirmed(
+        moveMessage, observeMessageWithLabels, relabelMessage
     )
     // endregion
 
@@ -1871,6 +1880,78 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should relabel and move message when label as is confirmed and archive is selected`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messageLabels = MessageWithLabelsSample.InvoiceWithLabel.labels.map { it.labelId }
+        val newMessageLabels = buildList {
+            addAll(messageLabels)
+            add(LabelSample.Label2022.labelId)
+        }
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery {
+            observeMessageWithLabels(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
+        coEvery { moveMessage(userId, messageId, MailLabelId.System.Archive.labelId) } returns Unit.right()
+        coEvery {
+            relabelMessage(userId, messageId, messageLabels, newMessageLabels)
+        } returns MessageWithLabelsSample.InvoiceWithLabel.message.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(
+            ExpandMessage(
+                messageIdUiModelMapper.toUiModel(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
+            )
+        )
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(
+                ConversationDetailViewAction.RequestMoreActionsBottomSheet(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+            skipItems(2)
+            viewModel.submit(
+                ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+            skipItems(1)
+            viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Label2022.labelId))
+            skipItems(1)
+            viewModel.submit(
+                ConversationDetailViewAction.LabelAsConfirmed(
+                    true,
+                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                )
+            )
+            skipItems(1)
+
+            // Then
+            assertEquals(
+                BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+            coVerifySequence {
+                moveMessage(userId, messageId, MailLabelId.System.Archive.labelId)
+                relabelMessage(userId, messageId, messageLabels, newMessageLabels)
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -1944,7 +2025,8 @@ class ConversationDetailViewModelIntegrationTest {
         markMessageAsUnread = markMessageAsUnread,
         findContactByEmail = findContactByEmailAddress,
         getMessageIdToExpand = getMessageToExpand,
-        loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet
+        loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
+        onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

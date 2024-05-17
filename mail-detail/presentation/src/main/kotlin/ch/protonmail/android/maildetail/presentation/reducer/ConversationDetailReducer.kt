@@ -181,10 +181,11 @@ class ConversationDetailReducer @Inject constructor(
             )
         )
 
-        is ConversationDetailViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {
-            true -> Effect.of(DefinitiveActionResult(TextUiModel(R.string.conversation_moved_to_archive)))
-            false -> exitScreenWithMessageEffect
-        }
+        is ConversationDetailViewAction.LabelAsConfirmed ->
+            when (operation.archiveSelected && operation.messageId == null) {
+                true -> Effect.of(DefinitiveActionResult(TextUiModel(R.string.conversation_moved_to_archive)))
+                false -> exitScreenWithMessageEffect
+            }
 
         is ConversationDetailViewAction.DeleteConfirmed -> Effect.of(
             DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))

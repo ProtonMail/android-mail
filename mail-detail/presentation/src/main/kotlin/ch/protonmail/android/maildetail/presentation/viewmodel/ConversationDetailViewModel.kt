@@ -106,6 +106,7 @@ import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
@@ -188,7 +189,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val markMessageAsUnread: MarkMessageAsUnread,
     private val findContactByEmail: FindContactByEmail,
     private val getMessageIdToExpand: GetMessageIdToExpand,
-    private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet
+    private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
+    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -219,7 +221,7 @@ class ConversationDetailViewModel @Inject constructor(
             is MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
             is RequestConversationLabelAsBottomSheet -> showConversationLabelAsBottomSheet(action)
             is RequestContactActionsBottomSheet -> showContactActionsBottomSheetAndLoadData(action)
-            is LabelAsConfirmed -> onLabelAsConfirmed(action.archiveSelected)
+            is LabelAsConfirmed -> onLabelAsConfirmed(action)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
             is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet ->
@@ -542,7 +544,40 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onLabelAsConfirmed(archiveSelected: Boolean) {
+    private fun onLabelAsConfirmed(operation: LabelAsConfirmed) {
+        if (operation.messageId != null) {
+            onMessageLabelAsConfirmed(operation.archiveSelected, operation.messageId)
+        } else {
+            onConversationLabelAsConfirmed(operation.archiveSelected)
+        }
+    }
+
+    private fun onMessageLabelAsConfirmed(archiveSelected: Boolean, messageId: MessageId) {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+
+            val labelAsData =
+                mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                    ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+
+            val operation =
+                onMessageLabelAsConfirmed(
+                    userId = userId,
+                    messageId = messageId,
+                    labelUiModelsWithSelectedState = labelAsData.labelUiModelsWithSelectedState,
+                    archiveSelected = archiveSelected
+                ).fold(
+                    ifLeft = {
+                        Timber.e("Relabel message failed: $it")
+                        ConversationDetailEvent.ErrorLabelingConversation
+                    },
+                    ifRight = { LabelAsConfirmed(archiveSelected, messageId) }
+                )
+            emitNewStateFrom(operation)
+        }
+    }
+
+    private fun onConversationLabelAsConfirmed(archiveSelected: Boolean) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val labels = observeCustomMailLabels(userId).first().onLeft {
@@ -576,7 +611,7 @@ class ConversationDetailViewModel @Inject constructor(
                     Timber.e("Error while relabeling conversation: $it")
                     ConversationDetailEvent.ErrorLabelingConversation
                 },
-                ifRight = { LabelAsConfirmed(archiveSelected) }
+                ifRight = { LabelAsConfirmed(archiveSelected, null) }
             )
             emitNewStateFrom(operation)
         }

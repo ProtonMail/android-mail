@@ -149,7 +149,10 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class MoveToDestinationConfirmed(val mailLabelText: String) : ConversationDetailViewAction
     object RequestConversationLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
-    data class LabelAsConfirmed(val archiveSelected: Boolean) : ConversationDetailViewAction, AffectingBottomSheet
+    data class LabelAsConfirmed(
+        val archiveSelected: Boolean,
+        val messageId: MessageId?
+    ) : ConversationDetailViewAction, AffectingBottomSheet
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :
         ConversationDetailViewAction, AffectingBottomSheet
 

@@ -169,7 +169,9 @@ fun MessageDetailScreen(
                     actions = LabelAsBottomSheetContent.Actions(
                         onAddLabelClick = actions.onAddLabel,
                         onLabelAsSelected = { viewModel.submit(MessageViewAction.LabelAsToggleAction(it)) },
-                        onDoneClick = { viewModel.submit(MessageViewAction.LabelAsConfirmed(it)) }
+                        onDoneClick = { archiveSelected, _ ->
+                            viewModel.submit(MessageViewAction.LabelAsConfirmed(archiveSelected))
+                        }
                     )
                 )
 
