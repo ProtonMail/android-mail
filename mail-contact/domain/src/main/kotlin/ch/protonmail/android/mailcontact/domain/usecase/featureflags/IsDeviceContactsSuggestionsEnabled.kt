@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcontact.domain.usecase.featureflags
 
-import me.proton.core.domain.entity.UserId
 import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
 import me.proton.core.featureflag.domain.FeatureFlagManager
 import me.proton.core.featureflag.domain.entity.FeatureId
@@ -29,7 +28,7 @@ class IsDeviceContactsSuggestionsEnabled @Inject constructor(
 ) {
 
     @OptIn(ExperimentalProtonFeatureFlag::class)
-    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+    operator fun invoke() = featureFlagManager.getValue(null, FeatureId(FeatureFlagId))
 
     private companion object {
 

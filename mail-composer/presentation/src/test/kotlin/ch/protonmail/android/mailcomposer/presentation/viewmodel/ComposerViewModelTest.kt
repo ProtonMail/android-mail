@@ -168,7 +168,7 @@ class ComposerViewModelTest {
     private val searchContactsMock = mockk<SearchContacts>()
     private val searchDeviceContactsMock = mockk<SearchDeviceContacts>()
     private val isDeviceContactsSuggestionsEnabledMock = mockk<IsDeviceContactsSuggestionsEnabled> {
-        every { this@mockk.invoke(null) } returns false
+        every { this@mockk.invoke() } returns false
     }
     private val searchContactGroupsMock = mockk<SearchContactGroups>()
     private val participantMapperMock = mockk<ParticipantMapper>()
@@ -679,7 +679,7 @@ class ComposerViewModelTest {
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
+        expectIsDeviceContactsSuggestionsEnabled(true)
 
         // When
         viewModel.submit(action)
@@ -747,7 +747,7 @@ class ComposerViewModelTest {
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
+        expectIsDeviceContactsSuggestionsEnabled(true)
 
         // When
         viewModel.submit(action)
@@ -812,7 +812,7 @@ class ComposerViewModelTest {
         expectMessagePassword(expectedUserId, expectedMessageId)
         expectNoFileShareVia()
         expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
-        every { isDeviceContactsSuggestionsEnabledMock(null) } returns true
+        expectIsDeviceContactsSuggestionsEnabled(true)
 
         // When
         viewModel.submit(action)
@@ -2893,6 +2893,10 @@ class ComposerViewModelTest {
             searchContactGroupsMock.invoke(expectedUserId, expectedSearchTerm)
         } returns flowOf(expectedContactGroups.right())
         return expectedContactGroups
+    }
+
+    private fun expectIsDeviceContactsSuggestionsEnabled(enabled: Boolean) {
+        every { isDeviceContactsSuggestionsEnabledMock.invoke() } returns enabled
     }
 
     private fun expectObservedMessageAttachments(userId: UserId, messageId: MessageId) {

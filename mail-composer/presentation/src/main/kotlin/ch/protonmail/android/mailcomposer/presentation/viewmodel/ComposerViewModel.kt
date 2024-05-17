@@ -213,7 +213,7 @@ class ComposerViewModel @Inject constructor(
         observeMessagePassword()
         observeMessageExpirationTime()
 
-        emitNewStateFor(ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(isDeviceContactsSuggestionsEnabled(null)))
+        emitNewStateFor(ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(isDeviceContactsSuggestionsEnabled()))
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =

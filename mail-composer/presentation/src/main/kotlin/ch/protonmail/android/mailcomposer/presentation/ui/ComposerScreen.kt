@@ -19,8 +19,6 @@
 package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.Manifest
-import android.content.Intent
-import android.net.Uri
 import android.text.format.Formatter
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -121,36 +119,28 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         permission = Manifest.permission.READ_CONTACTS
     )
 
-    @Suppress("VariableMaxLength")
-    val shouldShowReadContactsPermissionRationaleDialog = remember { mutableStateOf(false) }
-    if (state.isDeviceContactsSuggestionsEnabled && shouldShowReadContactsPermissionRationaleDialog.value) {
+    val isShowReadContactsPermissionRationale = remember { mutableStateOf(false) }
+    if (state.isDeviceContactsSuggestionsEnabled && isShowReadContactsPermissionRationale.value) {
         ProtonAlertDialog(
             title = stringResource(id = R.string.device_contacts_permission_dialog_title),
             text = { ProtonAlertDialogText(R.string.device_contacts_permission_dialog_message) },
             dismissButton = {},
             confirmButton = {
                 ProtonAlertDialogButton(R.string.device_contacts_permission_dialog_action_button) {
-                    shouldShowReadContactsPermissionRationaleDialog.value = false
+                    isShowReadContactsPermissionRationale.value = false
                     if (readContactsPermission.status.shouldShowRationale) {
                         readContactsPermission.launchPermissionRequest()
-                    } else {
-                        context.startActivity(
-                            Intent().apply {
-                                action = android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                                data = Uri.fromParts("package", context.packageName, null)
-                            }
-                        )
                     }
                 }
             },
-            onDismissRequest = { shouldShowReadContactsPermissionRationaleDialog.value = false }
+            onDismissRequest = { isShowReadContactsPermissionRationale.value = false }
         )
     }
 
     LaunchedEffect(readContactsPermission.status.isGranted) {
         if (state.isDeviceContactsSuggestionsEnabled && !readContactsPermission.status.isGranted) {
             if (readContactsPermission.status.shouldShowRationale) {
-                shouldShowReadContactsPermissionRationaleDialog.value = true
+                isShowReadContactsPermissionRationale.value = true
             } else {
                 readContactsPermission.launchPermissionRequest()
             }
