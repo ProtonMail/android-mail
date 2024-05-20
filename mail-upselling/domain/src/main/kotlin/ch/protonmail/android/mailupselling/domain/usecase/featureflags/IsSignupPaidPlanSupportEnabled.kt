@@ -33,6 +33,6 @@ class IsSignupPaidPlanSupportEnabled @Inject constructor(
 
     private companion object {
 
-        const val FeatureFlagId = "MailAndroidUpsellingSupportUpgradePaidPlans"
+        const val FeatureFlagId = "MailAndroidUpsellingSignupPaidPlans"
     }
 }
