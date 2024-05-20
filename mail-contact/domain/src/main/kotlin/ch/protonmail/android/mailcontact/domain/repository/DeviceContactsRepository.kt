@@ -16,22 +16,17 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcontact.domain.usecase
+package ch.protonmail.android.mailcontact.domain.repository
 
 import arrow.core.Either
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
-import ch.protonmail.android.mailcontact.domain.model.GetContactError
-import ch.protonmail.android.mailcontact.domain.repository.DeviceContactsRepository
-import javax.inject.Inject
 
-class SearchDeviceContacts @Inject constructor(
-    private val deviceContactsRepository: DeviceContactsRepository
-) {
+interface DeviceContactsRepository {
 
-    suspend operator fun invoke(query: String): Either<GetContactError, List<DeviceContact>> {
-        return deviceContactsRepository.getDeviceContacts(query).mapLeft {
-            GetContactError
-        }
+    suspend fun getDeviceContacts(query: String): Either<DeviceContactsErrors, List<DeviceContact>>
+
+    sealed class DeviceContactsErrors {
+        data object PermissionDenied : DeviceContactsErrors()
     }
 
 }
