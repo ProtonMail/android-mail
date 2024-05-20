@@ -135,6 +135,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
             modifier = Modifier.testTag(ComposerTestTags.RootItem),
             topBar = {
                 ComposerTopBar(
+                    attachmentsCount = state.attachments.attachments.size,
                     onAddAttachmentsClick = {
                         bottomSheetType.value = BottomSheetType.AddAttachments
                         viewModel.submit(ComposerAction.OnAddAttachments)

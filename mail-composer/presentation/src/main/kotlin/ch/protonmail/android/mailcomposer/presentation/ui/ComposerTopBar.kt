@@ -18,25 +18,39 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallStrongInverted
 
 @Composable
 @Suppress("UseComposableActions")
 internal fun ComposerTopBar(
+    attachmentsCount: Int,
     onAddAttachmentsClick: () -> Unit,
     onCloseComposerClick: () -> Unit,
     onSendMessageComposerClick: () -> Unit,
@@ -58,16 +72,7 @@ internal fun ComposerTopBar(
             }
         },
         actions = {
-            IconButton(
-                modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
-                onClick = onAddAttachmentsClick
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_paper_clip),
-                    tint = ProtonTheme.colors.iconNorm,
-                    contentDescription = stringResource(R.string.composer_add_attachments_content_description)
-                )
-            }
+            AttachmentsButton(attachmentsCount = attachmentsCount, onClick = onAddAttachmentsClick)
             IconButton(
                 modifier = Modifier
                     .testTag(ComposerTestTags.SendButton)
@@ -87,4 +92,47 @@ internal fun ComposerTopBar(
             }
         }
     )
+}
+
+@Composable
+private fun AttachmentsButton(
+    attachmentsCount: Int,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy((-ProtonDimens.SmallSpacing.value).dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (attachmentsCount > 0) {
+            AttachmentsNumber(attachmentsCount)
+        }
+        IconButton(
+            modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
+            onClick = onClick
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_proton_paper_clip),
+                contentDescription = stringResource(id = R.string.composer_add_attachments_content_description),
+                tint = ProtonTheme.colors.iconNorm
+            )
+        }
+    }
+}
+
+@Composable
+private fun AttachmentsNumber(attachmentsCount: Int, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .background(ProtonTheme.colors.interactionNorm, CircleShape)
+            .border(Dp.Hairline, ProtonTheme.colors.backgroundNorm, CircleShape)
+            .padding(vertical = ProtonDimens.ExtraSmallSpacing, horizontal = ProtonDimens.SmallSpacing),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = attachmentsCount.toString(),
+            style = ProtonTheme.typography.defaultSmallStrongInverted
+        )
+    }
 }
