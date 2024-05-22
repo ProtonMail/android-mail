@@ -21,12 +21,13 @@ package ch.protonmail.upselling.domain.repository
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailupselling.domain.model.telemetry.data.SubscriptionName
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.domain.model.telemetry.data.AccountAge
+import ch.protonmail.android.mailupselling.domain.model.telemetry.data.SubscriptionName
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName
@@ -46,6 +47,7 @@ import me.proton.core.telemetry.domain.entity.TelemetryPriority
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
+import javax.inject.Provider
 import kotlin.test.AfterTest
 
 internal class UpsellingTelemetryRepositoryImplTest {
@@ -54,16 +56,19 @@ internal class UpsellingTelemetryRepositoryImplTest {
     private val getPrimaryUser = mockk<GetPrimaryUser>()
     private val getSubscriptionName = mockk<GetSubscriptionName>()
     private val telemetryManager = mockk<TelemetryManager>()
+    private val telemetryEnabled = mockk<Provider<Boolean>>()
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
-    private val repository = UpsellingTelemetryRepositoryImpl(
-        getAccountAgeInDays,
-        getPrimaryUser,
-        getSubscriptionName,
-        telemetryManager,
-        scopeProvider
-    )
+    private val repository: UpsellingTelemetryRepository
+        get() = UpsellingTelemetryRepositoryImpl(
+            getAccountAgeInDays,
+            getPrimaryUser,
+            getSubscriptionName,
+            telemetryManager,
+            telemetryEnabled.get(),
+            scopeProvider
+        )
 
     private val user = UserSample.Primary
 
@@ -73,9 +78,23 @@ internal class UpsellingTelemetryRepositoryImplTest {
     }
 
     @Test
+    fun `should not track event if the upselling 1 click telemetry flag is disabled`() = runTest {
+        // Given
+        expectTelemetryDisabled()
+        val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
+
+        // When
+        repository.trackEvent(eventType)
+
+        // Then
+        verify { telemetryManager wasNot called }
+    }
+
+    @Test
     fun `should track the base mailbox button tap event`() = runTest {
         // Given
         expectValidUserData()
+        expectTelemetryEnabled()
 
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
         val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(BaseDimensions).toTelemetryEvent()
@@ -96,6 +115,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
     fun `should track the upgrade attempt event`() = runTest {
         // Given
         expectValidUserData()
+        expectTelemetryEnabled()
 
         val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
@@ -117,6 +137,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
     fun `should track the purchase completed event`() = runTest {
         // Given
         expectValidUserData()
+        expectTelemetryEnabled()
 
         val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
         val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
@@ -137,6 +158,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
     @Test
     fun `should not send telemetry event if the primary user can not be obtained`() {
         // Given
+        expectTelemetryEnabled()
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
 
         // When
@@ -152,6 +174,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         coEvery { getPrimaryUser() } returns user
         every { getAccountAgeInDays(user) } returns AccountAge(1)
         coEvery { getSubscriptionName(user.userId) } returns GetSubscriptionNameError.left()
+        expectTelemetryEnabled()
 
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
 
@@ -166,6 +189,14 @@ internal class UpsellingTelemetryRepositoryImplTest {
         coEvery { getPrimaryUser() } returns user
         every { getAccountAgeInDays(user) } returns AccountAge(1)
         coEvery { getSubscriptionName(user.userId) } returns SubscriptionName("free").right()
+    }
+
+    private fun expectTelemetryEnabled() {
+        every { telemetryEnabled.get() } returns true
+    }
+
+    private fun expectTelemetryDisabled() {
+        every { telemetryEnabled.get() } returns false
     }
 
     private companion object {

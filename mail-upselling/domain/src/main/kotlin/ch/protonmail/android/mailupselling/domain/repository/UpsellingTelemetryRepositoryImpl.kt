@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.domain.repository
 
 import arrow.core.getOrElse
 import arrow.core.raise.either
+import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
@@ -44,12 +45,14 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
     private val getPrimaryUser: GetPrimaryUser,
     private val getSubscriptionName: GetSubscriptionName,
     private val telemetryManager: TelemetryManager,
+    @OneClickUpsellingTelemetryEnabled private val isOneClickTelemetryEnabled: Boolean,
     private val scopeProvider: CoroutineScopeProvider
 ) : UpsellingTelemetryRepository {
 
     // Note that the user preference check is delegated to the TelemetryManager from core.
     // If the user has opted out, we will discard the event and not send it.
     override fun trackEvent(eventType: UpsellingTelemetryEventType) = onSupervisedScope {
+        if (!isOneClickTelemetryEnabled) return@onSupervisedScope
         val user = getPrimaryUser() ?: return@onSupervisedScope
 
         val event = when (eventType) {
