@@ -72,6 +72,8 @@ data class Message(
 
     fun isDraft() = labelIds.any { it == SystemLabelId.AllDrafts.labelId }
 
+    fun isSent() = labelIds.any { it == SystemLabelId.AllSent.labelId }
+
     fun isPhishing() = flags.and(FLAG_PHISHING_AUTO) == FLAG_PHISHING_AUTO
 
     companion object {

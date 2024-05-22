@@ -85,7 +85,7 @@ class ParentMessageToDraftFields @Inject constructor(
             buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature, mobileFooter),
             RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody, sender)),
             RecipientsCc(ccRecipientsForAction(action, message)),
-            RecipientsBcc(emptyList()),
+            RecipientsBcc(bccRecipientsForAction(action, message)),
             buildQuotedHtmlBody(message, decryptedBody)
         ).right()
     }
@@ -194,7 +194,11 @@ class ParentMessageToDraftFields @Inject constructor(
             is DraftAction.ComposeToAddresses, // will be handled via VM
             is DraftAction.Forward -> emptyList()
 
-            is DraftAction.Reply -> listOf(messageWithBody.messageBody.replyTo)
+            is DraftAction.Reply -> if (messageWithBody.message.isSent()) {
+                messageWithBody.message.toList
+            } else {
+                listOf(messageWithBody.messageBody.replyTo)
+            }
             is DraftAction.ReplyAll -> listOf(messageWithBody.messageBody.replyTo) + messageWithBody.message.toList
         }
         return allRecipients.filterNot { it.address == senderEmail.value }
@@ -208,6 +212,16 @@ class ParentMessageToDraftFields @Inject constructor(
         is DraftAction.Reply -> emptyList()
 
         is DraftAction.ReplyAll -> message.ccList
+    }
+
+    private fun bccRecipientsForAction(action: DraftAction, message: Message) = when (action) {
+        is DraftAction.PrefillForShare,
+        is DraftAction.Compose,
+        is DraftAction.ComposeToAddresses,
+        is DraftAction.Forward,
+        is DraftAction.Reply -> emptyList()
+
+        is DraftAction.ReplyAll -> if (message.isSent()) message.bccList else emptyList()
     }
 
     companion object {
