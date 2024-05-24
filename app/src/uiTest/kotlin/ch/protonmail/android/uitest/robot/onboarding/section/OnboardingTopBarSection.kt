@@ -20,7 +20,7 @@ package ch.protonmail.android.uitest.robot.onboarding.section
 
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailmailbox.presentation.mailbox.OnboardingScreenTestTags
+import ch.protonmail.android.mailonboarding.presentation.OnboardingScreenTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot

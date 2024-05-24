@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 
 @Stable
 data class MailboxState(

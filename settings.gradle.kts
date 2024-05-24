@@ -76,6 +76,11 @@ include(":mail-mailbox:data")
 include(":mail-mailbox:domain")
 include(":mail-mailbox:presentation")
 
+include(":mail-onboarding:dagger")
+include(":mail-onboarding:data")
+include(":mail-onboarding:domain")
+include(":mail-onboarding:presentation")
+
 include(":mail-notifications")
 
 include(":mail-settings:dagger")

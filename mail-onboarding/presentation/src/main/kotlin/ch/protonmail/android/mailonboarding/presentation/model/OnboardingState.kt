@@ -16,25 +16,11 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.onboarding
+package ch.protonmail.android.mailonboarding.presentation.model
 
-import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailonboarding.presentation.OnboardingScreenTestTags
-import ch.protonmail.android.test.ksp.annotations.AsDsl
-import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.robot.ComposeRobot
-import ch.protonmail.android.uitest.util.awaitDisplayed
+sealed interface OnboardingState {
 
-@AsDsl
-internal class OnboardingRobot : ComposeRobot() {
+    object Hidden : OnboardingState
 
-    private val rootItem = composeTestRule.onNodeWithTag(OnboardingScreenTestTags.RootItem)
-
-    @VerifiesOuter
-    inner class Verify {
-
-        fun isShown() {
-            rootItem.awaitDisplayed()
-        }
-    }
+    object Shown : OnboardingState
 }

@@ -16,11 +16,14 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+package ch.protonmail.android.mailonboarding.presentation.model
 
-sealed interface OnboardingState {
+sealed interface OnboardingOperation {
+    sealed interface Action : OnboardingOperation {
+        data object CloseOnboarding : Action
+    }
 
-    object Hidden : OnboardingState
-
-    object Shown : OnboardingState
+    sealed interface Event : OnboardingOperation {
+        data object ShowOnboarding : Event
+    }
 }

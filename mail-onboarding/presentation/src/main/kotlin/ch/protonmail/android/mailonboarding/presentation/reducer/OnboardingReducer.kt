@@ -16,20 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
+package ch.protonmail.android.mailonboarding.presentation.reducer
 
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import javax.inject.Inject
 
 class OnboardingReducer @Inject constructor() {
 
-    internal fun newStateFrom(operation: MailboxOperation.AffectingOnboarding): OnboardingState {
+    fun newStateFrom(operation: OnboardingOperation): OnboardingState {
         return when (operation) {
-            is MailboxEvent.ShowOnboarding -> OnboardingState.Shown
-            is MailboxViewAction.CloseOnboarding -> OnboardingState.Hidden
+            is OnboardingOperation.Event.ShowOnboarding -> OnboardingState.Shown
+            is OnboardingOperation.Action.CloseOnboarding -> OnboardingState.Hidden
         }
     }
 }

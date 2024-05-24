@@ -16,10 +16,24 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.model
+plugins {
+    id("com.android.library")
+    kotlin("android")
+}
 
-data class OnboardingUiModel(
-    val illustrationId: Int,
-    val headlineId: Int,
-    val descriptionId: Int
-)
+android {
+    namespace = "ch.protonmail.android.mailonboarding"
+    compileSdk = Config.compileSdk
+
+    defaultConfig {
+        minSdk = Config.minSdk
+        lint.targetSdk = Config.targetSdk
+    }
+}
+
+dependencies {
+    api(project(":mail-onboarding:dagger"))
+    api(project(":mail-onboarding:data"))
+    api(project(":mail-onboarding:domain"))
+    api(project(":mail-onboarding:presentation"))
+}

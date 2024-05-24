@@ -103,7 +103,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearc
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreview
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxPreviewProvider
@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMore
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpsellingBottomSheet
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
+import ch.protonmail.android.mailonboarding.presentation.OnboardingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -173,10 +174,7 @@ fun MailboxScreen(
     Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
 
     if (mailboxState.onboardingState is OnboardingState.Shown) {
-        val completeActions = actions.copy(
-            closeOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) }
-        )
-        OnboardingScreen(actions = completeActions)
+        OnboardingScreen(onCloseOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) })
     } else {
         val completeActions = actions.copy(
             onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
@@ -1006,7 +1004,6 @@ object MailboxScreen {
         val onMoreClicked: () -> Unit,
         val onAddLabel: () -> Unit,
         val onAddFolder: () -> Unit,
-        val closeOnboarding: () -> Unit,
         val onSwipeRead: (UserId, String, Boolean) -> Unit,
         val onSwipeArchive: (UserId, String) -> Unit,
         val onSwipeSpam: (UserId, String) -> Unit,
@@ -1053,7 +1050,6 @@ object MailboxScreen {
                 onMoreClicked = {},
                 onAddLabel = {},
                 onAddFolder = {},
-                closeOnboarding = {},
                 onSwipeRead = { _, _, _ -> },
                 onSwipeArchive = { _, _ -> },
                 onSwipeSpam = { _, _ -> },

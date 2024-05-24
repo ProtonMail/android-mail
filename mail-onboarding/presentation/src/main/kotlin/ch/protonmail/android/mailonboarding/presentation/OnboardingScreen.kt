@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.mailonboarding.presentation
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
@@ -55,8 +55,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingUiModel
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -66,7 +65,7 @@ import me.proton.core.compose.theme.headlineNorm
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(actions: MailboxScreen.Actions) {
+fun OnboardingScreen(onCloseOnboarding: () -> Unit) {
     val contentMap = listOf(
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_ga,
@@ -112,7 +111,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
                         .testTag(OnboardingScreenTestTags.CloseButton)
                         .horizontalScroll(state = ScrollState(0), enabled = true),
                     onClick = {
-                        actions.closeOnboarding()
+                        onCloseOnboarding()
                     }
                 ) {
                     Icon(
@@ -131,7 +130,7 @@ fun OnboardingScreen(actions: MailboxScreen.Actions) {
             OnboardingContent(content = contentMap[pageIndex])
         }
 
-        OnboardingButton(actions, pagerState, viewCount)
+        OnboardingButton(onCloseOnboarding, pagerState, viewCount)
         OnboardingIndexDots(pagerState, viewCount)
     }
 }
@@ -176,7 +175,7 @@ fun OnboardingContent(content: OnboardingUiModel) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingButton(
-    actions: MailboxScreen.Actions,
+    onCloseOnboarding: () -> Unit,
     pagerState: PagerState,
     viewCount: Int
 ) {
@@ -192,7 +191,7 @@ fun OnboardingButton(
         onClick = {
             val nextPageIndex = pagerState.currentPage.plus(1)
             if (nextPageIndex == viewCount) {
-                actions.closeOnboarding()
+                onCloseOnboarding()
             } else {
                 scope.launch {
                     pagerState.animateScrollToPage(nextPageIndex)
@@ -245,7 +244,7 @@ fun OnboardingIndexDots(pagerState: PagerState, viewCount: Int) {
 private fun OnboardingScreenPreview() {
     ProtonTheme {
         OnboardingScreen(
-            actions = MailboxScreen.Actions.Empty
+            onCloseOnboarding = {}
         )
     }
 }

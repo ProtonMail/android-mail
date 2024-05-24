@@ -20,19 +20,16 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    id("kotlin-parcelize")
 }
 
-setAsHiltModule()
-
 android {
-    namespace = "ch.protonmail.android.mailmailbox.presentation"
+    namespace = "ch.protonmail.android.mailonboarding.presentation"
     compileSdk = Config.compileSdk
 
     defaultConfig {
         minSdk = Config.minSdk
-        lint.targetSdk = Config.targetSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
     }
 
     compileOptions {
@@ -53,49 +50,18 @@ android {
     }
 
     packaging {
-        resources.excludes.add("MANIFEST.MF")
-        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
     debugImplementation(Dependencies.composeDebugLibs)
 
     implementation(Dependencies.modulePresentationLibs)
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.key)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.account)
-    implementation(Proton.Core.accountManagerPresentationCompose)
-    implementation(Proton.Core.featureFlag)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.mailSettings)
-    implementation(Proton.Core.planCompose)
+    kapt(Dependencies.hiltAnnotationProcessors)
 
-    implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
-    implementation(project(":mail-contact:domain"))
-    implementation(project(":mail-conversation:domain"))
-    implementation(project(":mail-label:domain"))
-    implementation(project(":mail-label:presentation"))
-    implementation(project(":mail-mailbox:domain"))
-    implementation(project(":mail-message:domain"))
-    implementation(project(":mail-message:presentation"))
-    implementation(project(":mail-pagination:domain"))
-    implementation(project(":mail-pagination:presentation"))
-    implementation(project(":mail-settings:domain"))
-    implementation(project(":mail-settings:presentation"))
-    implementation(project(":mail-upselling:presentation"))
-    implementation(project(":mail-onboarding:presentation"))
-    implementation(project(":uicomponents"))
-
-    testImplementation(Dependencies.testLibs)
-    testImplementation(project(":test:test-data"))
-
-    androidTestImplementation(Dependencies.androidTestLibs)
-    androidTestImplementation(project(":test:annotations"))
 }

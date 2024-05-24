@@ -33,7 +33,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
@@ -42,6 +42,8 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
+import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
@@ -135,7 +137,11 @@ class MailboxReducer @Inject constructor(
 
     private fun MailboxState.toNewOnboardingStateFrom(operation: MailboxOperation): OnboardingState {
         return if (operation is MailboxOperation.AffectingOnboarding) {
-            onboardingReducer.newStateFrom(operation)
+            val onboardingOperation = when (operation) {
+                MailboxViewAction.CloseOnboarding -> OnboardingOperation.Action.CloseOnboarding
+                MailboxEvent.ShowOnboarding -> OnboardingOperation.Event.ShowOnboarding
+            }
+            onboardingReducer.newStateFrom(onboardingOperation)
         } else {
             onboardingState
         }

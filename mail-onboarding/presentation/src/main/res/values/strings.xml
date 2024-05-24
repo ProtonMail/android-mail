@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+    <!--  Spotlight V6 GA  -->
+    <string name="onboarding_headline_ga">Welcome to the new app</string>
+    <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
+    <!--  Onboarding 1  -->
+    <string name="onboarding_privacy_for_all_headline">Privacy for all</string>
+    <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
+    <!--  Onboarding 2  -->
+    <string name="onboarding_easily_up_to_date_headline">Easily up-to-date</string>
+    <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
+    <!--  Onboarding 3  -->
+    <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
+    <string name="onboarding_neat_and_tidy_description">File, label, and color code messages to create your perfect, custom inbox.</string>
+    <!--  Onboarding actions  -->
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_get_started">Get started</string>
+    <string name="onboarding_illustration_content_description">Onboarding illustration</string>
+    <string name="onboarding_close_content_description">Close</string>
+</resources>

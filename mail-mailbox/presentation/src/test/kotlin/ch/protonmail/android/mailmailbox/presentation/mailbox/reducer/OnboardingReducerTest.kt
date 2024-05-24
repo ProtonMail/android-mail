@@ -18,10 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation.Action
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation.Event
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
+import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -47,12 +48,12 @@ internal class OnboardingReducerTest(
         private val transitionsFromHiddenState = listOf(
             TestInput(
                 currentState = OnboardingState.Hidden,
-                operation = MailboxEvent.ShowOnboarding,
+                operation = Event.ShowOnboarding,
                 expectedState = OnboardingState.Shown
             ),
             TestInput(
                 currentState = OnboardingState.Hidden,
-                operation = MailboxViewAction.CloseOnboarding,
+                operation = Action.CloseOnboarding,
                 expectedState = OnboardingState.Hidden
             )
         )
@@ -60,12 +61,12 @@ internal class OnboardingReducerTest(
         private val transitionsFromShownState = listOf(
             TestInput(
                 currentState = OnboardingState.Shown,
-                operation = MailboxViewAction.CloseOnboarding,
+                operation = Action.CloseOnboarding,
                 expectedState = OnboardingState.Hidden
             ),
             TestInput(
                 currentState = OnboardingState.Shown,
-                operation = MailboxEvent.ShowOnboarding,
+                operation = Event.ShowOnboarding,
                 expectedState = OnboardingState.Shown
             )
         )
@@ -85,7 +86,7 @@ internal class OnboardingReducerTest(
 
     data class TestInput(
         val currentState: OnboardingState,
-        val operation: MailboxOperation.AffectingOnboarding,
+        val operation: OnboardingOperation,
         val expectedState: OnboardingState
     )
 }

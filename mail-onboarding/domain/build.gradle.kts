@@ -16,25 +16,35 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.robot.onboarding
+plugins {
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
+    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+}
 
-import androidx.compose.ui.test.onNodeWithTag
-import ch.protonmail.android.mailonboarding.presentation.OnboardingScreenTestTags
-import ch.protonmail.android.test.ksp.annotations.AsDsl
-import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
-import ch.protonmail.android.uitest.robot.ComposeRobot
-import ch.protonmail.android.uitest.util.awaitDisplayed
+setAsHiltModule()
 
-@AsDsl
-internal class OnboardingRobot : ComposeRobot() {
+android {
+    namespace = "ch.protonmail.android.mailonboarding.domain"
+    compileSdk = Config.compileSdk
 
-    private val rootItem = composeTestRule.onNodeWithTag(OnboardingScreenTestTags.RootItem)
-
-    @VerifiesOuter
-    inner class Verify {
-
-        fun isShown() {
-            rootItem.awaitDisplayed()
-        }
+    defaultConfig {
+        minSdk = Config.minSdk
+        lint.targetSdk = Config.targetSdk
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+}
+
+dependencies {
+    kapt(Dependencies.appAnnotationProcessors)
+
 }
