@@ -51,7 +51,7 @@
   <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Сообщение помещено в Корзину</item>
+    <item quantity="one">Сообщений отправлено в Корзину</item>
     <item quantity="few">%d сообщения перемещены в Корзину</item>
     <item quantity="many">%d сообщений перемещено в Корзину</item>
     <item quantity="other">%d messages moved to Trash</item>

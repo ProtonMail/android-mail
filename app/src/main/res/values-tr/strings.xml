@@ -29,6 +29,7 @@
   <string name="you_are_offline">Çevrim dışısınız</string>
   <string name="feature_coming_soon">Özellik yakında kullanılabilecek…</string>
   <string name="mailbox_draft_saved">Taslak kaydedildi</string>
+  <string name="mailbox_draft_discard">Yok say</string>
   <string name="mailbox_message_sending">İleti gönderiliyor…</string>
   <string name="mailbox_message_sending_offline">Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı</string>
   <string name="mailbox_message_sending_success">İleti gönderildi</string>

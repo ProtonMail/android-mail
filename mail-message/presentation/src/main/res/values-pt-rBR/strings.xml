@@ -57,9 +57,9 @@
   <string name="contact_actions_copy_name_description">Copiar nome do contato</string>
   <string name="contact_actions_copy_name_performed">Nome copiado para a área de transferência</string>
   <string name="contact_actions_new_message">Nova mensagem</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">Comece a escrever uma nova mensagem para este contato</string>
   <string name="contact_actions_add_contact">Adicionar contato</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
+  <string name="contact_actions_add_contact_description">Salvar esse destinatário como um contato</string>
   <string name="contact_actions_view_contact_details">Ver detalhes do contato</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_view_contact_details_description">Ver detalhes do contato</string>
 </resources>

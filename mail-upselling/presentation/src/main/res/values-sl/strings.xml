@@ -22,17 +22,18 @@
   <string name="upselling_title">Nadgradi na .</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Nadgradite za več prostora za shranjevanje in premijskih funkcij</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Načrtujte pošiljanje in dremež</string>
-  <string name="upselling_plus_feature_custom_domain">1 e-poštna domena po meri</string>
+  <string name="upselling_plus_feature_storage">15 GB prostora za shranjevanje</string>
+  <string name="upselling_plus_feature_email_addresses">10 e-poštnih naslovov</string>
+  <string name="upselling_plus_feature_custom_domain">Podpora za e-poštno domeno po meri</string>
+  <string name="upselling_plus_feature_desktop_app">Nova namizna aplikacija Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Neomejeno število map, oznak in filtrov</string>
-  <string name="upselling_plus_feature_more">In še 14 vrhunskih funkcij</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Vaša premijska naročnina vse v enem</string>
-  <string name="upselling_unlimited_feature_storage">500 GB prostora</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Vse plačljive funkcije Mail in Colender</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB prostora za shranjevanje z varnostno kopijo</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Vse plačljive funkcije Pošte in Koledarja</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ držav)</string>
+  <string name="upselling_unlimited_feature_drive">Varna shramba v oblaku</string>
+  <string name="upselling_unlimited_feature_pass">Upravitelj šifriranih gesel</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SHRANI %s%%</string>
   <string name="upselling_month">/mesec</string>

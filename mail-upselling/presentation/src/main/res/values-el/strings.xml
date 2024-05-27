@@ -22,17 +22,18 @@
   <string name="upselling_title">Αναβάθμιση σε</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Προγραμματισμός αποστολής και αναβολής</string>
-  <string name="upselling_plus_feature_custom_domain">1 προσαρμοσμένος τομέας ηλεκτρονικού ταχυδρομείου</string>
-  <string name="upselling_plus_feature_folders_labels">Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα</string>
-  <string name="upselling_plus_feature_more">Και 14 περισσότερα premium χαρακτηριστικά</string>
+  <string name="upselling_plus_feature_storage">15 GB αποθηκευτικός χώρος</string>
+  <string name="upselling_plus_feature_email_addresses">10 διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>
+  <string name="upselling_plus_feature_custom_domain">Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου</string>
+  <string name="upselling_plus_feature_desktop_app">Νέα Proton Mail εφαρμογή για υπολογιστές</string>
+  <string name="upselling_plus_feature_folders_labels">Απεριόριστοι φάκελοι, ετικέτες, φίλτρα</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Η premium συνδρομή σας all-in-one</string>
-  <string name="upselling_unlimited_feature_storage">500 GB αποθηκευτικός χώρος</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Όλες οι δυνατότητες Mail και Calendar επί πληρωμή</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB αποθηκευτικού χώρου με δημιουργία αντιγράφων ασφαλείας φωτογραφιών</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Όλες οι δυνατότητες Αλληλογραφίας και Ημερολογίου επί πληρωμή</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ χώρες)</string>
+  <string name="upselling_unlimited_feature_drive">Ασφαλής αποθήκευση στο cloud</string>
+  <string name="upselling_unlimited_feature_pass">Κρυπτογραφημένος διαχειριστής κωδικών πρόσβασης</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ΕΞΟΙΚΟΝΟΜΗΣΤΕ %s%%</string>
   <string name="upselling_month">/μήνα</string>

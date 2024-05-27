@@ -147,7 +147,7 @@
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Verifica del codice PIN non riuscita</string>
   <string name="mail_settings_pin_insertion_signout_text">Esci</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Esci dall\'account</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Esci dagli account</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Sei sicuro di voler uscire da tutti gli account?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Esci</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Annulla</string>

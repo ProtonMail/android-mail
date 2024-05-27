@@ -22,17 +22,18 @@
   <string name="upselling_title">Upgrade to</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Neograničen broj mapa, oznaka i filtara</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_email_addresses">10 adrese e-pošte</string>
+  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
+  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and Calendar features</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_drive">Secure cloud storage</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SAVE %s%%</string>
   <string name="upselling_month">/month</string>

@@ -48,7 +48,7 @@
     <item quantity="other">%d 封邮件已移至废件箱</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
-    <item quantity="other">删除 %d 条会话</item>
+    <item quantity="other">删除 %d 项会话</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="other">删除 %d 封邮件</item>

@@ -29,6 +29,7 @@
   <string name="you_are_offline">연결되지 않음</string>
   <string name="feature_coming_soon">곧 출시될 기능입니다…</string>
   <string name="mailbox_draft_saved">임시 저장됨</string>
+  <string name="mailbox_draft_discard">저장 안 함</string>
   <string name="mailbox_message_sending">메시지를 보내는중…</string>
   <string name="mailbox_message_sending_offline">오프라인, 메시지 전송 대기중</string>
   <string name="mailbox_message_sending_success">메시지 보냄</string>

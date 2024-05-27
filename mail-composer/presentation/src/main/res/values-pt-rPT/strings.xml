@@ -35,7 +35,7 @@
   <string name="composer_error_store_draft_body">O armazenamento do corpo deste rascunho falhou</string>
   <string name="composer_error_duplicate_recipient">Destinatário duplicado eliminado: %1$s</string>
   <string name="composer_error_store_draft_subject">Erro ao guardar o assunto deste rascunho</string>
-  <string name="composer_error_store_draft_recipients">Falha ao guardar os destinatários deste rascunho</string>
+  <string name="composer_error_store_draft_recipients">Erro ao guardar os destinatários deste rascunho</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição anulará qualquer conteúdo pré-existente.</string>
   <string name="composer_add_attachments_content_description">Adicionar anexos</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar de…</string>
@@ -43,7 +43,7 @@
   <string name="composer_original_message_quote">Mensagem original</string>
   <string name="composer_sender_quote">On %s, %s &lt;%s&gt; wrote:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
-  <string name="composer_attachment_size_exceeded_dialog_title">Attachment limit reached</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">O limite de anexos foi atingido.</string>
   <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
@@ -56,7 +56,7 @@
   <string name="composer_bottom_bar_expiration_time_one_day">1dia</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 dias</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 semana</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Personalizar</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Expiração não suportada</string>
@@ -77,14 +77,14 @@
   <string name="message_sending_error_dialog_header">Erro ao enviar</string>
   <string name="message_sending_error_dialog_button_dismiss">Fechar</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Não há chaves de confiança: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
   <string name="set_message_password_title">Encriptar a mensagem</string>
   <string name="set_message_password_info_message">Set a password to encrypt this message for non-Proton Mail users.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Learn more</a></string>
   <string name="set_message_password_label">Palavra-passe da mensagem</string>
   <string name="set_message_password_label_repeat">Repita a palavra-passe</string>
-  <string name="set_message_password_label_hint">Password hint (optional)</string>
+  <string name="set_message_password_label_hint">Dica da palavra-passe (opcional)</string>
   <string name="set_message_password_supporting_text">4 a 21 carateres</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">As palavras-passe têm de coincidir.</string>
@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Remover a palavra-passe</string>
   <string name="respondInline">Responder em linha</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d contacto</item>
+    <item quantity="other">%d contactos</item>
   </plurals>
 </resources>

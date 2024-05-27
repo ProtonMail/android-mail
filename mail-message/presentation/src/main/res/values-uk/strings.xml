@@ -44,24 +44,24 @@
   <string name="bottom_sheet_move_to_title">Перемістити...</string>
   <string name="bottom_sheet_done_action">Готово</string>
   <string name="bottom_sheet_archive_action">Також архівувати?</string>
-  <string name="bottom_sheet_label_as_title">Позначити як...</string>
+  <string name="bottom_sheet_label_as_title">Позначити міткою...</string>
   <string name="bottom_sheet_more_header_message_from">Повідомлення від %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Копіювати посилання</string>
   <string name="message_link_long_click_copy_description">Текст скопійовано з Proton Mail</string>
   <string name="message_link_long_click_share">Поділитись посиланням</string>
-  <string name="message_link_long_click_share_via">Поширити посилання через</string>
+  <string name="message_link_long_click_share_via">Поділитись посиланням через</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Копіювати адресу</string>
-  <string name="contact_actions_copy_address_description">Копіювати контактну адресу</string>
+  <string name="contact_actions_copy_address_description">Копіювати адресу контакту</string>
   <string name="contact_actions_copy_address_performed">Адресу скопійовано до буфера обміну</string>
   <string name="contact_actions_copy_name">Копіювати ім\'я</string>
   <string name="contact_actions_copy_name_description">Копіювати ім\'я контакту</string>
   <string name="contact_actions_copy_name_performed">Ім\'я скопійовано до буфера обміну</string>
   <string name="contact_actions_new_message">Нове повідомлення</string>
-  <string name="contact_actions_new_message_description">Почати писати нове повідомлення для цього контакту</string>
+  <string name="contact_actions_new_message_description">Написати нове повідомлення цьому контакту</string>
   <string name="contact_actions_add_contact">Додати контакт</string>
-  <string name="contact_actions_add_contact_description">Зберегти цього одержувача як контакт</string>
+  <string name="contact_actions_add_contact_description">Зберегти цього отримувача до контактів</string>
   <string name="contact_actions_view_contact_details">Подробиці контакту</string>
   <string name="contact_actions_view_contact_details_description">Переглянути інформацію про контакт</string>
 </resources>

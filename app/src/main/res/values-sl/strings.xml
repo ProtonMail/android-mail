@@ -29,6 +29,7 @@
   <string name="you_are_offline">Niste povezani</string>
   <string name="feature_coming_soon">Funkcija bo kmalu na voljo ...</string>
   <string name="mailbox_draft_saved">Osnutek shranjen</string>
+  <string name="mailbox_draft_discard">Zavrzi</string>
   <string name="mailbox_message_sending">Pošiljanje sporočila …</string>
   <string name="mailbox_message_sending_offline">Ni povezave, sporočilo je uvrščeno v pošiljanje</string>
   <string name="mailbox_message_sending_success">Sporočilo poslano</string>

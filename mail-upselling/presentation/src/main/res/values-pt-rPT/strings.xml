@@ -18,35 +18,36 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">Botão Melhorar</string>
+  <string name="upselling_title">Melhorar para</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Pastas, marcadores, e filtros ilimitados</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_feature_storage">15 GB de armazenamento</string>
+  <string name="upselling_plus_feature_email_addresses">10 endereços de e-mail</string>
+  <string name="upselling_plus_feature_custom_domain">Suporte para domínio de e-mail personalizado</string>
+  <string name="upselling_plus_feature_desktop_app">Nova aplicação Proton Mail para desktop</string>
+  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB de armazenamento com cópias de segurança de fotos</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Todas as funcionalidades pagas do Mail e do Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (mais de 90 países)</string>
+  <string name="upselling_unlimited_feature_drive">Armazenamento seguro na nuvem</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">POUPE %s%%</string>
+  <string name="upselling_month">/mês</string>
+  <string name="upselling_get_button">Obter %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mês</item>
     <item quantity="other">%d meses</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">Não é possível recuperar as opções de melhoramento.</string>
   <string name="upselling_snackbar_error_no_user_id">Ocorreu um erro.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
   <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Ocorreu um erro. Tenta novamente.</string>
 </resources>

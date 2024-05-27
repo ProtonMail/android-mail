@@ -113,13 +113,13 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Chyba pri ukladaní kontaktu, obsahuje neplatnú emailovú adresu</string>
   <string name="contact_group_details_loading_error">Chyba pri načítaní skupiny kontaktov, skúste to neskôr, prosím</string>
-  <string name="contact_group_details_deletion_success">Skupina kontaktov bola odstránená</string>
-  <string name="contact_group_details_deletion_error">Chyba pri odstraňovaní skupiny kontaktov</string>
+  <string name="contact_group_details_deletion_success">Skupina kontaktov vymazaná</string>
+  <string name="contact_group_details_deletion_error">Chyba pri mazaní skupiny kontaktov</string>
   <string name="contact_group_delete_dialog_title">Odstrániť skupinu %s z kontaktov?</string>
   <string name="contact_group_delete_dialog_message">Skupina bude rozpustená, ale priradené kontakty zostanú zachované.</string>
   <string name="contact_group_delete_dialog_confirm">Odstrániť</string>
   <string name="contact_group_delete_dialog_dismiss">Ponechať</string>
-  <string name="contact_group_delete_button_text">Odstrániť skupinu</string>
+  <string name="contact_group_delete_button_text">Vymazať skupinu</string>
   <string name="contact_group_form_loading_error">Chyba pri načítaní skupiny kontaktov, skúste to neskôr, prosím</string>
   <string name="edit_contact_group_content_description">Upraviť skupinu kontaktov</string>
   <string name="delete_contact_group_content_description">Zmazať skupinu kontaktov</string>

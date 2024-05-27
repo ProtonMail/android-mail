@@ -29,6 +29,7 @@
   <string name="you_are_offline">Ste v režime offline</string>
   <string name="feature_coming_soon">Funkcia už čoskoro…</string>
   <string name="mailbox_draft_saved">Koncept bol uložený</string>
+  <string name="mailbox_draft_discard">Zahodiť</string>
   <string name="mailbox_message_sending">Odosiela sa správa…</string>
   <string name="mailbox_message_sending_offline">Offline, správa vo fronte na odoslanie</string>
   <string name="mailbox_message_sending_success">Správa odoslaná</string>

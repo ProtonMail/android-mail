@@ -29,6 +29,7 @@
   <string name="you_are_offline">Ви не в мережі</string>
   <string name="feature_coming_soon">Функція невдовзі з\'явиться…</string>
   <string name="mailbox_draft_saved">Чернетку збережено</string>
+  <string name="mailbox_draft_discard">Відхилити</string>
   <string name="mailbox_message_sending">Надсилання повідомлення…</string>
   <string name="mailbox_message_sending_offline">Повідомлення поставлено в чергу через відсутність мережевого з\'єднання</string>
   <string name="mailbox_message_sending_success">Повідомлення надіслано</string>

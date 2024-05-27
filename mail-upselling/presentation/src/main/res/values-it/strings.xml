@@ -22,17 +22,18 @@
   <string name="upselling_title">Effettua l\'upgrade a</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Per sbloccare più spazio di archiviazione e funzionalità premium</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Programma gli invii e posticipa i messaggi</string>
-  <string name="upselling_plus_feature_custom_domain">1 dominio email personalizzato</string>
+  <string name="upselling_plus_feature_storage">15 GB di spazio di archiviazione</string>
+  <string name="upselling_plus_feature_email_addresses">10 indirizzi email</string>
+  <string name="upselling_plus_feature_custom_domain">Supporto per domini email personalizzati</string>
+  <string name="upselling_plus_feature_desktop_app">Nuova app di Proton Mail per desktop</string>
   <string name="upselling_plus_feature_folders_labels">Cartelle, etichette e filtri illimitati</string>
-  <string name="upselling_plus_feature_more">E altre 14 funzionalità premium</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Il tuo unico e completo abbonamento premium</string>
-  <string name="upselling_unlimited_feature_storage">500 GB di spazio di archiviazione</string>
+  <string name="upselling_unlimited_feature_storage">500 GB di spazio di archiviazione con backup delle foto</string>
   <string name="upselling_unlimited_feature_mail_calendar">Tutte le funzioni a pagamento di Mail e Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (oltre 90 paesi)</string>
+  <string name="upselling_unlimited_feature_drive">Archiviazione sicura nel cloud</string>
+  <string name="upselling_unlimited_feature_pass">Gestore di password crittografato</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">Risparmia il %s%%</string>
   <string name="upselling_month">/ mese</string>

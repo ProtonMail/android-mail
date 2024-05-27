@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="drawer_title_more">Mais</string>
-  <string name="drawer_title_contacts">Contatos</string>
+  <string name="drawer_title_contacts">Contactos</string>
   <string name="drawer_title_subscription">Subscrição</string>
   <string name="mailbox_toolbar_compose_button_content_description">Compor nova mensagem</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Sair do modo de seleção</string>
@@ -45,10 +45,10 @@
   <string name="mailbox_is_empty_no_unread_messages_title">Nenhuma mensagem por ler</string>
   <string name="mailbox_is_empty_folder_description">Esta pasta está vazia.</string>
   <string name="mailbox_is_empty_spam_description">A sua pasta de spam está vazia</string>
-  <string name="mailbox_is_empty_trash_description">O lixo está vazio</string>
+  <string name="mailbox_is_empty_trash_description">A lixeira está vazia.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensagem movida para o Lixo</item>
-    <item quantity="other">%d mensagens movidas para o Lixo</item>
+    <item quantity="one">Mensagem movida para o Lixeira</item>
+    <item quantity="other">%d mensagens movidas para o Lixeira</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar conversa</item>
@@ -74,11 +74,11 @@
     <item quantity="one">Conversa eliminada permanentemente</item>
     <item quantity="other">%d conversas eliminadas permanentemente</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Falha na operação da etiqueta</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Falha ao obter etiquetas</string>
-  <string name="mailbox_action_failed_retrieving_colors">Falha ao obter definições de cor</string>
-  <string name="mailbox_action_move_messages_failed">Falha na operação de mover</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Falha ao obter pastas</string>
+  <string name="mailbox_action_label_messages_failed">Erro na operação da etiqueta</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Erro ao obter etiquetas</string>
+  <string name="mailbox_action_failed_retrieving_colors">Erro ao obter definições de cor</string>
+  <string name="mailbox_action_move_messages_failed">Erro na operação de mover</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Erro ao obter pastas</string>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Bem-vindo à nova aplicação</string>
   <string name="onboarding_description_ga">Completamente reconstruída de raiz, a nova aplicação Proton Mail foi feita para estabilidade e desempenho.</string>
@@ -96,19 +96,19 @@
   <string name="onboarding_get_started">Começar</string>
   <string name="onboarding_illustration_content_description">Ilustração \'onboarding\'</string>
   <string name="onboarding_close_content_description">Fechar</string>
-  <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
+  <string name="mailbox_action_trash_message">Mensagem movida para a lixeira</string>
   <string name="mailbox_action_archive_message">Mensagem movida para Arquivo</string>
   <string name="mailbox_action_spam_message">Mensagem movida para Spam</string>
   <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
   <string name="mailbox_search_no_results_title">Não foram encontrados resultados.</string>
   <string name="mailbox_search_no_results_explanation">Data de pesquisa, nome, endereço de e-mail ou linha de assunto</string>
-  <string name="mailbox_action_button_clear_trash">Esvaziar o lixo</string>
+  <string name="mailbox_action_button_clear_trash">Esvaziar a lixeira</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta Lixo</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta Lixeira</string>
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens no \'Lixo\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens no \'Lixeira\'?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens no \'Spam\'?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Tem a certeza que pretende eliminar permanentemente todas as conversas na pasta \"Lixo\"?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_conversation">Tem a certeza que pretende eliminar permanentemente todas as conversas na pasta \"Lixeira\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Tem a certeza que pretende eliminar permanentemente todas as conversas na pasta \"Spam\"?</string>
   <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está agendada"</string>
   <!--    Storage Limit Warning-->

@@ -92,8 +92,8 @@
   <string name="mailbox_action_delete_dialog_button_cancel">Скасувати</string>
   <string name="mailbox_action_delete_dialog_button_delete">Видалити</string>
   <string name="picker_dialog_cancel">Скасувати</string>
-  <string name="color_purple">Фіолетовий</string>
-  <string name="color_enzian">Ензіанський</string>
+  <string name="color_purple">Бузковий</string>
+  <string name="color_enzian">Енізан</string>
   <string name="color_pink">Рожевий</string>
   <string name="color_plum">Сливовий</string>
   <string name="color_strawberry">Полуничний</string>
@@ -111,8 +111,8 @@
   <string name="color_fern">Папороть</string>
   <string name="color_forest">Лісовий</string>
   <string name="color_olive">Оливковий</string>
-  <string name="color_pickle">Огірочний</string>
+  <string name="color_pickle">Сіро-зелений</string>
   <string name="undo_button_label">Скасувати</string>
   <string name="undo_success_message">Дію скасовано</string>
-  <string name="undo_failure_message">Не вдалося повернути дію</string>
+  <string name="undo_failure_message">Не вдалося скасувати дію</string>
 </resources>

@@ -46,7 +46,7 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Досягнуто обмеження для вкладень</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Обмеження розміру для вкладень – %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Збій повторного шифрування вкладення. З міркувань безпеки усі вкладення вилучено.</string>
-  <string name="composer_warning_local_data_shown">Останню версію цього проєкту не вдалося завантажити. Будь-які зміни замінять її вміст.</string>
+  <string name="composer_warning_local_data_shown">Не вдалося завантажити останню версію цієї чернетки. Будь-які зміни перезапишуть її.</string>
   <string name="composer_button_add_password">Додати пароль</string>
   <string name="composer_button_set_expiration">Вказати термін дії</string>
   <string name="composer_expiration_time_bottom_sheet_title">Термін дії повідомлення</string>
@@ -57,7 +57,7 @@
   <string name="composer_bottom_bar_expiration_time_three_days">3 дні</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 тиждень</string>
   <string name="composer_bottom_bar_expiration_time_custom">Власний</string>
-  <string name="composer_error_setting_expiration_time">Не вдалося встановити термін придатності</string>
+  <string name="composer_error_setting_expiration_time">Не вдалося встановити термін дії</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Термін дії не підтримується</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Натомість ми радимо встановити пароль для таких отримувачів:</string>
@@ -66,27 +66,27 @@
   <!-- Sender changed dialog -->
   <string name="composer_sender_changed_dialog_title">Надсилання сповіщення</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Надсилання повідомлень з @pm.me є платною функцією. Ваше повідомлення буде надіслано з вашої типової адреси.</string>
-  <string name="composer_sender_changed_original_address_disabled">Вибрана адреса відправника вимкнена. Ваше повідомлення буде надіслано зі стандартної адреси.</string>
+  <string name="composer_sender_changed_original_address_disabled">Вибрана адреса відправника вимкнена. Ваше повідомлення буде надіслано з типової адреси.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Надіслати</string>
+  <string name="composer_send_without_subject_dialog_title">Написати</string>
   <string name="composer_send_without_subject_dialog_text">Надіслати повідомлення без теми?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Так</string>
   <string name="composer_send_without_subject_dialog_reject_button">Ні</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Надсилання звіту про помилку</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>
-  <string name="message_sending_error_dialog_text_error">Ваш лист не може бути надіслано на вказану адресу з наступної причини:</string>
+  <string name="message_sending_error_dialog_text_error">Вашого листа неможливо надіслати на вказану адресу з такої причини:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Немає довірених ключів: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Адреса %s не існує</string>
   <string name="set_message_password_title">Зашифрувати повідомлення</string>
   <string name="set_message_password_info_message">Встановіть пароль, щоб зашифрувати це повідомлення для користувачів поза Proton Mail.</string>
-  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Дізнатися більше</a></string>
+  <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Докладніше</a></string>
   <string name="set_message_password_label">Пароль повідомлення</string>
   <string name="set_message_password_label_repeat">Повторіть пароль</string>
   <string name="set_message_password_label_hint">Підказка до пароля (необов\'язково)</string>
   <string name="set_message_password_supporting_text">Довжина від 4 до 21 символу</string>
-  <string name="set_message_password_supporting_error_text">Пароль повинен містити від 4 до 21 символу</string>
+  <string name="set_message_password_supporting_error_text">Пароль повинен мати від 4 до 21 символів</string>
   <string name="set_message_password_supporting_text_repeat">Паролі повинні збігатися</string>
   <string name="set_message_password_supporting_error_text_repeat">2 паролі відрізняються</string>
   <string name="set_message_password_button_show">Показати пароль</string>

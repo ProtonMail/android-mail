@@ -29,6 +29,7 @@
   <string name="you_are_offline">Anda sedang offline</string>
   <string name="feature_coming_soon">Fitur ini akan segera hadir…</string>
   <string name="mailbox_draft_saved">Draf disimpan</string>
+  <string name="mailbox_draft_discard">Buang</string>
   <string name="mailbox_message_sending">Mengirim pesan…</string>
   <string name="mailbox_message_sending_offline">Luring, pesan diantrekan untuk pengiriman</string>
   <string name="mailbox_message_sending_success">Pesan terkirim</string>

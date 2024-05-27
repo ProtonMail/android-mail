@@ -28,12 +28,12 @@
   <string name="quick_reply_button_content_description">Responder</string>
   <string name="quick_reply_all_button_content_description">Responder a todos</string>
   <string name="more_button_content_description">Mais</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Assunto:</string>
+  <string name="from">De:</string>
   <string name="to">Para:</string>
   <string name="cc">CC:</string>
   <string name="bcc">BCC:</string>
-  <string name="date">Date:</string>
+  <string name="date">Data:</string>
   <plurals name="attachment">
     <item quantity="one">%d Anexo</item>
     <item quantity="other">%d Anexos</item>
@@ -43,12 +43,12 @@
   <string name="error_mark_as_unread_failed">Erro na operação de marcar como não lido. Tente novamente.</string>
   <string name="error_star_operation_failed">A operação de adicionar estrela falhou. Por favor, tente novamente.</string>
   <string name="error_unstar_operation_failed">A operação de remover estrela falhou. Por favor, tente novamente.</string>
-  <string name="error_move_to_trash_failed">Erro no envio para o lixo. Tente novamente.</string>
-  <string name="message_moved_to_trash">Mensagem movida para a pasta Lixo</string>
+  <string name="error_move_to_trash_failed">Erro no envio para a lixeira. Tente novamente.</string>
+  <string name="message_moved_to_trash">Mensagem movida para a pasta Lixeira</string>
   <string name="message_moved_to_archive">Mensagem movida para a pasta Arquivo</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Erro ao mover a mensagem. Tente novamente.</string>
-  <string name="conversation_moved_to_trash">Conversa movida para a pasta Lixo</string>
+  <string name="conversation_moved_to_trash">Conversa movida para a pasta Lixeira</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
   <string name="conversation_moved_to_archive">Conversa movida para a pasta Arquivo</string>
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>
@@ -56,10 +56,10 @@
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
   <string name="error_get_attachment_failed">Erro ao obter o anexo.</string>
   <string name="error_attachment_download_in_progress">A transferência atual deve ser concluída antes de iniciar uma nova.</string>
-  <string name="error_get_attachment_not_enough_memory">Falha ao obter o anexo devido à memória insuficiente</string>
+  <string name="error_get_attachment_not_enough_memory">Erro ao obter o anexo devido à memória insuficiente</string>
   <string name="reload">Recarregar</string>
-  <string name="error_relabel_message_failed">Falha ao etiquetar a mensagem. Por favor, tente novamente.</string>
-  <string name="error_relabel_conversation_failed">Falha ao etiquetar a conversa. Por favor, tente novamente.</string>
+  <string name="error_relabel_message_failed">Erro ao etiquetar a mensagem. Por favor, tente novamente.</string>
+  <string name="error_relabel_conversation_failed">Erro ao etiquetar a conversa. Por favor, tente novamente.</string>
   <string name="please_go_back_online_to_load_messages">Está offline. Por favor, volte a estar online para carregar as mensagens.</string>
   <string name="decryption_error">Erro ao desencriptar a mensagem.</string>
   <string name="detail_error_retrieving_message_body">Não é possível recuperar a mensagem</string>
@@ -84,9 +84,9 @@
   <string name="message_delete_dialog_title">Eliminar a mensagem</string>
   <string name="message_delete_dialog_message">Tem a certeza de que pretende eliminar permanentemente esta mensagem?</string>
   <string name="message_deleted">Mensagem eliminada</string>
-  <string name="error_delete_message_failed">Failed to delete message</string>
+  <string name="error_delete_message_failed">Erro ao eliminar a mensagem</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
-  <string name="error_delete_conversation_failed">Failed to delete conversation</string>
+  <string name="error_delete_conversation_failed">Erro ao eliminar a conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
   <string name="conversation_deleted">Conversa eliminada</string>
   <string name="message_body_load_remote_content_button_text">Carregar o conteúdo remoto</string>
@@ -101,5 +101,5 @@
   <string name="message_report_phishing_dialog_cancel_button">Cancelar</string>
   <string name="open_on_protoncalendar_banner_title">Abrir no Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendário seguro e encriptado</string>
-  <string name="error_print_failed">Failed to print message</string>
+  <string name="error_print_failed">Erro ao imprimir a mensagem</string>
 </resources>

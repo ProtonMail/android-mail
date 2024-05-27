@@ -22,17 +22,18 @@
   <string name="upselling_title">Tingkatkan ke</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Untuk memperoleh ruang penyimpanan tambahan dan berbagai fitur premium</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Jadwalkan pengiriman dan penundaan</string>
-  <string name="upselling_plus_feature_custom_domain">1 domain email khusus</string>
+  <string name="upselling_plus_feature_storage">Ruang penyimpanan 15 GB</string>
+  <string name="upselling_plus_feature_email_addresses">10 alamat email</string>
+  <string name="upselling_plus_feature_custom_domain">Dukungan domain email khusus</string>
+  <string name="upselling_plus_feature_desktop_app">Aplikasi desktop Proton Mail baru</string>
   <string name="upselling_plus_feature_folders_labels">Tanpa batasan jumlah folder, label, dan filter</string>
-  <string name="upselling_plus_feature_more">Dan 14 fitur premium lainnya</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Langganan premium menyeluruh Anda</string>
-  <string name="upselling_unlimited_feature_storage">Ruang penyimpanan 500 GB</string>
+  <string name="upselling_unlimited_feature_storage">Ruang penyimpanan 500 GB dengan pencadangan foto</string>
   <string name="upselling_unlimited_feature_mail_calendar">Seluruh fitur Mail dan Calendar berbayar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ negara)</string>
+  <string name="upselling_unlimited_feature_drive">Penyimpanan cloud yang aman</string>
+  <string name="upselling_unlimited_feature_pass">Pengelola kata sandi terenkripsi</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>

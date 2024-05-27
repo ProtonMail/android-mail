@@ -111,7 +111,7 @@
   <string name="contact_group_details_loading_error">Fel vid laddning av kontaktgrupp, försök igen senare</string>
   <string name="contact_group_details_deletion_success">Kontaktgrupp borttagen</string>
   <string name="contact_group_details_deletion_error">Fel vid borttagning av kontaktgrupp</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
+  <string name="contact_group_delete_dialog_title">Ta bort %s-grupp från kontakter?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
   <string name="contact_group_delete_dialog_confirm">Ta bort</string>
   <string name="contact_group_delete_dialog_dismiss">Behåll det</string>

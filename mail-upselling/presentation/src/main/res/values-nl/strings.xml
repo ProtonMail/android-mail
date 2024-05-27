@@ -22,17 +22,18 @@
   <string name="upselling_title">Upgraden naar</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Om meer opslag- en premiumfuncties te ontgrendelen</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Geplande verzenden en snoozen</string>
-  <string name="upselling_plus_feature_custom_domain">1 aangepast e-maildomein</string>
-  <string name="upselling_plus_feature_folders_labels">Ongelimiteerde mappen, labels en filters</string>
-  <string name="upselling_plus_feature_more">En 14 meer premium functies</string>
+  <string name="upselling_plus_feature_storage">15 GB opslagruimte</string>
+  <string name="upselling_plus_feature_email_addresses">10 e-mailadressen</string>
+  <string name="upselling_plus_feature_custom_domain">Gepersonaliseerde e-maildomein ondersteuning</string>
+  <string name="upselling_plus_feature_desktop_app">Nieuwe Proton Mail desktop-app</string>
+  <string name="upselling_plus_feature_folders_labels">Onbeperkt aantal mappen, labels en filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Uw all-in-één Premium-abonnement</string>
-  <string name="upselling_unlimited_feature_storage">500 GB opslagruimte</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Alle betaalde Mail- en Calendar-kenmerken</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB opslag met foto back-up</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Alle betaalde Mail- en Calendar-functies</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ landen)</string>
+  <string name="upselling_unlimited_feature_drive">Veilige cloudopslag</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">BESPAAR %s%%</string>
   <string name="upselling_month">/maand</string>

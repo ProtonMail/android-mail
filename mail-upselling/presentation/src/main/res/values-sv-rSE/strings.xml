@@ -22,17 +22,18 @@
   <string name="upselling_title">Uppgradera till</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 anpassad e-postdomän</string>
-  <string name="upselling_plus_feature_folders_labels">Obegränsade mappar, etiketter och filter</string>
-  <string name="upselling_plus_feature_more">Och 14 fler premiumfunktioner</string>
+  <string name="upselling_plus_feature_storage">15 GB lagringsutrymme</string>
+  <string name="upselling_plus_feature_email_addresses">10 e-postadresser</string>
+  <string name="upselling_plus_feature_custom_domain">Stöd för anpassad e-postdomän</string>
+  <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-app för stationär dator</string>
+  <string name="upselling_plus_feature_folders_labels">Obegränsat antal mappar, etiketter och filter</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Din allt-i-ett premiumprenumeration</string>
-  <string name="upselling_unlimited_feature_storage">500 GB lagringsutrymme</string>
+  <string name="upselling_unlimited_feature_storage">500 GB lagringsutrymme för säkerhetskopiering av foton</string>
   <string name="upselling_unlimited_feature_mail_calendar">Alla betalda Mail och Calendar-funktioner</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ länder)</string>
+  <string name="upselling_unlimited_feature_drive">Säker molnlagring</string>
+  <string name="upselling_unlimited_feature_pass">Krypterad lösenordshanterare</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPARA %s %%</string>
   <string name="upselling_month">/månad</string>

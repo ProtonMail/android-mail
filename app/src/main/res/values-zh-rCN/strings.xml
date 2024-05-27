@@ -29,6 +29,7 @@
   <string name="you_are_offline">您处于离线状态</string>
   <string name="feature_coming_soon">功能即将推出…</string>
   <string name="mailbox_draft_saved">草稿已保存</string>
+  <string name="mailbox_draft_discard">Discard</string>
   <string name="mailbox_message_sending">正在发送邮件…</string>
   <string name="mailbox_message_sending_offline">网络尚未连接，邮件将稍后发送</string>
   <string name="mailbox_message_sending_success">邮件已发送</string>

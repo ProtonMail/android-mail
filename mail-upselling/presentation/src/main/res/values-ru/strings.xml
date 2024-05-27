@@ -19,24 +19,25 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Кнопка улучшения</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_title">Улучшить до</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Неограниченное количество папок, ярлыков и фильтров</string>
-  <string name="upselling_plus_feature_more">And 14 more premium features</string>
+  <string name="upselling_plus_description_override">Чтобы разблокировать больше места в хранилище и платные функции</string>
+  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_email_addresses">10 адресов электронной почты</string>
+  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
+  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">Хранилище объемом 500 ГБ</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_description_override">Ваш платная подписка \"все в одном\"</string>
+  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Все платные функции Mail и Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_drive">Безопасное облачное хранилище</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">Сэкономьте %s%%</string>
   <string name="upselling_month">/в месяц</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_get_button">Получить %s</string>
   <plurals name="upselling_month">
     <item quantity="one">первый %d месяц</item>
     <item quantity="few">%d месяцев</item>
@@ -44,11 +45,11 @@
     <item quantity="other">%d месяца</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">Не удалось получить параметры улучшения.</string>
   <string name="upselling_snackbar_error_no_user_id">Произошла ошибка.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Не удалось загрузить подписки.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Идет улучшение подписки…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Произошла ошибка при улучшении вашей подписки.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Произошла ошибка. Повторите попытку.</string>
 </resources>

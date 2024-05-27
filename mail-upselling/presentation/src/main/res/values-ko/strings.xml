@@ -22,17 +22,18 @@
   <string name="upselling_title">업그레이드하기</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">스케쥴 전송과 방해 금지</string>
-  <string name="upselling_plus_feature_custom_domain">커스텀 이메일 도메인 1개</string>
+  <string name="upselling_plus_feature_storage">저장공간 15GB</string>
+  <string name="upselling_plus_feature_email_addresses">이메일 주소 10개</string>
+  <string name="upselling_plus_feature_custom_domain">사용자 지정 이메일 도메인 지원</string>
+  <string name="upselling_plus_feature_desktop_app">새로운 Proton Mail 데스크톱 앱</string>
   <string name="upselling_plus_feature_folders_labels">무제한 폴더, 라벨, 필터</string>
-  <string name="upselling_plus_feature_more">그리고 14개의 프리미엄 기능</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">올인원 프리미엄 구독</string>
-  <string name="upselling_unlimited_feature_storage">저장공간 500GB</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Mail과 Calendar의 모든 유료 기능</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">사진 백업 기능과 저장공간 500GB</string>
+  <string name="upselling_unlimited_feature_mail_calendar">모든 유료 메일 및 캘린더 기능</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90개 이상 국가)</string>
+  <string name="upselling_unlimited_feature_drive">안전한 클라우드 저장 공간</string>
+  <string name="upselling_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">%s%% 절약</string>
   <string name="upselling_month">/월</string>

@@ -22,17 +22,18 @@
   <string name="upselling_title">Trecere la</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Pentru a debloca mai mult spațiu și funcții premium</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Programare trimitere și amânare</string>
-  <string name="upselling_plus_feature_custom_domain">Un domeniu de e-mail personal</string>
+  <string name="upselling_plus_feature_storage">15 GiB spațiu de stocare</string>
+  <string name="upselling_plus_feature_email_addresses">10 adrese de e-mail</string>
+  <string name="upselling_plus_feature_custom_domain">Suport pentru domeniu personal de e-mail</string>
+  <string name="upselling_plus_feature_desktop_app">Aplicație nouă Proton Mail pentru desktop</string>
   <string name="upselling_plus_feature_folders_labels">Foldere, etichete și filtre nelimitate</string>
-  <string name="upselling_plus_feature_more">Și încă alte 14 funcții premium</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Abonamentul premium complet</string>
-  <string name="upselling_unlimited_feature_storage">500 GiB spațiu</string>
+  <string name="upselling_unlimited_feature_storage">500 GiB spațiu de stocare cu conservare fotografii</string>
   <string name="upselling_unlimited_feature_mail_calendar">Toate funcțiile cu plată de la Mail și Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (peste 90 de țări)</string>
+  <string name="upselling_unlimited_feature_drive">Stocare securizată în cloud</string>
+  <string name="upselling_unlimited_feature_pass">Manager criptat de parole</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>

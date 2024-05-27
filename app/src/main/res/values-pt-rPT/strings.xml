@@ -29,12 +29,13 @@
   <string name="you_are_offline">Está offline</string>
   <string name="feature_coming_soon">Funcionalidade a disponibilizar em breve…</string>
   <string name="mailbox_draft_saved">Rascunho guardado</string>
+  <string name="mailbox_draft_discard">Descartar</string>
   <string name="mailbox_message_sending">A enviar a mensagem…</string>
   <string name="mailbox_message_sending_offline">Sem ligação, a mensagem está na lista para ser enviada</string>
   <string name="mailbox_message_sending_success">Mensagem enviada</string>
   <string name="mailbox_message_sending_error">Erro no envio da mensagem</string>
   <string name="mailbox_message_sending_error_action">Ir para Rascunhos</string>
-  <string name="mailbox_attachment_uploading_error">Erro a carregar anexo</string>
+  <string name="mailbox_attachment_uploading_error">Erro a enviar o anexo</string>
   <string name="notification_switched_account">Mudou para a conta: \'%s\'.</string>
   <string name="label_saved">Etiqueta guardada</string>
   <string name="label_deleted">Etiqueta eliminada</string>

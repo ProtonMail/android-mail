@@ -107,12 +107,12 @@
     <item quantity="one">Membre (%1$d)</item>
     <item quantity="other">Membres (%1$d)</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Il contient une adresse e-mail non valide.</string>
+  <string name="contact_form_invalid_email_error">Une erreur s\'est produite lors de l\'enregistrement du contact : il contient une adresse e-mail qui n\'est pas valide.</string>
   <string name="contact_group_details_loading_error">Une erreur s\'est produite lors du chargement du contact. Veuillez réessayer plus tard.</string>
   <string name="contact_group_details_deletion_success">Le groupe de contacts a été supprimé.</string>
-  <string name="contact_group_details_deletion_error">Une erreur s\'est produite pendant la suppression du groupe.</string>
+  <string name="contact_group_details_deletion_error">Une erreur s\'est produite lors de la suppression du groupe.</string>
   <string name="contact_group_delete_dialog_title">Retirer le groupe %s des contacts ?</string>
-  <string name="contact_group_delete_dialog_message">Le groupe sera dissous,mais les contacts attribués ne seront pas affectés.</string>
+  <string name="contact_group_delete_dialog_message">Le groupe sera retiré, mais les contacts attribués ne seront pas affectés.</string>
   <string name="contact_group_delete_dialog_confirm">Retirer</string>
   <string name="contact_group_delete_dialog_dismiss">Conserver</string>
   <string name="contact_group_delete_button_text">Supprimer le groupe</string>
@@ -127,14 +127,14 @@
   <string name="change_color">Changer la couleur</string>
   <string name="contact_group_form_create_success">Le groupe de contacts a été créé.</string>
   <string name="contact_group_form_update_success">Le groupe de contacts a été mis à jour.</string>
-  <string name="contact_group_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Veuillez réessayer plus tard.</string>
+  <string name="contact_group_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du groupe de contacts. Veuillez réessayer plus tard.</string>
   <string name="contact_group_form_save_error_already_exists">Un groupe portant ce nom existe déjà.</string>
-  <string name="contact_group_form_subscription_error">Passez à un abonnement payant pour créer des groupes de contact.</string>
+  <string name="contact_group_form_subscription_error">Passez à un abonnement payant pour créer des groupes de contacts.</string>
   <string name="members_loading_error">Une erreur s\'est produite lors du chargement des membres. Réessayez plus tard.</string>
   <string name="members_done">Terminé</string>
   <string name="add_members_error">Une erreur s\'est produite lors de l\'ajout des membres. Réessayez plus tard.</string>
   <string name="manage_members_title">Gérer les membres</string>
   <string name="search_contact">Rechercher des contacts</string>
-  <string name="member_update_error">Une erreur s\'est produite lors de l\'actualisation du membre. Réessayez plus tard.</string>
+  <string name="member_update_error">Une erreur s\'est produite lors de l\'actualisation des membres. Réessayez plus tard.</string>
   <string name="contact_group_color">Couleur du groupe de contacts</string>
 </resources>

@@ -19,12 +19,12 @@
 <resources>
   <string name="contact_list_title">Contactos</string>
   <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
-  <string name="no_contacts">No contacts found</string>
-  <string name="no_contact_groups">No contact groups found</string>
+  <string name="no_contacts">Não foram encontrados contactos.</string>
+  <string name="no_contact_groups">Nenhum grupo de contactos foi encontrado.</string>
   <string name="no_contacts_description">Improve your email experience by creating a new contact or importing existing ones.</string>
   <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
   <string name="add_contact">Adicionar contacto</string>
-  <string name="add_contact_group">Add contact group</string>
+  <string name="add_contact_group">Adicionar un grupo de contactos</string>
   <string name="add_contact_content_description">Adicionar contacto</string>
   <string name="all_title">Todos</string>
   <string name="groups_title">Grupos</string>
@@ -36,7 +36,7 @@
   <string name="no_contact_email">Sem endereço de e-mail</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <string name="contact_details_loading_error">Error loading contact, please try again later</string>
-  <string name="contact_details_delete_success">Contato eliminado</string>
+  <string name="contact_details_delete_success">Contacto eliminado</string>
   <string name="edit_contact_content_description">Editar o contacto</string>
   <string name="delete_contact_content_description">Eliminar o contacto</string>
   <string name="contact_avatar_image_content_description">Avatar do contacto</string>
@@ -77,14 +77,14 @@
   <string name="address_section">Endereço</string>
   <string name="note_section">Nota</string>
   <string name="birthday_section">Data de nascimento</string>
-  <string name="other_section">Additional information</string>
+  <string name="other_section">Informações adicionais</string>
   <string name="display_name">Nome a mostrar</string>
   <string name="first_name">Nome próprio</string>
   <string name="last_name">Apelido</string>
   <string name="email_address">Endereço de e-mail</string>
   <string name="phone_number">Número de telefone</string>
   <string name="additional_info">Informação adicional</string>
-  <string name="remove_contact_property">Remove contact property</string>
+  <string name="remove_contact_property">Remover a propriedade do contacto</string>
   <string name="property_type">Tipo de propriedade</string>
   <string name="property_label">Etiqueta</string>
   <string name="address_street">Rua</string>
@@ -114,8 +114,8 @@
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
   <string name="contact_group_delete_dialog_confirm">Remover</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_delete_dialog_dismiss">Guarde isso</string>
+  <string name="contact_group_delete_button_text">Excluir o grupo</string>
   <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>
   <string name="edit_contact_group_content_description">Editar grupo de contactos</string>
   <string name="delete_contact_group_content_description">Eliminar grupo de contactos</string>
@@ -134,7 +134,7 @@
   <string name="members_done">Terminado</string>
   <string name="add_members_error">Error adding members, please try again later</string>
   <string name="manage_members_title">Gerir os membros</string>
-  <string name="search_contact">Search for contact</string>
+  <string name="search_contact">Pesquisar contactos</string>
   <string name="member_update_error">Error updating member, please try again later</string>
-  <string name="contact_group_color">Contact group color</string>
+  <string name="contact_group_color">Cor do grupo de contactos</string>
 </resources>

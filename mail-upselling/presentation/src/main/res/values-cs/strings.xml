@@ -22,17 +22,18 @@
   <string name="upselling_title">Navýšit na</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Pro odemknutí většího úložného prostoru a prémiových funkcí</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Naplánujte odeslání a odložte na později</string>
-  <string name="upselling_plus_feature_custom_domain">1 vlastní e-mailová doména</string>
+  <string name="upselling_plus_feature_storage">15 GB prostoru</string>
+  <string name="upselling_plus_feature_email_addresses">10 e-mailových adres</string>
+  <string name="upselling_plus_feature_custom_domain">Podpora vlastní e-mailové domény</string>
+  <string name="upselling_plus_feature_desktop_app">Nová aplikace Proton Mail pro desktop</string>
   <string name="upselling_plus_feature_folders_labels">Neomezený počet složek, štítků a filtrů</string>
-  <string name="upselling_plus_feature_more">A 14 dAlších prémiových funkcí</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Vaše prémiové předplatné obsahující vše v jednom</string>
-  <string name="upselling_unlimited_feature_storage">500 GB úložiště</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Všechny placené funkce Mailu a kalendáře</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB prostoru se zálohováním fotografií</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Všechny placené funkce Mail a Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ zemí)</string>
+  <string name="upselling_unlimited_feature_drive">Bezpečné cloudové úložiště</string>
+  <string name="upselling_unlimited_feature_pass">Šifrovaný správce hesel</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">UŠETŘETE %s%%</string>
   <string name="upselling_month">/měsíčně</string>

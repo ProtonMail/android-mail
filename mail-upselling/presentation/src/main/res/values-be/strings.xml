@@ -22,17 +22,18 @@
   <string name="upselling_title">Палепшыць да</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Планаванне адпраўкі і адкладанне</string>
-  <string name="upselling_plus_feature_custom_domain">1 карыстальніцкі дамен электроннай пошты</string>
+  <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
+  <string name="upselling_plus_feature_email_addresses">10 адрасоў электроннай пошты</string>
+  <string name="upselling_plus_feature_custom_domain">Падтрымка карыстальніцкіх даменаў электроннай пошты</string>
+  <string name="upselling_plus_feature_desktop_app">Новая настольная праграма Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Неабмежаваная колькасць папак, метак і фільтраў</string>
-  <string name="upselling_plus_feature_more">І яшчэ 14 прэміяльныя функцый</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Ваша ўніверсальная прэміяльная падпіска</string>
-  <string name="upselling_unlimited_feature_storage">500 ГБ сховішча</string>
+  <string name="upselling_unlimited_feature_storage">500 ГБ сховішча з рэзерваваннем фатаграфій</string>
   <string name="upselling_unlimited_feature_mail_calendar">Усе платныя функцыі Mail і Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (больш за 90 краін)</string>
+  <string name="upselling_unlimited_feature_drive">Бяспечнае воблачнае сховішча</string>
+  <string name="upselling_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ЭКАНОМІЯ %s%%</string>
   <string name="upselling_month">/месяц</string>

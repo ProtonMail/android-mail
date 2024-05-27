@@ -29,6 +29,7 @@
   <string name="you_are_offline">Du er frakoblet</string>
   <string name="feature_coming_soon">Denne funksjonen kommer snart ...</string>
   <string name="mailbox_draft_saved">Utkast lagret</string>
+  <string name="mailbox_draft_discard">Forkast</string>
   <string name="mailbox_message_sending">Sender melding…</string>
   <string name="mailbox_message_sending_offline">Frakoblet modus, melding satt i sendekø</string>
   <string name="mailbox_message_sending_success">Melding sendt</string>

@@ -49,17 +49,17 @@
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
   <string name="composer_button_add_password">Ajouter un mot de passe</string>
   <string name="composer_button_set_expiration">Définir la date d\'expiration</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Délai d\'expiration du message</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Configurer</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Expiration du message</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Définir</string>
   <string name="composer_bottom_bar_expiration_time_none">Aucun</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 heure</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 jour</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 jours</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 semaine</string>
   <string name="composer_bottom_bar_expiration_time_custom">Personnaliser</string>
-  <string name="composer_error_setting_expiration_time">Le paramétrage du délai d\'expiration a échoué</string>
+  <string name="composer_error_setting_expiration_time">La définition du délai d\'expiration n\'a pas abouti.</string>
   <!-- Send expiring message to external recipients dialog -->
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Les messages avec délai d\'expiration ne sont pas prise en charge.</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Les messages avec délai d\'expiration ne sont pas pris en charge.</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Nous vous recommandons de configurer un mot de passe pour les destinataires suivants :</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Annuler</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Envoyer quand même</string>
@@ -84,7 +84,7 @@
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">En savoir plus</a></string>
   <string name="set_message_password_label">Mot de passe du message</string>
   <string name="set_message_password_label_repeat">Confirmer le mot de passe</string>
-  <string name="set_message_password_label_hint">Indication de mot de passe (facultatif)</string>
+  <string name="set_message_password_label_hint">Indice de mot de passe (facultatif)</string>
   <string name="set_message_password_supporting_text">4 à 21 caractères</string>
   <string name="set_message_password_supporting_error_text">Le mot de passe doit contenir entre 4 et 21 caractères.</string>
   <string name="set_message_password_supporting_text_repeat">Les mots de passe doivent être identiques.</string>

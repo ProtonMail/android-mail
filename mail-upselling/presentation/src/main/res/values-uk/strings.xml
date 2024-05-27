@@ -21,27 +21,28 @@
   <string name="upselling_button_item_content_description">Upgrade button</string>
   <string name="upselling_title">Upgrade to</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Щоб розблокувати більше сховища та преміум функцій</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Schedule send and snooze</string>
-  <string name="upselling_plus_feature_custom_domain">1 custom email domain</string>
-  <string name="upselling_plus_feature_folders_labels">Необмежена кількість тек, міток і фільтрів</string>
-  <string name="upselling_plus_feature_more">Та ще 14 преміум-функцій</string>
+  <string name="upselling_plus_description_override">Щоб розблокувати більше сховище та преміальні функції</string>
+  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_email_addresses">10 адрес електронної пошти</string>
+  <string name="upselling_plus_feature_custom_domain">Підтримка власних доменів електронної пошти</string>
+  <string name="upselling_plus_feature_desktop_app">Нова програма Proton Mail для комп\'ютера</string>
+  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage</string>
-  <string name="upselling_unlimited_feature_mail_calendar">All paid Mail and calendar features</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Усі платні функції Proton Mail і Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_drive">Безпечне хмарне сховище</string>
+  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SAVE %s%%</string>
   <string name="upselling_month">/month</string>
   <string name="upselling_get_button">Get %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d місяць</item>
-    <item quantity="few">%d місяців</item>
-    <item quantity="many">%d місяці</item>
-    <item quantity="other">%d місяці</item>
+    <item quantity="few">%d місяці</item>
+    <item quantity="many">%d місяців</item>
+    <item quantity="other">%d місяців</item>
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>

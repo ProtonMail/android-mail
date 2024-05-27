@@ -27,7 +27,7 @@
   <string name="mail_settings_auto_lock">Bloqueio automático</string>
   <string name="mail_settings_alternative_routing">Redirecionamento alternativo</string>
   <string name="mail_settings_app_language">Idioma da aplicação</string>
-  <string name="mail_settings_combined_contacts">Contatos combinados</string>
+  <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_local_cache">Cache local</string>
   <string name="mail_settings_local_cache_hint">Espaço utilizado: %s</string>
   <string name="mail_settings_local_cache_clear_button">Limpar dados</string>
@@ -54,7 +54,7 @@
   <string name="mail_settings_recovery_email">Endereço de recuperação</string>
   <string name="mail_settings_mailbox_size">Tamanho da caixa de correio</string>
   <string name="mail_settings_addresses">Endereços</string>
-  <string name="mail_settings_default_email_address">Endereço de e-mail predefinido</string>
+  <string name="mail_settings_default_email_address">Endereço de e-mail padrão</string>
   <string name="mail_settings_display_name_and_signature">Nome a mostrar e assinatura</string>
   <string name="mail_settings_mailbox">Caixa de correio</string>
   <string name="mail_settings_privacy">Privacidade</string>
@@ -64,7 +64,7 @@
   <string name="mail_settings_not_set">Não definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa na sua caixa de entrada ou veja-os separadamente</string>
   <!-- Default email address settings -->
-  <string name="mail_settings_default_email_address_title">Endereço de e-mail predefinido</string>
+  <string name="mail_settings_default_email_address_title">Endereço de e-mail padrão</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Endereços inativos</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">Sem endereços inativos</string>
   <string name="mail_settings_default_email_address_error_loading">Erro ao carregar as definições</string>
@@ -101,12 +101,12 @@
   <string name="mail_settings_swipe_action_read_title">Não lida</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Estrela</string>
-  <string name="mail_settings_swipe_action_trash_title">Lixo</string>
+  <string name="mail_settings_swipe_action_trash_title">Lixeira</string>
   <string name="mail_settings_swipe_action_archive_description">Mover para o Arquivo</string>
   <string name="mail_settings_swipe_action_read_description">Marcar como não lido/lido</string>
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
   <string name="mail_settings_swipe_action_star_description">Adicionar/Remover estrela</string>
-  <string name="mail_settings_swipe_action_trash_description">Mover para o lixo</string>
+  <string name="mail_settings_swipe_action_trash_description">Mover para a lixeira</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificações push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificações estendidas</string>
@@ -138,7 +138,7 @@
   <string name="mail_settings_pin_insertion_button_confirm">Confirmar</string>
   <string name="mail_settings_pin_insertion_error_no_match">Os códigos PIN não correspondem.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="one">%s remaining attempt.</item>
+    <item quantity="one">%s tentativa restante.</item>
     <item quantity="other">%s tentativas restantes.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">

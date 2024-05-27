@@ -29,6 +29,7 @@
   <string name="you_are_offline">您處於離線狀態</string>
   <string name="feature_coming_soon">全新功能即將大展身手...</string>
   <string name="mailbox_draft_saved">草稿已儲存</string>
+  <string name="mailbox_draft_discard">放棄</string>
   <string name="mailbox_message_sending">傳送郵件訊息...</string>
   <string name="mailbox_message_sending_offline">未連線，郵件佇列等候傳送</string>
   <string name="mailbox_message_sending_success">郵件已傳送</string>

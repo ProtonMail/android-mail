@@ -29,6 +29,7 @@
   <string name="you_are_offline">Sei offline</string>
   <string name="feature_coming_soon">Funzionalità in arrivo…</string>
   <string name="mailbox_draft_saved">Bozza salvata</string>
+  <string name="mailbox_draft_discard">Scarta</string>
   <string name="mailbox_message_sending">Invio del messaggio in corso</string>
   <string name="mailbox_message_sending_offline">Sei offline. Messaggio in coda per l\'invio.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>

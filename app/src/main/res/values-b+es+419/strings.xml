@@ -29,6 +29,7 @@
   <string name="you_are_offline">No está conectado.</string>
   <string name="feature_coming_soon">Próximamente...</string>
   <string name="mailbox_draft_saved">Borrador guardado</string>
+  <string name="mailbox_draft_discard">Descartar</string>
   <string name="mailbox_message_sending">Enviando mensaje…</string>
   <string name="mailbox_message_sending_offline">Sin conexión, mensaje puesto en cola de envío</string>
   <string name="mailbox_message_sending_success">Mensaje enviado</string>

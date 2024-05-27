@@ -22,17 +22,18 @@
   <string name="upselling_title">Opgrader til</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">For at få mere lagerplads og premium-funktioner</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Planlæg afsendelse og udsæt</string>
-  <string name="upselling_plus_feature_custom_domain">1 brugertilpasset e-maildomæne</string>
+  <string name="upselling_plus_feature_storage">15 GB lagerplads</string>
+  <string name="upselling_plus_feature_email_addresses">10 e-mailadresser</string>
+  <string name="upselling_plus_feature_custom_domain">Understøttelse af brugerdefinerede e-maildomæner</string>
+  <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-skrivebordsapp</string>
   <string name="upselling_plus_feature_folders_labels">Ubegrænsede mapper, etiketter og filtre</string>
-  <string name="upselling_plus_feature_more">Og 14 andre premium-funktioner</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Dit premium-abonnement med alt i ét</string>
-  <string name="upselling_unlimited_feature_storage">500 GB lagerplads</string>
-  <string name="upselling_unlimited_feature_mail_calendar">Alle betalte funktioner i Mail og Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_storage">500 GB lagerplads med sikkerhedskopiering af fotos</string>
+  <string name="upselling_unlimited_feature_mail_calendar">Samtlige betalte funktioner i Mail og Calendar</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ lande)</string>
+  <string name="upselling_unlimited_feature_drive">Sikker skylagring</string>
+  <string name="upselling_unlimited_feature_pass">Krypteret adgangskodeadministrator</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPAR %s%%</string>
   <string name="upselling_month">/måned</string>

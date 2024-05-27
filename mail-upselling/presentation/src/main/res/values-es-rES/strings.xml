@@ -22,17 +22,18 @@
   <string name="upselling_title">Mejorar a</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Para desbloquear más almacenamiento y funciones premium</string>
-  <string name="upselling_plus_feature_schedule_send_snooze">Envío programado y pausa</string>
-  <string name="upselling_plus_feature_custom_domain">1 dominio de correo electrónico personalizado</string>
-  <string name="upselling_plus_feature_folders_labels">Carpetas, etiquetas y filtros ilimitados</string>
-  <string name="upselling_plus_feature_more">Y 14 funciones premium más</string>
+  <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>
+  <string name="upselling_plus_feature_email_addresses">10 direcciones de correo electrónico</string>
+  <string name="upselling_plus_feature_custom_domain">Soporte de dominio de correo personalizado</string>
+  <string name="upselling_plus_feature_desktop_app">Nueva aplicación de escritorio de Proton Mail</string>
+  <string name="upselling_plus_feature_folders_labels">Carpetas, etiquetas, filtros ilimitados</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Tu suscripción premium todo en uno</string>
-  <string name="upselling_unlimited_feature_storage">500 GB de espacio de almacenamiento</string>
+  <string name="upselling_unlimited_feature_storage">500 GB de almacenamiento con copia de seguridad de fotos</string>
   <string name="upselling_unlimited_feature_mail_calendar">Todas las funciones de pago de Mail y Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN Plus</string>
-  <string name="upselling_unlimited_feature_drive">Drive Plus</string>
-  <string name="upselling_unlimited_feature_pass">Pass Plus</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (más de 90 países)</string>
+  <string name="upselling_unlimited_feature_drive">Almacenamiento seguro en la nube</string>
+  <string name="upselling_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">AHORRA %s%%</string>
   <string name="upselling_month">/mes</string>
