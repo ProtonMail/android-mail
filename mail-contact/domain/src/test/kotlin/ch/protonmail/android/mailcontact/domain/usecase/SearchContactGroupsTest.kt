@@ -103,7 +103,7 @@ class SearchContactGroupsTest {
     }
 
     @Test
-    fun `when there are matching contact groups but they are empty, don't return them`() = runTest {
+    fun `when there are matching contact groups but they are empty, don't return them if param is false`() = runTest {
         // Given
         val query = "work"
 
@@ -129,6 +129,38 @@ class SearchContactGroupsTest {
             val actual = assertIs<Either.Right<List<ContactGroup>>>(awaitItem())
 
             assertEquals(actual.value.size, 0)
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `when there are matching contact groups but they are empty, return them if param is true`() = runTest {
+        // Given
+        val query = "work"
+
+        expectContactGroupLabelsSuccess(UserIdTestData.userId, expectedLabels)
+
+        val expectedEmptyGroupCoworkers = ContactGroup(
+            UserIdTestData.userId,
+            LabelSample.GroupCoworkers.labelId,
+            "Coworkers",
+            "#ABCABC",
+            emptyList() // this group matches by name, but it's empty
+        )
+
+        expectObserveContactGroup(
+            UserIdTestData.userId,
+            expectedContactGroupCoworkers.labelId,
+            expectedEmptyGroupCoworkers
+        )
+
+        // When
+        searchContactGroups(UserIdTestData.userId, query, returnEmpty = true).test {
+            // Then
+            val actual = assertIs<Either.Right<List<ContactGroup>>>(awaitItem())
+
+            assertEquals(actual.value.size, 1)
+            assertEquals(actual.value.first(), expectedEmptyGroupCoworkers)
             awaitComplete()
         }
     }

@@ -39,7 +39,14 @@ class SearchContactGroups @Inject constructor(
     private val observeContactGroup: ObserveContactGroup
 ) {
 
-    operator fun invoke(userId: UserId, query: String): Flow<Either<GetContactError, List<ContactGroup>>> =
+    /**
+     * @param returnEmpty if we should return matched Contact Groups that have no Members
+     */
+    operator fun invoke(
+        userId: UserId,
+        query: String,
+        returnEmpty: Boolean = false
+    ): Flow<Either<GetContactError, List<ContactGroup>>> =
         observeContactGroupLabels(userId).distinctUntilChanged().transformLatest {
             it.onLeft {
                 Timber.e("SearchContactGroups, error observing contacts group labels: $it")
@@ -60,7 +67,7 @@ class SearchContactGroups @Inject constructor(
                             contactGroups
                                 .filterNotNull()
                                 .filter {
-                                    it.members.isNotEmpty()
+                                    if (!returnEmpty) it.members.isNotEmpty() else true
                                 }
                                 .right()
                         )
