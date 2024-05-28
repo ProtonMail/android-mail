@@ -2027,6 +2027,43 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should close bottom sheet and call use case when moving a message to spam`() = runTest {
+        // Given
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) } returns Unit.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            skipItems(2)
+            viewModel.submit(ConversationDetailViewAction.MoveMessageToSpam(messageId))
+
+            // then
+            assertEquals(
+                BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+            coVerify { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,

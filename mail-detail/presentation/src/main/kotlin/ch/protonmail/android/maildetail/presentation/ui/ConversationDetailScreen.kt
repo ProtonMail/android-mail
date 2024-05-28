@@ -210,7 +210,7 @@ fun ConversationDetailScreen(
                         },
                         onMoveToTrash = { viewModel.submit(ConversationDetailViewAction.TrashMessage(it)) },
                         onMoveToArchive = { viewModel.submit(ConversationDetailViewAction.ArchiveMessage(it)) },
-                        onMoveToSpam = {},
+                        onMoveToSpam = { viewModel.submit(ConversationDetailViewAction.MoveMessageToSpam(it)) },
                         onPrint = { viewModel.submit(ConversationDetailViewAction.PrintRequested(it)) },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
                     )

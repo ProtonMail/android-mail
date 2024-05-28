@@ -133,7 +133,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.PrintRequested,
                 is ConversationDetailViewAction.MarkMessageUnread,
                 is ConversationDetailViewAction.TrashMessage,
-                is ConversationDetailViewAction.ArchiveMessage -> BottomSheetOperation.Dismiss
+                is ConversationDetailViewAction.ArchiveMessage,
+                is ConversationDetailViewAction.MoveMessageToSpam -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
