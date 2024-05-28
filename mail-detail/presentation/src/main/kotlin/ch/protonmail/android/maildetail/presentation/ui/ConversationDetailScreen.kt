@@ -208,6 +208,7 @@ fun ConversationDetailScreen(
                                 ConversationDetailViewAction.SwitchViewMode(it, ViewModePreference.DarkMode)
                             )
                         },
+                        onMoveToTrash = {},
                         onPrint = { viewModel.submit(ConversationDetailViewAction.PrintRequested(it)) },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
                     )
