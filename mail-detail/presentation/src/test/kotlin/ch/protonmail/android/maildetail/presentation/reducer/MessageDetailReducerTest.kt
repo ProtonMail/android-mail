@@ -511,6 +511,19 @@ class MessageDetailReducerTest(
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceDeleteDialogState = false,
                 shouldReduceReportPhishingDialogState = false
+            ),
+            TestInput(
+                MessageViewAction.Archive,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                exitMessage = ActionResult.UndoableActionResult(TextUiModel(string.message_moved_to_archive)),
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false
             )
         )
 
@@ -741,6 +754,18 @@ class MessageDetailReducerTest(
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReducePhishingLinkConfirmation = false,
                 shouldReduceReportPhishingDialogState = true
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorMovingToArchive,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false
             )
         )
 

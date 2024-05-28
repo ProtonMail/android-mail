@@ -193,6 +193,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.SwitchViewMode -> directlyHandleViewAction(action)
             is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
             is MessageViewAction.Print -> handlePrint(action.context)
+            is MessageViewAction.Archive -> handleArchive()
         }
     }
 
@@ -676,6 +677,17 @@ class MessageDetailViewModel @Inject constructor(
                 this@MessageDetailViewModel::loadEmbeddedImage
             )
         }
+    }
+
+    private fun handleArchive() {
+        primaryUserId.mapLatest { userId ->
+            moveMessage(userId, messageId, SystemLabelId.Archive.labelId).fold(
+                ifLeft = { MessageDetailEvent.ErrorMovingToArchive },
+                ifRight = { MessageViewAction.Archive }
+            )
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {

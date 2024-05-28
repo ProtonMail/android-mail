@@ -190,6 +190,7 @@ fun MessageDetailScreen(
                             viewModel.submit(MessageViewAction.SwitchViewMode(ViewModePreference.DarkMode))
                         },
                         onMoveToTrash = { viewModel.submit(MessageViewAction.Trash) },
+                        onMoveToArchive = { viewModel.submit(MessageViewAction.Archive) },
                         onPrint = { viewModel.submit(MessageViewAction.PrintRequested) },
                         onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
                     )

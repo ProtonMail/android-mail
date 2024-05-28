@@ -86,6 +86,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorDeletingMessage -> R.string.error_delete_message_failed
                 is MessageDetailEvent.ErrorDeletingNoApplicableFolder ->
                     R.string.error_delete_message_failed_wrong_folder
+                is MessageDetailEvent.ErrorMovingToArchive -> R.string.error_move_to_archive_failed
             }
             Effect.of(TextUiModel(textResource))
         } else {
@@ -118,6 +119,8 @@ class MessageDetailReducer @Inject constructor(
         is MessageViewAction.DeleteConfirmed -> Effect.of(
             DefinitiveActionResult(TextUiModel(R.string.message_deleted))
         )
+
+        is MessageViewAction.Archive -> Effect.of(UndoableActionResult(TextUiModel(R.string.message_moved_to_archive)))
 
         else -> exitScreenWithMessageEffect
     }

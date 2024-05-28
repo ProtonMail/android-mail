@@ -116,6 +116,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorAttachmentDownloadInProgress : MessageDetailEvent, AffectingErrorBar
     object ErrorDeletingMessage : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
     object ErrorDeletingNoApplicableFolder : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
+    object ErrorMovingToArchive : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -156,4 +157,6 @@ sealed interface MessageViewAction : MessageDetailOperation {
         val participant: ParticipantUiModel,
         val avatarUiModel: AvatarUiModel
     ) : MessageViewAction, AffectingBottomSheet
+
+    data object Archive : MessageViewAction
 }

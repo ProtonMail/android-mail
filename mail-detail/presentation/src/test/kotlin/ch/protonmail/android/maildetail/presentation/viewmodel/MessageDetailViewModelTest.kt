@@ -300,6 +300,13 @@ class MessageDetailViewModelTest {
                 labelId = SystemLabelId.Trash.labelId
             )
         } returns Unit.right()
+        coEvery {
+            this@mockk.invoke(
+                userId = userId,
+                messageId = messageId,
+                labelId = SystemLabelId.Archive.labelId
+            )
+        } returns Unit.right()
     }
     private val resolveParticipantName = mockk<ResolveParticipantName> {
         every { this@mockk(any(), any()) } returns ResolveParticipantNameResult("Sender", isProton = false)
@@ -1787,6 +1794,41 @@ class MessageDetailViewModelTest {
             assertEquals(participant, stateData.participant)
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    @Test
+    fun `when archive action is submitted, use case is called and success message is emitted`() = runTest {
+        // Given
+        val expectedMessage = ActionResult.UndoableActionResult(TextUiModel(R.string.message_moved_to_archive))
+
+        // when
+        viewModel.submit(MessageViewAction.Archive)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { moveMessage(userId, messageId, SystemLabelId.Archive.labelId) }
+            assertEquals(expectedMessage, awaitItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `when error moving to archive, error is emitted`() = runTest {
+        // Given
+        coEvery {
+            moveMessage(
+                userId,
+                messageId,
+                SystemLabelId.Archive.labelId
+            )
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.submit(MessageViewAction.Archive)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(TextUiModel(R.string.error_move_to_archive_failed), viewModel.state.value.error.consume())
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {

@@ -136,6 +136,7 @@ private fun callbackForAction(
     Action.ViewInLightMode -> actionCallbacks.onViewInLightMode
     Action.ViewInDarkMode -> actionCallbacks.onViewInDarkMode
     Action.Trash -> actionCallbacks.onMoveToTrash
+    Action.Archive -> actionCallbacks.onMoveToArchive
     Action.Print -> actionCallbacks.onPrint
     Action.ReportPhishing -> actionCallbacks.onReportPhishing
 
@@ -158,6 +159,7 @@ object DetailMoreActionsBottomSheetContent {
         val onViewInLightMode: (MessageId) -> Unit,
         val onViewInDarkMode: (MessageId) -> Unit,
         val onMoveToTrash: (MessageId) -> Unit,
+        val onMoveToArchive: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onReportPhishing: (MessageId) -> Unit
     )
@@ -190,6 +192,7 @@ private fun BottomSheetContentPreview() {
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
                 onMoveToTrash = {},
+                onMoveToArchive = {},
                 onPrint = {},
                 onReportPhishing = {}
             )
