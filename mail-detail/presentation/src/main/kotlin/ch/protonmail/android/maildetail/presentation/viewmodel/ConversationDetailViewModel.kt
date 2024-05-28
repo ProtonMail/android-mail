@@ -243,6 +243,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.Print -> handlePrint(action.context, action.messageId)
             is ConversationDetailViewAction.MarkMessageUnread -> handleMarkMessageUnread(action)
             is ConversationDetailViewAction.TrashMessage -> handleTrashMessage(action)
+            is ConversationDetailViewAction.ArchiveMessage -> handleArchiveMessage(action)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -1008,6 +1009,13 @@ class ConversationDetailViewModel @Inject constructor(
     private fun handleTrashMessage(action: ConversationDetailViewAction.TrashMessage) {
         viewModelScope.launch {
             moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Trash.labelId)
+            emitNewStateFrom(action)
+        }
+    }
+
+    private fun handleArchiveMessage(action: ConversationDetailViewAction.ArchiveMessage) {
+        viewModelScope.launch {
+            moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Archive.labelId)
             emitNewStateFrom(action)
         }
     }

@@ -209,7 +209,8 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.PrintRequested(MessageId(messageId.id)) affects listOf(BottomSheet, Messages),
             ConversationDetailViewAction.MarkMessageUnread(MessageId(messageId.id)) affects listOf(BottomSheet),
             ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(MessageId(messageId.id)) affects BottomSheet,
-            ConversationDetailViewAction.TrashMessage(MessageId(messageId.id)) affects listOf(BottomSheet)
+            ConversationDetailViewAction.TrashMessage(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.ArchiveMessage(MessageId(messageId.id)) affects listOf(BottomSheet)
         )
 
         val events = listOf(

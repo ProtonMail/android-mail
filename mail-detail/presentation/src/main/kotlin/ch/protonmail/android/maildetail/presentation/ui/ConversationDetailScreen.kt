@@ -209,7 +209,7 @@ fun ConversationDetailScreen(
                             )
                         },
                         onMoveToTrash = { viewModel.submit(ConversationDetailViewAction.TrashMessage(it)) },
-                        onMoveToArchive = {},
+                        onMoveToArchive = { viewModel.submit(ConversationDetailViewAction.ArchiveMessage(it)) },
                         onPrint = { viewModel.submit(ConversationDetailViewAction.PrintRequested(it)) },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
                     )

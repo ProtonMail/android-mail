@@ -209,4 +209,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class TrashMessage(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data class ArchiveMessage(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
 }
