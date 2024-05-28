@@ -205,4 +205,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class RequestMessageLabelAsBottomSheet(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data class TrashMessage(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
 }

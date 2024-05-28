@@ -48,6 +48,7 @@ import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
@@ -190,7 +191,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val findContactByEmail: FindContactByEmail,
     private val getMessageIdToExpand: GetMessageIdToExpand,
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
-    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed
+    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
+    private val moveMessage: MoveMessage
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -240,6 +242,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
             is ConversationDetailViewAction.Print -> handlePrint(action.context, action.messageId)
             is ConversationDetailViewAction.MarkMessageUnread -> handleMarkMessageUnread(action)
+            is ConversationDetailViewAction.TrashMessage -> handleTrashMessage(action)
 
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
@@ -998,6 +1001,13 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch {
             markMessageAsUnread(primaryUserId.first(), action.messageId)
             onCollapseMessage(MessageIdUiModel(action.messageId.id))
+            emitNewStateFrom(action)
+        }
+    }
+
+    private fun handleTrashMessage(action: ConversationDetailViewAction.TrashMessage) {
+        viewModelScope.launch {
+            moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Trash.labelId)
             emitNewStateFrom(action)
         }
     }

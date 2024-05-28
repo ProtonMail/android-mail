@@ -57,6 +57,7 @@ import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
+import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
@@ -321,6 +322,7 @@ class ConversationDetailViewModelTest {
     }
     private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet>()
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
+    private val moveMessage = mockk<MoveMessage>()
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -365,7 +367,8 @@ class ConversationDetailViewModelTest {
             findContactByEmail = findContactByEmail,
             getMessageIdToExpand = getMessageIdToExpand,
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
-            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
+            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
+            moveMessage = moveMessage
         )
     }
 
