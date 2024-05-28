@@ -117,6 +117,7 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     object ErrorDeletingMessage : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
     object ErrorDeletingNoApplicableFolder : MessageDetailEvent, AffectingErrorBar, AffectingDeleteDialog
     object ErrorMovingToArchive : MessageDetailEvent, AffectingErrorBar
+    object ErrorMovingToSpam : MessageDetailEvent, AffectingErrorBar
 }
 
 sealed interface MessageViewAction : MessageDetailOperation {
@@ -159,4 +160,5 @@ sealed interface MessageViewAction : MessageDetailOperation {
     ) : MessageViewAction, AffectingBottomSheet
 
     data object Archive : MessageViewAction
+    data object Spam : MessageViewAction
 }

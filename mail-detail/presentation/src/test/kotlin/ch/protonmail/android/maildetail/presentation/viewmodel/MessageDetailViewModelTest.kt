@@ -307,6 +307,13 @@ class MessageDetailViewModelTest {
                 labelId = SystemLabelId.Archive.labelId
             )
         } returns Unit.right()
+        coEvery {
+            this@mockk.invoke(
+                userId = userId,
+                messageId = messageId,
+                labelId = SystemLabelId.Spam.labelId
+            )
+        } returns Unit.right()
     }
     private val resolveParticipantName = mockk<ResolveParticipantName> {
         every { this@mockk(any(), any()) } returns ResolveParticipantNameResult("Sender", isProton = false)
@@ -1829,6 +1836,41 @@ class MessageDetailViewModelTest {
 
         // Then
         assertEquals(TextUiModel(R.string.error_move_to_archive_failed), viewModel.state.value.error.consume())
+    }
+
+    @Test
+    fun `when spam action is submitted, use case is called and success message is emitted`() = runTest {
+        // Given
+        val expectedMessage = ActionResult.UndoableActionResult(TextUiModel(R.string.message_moved_to_spam))
+
+        // when
+        viewModel.submit(MessageViewAction.Spam)
+        advanceUntilIdle()
+        viewModel.state.test {
+
+            // then
+            coVerify { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) }
+            assertEquals(expectedMessage, awaitItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `when error moving to spam, error is emitted`() = runTest {
+        // Given
+        coEvery {
+            moveMessage(
+                userId,
+                messageId,
+                SystemLabelId.Spam.labelId
+            )
+        } returns DataError.Local.NoDataCached.left()
+
+        // When
+        viewModel.submit(MessageViewAction.Spam)
+        advanceUntilIdle()
+
+        // Then
+        assertEquals(TextUiModel(R.string.error_move_to_spam_failed), viewModel.state.value.error.consume())
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {

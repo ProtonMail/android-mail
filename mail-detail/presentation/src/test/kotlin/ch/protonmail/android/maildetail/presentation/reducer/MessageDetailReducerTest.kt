@@ -524,6 +524,19 @@ class MessageDetailReducerTest(
                 shouldReduceBottomSheetState = false,
                 shouldReduceOpenMessageBodyLinkEffect = false,
                 shouldReducePhishingLinkConfirmation = false
+            ),
+            TestInput(
+                MessageViewAction.Spam,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                exitMessage = ActionResult.UndoableActionResult(TextUiModel(string.message_moved_to_spam)),
+                shouldReduceToErrorEffect = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false
             )
         )
 
@@ -757,6 +770,18 @@ class MessageDetailReducerTest(
             ),
             TestInput(
                 MessageDetailEvent.ErrorMovingToArchive,
+                shouldReduceMessageMetadataState = false,
+                shouldReduceMessageBannersState = false,
+                shouldReduceMessageBodyState = false,
+                shouldReduceBottomBarState = false,
+                shouldReduceExitEffect = false,
+                shouldReduceToErrorEffect = true,
+                shouldReduceBottomSheetState = false,
+                shouldReduceOpenMessageBodyLinkEffect = false,
+                shouldReducePhishingLinkConfirmation = false
+            ),
+            TestInput(
+                MessageDetailEvent.ErrorMovingToSpam,
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,

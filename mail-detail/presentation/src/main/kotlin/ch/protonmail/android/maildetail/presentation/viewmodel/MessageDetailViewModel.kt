@@ -194,6 +194,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.PrintRequested -> directlyHandleViewAction(action)
             is MessageViewAction.Print -> handlePrint(action.context)
             is MessageViewAction.Archive -> handleArchive()
+            is MessageViewAction.Spam -> handleSpam()
         }
     }
 
@@ -684,6 +685,17 @@ class MessageDetailViewModel @Inject constructor(
             moveMessage(userId, messageId, SystemLabelId.Archive.labelId).fold(
                 ifLeft = { MessageDetailEvent.ErrorMovingToArchive },
                 ifRight = { MessageViewAction.Archive }
+            )
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun handleSpam() {
+        primaryUserId.mapLatest { userId ->
+            moveMessage(userId, messageId, SystemLabelId.Spam.labelId).fold(
+                ifLeft = { MessageDetailEvent.ErrorMovingToSpam },
+                ifRight = { MessageViewAction.Spam }
             )
         }.onEach { event ->
             emitNewStateFrom(event)

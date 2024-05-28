@@ -46,6 +46,8 @@
     <string name="message_moved_to_trash">Message moved to Trash</string>
     <string name="message_moved_to_archive">Message moved to Archive</string>
     <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+    <string name="message_moved_to_spam">Message moved to Spam</string>
+    <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
     <string name="message_moved_to_selected_destination">Message moved to %1$s</string>
     <string name="error_move_message_failed">Moving message failed. Please retry.</string>
     <string name="conversation_moved_to_trash">Conversation moved to Trash</string>
