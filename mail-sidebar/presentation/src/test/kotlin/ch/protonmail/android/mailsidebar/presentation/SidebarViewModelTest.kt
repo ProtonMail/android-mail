@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation
+package ch.protonmail.android.mailsidebar.presentation
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.AppInformation
@@ -33,13 +33,12 @@ import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.C
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Expand
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction.Select
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.Action.LabelAction
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Disabled
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarViewModel.State.Enabled
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.Action.LabelAction
+import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
+import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Enabled
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery

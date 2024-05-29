@@ -91,6 +91,7 @@ dependencies {
     implementation(project(":mail-settings:presentation"))
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":mail-onboarding:presentation"))
+    implementation(project(":mail-sidebar:presentation"))
     implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)

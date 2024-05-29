@@ -50,7 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
-import ch.protonmail.android.mailmailbox.presentation.sidebar.Sidebar
+import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.navigation.model.Destination.Dialog

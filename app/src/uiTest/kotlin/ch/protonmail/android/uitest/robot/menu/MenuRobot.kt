@@ -17,7 +17,6 @@
  */
 package ch.protonmail.android.uitest.robot.menu
 
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
@@ -27,7 +26,7 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarSystemLabelTestTags.BaseTag
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTestTags
-import ch.protonmail.android.mailmailbox.presentation.sidebar.SidebarMenuTestTags
+import ch.protonmail.android.mailsidebar.presentation.SidebarMenuTestTags
 import ch.protonmail.android.test.ksp.annotations.AsDsl
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.models.folders.SidebarCustomItemEntry

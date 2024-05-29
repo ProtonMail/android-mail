@@ -63,4 +63,19 @@ dependencies {
     implementation(Dependencies.modulePresentationLibs)
     kapt(Dependencies.hiltAnnotationProcessors)
 
+    implementation(Proton.Core.domain)
+    implementation(Proton.Core.label)
+    implementation(Proton.Core.mailSettings)
+    implementation(Proton.Core.planCompose)
+
+    implementation(project(":mail-common:domain"))
+    implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-label:domain"))
+    implementation(project(":mail-label:presentation"))
+    implementation(project(":mail-mailbox:domain"))
+    implementation(project(":mail-message:domain"))
+    implementation(project(":mail-settings:domain"))
+
+    testImplementation(Dependencies.testLibs)
+    testImplementation(project(":test:test-data"))
 }

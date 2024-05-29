@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.sidebar
+package ch.protonmail.android.mailsidebar.presentation
 
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
