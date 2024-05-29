@@ -93,6 +93,11 @@ include(":mail-upselling:data")
 include(":mail-upselling:domain")
 include(":mail-upselling:presentation")
 
+include(":mail-sidebar:dagger")
+include(":mail-sidebar:data")
+include(":mail-sidebar:domain")
+include(":mail-sidebar:presentation")
+
 include(":uicomponents")
 
 include(":test:annotations")
