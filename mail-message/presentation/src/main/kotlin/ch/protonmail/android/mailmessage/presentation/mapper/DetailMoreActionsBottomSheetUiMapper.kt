@@ -69,6 +69,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
             add(ActionUiModel(Action.Trash))
             add(ActionUiModel(Action.Archive))
             add(ActionUiModel(Action.Spam))
+            add(ActionUiModel(Action.Move))
             add(ActionUiModel(Action.Print))
             add(ActionUiModel(Action.ReportPhishing))
         }.toImmutableList()

@@ -192,6 +192,7 @@ fun MessageDetailScreen(
                         onMoveToTrash = { viewModel.submit(MessageViewAction.Trash) },
                         onMoveToArchive = { viewModel.submit(MessageViewAction.Archive) },
                         onMoveToSpam = { viewModel.submit(MessageViewAction.Spam) },
+                        onMove = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                         onPrint = { viewModel.submit(MessageViewAction.PrintRequested) },
                         onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
                     )
