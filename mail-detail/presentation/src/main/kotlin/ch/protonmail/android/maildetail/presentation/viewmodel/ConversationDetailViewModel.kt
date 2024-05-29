@@ -220,7 +220,7 @@ class ConversationDetailViewModel @Inject constructor(
             is Trash -> moveConversationToTrash()
             is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
-            is MoveToDestinationConfirmed -> onBottomSheetDestinationConfirmed(action.mailLabelText)
+            is MoveToDestinationConfirmed -> onMoveToDestinationConfirmed(action.mailLabelText, action.messageId)
             is RequestConversationLabelAsBottomSheet -> showConversationLabelAsBottomSheet(action)
             is RequestContactActionsBottomSheet -> showContactActionsBottomSheetAndLoadData(action)
             is LabelAsConfirmed -> onLabelAsConfirmed(action)
@@ -788,18 +788,44 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
+    private fun onMoveToDestinationConfirmed(mailLabelText: String, messageId: MessageId?) {
+        if (messageId == null) {
+            onConversationMoveToDestinationConfirmed(mailLabelText)
+        } else {
+            onMessageMoveToDestinationConfirmed(mailLabelText, messageId)
+        }
+    }
+
+    private fun onConversationMoveToDestinationConfirmed(mailLabelText: String) {
         primaryUserId.mapLatest { userId ->
             val bottomSheetState = state.value.bottomSheetState?.contentState
             if (bottomSheetState is MoveToBottomSheetState.Data) {
                 bottomSheetState.selected?.let { mailLabelUiModel ->
                     moveConversation(userId, conversationId, mailLabelUiModel.id.labelId).fold(
                         ifLeft = { ConversationDetailEvent.ErrorMovingConversation },
-                        ifRight = { MoveToDestinationConfirmed(mailLabelText) }
+                        ifRight = { MoveToDestinationConfirmed(mailLabelText, null) }
                     )
                 } ?: throw IllegalStateException("No destination selected")
             } else {
                 ConversationDetailEvent.ErrorMovingConversation
+            }
+        }.onEach { event ->
+            emitNewStateFrom(event)
+        }.launchIn(viewModelScope)
+    }
+
+    private fun onMessageMoveToDestinationConfirmed(mailLabelText: String, messageId: MessageId) {
+        primaryUserId.mapLatest { userId ->
+            val bottomSheetState = state.value.bottomSheetState?.contentState
+            if (bottomSheetState is MoveToBottomSheetState.Data) {
+                bottomSheetState.selected?.let { mailLabelUiModel ->
+                    moveMessage(userId, messageId, mailLabelUiModel.id.labelId).fold(
+                        ifLeft = { ConversationDetailEvent.ErrorMovingMessage },
+                        ifRight = { MoveToDestinationConfirmed(mailLabelText, messageId) }
+                    )
+                } ?: throw IllegalStateException("No destination selected")
+            } else {
+                ConversationDetailEvent.ErrorMovingMessage
             }
         }.onEach { event ->
             emitNewStateFrom(event)

@@ -52,6 +52,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.textRes
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.R
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.toImmutableList
@@ -91,7 +92,11 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
                 modifier = Modifier
                     .testTag(MoveToBottomSheetTestTags.DoneButton)
                     .semantics { selectedMailLabel ?: disabled() }
-                    .clickable { selectedMailLabel?.let(actions.onDoneClick) },
+                    .clickable {
+                        selectedMailLabel?.let {
+                            actions.onDoneClick(it, dataState.messageIdInConversation)
+                        }
+                    },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm(dataState.selected != null)
@@ -181,7 +186,7 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onAddFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId) -> Unit,
-        val onDoneClick: (String) -> Unit
+        val onDoneClick: (String, MessageId?) -> Unit
     )
 }
 
@@ -250,7 +255,7 @@ fun MoveToBottomSheetContentPreview() {
         actions = MoveToBottomSheetContent.Actions(
             onAddFolderClick = {},
             onFolderSelected = {},
-            onDoneClick = {}
+            onDoneClick = { _, _ -> }
         )
     )
 }

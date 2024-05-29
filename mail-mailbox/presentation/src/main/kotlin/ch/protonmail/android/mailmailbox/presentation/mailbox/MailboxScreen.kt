@@ -251,7 +251,7 @@ fun MailboxScreen(
                         actions = MoveToBottomSheetContent.Actions(
                             onAddFolderClick = actions.onAddFolder,
                             onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
-                            onDoneClick = { viewModel.submit(MailboxViewAction.MoveToConfirmed) }
+                            onDoneClick = { _, _ -> viewModel.submit(MailboxViewAction.MoveToConfirmed) }
                         )
                     )
 

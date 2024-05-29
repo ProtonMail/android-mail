@@ -43,6 +43,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorLabelingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMarkingAsUnread
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingToTrash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorRemoveStar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.MessagesData
@@ -135,7 +136,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.MarkMessageUnread,
                 is ConversationDetailViewAction.TrashMessage,
                 is ConversationDetailViewAction.ArchiveMessage,
-                is ConversationDetailViewAction.MoveMessageToSpam -> BottomSheetOperation.Dismiss
+                is ConversationDetailViewAction.MoveMessageToSpam,
+                is ConversationDetailViewAction.MoveToDestinationConfirmed -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
@@ -151,6 +153,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ErrorMarkingAsUnread -> R.string.error_mark_as_unread_failed
                 is ErrorMovingToTrash -> R.string.error_move_to_trash_failed
                 is ErrorMovingConversation -> R.string.error_move_conversation_failed
+                is ErrorMovingMessage -> R.string.error_move_message_failed
                 is ErrorLabelingConversation -> R.string.error_relabel_message_failed
                 is ErrorExpandingDecryptMessageError -> R.string.decryption_error
                 is ErrorExpandingRetrieveMessageError -> R.string.detail_error_retrieving_message_body
@@ -179,11 +182,14 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.Trash -> Effect.of(
             UndoableActionResult(TextUiModel(R.string.conversation_moved_to_trash))
         )
-        is ConversationDetailViewAction.MoveToDestinationConfirmed -> Effect.of(
-            UndoableActionResult(
-                TextUiModel(R.string.conversation_moved_to_selected_destination, operation.mailLabelText)
+        is ConversationDetailViewAction.MoveToDestinationConfirmed -> when (operation.messageId == null) {
+            true -> Effect.of(
+                UndoableActionResult(
+                    TextUiModel(R.string.conversation_moved_to_selected_destination, operation.mailLabelText)
+                )
             )
-        )
+            false -> exitScreenWithMessageEffect
+        }
 
         is ConversationDetailViewAction.LabelAsConfirmed ->
             when (operation.archiveSelected && operation.messageId == null) {

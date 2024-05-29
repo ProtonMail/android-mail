@@ -171,7 +171,14 @@ fun ConversationDetailScreen(
                         onFolderSelected = {
                             viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it))
                         },
-                        onDoneClick = { viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed(it)) }
+                        onDoneClick = { mailLabelText, messageIdInConversation ->
+                            viewModel.submit(
+                                ConversationDetailViewAction.MoveToDestinationConfirmed(
+                                    mailLabelText,
+                                    messageIdInConversation
+                                )
+                            )
+                        }
                     )
                 )
 

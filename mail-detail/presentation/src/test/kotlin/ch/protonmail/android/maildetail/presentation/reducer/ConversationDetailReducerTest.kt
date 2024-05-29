@@ -173,9 +173,15 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
-            ConversationDetailViewAction.MoveToDestinationConfirmed("spam", null) affects ExitWithResult(
-                UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
+            ConversationDetailViewAction.MoveToDestinationConfirmed("spam", null) affects listOf(
+                BottomSheet,
+                ExitWithResult(
+                    UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
+                )
             ),
+            ConversationDetailViewAction.MoveToDestinationConfirmed(
+                "spam", MessageId(messageId.id)
+            ) affects BottomSheet,
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
             ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
             ConversationDetailViewAction.MoveToDestinationSelected(
@@ -227,6 +233,7 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
             ConversationDetailEvent.ErrorMarkingAsUnread affects ErrorBar,
             ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
+            ConversationDetailEvent.ErrorMovingMessage affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
             ConversationDetailEvent.MessagesData(

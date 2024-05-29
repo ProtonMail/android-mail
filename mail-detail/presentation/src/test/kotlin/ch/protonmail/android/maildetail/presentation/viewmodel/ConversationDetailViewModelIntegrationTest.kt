@@ -2119,6 +2119,56 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should move message when move to is confirmed`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery {
+            observeMessageWithLabels(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
+        coEvery { moveMessage(userId, messageId, MailLabelId.System.Spam.labelId) } returns Unit.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+
+        viewModel.state.test {
+            skipItems(4)
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            skipItems(2)
+            viewModel.submit(ConversationDetailViewAction.RequestMessageMoveToBottomSheet(messageId))
+            skipItems(2)
+            viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
+            skipItems(1)
+            viewModel.submit(
+                ConversationDetailViewAction.MoveToDestinationConfirmed(
+                    MailLabelId.System.Spam.toString(),
+                    messageId
+                )
+            )
+
+            // Then
+            assertEquals(
+                BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+            coVerify {
+                moveMessage(userId, messageId, MailLabelId.System.Spam.labelId)
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,

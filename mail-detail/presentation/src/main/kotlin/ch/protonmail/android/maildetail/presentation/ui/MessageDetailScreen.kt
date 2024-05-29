@@ -160,7 +160,9 @@ fun MessageDetailScreen(
                         onFolderSelected = {
                             viewModel.submit(MessageViewAction.MoveToDestinationSelected(it))
                         },
-                        onDoneClick = { viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(it)) }
+                        onDoneClick = { mailLabelText, _ ->
+                            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(mailLabelText))
+                        }
                     )
                 )
 

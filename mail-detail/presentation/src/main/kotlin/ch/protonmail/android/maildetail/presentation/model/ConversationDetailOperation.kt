@@ -80,6 +80,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMovingMessage : ConversationDetailEvent, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachmentNotEnoughSpace : ConversationDetailEvent, AffectingErrorBar
@@ -146,7 +147,10 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val mailLabelId: MailLabelId
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
-    data class MoveToDestinationConfirmed(val mailLabelText: String) : ConversationDetailViewAction
+    data class MoveToDestinationConfirmed(
+        val mailLabelText: String,
+        val messageId: MessageId?
+    ) : ConversationDetailViewAction, AffectingBottomSheet
     object RequestConversationLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(
