@@ -244,7 +244,8 @@ fun MoveToBottomSheetContentPreview() {
                     isExpanded = true,
                     iconPaddingStart = 0.dp
                 )
-            ).toImmutableList()
+            ).toImmutableList(),
+            messageIdInConversation = null
         ),
         actions = MoveToBottomSheetContent.Actions(
             onAddFolderClick = {},

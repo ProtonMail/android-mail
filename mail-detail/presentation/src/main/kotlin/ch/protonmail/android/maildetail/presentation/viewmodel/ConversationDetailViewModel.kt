@@ -226,8 +226,8 @@ class ConversationDetailViewModel @Inject constructor(
             is LabelAsConfirmed -> onLabelAsConfirmed(action)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
-            is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet ->
-                showMessageLabelAsBottomSheet(action)
+            is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> showMessageLabelAsBottomSheet(action)
+            is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
 
             is ExpandMessage -> onExpandMessage(action.messageId)
             is CollapseMessage -> onCollapseMessage(action.messageId)
@@ -472,7 +472,13 @@ class ConversationDetailViewModel @Inject constructor(
             ) { folders, color ->
                 ConversationDetailEvent.ConversationBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
-                        folders.toUiModels(color).let { it.folders + it.systems }.toImmutableList()
+                        moveToDestinations = folders.toUiModels(color).let {
+                            it.folders + it.systems
+                        }.toImmutableList(),
+                        messageIdInConversation = when (initialEvent) {
+                            is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> initialEvent.messageId
+                            else -> null
+                        }
                     )
                 )
             }

@@ -238,6 +238,7 @@ class MessageDetailReducerTest(
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolder,
+                    null,
                     null
                 )
             ),

@@ -124,7 +124,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.RequestMoreActionsBottomSheet,
                 is ConversationDetailViewAction.RequestContactActionsBottomSheet,
                 is ConversationDetailViewAction.RequestMoveToBottomSheet,
-                is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> BottomSheetOperation.Requested
+                is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet,
+                is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> BottomSheetOperation.Requested
 
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailEvent.ReportPhishingRequested,

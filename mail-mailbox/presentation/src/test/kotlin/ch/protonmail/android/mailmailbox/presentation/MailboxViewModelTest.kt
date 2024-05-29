@@ -4250,7 +4250,7 @@ class MailboxViewModelTest {
         selectedMailboxItemUiModels = selectedMailboxItems,
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
         bottomSheetState = BottomSheetState(
-            MoveToBottomSheetState.Data(MailLabelUiModelTestData.customLabelList, selectedItem)
+            MoveToBottomSheetState.Data(MailLabelUiModelTestData.customLabelList, selectedItem, null)
         )
     )
 

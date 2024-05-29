@@ -217,4 +217,8 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class MoveMessageToSpam(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data class RequestMessageMoveToBottomSheet(
+        val messageId: MessageId
+    ) : ConversationDetailViewAction, AffectingBottomSheet
 }

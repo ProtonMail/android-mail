@@ -1005,7 +1005,8 @@ class ConversationDetailViewModelTest {
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
-                    selected = null
+                    selected = null,
+                    null
                 )
             )
         )
@@ -1019,13 +1020,14 @@ class ConversationDetailViewModelTest {
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
-                    MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first()
+                    MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first(),
+                    null
                 )
             )
         )
 
         coEvery {
-            reducer.newStateFrom(any(), ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
+            reducer.newStateFrom(any(), ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel", null))
         } returns ConversationDetailState.Loading.copy(
             exitScreenWithMessageEffect = Effect.of(
                 ActionResult.UndoableActionResult(
@@ -1039,7 +1041,7 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel"))
+            viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel", null))
             advanceUntilIdle()
 
             // Then
@@ -2097,7 +2099,8 @@ class ConversationDetailViewModelTest {
             bottomSheetState = BottomSheetState(
                 MoveToBottomSheetState.Data(
                     moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
-                    selected = null
+                    selected = null,
+                    null
                 )
             )
         )

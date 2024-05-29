@@ -55,7 +55,7 @@ class MoveToBottomSheetReducer @Inject constructor() {
                 )
 
                 else -> BottomSheetState(
-                    Data(operation.moveToDestinations, null),
+                    Data(operation.moveToDestinations, null, operation.messageIdInConversation),
                     currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
                 )
             }

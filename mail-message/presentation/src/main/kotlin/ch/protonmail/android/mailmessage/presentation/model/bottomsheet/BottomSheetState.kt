@@ -57,7 +57,8 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
 
     data class Data(
         val moveToDestinations: ImmutableList<MailLabelUiModel>,
-        val selected: MailLabelUiModel?
+        val selected: MailLabelUiModel?,
+        val messageIdInConversation: MessageId?
     ) : MoveToBottomSheetState
 
     object Loading : MoveToBottomSheetState
@@ -65,7 +66,10 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
     sealed interface MoveToBottomSheetOperation : BottomSheetOperation
 
     sealed interface MoveToBottomSheetEvent : MoveToBottomSheetOperation {
-        data class ActionData(val moveToDestinations: ImmutableList<MailLabelUiModel>) : MoveToBottomSheetEvent
+        data class ActionData(
+            val moveToDestinations: ImmutableList<MailLabelUiModel>,
+            val messageIdInConversation: MessageId? = null
+        ) : MoveToBottomSheetEvent
     }
 
     sealed interface MoveToBottomSheetAction : MoveToBottomSheetOperation {

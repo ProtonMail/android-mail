@@ -173,7 +173,7 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
-            ConversationDetailViewAction.MoveToDestinationConfirmed("spam") affects ExitWithResult(
+            ConversationDetailViewAction.MoveToDestinationConfirmed("spam", null) affects ExitWithResult(
                 UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
             ),
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
@@ -211,7 +211,10 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(MessageId(messageId.id)) affects BottomSheet,
             ConversationDetailViewAction.TrashMessage(MessageId(messageId.id)) affects listOf(BottomSheet),
             ConversationDetailViewAction.ArchiveMessage(MessageId(messageId.id)) affects listOf(BottomSheet),
-            ConversationDetailViewAction.MoveMessageToSpam(MessageId(messageId.id)) affects listOf(BottomSheet)
+            ConversationDetailViewAction.MoveMessageToSpam(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.RequestMessageMoveToBottomSheet(
+                MessageId(messageId.id)
+            ) affects listOf(BottomSheet)
         )
 
         val events = listOf(

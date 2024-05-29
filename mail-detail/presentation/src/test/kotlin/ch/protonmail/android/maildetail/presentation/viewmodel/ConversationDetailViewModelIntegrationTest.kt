@@ -127,6 +127,7 @@ import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -149,6 +150,7 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsBottomSheetReducer
@@ -180,6 +182,7 @@ import io.mockk.mockkStatic
 import io.mockk.runs
 import io.mockk.unmockkStatic
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -2059,6 +2062,58 @@ class ConversationDetailViewModelIntegrationTest {
                 BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
             )
             coVerify { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should show message move to bottom sheet and load data when it is requested`() = runTest {
+        // Given
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast,
+            MessageWithLabelsSample.InvoiceWithLabel,
+            MessageWithLabelsSample.EmptyDraft
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery {
+            observeMessage(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+        coEvery {
+            observeMessageWithLabels(userId, messageId)
+        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            skipItems(2)
+            viewModel.submit(ConversationDetailViewAction.RequestMessageMoveToBottomSheet(messageId))
+
+            // then
+            assertEquals(
+                BottomSheetVisibilityEffect.Show, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+
+            val bottomSheetContentState = awaitItem().bottomSheetState?.contentState as MoveToBottomSheetState.Data
+            assertEquals(
+                MoveToBottomSheetState.Data(
+                    MailLabels(
+                        systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
+                        folders = listOf(MailLabelTestData.buildCustomFolder(id = "folder1")),
+                        labels = listOf()
+                    ).toUiModels(defaultFolderColorSettings).let { it.folders + it.systems }.toImmutableList(),
+                    null,
+                    messageId
+                ),
+                bottomSheetContentState
+            )
 
             cancelAndIgnoreRemainingEvents()
         }

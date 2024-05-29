@@ -69,7 +69,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(
                 moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
-                selected = null
+                selected = null,
+                messageIdInConversation = null
             )
         ),
         exitScreenEffect = Effect.empty(),
@@ -117,7 +118,8 @@ object ConversationDetailsPreviewData {
         bottomSheetState = BottomSheetState(
             MoveToBottomSheetState.Data(
                 moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
-                selected = null
+                selected = null,
+                messageIdInConversation = null
             )
         ),
         exitScreenEffect = Effect.empty(),
