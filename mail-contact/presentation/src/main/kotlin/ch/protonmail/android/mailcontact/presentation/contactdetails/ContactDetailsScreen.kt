@@ -142,7 +142,7 @@ fun ContactDetailsScreen(actions: ContactDetailsScreen.Actions, viewModel: Conta
                     }
                     ConsumableLaunchedEffect(effect = state.callPhoneNumber) {
                         val callIntent = Intent(Intent.ACTION_DIAL).apply {
-                            data = Uri.parse("tel:$it}")
+                            data = Uri.parse("tel:$it")
                         }
                         context.startActivity(callIntent)
                     }
