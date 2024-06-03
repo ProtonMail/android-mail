@@ -142,5 +142,8 @@
         <item quantity="one">%d member</item>
         <item quantity="other">%d members</item>
     </plurals>
+    <string name="contact_search_placeholder">Search for contact or group</string>
+    <string name="contact_search_content_description">Search for contact or group</string>
+    <string name="contact_search_arrow_back_content_description">Go back to contacts</string>
     <string name="contact_search_no_results">No results found.</string>
 </resources>

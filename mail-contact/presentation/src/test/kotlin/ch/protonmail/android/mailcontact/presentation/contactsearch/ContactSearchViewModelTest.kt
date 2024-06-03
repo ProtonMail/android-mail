@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModelMapper
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -45,13 +44,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
-import me.proton.core.contact.domain.entity.ContactEmail
-import me.proton.core.contact.domain.entity.ContactEmailId
-import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
-import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.label.domain.entity.LabelType
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -60,39 +53,6 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ContactSearchViewModelTest {
-
-    private val defaultTestContactGroupLabel = Label(
-        userId = UserIdTestData.userId,
-        labelId = LabelId("LabelId1"),
-        parentId = null,
-        name = "Label 1",
-        type = LabelType.ContactGroup,
-        path = "",
-        color = Color.Red.getHexStringFromColor(),
-        order = 0,
-        isNotified = null,
-        isExpanded = null,
-        isSticky = null
-    )
-    private val defaultTestContact = Contact(
-        UserIdTestData.userId,
-        ContactId("1"),
-        "first contact",
-        listOf(
-            ContactEmail(
-                UserIdTestData.userId,
-                ContactEmailId("contact email id 1"),
-                "First contact email",
-                "firstcontact+alias@protonmail.com",
-                0,
-                0,
-                ContactId("1"),
-                "firstcontact@protonmail.com",
-                listOf(defaultTestContactGroupLabel.labelId.id),
-                true
-            )
-        )
-    )
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
@@ -136,23 +96,6 @@ class ContactSearchViewModelTest {
                 close = Effect.empty(),
                 uiModels = null,
                 searchValue = ""
-            )
-
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `handles OnCloseClick`() = runTest {
-        // Given
-        contactSearchViewModel.submit(ContactSearchViewAction.OnCloseClick)
-
-        // When
-        contactSearchViewModel.state.test {
-            // Then
-            val actual = awaitItem()
-            val expected = ContactSearchState(
-                close = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)

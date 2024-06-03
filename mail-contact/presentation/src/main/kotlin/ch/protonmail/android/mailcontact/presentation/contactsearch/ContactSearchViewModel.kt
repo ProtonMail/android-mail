@@ -59,7 +59,6 @@ class ContactSearchViewModel @Inject constructor(
         viewModelScope.launch {
             actionMutex.withLock {
                 when (action) {
-                    ContactSearchViewAction.OnCloseClick -> emitNewStateFor(ContactSearchEvent.Close)
                     is ContactSearchViewAction.OnSearchValueChanged -> handleOnSearchValueChanged(action)
                 }
             }

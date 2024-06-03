@@ -23,7 +23,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 sealed interface ContactSearchOperation
 
 sealed interface ContactSearchViewAction : ContactSearchOperation {
-    data object OnCloseClick : ContactSearchViewAction
     data class OnSearchValueChanged(
         val searchValue: String
     ) : ContactSearchViewAction

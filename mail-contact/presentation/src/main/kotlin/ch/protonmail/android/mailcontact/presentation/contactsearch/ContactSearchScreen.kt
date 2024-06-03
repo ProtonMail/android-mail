@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
@@ -42,7 +43,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -54,13 +54,9 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.dismissKeyboard
-import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
-import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
-import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
-import me.proton.core.compose.component.ProtonSnackbarHostState
-import me.proton.core.compose.component.ProtonSnackbarType
+import ch.protonmail.android.uicomponents.SearchView
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
@@ -76,13 +72,17 @@ fun ContactSearchScreen(actions: ContactSearchScreen.Actions, viewModel: Contact
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
     val state = rememberAsState(flow = viewModel.state, initial = ContactSearchViewModel.initialState).value
 
     Scaffold(
         topBar = {
             ContactSearchTopBar(
-                actions = actions
+                Modifier,
+                actions = actions,
+                state = state,
+                onSearchValueChange = {
+                    viewModel.submit(ContactSearchViewAction.OnSearchValueChanged(it))
+                }
             )
         },
         content = { _ ->
@@ -94,17 +94,8 @@ fun ContactSearchScreen(actions: ContactSearchScreen.Actions, viewModel: Contact
                     },
                     onContactGroupClick = {
                         actions.onContactGroupSelected(it)
-                    },
-                    onSearchValueChange = {
-                        viewModel.submit(ContactSearchViewAction.OnSearchValueChanged(it))
                     }
                 )
-            )
-        },
-        snackbarHost = {
-            DismissableSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                protonSnackbarHostState = snackbarHostErrorState
             )
         }
     )
@@ -129,19 +120,6 @@ fun ContactSearchContent(
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
-        item {
-            FormInputField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(ProtonDimens.DefaultSpacing),
-                initialValue = state.searchValue,
-                hint = stringResource(R.string.search_contact),
-                showClearTextIcon = true,
-                onTextChange = {
-                    actions.onSearchValueChange(it)
-                }
-            )
-        }
         state.uiModels?.let {
             items(state.uiModels) {
                 ContactSearchItem(
@@ -268,16 +246,42 @@ private fun ContactSearchAvatar(contactSearchUiModel: ContactSearchUiModel) {
 }
 
 @Composable
-fun ContactSearchTopBar(actions: ContactSearchScreen.Actions) {
+fun ContactSearchTopBar(
+    modifier: Modifier,
+    actions: ContactSearchScreen.Actions,
+    state: ContactSearchState,
+    onSearchValueChange: (String) -> Unit
+) {
 
     ProtonTopAppBar(
+        modifier = modifier,
         title = {
-
+            SearchView(
+                SearchView.Parameters(
+                    initialSearchValue = state.searchValue,
+                    searchPlaceholderText = R.string.contact_search_placeholder,
+                    closeButtonContentDescription = R.string.contact_search_content_description
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                actions = SearchView.Actions(
+                    onClearSearchQuery = {},
+                    onSearchQuerySubmit = {},
+                    onSearchQueryChanged = { onSearchValueChange(it) }
+                )
+            )
         },
         navigationIcon = {
-
-        },
-        actions = {}
+            IconButton(
+                modifier = Modifier,
+                onClick = actions.onClose
+            ) {
+                androidx.compose.material.Icon(
+                    painter = painterResource(id = R.drawable.ic_proton_arrow_left),
+                    contentDescription = stringResource(id = R.string.contact_search_arrow_back_content_description)
+                )
+            }
+        }
     )
 }
 
@@ -304,16 +308,14 @@ object ContactSearchContent {
 
     data class Actions(
         val onContactClick: (ContactId) -> Unit,
-        val onContactGroupClick: (LabelId) -> Unit,
-        val onSearchValueChange: (String) -> Unit
+        val onContactGroupClick: (LabelId) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
                 onContactClick = {},
-                onContactGroupClick = {},
-                onSearchValueChange = {}
+                onContactGroupClick = {}
             )
         }
     }
@@ -345,6 +347,9 @@ private fun EmptyManageMembersContentPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ManageMembersTopBarPreview() {
     ContactSearchTopBar(
-        actions = ContactSearchScreen.Actions.Empty
+        Modifier,
+        actions = ContactSearchScreen.Actions.Empty,
+        state = ContactSearchState(),
+        onSearchValueChange = {}
     )
 }
