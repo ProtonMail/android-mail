@@ -79,6 +79,9 @@ fun SearchView(
             value = searchText,
             onValueChange = {
                 searchText = it
+                if (it.text.isNotEmpty()) {
+                    actions.onSearchQueryChanged(it.text)
+                }
             },
             modifier = modifier
                 .testTag(SearchViewTestTags.SearchTextField)
@@ -192,14 +195,16 @@ object SearchView {
 
     data class Actions(
         val onClearSearchQuery: () -> Unit,
-        val onSearchQuerySubmit: (query: String) -> Unit
+        val onSearchQuerySubmit: (query: String) -> Unit,
+        val onSearchQueryChanged: (query: String) -> Unit
     ) {
 
         companion object {
 
             val Empty = Actions(
                 onClearSearchQuery = {},
-                onSearchQuerySubmit = {}
+                onSearchQuerySubmit = {},
+                onSearchQueryChanged = {}
             )
         }
     }

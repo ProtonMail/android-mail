@@ -175,7 +175,8 @@ private fun TopAppBarInSearchMode(
                     .testTag(MailboxTopAppBarTestTags.SearchView),
                 actions = SearchView.Actions(
                     onClearSearchQuery = {},
-                    onSearchQuerySubmit = actions.onSearch
+                    onSearchQuerySubmit = actions.onSearch,
+                    onSearchQueryChanged = {}
                 )
             )
         },
