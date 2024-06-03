@@ -1,0 +1,269 @@
+/*
+ * Copyright (c) 2022 Proton Technologies AG
+ * This file is part of Proton Technologies AG and Proton Mail.
+ *
+ * Proton Mail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Proton Mail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package ch.protonmail.android.mailcontact.presentation.contactsearch
+
+import androidx.compose.ui.graphics.Color
+import app.cash.turbine.test
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
+import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
+import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModelMapper
+import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.testdata.contact.ContactEmailSample
+import ch.protonmail.android.testdata.contact.ContactSample
+import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.unmockkAll
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import me.proton.core.contact.domain.entity.Contact
+import me.proton.core.contact.domain.entity.ContactEmail
+import me.proton.core.contact.domain.entity.ContactEmailId
+import me.proton.core.contact.domain.entity.ContactId
+import me.proton.core.domain.entity.UserId
+import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
+import me.proton.core.label.domain.entity.LabelType
+import org.junit.Test
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+
+class ContactSearchViewModelTest {
+
+    private val defaultTestContactGroupLabel = Label(
+        userId = UserIdTestData.userId,
+        labelId = LabelId("LabelId1"),
+        parentId = null,
+        name = "Label 1",
+        type = LabelType.ContactGroup,
+        path = "",
+        color = Color.Red.getHexStringFromColor(),
+        order = 0,
+        isNotified = null,
+        isExpanded = null,
+        isSticky = null
+    )
+    private val defaultTestContact = Contact(
+        UserIdTestData.userId,
+        ContactId("1"),
+        "first contact",
+        listOf(
+            ContactEmail(
+                UserIdTestData.userId,
+                ContactEmailId("contact email id 1"),
+                "First contact email",
+                "firstcontact+alias@protonmail.com",
+                0,
+                0,
+                ContactId("1"),
+                "firstcontact@protonmail.com",
+                listOf(defaultTestContactGroupLabel.labelId.id),
+                true
+            )
+        )
+    )
+
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
+    }
+    private val reducer = ContactSearchReducer()
+
+    private val contactSearchUiModelMapper = mockk<ContactSearchUiModelMapper>()
+    private val searchContactsMock = mockk<SearchContacts>()
+    private val searchContactGroupsMock = mockk<SearchContactGroups>()
+
+    private val contactSearchViewModel by lazy {
+        ContactSearchViewModel(
+            reducer,
+            contactSearchUiModelMapper,
+            searchContactsMock,
+            searchContactGroupsMock,
+            observePrimaryUserId
+        )
+    }
+
+    @BeforeTest
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+    }
+
+    @AfterTest
+    fun tearDown() {
+        Dispatchers.resetMain()
+        unmockkAll()
+    }
+
+    @Test
+    fun `initial state is empty`() = runTest {
+        // Given
+
+        // When
+        contactSearchViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactSearchState(
+                close = Effect.empty(),
+                uiModels = null,
+                searchValue = ""
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `handles OnCloseClick`() = runTest {
+        // Given
+        contactSearchViewModel.submit(ContactSearchViewAction.OnCloseClick)
+
+        // When
+        contactSearchViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactSearchState(
+                close = Effect.of(Unit)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `handles OnSearchValueChanged`() = runTest {
+        // Given
+        val expectedSearchTerm = "searching for this"
+
+        val expectedContacts = listOf(ContactSample.Stefano, ContactSample.Francesco)
+        val expectedContactGroups = listOf(
+            ContactGroup(
+                UserIdSample.Primary,
+                LabelIdSample.LabelCoworkers,
+                "Coworkers contact group",
+                "#AABBCC",
+                listOf(ContactEmailSample.contactEmail1)
+            )
+        )
+
+        expectSearchContacts(
+            expectedUserId = UserIdTestData.userId,
+            expectedSearchTerm = expectedSearchTerm,
+            expectedContacts = expectedContacts
+        )
+
+        expectSearchContactGroups(
+            expectedUserId = UserIdTestData.userId,
+            expectedSearchTerm = expectedSearchTerm,
+            expectedContactGroups = expectedContactGroups,
+            returnEmpty = true
+        )
+
+        val expectedContactSearchUiModels = listOf(
+            ContactSearchUiModel.Contact(
+                expectedContacts[0].id,
+                expectedContacts[0].name,
+                expectedContacts[0].contactEmails.first().email,
+                "S"
+            ),
+            ContactSearchUiModel.Contact(
+                expectedContacts[1].id,
+                expectedContacts[1].name,
+                expectedContacts[1].contactEmails.first().email,
+                "F"
+            )
+        )
+
+        expectContactSearchUiModelMapper(expectedContacts, expectedContactSearchUiModels)
+
+        val expectedContactGroupsSearchUiModels = listOf(
+            ContactSearchUiModel.ContactGroup(
+                expectedContactGroups[0].labelId,
+                expectedContactGroups[0].name,
+                Color.Red,
+                emailCount = 1
+            )
+        )
+
+        expectContactGroupsSearchUiModelMapper(expectedContactGroups, expectedContactGroupsSearchUiModels)
+
+        contactSearchViewModel.submit(ContactSearchViewAction.OnSearchValueChanged(expectedSearchTerm))
+
+        // When
+        contactSearchViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            assertNotNull(actual.uiModels)
+            assertTrue(actual.uiModels!!.contains(expectedContactSearchUiModels[0]))
+            assertTrue(actual.uiModels!!.contains(expectedContactSearchUiModels[1]))
+            assertTrue(actual.uiModels!!.contains(expectedContactGroupsSearchUiModels[0]))
+        }
+    }
+
+    private fun expectSearchContacts(
+        expectedUserId: UserId,
+        expectedSearchTerm: String,
+        expectedContacts: List<Contact>
+    ): List<Contact> {
+        coEvery {
+            searchContactsMock.invoke(expectedUserId, expectedSearchTerm)
+        } returns flowOf(expectedContacts.right())
+        return expectedContacts
+    }
+
+    private fun expectSearchContactGroups(
+        expectedUserId: UserId,
+        expectedSearchTerm: String,
+        expectedContactGroups: List<ContactGroup>,
+        returnEmpty: Boolean
+    ): List<ContactGroup> {
+        coEvery {
+            searchContactGroupsMock.invoke(expectedUserId, expectedSearchTerm, returnEmpty = returnEmpty)
+        } returns flowOf(expectedContactGroups.right())
+        return expectedContactGroups
+    }
+
+    private fun expectContactSearchUiModelMapper(
+        contacts: List<Contact>,
+        expected: List<ContactSearchUiModel.Contact>
+    ) {
+        every { contactSearchUiModelMapper.contactsToContactSearchUiModelList(contacts) } returns expected
+    }
+
+    private fun expectContactGroupsSearchUiModelMapper(
+        contacts: List<ContactGroup>,
+        expected: List<ContactSearchUiModel.ContactGroup>
+    ) {
+        every { contactSearchUiModelMapper.contactGroupsToContactSearchUiModelList(contacts) } returns expected
+    }
+}

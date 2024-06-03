@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScr
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGroupFormScreen
 import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListScreen
+import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearchScreen
 import ch.protonmail.android.mailcontact.presentation.managemembers.ManageMembersScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
@@ -354,6 +355,9 @@ internal fun NavGraphBuilder.addContacts(
                 onNavigateToNewGroupForm = {
                     navController.navigate(Destination.Screen.CreateContactGroup.route)
                 },
+                onNavigateToContactSearch = {
+                    navController.navigate(Destination.Screen.ContactSearch.route)
+                },
                 openImportContact = {
                     showFeatureMissingSnackbar()
                 },
@@ -548,3 +552,21 @@ internal fun NavGraphBuilder.addManageMembers(
         )
     }
 }
+
+internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) {
+    val actions = ContactSearchScreen.Actions(
+        onContactSelected = { contactId ->
+            navController.navigate(Destination.Screen.ContactDetails(contactId))
+        },
+        onContactGroupSelected = { labelId ->
+            navController.navigate(Destination.Screen.ContactGroupDetails(labelId))
+        },
+        onClose = { navController.navigateBack() }
+    )
+    composable(route = Destination.Screen.ContactSearch.route) {
+        ContactSearchScreen(
+            actions
+        )
+    }
+}
+

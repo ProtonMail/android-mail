@@ -66,6 +66,7 @@ import ch.protonmail.android.navigation.route.addContactDetails
 import ch.protonmail.android.navigation.route.addContactForm
 import ch.protonmail.android.navigation.route.addContactGroupDetails
 import ch.protonmail.android.navigation.route.addContactGroupForm
+import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
@@ -539,6 +540,9 @@ fun Home(
                             )
                         }
                     }
+                )
+                addContactSearch(
+                    navController
                 )
                 addAlternativeRoutingSetting(navController)
                 addCombinedContactsSetting(navController)

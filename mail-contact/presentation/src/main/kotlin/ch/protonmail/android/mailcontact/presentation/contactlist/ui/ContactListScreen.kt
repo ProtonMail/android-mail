@@ -105,6 +105,9 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                     ConsumableLaunchedEffect(effect = state.openImportContact) {
                         actions.openImportContact()
                     }
+                    ConsumableLaunchedEffect(effect = state.openContactSearch) {
+                        actions.onNavigateToContactSearch()
+                    }
                 }
 
                 when (state) {
@@ -157,6 +160,7 @@ object ContactListScreen {
         val onContactGroupSelected: (LabelId) -> Unit,
         val onNavigateToNewContactForm: () -> Unit,
         val onNavigateToNewGroupForm: () -> Unit,
+        val onNavigateToContactSearch: () -> Unit,
         val onNewGroupClick: () -> Unit,
         val openImportContact: () -> Unit,
         val onSubscriptionUpgradeRequired: (String) -> Unit,
@@ -171,6 +175,7 @@ object ContactListScreen {
                 onContactGroupSelected = {},
                 onNavigateToNewContactForm = {},
                 onNavigateToNewGroupForm = {},
+                onNavigateToContactSearch = {},
                 openImportContact = {},
                 onNewGroupClick = {},
                 onSubscriptionUpgradeRequired = {},
