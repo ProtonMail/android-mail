@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Вітаємо в новій програмі</string>
+  <string name="onboarding_description_ga">Нову програму Proton Mail створено для стабільної та продуктивної роботи.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Приватність для всіх</string>
+  <string name="onboarding_privacy_for_all_description">Запросіть інших до Proton Mail, щоб разом користуватися перевагами наскрізного шифрування.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Зручне оновлення</string>
+  <string name="onboarding_easily_up_to_date_description">Переглядайте ланцюжки повідомлень у режимі розмови.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Простота й лаконічність</string>
+  <string name="onboarding_neat_and_tidy_description">Файли, мітки та позначення повідомлень кольором для досконалої, індивідуальної поштової скриньки.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Далі</string>
+  <string name="onboarding_get_started">Розпочати</string>
+  <string name="onboarding_illustration_content_description">Ознайомча ілюстрація</string>
+  <string name="onboarding_close_content_description">Закрити</string>
+</resources>

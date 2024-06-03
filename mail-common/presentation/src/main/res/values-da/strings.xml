@@ -35,7 +35,7 @@
   <string name="action_mark_unread_description">Markér som ulæst</string>
   <string name="action_star_description">Stjernemarkér</string>
   <string name="action_unstar_description">Fjern stjernemarkering</string>
-  <string name="action_label_description">Tilføj etiketten</string>
+  <string name="action_label_description">Mærk som</string>
   <string name="action_move_description">Flyt til</string>
   <string name="action_trash_description">Flyt til papirkurv</string>
   <string name="action_delete_description">Slet</string>
@@ -83,9 +83,9 @@
   <string name="attachment_download_notification_channel_name">Vedhæftninger</string>
   <string name="attachment_download_notification_channel_description">Notifikationer ved download af vedhæftninger</string>
   <string name="email_notification_channel_name">E-mails</string>
-  <string name="login_notification_channel_name">Login-notifikationer</string>
-  <string name="email_notification_channel_description">Indgående e-mailnotifikationer</string>
-  <string name="login_notification_channel_description">Nye login-notifikationer</string>
+  <string name="login_notification_channel_name">Login-varsler</string>
+  <string name="email_notification_channel_description">Indgående e-mail-meddelelser</string>
+  <string name="login_notification_channel_description">Notifikationer om nye logins</string>
   <string name="auth_badge_official">Officiel</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app til håndtering af denne handling fundet</string>
   <string name="action_copied_to_clipboard">Kopieret til udklipsholder</string>
@@ -113,6 +113,6 @@
   <string name="color_olive">Oliven</string>
   <string name="color_pickle">Agurk</string>
   <string name="undo_button_label">Fortryd</string>
-  <string name="undo_success_message">Handling annulleret</string>
-  <string name="undo_failure_message">Handling tilbagekaldelse mislykkedes</string>
+  <string name="undo_success_message">Handling tilbageført</string>
+  <string name="undo_failure_message">Tilbageførsel af handling fejlede</string>
 </resources>

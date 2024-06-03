@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Inténtalo de nuevo.</string>
   <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
   <string name="message_moved_to_archive">Mensaje movido al archivo</string>
+  <string name="error_move_to_archive_failed">Error al mover a la carpeta Archivo. Intenta de nuevo.</string>
+  <string name="message_moved_to_spam">El mensaje ha sido movido a la carpeta Spam.</string>
+  <string name="error_move_to_spam_failed">Error al mover a la carpeta Spam. Intenta de nuevo.</string>
   <string name="message_moved_to_selected_destination">Mensaje movido a %1$s</string>
   <string name="error_move_message_failed">Error al mover el mensaje. Inténtalo de nuevo.</string>
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>

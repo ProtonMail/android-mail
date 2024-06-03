@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Не ўдалося перамясціць у сметніцу. Паўтарыце спробу.</string>
   <string name="message_moved_to_trash">Паведамленне перамешчана ў Сметніцу</string>
   <string name="message_moved_to_archive">Паведамленне перамешчана ў Архіў</string>
+  <string name="error_move_to_archive_failed">Не ўдалося перамясціць у архіў. Паўтарыце спробу.</string>
+  <string name="message_moved_to_spam">Паведамленне перамешчана ў спам</string>
+  <string name="error_move_to_spam_failed">Збой пры перамяшчэнні ў спам. Паўтарыце спробу.</string>
   <string name="message_moved_to_selected_destination">Паведамленне перамешчана ў %1$s</string>
   <string name="error_move_message_failed">Не ўдалося перамясціць паведамленне. Паўтарыце спробу.</string>
   <string name="conversation_moved_to_trash">Размова перамешчана ў Сметніцу</string>

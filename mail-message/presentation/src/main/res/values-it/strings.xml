@@ -62,4 +62,9 @@
   <string name="contact_actions_add_contact_description">Salva questo destinatario come contatto</string>
   <string name="contact_actions_view_contact_details">Visualizza i dettagli</string>
   <string name="contact_actions_view_contact_details_description">Visualizza i dettagli di questo contatto</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Autorizzazione necessaria</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail necessita dell\'autorizzazione di lettura dei tuoi contatti per poterti suggerire i destinatari.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Richiesta dell\'autorizzazione</string>
 </resources>

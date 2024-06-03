@@ -62,4 +62,9 @@
   <string name="contact_actions_add_contact_description">Diesen Empfänger als Kontakt speichern</string>
   <string name="contact_actions_view_contact_details">Kontaktinformationen anzeigen</string>
   <string name="contact_actions_view_contact_details_description">Details zum Kontakt anzeigen</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Berechtigung benötigt</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail benötigt die Erlaubnis, deine Kontakte zu sehen, um Empfänger vorschlagen zu können.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Erlaubnis anfordern</string>
 </resources>

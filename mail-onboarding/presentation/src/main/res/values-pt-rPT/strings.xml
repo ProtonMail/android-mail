@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Bem-vindo à nova aplicação</string>
+  <string name="onboarding_description_ga">Completamente reconstruída de raiz, a nova aplicação Proton Mail foi feita para estabilidade e desempenho.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacidade para todos</string>
+  <string name="onboarding_privacy_for_all_description">Convide outros para o Proton Mail e assim todos podem beneficiar da encriptação de ponta-a-ponta.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Facilmente atualizável</string>
+  <string name="onboarding_easily_up_to_date_description">Navegue por tópicos no modo de conversas.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Limpo e organizado</string>
+  <string name="onboarding_neat_and_tidy_description">Arquive, etiquete ou dê cor às mensagens para criar a sua caixa de entrada perfeita.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Seguinte</string>
+  <string name="onboarding_get_started">Começar</string>
+  <string name="onboarding_illustration_content_description">Ilustração \'onboarding\'</string>
+  <string name="onboarding_close_content_description">Fechar</string>
+</resources>

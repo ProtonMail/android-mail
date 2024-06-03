@@ -22,7 +22,7 @@
   <string name="dialog_sign_out_account_confirm">Ja</string>
   <string name="dialog_sign_out_account_cancel">Nej</string>
   <string name="dialog_remove_account_title">Fjern konto</string>
-  <string name="dialog_remove_account_description">Du logger ud og fjerner alle oplysninger, der er knyttet til denne konto.</string>
+  <string name="dialog_remove_account_description">Du logger ud og fjerner alle tilknyttede oplysninger til denne konto.</string>
   <string name="dialog_remove_account_confirm">Fjern</string>
   <string name="dialog_remove_account_cancel">Annuller</string>
   <string name="user_select_other_account_content_description">Vælg en anden konto</string>
@@ -31,15 +31,15 @@
   <string name="mailbox_draft_saved">Kladde gemt</string>
   <string name="mailbox_draft_discard">Kassér</string>
   <string name="mailbox_message_sending">Sender besked…</string>
-  <string name="mailbox_message_sending_offline">Offline, besked sat i kø til afsendelse</string>
+  <string name="mailbox_message_sending_offline">Offline, besked er i kø til afsendelse</string>
   <string name="mailbox_message_sending_success">Besked sendt</string>
-  <string name="mailbox_message_sending_error">Fejl ved afsendelse af besked</string>
+  <string name="mailbox_message_sending_error">Besked om fejlafsendelse</string>
   <string name="mailbox_message_sending_error_action">Gå til kladder</string>
   <string name="mailbox_attachment_uploading_error">Fejl ved upload af vedhæftning</string>
   <string name="notification_switched_account">Skiftede til konto: %s</string>
   <string name="label_saved">Etiket gemt</string>
   <string name="label_deleted">Etiket slettet</string>
-  <string name="label_list_loading_error">Fejl ved indlæsning af etikette. Prøv igen senere.</string>
+  <string name="label_list_loading_error">Indlæsningsfejl af etikette. Prøv igen senere.</string>
   <string name="app_locked">App er låst</string>
   <string name="use_pin_instead">Brug i stedet pinkode</string>
 </resources>

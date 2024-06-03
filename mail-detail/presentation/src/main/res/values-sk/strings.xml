@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Presun do koša zlyhal. Skúste to znova.</string>
   <string name="message_moved_to_trash">Správa bola presunutá do koša</string>
   <string name="message_moved_to_archive">Správa bola presunutá do archívu</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Správa presunutá do %1$s</string>
   <string name="error_move_message_failed">Presun správy zlyhal. Skúste to znova.</string>
   <string name="conversation_moved_to_trash">Konverzácia bola presunutá do koša</string>

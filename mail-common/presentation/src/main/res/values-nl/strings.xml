@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Ster verwijderen</string>
   <string name="action_label_description">Labellen als</string>
   <string name="action_move_description">Verplaatsen naar</string>
-  <string name="action_trash_description">Prullenbak</string>
+  <string name="action_trash_description">Move to trash</string>
   <string name="action_delete_description">Verwijderen</string>
   <string name="action_archive_description">Archief</string>
   <string name="action_spam_description">Verplaatsen naar spam</string>

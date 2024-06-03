@@ -61,4 +61,9 @@
   <string name="contact_actions_add_contact_description">Simpan penerima ini sebagai kontak</string>
   <string name="contact_actions_view_contact_details">Lihat rincian kontak</string>
   <string name="contact_actions_view_contact_details_description">Salin rincian kontak</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Perizinan diperlukan</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail memerlukan izin untuk membaca kontak Anda untuk dapat menyarankan penerima.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Minta izin</string>
 </resources>

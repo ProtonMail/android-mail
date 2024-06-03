@@ -78,7 +78,7 @@
   <string name="note_section">Note</string>
   <string name="birthday_section">Fødselsdag</string>
   <string name="other_section">Yderligere oplysninger</string>
-  <string name="display_name">Vist navn</string>
+  <string name="display_name">Visningsnavn</string>
   <string name="first_name">Fornavn</string>
   <string name="last_name">Efternavn</string>
   <string name="email_address">E-mailadresse</string>

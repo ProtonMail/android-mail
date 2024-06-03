@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="contact_list_title">Contacts</string>
+  <string name="contact_list_title">Kontakti</string>
   <string name="contact_list_loading_error">Error loading contacts, please try again later</string>
   <string name="no_contacts">No contacts found</string>
   <string name="no_contact_groups">No contact groups found</string>
@@ -31,7 +31,7 @@
   <string name="group_member_count">%1$s member</string>
   <string name="group_members_count">%1$s members</string>
   <string name="new_contact">New contact</string>
-  <string name="new_group">New group</string>
+  <string name="new_group">Nova grupa</string>
   <string name="import_contact">Učitaj kontakte uređaja</string>
   <string name="no_contact_email">Nema adresa e-pošte</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
@@ -47,11 +47,11 @@
   <string name="contact_type_work">Posao</string>
   <string name="contact_type_other">Other</string>
   <string name="contact_type_mobile">Mobitel</string>
-  <string name="contact_type_main">Main</string>
+  <string name="contact_type_main">Glavno</string>
   <string name="contact_type_fax">Faks</string>
   <string name="contact_type_pager">Dojavljivač</string>
-  <string name="contact_type_address">Address</string>
-  <string name="contact_property_birthday">Birthday</string>
+  <string name="contact_type_address">Adresa</string>
+  <string name="contact_property_birthday">Rođendan</string>
   <string name="contact_property_note">Bilješka</string>
   <string name="contact_property_photo">Fotografija</string>
   <string name="contact_property_logo">Logo</string>
@@ -63,8 +63,8 @@
   <string name="contact_property_member">Član</string>
   <string name="contact_property_url">URL</string>
   <string name="contact_property_gender">Spol</string>
-  <string name="contact_property_language">Language</string>
-  <string name="contact_property_time_zone">Time zone</string>
+  <string name="contact_property_language">Jezik</string>
+  <string name="contact_property_time_zone">Vremenska zona</string>
   <string name="contact_form_loading_error">Error loading contact, please try again later</string>
   <string name="contact_form_save_success">Contact saved</string>
   <string name="contact_form_create_success">Contact created</string>
@@ -74,13 +74,13 @@
   <string name="add_new">Add new</string>
   <string name="email_section">E-pošta</string>
   <string name="phone_section">Phone number</string>
-  <string name="address_section">Address</string>
+  <string name="address_section">Adresa</string>
   <string name="note_section">Bilješka</string>
-  <string name="birthday_section">Birthday</string>
+  <string name="birthday_section">Rođendan</string>
   <string name="other_section">Additional information</string>
   <string name="display_name">Zaslonski naziv</string>
   <string name="first_name">First name</string>
-  <string name="last_name">Last name</string>
+  <string name="last_name">Prezime</string>
   <string name="email_address">Email address</string>
   <string name="phone_number">Phone number</string>
   <string name="additional_info">Additional info</string>
@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Poništi</string>
   <string name="contact_details_delete_dialog_confirm_button">U redu</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
-  <string name="all_contacts_tab">Contacts</string>
+  <string name="all_contacts_tab">Kontakti</string>
   <string name="contact_groups_tab">Grupe</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d member</item>
@@ -115,7 +115,7 @@
   <string name="contact_group_details_deletion_error">Error deleting contact group</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
-  <string name="contact_group_delete_dialog_confirm">Remove</string>
+  <string name="contact_group_delete_dialog_confirm">Ukloni</string>
   <string name="contact_group_delete_dialog_dismiss">Keep it</string>
   <string name="contact_group_delete_button_text">Delete group</string>
   <string name="contact_group_form_loading_error">Error loading contact group, please try again later</string>

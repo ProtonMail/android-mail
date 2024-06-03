@@ -110,7 +110,7 @@
   <string name="contact_form_invalid_email_error">Error saving contact, it contains an invalid email address</string>
   <string name="contact_group_details_loading_error">Error loading contact group, please try again later</string>
   <string name="contact_group_details_deletion_success">Grupo de contactos eliminado</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
+  <string name="contact_group_details_deletion_error">Erro ao eliminar grupo de contactos</string>
   <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
   <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
   <string name="contact_group_delete_dialog_confirm">Remover</string>

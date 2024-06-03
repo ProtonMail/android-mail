@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Renk ayarları alınamadı</string>
   <string name="mailbox_action_move_messages_failed">Taşıma işlemi tamamlanamadı</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
-  <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Herkes için gizlilik</string>
-  <string name="onboarding_privacy_for_all_description">Başkalarını Proton Mail kullanmaya çağırın ve hepiniz uçtan uca şifrelemeden yararlanın.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Kolayca güncel kalın</string>
-  <string name="onboarding_easily_up_to_date_description">Yazışma kipinde, ileti dizileri arasında hızla gezinin.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Temiz ve düzenli</string>
-  <string name="onboarding_neat_and_tidy_description">Gelen kutunuzu düzenlemek için iletileri dosyalayın, etiketleyin ve renklendirin.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Sonraki</string>
-  <string name="onboarding_get_started">Başlayalım</string>
-  <string name="onboarding_illustration_content_description">Başlama çizimi</string>
-  <string name="onboarding_close_content_description">Kapat</string>
   <string name="mailbox_action_trash_message">İleti çöpe atıldı</string>
   <string name="mailbox_action_archive_message">İleti arşivlendi</string>
   <string name="mailbox_action_spam_message">ileti İstenmeyen kutusuna taşındı</string>

@@ -18,36 +18,36 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_title">Upgrade to</string>
+  <string name="upselling_button_item_content_description">სატარიფო გეგმის განახლების ღილაკი</string>
+  <string name="upselling_title">სატარიფო გეგმის განახლება</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">მეტი საცავი და ფასიანი თვისებების მისაღებად</string>
-  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_storage">15 გბ საცავი</string>
   <string name="upselling_plus_feature_email_addresses">10 ელფოსტის მისამართი</string>
   <string name="upselling_plus_feature_custom_domain">თქვენი ელფოსტის დომენების მხარდაჭერა</string>
-  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
+  <string name="upselling_plus_feature_desktop_app">ახალი Proton Mal-ის კომპიუტერის აპი</string>
+  <string name="upselling_plus_feature_folders_labels">ულიმიტო საქაღალდეები, ჭდეები და ფილტრები</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_description_override">თქვენი უნივერსალური გამოწერა</string>
+  <string name="upselling_unlimited_feature_storage">500 გბ საცავი სურათების მარქაფით</string>
   <string name="upselling_unlimited_feature_mail_calendar">ყველა ფასიანი Mail-ის და Calendar-ის ფუნქცია</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ ქვეყანა)</string>
   <string name="upselling_unlimited_feature_drive">დაცული ღრუბლოვანი საცავი</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">დაშიფრული პაროლების მმართველი</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_discount_tag">დაზოგეთ %s%%</string>
+  <string name="upselling_month">/თვე</string>
+  <string name="upselling_get_button">%s-ის მიღება</string>
   <plurals name="upselling_month">
     <item quantity="one">%d თვე</item>
     <item quantity="other">%d თვე</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">გაუმჯობესების პარამეტრების მიღება შეუძლებელია</string>
   <string name="upselling_snackbar_error_no_user_id">ნაპოვნია შეცდომა.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">გამოწერების გამოთხოვნა შეუძლებელია</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
+  <string name="upselling_snackbar_upgrade_in_progress">მიმდინარეობს სატარიფო გეგმის აწევა…</string>
   <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">მოხდა შეცდომა. სცადეთ კიდევ ერთხელ.</string>
 </resources>

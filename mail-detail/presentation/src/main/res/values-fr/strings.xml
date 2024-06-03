@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Le déplacement dans le dossier Corbeille n\'a pas abouti. Veuillez réessayer.</string>
   <string name="message_moved_to_trash">Le message a été déplacé dans le dossier Corbeille.</string>
   <string name="message_moved_to_archive">Le message a été déplacé dans le dossier Archives.</string>
+  <string name="error_move_to_archive_failed">Échec du déplacement dans les archives. Merci de réessayer.</string>
+  <string name="message_moved_to_spam">Le message a été déplacé dans le dossier Indésirables/spam.</string>
+  <string name="error_move_to_spam_failed">Le message n\'a pas pu être déplacé dans le dossier Indésirables/spam. Merci de réessayer.</string>
   <string name="message_moved_to_selected_destination">Le message a été déplacé dans %1$s.</string>
   <string name="error_move_message_failed">Le message n\'a pas pu être déplacé. Veuillez réessayer.</string>
   <string name="conversation_moved_to_trash">La conversation a été déplacée dans le dossier Corbeille.</string>

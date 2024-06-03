@@ -46,7 +46,7 @@
   <string name="bottom_sheet_label_as_title">Označi kao...</string>
   <string name="bottom_sheet_more_header_message_from">Poruka od %s</string>
   <!-- Message body link actions -->
-  <string name="message_link_long_click_copy">Copy link</string>
+  <string name="message_link_long_click_copy">Kopiraj poveznicu</string>
   <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
   <string name="message_link_long_click_share">Share link</string>
   <string name="message_link_long_click_share_via">Share link via</string>
@@ -54,7 +54,7 @@
   <string name="contact_actions_copy_address">Copy address</string>
   <string name="contact_actions_copy_address_description">Copy contact address</string>
   <string name="contact_actions_copy_address_performed">Adresa je kopirana u međuspremnik</string>
-  <string name="contact_actions_copy_name">Copy name</string>
+  <string name="contact_actions_copy_name">Kopiraj naziv</string>
   <string name="contact_actions_copy_name_description">Copy contact name</string>
   <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
   <string name="contact_actions_new_message">New message</string>
@@ -63,4 +63,9 @@
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
   <string name="contact_actions_view_contact_details">Vidi pojedinosti o kontaktu</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Permission required</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
 </resources>

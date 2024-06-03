@@ -62,4 +62,9 @@
   <string name="contact_actions_add_contact_description">Spara denna mottagare som en kontakt</string>
   <string name="contact_actions_view_contact_details">Visa kontaktdetaljer</string>
   <string name="contact_actions_view_contact_details_description">Visa detaljer om kontakten</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Behörighet krävs</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail behöver behörighet för att läsa dina kontakter för att föreslå mottagare.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Begär behörighet</string>
 </resources>

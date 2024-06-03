@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Kein Favorit</string>
   <string name="action_label_description">Hinzufügen zu Kategorie</string>
   <string name="action_move_description">Verschieben nach</string>
-  <string name="action_trash_description">Papierkorb</string>
+  <string name="action_trash_description">In Papierkorb verschieben</string>
   <string name="action_delete_description">Löschen</string>
   <string name="action_archive_description">Archivieren</string>
   <string name="action_spam_description">In den Spam-Ordner verschieben</string>

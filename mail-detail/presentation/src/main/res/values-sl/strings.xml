@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Premikanje v smeti ni uspelo. Poskusite znova.</string>
   <string name="message_moved_to_trash">Sporočilo je premaknjeno v smetnjak</string>
   <string name="message_moved_to_archive">Sporočilo je premaknjeno v arhiv</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Sporočilo je premaknjeno v mapo %1$s</string>
   <string name="error_move_message_failed">Premikanje sporočila ni uspelo. Poskusite znova.</string>
   <string name="conversation_moved_to_trash">Pogovor je premaknjen v smetnjak</string>

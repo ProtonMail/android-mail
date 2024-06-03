@@ -97,23 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nastavitev barv ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Dobrodošli v novi aplikaciji</string>
-  <string name="onboarding_description_ga">Nova aplikacija Proton Mail, popolnoma prenovljena, je bila narejena za stabilnost in zmogljivost.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Zasebnost za vse</string>
-  <string name="onboarding_privacy_for_all_description">Povabite druge v Proton Mail, da boste lahko vsi izkoristili prednosti šifriranja od konca do konca.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Preprosto posodabljanje</string>
-  <string name="onboarding_easily_up_to_date_description">Brskajte po navojnih sporočilih v načinu pogovora.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Čisto in urejeno</string>
-  <string name="onboarding_neat_and_tidy_description">Z razporejanjem, oznakami in barvnimi oznakami sporočil ustvarite popoln poštni predal po meri.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Naprej</string>
-  <string name="onboarding_get_started">Začnite</string>
-  <string name="onboarding_illustration_content_description">Ilustracija upravljalske plošče</string>
-  <string name="onboarding_close_content_description">Zapri</string>
   <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
   <string name="mailbox_action_archive_message">Sporočilo je premaknjeno v arhiv</string>
   <string name="mailbox_action_spam_message">Sporočilo premaknjeno v neželeno pošto.</string>

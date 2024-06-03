@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Verplaatsen naar prullenbak is mislukt. Probeer opnieuw.</string>
   <string name="message_moved_to_trash">Bericht verplaatst naar de prullenbak</string>
   <string name="message_moved_to_archive">Bericht verplaatst naar archief</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Bericht verplaatst naar %1$s</string>
   <string name="error_move_message_failed">Bericht verplaatsen mislukt. Probeer opnieuw.</string>
   <string name="conversation_moved_to_trash">Gesprek verplaatst naar prullenbak</string>

@@ -97,23 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Сардэчна запрашаем у новую праграму</string>
-  <string name="onboarding_description_ga">Новая праграма Proton Mail цалкам перапрацавана з нуля, каб забяспечыць стабільнасць і прадукцыйнасць.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Прыватнасць для ўсяго</string>
-  <string name="onboarding_privacy_for_all_description">Запрасіце іншых у Proton Mail і вы зможаце атрымаць усе перавагі ад скразнога шыфравання.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Лёгка абнаўляць</string>
-  <string name="onboarding_easily_up_to_date_description">Праглядайце ланцужкі паведамленняў у рэжыме размовы.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Просты і лаканічны</string>
-  <string name="onboarding_neat_and_tidy_description">Файл, метка і пазначэнне паведамленняў колерам дапамогуць стварыць ідэальную паштовую скрыню, якая будзе пасаваць менавіта вам.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Далей</string>
-  <string name="onboarding_get_started">Пачаць працу</string>
-  <string name="onboarding_illustration_content_description">Ілюстрацыі для азнаямлення</string>
-  <string name="onboarding_close_content_description">Закрыць</string>
   <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
   <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>

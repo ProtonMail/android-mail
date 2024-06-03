@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Odznači</string>
   <string name="action_label_description">Označi kot</string>
   <string name="action_move_description">Premakni v</string>
-  <string name="action_trash_description">Smetnjak</string>
+  <string name="action_trash_description">Premakni v smetnjak</string>
   <string name="action_delete_description">Izbriši</string>
   <string name="action_archive_description">Arhiviraj</string>
   <string name="action_spam_description">Premakni med neželeno pošto</string>

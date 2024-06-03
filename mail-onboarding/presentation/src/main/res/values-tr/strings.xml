@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Yeni uygulamaya hoş geldiniz</string>
+  <string name="onboarding_description_ga">Tümüyle sıfırdan yeniden oluşturulan yeni Proton Mail uygulaması, kararlılık ve başarım için tasarlandı.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Herkes için gizlilik</string>
+  <string name="onboarding_privacy_for_all_description">Başkalarını Proton Mail kullanmaya çağırın ve hepiniz uçtan uca şifrelemeden yararlanın.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Kolayca güncel kalın</string>
+  <string name="onboarding_easily_up_to_date_description">Yazışma kipinde, ileti dizileri arasında hızla gezinin.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Temiz ve düzenli</string>
+  <string name="onboarding_neat_and_tidy_description">Gelen kutunuzu düzenlemek için iletileri dosyalayın, etiketleyin ve renklendirin.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Sonraki</string>
+  <string name="onboarding_get_started">Başlayalım</string>
+  <string name="onboarding_illustration_content_description">Başlama çizimi</string>
+  <string name="onboarding_close_content_description">Kapat</string>
+</resources>

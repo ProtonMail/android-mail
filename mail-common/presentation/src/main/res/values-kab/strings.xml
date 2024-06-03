@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Kkes seg inurifen</string>
   <string name="action_label_description">Tamzim am</string>
   <string name="action_move_description">Senkez ɣer</string>
-  <string name="action_trash_description">Idumman</string>
+  <string name="action_trash_description">Move to trash</string>
   <string name="action_delete_description">Kkes</string>
   <string name="action_archive_description">Tarcivt</string>
   <string name="action_spam_description">Awi ɣer yispamen</string>

@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Αποτυχία λήψης ρυθμίσεων χρωμάτων</string>
   <string name="mailbox_action_move_messages_failed">Η μετακίνηση απέτυχε</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Καλώς ήλθατε στη νέα εφαρμογή</string>
-  <string name="onboarding_description_ga">Πλήρως ανακατασκευασμένη από την αρχή, η νέα εφαρμογή Proton Mail δημιουργήθηκε για σταθερότητα και απόδοση.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Ιδιωτικότητα για όλους</string>
-  <string name="onboarding_privacy_for_all_description">Προσκαλέστε άλλους στο Proton Mail, ώστε να μπορείτε όλοι να επωφεληθείτε από την κρυπτογράφηση από άκρο σε άκρο.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Εύκολα ενημερωμένο</string>
-  <string name="onboarding_easily_up_to_date_description">Περάστε τα μηνύματα με νήματα στη λειτουργία συνομιλίας.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Τακτοποιημένα</string>
-  <string name="onboarding_neat_and_tidy_description">Αρχειοθετήστε, εφαρμόσετε ετικέτες και χρώματα στα μηνύματά σας, για να δημιουργήσετε τα τέλεια, προσαρμοσμένα εισερχόμενά σας.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Επόμενο</string>
-  <string name="onboarding_get_started">Ξεκινήστε</string>
-  <string name="onboarding_illustration_content_description">Απεικόνιση ενσωμάτωσης</string>
-  <string name="onboarding_close_content_description">Κλείσιμο</string>
   <string name="mailbox_action_trash_message">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
   <string name="mailbox_action_spam_message">μήνυμα μετακινήθηκε στα Ενοχλητικά</string>

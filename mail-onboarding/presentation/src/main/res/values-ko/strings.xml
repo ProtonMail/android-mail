@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">새 앱에 오신 것을 환영합니다</string>
+  <string name="onboarding_description_ga">완전히 새롭게 다시 만든, 새 Proton Mail 앱은 안정성과 성능을 위해 만들어졌습니다.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">모두를 위한 개인정보 보호</string>
+  <string name="onboarding_privacy_for_all_description">Proton Mail에 다른 이들을 초대해 모두가 종단간 암호화를 누릴 수 있게 하세요.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">쉽게 최신으로 업데이트하기</string>
+  <string name="onboarding_easily_up_to_date_description">대화 모드에서 스레드된 메시지를 확인합니다.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">단정하고 깔끔한.</string>
+  <string name="onboarding_neat_and_tidy_description">폴더, 라벨 및 색상 코드 메시지를 사용하여 맞춤형 메일함을 만들어보세요.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">다음</string>
+  <string name="onboarding_get_started">시작하기</string>
+  <string name="onboarding_illustration_content_description">온보딩 일러스트레이션</string>
+  <string name="onboarding_close_content_description">닫기</string>
+</resources>

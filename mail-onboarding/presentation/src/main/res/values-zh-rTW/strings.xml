@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">歡迎使用全新的應用程式</string>
+  <string name="onboarding_description_ga">完全從零開始重建，全新的 Proton Mail 應用程式專為穩定性和性能而設計。</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">人人都有專屬隱私權</string>
+  <string name="onboarding_privacy_for_all_description">廣邀親友加入 Proton Mail 一同享有端對端加密的各種優勢！</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">輕鬆更新</string>
+  <string name="onboarding_easily_up_to_date_description">在對話模式中輕鬆地穿梭各個訊息討論串</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">整齊俐落</string>
+  <string name="onboarding_neat_and_tidy_description">歸檔、標籤與色彩編碼郵件，可創建您理想又可自訂的收件匣。</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">下一步</string>
+  <string name="onboarding_get_started">入門指南</string>
+  <string name="onboarding_illustration_content_description">入門指南</string>
+  <string name="onboarding_close_content_description">關閉</string>
+</resources>

@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">ფერის პარამეტრების მიღება ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed">გადატანის ოპერაცია ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">მოგესალმებით ახალ აპში</string>
-  <string name="onboarding_description_ga">სრულად 0-დან შექმნილი ახალი Proton Mail-ის აპი, რომელიც სტაბილურობით და წარმადობით გამოირჩევა.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">პირადი სივრცე ყველასთვის</string>
-  <string name="onboarding_privacy_for_all_description">მოიწვიეთ სხვები Proton Mail-ზე და ისარგებლეთ გამჭოლი დაშიფვრით.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">ადვილად განახლებადი</string>
-  <string name="onboarding_easily_up_to_date_description">საუბრების რეჟიმში შეტყობინებების ნაკადების სახით ჩვენება.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">მოვლილი და მოწესრიგებული</string>
-  <string name="onboarding_neat_and_tidy_description">ფაილი, ჭდე და შეტყობინების ფერადი ჭდეები რათა იდეალური, თქვენზე მორგებული საფოსტო ყუთი შექმნათ.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">შემდეგი</string>
-  <string name="onboarding_get_started">დაიწყეთ</string>
-  <string name="onboarding_illustration_content_description">გაცნობის ილუსტრაცია</string>
-  <string name="onboarding_close_content_description">დახურვა</string>
   <string name="mailbox_action_trash_message">შეტყობინება გადატანილია ნაგავში</string>
   <string name="mailbox_action_archive_message">შეტყობინება გადატანილია არქივში</string>
   <string name="mailbox_action_spam_message">შეტყობინება გადატანილია სპამში</string>

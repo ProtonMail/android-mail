@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Spostamento nel cestino non riuscito. Riprova.</string>
   <string name="message_moved_to_trash">Messaggio spostato nel cestino</string>
   <string name="message_moved_to_archive">Messaggio spostato nell\'archivio</string>
+  <string name="error_move_to_archive_failed">Impossibile spostare nell\'archivio. Riprova.</string>
+  <string name="message_moved_to_spam">Messaggio spostato in spam</string>
+  <string name="error_move_to_spam_failed">Impossibile spostare in spam. Riprova.</string>
   <string name="message_moved_to_selected_destination">Messaggio spostato in %1$s</string>
   <string name="error_move_message_failed">Spostamento del messaggio non riuscito. Riprova.</string>
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>

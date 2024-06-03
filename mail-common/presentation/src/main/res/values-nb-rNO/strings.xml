@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Fjern stjernemerking</string>
   <string name="action_label_description">Merk som</string>
   <string name="action_move_description">Flytt til</string>
-  <string name="action_trash_description">Papirkurv</string>
+  <string name="action_trash_description">Flytt til papirkurven</string>
   <string name="action_delete_description">Slett</string>
   <string name="action_archive_description">Arkiver</string>
   <string name="action_spam_description">Flytt til søppelpost</string>

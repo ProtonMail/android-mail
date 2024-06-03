@@ -24,12 +24,12 @@
   <string name="mail_settings_app_settings">Postavke aplikacije</string>
   <string name="mail_settings_theme">Tema</string>
   <string name="mail_settings_push_notifications">Push obavijesti</string>
-  <string name="mail_settings_auto_lock">Auto lock</string>
+  <string name="mail_settings_auto_lock">Automatsko zaključavanje</string>
   <string name="mail_settings_alternative_routing">Alternativno usmjeravanje</string>
   <string name="mail_settings_app_language">Jezik aplikacije</string>
   <string name="mail_settings_combined_contacts">Kombinirani kontakti</string>
   <string name="mail_settings_local_cache">Lokalna predmemorija</string>
-  <string name="mail_settings_local_cache_hint">Space used: %s</string>
+  <string name="mail_settings_local_cache_hint">Prostora iskorišteno: %s</string>
   <string name="mail_settings_local_cache_clear_button">Obriši podatke</string>
   <string name="mail_settings_swipe_actions">Swipe akcije</string>
   <string name="mail_settings_combined_contacts_hint">Uključite ovu značajku za automatsko dovršavanje adresa e-pošte pomoću kontakata sa svih vaših prijavljenih računa.</string>
@@ -65,7 +65,7 @@
   <string name="mail_settings_conversation_mode_hint">Grupirajte e-poštu u istom razgovoru u pristigloj pošti ili ih prikažite zasebno</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Zadana adresa e-pošte</string>
-  <string name="mail_settings_default_email_address_inactive_addresses">Inactive addresses</string>
+  <string name="mail_settings_default_email_address_inactive_addresses">Neaktivne adrese</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
   <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
   <string name="mail_settings_default_email_address_error_update">Pogreška prilikom ažuriranja postavki</string>
@@ -135,7 +135,7 @@
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometric Authentication</string>
   <string name="mail_settings_pin_insertion_button_create">Stvori</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Confirm</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Potvrdi</string>
   <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
@@ -148,8 +148,8 @@
     <item quantity="other">%s remaining attempts until secure data wipe.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">There was an error verifying your PIN code.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
+  <string name="mail_settings_pin_insertion_signout_text">Odjava</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Odjava</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Da li ste sigurni da se želite odjaviti?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Da</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ne</string>

@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">No s\'han pogut obtenir les preferències de color.</string>
   <string name="mailbox_action_move_messages_failed">No s\'ha pogut moure.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">No s\'han pogut obtenir les carpetes.</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Us donem la benvinguda a la nova aplicació</string>
-  <string name="onboarding_description_ga">Completament reconstruïda des de zero, la nova aplicació de Proton Mail s\'ha fet per a l\'estabilitat i el rendiment.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacitat per a tothom</string>
-  <string name="onboarding_privacy_for_all_description">Convideu els altres a Proton Mail perquè tots pugueu beneficiar-vos del xifratge d\'extrem a extrem.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Actualitzat fàcilment</string>
-  <string name="onboarding_easily_up_to_date_description">Navegueu ràpidament a través dels missatges encadenats en el mode de conversa.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Net i ordenat</string>
-  <string name="onboarding_neat_and_tidy_description">Classifiqueu els missatges amb carpetes, etiquetes i colors per a crear la vostra safata d\'entrada personalitzada perfecta.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Següent</string>
-  <string name="onboarding_get_started">Comença</string>
-  <string name="onboarding_illustration_content_description">Il·lustració de benvinguda</string>
-  <string name="onboarding_close_content_description">Tanca</string>
   <string name="mailbox_action_trash_message">S\'ha mogut el missatge a la paperera.</string>
   <string name="mailbox_action_archive_message">S\'ha mogut el missatge a l\'arxiu.</string>
   <string name="mailbox_action_spam_message">S\'ha mogut el missatge al correu brossa.</string>

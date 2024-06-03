@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Přesunutí do koše se nezdařilo. Zkuste to znovu.</string>
   <string name="message_moved_to_trash">Zpráva přesunuta do Koše</string>
   <string name="message_moved_to_archive">Zpráva přesunuta do Archivu</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Zpráva přesunuta do %1$s</string>
   <string name="error_move_message_failed">Přesunutí zprávy se nezdařilo. Zkuste to znovu.</string>
   <string name="conversation_moved_to_trash">Konverzace přesunuta do Koše</string>

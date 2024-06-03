@@ -38,7 +38,7 @@
     <item quantity="other">%s nepročitane</item>
   </plurals>
   <string name="mailbox_default_recipient">(Nema primatelja)</string>
-  <string name="mailbox_default_sender">(No Sender)</string>
+  <string name="mailbox_default_sender">(Nema pošiljatelja)</string>
   <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
   <string name="mailbox_error_message_generic">Loading mailbox failed</string>
   <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
@@ -88,23 +88,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
   <string name="mailbox_action_move_messages_failed">Move operation failed</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welcome to the new app</string>
-  <string name="onboarding_description_ga">Completely rebuilt from scratch, the new Proton Mail app was made for stability and performance.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privatnost za sve</string>
-  <string name="onboarding_privacy_for_all_description">Invite others to Proton Mail so you can all benefit from end-to-end encryption.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Lako ažurirano</string>
-  <string name="onboarding_easily_up_to_date_description">Breeze through threaded messages in conversation mode.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Neat and tidy</string>
-  <string name="onboarding_neat_and_tidy_description">Poruke s datotekama, oznakama i bojama za stvaranje savršenog, prilagođenog pretinca.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Sljedeće</string>
-  <string name="onboarding_get_started">Započnite</string>
-  <string name="onboarding_illustration_content_description">Onboarding illustration</string>
-  <string name="onboarding_close_content_description">Zatvori</string>
   <string name="mailbox_action_trash_message">Poruka premještena u otpad</string>
   <string name="mailbox_action_archive_message">Message moved to archive</string>
   <string name="mailbox_action_spam_message">Message moved to spam</string>
@@ -121,13 +104,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Warning</string>
+  <string name="storage_limit_warning_dialog_title">Upozorenje</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Ne podsjećaj me više</string>
   <string name="storage_limit_warning_dialog_confirm_button">U redu</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Warning</string>
+  <string name="storage_quota_over_dialog_title">Upozorenje</string>
   <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
   <string name="storage_quota_over_dialog_confirm_button">U redu</string>
 </resources>

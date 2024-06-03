@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Remover favorito</string>
   <string name="action_label_description">Rotular como</string>
   <string name="action_move_description">Mover para</string>
-  <string name="action_trash_description">Lixeira</string>
+  <string name="action_trash_description">Mover para a lixeira</string>
   <string name="action_delete_description">Excluir</string>
   <string name="action_archive_description">Arquivo</string>
   <string name="action_spam_description">Mover para spam</string>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Bem-vindo ao novo aplicativo</string>
+  <string name="onboarding_description_ga">Completamente reconstruído do zero, o novo aplicativo Proton Mail foi feito para estabilidade e desempenho.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacidade para todos</string>
+  <string name="onboarding_privacy_for_all_description">Convide outras pessoas para o Proton Mail para que todos possam se beneficiar da criptografia de ponta a ponta.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Facilmente atualizado</string>
+  <string name="onboarding_easily_up_to_date_description">Navegue pelas mensagens encadeadas no modo de conversa.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Limpo e arrumado</string>
+  <string name="onboarding_neat_and_tidy_description">Mensagens de arquivos, etiquetas e códigos de cores para criar sua caixa de entrada personalizada e perfeita.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Próximo</string>
+  <string name="onboarding_get_started">Começar</string>
+  <string name="onboarding_illustration_content_description">Ilustração de integração</string>
+  <string name="onboarding_close_content_description">Fechar</string>
+</resources>

@@ -64,4 +64,9 @@
   <string name="contact_actions_add_contact_description">Zapisz odbiorcę w kontaktach</string>
   <string name="contact_actions_view_contact_details">Pokaż szczegóły kontaktu</string>
   <string name="contact_actions_view_contact_details_description">Pokaż szczegóły kontaktu</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Wymagane uprawnienia</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail potrzebuje dostępu do kontaktów, aby sugerować odbiorców.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
 </resources>

@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Убрать звёздочку</string>
   <string name="action_label_description">Отметить как</string>
   <string name="action_move_description">Переместить в</string>
-  <string name="action_trash_description">Корзина</string>
+  <string name="action_trash_description">Move to trash</string>
   <string name="action_delete_description">Удалить</string>
   <string name="action_archive_description">Архив</string>
   <string name="action_spam_description">Переместить в Спам</string>

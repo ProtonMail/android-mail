@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Remover estrela</string>
   <string name="action_label_description">Etiquetar como</string>
   <string name="action_move_description">Mover para</string>
-  <string name="action_trash_description">Lixeira</string>
+  <string name="action_trash_description">Mover para a lixeira</string>
   <string name="action_delete_description">Eliminar</string>
   <string name="action_archive_description">Arquivar</string>
   <string name="action_spam_description">Mover para o spam</string>

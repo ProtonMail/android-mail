@@ -62,4 +62,9 @@
   <string name="contact_actions_add_contact_description">Αποθήκευση αυτού του παραλήπτη ως επαφή</string>
   <string name="contact_actions_view_contact_details">Προβολή στοιχείων επαφής</string>
   <string name="contact_actions_view_contact_details_description">Προβολή λεπτομερειών της επαφής</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Απαιτείται εξουσιοδότηση</string>
+  <string name="device_contacts_permission_dialog_message">Το Proton Mail χρειάζεται άδεια για να διαβάσει τις επαφές σας για να προτείνει παραλήπτες.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">ΟΚ</string>
+  <string name="device_contacts_permission_dialog_action_button">Αίτημα άδειας</string>
 </resources>

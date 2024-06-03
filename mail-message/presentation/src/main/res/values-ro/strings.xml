@@ -63,4 +63,9 @@
   <string name="contact_actions_add_contact_description">Salvare acest destinatar în contacte.</string>
   <string name="contact_actions_view_contact_details">Afișare detalii contact</string>
   <string name="contact_actions_view_contact_details_description">Afișare detalii contact.</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Permisiune necesară</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail are nevoie de permisiunea de a accesa contactele pentru a sugera destinatari.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Solicitare permisiune</string>
 </resources>

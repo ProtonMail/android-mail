@@ -64,4 +64,9 @@
   <string name="contact_actions_add_contact_description">Захаваць гэтага атрымальніка як кантакт</string>
   <string name="contact_actions_view_contact_details">Паглядзець кантактныя звесткі</string>
   <string name="contact_actions_view_contact_details_description">Паглядзець падрабязнасці кантакту</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Патрабуецца дазвол</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail неабходны дазвол на чытанне вашых кантактаў, каб прапаноўваць атрымальнікаў.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">Добра</string>
+  <string name="device_contacts_permission_dialog_action_button">Запытаць дазвол</string>
 </resources>

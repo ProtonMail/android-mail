@@ -44,6 +44,9 @@
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
   <string name="message_moved_to_trash">メッセージをごみ箱に移動しました</string>
   <string name="message_moved_to_archive">メッセージをアーカイブに移動しました</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
   <string name="conversation_moved_to_trash">会話をごみ箱に移動しました</string>

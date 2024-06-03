@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Erro ao mover para a lixeira. Tente novamente.</string>
   <string name="message_moved_to_trash">Mensagem movida para a lixeira</string>
   <string name="message_moved_to_archive">Mensagem movida para o arquivo</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Mensagem movida para Spam</string>
+  <string name="error_move_to_spam_failed">Erro ao mover para spam. Tente novamente.</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Erro ao mover a mensagem. Tente novamente.</string>
   <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>

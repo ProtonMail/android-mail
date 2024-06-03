@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
   <string name="message_moved_to_trash">Üzenet áthelyezve a lomtárba</string>
   <string name="message_moved_to_archive">Üzenet áthelyezve az archívumba</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Üzenet áthelyezve a %1$s mappába</string>
   <string name="error_move_message_failed">Az üzenet áthelyezése sikertelen. Próbálja újra.</string>
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>

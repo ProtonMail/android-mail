@@ -29,7 +29,7 @@
   <string name="you_are_offline">ქსელი გამორთულია</string>
   <string name="feature_coming_soon">ფუნქცია მალე ჩაირთვება…</string>
   <string name="mailbox_draft_saved">მონახაზი შენახულია</string>
-  <string name="mailbox_draft_discard">Discard</string>
+  <string name="mailbox_draft_discard">მოცილება</string>
   <string name="mailbox_message_sending">შეტყობინების გაგზავნა…</string>
   <string name="mailbox_message_sending_offline">ინტერნეტის გარეშე. შეტყობინება გაგზავნის რიგშია</string>
   <string name="mailbox_message_sending_success">შეტყობინება გაიგზავნა</string>

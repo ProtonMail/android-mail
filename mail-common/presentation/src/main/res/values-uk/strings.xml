@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Прибрати зірочку</string>
   <string name="action_label_description">Позначити міткою</string>
   <string name="action_move_description">Перемістити</string>
-  <string name="action_trash_description">Смітник</string>
+  <string name="action_trash_description">Move to trash</string>
   <string name="action_delete_description">Видалити</string>
   <string name="action_archive_description">Архівувати</string>
   <string name="action_spam_description">Перемістити до спаму</string>

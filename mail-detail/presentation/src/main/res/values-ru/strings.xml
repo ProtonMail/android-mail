@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Не удалось переместить в корзину. Пожалуйста, попробуйте еще раз.</string>
   <string name="message_moved_to_trash">Сообщение помещено в Корзину</string>
   <string name="message_moved_to_archive">Сообщение помещено в Архив</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Сообщение перемещено в %1$s</string>
   <string name="error_move_message_failed">Не удалось переместить сообщение. Пожалуйста, повторите попытку.</string>
   <string name="conversation_moved_to_trash">Цепочка писем помещена в Корзину</string>

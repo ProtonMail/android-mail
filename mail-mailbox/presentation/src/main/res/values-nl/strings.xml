@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Kan geen kleurinstellingen ophalen</string>
   <string name="mailbox_action_move_messages_failed">Verplaatsactie mislukt</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kan geen mappen ophalen</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Welkom bij de nieuwe app</string>
-  <string name="onboarding_description_ga">Volledig opnieuw van de grond  opgebouwd, de nieuwe Proton Mail-app werd gemaakt voor stabiliteit en prestaties.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacy voor iedereen</string>
-  <string name="onboarding_privacy_for_all_description">Nodig anderen uit voor Proton Mail, zodat u allemaal kan profiteren van end-to-end versleuteling.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Gemakkelijk up-to-date</string>
-  <string name="onboarding_easily_up_to_date_description">Snel scrollen door berichten in een thread in conversatiemodus.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Netjes en opgeruimd</string>
-  <string name="onboarding_neat_and_tidy_description">Sorteer, label en ken kleur toe aan berichten om uw perfecte inbox te creëren.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Volgende</string>
-  <string name="onboarding_get_started">Aan de slag</string>
-  <string name="onboarding_illustration_content_description">Onboardingillustratie</string>
-  <string name="onboarding_close_content_description">Sluiten</string>
   <string name="mailbox_action_trash_message">Bericht verplaatst naar de prullenbak</string>
   <string name="mailbox_action_archive_message">Bericht verplaatst naar archief</string>
   <string name="mailbox_action_spam_message">Bericht verplaatst naar spam</string>

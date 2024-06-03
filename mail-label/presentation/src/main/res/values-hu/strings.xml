@@ -22,8 +22,8 @@
   <string name="label_title_sent">Elküldött</string>
   <string name="label_title_starred">Csillagozott</string>
   <string name="label_title_archive">Archívum</string>
-  <string name="label_title_spam">Levélszemét</string>
-  <string name="label_title_trash">Lomtár</string>
+  <string name="label_title_spam">Spam</string>
+  <string name="label_title_trash">Kuka</string>
   <string name="label_title_outbox">Kimenő</string>
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_drafts">Minden piszkozat</string>
@@ -59,8 +59,8 @@
   <string name="folder_limit_reached_error">Elérte a mappák maximális számát</string>
   <string name="delete_label_error">Hiba a címke törlésekor</string>
   <string name="input_field_clear_content_description">Szöveg törlése</string>
-  <string name="label_list_item_content_description">Label list item</string>
-  <string name="folder_list_item_content_description">Folder list item</string>
+  <string name="label_list_item_content_description">Címke listaelem</string>
+  <string name="folder_list_item_content_description">Mappa listaelem</string>
   <string name="folder_list_no_folders_found">Nincsenek mappák.</string>
   <string name="folder_list_create_folder_placeholder_description">Hozzon létre egy mappát az üzenetek rendszerezéséhez.</string>
   <string name="create_folder_content_description">Mappa hozzáadása</string>

@@ -64,4 +64,9 @@
   <string name="contact_actions_add_contact_description">Сохранить этого получателя как контакт</string>
   <string name="contact_actions_view_contact_details">Просмотреть контактную информацию</string>
   <string name="contact_actions_view_contact_details_description">Просмотреть информацию контакта</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Необходимо разрешение</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail необходимо разрешение на чтение ваших контактов, чтобы предлагать адресатов.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">ОК</string>
+  <string name="device_contacts_permission_dialog_action_button">Запросить разрешение</string>
 </resources>

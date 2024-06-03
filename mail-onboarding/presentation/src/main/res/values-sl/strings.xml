@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Dobrodošli v novi aplikaciji</string>
+  <string name="onboarding_description_ga">Nova aplikacija Proton Mail, popolnoma prenovljena, je bila narejena za stabilnost in zmogljivost.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Zasebnost za vse</string>
+  <string name="onboarding_privacy_for_all_description">Povabite druge v Proton Mail, da boste lahko vsi izkoristili prednosti šifriranja od konca do konca.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Preprosto posodabljanje</string>
+  <string name="onboarding_easily_up_to_date_description">Brskajte po navojnih sporočilih v načinu pogovora.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Čisto in urejeno</string>
+  <string name="onboarding_neat_and_tidy_description">Z razporejanjem, oznakami in barvnimi oznakami sporočil ustvarite popoln poštni predal po meri.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Naprej</string>
+  <string name="onboarding_get_started">Začnite</string>
+  <string name="onboarding_illustration_content_description">Ilustracija upravljalske plošče</string>
+  <string name="onboarding_close_content_description">Zapri</string>
+</resources>

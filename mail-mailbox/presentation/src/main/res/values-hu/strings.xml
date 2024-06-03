@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nem sikerült betölteni a szín beállításokat</string>
   <string name="mailbox_action_move_messages_failed">Áthelyezés művelet sikertelen</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nem sikerült betölteni a mappákat</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Üdvözöljük az új alkalmazásban</string>
-  <string name="onboarding_description_ga">A teljesen megújult Proton Mail alkalmazás a stabilitásra és hatékonyságra alapoz.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Adatbiztonság mindenkinek</string>
-  <string name="onboarding_privacy_for_all_description">Hívjon meg másokat is a Proton Mail használatára, így ők is élvezhetik a végpontok közti titkosítás előnyeit.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Könnyen naprakész</string>
-  <string name="onboarding_easily_up_to_date_description">Beszélgetés üzemmódban könnyedén átfuthat a szálankénti üzeneteken.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Takaros</string>
-  <string name="onboarding_neat_and_tidy_description">Rendezze el, címkézze fel és lássa el színkóddal üzeneteit, hogy létrehozza a saját tökéletes fiókját.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Következő</string>
-  <string name="onboarding_get_started">Kezdés</string>
-  <string name="onboarding_illustration_content_description">Indulási illusztráció</string>
-  <string name="onboarding_close_content_description">Bezárás</string>
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
   <string name="mailbox_action_spam_message">üzenet a levélszemét mappába áthelyezve</string>

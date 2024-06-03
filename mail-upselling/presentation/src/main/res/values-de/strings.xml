@@ -22,18 +22,18 @@
   <string name="upselling_title">Upgrade auf</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
-  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_custom_domain">Eigene E-Mail-Domain Support</string>
   <string name="upselling_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
+  <string name="upselling_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Ihr umfassendes Premium-Abonnement</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_storage">500 GB Speicherplatz mit Fotosicherung</string>
   <string name="upselling_unlimited_feature_mail_calendar">Alle kostenpflichtigen Mail- und Calendar-Funktionen</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ Länder)</string>
   <string name="upselling_unlimited_feature_drive">Sicherer Cloud-Speicher</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPARE %s%%</string>
   <string name="upselling_month">/Monat</string>

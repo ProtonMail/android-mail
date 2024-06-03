@@ -37,7 +37,7 @@
   </plurals>
   <string name="mailbox_default_recipient">(Ingen modtager)</string>
   <string name="mailbox_default_sender">(Ingen afsender)</string>
-  <string name="mailbox_error_message_offline">Du er offline, kunne ikke hente elementer</string>
+  <string name="mailbox_error_message_offline">Du er offline og kan ikke hente emner</string>
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
   <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen beskeder</string>
@@ -67,35 +67,18 @@
     <item quantity="other">Er du sikker på, at du vil slette disse beskeder permanent?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Besked er slettet permanent</item>
-    <item quantity="other">%d beskeder er slettet permanent</item>
+    <item quantity="one">Besked er permanent slettet</item>
+    <item quantity="other">%d beskeder er permanent slettet</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Samtale er slettet permanent</item>
-    <item quantity="other">%d samtaler er slettet permanent</item>
+    <item quantity="one">Samtale er permanent slettet</item>
+    <item quantity="other">%d samtaler er permanent slettet</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Etikette-handling mislykkedes</string>
-  <string name="mailbox_action_label_messages_failed_retrieving_labels">Kunne ikke hente etiketter</string>
-  <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente farveindstillinger</string>
+  <string name="mailbox_action_label_messages_failed">Etikettering mislykkedes</string>
+  <string name="mailbox_action_label_messages_failed_retrieving_labels">Etiketter kunne ikke hentes</string>
+  <string name="mailbox_action_failed_retrieving_colors">Farveindstillinger kunne ikke hentes</string>
   <string name="mailbox_action_move_messages_failed">Flytning mislykkedes</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Velkommen til den nye app</string>
-  <string name="onboarding_description_ga">Den nye Proton Mail-app er genopbygget helt fra bunden og er skabt med henblik på stabilitet og ydeevne.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privatliv for alle</string>
-  <string name="onboarding_privacy_for_all_description">Inviter andre til Proton Mail, så I alle kan drage fordel af end-to-end-kryptering.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Nem opdatering</string>
-  <string name="onboarding_easily_up_to_date_description">Gå hurtigt gennem trådede beskeder i samtaletilstand.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Pæn og ryddelig</string>
-  <string name="onboarding_neat_and_tidy_description">Inddel beskeder i arkiver, etiketter og farvekoder for at skabe din egen perfekte indbakke.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Næste</string>
-  <string name="onboarding_get_started">Kom godt i gang</string>
-  <string name="onboarding_illustration_content_description">Introduktion-illustration</string>
-  <string name="onboarding_close_content_description">Luk</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Mapper kunne ikke hentes</string>
   <string name="mailbox_action_trash_message">Besked flyttet til papirkurv</string>
   <string name="mailbox_action_archive_message">Besked flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Besked flyttet til spam</string>
@@ -113,12 +96,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"Rydning er planlagt"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Lageret på din Proton-konto er mere end 80 % fyldt. Frigør plads, eller opgrader for at få mere lagerplads.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Lageret på din Proton-konto er mere end 90 % fyldt. Frigør plads, eller opgrader for at få mere lagerplads.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Lagerpladsen på din Proton-konto er mere end 80% opbrugt. Frigør plads eller opgrader til mere</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lagerpladsen på din Proton-konto er mere end 90% opbrugt. Frigør plads eller opgrader til mere</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Påmind mig ikke igen</string>
   <string name="storage_limit_warning_dialog_confirm_button">Ok</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advarsel</string>
-  <string name="storage_quota_over_dialog_text">Lagerpladsen på din Proton-konto er 100 % fuld. Du vil ikke kunne sende eller modtage e-mails, medmindre du sletter nogle e-mails permanent eller opgraderer for at få mere lagerplads.</string>
+  <string name="storage_quota_over_dialog_text">Lagerpladsen på din Proton-konto er 100% opbrugt. Derfor kan du ikke sende eller modtage e-mails, medmindre du sletter nogle e-mails permanent eller opgraderer til mere plads.</string>
   <string name="storage_quota_over_dialog_confirm_button">Ok</string>
 </resources>

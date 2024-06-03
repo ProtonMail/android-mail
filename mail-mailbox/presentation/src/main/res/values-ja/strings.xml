@@ -72,23 +72,6 @@
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>
   <string name="mailbox_action_move_messages_failed">移動できませんでした</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">フォルダーを取得できませんでした</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">新しいアプリへようこそ</string>
-  <string name="onboarding_description_ga">新しい Proton Mail アプリは、安定性とパフォーマンスを重視してゼロから完全に再構築されました。</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">すべての人にプライバシーを</string>
-  <string name="onboarding_privacy_for_all_description">他の人を Proton Mail に招待すると、エンドツーエンド暗号化の恩恵を受けることができます。</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">最新に保つのは簡単です</string>
-  <string name="onboarding_easily_up_to_date_description">会話モードでスレッドのメッセージを読み進めることができます。</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">整列</string>
-  <string name="onboarding_neat_and_tidy_description">ファイルやラベルを使ったり、メッセージに色付けをしたりして、自分好みの受信トレイを作りましょう。</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">次へ</string>
-  <string name="onboarding_get_started">はじめましょう</string>
-  <string name="onboarding_illustration_content_description">解説イラスト</string>
-  <string name="onboarding_close_content_description">閉じる</string>
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
   <string name="mailbox_action_spam_message">件のメッセージが迷惑メールに移動されました</string>

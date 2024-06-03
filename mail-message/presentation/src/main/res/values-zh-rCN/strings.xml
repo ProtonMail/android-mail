@@ -61,4 +61,9 @@
   <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
   <string name="contact_actions_view_contact_details">查看联系人详情</string>
   <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">需要权限</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
 </resources>

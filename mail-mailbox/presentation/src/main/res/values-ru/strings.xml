@@ -97,23 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Добро пожаловать в новое приложение</string>
-  <string name="onboarding_description_ga">Полностью переработанное с нуля, новое приложение Proton Mail отличается стабильностью и производительностью.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Конфиденциальность для всех</string>
-  <string name="onboarding_privacy_for_all_description">Приглашайте других пользователей в Proton Mail, чтобы вы все могли воспользоваться преимуществами сквозного шифрования.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Легко обновить</string>
-  <string name="onboarding_easily_up_to_date_description">Просматривайте потоковые сообщения в режиме цепочки писем.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Чистота и порядок</string>
-  <string name="onboarding_neat_and_tidy_description">Упорядочивайте, отмечайте и раскрашивайте зашифрованные сообщения, чтобы создать идеальный индивидуальный почтовый ящик.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Далее</string>
-  <string name="onboarding_get_started">Приступить к работе</string>
-  <string name="onboarding_illustration_content_description">Иллюстрация использования</string>
-  <string name="onboarding_close_content_description">Закрыть</string>
   <string name="mailbox_action_trash_message">Сообщение перемещено в Корзину</string>
   <string name="mailbox_action_archive_message">Сообщение перемещено в Архив</string>
   <string name="mailbox_action_spam_message">Сообщение перемещено в Спам</string>

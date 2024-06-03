@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Asenkez ɣer yiḍumman yecceḍ. Ttxil ɛawed-as.</string>
   <string name="message_moved_to_trash">Izen ittwasenkez ɣer iḍumman</string>
   <string name="message_moved_to_archive">Izen yettwasnekzen ɣer teṛcivt</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Izen yettwasenkez ɣer %1$s</string>
   <string name="error_move_message_failed">Asenkez n yiznan yecceḍ. Ttxil ɛawed-as.</string>
   <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer tqecwalt</string>

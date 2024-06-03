@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente fargeinnstillinger</string>
   <string name="mailbox_action_move_messages_failed">Flytteoperasjonen mislyktes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Velkommen til den nye appen</string>
-  <string name="onboarding_description_ga">Den nye Proton Mail-appen ble fullstendig gjenoppbygd fra bunnen av, og ble laget for stabilitet og ytelse.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Personvern for alle</string>
-  <string name="onboarding_privacy_for_all_description">Inviter andre til Proton Mail, slik at dere alle kan dra nytte av ende-til-ende kryptering.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Lett oppdatert</string>
-  <string name="onboarding_easily_up_to_date_description">Lek deg gjennom trådmeldinger i samtalemodus.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Pent og ryddig</string>
-  <string name="onboarding_neat_and_tidy_description">Fil-, etikett- og fargekodemeldinger for å opprette en perfekt, tilpasset innboks.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Neste</string>
-  <string name="onboarding_get_started">Kom i gang</string>
-  <string name="onboarding_illustration_content_description">Illustrasjon om introduksjon</string>
-  <string name="onboarding_close_content_description">Lukk</string>
   <string name="mailbox_action_trash_message">Melding flyttet til papirkurven</string>
   <string name="mailbox_action_archive_message">Melding flyttet til arkiv</string>
   <string name="mailbox_action_spam_message">Melding flyttet til søppelpost</string>

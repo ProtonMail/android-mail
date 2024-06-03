@@ -37,7 +37,7 @@
   <string name="action_unstar_description">No destaquis</string>
   <string name="action_label_description">Etiqueta com a</string>
   <string name="action_move_description">Mou a</string>
-  <string name="action_trash_description">Paperera</string>
+  <string name="action_trash_description">Mou a la paperera</string>
   <string name="action_delete_description">Elimina</string>
   <string name="action_archive_description">Arxiva</string>
   <string name="action_spam_description">Mou al correu brossa</string>

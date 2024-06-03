@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Hapus bintang</string>
   <string name="action_label_description">Labeli sebagai</string>
   <string name="action_move_description">Pindahkan ke</string>
-  <string name="action_trash_description">Sampah</string>
+  <string name="action_trash_description">Pindahkan ke sampah</string>
   <string name="action_delete_description">Hapus</string>
   <string name="action_archive_description">Arsipkan</string>
   <string name="action_spam_description">Pindahkan ke spam</string>

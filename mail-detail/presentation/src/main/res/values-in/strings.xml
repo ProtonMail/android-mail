@@ -44,6 +44,9 @@
   <string name="error_move_to_trash_failed">Pemindahan ke sampah gagal. Silakan coba lagi.</string>
   <string name="message_moved_to_trash">Pesan dipindahkan ke Sampah</string>
   <string name="message_moved_to_archive">Pesan dipindahkan ke Arsip</string>
+  <string name="error_move_to_archive_failed">Pemindahan ke arsip gagal. Silakan coba lagi.</string>
+  <string name="message_moved_to_spam">Pesan dipindahkan ke Spam</string>
+  <string name="error_move_to_spam_failed">Pemindahan ke spam gagal. Silakan coba lagi.</string>
   <string name="message_moved_to_selected_destination">Pesan dipindahkan ke %1$s</string>
   <string name="error_move_message_failed">Pesan gagal dipindahkan. Silakan coba lagi.</string>
   <string name="conversation_moved_to_trash">Percakapan dipindahkan ke Sampah</string>

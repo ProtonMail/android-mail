@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Ta bort stjärnmärkning</string>
   <string name="action_label_description">Märk som</string>
   <string name="action_move_description">Flytta till</string>
-  <string name="action_trash_description">Papperskorg</string>
+  <string name="action_trash_description">Flytta till papperskorg</string>
   <string name="action_delete_description">Ta bort</string>
   <string name="action_archive_description">Arkivera</string>
   <string name="action_spam_description">Flytta till skräppost</string>

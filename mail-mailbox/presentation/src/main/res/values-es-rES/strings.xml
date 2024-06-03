@@ -79,23 +79,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de movimiento</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Te damos la bienvenida a la nueva aplicación</string>
-  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva aplicación de Proton Mail de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Privacidad para todos</string>
-  <string name="onboarding_privacy_for_all_description">Invita a más personas a Proton Mail para beneficiar del cifrado de extremo a extremo.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Estar al día es más fácil</string>
-  <string name="onboarding_easily_up_to_date_description">Consulta rápidamente los mensajes hilados en el modo de conversación.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Limpio y ordenado</string>
-  <string name="onboarding_neat_and_tidy_description">Archiva, etiqueta y clasifica por colores los mensajes para crear una perfecta y personalizada bandeja de entrada.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Siguiente</string>
-  <string name="onboarding_get_started">Comenzar</string>
-  <string name="onboarding_illustration_content_description">Ilustración de bienvenida</string>
-  <string name="onboarding_close_content_description">Cerrar</string>
   <string name="mailbox_action_trash_message">El mensaje ha sido movido a la carpeta Papelera.</string>
   <string name="mailbox_action_archive_message">El mensaje ha sido movido a la carpeta Archivo.</string>
   <string name="mailbox_action_spam_message">El mensaje ha sido movido a la carpeta Spam.</string>

@@ -46,6 +46,9 @@
   <string name="error_move_to_trash_failed">Flytt till papperskorg misslyckades. Försök igen.</string>
   <string name="message_moved_to_trash">Meddelande flyttat till papperskorg</string>
   <string name="message_moved_to_archive">Meddelande flyttat till arkiv</string>
+  <string name="error_move_to_archive_failed">Misslyckades att flytta till arkiv. Försök igen.</string>
+  <string name="message_moved_to_spam">Meddelande flyttat till skräppost</string>
+  <string name="error_move_to_spam_failed">Flytt till skräppost misslyckades. Försök igen.</string>
   <string name="message_moved_to_selected_destination">Meddelandet flyttades till %1$s</string>
   <string name="error_move_message_failed">Misslyckades att flytta meddelande. Försök igen.</string>
   <string name="conversation_moved_to_trash">Konversation flyttad till papperskorg</string>

@@ -37,7 +37,7 @@
   <string name="action_unstar_description">별표 제거</string>
   <string name="action_label_description">라벨 추가</string>
   <string name="action_move_description">다음으로 이동</string>
-  <string name="action_trash_description">휴지통</string>
+  <string name="action_trash_description">휴지통으로 이동합니다</string>
   <string name="action_delete_description">삭제</string>
   <string name="action_archive_description">보관 편지함</string>
   <string name="action_spam_description">스팸으로 이동</string>

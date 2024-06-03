@@ -26,12 +26,12 @@
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
   <string name="upselling_plus_feature_custom_domain">Özel e-posta etki alanı desteği</string>
   <string name="upselling_plus_feature_desktop_app">Yeni Proton Mail masaüstü uygulaması</string>
-  <string name="upselling_plus_feature_folders_labels">Sınırsız klasör, etiket, filtre</string>
+  <string name="upselling_plus_feature_folders_labels">Sınırsız klasör, etiket, süzgeç</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Tümünü bir arada sunan ücretli abonelik</string>
-  <string name="upselling_unlimited_feature_storage">Fotoğraf yedeklemeli 500 GB depolama alanı</string>
+  <string name="upselling_unlimited_feature_storage">Fotoğraf yedekleme ile 500 GB depolama alanı</string>
   <string name="upselling_unlimited_feature_mail_calendar">Tüm ücretli Mail ve Calendar özellikleri</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ ülke)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90 üzerinde ülke)</string>
   <string name="upselling_unlimited_feature_drive">Güvenli bulut depolama alanı</string>
   <string name="upselling_unlimited_feature_pass">Şifrelenmiş parola yöneticisi</string>
   <!-- Other UI Items -->

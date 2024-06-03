@@ -61,4 +61,9 @@
   <string name="contact_actions_add_contact_description">이 받는 이를 연락처에 저장합니다</string>
   <string name="contact_actions_view_contact_details">연락처 세부 정보 보기</string>
   <string name="contact_actions_view_contact_details_description">연락처의 세부 정보를 봅니다</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">권한 필요</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail이 수신자를 제안하기 위해 연락처를 읽을 권한이 필요합니다.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">확인</string>
+  <string name="device_contacts_permission_dialog_action_button">권한 요청</string>
 </resources>

@@ -64,4 +64,9 @@
   <string name="contact_actions_add_contact_description">Зберегти цього отримувача до контактів</string>
   <string name="contact_actions_view_contact_details">Подробиці контакту</string>
   <string name="contact_actions_view_contact_details_description">Переглянути інформацію про контакт</string>
+  <!-- Device Contacts permission dialog -->
+  <string name="device_contacts_permission_dialog_title">Потрібен дозвіл</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
 </resources>

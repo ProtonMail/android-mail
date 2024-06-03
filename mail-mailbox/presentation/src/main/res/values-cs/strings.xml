@@ -97,23 +97,6 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodařilo se získat nastavení barev</string>
   <string name="mailbox_action_move_messages_failed">Operace přesunu se nezdařila</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodařilo se získat složky</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Vítejte v nové aplikaci</string>
-  <string name="onboarding_description_ga">Aplikace Proton Mail byla kompletně přestavěna od základů s ohledem na stabilitu a výkon.</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">Soukromí pro všechny</string>
-  <string name="onboarding_privacy_for_all_description">Pozvěte ostatní do Proton Mail, abyste všichni mohli využívat výhod koncového šifrování.</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">Jednoduše aktuální</string>
-  <string name="onboarding_easily_up_to_date_description">Snadné procházení zpráv ve vláknech v režimu konverzace.</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">Elegantní a úhledný</string>
-  <string name="onboarding_neat_and_tidy_description">Třiďte soubory, označte štítky a barevnými kódy pro perfektní schránku na míru.</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">Další</string>
-  <string name="onboarding_get_started">Začínáme</string>
-  <string name="onboarding_illustration_content_description">Znázornění registrace</string>
-  <string name="onboarding_close_content_description">Zavřít</string>
   <string name="mailbox_action_trash_message">Zpráva přesunuta do koše</string>
   <string name="mailbox_action_archive_message">Zpráva přesunuta do archivu</string>
   <string name="mailbox_action_spam_message">Zpráva přesunuta do spamu</string>

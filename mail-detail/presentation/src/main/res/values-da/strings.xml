@@ -46,6 +46,10 @@
   <string name="error_move_to_trash_failed">Flytning til papirkurv mislykkedes. Prøv igen.</string>
   <string name="message_moved_to_trash">Besked flyttet til Papirkurv</string>
   <string name="message_moved_to_archive">Besked flyttet til Arkiv</string>
+  <string name="error_move_to_archive_failed">Flyt til arkiv mislykkedes. Prøv
+igen.</string>
+  <string name="message_moved_to_spam">Besked flyttet til spam</string>
+  <string name="error_move_to_spam_failed">Flyt til spam mislykkedes. Prøv igen.</string>
   <string name="message_moved_to_selected_destination">Besked flyttet til %1$s</string>
   <string name="error_move_message_failed">Flytning af besked mislykkedes. Prøv igen.</string>
   <string name="conversation_moved_to_trash">Samtale flyttet til Papirkurv</string>

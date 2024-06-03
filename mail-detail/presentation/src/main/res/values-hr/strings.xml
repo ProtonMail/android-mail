@@ -26,15 +26,15 @@
     <item quantity="few">%d poruke</item>
     <item quantity="other">%d poruka</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
+  <string name="quick_reply_button_content_description">Odgovori</string>
   <string name="quick_reply_all_button_content_description">Reply All</string>
   <string name="more_button_content_description">Više</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Predmet:</string>
+  <string name="from">Od:</string>
   <string name="to">Za:</string>
   <string name="cc">Kopija:</string>
   <string name="bcc">Skrivena kopija:</string>
-  <string name="date">Date:</string>
+  <string name="date">Datum:</string>
   <plurals name="attachment">
     <item quantity="one">%d privitak</item>
     <item quantity="few">%d privitka</item>
@@ -48,6 +48,9 @@
   <string name="error_move_to_trash_failed">Move to trash failed. Please retry.</string>
   <string name="message_moved_to_trash">Message moved to Trash</string>
   <string name="message_moved_to_archive">Message moved to Archive</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Poruka premještena u %1$s</string>
   <string name="error_move_message_failed">Moving message failed. Please retry.</string>
   <string name="conversation_moved_to_trash">Razgovor premješten u Otpad</string>
@@ -100,7 +103,7 @@
   <string name="message_report_phishing_dialog_title">Potvrdi izvještaj o krađi identiteta</string>
   <string name="message_report_phishing_dialog_message">Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.</string>
   <string name="message_report_phishing_dialog_confim_button">Confirm</string>
-  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="message_report_phishing_dialog_cancel_button">Poništi</string>
   <string name="open_on_protoncalendar_banner_title">Otvori u Proton Calendaru</string>
   <string name="open_on_protoncalendar_banner_description">Osiguraj šifrirani kalendar</string>
   <string name="error_print_failed">Failed to print message</string>

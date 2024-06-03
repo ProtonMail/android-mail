@@ -44,6 +44,9 @@
   <string name="error_move_to_trash_failed">移至废件箱失败，请重试。</string>
   <string name="message_moved_to_trash">邮件已移至废件箱</string>
   <string name="message_moved_to_archive">邮件已存档</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">邮件已移至 %1$s</string>
   <string name="error_move_message_failed">邮件移动失败，请重试。</string>
   <string name="conversation_moved_to_trash">会话已移动到废件箱</string>

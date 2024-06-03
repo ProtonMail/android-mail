@@ -70,23 +70,6 @@
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">欢迎体验全新的应用</string>
-  <string name="onboarding_description_ga">Proton Mail 的全新应用程序是完全从头开始重新构建的，它专为提升稳定性和性能而设计。</string>
-  <!--  Onboarding 1  -->
-  <string name="onboarding_privacy_for_all_headline">人人享有隐私</string>
-  <string name="onboarding_privacy_for_all_description">邀请更多人使用 Proton Mail，让大家都能享受到端到端加密带来的好处。</string>
-  <!--  Onboarding 2  -->
-  <string name="onboarding_easily_up_to_date_headline">有条不紊</string>
-  <string name="onboarding_easily_up_to_date_description">会话模式能帮助您轻松应对各方的往来邮件。</string>
-  <!--  Onboarding 3  -->
-  <string name="onboarding_neat_and_tidy_headline">干净利落，井井有条。</string>
-  <string name="onboarding_neat_and_tidy_description">使用文件夹、标签和颜色打造与您一拍即合的完美邮箱。</string>
-  <!--  Onboarding actions  -->
-  <string name="onboarding_next">继续</string>
-  <string name="onboarding_get_started">立即体验</string>
-  <string name="onboarding_illustration_content_description">入职流程插画</string>
-  <string name="onboarding_close_content_description">关闭</string>
   <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
   <string name="mailbox_action_archive_message">邮件已存档</string>
   <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>

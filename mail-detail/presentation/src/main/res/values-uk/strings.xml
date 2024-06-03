@@ -50,6 +50,9 @@
   <string name="error_move_to_trash_failed">Не вдалося перемістити до смітника. Повторіть спробу.</string>
   <string name="message_moved_to_trash">Повідомлення переміщено до смітника</string>
   <string name="message_moved_to_archive">Повідомлення переміщено до архіву</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Повідомлення переміщено до %1$s</string>
   <string name="error_move_message_failed">Не вдалося перемістити повідомлення. Повторіть спробу.</string>
   <string name="conversation_moved_to_trash">Розмову переміщено до смітника</string>

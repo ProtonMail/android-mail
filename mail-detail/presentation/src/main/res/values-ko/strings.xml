@@ -44,6 +44,9 @@
   <string name="error_move_to_trash_failed">휴지통으로 이동하는 중 문제가 발생했습니다. 다시 시도해 주세요.</string>
   <string name="message_moved_to_trash">메시지가 휴지통으로 이동됨</string>
   <string name="message_moved_to_archive">메시지가 보관함으로 이동함</string>
+  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="message_moved_to_spam">Message moved to Spam</string>
+  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">메시지가 %1$s으로 이동됨</string>
   <string name="error_move_message_failed">메시지 이동에 실패하였습니다. 다시 시도해 주세요.</string>
   <string name="conversation_moved_to_trash">대화가 휴지통으로 이동됨</string>

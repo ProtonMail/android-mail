@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+<resources>
+  <!--  Spotlight V6 GA  -->
+  <string name="onboarding_headline_ga">Te damos la bienvenida a la nueva aplicación</string>
+  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva aplicación de Proton Mail de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
+  <!--  Onboarding 1  -->
+  <string name="onboarding_privacy_for_all_headline">Privacidad para todos</string>
+  <string name="onboarding_privacy_for_all_description">Invita a más personas a Proton Mail para beneficiar del cifrado de extremo a extremo.</string>
+  <!--  Onboarding 2  -->
+  <string name="onboarding_easily_up_to_date_headline">Estar al día es más fácil</string>
+  <string name="onboarding_easily_up_to_date_description">Consulta rápidamente los mensajes hilados en el modo de conversación.</string>
+  <!--  Onboarding 3  -->
+  <string name="onboarding_neat_and_tidy_headline">Limpio y ordenado</string>
+  <string name="onboarding_neat_and_tidy_description">Archiva, etiqueta y clasifica por colores los mensajes para crear una perfecta y personalizada bandeja de entrada.</string>
+  <!--  Onboarding actions  -->
+  <string name="onboarding_next">Siguiente</string>
+  <string name="onboarding_get_started">Comenzar</string>
+  <string name="onboarding_illustration_content_description">Ilustración de bienvenida</string>
+  <string name="onboarding_close_content_description">Cerrar</string>
+</resources>

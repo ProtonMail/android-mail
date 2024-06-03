@@ -84,7 +84,7 @@
   <string name="email_address">Adresse e-mail</string>
   <string name="phone_number">Numéro de téléphone</string>
   <string name="additional_info">Informations complémentaires</string>
-  <string name="remove_contact_property">Supprimer la propriété du contact</string>
+  <string name="remove_contact_property">Retirer la propriété du contact</string>
   <string name="property_type">Type de propriété</string>
   <string name="property_label">Label</string>
   <string name="address_street">Rue</string>
@@ -96,7 +96,7 @@
   <string name="contact_details_delete_dialog_text">Voulez-vous vraiment supprimer ce contact ?</string>
   <string name="contact_details_delete_dialog_cancel_button">Annuler</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
-  <string name="contact_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Merci de réessayer plus tard</string>
+  <string name="contact_form_save_error">Une erreur s\'est produite lors de l\'enregistrement du contact. Nous vous invitons à réessayer plus tard.</string>
   <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Groupes</string>
   <plurals name="contact_group_details_member_count">

@@ -37,7 +37,7 @@
   <string name="action_unstar_description">No destacar</string>
   <string name="action_label_description">Etiquetar como</string>
   <string name="action_move_description">Mover a</string>
-  <string name="action_trash_description">Papelera</string>
+  <string name="action_trash_description">Mover a la papelera</string>
   <string name="action_delete_description">Eliminar</string>
   <string name="action_archive_description">Archivar</string>
   <string name="action_spam_description">Mover a la carpeta Spam</string>
