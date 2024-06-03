@@ -22,12 +22,9 @@ import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
-import io.mockk.every
-import io.mockk.mockk
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
@@ -40,10 +37,6 @@ internal class ContactListReducerTest(
     private val testName: String,
     private val testInput: TestInput
 ) {
-
-    private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
-        every { this@mockk(any()) } returns true
-    }
 
     private val reducer = ContactListReducer()
 

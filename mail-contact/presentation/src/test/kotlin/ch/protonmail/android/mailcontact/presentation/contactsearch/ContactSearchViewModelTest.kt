@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModelMapper
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -37,22 +38,21 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ContactSearchViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
@@ -73,14 +73,8 @@ class ContactSearchViewModelTest {
         )
     }
 
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-    }
-
     @AfterTest
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkAll()
     }
 

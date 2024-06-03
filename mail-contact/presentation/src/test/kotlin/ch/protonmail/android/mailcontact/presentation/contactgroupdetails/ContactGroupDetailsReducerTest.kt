@@ -38,7 +38,7 @@ class ContactGroupDetailsReducerTest(
 ) {
 
     private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
-        every { this@mockk(any()) } returns true
+        every { this@mockk() } returns true
     }
 
     private val reducer = ContactGroupDetailsReducer(isContactGroupsCrudEnabledMock)

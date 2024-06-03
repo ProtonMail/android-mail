@@ -141,8 +141,7 @@ fun NoResultsContent(modifier: Modifier = Modifier) {
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(id = R.string.contact_search_no_results),
             textAlign = TextAlign.Center,
-            style = ProtonTheme.typography.body2Regular,
-            color = ProtonTheme.colors.textHint
+            style = ProtonTheme.typography.defaultSmallWeak
         )
     }
 }

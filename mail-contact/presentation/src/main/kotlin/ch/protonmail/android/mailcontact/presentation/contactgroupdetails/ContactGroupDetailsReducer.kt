@@ -57,7 +57,7 @@ class ContactGroupDetailsReducer @Inject constructor(
 
             is ContactGroupDetailsState.Loading -> ContactGroupDetailsState.Data(
                 isSendEnabled = event.contactGroupDetailsUiModel.memberCount > 0,
-                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null),
+                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(),
                 contactGroup = event.contactGroupDetailsUiModel,
                 deleteDialogState = DeleteDialogState.Hidden
             )

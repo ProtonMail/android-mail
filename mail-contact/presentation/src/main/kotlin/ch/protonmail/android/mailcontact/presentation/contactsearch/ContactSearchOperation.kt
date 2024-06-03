@@ -29,7 +29,6 @@ sealed interface ContactSearchViewAction : ContactSearchOperation {
 }
 
 sealed interface ContactSearchEvent : ContactSearchOperation {
-    data object Close : ContactSearchEvent
     data class ContactsLoaded(
         val contacts: List<ContactSearchUiModel>
     ) : ContactSearchEvent

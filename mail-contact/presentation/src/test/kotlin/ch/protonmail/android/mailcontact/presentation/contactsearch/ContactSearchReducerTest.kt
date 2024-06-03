@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
 import androidx.compose.ui.graphics.Color
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
@@ -88,13 +87,6 @@ internal class ContactSearchReducerTest(
                     contacts = searchResults
                 ),
                 expectedState = someResultsState
-            ),
-            TestInput(
-                currentState = emptyState,
-                event = ContactSearchEvent.Close,
-                expectedState = emptyState.copy(
-                    close = Effect.of(Unit)
-                )
             )
         )
 
@@ -112,13 +104,6 @@ internal class ContactSearchReducerTest(
                     contacts = searchResults
                 ),
                 expectedState = someResultsState
-            ),
-            TestInput(
-                currentState = noResultsState,
-                event = ContactSearchEvent.Close,
-                expectedState = noResultsState.copy(
-                    close = Effect.of(Unit)
-                )
             )
         )
 
@@ -137,13 +122,6 @@ internal class ContactSearchReducerTest(
                 ),
                 expectedState = someResultsState.copy(
                     uiModels = searchResults.take(1)
-                )
-            ),
-            TestInput(
-                currentState = someResultsState,
-                event = ContactSearchEvent.Close,
-                expectedState = someResultsState.copy(
-                    close = Effect.of(Unit)
                 )
             )
         )

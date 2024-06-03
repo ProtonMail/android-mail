@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
-import ch.protonmail.android.mailcommon.presentation.Effect
 import javax.inject.Inject
 
 class ContactSearchReducer @Inject constructor() {
@@ -26,7 +25,6 @@ class ContactSearchReducer @Inject constructor() {
     internal fun newStateFrom(currentState: ContactSearchState, event: ContactSearchEvent): ContactSearchState {
         return when (event) {
             is ContactSearchEvent.ContactsLoaded -> reduceMembersLoaded(currentState, event)
-            ContactSearchEvent.Close -> reduceClose(currentState)
         }
     }
 
@@ -35,6 +33,4 @@ class ContactSearchReducer @Inject constructor() {
         event: ContactSearchEvent.ContactsLoaded
     ): ContactSearchState = currentState.copy(uiModels = event.contacts)
 
-    private fun reduceClose(currentState: ContactSearchState): ContactSearchState =
-        currentState.copy(close = Effect.of(Unit))
 }

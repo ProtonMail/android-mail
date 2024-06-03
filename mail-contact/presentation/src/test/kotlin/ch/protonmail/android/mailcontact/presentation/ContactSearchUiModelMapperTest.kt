@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -32,14 +33,11 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -47,19 +45,20 @@ import kotlin.test.assertEquals
 
 class ContactSearchUiModelMapperTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     private val getInitials = GetInitials()
     private val contactSearchUiModelMapper = ContactSearchUiModelMapper(getInitials)
 
     @BeforeTest
     fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
         mockkStatic(android.graphics.Color::class)
         every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
     }
 
     @AfterTest
     fun tearDown() {
-        Dispatchers.resetMain()
         unmockkAll()
     }
 

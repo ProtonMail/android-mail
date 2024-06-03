@@ -99,8 +99,8 @@ class ContactListViewModel @Inject constructor(
             observeContacts(userId),
             observeContactGroupLabels(userId)
         ) { contacts, contactGroups ->
-            val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled(null)
-            val isContactSearchEnabled = isContactSearchEnabled(null)
+            val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled()
+            val isContactSearchEnabled = isContactSearchEnabled()
             val contactList = contacts.getOrElse {
                 Timber.e("Error while observing contacts")
                 return@combine ContactListEvent.ErrorLoadingContactList
