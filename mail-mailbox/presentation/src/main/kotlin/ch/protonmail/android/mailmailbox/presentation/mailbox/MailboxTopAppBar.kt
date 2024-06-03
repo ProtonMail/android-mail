@@ -42,6 +42,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxTopAppBarTe
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingMailButton
+import ch.protonmail.android.uicomponents.SearchView
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -163,10 +164,15 @@ private fun TopAppBarInSearchMode(
         modifier = modifier.testTag(MailboxTopAppBarTestTags.RootItem),
         title = {
             SearchView(
+                SearchView.Parameters(
+                    initialSearchValue = uiModel.searchQuery,
+                    searchPlaceholderText = R.string.mailbox_search_placeholder_text,
+                    closeButtonContentDescription =
+                    R.string.mailbox_toolbar_searchview_clear_search_query_content_description
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag(MailboxTopAppBarTestTags.SearchView),
-                initialValue = uiModel.searchQuery,
                 actions = SearchView.Actions(
                     onClearSearchQuery = {},
                     onSearchQuerySubmit = actions.onSearch

@@ -16,8 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox
+package ch.protonmail.android.uicomponents
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -53,15 +54,14 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.keyboardVisibilityAsState
-import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.uicomponents.text.defaultTextFieldColors
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal fun SearchView(
-    initialValue: String,
+fun SearchView(
+    parameters: SearchView.Parameters,
     actions: SearchView.Actions,
     modifier: Modifier = Modifier
 ) {
@@ -70,7 +70,7 @@ internal fun SearchView(
     val isKeyboardVisible by keyboardVisibilityAsState()
     var isFocused by remember { mutableStateOf(false) }
     var searchText by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(initialValue))
+        mutableStateOf(TextFieldValue(parameters.initialSearchValue))
     }
 
     Row(modifier = modifier) {
@@ -114,7 +114,7 @@ internal fun SearchView(
             placeholder = {
                 Text(
                     modifier = Modifier.testTag(SearchViewTestTags.SearchTextFieldPlaceholder),
-                    text = stringResource(R.string.mailbox_search_placeholder_text),
+                    text = stringResource(parameters.searchPlaceholderText),
                     color = ProtonTheme.colors.textHint,
                     style = ProtonTheme.typography.defaultNorm
                 )
@@ -147,7 +147,7 @@ internal fun SearchView(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_proton_close),
                     contentDescription = stringResource(
-                        id = R.string.mailbox_toolbar_searchview_clear_search_query_content_description
+                        id = parameters.closeButtonContentDescription
                     ),
                     tint = ProtonTheme.colors.textNorm
                 )
@@ -162,8 +162,12 @@ internal fun EmptySearchTextFieldPreview() {
     ProtonTheme {
         SearchView(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = "",
-            actions = SearchView.Actions.Empty
+            actions = SearchView.Actions.Empty,
+            parameters = SearchView.Parameters(
+                initialSearchValue = "",
+                searchPlaceholderText = R.string.countries_search,
+                closeButtonContentDescription = R.string.countries_search
+            )
         )
     }
 }
@@ -174,8 +178,12 @@ internal fun FilledSearchTextFieldPreview() {
     ProtonTheme {
         SearchView(
             modifier = Modifier.fillMaxWidth(),
-            initialValue = "searchtext",
-            actions = SearchView.Actions.Empty
+            actions = SearchView.Actions.Empty,
+            parameters = SearchView.Parameters(
+                initialSearchValue = "",
+                searchPlaceholderText = R.string.countries_search,
+                closeButtonContentDescription = R.string.countries_search
+            )
         )
     }
 }
@@ -195,6 +203,12 @@ object SearchView {
             )
         }
     }
+
+    data class Parameters(
+        val initialSearchValue: String,
+        @StringRes val searchPlaceholderText: Int,
+        @StringRes val closeButtonContentDescription: Int
+    )
 }
 
 object SearchViewTestTags {
@@ -202,4 +216,3 @@ object SearchViewTestTags {
     const val SearchTextFieldPlaceholder = "SearchTextPlaceholder"
     const val SearchViewClearQueryButton = "SearchViewClearQueryButton"
 }
-

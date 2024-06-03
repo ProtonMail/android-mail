@@ -50,6 +50,7 @@ android {
 dependencies {
     implementation(Dependencies.modulePresentationLibs)
     implementation(Dependencies.composeLibs)
+    implementation(project(":mail-common:presentation"))
 
     debugImplementation(Dependencies.appDebug)
     testImplementation(Dependencies.testLibs)
