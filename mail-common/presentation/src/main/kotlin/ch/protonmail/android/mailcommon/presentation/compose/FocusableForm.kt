@@ -50,7 +50,7 @@ fun <FocusedField> FocusableForm(
     val focusRequesters: Map<FocusedField, FocusRequester> = fieldList.associateWith { FocusRequester() }
     val bringIntoViewRequesters: Map<FocusedField, BringIntoViewRequester> =
         fieldList.associateWith { BringIntoViewRequester() }
-    val isKeyboardVisible by keyboardVisibilityAsState()
+    val isKeyboardVisible by ch.protonmail.android.uicomponents.keyboardVisibilityAsState()
     val onFieldFocused: (FocusedField) -> Unit = {
         focusedField = it
         onFocusedField(it)

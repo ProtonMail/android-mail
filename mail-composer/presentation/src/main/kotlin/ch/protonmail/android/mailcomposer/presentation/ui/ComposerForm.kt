@@ -47,7 +47,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.FocusableForm
-import ch.protonmail.android.mailcommon.presentation.compose.keyboardVisibilityAsState
+import ch.protonmail.android.uicomponents.keyboardVisibilityAsState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider

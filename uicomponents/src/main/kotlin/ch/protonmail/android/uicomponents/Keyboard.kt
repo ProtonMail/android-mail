@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.compose
+package ch.protonmail.android.uicomponents
 
 import android.content.Context
 import android.view.View
