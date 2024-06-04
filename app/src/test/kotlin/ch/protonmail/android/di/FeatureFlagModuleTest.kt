@@ -45,21 +45,24 @@ class FeatureFlagModuleTest(private val testInput: TestInput) {
                 buildFlavor = "dev",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.ConversationMode to true
+                    MailFeatureId.ConversationMode to true,
+                    MailFeatureId.RatingBooster to false
                 )
             ),
             TestInput(
                 buildFlavor = "alpha",
                 buildDebug = true,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.ConversationMode to true
+                    MailFeatureId.ConversationMode to true,
+                    MailFeatureId.RatingBooster to false
                 )
             ),
             TestInput(
                 buildFlavor = "prod",
                 buildDebug = false,
                 expectedDefaultsMap = mapOf(
-                    MailFeatureId.ConversationMode to true
+                    MailFeatureId.ConversationMode to true,
+                    MailFeatureId.RatingBooster to false
                 )
             )
         )

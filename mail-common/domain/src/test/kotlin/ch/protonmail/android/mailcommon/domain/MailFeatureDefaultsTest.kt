@@ -27,7 +27,8 @@ class MailFeatureDefaultsTest {
     fun `should return the default value if found in the provided defaults or false otherwise`() {
         // Given
         val defaultsMap = mapOf(
-            MailFeatureId.ConversationMode to true
+            MailFeatureId.ConversationMode to true,
+            MailFeatureId.RatingBooster to false
         )
         val defaults = MailFeatureDefaults(defaultsMap)
 

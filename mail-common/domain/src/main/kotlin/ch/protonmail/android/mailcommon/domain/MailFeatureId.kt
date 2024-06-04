@@ -26,5 +26,6 @@ import me.proton.core.featureflag.domain.entity.FeatureId
 enum class MailFeatureId(val id: FeatureId) {
 
     // Remote flags
-    ConversationMode(FeatureId("ThreadingAndroid"))
+    ConversationMode(FeatureId("ThreadingAndroid")),
+    RatingBooster(FeatureId("RatingAndroidMail"))
 }

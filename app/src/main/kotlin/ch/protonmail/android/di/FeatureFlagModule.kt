@@ -35,7 +35,8 @@ object FeatureFlagModule {
     fun provideDefaultMailFeatureFlags(): MailFeatureDefaults {
         return MailFeatureDefaults(
             mapOf(
-                MailFeatureId.ConversationMode to true
+                MailFeatureId.ConversationMode to true,
+                MailFeatureId.RatingBooster to false
             )
         )
     }
