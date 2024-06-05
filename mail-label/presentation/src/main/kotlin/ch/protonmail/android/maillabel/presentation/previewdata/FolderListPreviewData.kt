@@ -18,26 +18,22 @@
 
 package ch.protonmail.android.maillabel.presentation.previewdata
 
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
 import ch.protonmail.android.maillabel.presentation.sample.LabelColorListSample.colorListSample
-import me.proton.core.domain.entity.UserId
-import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.label.domain.entity.LabelType
 
 object FolderListPreviewData {
 
-    val folderSampleData = Label(
-        userId = UserId("userId"),
-        labelId = LabelId("labelId"),
-        parentId = null,
+    val folderUiModelSampleData = FolderUiModel(
+        id = LabelId("labelId"),
+        parent = null,
         name = "Folder Name",
-        type = LabelType.MessageFolder,
-        path = "path",
-        color = colorListSample().random().getHexStringFromColor(),
+        color = colorListSample().random(),
+        displayColor = colorListSample().random(),
+        level = 0,
         order = 0,
-        isNotified = false,
-        isExpanded = false,
-        isSticky = null
+        children = emptyList(),
+        icon = 0
     )
+
 }

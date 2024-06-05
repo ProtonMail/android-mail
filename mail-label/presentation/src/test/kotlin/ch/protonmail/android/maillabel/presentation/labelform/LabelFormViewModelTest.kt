@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -28,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
@@ -36,27 +36,24 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class LabelFormViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val defaultTestLabel = buildLabel(id = "LabelID", color = Color.Red.getHexStringFromColor())
     private val defaultTestUpdatedName = "UpdatedName"
@@ -102,6 +99,8 @@ class LabelFormViewModelTest {
 
     private val reducer = LabelFormReducer()
 
+    private val colorMapper = ColorMapper()
+
     private val savedStateHandle = mockk<SavedStateHandle>()
 
     private val labelFormViewModel by lazy {
@@ -114,23 +113,10 @@ class LabelFormViewModelTest {
             isLabelNameAllowed,
             isLabelLimitReached,
             reducer,
+            colorMapper,
             observePrimaryUserId,
             savedStateHandle
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-        every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkStatic(android.graphics.Color::class)
     }
 
     @Test

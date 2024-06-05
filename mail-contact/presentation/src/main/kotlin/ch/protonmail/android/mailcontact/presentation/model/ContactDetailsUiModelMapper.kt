@@ -18,6 +18,9 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
@@ -25,7 +28,6 @@ import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
@@ -33,7 +35,8 @@ import javax.inject.Inject
 class ContactDetailsUiModelMapper @Inject constructor(
     private val formatLocalDate: FormatLocalDate,
     private val decodeByteArray: DecodeByteArray,
-    private val getInitials: GetInitials
+    private val getInitials: GetInitials,
+    private val colorMapper: ColorMapper
 ) {
 
     fun toContactDetailsUiModel(decryptedContact: DecryptedContact): ContactDetailsUiModel {
@@ -85,7 +88,7 @@ class ContactDetailsUiModelMapper @Inject constructor(
 
     private fun getDetailsGroupLabelList(contact: DecryptedContact): List<ContactDetailsGroupLabel> {
         return contact.contactGroupLabels.map {
-            ContactDetailsGroupLabel(it.name, it.color.getColorFromHexString())
+            ContactDetailsGroupLabel(it.name, colorMapper.toColor(it.color).getOrElse { Color.Black })
         }
     }
 

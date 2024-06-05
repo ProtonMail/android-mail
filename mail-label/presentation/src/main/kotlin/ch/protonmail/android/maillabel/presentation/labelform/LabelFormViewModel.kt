@@ -18,11 +18,13 @@
 
 package ch.protonmail.android.maillabel.presentation.labelform
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
@@ -30,7 +32,6 @@ import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,6 +56,7 @@ class LabelFormViewModel @Inject constructor(
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
     private val reducer: LabelFormReducer,
+    private val colorMapper: ColorMapper,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -70,7 +72,7 @@ class LabelFormViewModel @Inject constructor(
         val labelId = savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey)
         viewModelScope.launch {
             val colors = getLabelColors().map {
-                it.getColorFromHexString()
+                colorMapper.toColor(it).getOrElse { Color.Black }
             }
             if (labelId != null) {
                 getLabel(

@@ -18,19 +18,20 @@
 
 package ch.protonmail.android.maillabel.presentation.folderform
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
-import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
+import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +58,7 @@ class FolderFormViewModel @Inject constructor(
     private val isLabelLimitReached: IsLabelLimitReached,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val reducer: FolderFormReducer,
+    private val colorMapper: ColorMapper,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -72,7 +74,7 @@ class FolderFormViewModel @Inject constructor(
         val labelId = savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
         viewModelScope.launch {
             val colors = getLabelColors().map {
-                it.getColorFromHexString()
+                colorMapper.toColor(it).getOrElse { Color.Black }
             }
             val folderColorSettings = observeFolderColorSettings(primaryUserId()).filterNotNull().first()
             if (labelId != null) {
@@ -124,12 +126,15 @@ class FolderFormViewModel @Inject constructor(
                     is FolderFormViewAction.FolderColorChanged -> emitNewStateFor(
                         FolderFormEvent.UpdateFolderColor(action.color.getHexStringFromColor())
                     )
+
                     is FolderFormViewAction.FolderNameChanged -> emitNewStateFor(
                         FolderFormEvent.UpdateFolderName(action.name)
                     )
+
                     is FolderFormViewAction.FolderNotificationsChanged -> emitNewStateFor(
                         FolderFormEvent.UpdateFolderNotifications(action.enabled)
                     )
+
                     is FolderFormViewAction.FolderParentChanged -> handleFolderParentChanged(action.parentId)
                     FolderFormViewAction.OnCloseFolderFormClick -> emitNewStateFor(FolderFormEvent.CloseFolderForm)
                     FolderFormViewAction.OnDeleteClick -> handleOnDeleteClick()
@@ -167,6 +172,7 @@ class FolderFormViewModel @Inject constructor(
                             currentState.notifications
                         )
                     }
+
                     is FolderFormState.Data.Update -> {
                         editFolder(
                             currentState.labelId,
@@ -178,6 +184,7 @@ class FolderFormViewModel @Inject constructor(
                     }
                 }
             }
+
             is FolderFormState.Loading -> {}
         }
     }

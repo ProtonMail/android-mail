@@ -18,46 +18,27 @@
 
 package ch.protonmail.android.mailcontact.presentation
 
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ManageMembersUiModelMapper
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ManageMembersUiModelMapperTest {
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     private val getInitials = GetInitials()
+
     private val manageMembersUiModelMapper = ManageMembersUiModelMapper(getInitials)
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
-    }
 
     @Test
     fun `maps Contacts to ManageMembersUiModel`() {

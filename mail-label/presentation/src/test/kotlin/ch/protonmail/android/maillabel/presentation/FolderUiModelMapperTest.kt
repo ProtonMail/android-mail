@@ -18,37 +18,23 @@
 
 package ch.protonmail.android.maillabel.presentation
 
-import android.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.folder.FolderTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import org.junit.After
-import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class FolderUiModelMapperTest {
 
+    private val colorMapper = ColorMapper()
+
     private val userId = UserIdTestData.userId
-
-    @Before
-    fun setUp() {
-        mockkStatic(Color::parseColor)
-        every { Color.parseColor(any()) } returns 0
-    }
-
-    @After
-    fun tearDown() {
-        unmockkStatic(Color::parseColor)
-    }
 
     @Test
     fun `return correct folders with parent`() = runTest {
@@ -88,10 +74,10 @@ class FolderUiModelMapperTest {
                 parentId = "0.2"
             )
         )
-        val labelColor = items.first().color.getColorFromHexString()
+        val labelColor = colorMapper.toColor(items.first().color).getOrNull()!!
 
         // When
-        val actual = items.toFolderUiModel(settings)
+        val actual = items.toFolderUiModel(settings, colorMapper)
 
         // Then
         val f0 = FolderTestData.buildFolderUiModel(
@@ -152,10 +138,10 @@ class FolderUiModelMapperTest {
                 parentId = "0.2"
             )
         )
-        val labelColor = items.first().color.getColorFromHexString()
+        val labelColor = colorMapper.toColor(items.first().color).getOrNull()!!
 
         // When
-        val actual = items.toFolderUiModel(settings)
+        val actual = items.toFolderUiModel(settings, colorMapper)
 
         // Then
         val f0 = FolderTestData.buildFolderUiModel(

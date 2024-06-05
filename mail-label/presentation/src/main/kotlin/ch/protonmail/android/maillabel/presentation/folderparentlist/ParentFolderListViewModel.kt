@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
@@ -50,6 +51,7 @@ class ParentFolderListViewModel @Inject constructor(
     private val observeLabels: ObserveLabels,
     private val reducer: ParentFolderListReducer,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
+    private val colorMapper: ColorMapper,
     observePrimaryUserId: ObservePrimaryUserId,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -85,7 +87,10 @@ class ParentFolderListViewModel @Inject constructor(
         ) { folders, folderColorSettings ->
             folders.map {
                 ParentFolderListEvent.FolderListLoaded(
-                    folderList = it.toFolderUiModel(folderColorSettings).toParentFolderUiModel(labelId, parentLabelId),
+                    folderList = it.toFolderUiModel(
+                        folderColorSettings,
+                        colorMapper
+                    ).toParentFolderUiModel(labelId, parentLabelId),
                     labelId = labelId,
                     parentLabelId = parentLabelId,
                     useFolderColor = folderColorSettings.useFolderColor,

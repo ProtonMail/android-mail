@@ -19,13 +19,13 @@
 package ch.protonmail.android.maillabel.presentation.folderlist
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.R
@@ -35,27 +35,24 @@ import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.UpdateEnableFolderColor
 import ch.protonmail.android.mailsettings.domain.usecase.UpdateInheritFolderColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class FolderListViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val defaultTestFolder = LabelTestData.buildLabel(
         id = "LabelID",
@@ -78,6 +75,7 @@ class FolderListViewModelTest {
     private val updateInheritFolderColor = mockk<UpdateInheritFolderColor>()
 
     private val reducer = FolderListReducer()
+    private val colorMapper = ColorMapper()
 
     private val folderListViewModel by lazy {
         FolderListViewModel(
@@ -86,21 +84,9 @@ class FolderListViewModelTest {
             observeFolderColorSettings,
             updateEnableFolderColor,
             updateInheritFolderColor,
+            colorMapper,
             observePrimaryUserId
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test
@@ -134,7 +120,7 @@ class FolderListViewModelTest {
             val expected = FolderListState.ListLoaded.Data(
                 useFolderColor = true,
                 inheritParentFolderColor = false,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings)
+                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings, colorMapper)
             )
 
             assertEquals(expected, actual)
@@ -177,7 +163,7 @@ class FolderListViewModelTest {
             val expected = FolderListState.ListLoaded.Data(
                 useFolderColor = true,
                 inheritParentFolderColor = false,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings),
+                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings, colorMapper),
                 openFolderForm = Effect.of(Unit)
             )
 
@@ -205,7 +191,7 @@ class FolderListViewModelTest {
             val expected = FolderListState.ListLoaded.Data(
                 useFolderColor = false,
                 inheritParentFolderColor = false,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings)
+                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings, colorMapper)
             )
 
             assertEquals(expected, actual)
@@ -232,7 +218,7 @@ class FolderListViewModelTest {
             val expected = FolderListState.ListLoaded.Data(
                 useFolderColor = true,
                 inheritParentFolderColor = true,
-                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings)
+                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings, colorMapper)
             )
 
             assertEquals(expected, actual)

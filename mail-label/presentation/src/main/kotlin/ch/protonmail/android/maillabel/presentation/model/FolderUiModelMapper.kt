@@ -20,20 +20,24 @@ package ch.protonmail.android.maillabel.presentation.model
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 
-fun List<Label>.toFolderUiModel(folderColorSettings: FolderColorSettings): List<FolderUiModel> {
+fun List<Label>.toFolderUiModel(
+    folderColorSettings: FolderColorSettings,
+    colorMapper: ColorMapper
+): List<FolderUiModel> {
     val labelById = associateBy { it.labelId }
     val groupByParentId = groupBy { it.parentId }
     val mailLabels = mutableMapOf<LabelId, FolderUiModel>()
     fun getChildren(labelId: LabelId): List<Label> = groupByParentId[labelId].orEmpty().sortedBy { it.order }
     fun getMailLabel(labelId: LabelId): FolderUiModel = mailLabels.getOrPut(labelId) {
         val label = requireNotNull(labelById[labelId])
-        label.toMailLabelCustom(::getMailLabel, ::getChildren, folderColorSettings)
+        label.toMailLabelCustom(::getMailLabel, ::getChildren, folderColorSettings, colorMapper)
     }
     return mapNotNull { label ->
         if (label.parentId == null || this.any { label.parentId == it.labelId }) {
@@ -45,12 +49,13 @@ fun List<Label>.toFolderUiModel(folderColorSettings: FolderColorSettings): List<
 private fun Label.toMailLabelCustom(
     getMailLabel: (LabelId) -> FolderUiModel,
     getChildren: (LabelId) -> List<Label>,
-    folderColorSettings: FolderColorSettings
+    folderColorSettings: FolderColorSettings,
+    colorMapper: ColorMapper
 ): FolderUiModel {
     val parent = parentId?.let(getMailLabel)
     val children = getChildren(labelId).map { it.labelId }
     val level = parent?.level?.plus(1) ?: 0
-    val folderColor = color.getColorFromHexString()
+    val folderColor = colorMapper.toColor(color).getOrElse { Color.Black }
     return FolderUiModel(
         id = labelId,
         name = name,

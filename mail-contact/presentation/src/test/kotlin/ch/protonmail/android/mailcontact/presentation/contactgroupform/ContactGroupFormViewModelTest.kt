@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -27,6 +26,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -45,30 +45,27 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFor
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupFormPreviewData
 import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 @Suppress("MaxLineLength")
 class ContactGroupFormViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val testUserId = UserIdTestData.userId
     private val testLabelId = ContactGroupFormPreviewData.contactGroupFormSampleData.id!!
@@ -112,6 +109,8 @@ class ContactGroupFormViewModelTest {
 
     private val reducer = ContactGroupFormReducer()
 
+    private val colorMapper = ColorMapper()
+
     private val contactGroupFormViewModel by lazy {
         ContactGroupFormViewModel(
             observeContactGroupMock,
@@ -122,23 +121,10 @@ class ContactGroupFormViewModelTest {
             createContactGroupMock,
             editContactGroupMock,
             deleteContactGroupMock,
+            colorMapper,
             getColorHexWithNameList,
             observePrimaryUserId
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-        every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test

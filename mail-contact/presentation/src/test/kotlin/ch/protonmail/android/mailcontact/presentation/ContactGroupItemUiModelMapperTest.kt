@@ -19,18 +19,12 @@
 package ch.protonmail.android.mailcontact.presentation
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
-import io.mockk.every
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
@@ -38,28 +32,17 @@ import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ContactGroupItemUiModelMapperTest {
 
-    private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-        every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
-    }
+    private val colorMapper = ColorMapper()
+    private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper(colorMapper)
 
     @Test
     fun `return correct contact groups`() {

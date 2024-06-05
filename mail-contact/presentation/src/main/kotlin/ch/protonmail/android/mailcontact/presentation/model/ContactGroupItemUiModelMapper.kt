@@ -18,12 +18,16 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.Label
 import javax.inject.Inject
 
-class ContactGroupItemUiModelMapper @Inject constructor() {
+class ContactGroupItemUiModelMapper @Inject constructor(
+    private val colorMapper: ColorMapper
+) {
 
     fun toContactGroupItemUiModel(contactList: List<Contact>, labels: List<Label>): List<ContactGroupItemUiModel> {
         val labelMembersCount = hashMapOf<String, Int>()
@@ -39,7 +43,7 @@ class ContactGroupItemUiModelMapper @Inject constructor() {
                 labelId = label.labelId,
                 name = label.name,
                 memberCount = labelMembersCount[label.labelId.id] ?: 0,
-                color = label.color.getColorFromHexString()
+                color = colorMapper.toColor(label.color).getOrElse { Color.Black }
             )
         }
         return contactGroups

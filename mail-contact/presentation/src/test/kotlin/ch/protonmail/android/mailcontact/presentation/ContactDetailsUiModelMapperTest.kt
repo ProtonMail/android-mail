@@ -21,8 +21,8 @@ package ch.protonmail.android.mailcontact.presentation
 import java.time.LocalDate
 import java.util.Locale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import ch.protonmail.android.mailcommon.domain.usecase.GetAppLocale
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
@@ -40,15 +40,7 @@ import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ContactDetailsUiModelMapperTest {
@@ -64,25 +56,14 @@ class ContactDetailsUiModelMapperTest {
         every { this@mockk.invoke(any()) } returns mockk()
     }
     private val getInitials = GetInitials()
+    private val colorMapper = ColorMapper()
 
     private val contactDetailsUiModelMapper = ContactDetailsUiModelMapper(
         formatLocalDate = formatLocalDate,
         decodeByteArray = decodeByteArray,
-        getInitials = getInitials
+        getInitials = getInitials,
+        colorMapper = colorMapper
     )
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
-    }
 
     @Test
     fun `maps DecryptedContact to ContactDetailsUiModel`() {

@@ -64,9 +64,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maillabel.presentation.R
-import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
-import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderSampleData
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderUiModelSampleData
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -169,12 +167,14 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
                             actions = actions
                         )
                     }
+
                     is FolderListState.ListLoaded.Empty -> {
                         EmptyFolderListScreen(
                             modifier = Modifier.padding(paddingValues),
                             onAddFolderClick = { viewModel.submit(FolderListViewAction.OnAddFolderClick) }
                         )
                     }
+
                     is FolderListState.Loading -> {
                         ProtonCenteredProgress(
                             modifier = Modifier
@@ -483,14 +483,9 @@ private fun FolderListScreenPreview() {
     FolderListScreenContent(
         state = FolderListState.ListLoaded.Data(
             folders = listOf(
-                folderSampleData,
-                folderSampleData,
-                folderSampleData
-            ).toFolderUiModel(
-                FolderColorSettings(
-                    useFolderColor = true,
-                    inheritParentFolderColor = true
-                )
+                folderUiModelSampleData,
+                folderUiModelSampleData,
+                folderUiModelSampleData
             ),
             useFolderColor = true,
             inheritParentFolderColor = true

@@ -73,6 +73,7 @@ dependencies {
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:test-data"))
+    testImplementation(project(":test:utils"))
 
     androidTestImplementation(Dependencies.androidTestLibs)
     androidTestImplementation(project(":test:annotations"))

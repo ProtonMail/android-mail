@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.folderform
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -28,6 +27,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
@@ -40,27 +40,24 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class FolderFormViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val defaultTestFolder = buildLabel(
         id = "LabelID",
@@ -134,6 +131,8 @@ class FolderFormViewModelTest {
 
     private val reducer = FolderFormReducer()
 
+    private val colorMapper = ColorMapper()
+
     private val savedStateHandle = mockk<SavedStateHandle>()
 
     private val folderFormViewModel by lazy {
@@ -147,23 +146,10 @@ class FolderFormViewModelTest {
             isLabelLimitReached,
             observeFolderColorSettings,
             reducer,
+            colorMapper,
             observePrimaryUserId,
             savedStateHandle
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-        every { android.graphics.Color.parseColor(Color.Blue.getHexStringFromColor()) } returns Color.Blue.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test

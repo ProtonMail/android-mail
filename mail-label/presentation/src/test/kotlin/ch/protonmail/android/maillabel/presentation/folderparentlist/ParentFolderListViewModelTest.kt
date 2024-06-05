@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.presentation.folderparentlist
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import arrow.core.left
@@ -27,6 +26,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.R
@@ -35,28 +35,27 @@ import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ParentFolderListViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    private val colorMapper = ColorMapper()
 
     private val defaultTestFolder = LabelTestData.buildLabel(
         id = "LabelId",
@@ -84,22 +83,10 @@ class ParentFolderListViewModelTest {
             observeLabels,
             reducer,
             observeFolderColorSettings,
+            colorMapper,
             observePrimaryUserId,
             savedStateHandle
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test
@@ -149,7 +136,7 @@ class ParentFolderListViewModelTest {
                 useFolderColor = true,
                 inheritParentFolderColor = false,
                 folders = listOf(defaultTestFolder)
-                    .toFolderUiModel(defaultFolderColorSettings)
+                    .toFolderUiModel(defaultFolderColorSettings, colorMapper)
                     .toParentFolderUiModel(labelId, parentLabelId)
             )
 
@@ -181,7 +168,7 @@ class ParentFolderListViewModelTest {
                 useFolderColor = true,
                 inheritParentFolderColor = false,
                 folders = listOf(defaultTestFolder)
-                    .toFolderUiModel(defaultFolderColorSettings)
+                    .toFolderUiModel(defaultFolderColorSettings, colorMapper)
                     .toParentFolderUiModel(defaultTestFolder.labelId, parentLabelId)
             )
 

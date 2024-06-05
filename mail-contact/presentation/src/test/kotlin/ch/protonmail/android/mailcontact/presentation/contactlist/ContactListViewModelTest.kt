@@ -19,13 +19,13 @@
 package ch.protonmail.android.mailcontact.presentation.contactlist
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.GetContactError
@@ -38,18 +38,13 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.unmockkAll
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.contact.domain.entity.ContactEmail
 import me.proton.core.contact.domain.entity.ContactEmailId
@@ -57,12 +52,14 @@ import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
+import org.junit.Rule
 import org.junit.Test
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 class ContactListViewModelTest {
+
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
 
     private val defaultTestContactGroupLabel = Label(
         userId = UserIdTestData.userId,
@@ -114,7 +111,8 @@ class ContactListViewModelTest {
     private val isPaidUser = mockk<IsPaidUser>()
     private val getInitials = GetInitials()
     private val contactListItemUiModelMapper = ContactListItemUiModelMapper(getInitials)
-    private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper()
+    private val colorMapper = ColorMapper()
+    private val contactGroupItemUiModelMapper = ContactGroupItemUiModelMapper(colorMapper)
 
     private val contactListViewModel by lazy {
         ContactListViewModel(
@@ -128,19 +126,6 @@ class ContactListViewModelTest {
             isContactSearchEnabledMock,
             observePrimaryUserId
         )
-    }
-
-    @BeforeTest
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-        mockkStatic(android.graphics.Color::class)
-        every { android.graphics.Color.parseColor(Color.Red.getHexStringFromColor()) } returns Color.Red.toArgb()
-    }
-
-    @AfterTest
-    fun tearDown() {
-        Dispatchers.resetMain()
-        unmockkAll()
     }
 
     @Test

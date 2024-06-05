@@ -18,16 +18,18 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactgroupform
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
 import ch.protonmail.android.mailcommon.presentation.usecase.GetColorHexWithNameList
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroup
-import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.CreateContactGroupError
+import ch.protonmail.android.mailcontact.domain.usecase.DeleteContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.EditContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactEmailsById
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroup
@@ -35,7 +37,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiMo
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupFormUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactGroupFormUiModel
 import ch.protonmail.android.maillabel.domain.model.ColorRgbHex
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,6 +62,7 @@ class ContactGroupFormViewModel @Inject constructor(
     private val createContactGroup: CreateContactGroup,
     private val editContactGroup: EditContactGroup,
     private val deleteContactGroup: DeleteContactGroup,
+    private val colorMapper: ColorMapper,
     getColorHexWithNameList: GetColorHexWithNameList,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
@@ -83,7 +85,7 @@ class ContactGroupFormViewModel @Inject constructor(
             emitNewStateFor(
                 ContactGroupFormEvent.ContactGroupLoaded(
                     contactGroupFormUiModel = emptyContactGroupFormUiModel(
-                        randomColor = colors.random().colorHex.getColorFromHexString()
+                        randomColor = colorMapper.toColor(colors.random().colorHex).getOrElse { Color.Black }
                     ),
                     colors = colors
                 )
@@ -102,6 +104,7 @@ class ContactGroupFormViewModel @Inject constructor(
                     ContactGroupFormViewAction.OnCloseClick -> emitNewStateFor(
                         ContactGroupFormEvent.Close
                     )
+
                     ContactGroupFormViewAction.OnSaveClick -> handleSave()
                     ContactGroupFormViewAction.OnDeleteClick -> handleShowDeleteDialog()
                     ContactGroupFormViewAction.OnDeleteConfirmedClick -> handleOnDeleteConfirmedClick()

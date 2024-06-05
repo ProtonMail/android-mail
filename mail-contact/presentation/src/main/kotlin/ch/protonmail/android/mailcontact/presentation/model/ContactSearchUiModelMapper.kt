@@ -18,14 +18,17 @@
 
 package ch.protonmail.android.mailcontact.presentation.model
 
+import androidx.compose.ui.graphics.Color
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
-import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
 
 class ContactSearchUiModelMapper @Inject constructor(
-    private val getInitials: GetInitials
+    private val getInitials: GetInitials,
+    private val colorMapper: ColorMapper
 ) {
 
     fun contactsToContactSearchUiModelList(contacts: List<Contact>): List<ContactSearchUiModel.Contact> {
@@ -46,7 +49,7 @@ class ContactSearchUiModelMapper @Inject constructor(
             ContactSearchUiModel.ContactGroup(
                 id = contactGroup.labelId,
                 name = contactGroup.name,
-                color = contactGroup.color.getColorFromHexString(),
+                color = colorMapper.toColor(contactGroup.color).getOrElse { Color.Black },
                 emailCount = contactGroup.members.size
             )
         }

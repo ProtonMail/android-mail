@@ -51,10 +51,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.model.ParentFolderUiModel
-import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
-import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
-import ch.protonmail.android.maillabel.presentation.previewdata.FolderListPreviewData.folderSampleData
-import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.flow.rememberAsState
@@ -93,6 +89,7 @@ fun ParentFolderListScreen(
                         actions = actions
                     )
                 }
+
                 is ParentFolderListState.ListLoaded.Empty -> {
                     EmptyParentFolderListScreen(
                         modifier = Modifier.padding(paddingValues),
@@ -100,6 +97,7 @@ fun ParentFolderListScreen(
                         state = state
                     )
                 }
+
                 is ParentFolderListState.Loading -> {
                     ProtonCenteredProgress(
                         modifier = Modifier
@@ -308,30 +306,6 @@ object ParentFolderListScreen {
             )
         }
     }
-}
-
-@Composable
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
-private fun ParentFolderListScreenPreview() {
-    ParentFolderListScreenContent(
-        state = ParentFolderListState.ListLoaded.Data(
-            folders = listOf(
-                folderSampleData,
-                folderSampleData,
-                folderSampleData
-            ).toFolderUiModel(
-                FolderColorSettings(
-                    useFolderColor = true,
-                    inheritParentFolderColor = true
-                )
-            ).toParentFolderUiModel(null, null),
-            labelId = LabelId("N/A"),
-            parentLabelId = null,
-            useFolderColor = true,
-            inheritParentFolderColor = true
-        ),
-        actions = ParentFolderListScreen.Actions.Empty
-    )
 }
 
 @Composable
