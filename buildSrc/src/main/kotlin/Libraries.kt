@@ -312,6 +312,12 @@ object Mockk {
     const val mockkAndroid = "io.mockk:mockk-android:${Versions.Mockk.mockk}"
 }
 
+object Play {
+
+    const val review = "com.google.android.play:review:${Versions.Play.review}"
+    const val reviewKtx = "com.google.android.play:review-ktx:${Versions.Play.review}"
+}
+
 object Proton {
 
     object Core {

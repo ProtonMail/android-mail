@@ -160,6 +160,11 @@ object Versions {
         const val mockk = "1.13.8"
     }
 
+    object Play {
+
+        const val review = "2.0.1"
+    }
+
     object Proton {
 
         const val core = "24.0.1"
