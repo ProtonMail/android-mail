@@ -90,6 +90,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSend
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
+import ch.protonmail.android.mailcontact.domain.DeviceContactsSuggestionsPrompt
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -118,11 +119,13 @@ import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.message.DecryptedMessageBodyTestData
 import io.mockk.Called
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.spyk
@@ -167,6 +170,10 @@ class ComposerViewModelTest {
     private val getContactsMock = mockk<GetContacts>()
     private val searchContactsMock = mockk<SearchContacts>()
     private val searchDeviceContactsMock = mockk<SearchDeviceContacts>()
+    private val deviceContactsSuggestionsPromptMock = mockk<DeviceContactsSuggestionsPrompt> {
+        coEvery { this@mockk.getPromptEnabled() } returns true
+        coEvery { this@mockk.setPromptEnabled(any()) } just Runs
+    }
     private val isDeviceContactsSuggestionsEnabledMock = mockk<IsDeviceContactsSuggestionsEnabled> {
         every { this@mockk.invoke() } returns false
     }
@@ -221,7 +228,7 @@ class ComposerViewModelTest {
             getContactsMock,
             searchContactsMock,
             searchDeviceContactsMock,
-            isDeviceContactsSuggestionsEnabledMock,
+            deviceContactsSuggestionsPromptMock,
             searchContactGroupsMock,
             participantMapperMock,
             reducer,
@@ -250,6 +257,7 @@ class ComposerViewModelTest {
             observeMessageExpirationTime,
             getExternalRecipients,
             convertHtmlToPlainText,
+            isDeviceContactsSuggestionsEnabledMock,
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
@@ -691,6 +699,47 @@ class ComposerViewModelTest {
             actual.contactSuggestions
         )
         assertEquals(mapOf(ContactSuggestionsField.BCC to false), actual.areContactSuggestionsExpanded)
+    }
+
+    @Test
+    fun `should call DeviceContactsSuggestionsPrompt when DeviceContactsPromptDenied is emitted`() = runTest {
+        // Given
+        val expectedSenderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
+        val expectedMessageId = expectedMessageId { MessageIdSample.EmptyDraft }
+        val expectedUserId = expectedUserId { UserIdSample.Primary }
+        val expectedSearchTerm = ""
+
+        val expectedContacts = emptyList<Contact>()
+
+        val expectedDeviceContacts = emptyList<DeviceContact>()
+
+        val expectedContactGroups = emptyList<ContactGroup>()
+        val action = ComposerAction.DeviceContactsPromptDenied
+
+        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
+        expectNoInputDraftMessageId()
+        expectNoInputDraftAction()
+        expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
+        expectObservedMessageAttachments(expectedUserId, expectedMessageId)
+        expectInjectAddressSignature(expectedUserId, expectDraftBodyWithSignature(), expectedSenderEmail)
+        expectObserveMessageSendingError(expectedUserId, expectedMessageId)
+        expectSearchContacts(expectedUserId, expectedSearchTerm, expectedContacts)
+        expectSearchDeviceContacts(expectedSearchTerm, expectedDeviceContacts)
+        expectSearchContactGroups(expectedUserId, expectedSearchTerm, expectedContactGroups)
+        expectMessagePassword(expectedUserId, expectedMessageId)
+        expectNoFileShareVia()
+        expectObserveMessageExpirationTime(expectedUserId, expectedMessageId)
+        expectIsDeviceContactsSuggestionsEnabled(true)
+
+        // When
+        viewModel.submit(action)
+
+        // Then
+        viewModel.state.test {
+            awaitItem()
+
+            coVerify { deviceContactsSuggestionsPromptMock.setPromptEnabled(false) }
+        }
     }
 
     @Test
@@ -2665,7 +2714,8 @@ class ComposerViewModelTest {
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
-            isDeviceContactsSuggestionsEnabled = false
+            isDeviceContactsSuggestionsEnabled = false,
+            isDeviceContactsSuggestionsPromptEnabled = false
         )
 
         mockkObject(ComposerDraftState.Companion)

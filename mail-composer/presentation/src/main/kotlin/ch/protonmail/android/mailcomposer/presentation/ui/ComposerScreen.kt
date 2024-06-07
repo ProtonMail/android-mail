@@ -35,6 +35,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -52,7 +53,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
-import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
@@ -60,6 +60,7 @@ import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen.Actions.Companion.ReplaceDraftBodyTimeout
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
@@ -67,6 +68,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
+import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -120,11 +122,16 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     )
 
     val isShowReadContactsPermissionRationale = remember { mutableStateOf(false) }
-    if (state.isDeviceContactsSuggestionsEnabled && isShowReadContactsPermissionRationale.value) {
+    if (shouldShowPermissionDialog(state, isShowReadContactsPermissionRationale)) {
         ProtonAlertDialog(
             title = stringResource(id = R.string.device_contacts_permission_dialog_title),
             text = { ProtonAlertDialogText(R.string.device_contacts_permission_dialog_message) },
-            dismissButton = {},
+            dismissButton = {
+                ProtonAlertDialogButton(R.string.device_contacts_permission_dialog_action_button_deny) {
+                    viewModel.submit(ComposerAction.DeviceContactsPromptDenied)
+                    isShowReadContactsPermissionRationale.value = false
+                }
+            },
             confirmButton = {
                 ProtonAlertDialogButton(R.string.device_contacts_permission_dialog_action_button) {
                     isShowReadContactsPermissionRationale.value = false
@@ -421,6 +428,14 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     }
 }
 
+@Composable
+private fun shouldShowPermissionDialog(
+    state: ComposerDraftState,
+    isShowReadContactsPermissionRationale: MutableState<Boolean>
+) = state.isDeviceContactsSuggestionsEnabled &&
+    state.isDeviceContactsSuggestionsPromptEnabled &&
+    isShowReadContactsPermissionRationale.value
+
 @Suppress("LongParameterList")
 private fun buildActions(
     viewModel: ComposerViewModel,
@@ -436,6 +451,7 @@ private fun buildActions(
     onCcChanged = { viewModel.submit(ComposerAction.RecipientsCcChanged(it)) },
     onBccChanged = { viewModel.submit(ComposerAction.RecipientsBccChanged(it)) },
     onContactSuggestionsDismissed = { viewModel.submit(ComposerAction.ContactSuggestionsDismissed(it)) },
+    onDeviceContactsPromptDenied = { viewModel.submit(ComposerAction.DeviceContactsPromptDenied) },
     onContactSuggestionTermChanged = { searchTerm, suggestionsField ->
         viewModel.submit(ComposerAction.ContactSuggestionTermChanged(searchTerm, suggestionsField))
     },

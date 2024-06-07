@@ -44,6 +44,7 @@ internal sealed interface ComposerAction : ComposerOperation {
         val suggestionsField: ContactSuggestionsField
     ) : ComposerAction
     data class ContactSuggestionsDismissed(val suggestionsField: ContactSuggestionsField) : ComposerAction
+    data object DeviceContactsPromptDenied : ComposerAction
     data class ExpirationTimeSet(val duration: Duration) : ComposerAction
 
     data class SubjectChanged(val subject: Subject) : ComposerAction
@@ -78,6 +79,7 @@ sealed interface ComposerEvent : ComposerOperation {
     data class OnAttachmentsUpdated(val attachments: List<MessageAttachment>) : ComposerEvent
     data class OnSendingError(val sendingError: TextUiModel) : ComposerEvent
     data class OnIsDeviceContactsSuggestionsEnabled(val enabled: Boolean) : ComposerEvent
+    data class OnIsDeviceContactsSuggestionsPromptEnabled(val enabled: Boolean) : ComposerEvent
     data class OnMessagePasswordUpdated(val messagePassword: MessagePassword?) : ComposerEvent
     data class UpdateContactSuggestions(
         val contactSuggestions: List<ContactSuggestionUiModel>,

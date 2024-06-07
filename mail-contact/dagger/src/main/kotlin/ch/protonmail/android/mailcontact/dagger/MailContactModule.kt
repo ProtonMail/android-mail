@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.dagger
 import ch.protonmail.android.mailcontact.data.ContactDetailRepositoryImpl
 import ch.protonmail.android.mailcontact.data.ContactGroupRepositoryImpl
 import ch.protonmail.android.mailcontact.data.DeviceContactsRepositoryImpl
+import ch.protonmail.android.mailcontact.data.DeviceContactsSuggestionsPromptImpl
 import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSource
 import ch.protonmail.android.mailcontact.data.local.ContactDetailLocalDataSourceImpl
 import ch.protonmail.android.mailcontact.data.local.ContactGroupLocalDataSource
@@ -29,6 +30,7 @@ import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSour
 import ch.protonmail.android.mailcontact.data.remote.ContactDetailRemoteDataSourceImpl
 import ch.protonmail.android.mailcontact.data.remote.ContactGroupRemoteDataSource
 import ch.protonmail.android.mailcontact.data.remote.ContactGroupRemoteDataSourceImpl
+import ch.protonmail.android.mailcontact.domain.DeviceContactsSuggestionsPrompt
 import ch.protonmail.android.mailcontact.domain.repository.ContactDetailRepository
 import ch.protonmail.android.mailcontact.domain.repository.ContactGroupRepository
 import ch.protonmail.android.mailcontact.domain.repository.DeviceContactsRepository
@@ -37,6 +39,7 @@ import dagger.Module
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -71,5 +74,11 @@ abstract class MailContactModule {
     @Binds
     @Reusable
     abstract fun bindDeviceContactsRepository(impl: DeviceContactsRepositoryImpl): DeviceContactsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDeviceContactsSuggestionsPrompt(
+        impl: DeviceContactsSuggestionsPromptImpl
+    ): DeviceContactsSuggestionsPrompt
 
 }

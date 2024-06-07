@@ -81,6 +81,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.ExpirationTimeSet -> updateStateForExpirationTimeSet(currentState)
         is ComposerAction.RespondInlineRequested,
         is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> currentState
+        is ComposerAction.DeviceContactsPromptDenied -> updateStateForDeviceContactsPromptDenied(currentState, false)
     }
 
     @Suppress("ComplexMethod", "LongMethod")
@@ -177,6 +178,9 @@ class ComposerReducer @Inject constructor(
         )
 
         is ComposerEvent.RespondInlineContent -> updateStateForRespondInline(currentState, this.plainText)
+        is ComposerEvent.OnIsDeviceContactsSuggestionsPromptEnabled -> currentState.copy(
+            isDeviceContactsSuggestionsPromptEnabled = this.enabled
+        )
     }
 
     private fun updateStateForRespondInline(
@@ -323,6 +327,9 @@ class ComposerReducer @Inject constructor(
 
     private fun updateStateForExpirationTimeSet(currentState: ComposerDraftState) =
         currentState.copy(changeBottomSheetVisibility = Effect.of(false))
+
+    private fun updateStateForDeviceContactsPromptDenied(currentState: ComposerDraftState, enabled: Boolean) =
+        currentState.copy(isDeviceContactsSuggestionsPromptEnabled = enabled)
 
     private fun updateStateForMessageExpirationTime(
         currentState: ComposerDraftState,

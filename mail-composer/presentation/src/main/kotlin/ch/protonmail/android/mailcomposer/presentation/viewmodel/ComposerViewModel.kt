@@ -86,6 +86,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSend
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
+import ch.protonmail.android.mailcontact.domain.DeviceContactsSuggestionsPrompt
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
@@ -130,7 +131,7 @@ class ComposerViewModel @Inject constructor(
     private val getContacts: GetContacts,
     private val searchContacts: SearchContacts,
     private val searchDeviceContacts: SearchDeviceContacts,
-    private val isDeviceContactsSuggestionsEnabled: IsDeviceContactsSuggestionsEnabled,
+    private val deviceContactsSuggestionsPrompt: DeviceContactsSuggestionsPrompt,
     private val searchContactGroups: SearchContactGroups,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
@@ -159,6 +160,7 @@ class ComposerViewModel @Inject constructor(
     private val observeMessageExpirationTime: ObserveMessageExpirationTime,
     private val getExternalRecipients: GetExternalRecipients,
     private val convertHtmlToPlainText: ConvertHtmlToPlainText,
+    isDeviceContactsSuggestionsEnabled: IsDeviceContactsSuggestionsEnabled,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -212,6 +214,7 @@ class ComposerViewModel @Inject constructor(
         observeSendingError()
         observeMessagePassword()
         observeMessageExpirationTime()
+        observeDeviceContactsSuggestionsPromptEnabled()
 
         emitNewStateFor(ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(isDeviceContactsSuggestionsEnabled()))
     }
@@ -397,6 +400,7 @@ class ComposerViewModel @Inject constructor(
                     )
 
                     is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
+                    is ComposerAction.DeviceContactsPromptDenied -> onDeviceContactsPromptDenied()
                     is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
@@ -463,6 +467,17 @@ class ComposerViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
+    @Suppress("FunctionMaxLength")
+    private fun observeDeviceContactsSuggestionsPromptEnabled() {
+        viewModelScope.launch {
+            emitNewStateFor(
+                ComposerEvent.OnIsDeviceContactsSuggestionsPromptEnabled(
+                    deviceContactsSuggestionsPrompt.getPromptEnabled()
+                )
+            )
+        }
+    }
+
     fun validateEmailAddress(emailAddress: String): Boolean = isValidEmailAddress(emailAddress)
 
     fun clearSendingError() {
@@ -496,6 +511,12 @@ class ComposerViewModel @Inject constructor(
                 ifLeft = { emitNewStateFor(ComposerEvent.ErrorSettingExpirationTime) },
                 ifRight = { emitNewStateFor(action) }
             )
+        }
+    }
+
+    private fun onDeviceContactsPromptDenied() {
+        viewModelScope.launch {
+            deviceContactsSuggestionsPrompt.setPromptEnabled(false)
         }
     }
 

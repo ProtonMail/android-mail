@@ -860,6 +860,27 @@ class ComposerReducerTest(
             )
         )
 
+        private val EmptyToDeviceContactsPromptDenied = TestTransition(
+            name = "Should update state with a flag when contacts permission is denied from custom dialog",
+            currentState = ComposerDraftState.initial(messageId).copy(
+                isDeviceContactsSuggestionsPromptEnabled = true
+            ),
+            operation = ComposerAction.DeviceContactsPromptDenied,
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                isDeviceContactsSuggestionsPromptEnabled = false
+            )
+        )
+
+        @Suppress("VariableMaxLength")
+        private val EmptyToOnIsDeviceContactsSuggestionsPromptEnabled = TestTransition(
+            name = "Should update state with a flag when contacts permission dialog state is read from preferences",
+            currentState = ComposerDraftState.initial(messageId),
+            operation = ComposerEvent.OnIsDeviceContactsSuggestionsPromptEnabled(true),
+            expectedState = ComposerDraftState.initial(messageId).copy(
+                isDeviceContactsSuggestionsPromptEnabled = true
+            )
+        )
+
         private val EmptyToConfirmSendExpiringMessage = TestTransition(
             name = "Should update state with an effect when sending an expiring message to external recipients",
             currentState = ComposerDraftState.initial(messageId),
@@ -955,6 +976,8 @@ class ComposerReducerTest(
             EmptyToErrorSettingExpirationTime,
             EmptyToMessageExpirationTimeUpdated,
             EmptyToOnIsDeviceContactsSuggestionsEnabled,
+            EmptyToDeviceContactsPromptDenied,
+            EmptyToOnIsDeviceContactsSuggestionsPromptEnabled,
             EmptyToConfirmSendExpiringMessage
         )
 
@@ -1007,7 +1030,8 @@ class ComposerReducerTest(
             isMessagePasswordSet = false,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
-            isDeviceContactsSuggestionsEnabled = false
+            isDeviceContactsSuggestionsEnabled = false,
+            isDeviceContactsSuggestionsPromptEnabled = false
         )
 
         private fun aNotSubmittableState(
@@ -1064,7 +1088,8 @@ class ComposerReducerTest(
             senderChangedNotice = senderChangedNotice,
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
-            isDeviceContactsSuggestionsEnabled = false
+            isDeviceContactsSuggestionsEnabled = false,
+            isDeviceContactsSuggestionsPromptEnabled = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

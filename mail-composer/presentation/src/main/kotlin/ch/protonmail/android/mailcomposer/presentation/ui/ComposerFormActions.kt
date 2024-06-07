@@ -29,6 +29,7 @@ internal data class ComposerFormActions(
     val onCcChanged: (List<RecipientUiModel>) -> Unit,
     val onBccChanged: (List<RecipientUiModel>) -> Unit,
     val onContactSuggestionsDismissed: (ContactSuggestionsField) -> Unit,
+    val onDeviceContactsPromptDenied: () -> Unit,
     val onContactSuggestionTermChanged: (String, ContactSuggestionsField) -> Unit,
     val onSubjectChanged: (String) -> Unit,
     val onBodyChanged: (String) -> Unit,

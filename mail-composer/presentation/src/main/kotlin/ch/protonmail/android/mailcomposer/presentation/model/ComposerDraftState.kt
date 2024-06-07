@@ -33,6 +33,7 @@ data class ComposerDraftState(
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
     val isDeviceContactsSuggestionsEnabled: Boolean,
+    val isDeviceContactsSuggestionsPromptEnabled: Boolean,
     val senderAddresses: List<SenderUiModel>,
     val changeBottomSheetVisibility: Effect<Boolean>,
     val closeComposer: Effect<Unit>,
@@ -98,7 +99,8 @@ data class ComposerDraftState(
             senderChangedNotice = Effect.empty(),
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
-            isDeviceContactsSuggestionsEnabled = false
+            isDeviceContactsSuggestionsEnabled = false,
+            isDeviceContactsSuggestionsPromptEnabled = false
         )
     }
 }
