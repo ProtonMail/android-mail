@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Ukloni zvjezdicu</string>
   <string name="action_label_description">Označi kao</string>
   <string name="action_move_description">Premjesti u</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">Premjesti u otpad</string>
   <string name="action_delete_description">Izbriši</string>
   <string name="action_archive_description">Arhiva</string>
   <string name="action_spam_description">Premjesti u neželjenu poštu</string>

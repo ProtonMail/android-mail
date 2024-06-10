@@ -88,7 +88,7 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Spriječite snimanje snimki zaslona</string>
   <string name="mail_settings_privacy_request_link_confirmation">Zatražite potvrdu poveznice</string>
-  <string name="mail_settings_privacy_background_sync">Background sync</string>
+  <string name="mail_settings_privacy_background_sync">Sinkronizacija u pozadini</string>
   <string name="mail_settings_privacy_background_sync_description">Ako je ova opcija omogućena, aplikacija će se u pozadini sinkronizirati s poslužiteljem. Onemogućavanjem ove značajke onemogućiti ćete i push obavijesti.</string>
   <string name="mail_settings_privacy_error_updating">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_privacy_error_loading">Error loading settings</string>
@@ -117,18 +117,18 @@
   <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Auto lock</string>
-  <string name="mail_settings_auto_lock_item_title">Auto lock app</string>
+  <string name="mail_settings_auto_lock_item_title">Automatsko zaključavanje aplikacije</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Promijenite PIN kod</string>
   <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
-  <string name="mail_settings_auto_lock_immediately">Immediately</string>
+  <string name="mail_settings_auto_lock_immediately">Odmah</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
   <string name="mail_settings_auto_lock_update_error">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
-  <string name="mail_settings_pin_insertion_set_title">Set PIN code</string>
+  <string name="mail_settings_pin_insertion_set_title">Postavite PIN kôd</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>

@@ -26,13 +26,13 @@
   <string name="mailbox_toolbar_search_button_content_description">Αναζήτηση</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Έξοδος από τη λειτουργία αναζήτησης</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Εκκαθάριση ερωτήματος αναζήτησης</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Πληκτρολογήστε το ερώτημα αναζήτησης</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Εισάγετε το ερώτημα αναζήτησης</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Επιλεγμένο</item>
     <item quantity="other">%d Επιλεγμένα</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s μη διαβασμένα</item>
+    <item quantity="one">%s μη διαβασμένο</item>
     <item quantity="other">%s μη διαβασμένα</item>
   </plurals>
   <string name="mailbox_default_recipient">(Κανένας παραλήπτης)</string>
@@ -40,11 +40,11 @@
   <string name="mailbox_error_message_offline">Είστε αποσυνδεδεμένοι, δεν μπορείτε να ανακτήσετε στοιχεία</string>
   <string name="mailbox_error_message_generic">Η φόρτωση του γραμματοκιβωτίου απέτυχε</string>
   <string name="mailbox_error_message_unexpected">Κάτι πήγε απροσδόκητα στραβά</string>
-  <string name="mailbox_is_empty_title">Δεν υπάρχουν μηνύματα</string>
+  <string name="mailbox_is_empty_title">Κανένα μήνυμα</string>
   <string name="mailbox_is_empty_description">Είστε ενημερωμένοι</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Κανένα μη αναγνωσμένο μήνυμα</string>
   <string name="mailbox_is_empty_folder_description">Αυτός ο φάκελος είναι κενός</string>
-  <string name="mailbox_is_empty_spam_description">Ο φάκελος ενοχλητικών είναι κενός</string>
+  <string name="mailbox_is_empty_spam_description">Ο φάκελος Ενοχλητικών είναι κενός</string>
   <string name="mailbox_is_empty_trash_description">Τα Διαγραμμένα είναι άδεια</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>

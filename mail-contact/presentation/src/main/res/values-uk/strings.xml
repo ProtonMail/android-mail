@@ -139,6 +139,17 @@
   <string name="add_members_error">Помилка додавання учасників, повторіть спробу пізніше</string>
   <string name="manage_members_title">Керувати учасниками</string>
   <string name="search_contact">Пошук контакту</string>
+  <string name="search_contacts_description">Пошук контактів</string>
   <string name="member_update_error">Помилка оновлення учасника, повторіть спробу пізніше</string>
   <string name="contact_group_color">Колір групи контактів</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d учасник</item>
+    <item quantity="few">%d учасники</item>
+    <item quantity="many">%d учасники</item>
+    <item quantity="other">%d учасники</item>
+  </plurals>
+  <string name="contact_search_placeholder">Search for contact or group</string>
+  <string name="contact_search_content_description">Search for contact or group</string>
+  <string name="contact_search_arrow_back_content_description">Go back to contacts</string>
+  <string name="contact_search_no_results">Результатів не знайдено.</string>
 </resources>

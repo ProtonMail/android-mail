@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Odebrat hvězdičku</string>
   <string name="action_label_description">Přidat štítek</string>
   <string name="action_move_description">Přesunout do</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">Přesunout do koše</string>
   <string name="action_delete_description">Smazat</string>
   <string name="action_archive_description">Archivovat</string>
   <string name="action_spam_description">Přesunout do spamu</string>

@@ -20,7 +20,7 @@
   <string name="drawer_title_more">Més</string>
   <string name="drawer_title_contacts">Contactes</string>
   <string name="drawer_title_subscription">Subscripció</string>
-  <string name="mailbox_toolbar_compose_button_content_description">Escriu un missatge nou</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Redacta un missatge nou</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Tanca el mode de selecció</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>

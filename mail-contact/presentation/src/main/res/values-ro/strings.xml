@@ -137,6 +137,16 @@
   <string name="add_members_error">Eroare la adăugarea membrilor. Reîncercați mai târziu.</string>
   <string name="manage_members_title">Gestionare membri</string>
   <string name="search_contact">Căutare contact</string>
+  <string name="search_contacts_description">Căutare contacte</string>
   <string name="member_update_error">Eroare la actualizarea membrului. Reîncercați mai târziu.</string>
   <string name="contact_group_color">Culoare grup contacte</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d membru</item>
+    <item quantity="few">%d membri</item>
+    <item quantity="other">%d de membri</item>
+  </plurals>
+  <string name="contact_search_placeholder">Căutare contacte sau grupuri</string>
+  <string name="contact_search_content_description">Căutare contacte sau grupuri</string>
+  <string name="contact_search_arrow_back_content_description">Înapoi la contacte</string>
+  <string name="contact_search_no_results">Nu s-au găsit rezultate.</string>
 </resources>

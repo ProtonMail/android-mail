@@ -133,6 +133,14 @@
   <string name="add_members_error">구성원 추가 중 오류 발생, 다시 시도해주세요</string>
   <string name="manage_members_title">구성원 관리</string>
   <string name="search_contact">연락처 검색</string>
+  <string name="search_contacts_description">연락처 찾기</string>
   <string name="member_update_error">구성원 업데이트 중 오류 발생, 다시 시도해주세요</string>
   <string name="contact_group_color">연락처 그룹 색상</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="other">%d명 회원</item>
+  </plurals>
+  <string name="contact_search_placeholder">연락처나 그룹 검색하기</string>
+  <string name="contact_search_content_description">연락처나 그룹 검색하기</string>
+  <string name="contact_search_arrow_back_content_description">연락처로 이동하기</string>
+  <string name="contact_search_no_results">결과를 찾을 수 없음.</string>
 </resources>

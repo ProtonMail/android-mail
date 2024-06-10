@@ -22,7 +22,7 @@
   <string name="upselling_title">Улучшить до</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">Чтобы разблокировать больше места в хранилище и платные функции</string>
-  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_storage">15 ГБ хранилища</string>
   <string name="upselling_plus_feature_email_addresses">10 адресов электронной почты</string>
   <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
   <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>

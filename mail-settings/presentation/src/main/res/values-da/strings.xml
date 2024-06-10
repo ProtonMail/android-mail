@@ -159,7 +159,7 @@
   <string name="mail_settings_generic_error_message">Der opstod en fejl. Prøv igen.</string>
   <!-- strings used for biometric enrollment -->
   <string name="no_biometric_data_enrolled">Ingen biometriske data registreret</string>
-  <string name="log_in_using_biometric_credential">Lås op med dine biometriske akkreditiver</string>
+  <string name="log_in_using_biometric_credential">Lås op med dine biometriske legitimationsoplysninger</string>
   <string name="unlock_using_biometrics">Lås op med biometri</string>
   <string name="biometric_error_hw_not_available">Biometrisk hardware er ikke tilgængelig.</string>
 </resources>

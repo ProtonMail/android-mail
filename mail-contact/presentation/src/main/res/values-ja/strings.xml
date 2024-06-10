@@ -133,6 +133,14 @@
   <string name="add_members_error">Error adding members, please try again later</string>
   <string name="manage_members_title">メンバーを管理</string>
   <string name="search_contact">連絡先を検索</string>
+  <string name="search_contacts_description">連絡先の検索</string>
   <string name="member_update_error">Error updating member, please try again later</string>
   <string name="contact_group_color">連絡先グループの色</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="other">%d メンバー</item>
+  </plurals>
+  <string name="contact_search_placeholder">Search for contact or group</string>
+  <string name="contact_search_content_description">Search for contact or group</string>
+  <string name="contact_search_arrow_back_content_description">Go back to contacts</string>
+  <string name="contact_search_no_results">該当する結果が見つかりませんでした。</string>
 </resources>

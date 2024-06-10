@@ -23,9 +23,9 @@
   </plurals>
   <string name="attachment_show_more_label">+ %1$d</string>
   <string name="attachment_permission_dialog_title">Autorizzazione necessaria</string>
-  <string name="attachment_permission_dialog_message">Proton Mail ha bisogno dell\'autorizzazione all\'accesso al tuo spazio di archiviazione per scaricare l\'allegato.</string>
+  <string name="attachment_permission_dialog_message">Proton Mail ha bisogno dell\'accesso allo spazio di archiviazione per scaricare l\'allegato.</string>
   <string name="attachment_permission_dialog_dismiss_button">OK</string>
-  <string name="attachment_permission_dialog_action_button">Impostazioni</string>
+  <string name="attachment_permission_dialog_action_button">Autorizza</string>
   <string name="attachment_type_description">Tipo di file: %1$s</string>
   <!-- Attachment Types -->
   <string name="attachment_type_archive">Archivio</string>
@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">Visualizza i dettagli di questo contatto</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Autorizzazione necessaria</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail necessita dell\'autorizzazione di lettura dei tuoi contatti per poterti suggerire i destinatari.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail ha bisogno dell\'accesso ai contatti per suggerire i destinatari.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
-  <string name="device_contacts_permission_dialog_action_button">Richiesta dell\'autorizzazione</string>
+  <string name="device_contacts_permission_dialog_action_button">Autorizza</string>
 </resources>

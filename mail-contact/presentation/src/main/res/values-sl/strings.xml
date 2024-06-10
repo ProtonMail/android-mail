@@ -139,6 +139,17 @@
   <string name="add_members_error">Napaka pri dodajanju članov, poskusite znova pozneje</string>
   <string name="manage_members_title">Urejanje članov</string>
   <string name="search_contact">Iskanje stikov</string>
+  <string name="search_contacts_description">Išči stike</string>
   <string name="member_update_error">Napaka pri posodabljanju člana, poskusite znova pozneje</string>
   <string name="contact_group_color">Barva skupine stikov</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d član</item>
+    <item quantity="two">%d člani</item>
+    <item quantity="few">%d člana</item>
+    <item quantity="other">%d člana</item>
+  </plurals>
+  <string name="contact_search_placeholder">Rechercher un groupe ou contact</string>
+  <string name="contact_search_content_description">Iskanje skupine ali stika</string>
+  <string name="contact_search_arrow_back_content_description">Nazaj v stike</string>
+  <string name="contact_search_no_results">Ni najdenih rezultatov.</string>
 </resources>

@@ -57,7 +57,7 @@
   <string name="contact_actions_copy_name_description">კონტაქტის სახელის კოპირება</string>
   <string name="contact_actions_copy_name_performed">სახელი დაკოპირდა გაცვლის ბუფერში</string>
   <string name="contact_actions_new_message">ახალი შეტყობინება</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">ახალი შეტყობინების შედგენის დაწყება ამ კონტაქტისთვის</string>
   <string name="contact_actions_add_contact">კონტაქტის დამატება</string>
   <string name="contact_actions_add_contact_description">ამ მიმღების შენახვა კონტაქტის სახით</string>
   <string name="contact_actions_view_contact_details">კონტაქტის დეტალების ნახვა</string>

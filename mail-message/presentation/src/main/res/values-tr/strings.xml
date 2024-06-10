@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">İletişim bilgilerini görüntüle</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">İzin gerekli</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
-  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
-  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail alıcıları önermek için kişilerinizi okuma iznine gerek duyuyor.</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">Tamam</string>
+  <string name="device_contacts_permission_dialog_action_button">İzin iste</string>
 </resources>

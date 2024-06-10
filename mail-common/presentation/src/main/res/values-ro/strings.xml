@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Fără stea</string>
   <string name="action_label_description">Etichetare ca</string>
   <string name="action_move_description">Mutare în</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">Mutare în gunoi</string>
   <string name="action_delete_description">Ștergere</string>
   <string name="action_archive_description">Arhivare</string>
   <string name="action_spam_description">Mutare în «Nedorite»</string>

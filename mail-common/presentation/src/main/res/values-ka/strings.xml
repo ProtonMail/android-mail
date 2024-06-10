@@ -37,7 +37,7 @@
   <string name="action_unstar_description">ვარსკვლავის მოხსნა</string>
   <string name="action_label_description">ჭდის დადება</string>
   <string name="action_move_description">გადატანა</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">ნაგვის ყუთში გადატანა</string>
   <string name="action_delete_description">წაშლა</string>
   <string name="action_archive_description">დაარქივება</string>
   <string name="action_spam_description">სპამში გადატანა</string>

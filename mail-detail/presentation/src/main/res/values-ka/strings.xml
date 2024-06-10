@@ -46,9 +46,9 @@
   <string name="error_move_to_trash_failed">ნაგვის ყუთში გადატანის შეცდომა. თავიდან სცადეთ.</string>
   <string name="message_moved_to_trash">შეტყობინება გადატანილია ნაგვის ყუთში</string>
   <string name="message_moved_to_archive">შეტყობინება გადატანილია არქივში</string>
-  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
-  <string name="message_moved_to_spam">Message moved to Spam</string>
-  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
+  <string name="error_move_to_archive_failed">არქივში გადატანა ჩავარდა. თავიდან სცადეთ.</string>
+  <string name="message_moved_to_spam">შეტყობინება გადატანილია სპამში</string>
+  <string name="error_move_to_spam_failed">სპამში გადატანა ჩავარდა. თავიდან სცადეთ.</string>
   <string name="message_moved_to_selected_destination">შეტყობინება გადატანილია %1$s-ში</string>
   <string name="error_move_message_failed">შეტყობინების გადატანის შეცდომა. თავიდან სცადეთ.</string>
   <string name="conversation_moved_to_trash">საუბარი გადატანილია ნაგავში</string>

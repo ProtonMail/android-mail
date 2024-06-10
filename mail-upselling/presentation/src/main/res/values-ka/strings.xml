@@ -48,6 +48,6 @@
   <string name="upselling_snackbar_error_no_subscriptions">გამოწერების გამოთხოვნა შეუძლებელია</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">მიმდინარეობს სატარიფო გეგმის აწევა…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
+  <string name="upselling_snackbar_upgrade_error_generic">შეცდომა თქვენი გამოწერის განახლებისას.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">მოხდა შეცდომა. სცადეთ კიდევ ერთხელ.</string>
 </resources>

@@ -37,7 +37,7 @@
   <string name="action_unstar_description">Αφαίρεση αστεριού</string>
   <string name="action_label_description">Απόδοση ετικετών</string>
   <string name="action_move_description">Μεταφορά σε</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">Μετακίνηση στα Διαγραμμένα</string>
   <string name="action_delete_description">Διαγραφή</string>
   <string name="action_archive_description">Αρχειοθετημένα</string>
   <string name="action_spam_description">Μετακίνηση στα ανεπιθύμητα</string>

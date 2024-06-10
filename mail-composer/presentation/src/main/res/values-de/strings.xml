@@ -97,6 +97,6 @@
   <string name="respondInline">Eingebettet antworten</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d Kontakt</item>
-    <item quantity="other">%d Kontakten</item>
+    <item quantity="other">%d Kontakte</item>
   </plurals>
 </resources>

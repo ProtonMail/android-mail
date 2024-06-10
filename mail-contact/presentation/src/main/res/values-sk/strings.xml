@@ -139,6 +139,17 @@
   <string name="add_members_error">Chyba pri pridávaní členov, skúste to neskôr, prosím</string>
   <string name="manage_members_title">Spravovať členov</string>
   <string name="search_contact">Hľadať kontakt</string>
+  <string name="search_contacts_description">Vyhľadať kontakty</string>
   <string name="member_update_error">Chyba pri aktualizácii člena, skúste to neskôr, prosím</string>
   <string name="contact_group_color">Farba skupiny kontaktov</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d člen</item>
+    <item quantity="few">%d členovia</item>
+    <item quantity="many">%d členov</item>
+    <item quantity="other">%d členov</item>
+  </plurals>
+  <string name="contact_search_placeholder">Hľadať kontakt alebo skupinu</string>
+  <string name="contact_search_content_description">Hľadať kontakt alebo skupinu</string>
+  <string name="contact_search_arrow_back_content_description">Späť do kontaktov</string>
+  <string name="contact_search_no_results">Neboli nájdené žiadne výsledky.</string>
 </resources>

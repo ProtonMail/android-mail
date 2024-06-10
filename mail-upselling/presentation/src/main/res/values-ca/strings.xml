@@ -28,7 +28,7 @@
   <string name="upselling_plus_feature_desktop_app">Nova aplicació d\'escriptori de Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Carpetes, etiquetes, filtres il·limitats</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
+  <string name="upselling_unlimited_description_override">La subscripció prèmium tot en un</string>
   <string name="upselling_unlimited_feature_storage">500 GB d\'emmagatzematge amb còpia de seguretat de fotos</string>
   <string name="upselling_unlimited_feature_mail_calendar">Totes les característiques de pagament de Correu i Calendari</string>
   <string name="upselling_unlimited_feature_vpn">VPN (més de 90 països)</string>
@@ -43,11 +43,11 @@
     <item quantity="other">%d mesos</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">No s\'han pogut recuperar les opcions d\'actualització.</string>
   <string name="upselling_snackbar_error_no_user_id">S\'ha produït un error.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">No s\'han pogut obtenir les subscripcions.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Actualització de la subscripció en curs...</string>
+  <string name="upselling_snackbar_upgrade_error_generic">S\'ha produït un error en millorar la subscripció.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">S\'ha produït un error. Proveu de nou.</string>
 </resources>

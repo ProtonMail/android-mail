@@ -24,11 +24,11 @@
   <string name="upselling_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
   <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
-  <string name="upselling_plus_feature_custom_domain">Eigene E-Mail-Domain Support</string>
+  <string name="upselling_plus_feature_custom_domain">Unterstützung für eigene E-Mail-Domain</string>
   <string name="upselling_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
   <string name="upselling_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Ihr umfassendes Premium-Abonnement</string>
+  <string name="upselling_unlimited_description_override">Dein All-In-One-Premium-Abonnement</string>
   <string name="upselling_unlimited_feature_storage">500 GB Speicherplatz mit Fotosicherung</string>
   <string name="upselling_unlimited_feature_mail_calendar">Alle kostenpflichtigen Mail- und Calendar-Funktionen</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90+ Länder)</string>
@@ -45,9 +45,9 @@
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Fehler beim Abrufen der Upgrade-Optionen.</string>
   <string name="upselling_snackbar_error_no_user_id">Ein Fehler ist aufgetreten.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Abonnements können nicht abgerufen werden.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Fehler beim Abrufen der Abonnements.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Upgrade des Abonnements in Arbeit...</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Es ist ein Fehler beim Upgrade Deines Abonnements aufgetreten.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">Es ist ein Fehler aufgetreten, Bitte versuche es noch einmal.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Upgrade des Abonnements wird durchgeführt…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Fehler beim Upgraden deines Abonnements.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Ein Fehler ist aufgetreten. Bitte versuche es erneut.</string>
 </resources>

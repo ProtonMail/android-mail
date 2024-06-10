@@ -135,6 +135,15 @@
   <string name="add_members_error">Erro ao adicionar membros, tente novamente mais tarde</string>
   <string name="manage_members_title">Gerenciar membros</string>
   <string name="search_contact">Pesquisar contato</string>
+  <string name="search_contacts_description">Pesquisar contatos</string>
   <string name="member_update_error">Erro ao atualizar membro, tente novamente mais tarde</string>
   <string name="contact_group_color">Cor do grupo de contatos</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d membro</item>
+    <item quantity="other">%d membros</item>
+  </plurals>
+  <string name="contact_search_placeholder">Pesquisa por contato ou grupo</string>
+  <string name="contact_search_content_description">Pesquisa por contato ou grupo</string>
+  <string name="contact_search_arrow_back_content_description">Voltar para os contatos</string>
+  <string name="contact_search_no_results">Nenhum resultado encontrado.</string>
 </resources>

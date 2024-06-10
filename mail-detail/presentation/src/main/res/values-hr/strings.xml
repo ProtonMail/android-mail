@@ -27,7 +27,7 @@
     <item quantity="other">%d poruka</item>
   </plurals>
   <string name="quick_reply_button_content_description">Odgovori</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_all_button_content_description">Odgovori svima</string>
   <string name="more_button_content_description">Više</string>
   <string name="subject">Predmet:</string>
   <string name="from">Od:</string>
@@ -97,7 +97,7 @@
   <string name="message_body_load_remote_content_button_text">Učitaj udaljeni sadržaj</string>
   <string name="message_body_load_embedded_images_button_text">Učitaj ugrađene slike</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
-  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_title_offline">Pažnja</string>
   <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">U redu</string>
   <string name="message_report_phishing_dialog_title">Potvrdi izvještaj o krađi identiteta</string>

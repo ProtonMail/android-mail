@@ -28,12 +28,12 @@
   <string name="quick_reply_button_content_description">Válasz</string>
   <string name="quick_reply_all_button_content_description">Válasz mindenkinek</string>
   <string name="more_button_content_description">Több</string>
-  <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="subject">Tárgy:</string>
+  <string name="from">Feladó:</string>
   <string name="to">Címzett:</string>
   <string name="cc">Másolatot kap:</string>
   <string name="bcc">Titkos másolat:</string>
-  <string name="date">Date:</string>
+  <string name="date">Dátum:</string>
   <plurals name="attachment">
     <item quantity="one">%d melléklet</item>
     <item quantity="other">%d melléklet</item>
@@ -46,7 +46,7 @@
   <string name="error_move_to_trash_failed">A lomtárba helyezés sikertelen. Próbálja újra.</string>
   <string name="message_moved_to_trash">Üzenet áthelyezve a lomtárba</string>
   <string name="message_moved_to_archive">Üzenet áthelyezve az archívumba</string>
-  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
+  <string name="error_move_to_archive_failed">Az archívumba való áthelyezés sikertelen. Próbálja meg újra.</string>
   <string name="message_moved_to_spam">Message moved to Spam</string>
   <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Üzenet áthelyezve a %1$s mappába</string>

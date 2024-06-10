@@ -33,7 +33,7 @@
   <string name="upselling_unlimited_feature_mail_calendar">Todas as funcionalidades pagas do Mail e do Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (mais de 90 países)</string>
   <string name="upselling_unlimited_feature_drive">Armazenamento seguro na nuvem</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Gestor de palavras-passe encriptado</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">POUPE %s%%</string>
   <string name="upselling_month">/mês</string>

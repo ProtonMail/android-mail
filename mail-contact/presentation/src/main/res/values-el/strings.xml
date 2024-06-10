@@ -135,6 +135,15 @@
   <string name="add_members_error">Σφάλμα προσθήκης μελών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="manage_members_title">Διαχείριση μελών</string>
   <string name="search_contact">Αναζήτηση για επαφή</string>
+  <string name="search_contacts_description">Αναζήτηση επαφών</string>
   <string name="member_update_error">Σφάλμα ενημέρωσης μέλους, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="contact_group_color">Χρώμα ομάδας επαφών</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d μέλος</item>
+    <item quantity="other">%d μέλη</item>
+  </plurals>
+  <string name="contact_search_placeholder">Αναζήτηση επαφής ή ομάδας</string>
+  <string name="contact_search_content_description">Αναζήτηση επαφής ή ομάδας</string>
+  <string name="contact_search_arrow_back_content_description">Επιστροφή στις επαφές</string>
+  <string name="contact_search_no_results">Δεν βρέθηκαν αποτελέσματα.</string>
 </resources>

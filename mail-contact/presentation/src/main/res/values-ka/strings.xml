@@ -129,12 +129,21 @@
   <string name="contact_group_form_update_success">კონტაქტების ჯგუფი განახლდა</string>
   <string name="contact_group_form_save_error">კონტაქტების ჯგუფის შენახვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="contact_group_form_save_error_already_exists">ჯგუფი ამ სახელით უკვე არსებობს</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">კონტაქტების ჯგუფის შესამქნელად ფასიან ვერსიაზე უნდა გადახვიდეთ</string>
   <string name="members_loading_error">წევრების ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="members_done">დასრულებული</string>
   <string name="add_members_error">წევრების დამატების შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="manage_members_title">წევრების მართვა</string>
   <string name="search_contact">კონტაქტის ძებნა</string>
+  <string name="search_contacts_description">კონტაქტების ძებნა</string>
   <string name="member_update_error">წევრის განახლების შეცდომა. მოგვიანებით სცადეთ</string>
   <string name="contact_group_color">კონტაქტების ჯგუფის ფერი</string>
+  <plurals name="contact_search_contact_group_counter">
+    <item quantity="one">%d წევრი</item>
+    <item quantity="other">%d წევრი</item>
+  </plurals>
+  <string name="contact_search_placeholder">კონტაქტის ან ჯგუფის ძებნა</string>
+  <string name="contact_search_content_description">კონტაქტის ან ჯგუფის ძებნა</string>
+  <string name="contact_search_arrow_back_content_description">კონტაქტებზე დაბრუნება</string>
+  <string name="contact_search_no_results">შედეგების გარეშე.</string>
 </resources>
