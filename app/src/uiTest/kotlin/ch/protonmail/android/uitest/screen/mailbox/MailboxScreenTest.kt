@@ -221,7 +221,8 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 deleteAllDialogState = DeleteDialogState.Hidden,
                 storageLimitState = StorageLimitState.HasEnoughSpace,
                 bottomSheetState = null,
-                error = Effect.empty()
+                error = Effect.empty(),
+                showRatingBooster = Effect.empty()
             )
         }
 

@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import java.util.Collections
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -73,6 +74,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
+import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -88,6 +90,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UsedLabels
 import ch.protonmail.android.mailmailbox.presentation.mailbox.reducer.MailboxReducer
+import ch.protonmail.android.mailmailbox.presentation.mailbox.usecase.ShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.paging.MailboxPagerFactory
 import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -182,7 +185,9 @@ class MailboxViewModel @Inject constructor(
     private val observePrimaryUserAccountStorageStatus: ObservePrimaryUserAccountStorageStatus,
     private val observeStorageLimitPreference: ObserveStorageLimitPreference,
     private val saveStorageLimitPreference: SaveStorageLimitPreference,
-    private val shouldUpgradeStorage: ShouldUpgradeStorage
+    private val shouldUpgradeStorage: ShouldUpgradeStorage,
+    private val shouldShowRatingBooster: ShouldShowRatingBooster,
+    private val showRatingBooster: ShowRatingBooster
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -286,6 +291,12 @@ class MailboxViewModel @Inject constructor(
                 )
             }
             .launchIn(viewModelScope)
+
+        primaryUserId.filterNotNull().flatMapLatest { userId ->
+            shouldShowRatingBooster(userId)
+        }.onEach { shouldShowRatingBooster ->
+            if (shouldShowRatingBooster) emitNewStateFrom(MailboxEvent.ShowRatingBooster)
+        }.launchIn(viewModelScope)
     }
 
     private fun handleSwipeActionPreferences(userId: UserId, currentMailLabel: MailLabel): Flow<MailboxEvent> {
@@ -359,6 +370,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.DeleteAllDialogDismissed -> handleClearAllDialogDismissed(viewAction)
                 is MailboxViewAction.RequestUpsellingBottomSheet -> showUpsellingBottomSheet(viewAction)
                 is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
+                is MailboxViewAction.ShowRatingBooster -> showRatingBooster(viewAction)
             }.exhaustive
         }
     }
@@ -1263,6 +1275,14 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
+    private fun showRatingBooster(operation: MailboxViewAction.ShowRatingBooster) {
+        try {
+            showRatingBooster(operation.context as Activity)
+        } catch (exception: ClassCastException) {
+            Timber.e("Showing the rating booster was unsuccessful", exception)
+        }
+    }
+
     companion object {
 
         val initialState = MailboxState(
@@ -1277,7 +1297,8 @@ class MailboxViewModel @Inject constructor(
             storageLimitState = StorageLimitState.None,
             bottomSheetState = null,
             actionResult = Effect.empty(),
-            error = Effect.empty()
+            error = Effect.empty(),
+            showRatingBooster = Effect.empty()
         )
     }
 }

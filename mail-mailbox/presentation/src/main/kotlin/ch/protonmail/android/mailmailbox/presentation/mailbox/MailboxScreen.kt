@@ -69,6 +69,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -153,6 +154,7 @@ fun MailboxScreen(
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     BackHandler(mailboxState.mailboxListState is MailboxListState.Data.SelectionMode) {
         viewModel.submit(MailboxViewAction.ExitSelectionMode)
@@ -215,7 +217,8 @@ fun MailboxScreen(
             onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
             onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
             onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
-            onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) }
+            onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+            onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) }
         )
 
         mailboxState.bottomSheetState?.let {
@@ -323,6 +326,10 @@ fun MailboxScreen(
 
     ConsumableTextEffect(effect = mailboxState.error) {
         snackbarHostErrorState.showSnackbar(message = it, type = ProtonSnackbarType.ERROR)
+    }
+
+    ConsumableLaunchedEffect(mailboxState.showRatingBooster) {
+        actions.onShowRatingBooster()
     }
 
     DeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
@@ -1014,7 +1021,8 @@ object MailboxScreen {
         val onSearchResult: () -> Unit,
         val onExitSearchMode: () -> Unit,
         val onOpenUpsellingPage: () -> Unit,
-        val onCloseUpsellingPage: () -> Unit
+        val onCloseUpsellingPage: () -> Unit,
+        val onShowRatingBooster: () -> Unit
     ) {
 
         companion object {
@@ -1060,7 +1068,8 @@ object MailboxScreen {
                 onSearchQuery = {},
                 onSearchResult = {},
                 onOpenUpsellingPage = {},
-                onCloseUpsellingPage = {}
+                onCloseUpsellingPage = {},
+                onShowRatingBooster = {}
             )
         }
     }

@@ -211,7 +211,8 @@ internal class MailboxReducerTest(
             deleteAllDialogState = DeleteDialogState.Hidden,
             bottomSheetState = null,
             storageLimitState = StorageLimitState.None,
-            error = Effect.empty()
+            error = Effect.empty(),
+            showRatingBooster = Effect.empty()
         )
 
         private val actions = listOf(
@@ -760,6 +761,18 @@ internal class MailboxReducerTest(
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = false,
                 shouldReduceStorageLimitState = true
+            ),
+            TestInput(
+                MailboxEvent.ShowRatingBooster,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                showRatingBoosterState = Effect.of(Unit)
             )
         )
 
@@ -788,6 +801,7 @@ internal class MailboxReducerTest(
         val deleteAllDialogState: DeleteDialogState = DeleteDialogState.Hidden,
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceStorageLimitState: Boolean,
-        val errorBarState: Effect<TextUiModel> = Effect.empty()
+        val errorBarState: Effect<TextUiModel> = Effect.empty(),
+        val showRatingBoosterState: Effect<Unit> = Effect.empty()
     )
 }
