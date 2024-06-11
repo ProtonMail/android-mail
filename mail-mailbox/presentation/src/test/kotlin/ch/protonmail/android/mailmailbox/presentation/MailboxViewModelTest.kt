@@ -79,6 +79,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPrefe
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
@@ -288,6 +289,7 @@ class MailboxViewModelTest {
         every { this@mockk(userId) } returns flowOf(false)
     }
     private val showRatingBooster = mockk<ShowRatingBooster>(relaxUnitFun = true)
+    private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -334,7 +336,8 @@ class MailboxViewModelTest {
             saveStorageLimitPreference = saveStorageLimitPreference,
             shouldUpgradeStorage = shouldUpgradeStorage,
             shouldShowRatingBooster = shouldShowRatingBooster,
-            showRatingBooster = showRatingBooster
+            showRatingBooster = showRatingBooster,
+            recordRatingBoosterTriggered = recordRatingBoosterTriggered
         )
     }
 
@@ -3902,6 +3905,7 @@ class MailboxViewModelTest {
             verify(exactly = 1) {
                 mailboxReducer.newStateFrom(any(), MailboxEvent.ShowRatingBooster)
             }
+            coVerify { recordRatingBoosterTriggered(userId) }
         }
     }
 

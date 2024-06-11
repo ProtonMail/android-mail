@@ -72,6 +72,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPrefe
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
@@ -187,7 +188,8 @@ class MailboxViewModel @Inject constructor(
     private val saveStorageLimitPreference: SaveStorageLimitPreference,
     private val shouldUpgradeStorage: ShouldUpgradeStorage,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
-    private val showRatingBooster: ShowRatingBooster
+    private val showRatingBooster: ShowRatingBooster,
+    private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -295,7 +297,10 @@ class MailboxViewModel @Inject constructor(
         primaryUserId.filterNotNull().flatMapLatest { userId ->
             shouldShowRatingBooster(userId)
         }.onEach { shouldShowRatingBooster ->
-            if (shouldShowRatingBooster) emitNewStateFrom(MailboxEvent.ShowRatingBooster)
+            if (shouldShowRatingBooster) {
+                recordRatingBoosterTriggered(primaryUserId.filterNotNull().first())
+                emitNewStateFrom(MailboxEvent.ShowRatingBooster)
+            }
         }.launchIn(viewModelScope)
     }
 
