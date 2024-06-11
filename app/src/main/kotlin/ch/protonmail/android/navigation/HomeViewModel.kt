@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesS
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.navigation.model.Destination
@@ -62,6 +63,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val networkManager: NetworkManager,
     private val observeSendingMessagesStatus: ObserveSendingMessagesStatus,
+    private val recordMailboxScreenView: RecordMailboxScreenView,
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val discardDraft: DiscardDraft,
@@ -127,6 +129,8 @@ class HomeViewModel @Inject constructor(
             } ?: Timber.e("Primary user is not available!")
         }
     }
+
+    fun recordViewOfMailboxScreen() = recordMailboxScreenView()
 
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {
         if (messageSendingStatus == MessageSendingStatus.None) {

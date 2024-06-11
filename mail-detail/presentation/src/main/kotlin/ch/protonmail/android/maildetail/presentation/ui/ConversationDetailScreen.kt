@@ -19,6 +19,7 @@ package ch.protonmail.android.maildetail.presentation.ui
 
 import android.net.Uri
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -104,6 +105,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBotto
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
@@ -127,6 +129,8 @@ fun ConversationDetailScreen(
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val isSystemBackButtonClickEnabled = remember { mutableStateOf(true) }
+    val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
     state.bottomSheetState?.let {
         // Avoids a "jumping" of the bottom sheet
@@ -146,6 +150,15 @@ fun ConversationDetailScreen(
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(ConversationDetailViewAction.DismissBottomSheet)
+    }
+
+    BackHandler(!bottomSheetState.isVisible && isSystemBackButtonClickEnabled.value) {
+        actions.recordMailboxScreenView()
+        isSystemBackButtonClickEnabled.value = false
+        scope.launch {
+            awaitFrame()
+            onBackPressedDispatcher?.onBackPressed()
+        }
     }
 
     DeleteDialog(
@@ -724,7 +737,8 @@ object ConversationDetail {
         val onAddContact: (basicContactInfo: BasicContactInfo) -> Unit,
         val onComposeNewMessage: (recipientAddress: String) -> Unit,
         val openComposerForDraftMessage: (messageId: MessageId) -> Unit,
-        val showSnackbar: (message: String) -> Unit
+        val showSnackbar: (message: String) -> Unit,
+        val recordMailboxScreenView: () -> Unit
     )
 }
 

@@ -31,6 +31,7 @@ import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesStatus
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
@@ -41,6 +42,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.unmockkStatic
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
@@ -73,6 +75,8 @@ class HomeViewModelTest {
         every { this@mockk.invoke(any()) } returns flowOf(MessageSendingStatus.None)
     }
 
+    private val recordMailboxScreenView = mockk<RecordMailboxScreenView>(relaxUnitFun = true)
+
     private val resetSendingMessageStatus = mockk<ResetSendingMessagesStatus>(relaxUnitFun = true)
 
     private val selectedMailLabelId = mockk<SelectedMailLabelId>(relaxUnitFun = true)
@@ -91,6 +95,7 @@ class HomeViewModelTest {
         HomeViewModel(
             networkManager,
             observeSendingMessagesStatus,
+            recordMailboxScreenView,
             resetSendingMessageStatus,
             selectedMailLabelId,
             discardDraft,
@@ -372,6 +377,18 @@ class HomeViewModelTest {
 
         // Then
         coVerify { discardDraft(user.userId, messageId) }
+    }
+
+    @Test
+    fun `should call use case when recording mailbox screen view count`() {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+
+        // When
+        homeViewModel.recordViewOfMailboxScreen()
+
+        // Then
+        verify { recordMailboxScreenView() }
     }
 
     private fun mockIntent(action: String, data: Uri?): Intent {

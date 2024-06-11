@@ -283,6 +283,7 @@ fun Home(
                         onExit = { notifyUserMessage ->
                             navController.navigateBack()
                             notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
+                            viewModel.recordViewOfMailboxScreen()
                         },
                         openMessageBodyLink = activityActions.openInActivityInNewTask,
                         openAttachment = activityActions.openIntentChooser,
@@ -314,7 +315,8 @@ fun Home(
                                     type = ProtonSnackbarType.NORM
                                 )
                             }
-                        }
+                        },
+                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() }
                     )
                 )
                 addMailbox(
@@ -329,6 +331,7 @@ fun Home(
                         onExit = { notifyUserMessage ->
                             navController.navigateBack()
                             notifyUserMessage?.let { showUndoableOperationSnackbar(it) }
+                            viewModel.recordViewOfMailboxScreen()
                         },
                         openMessageBodyLink = activityActions.openInActivityInNewTask,
                         openAttachment = activityActions.openIntentChooser,
@@ -359,7 +362,8 @@ fun Home(
                                     type = ProtonSnackbarType.NORM
                                 )
                             }
-                        }
+                        },
+                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() }
                     )
                 )
                 addComposer(
