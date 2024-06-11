@@ -35,9 +35,9 @@ class DeviceContactsSuggestionsPromptImpl @Inject constructor(
     private val isPromptEnabledPrefKey =
         booleanPreferencesKey(DEVICE_CONTACT_SUGGESTIONS_PROMPT_ENABLED_PREF_KEY)
 
-    override suspend fun setPromptEnabled(enabled: Boolean) {
+    override suspend fun setPromptDisabled() {
         contactDataStoreProvider.contactDataStore.safeEdit {
-            it[isPromptEnabledPrefKey] = enabled
+            it[isPromptEnabledPrefKey] = false
         }
     }
 

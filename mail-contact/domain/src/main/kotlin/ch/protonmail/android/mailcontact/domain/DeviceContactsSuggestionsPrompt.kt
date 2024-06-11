@@ -20,7 +20,7 @@ package ch.protonmail.android.mailcontact.domain
 
 interface DeviceContactsSuggestionsPrompt {
 
-    suspend fun setPromptEnabled(enabled: Boolean)
+    suspend fun setPromptDisabled()
 
     suspend fun getPromptEnabled(): Boolean
 }

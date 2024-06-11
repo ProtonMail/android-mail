@@ -172,7 +172,7 @@ class ComposerViewModelTest {
     private val searchDeviceContactsMock = mockk<SearchDeviceContacts>()
     private val deviceContactsSuggestionsPromptMock = mockk<DeviceContactsSuggestionsPrompt> {
         coEvery { this@mockk.getPromptEnabled() } returns true
-        coEvery { this@mockk.setPromptEnabled(any()) } just Runs
+        coEvery { this@mockk.setPromptDisabled() } just Runs
     }
     private val isDeviceContactsSuggestionsEnabledMock = mockk<IsDeviceContactsSuggestionsEnabled> {
         every { this@mockk.invoke() } returns false
@@ -738,7 +738,7 @@ class ComposerViewModelTest {
         viewModel.state.test {
             awaitItem()
 
-            coVerify { deviceContactsSuggestionsPromptMock.setPromptEnabled(false) }
+            coVerify { deviceContactsSuggestionsPromptMock.setPromptDisabled() }
         }
     }
 

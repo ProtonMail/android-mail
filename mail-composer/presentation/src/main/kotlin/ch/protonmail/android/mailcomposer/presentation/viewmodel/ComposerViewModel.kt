@@ -516,7 +516,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun onDeviceContactsPromptDenied() {
         viewModelScope.launch {
-            deviceContactsSuggestionsPrompt.setPromptEnabled(false)
+            deviceContactsSuggestionsPrompt.setPromptDisabled()
         }
     }
 
