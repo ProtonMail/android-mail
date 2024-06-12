@@ -25,15 +25,18 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 import ch.protonmail.android.BuildConfig
+import ch.protonmail.android.initializer.featureflag.RefreshRatingBoosterFeatureFlags
 import me.proton.core.featureflag.data.FeatureFlagRefreshStarter
 
 class FeatureFlagInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        EntryPointAccessors.fromApplication(
+        val entryPoint = EntryPointAccessors.fromApplication(
             context.applicationContext,
             FeatureFlagInitializerEntryPoint::class.java
-        ).featureFlagRefreshStarter().start(BuildConfig.DEBUG)
+        )
+        entryPoint.featureFlagRefreshStarter().start(BuildConfig.DEBUG)
+        entryPoint.refreshRatingBoosterFeatureFlags().invoke()
     }
 
     override fun dependencies(): List<Class<out Initializer<*>?>> = listOf(
@@ -44,5 +47,7 @@ class FeatureFlagInitializer : Initializer<Unit> {
     @InstallIn(SingletonComponent::class)
     interface FeatureFlagInitializerEntryPoint {
         fun featureFlagRefreshStarter(): FeatureFlagRefreshStarter
+
+        fun refreshRatingBoosterFeatureFlags(): RefreshRatingBoosterFeatureFlags
     }
 }
