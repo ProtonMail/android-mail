@@ -202,6 +202,9 @@ startReview:
 
 stopReview:
   stage: stopReview
+  cache:
+    - <<: *ruby-cache
+      policy: !reference [ .cache-policy, cache, policy ]
   extends: .stopReview
   tags:
     - shared-small
