@@ -63,7 +63,7 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
             ActionUiModel(Action.Trash),
             ActionUiModel(Action.Archive),
             ActionUiModel(Action.Spam),
-            ActionUiModel(Action.Move),
+//            ActionUiModel(Action.Move),
             ActionUiModel(Action.Print),
             ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
@@ -99,7 +99,7 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
             ActionUiModel(Action.Trash),
             ActionUiModel(Action.Archive),
             ActionUiModel(Action.Spam),
-            ActionUiModel(Action.Move),
+//            ActionUiModel(Action.Move),
             ActionUiModel(Action.Print),
             ActionUiModel(Action.ReportPhishing)
         ).toImmutableList()
