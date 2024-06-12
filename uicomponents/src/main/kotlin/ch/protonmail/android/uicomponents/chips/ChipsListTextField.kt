@@ -2,8 +2,8 @@ package ch.protonmail.android.uicomponents.chips
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -60,7 +60,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import me.proton.core.compose.theme.ProtonDimens
@@ -69,6 +71,7 @@ import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.takeIfNotBlank
+import kotlin.math.roundToInt
 
 @Stable
 sealed class ChipItem(open val value: String) {
@@ -197,13 +200,21 @@ fun ChipsListTextField(
                 textStyle = textStyle
             )
 
+            var suggestionItemSize by remember { mutableStateOf(IntSize.Zero) }
+
             if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
                 DropdownMenu(
                     modifier = Modifier
                         .background(ProtonTheme.colors.backgroundNorm)
                         .width(textMaxWidth)
                         .exposedDropdownSize(false)
-                        .requiredSizeIn(maxHeight = 120.dp),
+                        .requiredSizeIn(
+                            maxHeight =
+                            suggestionsDropdownMaxHeight(
+                                localDensity,
+                                suggestionItemSize
+                            )
+                        ),
                     properties = PopupProperties(focusable = false),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
@@ -230,7 +241,6 @@ fun ChipsListTextField(
                                         overflow = TextOverflow.Ellipsis
                                     )
                                 }
-
                             },
                             onClick = {
                                 selectionOption.emails.joinToString(separator = " ").takeIfNotBlank()?.let {
@@ -238,7 +248,10 @@ fun ChipsListTextField(
                                 }
                                 actions.onSuggestionsDismissed()
                             },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                            modifier = Modifier.onSizeChanged {
+                                suggestionItemSize = it
+                            }
                         )
                     }
                 }
@@ -455,6 +468,16 @@ internal class ChipsListState(
         private const val CommaDelimiter = ","
         private const val TabDelimiter = "\t"
     }
+}
+
+private fun suggestionsDropdownMaxHeight(localDensity: Density, suggestionItemSize: IntSize): Dp {
+    val dropdownVerticalPadding = (2 * 8).dp // "DropdownMenuVerticalPadding" is internal in Menu.kt
+
+    val factor = 1.0 + 0.35 // full item + 35% of height for peek
+
+    return with(localDensity) {
+        (suggestionItemSize.height * factor).roundToInt().toDp()
+    } + dropdownVerticalPadding
 }
 
 private val chipShape = RoundedCornerShape(16.dp)
