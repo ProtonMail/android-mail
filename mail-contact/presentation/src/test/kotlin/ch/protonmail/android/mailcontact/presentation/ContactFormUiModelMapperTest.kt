@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormUiModelMa
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.emptyContactFormUiModel
+import ch.protonmail.android.mailcontact.presentation.model.filterOutUnsupportedFields
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
@@ -481,7 +482,7 @@ class ContactFormUiModelMapperTest {
                     selectedType = FieldType.OtherType.Anniversary
                 )
             ),
-            otherTypes = FieldType.OtherType.values().toList(),
+            otherTypes = FieldType.OtherType.values().filterOutUnsupportedFields().toList(),
             incrementalUniqueFieldId = incrementalFieldId
         )
     }

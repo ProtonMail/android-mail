@@ -78,6 +78,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactFormAvatar
 import ch.protonmail.android.mailcontact.presentation.model.FieldType
 import ch.protonmail.android.mailcontact.presentation.model.InputField
 import ch.protonmail.android.mailcontact.presentation.model.Section
+import ch.protonmail.android.mailcontact.presentation.model.filterOutUnsupportedFields
 import ch.protonmail.android.mailcontact.presentation.model.getAddressTypeByValue
 import ch.protonmail.android.mailcontact.presentation.model.getEmailTypeByValue
 import ch.protonmail.android.mailcontact.presentation.model.getOtherTypeByValue
@@ -629,7 +630,7 @@ private fun TypePickerField(initialSelectedType: FieldType, onValueSelected: (Te
         is FieldType.EmailType -> FieldType.EmailType.values()
         is FieldType.TelephoneType -> FieldType.TelephoneType.values()
         is FieldType.AddressType -> FieldType.AddressType.values()
-        is FieldType.OtherType -> FieldType.OtherType.values()
+        is FieldType.OtherType -> FieldType.OtherType.values().filterOutUnsupportedFields()
     }.map { it.localizedValue }
 
     when {

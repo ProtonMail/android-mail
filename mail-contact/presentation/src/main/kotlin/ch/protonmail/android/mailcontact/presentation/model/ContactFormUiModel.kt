@@ -143,6 +143,12 @@ sealed interface FieldType {
     }
 }
 
+fun Array<FieldType.OtherType>.filterOutUnsupportedFields(): Array<FieldType.OtherType> {
+    return this.filterNot {
+        it == FieldType.OtherType.Photo || it == FieldType.OtherType.Logo || it == FieldType.OtherType.Anniversary
+    }.toTypedArray()
+}
+
 enum class Section {
     Emails,
     Telephones,
@@ -173,7 +179,7 @@ fun emptyContactFormUiModel() = ContactFormUiModel(
     birthday = null,
     notes = mutableListOf(),
     others = mutableListOf(),
-    otherTypes = FieldType.OtherType.values().toList(),
+    otherTypes = FieldType.OtherType.values().filterOutUnsupportedFields().toList(),
     incrementalUniqueFieldId = 0
 )
 

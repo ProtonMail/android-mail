@@ -83,7 +83,7 @@ class ContactFormUiModelMapper @Inject constructor(
             birthday = birthday,
             notes = notes,
             others = others,
-            otherTypes = FieldType.OtherType.values().toList(),
+            otherTypes = FieldType.OtherType.values().filterOutUnsupportedFields().toList(),
             incrementalUniqueFieldId = incrementalUniqueFieldId
         )
     }
