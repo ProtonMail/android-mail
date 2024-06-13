@@ -40,8 +40,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -67,8 +67,10 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.extension.upgradeToSecuredWebResourceResponse
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
+import ch.protonmail.android.mailmessage.presentation.extension.isRemoteUnsecuredContent
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
@@ -159,7 +161,9 @@ fun MessageBodyWebView(
                         WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data))
                     }
                 } else {
-                    super.shouldInterceptRequest(view, request)
+                    if (request?.isRemoteUnsecuredContent() == true) {
+                        request.upgradeToSecuredWebResourceResponse()
+                    } else super.shouldInterceptRequest(view, request)
                 }
             }
 
