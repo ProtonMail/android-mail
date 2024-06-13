@@ -82,6 +82,9 @@ fun ContactSearchScreen(actions: ContactSearchScreen.Actions, viewModel: Contact
                 state = state,
                 onSearchValueChange = {
                     viewModel.submit(ContactSearchViewAction.OnSearchValueChanged(it))
+                },
+                onSearchValueClear = {
+                    viewModel.submit(ContactSearchViewAction.OnSearchValueCleared)
                 }
             )
         },
@@ -249,7 +252,8 @@ fun ContactSearchTopBar(
     modifier: Modifier,
     actions: ContactSearchScreen.Actions,
     state: ContactSearchState,
-    onSearchValueChange: (String) -> Unit
+    onSearchValueChange: (String) -> Unit,
+    onSearchValueClear: () -> Unit
 ) {
 
     ProtonTopAppBar(
@@ -264,7 +268,7 @@ fun ContactSearchTopBar(
                 modifier = Modifier
                     .fillMaxWidth(),
                 actions = SearchView.Actions(
-                    onClearSearchQuery = {},
+                    onClearSearchQuery = { onSearchValueClear() },
                     onSearchQuerySubmit = {},
                     onSearchQueryChanged = { onSearchValueChange(it) }
                 )
@@ -349,6 +353,7 @@ private fun ManageMembersTopBarPreview() {
         Modifier,
         actions = ContactSearchScreen.Actions.Empty,
         state = ContactSearchState(),
-        onSearchValueChange = {}
+        onSearchValueChange = {},
+        onSearchValueClear = {}
     )
 }

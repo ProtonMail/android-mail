@@ -26,10 +26,14 @@ sealed interface ContactSearchViewAction : ContactSearchOperation {
     data class OnSearchValueChanged(
         val searchValue: String
     ) : ContactSearchViewAction
+
+    data object OnSearchValueCleared : ContactSearchViewAction
 }
 
 sealed interface ContactSearchEvent : ContactSearchOperation {
     data class ContactsLoaded(
         val contacts: List<ContactSearchUiModel>
     ) : ContactSearchEvent
+
+    data object ContactsCleared : ContactSearchEvent
 }

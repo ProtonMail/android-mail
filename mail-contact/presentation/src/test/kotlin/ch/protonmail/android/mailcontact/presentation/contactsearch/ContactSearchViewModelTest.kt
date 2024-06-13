@@ -47,6 +47,7 @@ import org.junit.Test
 import kotlin.test.AfterTest
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class ContactSearchViewModelTest {
@@ -72,6 +73,40 @@ class ContactSearchViewModelTest {
             observePrimaryUserId
         )
     }
+
+    private val expectedSearchTerm = "searching for this"
+    private val expectedContacts = listOf(ContactSample.Stefano, ContactSample.Francesco)
+    private val expectedContactGroups = listOf(
+        ContactGroup(
+            UserIdSample.Primary,
+            LabelIdSample.LabelCoworkers,
+            "Coworkers contact group",
+            "#AABBCC",
+            listOf(ContactEmailSample.contactEmail1)
+        )
+    )
+    private val expectedContactSearchUiModels = listOf(
+        ContactSearchUiModel.Contact(
+            expectedContacts[0].id,
+            expectedContacts[0].name,
+            expectedContacts[0].contactEmails.first().email,
+            "S"
+        ),
+        ContactSearchUiModel.Contact(
+            expectedContacts[1].id,
+            expectedContacts[1].name,
+            expectedContacts[1].contactEmails.first().email,
+            "F"
+        )
+    )
+    private val expectedContactGroupsSearchUiModels = listOf(
+        ContactSearchUiModel.ContactGroup(
+            expectedContactGroups[0].labelId,
+            expectedContactGroups[0].name,
+            Color.Red,
+            emailCount = 1
+        )
+    )
 
     @AfterTest
     fun tearDown() {
@@ -99,19 +134,6 @@ class ContactSearchViewModelTest {
     @Test
     fun `handles OnSearchValueChanged`() = runTest {
         // Given
-        val expectedSearchTerm = "searching for this"
-
-        val expectedContacts = listOf(ContactSample.Stefano, ContactSample.Francesco)
-        val expectedContactGroups = listOf(
-            ContactGroup(
-                UserIdSample.Primary,
-                LabelIdSample.LabelCoworkers,
-                "Coworkers contact group",
-                "#AABBCC",
-                listOf(ContactEmailSample.contactEmail1)
-            )
-        )
-
         expectSearchContacts(
             expectedUserId = UserIdTestData.userId,
             expectedSearchTerm = expectedSearchTerm,
@@ -125,31 +147,7 @@ class ContactSearchViewModelTest {
             returnEmpty = true
         )
 
-        val expectedContactSearchUiModels = listOf(
-            ContactSearchUiModel.Contact(
-                expectedContacts[0].id,
-                expectedContacts[0].name,
-                expectedContacts[0].contactEmails.first().email,
-                "S"
-            ),
-            ContactSearchUiModel.Contact(
-                expectedContacts[1].id,
-                expectedContacts[1].name,
-                expectedContacts[1].contactEmails.first().email,
-                "F"
-            )
-        )
-
         expectContactSearchUiModelMapper(expectedContacts, expectedContactSearchUiModels)
-
-        val expectedContactGroupsSearchUiModels = listOf(
-            ContactSearchUiModel.ContactGroup(
-                expectedContactGroups[0].labelId,
-                expectedContactGroups[0].name,
-                Color.Red,
-                emailCount = 1
-            )
-        )
 
         expectContactGroupsSearchUiModelMapper(expectedContactGroups, expectedContactGroupsSearchUiModels)
 
@@ -164,6 +162,39 @@ class ContactSearchViewModelTest {
             assertTrue(actual.uiModels!!.contains(expectedContactSearchUiModels[0]))
             assertTrue(actual.uiModels!!.contains(expectedContactSearchUiModels[1]))
             assertTrue(actual.uiModels!!.contains(expectedContactGroupsSearchUiModels[0]))
+        }
+    }
+
+    @Test
+    fun `handles OnSearchValueCleared`() = runTest {
+        // Given
+        expectSearchContacts(
+            expectedUserId = UserIdTestData.userId,
+            expectedSearchTerm = expectedSearchTerm,
+            expectedContacts = expectedContacts
+        )
+
+        expectSearchContactGroups(
+            expectedUserId = UserIdTestData.userId,
+            expectedSearchTerm = expectedSearchTerm,
+            expectedContactGroups = expectedContactGroups,
+            returnEmpty = true
+        )
+
+        expectContactSearchUiModelMapper(expectedContacts, expectedContactSearchUiModels)
+
+        expectContactGroupsSearchUiModelMapper(expectedContactGroups, expectedContactGroupsSearchUiModels)
+
+        contactSearchViewModel.submit(ContactSearchViewAction.OnSearchValueChanged(expectedSearchTerm))
+
+        contactSearchViewModel.submit(ContactSearchViewAction.OnSearchValueCleared)
+
+        // When
+        contactSearchViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            assertNull(actual.uiModels)
         }
     }
 

@@ -60,6 +60,7 @@ class ContactSearchViewModel @Inject constructor(
             actionMutex.withLock {
                 when (action) {
                     is ContactSearchViewAction.OnSearchValueChanged -> handleOnSearchValueChanged(action)
+                    is ContactSearchViewAction.OnSearchValueCleared -> handleOnSearchValueCleared()
                 }
             }
         }
@@ -98,6 +99,12 @@ class ContactSearchViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    private fun handleOnSearchValueCleared() {
+        emitNewStateFor(
+            ContactSearchEvent.ContactsCleared
+        )
     }
 
     private suspend fun primaryUserId() = primaryUserId.first()

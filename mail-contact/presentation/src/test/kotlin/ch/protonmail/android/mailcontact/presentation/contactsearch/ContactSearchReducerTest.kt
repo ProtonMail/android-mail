@@ -87,6 +87,11 @@ internal class ContactSearchReducerTest(
                     contacts = searchResults
                 ),
                 expectedState = someResultsState
+            ),
+            TestInput(
+                currentState = emptyState,
+                event = ContactSearchEvent.ContactsCleared,
+                expectedState = emptyState
             )
         )
 
@@ -104,6 +109,11 @@ internal class ContactSearchReducerTest(
                     contacts = searchResults
                 ),
                 expectedState = someResultsState
+            ),
+            TestInput(
+                currentState = noResultsState,
+                event = ContactSearchEvent.ContactsCleared,
+                expectedState = emptyState
             )
         )
 
@@ -123,6 +133,11 @@ internal class ContactSearchReducerTest(
                 expectedState = someResultsState.copy(
                     uiModels = searchResults.take(1)
                 )
+            ),
+            TestInput(
+                currentState = someResultsState,
+                event = ContactSearchEvent.ContactsCleared,
+                expectedState = emptyState
             )
         )
 
