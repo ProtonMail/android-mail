@@ -75,8 +75,9 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         val dimensions = buildTelemetryDimensions(user, event.payload).getOrElse { raise(CreateTelemetryEventError) }
 
         when (event) {
-            is Upgrade.PurchaseCompleted -> UpsellingTelemetryEvent.PurchaseCompleted(dimensions)
             is Upgrade.UpgradeAttempt -> UpsellingTelemetryEvent.UpgradeAttempt(dimensions)
+            is Upgrade.UpgradeCancelled -> UpsellingTelemetryEvent.UpgradeCancelled(dimensions)
+            is Upgrade.PurchaseCompleted -> UpsellingTelemetryEvent.PurchaseCompleted(dimensions)
         }.toTelemetryEvent()
     }
 

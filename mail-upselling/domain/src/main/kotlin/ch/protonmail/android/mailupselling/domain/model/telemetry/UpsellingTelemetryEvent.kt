@@ -33,6 +33,10 @@ sealed class UpsellingTelemetryEvent(
         override val dimensions: UpsellingTelemetryEventDimensions
     ) : UpsellingTelemetryEvent(name = "upgrade_attempt", dimensions)
 
+    data class UpgradeCancelled(
+        override val dimensions: UpsellingTelemetryEventDimensions
+    ) : UpsellingTelemetryEvent(name = "upgrade_cancelled_by_user", dimensions)
+
     data class PurchaseCompleted(
         override val dimensions: UpsellingTelemetryEventDimensions
     ) : UpsellingTelemetryEvent(name = "upgrade_success", dimensions)
