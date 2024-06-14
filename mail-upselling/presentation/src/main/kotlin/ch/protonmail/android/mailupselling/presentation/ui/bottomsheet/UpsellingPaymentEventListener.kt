@@ -46,7 +46,8 @@ internal class UpsellingPaymentEventListener(
             ProtonPaymentEvent.Error.PurchaseNotFound,
             ProtonPaymentEvent.Error.UnrecoverableBillingError,
             ProtonPaymentEvent.Error.UnsupportedPaymentProvider -> {
-                Timber.w("Error while performing 1 click upselling flow - ${event::class.java}")
+                logEvent("Error while performing 1 click upselling flow - ${event::class.java}")
+
                 actions.onError(context.getString(R.string.upselling_snackbar_upgrade_error_generic))
                 actions.onDismiss()
             }
@@ -59,7 +60,8 @@ internal class UpsellingPaymentEventListener(
 
             is ProtonPaymentEvent.Error.GiapUnredeemed -> {
                 actions.onDismiss()
-                Timber.w("GiapUnredeemed received while performing 1 click upselling flow.")
+                logEvent("GiapUnredeemed received while performing 1 click upselling flow.")
+
                 val intent = StartUnredeemedPurchase.createIntent(context, Unit).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
@@ -68,6 +70,8 @@ internal class UpsellingPaymentEventListener(
             }
 
             ProtonPaymentEvent.Error.RecoverableBillingError -> {
+                logEvent("RecoverableBillingEvent received while performing 1 click upselling flow.")
+
                 Toast.makeText(
                     context,
                     context.getString(R.string.upselling_snackbar_upgrade_error_recoverable),
@@ -76,7 +80,7 @@ internal class UpsellingPaymentEventListener(
             }
 
             is ProtonPaymentEvent.StartRegularBillingFlow -> {
-                Timber.w("Starting regular flow while performing 1 click upselling flow.")
+                logEvent("Starting regular flow while performing 1 click upselling flow.")
                 // Unsupported from 1 click bottom sheet, redirecting to Subscription page.
                 actions.onDismiss()
 
@@ -88,8 +92,14 @@ internal class UpsellingPaymentEventListener(
                 actions.onPlanSelected(telemetryPayload)
             }
 
-            ProtonPaymentEvent.Error.UserCancelled -> Unit
+            ProtonPaymentEvent.Error.UserCancelled -> {
+                actions.onUpgradeCancelled(telemetryPayload)
+            }
         }
+    }
+
+    private fun logEvent(message: String) {
+        Timber.tag("UpsellingPaymentEventListener").w(message)
     }
 }
 
