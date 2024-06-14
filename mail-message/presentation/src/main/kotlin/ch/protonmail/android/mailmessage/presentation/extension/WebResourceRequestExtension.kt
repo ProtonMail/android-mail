@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.presentation.extension
 
+import java.io.IOException
 import java.net.URL
 import java.util.regex.Pattern
 import android.webkit.WebResourceRequest
@@ -36,7 +37,6 @@ fun WebResourceRequest.isEmbeddedImage() = url.scheme?.let {
     Pattern.compile("cid").matcher(it).matches()
 } ?: false
 
-@Suppress("TooGenericExceptionCaught")
 fun WebResourceRequest.upgradeToSecuredWebResourceResponse(): WebResourceResponse {
     return try {
         val httpsUrl = URL(this.url.toString().replaceFirst("http://", "https://"))
@@ -46,7 +46,7 @@ fun WebResourceRequest.upgradeToSecuredWebResourceResponse(): WebResourceRespons
             connection.contentEncoding,
             connection.getInputStream()
         )
-    } catch (e: Exception) {
+    } catch (e: IOException) {
         Timber.d("Error in upgradeToSecuredWebResourceResponse", e)
         WebResourceResponse(
             "",
