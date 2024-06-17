@@ -31,7 +31,7 @@
   <string name="upselling_unlimited_description_override">Ваш платная подписка \"все в одном\"</string>
   <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
   <string name="upselling_unlimited_feature_mail_calendar">Все платные функции Mail и Calendar</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (больше 90 стран)</string>
   <string name="upselling_unlimited_feature_drive">Безопасное облачное хранилище</string>
   <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->

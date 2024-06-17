@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Več</string>
-  <string name="drawer_title_contacts">Stiki</string>
-  <string name="drawer_title_subscription">Naročnina</string>
   <string name="mailbox_toolbar_compose_button_content_description">Sestavi novo sporočilo</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Zapusti način izbire</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meni</string>

@@ -69,4 +69,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail potrebuje dovoljenje za dostop do stikov, da lahko predlaga prejemnike.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">V redu</string>
   <string name="device_contacts_permission_dialog_action_button">Zahtevaj dovoljenje</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Deny</string>
 </resources>

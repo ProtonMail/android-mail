@@ -54,7 +54,7 @@
   <string name="color_picker_title">Колер</string>
   <string name="save_label_error">Памылка захавання меткі. Паспрабуйце пазней</string>
   <string name="save_folder_error">Памылка захавання папкі. Паспрабуйце яшчэ раз пазней</string>
-  <string name="label_already_exists">Метка або папка з гэтай назвай ужо існуе</string>
+  <string name="label_already_exists">Метка або папка з такой назвай ужо існуе</string>
   <string name="label_limit_reached_error">Дасягнута абмежаванне па колькасці метак</string>
   <string name="folder_limit_reached_error">Дасягнута абмежаванне па колькасці папак</string>
   <string name="delete_label_error">Памылка пры выдаленні меткі</string>

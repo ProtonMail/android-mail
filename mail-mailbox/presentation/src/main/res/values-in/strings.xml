@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Lainnya</string>
-  <string name="drawer_title_contacts">Kontak</string>
-  <string name="drawer_title_subscription">Langganan</string>
   <string name="mailbox_toolbar_compose_button_content_description">Tulis pesan baru</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Keluar mode pemilihan</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>

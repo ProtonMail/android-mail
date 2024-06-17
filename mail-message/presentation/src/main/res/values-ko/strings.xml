@@ -66,4 +66,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail이 수신자를 제안하기 위해 연락처를 읽을 권한이 필요합니다.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">확인</string>
   <string name="device_contacts_permission_dialog_action_button">권한 요청</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">거절</string>
 </resources>

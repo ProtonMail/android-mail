@@ -69,4 +69,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail необходимо разрешение на чтение ваших контактов, чтобы предлагать адресатов.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">ОК</string>
   <string name="device_contacts_permission_dialog_action_button">Запросить разрешение</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Отказать</string>
 </resources>

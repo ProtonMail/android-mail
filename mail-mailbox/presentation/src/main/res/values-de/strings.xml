@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Mehr</string>
-  <string name="drawer_title_contacts">Kontakte</string>
-  <string name="drawer_title_subscription">Abonnement</string>
   <string name="mailbox_toolbar_compose_button_content_description">Neue Nachricht verfassen</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Auswahlmodus beenden</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menü</string>
@@ -63,8 +60,8 @@
     <item quantity="other">Möchtest du diese Unterhaltungen wirklich dauerhaft löschen?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
-    <item quantity="one">Möchtest du diese Nachricht wirklich löschen?</item>
-    <item quantity="other">Möchtest du diese Nachrichten wirklich löschen?</item>
+    <item quantity="one">Möchtest du diese Nachricht wirklich dauerhaft löschen?</item>
+    <item quantity="other">Möchtest du diese Nachrichten wirklich dauerhaft löschen?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Nachricht dauerhaft gelöscht</item>

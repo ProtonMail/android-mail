@@ -46,9 +46,9 @@
   <string name="error_move_to_trash_failed">No s\'ha pogut moure el missatge a la paperera. Proveu de nou.</string>
   <string name="message_moved_to_trash">El missatge s\'ha mogut a la paperera.</string>
   <string name="message_moved_to_archive">El missatge s\'ha mogut a l\'arxiu.</string>
-  <string name="error_move_to_archive_failed">No s\'ha pogut moure a l\'arxiu. Si us plau, torni-ho a provar.</string>
+  <string name="error_move_to_archive_failed">No s\'ha pogut moure a l\'arxiu. Proveu de nou.</string>
   <string name="message_moved_to_spam">S\'ha mogut el missatge al correu brossa.</string>
-  <string name="error_move_to_spam_failed">No s\'ha pogut moure a correu brossa. Si us plau, torni-ho a provar.</string>
+  <string name="error_move_to_spam_failed">No s\'ha pogut moure a correu brossa. Torneu-ho a provar.</string>
   <string name="message_moved_to_selected_destination">S\'ha mogut el missatge a %1$s</string>
   <string name="error_move_message_failed">No s\'ha pogut moure el missatge. Proveu de nou.</string>
   <string name="conversation_moved_to_trash">La conversa s\'ha mogut a la paperera.</string>

@@ -145,8 +145,8 @@
   <plurals name="contact_search_contact_group_counter">
     <item quantity="one">%d учасник</item>
     <item quantity="few">%d учасники</item>
-    <item quantity="many">%d учасники</item>
-    <item quantity="other">%d учасники</item>
+    <item quantity="many">%d учасників</item>
+    <item quantity="other">%d учасників</item>
   </plurals>
   <string name="contact_search_placeholder">Search for contact or group</string>
   <string name="contact_search_content_description">Search for contact or group</string>

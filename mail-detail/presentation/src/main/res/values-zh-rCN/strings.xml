@@ -28,11 +28,11 @@
   <string name="quick_reply_all_button_content_description">回复所有人</string>
   <string name="more_button_content_description">更多</string>
   <string name="subject">Subject:</string>
-  <string name="from">From:</string>
+  <string name="from">发件人：</string>
   <string name="to">收件人：</string>
   <string name="cc">抄送：</string>
   <string name="bcc">密送：</string>
-  <string name="date">Date:</string>
+  <string name="date">日期：</string>
   <plurals name="attachment">
     <item quantity="other">%d 个附件</item>
   </plurals>

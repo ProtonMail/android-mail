@@ -30,7 +30,7 @@
   <string name="composer_error_invalid_sender">Indirizzo mittente non valido</string>
   <string name="change_sender_button_content_description">Cambia il mittente</string>
   <string name="composer_change_sender_paid_feature">Effettua l\'upgrade per modificare l\'indirizzo mittente</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Impossibile modificare il mittente in quanto il caricamento dell\'abbonamento dell\'utente non è riuscito. Riprova.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Impossibile modificare il mittente poiché il caricamento dell\'abbonamento dell\'utente non è riuscito. Riprova.</string>
   <string name="composer_error_store_draft_sender_address">Salvataggio dell\'indirizzo mittente di questa bozza non riuscito</string>
   <string name="composer_error_store_draft_body">Salvataggio del contenuto di questa bozza non riuscito</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>

@@ -69,4 +69,5 @@
   <string name="device_contacts_permission_dialog_message">Služba Proton Mail potrebuje oprávnenie na čítanie vašich kontaktov, aby mohla navrhnúť príjemcov.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Vyžiadanie povolenia</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Zamietnuť</string>
 </resources>

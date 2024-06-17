@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="drawer_title_more">Viac</string>
-  <string name="drawer_title_contacts">Kontakty</string>
-  <string name="drawer_title_subscription">Predplatné</string>
   <string name="mailbox_toolbar_compose_button_content_description">Napísať novú správu</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ukončiť režim výberu</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>

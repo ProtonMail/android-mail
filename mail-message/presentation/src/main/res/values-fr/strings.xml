@@ -67,4 +67,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail a besoin d\'une autorisation pour la lecture de vos contacts afin de suggérer des destinataires.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Demander l\'autorisation</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Refuser</string>
 </resources>

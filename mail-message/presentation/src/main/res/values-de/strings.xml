@@ -67,4 +67,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail benötigt die Erlaubnis, deine Kontakte zu sehen, um Empfänger vorschlagen zu können.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Erlaubnis anfordern</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Ablehnen</string>
 </resources>

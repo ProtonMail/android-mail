@@ -69,7 +69,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Nessun indirizzo inattivo</string>
   <string name="mail_settings_default_email_address_error_loading">Caricamento delle impostazioni non riuscito</string>
   <string name="mail_settings_default_email_address_error_update">Aggiornamento delle impostazioni non riuscito</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Effettua l\'upgrade a un piano a pagamento per impostare questo indirizzo come predefinito</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Effettua l\'upgrade per impostare questo indirizzo come predefinito</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Nome visualizzato e firma</string>
   <string name="mail_settings_identity_save_button">Salva</string>

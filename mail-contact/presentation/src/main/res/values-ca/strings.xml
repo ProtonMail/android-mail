@@ -144,6 +144,6 @@
   </plurals>
   <string name="contact_search_placeholder">Cerca per contacte o grup</string>
   <string name="contact_search_content_description">Cerca per contacte o grup</string>
-  <string name="contact_search_arrow_back_content_description">Torna als contactes</string>
+  <string name="contact_search_arrow_back_content_description">Tornar als contactes</string>
   <string name="contact_search_no_results">No s\'han trobat resultats.</string>
 </resources>

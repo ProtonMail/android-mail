@@ -37,7 +37,7 @@
   <string name="action_unstar_description">取消星號</string>
   <string name="action_label_description">套用標籤</string>
   <string name="action_move_description">移至</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">移至垃圾桶</string>
   <string name="action_delete_description">刪除</string>
   <string name="action_archive_description">封存</string>
   <string name="action_spam_description">移動至垃圾郵件</string>

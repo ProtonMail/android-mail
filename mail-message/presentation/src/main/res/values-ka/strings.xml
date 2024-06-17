@@ -67,4 +67,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">დიახ</string>
   <string name="device_contacts_permission_dialog_action_button">წვდომის მოთხოვნა</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">უარყოფა</string>
 </resources>

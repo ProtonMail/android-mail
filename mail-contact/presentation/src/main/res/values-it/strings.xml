@@ -112,8 +112,7 @@
   <string name="contact_group_details_deletion_success">Gruppo eliminato</string>
   <string name="contact_group_details_deletion_error">Eliminazione del gruppo non riuscita</string>
   <string name="contact_group_delete_dialog_title">Elimina il gruppo %s</string>
-  <string name="contact_group_delete_dialog_message">Sei sicuro di voler eliminare questo gruppo?
-I contatti non verranno eliminati.</string>
+  <string name="contact_group_delete_dialog_message">Sei sicuro di voler eliminare questo gruppo? I contatti non verranno eliminati.</string>
   <string name="contact_group_delete_dialog_confirm">Elimina</string>
   <string name="contact_group_delete_dialog_dismiss">Annulla</string>
   <string name="contact_group_delete_button_text">Elimina il gruppo</string>

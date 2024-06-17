@@ -69,4 +69,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail неабходны дазвол на чытанне вашых кантактаў, каб прапаноўваць атрымальнікаў.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">Добра</string>
   <string name="device_contacts_permission_dialog_action_button">Запытаць дазвол</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Забараніць</string>
 </resources>

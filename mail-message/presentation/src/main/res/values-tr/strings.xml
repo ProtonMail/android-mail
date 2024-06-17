@@ -67,4 +67,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail alıcıları önermek için kişilerinizi okuma iznine gerek duyuyor.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">Tamam</string>
   <string name="device_contacts_permission_dialog_action_button">İzin iste</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Reddet</string>
 </resources>
