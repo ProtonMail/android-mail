@@ -67,7 +67,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.R
-import ch.protonmail.android.mailmessage.presentation.extension.upgradeToSecuredWebResourceResponse
+import ch.protonmail.android.mailmessage.presentation.extension.getSecuredWebResourceResponse
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteUnsecuredContent
@@ -160,10 +160,10 @@ fun MessageBodyWebView(
                     actions.loadEmbeddedImage(messageId, "<${request.url.schemeSpecificPart}>")?.let {
                         WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data))
                     }
+                } else if (request?.isRemoteUnsecuredContent() == true) {
+                    request.getSecuredWebResourceResponse()
                 } else {
-                    if (request?.isRemoteUnsecuredContent() == true) {
-                        request.upgradeToSecuredWebResourceResponse()
-                    } else super.shouldInterceptRequest(view, request)
+                    super.shouldInterceptRequest(view, request)
                 }
             }
 

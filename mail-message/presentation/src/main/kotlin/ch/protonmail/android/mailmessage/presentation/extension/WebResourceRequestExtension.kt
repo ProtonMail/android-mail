@@ -37,7 +37,7 @@ fun WebResourceRequest.isEmbeddedImage() = url.scheme?.let {
     Pattern.compile("cid").matcher(it).matches()
 } ?: false
 
-fun WebResourceRequest.upgradeToSecuredWebResourceResponse(): WebResourceResponse {
+fun WebResourceRequest.getSecuredWebResourceResponse(): WebResourceResponse {
     return try {
         val httpsUrl = URL(this.url.toString().replaceFirst("http://", "https://"))
         val connection = httpsUrl.openConnection()

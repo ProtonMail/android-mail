@@ -37,7 +37,7 @@ import ch.protonmail.android.mailmessage.presentation.extension.getTotalAttachme
 import ch.protonmail.android.mailmessage.presentation.extension.isEmbeddedImage
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteContent
 import ch.protonmail.android.mailmessage.presentation.extension.isRemoteUnsecuredContent
-import ch.protonmail.android.mailmessage.presentation.extension.upgradeToSecuredWebResourceResponse
+import ch.protonmail.android.mailmessage.presentation.extension.getSecuredWebResourceResponse
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import org.jsoup.Jsoup
@@ -157,10 +157,10 @@ class PrintMessage @Inject constructor() {
                 loadEmbeddedImage(messageBodyUiModel.messageId, "<${request.url.schemeSpecificPart}>")?.let {
                     WebResourceResponse(it.mimeType, "", ByteArrayInputStream(it.data))
                 }
+            } else if (request?.isRemoteUnsecuredContent() == true) {
+                request.getSecuredWebResourceResponse()
             } else {
-                if (request?.isRemoteUnsecuredContent() == true) {
-                    request.upgradeToSecuredWebResourceResponse()
-                } else super.shouldInterceptRequest(view, request)
+                super.shouldInterceptRequest(view, request)
             }
         }
     }
