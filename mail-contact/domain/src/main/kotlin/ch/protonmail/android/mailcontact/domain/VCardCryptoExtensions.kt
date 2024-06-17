@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.domain
 
 import ezvcard.Ezvcard
 import ezvcard.VCard
+import ezvcard.property.Gender
 import me.proton.core.contact.domain.decryptContactCard
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.entity.DecryptedVCard
@@ -61,8 +62,17 @@ private fun KeyHolderContext.decryptContactCardEncryptedTrailingSpacesFallback(
         verifyTextWithTrailingSpacesFallback(decryptedText, signature) -> VerificationStatus.Success
         else -> VerificationStatus.Failure
     }
+
+    val parsedVCard = Ezvcard.parse(decryptedText).first()
+
     return DecryptedVCard(
-        card = Ezvcard.parse(decryptedText).first(),
+        card = parsedVCard.also {
+            // hack for MAILANDR-1819
+            val extractedGenderValue = decryptedText.extractProperty("GENDER")
+            if (extractedGenderValue != null) {
+                it.gender = Gender(extractedGenderValue)
+            }
+        },
         status = status
     )
 }
