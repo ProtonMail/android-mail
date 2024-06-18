@@ -564,7 +564,7 @@ private fun Recipients(
             }
         }
         recipients.forEachIndexed { index, participant ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Column {
                 if (participant.participantName.isNotEmpty()) {
                     ParticipantText(
                         modifier = Modifier.testTag(MessageDetailHeaderTestTags.ParticipantName),
@@ -582,11 +582,12 @@ private fun Recipients(
                     text = participant.participantAddress,
                     textColor = ProtonTheme.colors.textAccent,
                     clickable = true,
+                    shouldBreak = true,
                     onClick = { onRecipientClick(participant) }
                 )
             }
             if (index != recipients.size - 1) {
-                Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
+                Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
             }
         }
     }
@@ -603,6 +604,7 @@ private fun ParticipantText(
     text: String,
     textColor: Color = ProtonTheme.colors.textNorm,
     clickable: Boolean = true,
+    shouldBreak: Boolean = false,
     onClick: () -> Unit
 ) {
 
@@ -611,7 +613,7 @@ private fun ParticipantText(
         modifier = modifier
             .thenIf(clickable) { clickable(onClickLabel = text, onClick = onClick) },
         color = textColor,
-        maxLines = 1,
+        maxLines = if (shouldBreak) Int.MAX_VALUE else 1,
         overflow = TextOverflow.Ellipsis,
         style = ProtonTheme.typography.captionNorm
     )
