@@ -41,6 +41,7 @@ import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import me.proton.core.user.domain.entity.User
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -55,6 +56,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     private val userHasPendingPurchases = mockk<UserHasPendingPurchases>()
     private val canUpgradeFromMobile = mockk<CanUpgradeFromMobile>()
     private val observeUpsellingOneClickOnCooldown = mockk<ObserveUpsellingOneClickOnCooldown>()
+    private val alwaysShowOneClickUpselling = mockk<Provider<Boolean>>()
     private val sut: ObserveMailboxOneClickUpsellingVisibility
         get() = ObserveMailboxOneClickUpsellingVisibility(
             observePrimaryUser,
@@ -63,7 +65,8 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             observeUpsellingOneClickOnCooldown,
             canUpgradeFromMobile,
             userHasAvailablePlans,
-            userHasPendingPurchases
+            userHasPendingPurchases,
+            alwaysShowOneClickUpselling.get()
         )
 
 
@@ -83,6 +86,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(true)
 
@@ -99,6 +103,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(false)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(true)
 
@@ -115,6 +120,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(null)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(true)
 
@@ -131,6 +137,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(null)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(false)
 
@@ -147,6 +154,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
@@ -164,6 +172,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
@@ -182,6 +191,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
@@ -195,13 +205,35 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     }
 
     @Test
-    fun `should return false if visibility logic is on cooldown`() = runTest {
+    fun `should return false if visibility logic is on cooldown and FF is force enabled to always show`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOnCooldown()
+        expectOneClickButtonAlwaysShown(true)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+
+        // When + Then
+        sut().test {
+            assertEquals(true, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return true if visibility logic is on cooldown and FF not is force enabled to always show`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectOneClickUpsellingEnabledValue(true)
+        expectLastSeenThresholdOnCooldown()
+        expectOneClickButtonAlwaysShown(false)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
         // When + Then
         sut().test {
@@ -211,11 +243,12 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
     }
 
     @Test
-    fun `should return true if visibility logic is off cooldown`() = runTest {
+    fun `should return true if visibility logic is not cooldown and FF is force enabled to always show`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectOneClickUpsellingEnabledValue(true)
         expectLastSeenThresholdOffCooldown()
+        expectOneClickButtonAlwaysShown(true)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
@@ -227,6 +260,26 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             awaitComplete()
         }
     }
+
+    @Test
+    fun `should return true if visibility logic is not on cooldown and FF is not force enabled to always show`() =
+        runTest {
+            // Given
+            expectedUser(UserSample.Primary)
+            expectOneClickUpsellingEnabledValue(true)
+            expectLastSeenThresholdOffCooldown()
+            expectOneClickButtonAlwaysShown(false)
+            expectPurchases(listOf(mockk<Purchase>()))
+            expectCanUpgradeFromMobile(true)
+            expectPendingPurchasesValue(UserSample.Primary.userId, false)
+            expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+
+            // When + Then
+            sut().test {
+                assertEquals(true, awaitItem())
+                awaitComplete()
+            }
+        }
 
     private fun expectedUser(user: User?) {
         every { observePrimaryUser() } returns flowOf(user)
@@ -267,5 +320,9 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
 
     private fun expectCanUpgradeFromMobile(value: Boolean) {
         coEvery { canUpgradeFromMobile() } returns value
+    }
+
+    private fun expectOneClickButtonAlwaysShown(value: Boolean) {
+        every { alwaysShowOneClickUpselling.get() } returns value
     }
 }

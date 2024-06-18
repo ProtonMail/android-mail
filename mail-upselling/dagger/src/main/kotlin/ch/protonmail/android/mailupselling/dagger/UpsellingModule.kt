@@ -22,10 +22,12 @@ import android.content.Context
 import ch.protonmail.android.mailupselling.data.UpsellingDataStoreProvider
 import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
+import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.AlwaysShowOneClickUpselling
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsOneClickUpsellingTelemetryEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupPaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
@@ -66,6 +68,10 @@ object UpsellingModule {
     @Provides
     @OneClickUpsellingTelemetryEnabled
     fun provideOneClickUpsellingTelemetryEnabled(isEnabled: IsOneClickUpsellingTelemetryEnabled) = isEnabled(null)
+
+    @Provides
+    @OneClickUpsellingAlwaysShown
+    fun provideOneClickUpsellingAlwaysShown(isEnabled: AlwaysShowOneClickUpselling) = isEnabled(null)
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null

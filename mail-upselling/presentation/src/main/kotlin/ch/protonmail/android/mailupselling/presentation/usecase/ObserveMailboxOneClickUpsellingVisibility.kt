@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
@@ -36,7 +37,8 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
     private val observeUpsellingOneClickOnCooldown: ObserveUpsellingOneClickOnCooldown,
     private val canUpgradeFromMobile: CanUpgradeFromMobile,
     private val userHasAvailablePlans: UserHasAvailablePlans,
-    private val userHasPendingPurchases: UserHasPendingPurchases
+    private val userHasPendingPurchases: UserHasPendingPurchases,
+    @OneClickUpsellingAlwaysShown private val alwaysShowOneClickUpselling: Boolean
 ) {
 
     operator fun invoke(): Flow<Boolean> = combine(
@@ -48,7 +50,7 @@ class ObserveMailboxOneClickUpsellingVisibility @Inject constructor(
         if (user == null) return@combine false
         if (!canUpgradeFromMobile()) return@combine false
         if (isOneClickUpsellingEnabled == null || !isOneClickUpsellingEnabled.value) return@combine false
-        if (isOneClickOnCooldown) return@combine false
+        if (isOneClickOnCooldown && !alwaysShowOneClickUpselling) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
         userHasAvailablePlans(user.userId)
