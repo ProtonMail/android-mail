@@ -49,6 +49,7 @@ internal class UpsellingPaymentEventListener(
                 logEvent("Error while performing 1 click upselling flow - ${event::class.java}")
 
                 actions.onError(context.getString(R.string.upselling_snackbar_upgrade_error_generic))
+                actions.onUpgradeErrored(telemetryPayload)
                 actions.onDismiss()
             }
 

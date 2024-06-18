@@ -33,6 +33,7 @@ fun UpsellingBottomSheet(modifier: Modifier = Modifier, bottomSheetActions: Upse
         onDisplayed = { viewModel.updateLastSeenTimestamp() },
         onPlanSelected = { viewModel.trackUpgradeAttempt(it) },
         onUpgradeCancelled = { viewModel.trackUpgradeCancelled(it) },
+        onUpgradeErrored = { viewModel.trackUpgradeErrored(it) },
         onSuccess = { viewModel.trackPurchaseCompleted(it) }
     )
 
@@ -49,6 +50,7 @@ object UpsellingBottomSheet {
         val onError: (String) -> Unit,
         val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         val onUpgrade: (String) -> Unit,
         val onDismiss: () -> Unit
@@ -62,6 +64,7 @@ object UpsellingBottomSheet {
                 onError = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},
+                onUpgradeErrored = {},
                 onSuccess = {},
                 onDismiss = {}
             )

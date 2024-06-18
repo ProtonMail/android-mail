@@ -156,6 +156,28 @@ internal class UpsellingTelemetryRepositoryImplTest {
     }
 
     @Test
+    fun `should track the upgrade errored event`() = runTest {
+        // Given
+        expectValidUserData()
+        expectTelemetryEnabled()
+
+        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
+        val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
+        val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensions).toTelemetryEvent()
+
+        // When
+        repository.trackEvent(eventType)
+
+        // Then
+        coVerifySequence {
+            getPrimaryUser()
+            getAccountAgeInDays(user)
+            getSubscriptionName(user.userId)
+            telemetryManager.enqueue(user.userId, expectedEvent, TelemetryPriority.Immediate)
+        }
+    }
+
+    @Test
     fun `should track the purchase completed event`() = runTest {
         // Given
         expectValidUserData()

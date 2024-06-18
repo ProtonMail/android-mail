@@ -89,6 +89,7 @@ private fun UpsellingItem() {
                 onDismiss = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},
+                onUpgradeErrored = {},
                 onPlanSelected = {},
                 onError = {},
                 onSuccess = {}

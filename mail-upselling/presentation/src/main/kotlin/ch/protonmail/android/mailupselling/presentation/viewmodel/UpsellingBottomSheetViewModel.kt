@@ -83,6 +83,10 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
         upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeCancelled(payload))
     }
 
+    fun trackUpgradeErrored(payload: UpsellingTelemetryTargetPlanPayload) {
+        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeErrored(payload))
+    }
+
     fun trackPurchaseCompleted(payload: UpsellingTelemetryTargetPlanPayload) {
         upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(payload))
     }

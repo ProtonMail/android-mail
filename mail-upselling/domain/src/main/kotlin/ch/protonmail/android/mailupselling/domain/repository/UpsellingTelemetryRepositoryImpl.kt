@@ -77,6 +77,7 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         when (event) {
             is Upgrade.UpgradeAttempt -> UpsellingTelemetryEvent.UpgradeAttempt(dimensions)
             is Upgrade.UpgradeCancelled -> UpsellingTelemetryEvent.UpgradeCancelled(dimensions)
+            is Upgrade.UpgradeErrored -> UpsellingTelemetryEvent.UpgradeErrored(dimensions)
             is Upgrade.PurchaseCompleted -> UpsellingTelemetryEvent.PurchaseCompleted(dimensions)
         }.toTelemetryEvent()
     }

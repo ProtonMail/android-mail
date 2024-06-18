@@ -23,6 +23,7 @@ sealed interface UpsellingTelemetryEventType {
     sealed class Upgrade(open val payload: UpsellingTelemetryTargetPlanPayload) : UpsellingTelemetryEventType {
         data class UpgradeAttempt(override val payload: UpsellingTelemetryTargetPlanPayload) : Upgrade(payload)
         data class UpgradeCancelled(override val payload: UpsellingTelemetryTargetPlanPayload) : Upgrade(payload)
+        data class UpgradeErrored(override val payload: UpsellingTelemetryTargetPlanPayload) : Upgrade(payload)
         data class PurchaseCompleted(override val payload: UpsellingTelemetryTargetPlanPayload) : Upgrade(payload)
     }
 
