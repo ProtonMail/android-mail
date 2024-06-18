@@ -78,6 +78,8 @@ import me.proton.core.key.data.db.KeySaltDatabase
 import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.key.data.entity.KeySaltEntity
 import me.proton.core.key.data.entity.PublicAddressEntity
+import me.proton.core.key.data.entity.PublicAddressInfoEntity
+import me.proton.core.key.data.entity.PublicAddressKeyDataEntity
 import me.proton.core.key.data.entity.PublicAddressKeyEntity
 import me.proton.core.keytransparency.data.local.KeyTransparencyDatabase
 import me.proton.core.keytransparency.data.local.entity.AddressChangeEntity
@@ -134,6 +136,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         KeySaltEntity::class,
         PublicAddressEntity::class,
         PublicAddressKeyEntity::class,
+        PublicAddressInfoEntity::class,
+        PublicAddressKeyDataEntity::class,
         // human-verification
         HumanVerificationEntity::class,
         // mail-settings
@@ -249,7 +253,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 34
+        const val version = 35
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -284,7 +288,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_30_31,
             AppDatabaseMigrations.MIGRATION_31_32,
             AppDatabaseMigrations.MIGRATION_32_33,
-            AppDatabaseMigrations.MIGRATION_33_34
+            AppDatabaseMigrations.MIGRATION_33_34,
+            AppDatabaseMigrations.MIGRATION_34_35
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)

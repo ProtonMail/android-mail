@@ -259,4 +259,13 @@ object AppDatabaseMigrations {
             UserKeyDatabase.MIGRATION_1.migrate(db)
         }
     }
+
+    val MIGRATION_34_35 = object : Migration(34, 35) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            AccountDatabase.MIGRATION_8.migrate(db)
+            UserSettingsDatabase.MIGRATION_7.migrate(db)
+            PublicAddressDatabase.MIGRATION_3.migrate(db)
+            EventMetadataDatabase.MIGRATION_3.migrate(db)
+        }
+    }
 }
