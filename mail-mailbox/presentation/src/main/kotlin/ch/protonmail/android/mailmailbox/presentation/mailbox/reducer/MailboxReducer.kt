@@ -171,13 +171,7 @@ class MailboxReducer @Inject constructor(
                     when (operation.location) {
                         SystemLabelId.Trash.labelId -> DeleteDialogState.Shown(
                             title = TextUiModel(R.string.mailbox_action_clear_trash_dialog_title),
-                            message = when (operation.viewMode) {
-                                ViewMode.ConversationGrouping ->
-                                    TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_conversation)
-
-                                ViewMode.NoConversationGrouping ->
-                                    TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_message)
-                            }
+                            message = TextUiModel(R.string.mailbox_action_clear_trash_dialog_body_message)
                         )
 
                         SystemLabelId.Spam.labelId -> DeleteDialogState.Shown(
