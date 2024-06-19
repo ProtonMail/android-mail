@@ -94,9 +94,7 @@ class ContactSearchViewModel @Inject constructor(
             }.launchIn(viewModelScope)
         } else {
             emitNewStateFor(
-                ContactSearchEvent.ContactsLoaded(
-                    contacts = emptyList()
-                )
+                ContactSearchEvent.ContactsCleared
             )
         }
     }

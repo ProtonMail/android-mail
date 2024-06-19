@@ -78,9 +78,7 @@ fun SearchView(
             value = searchText,
             onValueChange = {
                 searchText = it
-                if (it.text.isNotEmpty()) {
-                    actions.onSearchQueryChanged(it.text)
-                }
+                actions.onSearchQueryChanged(it.text)
             },
             modifier = modifier
                 .testTag(SearchViewTestTags.SearchTextField)
