@@ -19,10 +19,12 @@
 package ch.protonmail.android.mailcommon.domain.mapper
 
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.AttachmentUploadMessageAlreadySent
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Banned
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Base64Format
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.Companion
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.InsufficientScope
+import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageAlreadySent
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageSearchQuerySyntax
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageUpdateDraftNotDraft
 import ch.protonmail.android.mailcommon.domain.model.ProtonError.MessageValidateKeyNotAssociated
@@ -39,6 +41,8 @@ fun Companion.fromProtonCode(code: Int?): ProtonError = when (code) {
     2030 -> UploadFailure
     2031 -> PayloadTooLarge
     2063 -> Base64Format
+    2500 -> MessageAlreadySent
+    11_109 -> AttachmentUploadMessageAlreadySent
     15_034 -> MessageUpdateDraftNotDraft
     15_213 -> MessageValidateKeyNotAssociated
     15_225 -> MessageSearchQuerySyntax
