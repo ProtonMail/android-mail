@@ -50,7 +50,7 @@
     <string name="mail_settings_account">Account</string>
     <!-- Account Settings items -->
     <string name="mail_settings_subscription">Subscription</string>
-    <string name="mail_settings_password_management">Password management</string>
+    <string name="mail_settings_password_management">Change password</string>
     <string name="mail_settings_recovery_email">Recovery email</string>
     <string name="mail_settings_mailbox_size">Mailbox size</string>
     <string name="mail_settings_addresses">Addresses</string>
