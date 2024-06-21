@@ -38,9 +38,8 @@ class ContactSearchUiModelMapper @Inject constructor(
                     ContactSearchUiModel.Contact(
                         id = contact.id,
                         name = contact.name,
-                        email = contact.contactEmails.firstOrNull()?.email,
+                        email = null,
                         initials = getInitials(contact.name)
-
                     )
                 )
             } else {

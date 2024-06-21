@@ -33,6 +33,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
+@Suppress("MaxLineLength")
 class SearchContactsTest {
 
     private val observeContacts = mockk<ObserveContacts> {
@@ -87,7 +88,7 @@ class SearchContactsTest {
     }
 
     @Test
-    fun `when there is contact matched only by ContactEmail, it is emitted with only matching ContactEmails`() =
+    fun `when there is contact matched only by ContactEmail, it is emitted with only matching ContactEmails if onlyMatchingContactEmails = true`() =
         runTest {
             // Given
             val query = "mail"
@@ -110,7 +111,7 @@ class SearchContactsTest {
             coEvery { observeContacts(UserIdTestData.userId) } returns flowOf(Either.Right(contacts))
 
             // When
-            searchContacts(UserIdTestData.userId, query).test {
+            searchContacts(UserIdTestData.userId, query, onlyMatchingContactEmails = true).test {
                 // Then
                 val actual = assertIs<Either.Right<List<Contact>>>(awaitItem())
                 assertTrue(actual.value.size == 1)
@@ -125,6 +126,54 @@ class SearchContactsTest {
                 assertEquals(
                     listOf(contact.contactEmails[1]), // return only 2nd ContactEmail
                     listOf(matchedContact.contactEmails.first())
+                )
+                awaitComplete()
+            }
+        }
+
+    @Test
+    fun `when there is contact matched only by ContactEmail, it is emitted with all ContactEmails if onlyMatchingContactEmails = false`() =
+        runTest {
+            // Given
+            val query = "mail"
+
+            val contact = ContactTestData.buildContactWith(
+                userId = UserIdTestData.userId,
+                name = "important contact display name",
+                contactEmails = listOf(
+                    ContactTestData.buildContactEmailWith(
+                        name = "name 1",
+                        address = "address1@proton.ch"
+                    ),
+                    ContactTestData.buildContactEmailWith(
+                        name = "name 2",
+                        address = "address2@protonmail.ch" // <-- match
+                    )
+                )
+            )
+            val contacts = ContactTestData.contacts + contact
+            coEvery { observeContacts(UserIdTestData.userId) } returns flowOf(Either.Right(contacts))
+
+            // When
+            searchContacts(UserIdTestData.userId, query, onlyMatchingContactEmails = false).test {
+                // Then
+                val actual = assertIs<Either.Right<List<Contact>>>(awaitItem())
+                assertTrue(actual.value.size == 1)
+
+                val matchedContact = actual.value.first()
+
+                assertEquals(contact.userId, matchedContact.userId)
+                assertEquals(contact.id, matchedContact.id)
+                assertEquals(contact.name, matchedContact.name)
+
+                assertTrue(matchedContact.contactEmails.size == 2)
+                assertEquals(
+                    listOf(contact.contactEmails[0]),
+                    listOf(matchedContact.contactEmails[0])
+                )
+                assertEquals(
+                    listOf(contact.contactEmails[1]),
+                    listOf(matchedContact.contactEmails[1])
                 )
                 awaitComplete()
             }

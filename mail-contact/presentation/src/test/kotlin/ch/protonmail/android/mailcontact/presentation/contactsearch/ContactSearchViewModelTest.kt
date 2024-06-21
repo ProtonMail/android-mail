@@ -204,7 +204,7 @@ class ContactSearchViewModelTest {
         expectedContacts: List<Contact>
     ): List<Contact> {
         coEvery {
-            searchContactsMock.invoke(expectedUserId, expectedSearchTerm)
+            searchContactsMock.invoke(expectedUserId, expectedSearchTerm, false)
         } returns flowOf(expectedContacts.right())
         return expectedContacts
     }

@@ -36,30 +36,42 @@ class SearchContacts @Inject constructor(
     private val observeContacts: ObserveContacts
 ) {
 
-    operator fun invoke(userId: UserId, query: String): Flow<Either<GetContactError, List<Contact>>> =
-        observeContacts(userId).distinctUntilChanged().transformLatest {
-            it.onLeft {
-                Timber.e("SearchContacts, error observing contacts: $it")
-                emit(GetContactError.left())
-            }.onRight { contacts ->
-                query.trim().takeIfNotBlank()?.run {
-                    val searchResult = search(contacts, query)
-                    emit(searchResult.right())
-                }
+    operator fun invoke(
+        userId: UserId,
+        query: String,
+        onlyMatchingContactEmails: Boolean = true
+    ): Flow<Either<GetContactError, List<Contact>>> = observeContacts(userId).distinctUntilChanged().transformLatest {
+        it.onLeft {
+            Timber.e("SearchContacts, error observing contacts: $it")
+            emit(GetContactError.left())
+        }.onRight { contacts ->
+            query.trim().takeIfNotBlank()?.run {
+                val searchResult = search(contacts, query, onlyMatchingContactEmails)
+                emit(searchResult.right())
             }
-        }.distinctUntilChanged()
+        }
+    }.distinctUntilChanged()
 
-    private fun search(contacts: List<Contact>, query: String): List<Contact> = contacts.mapNotNull { contact ->
+    private fun search(
+        contacts: List<Contact>,
+        query: String,
+        onlyMatchingContactEmails: Boolean
+    ): List<Contact> = contacts.mapNotNull { contact ->
         if (contact.name.containsNoCase(query)) { // if Contact's display name matches, return all contactEmails
             contact
-        } else { // otherwise, return Contact with only matching contactEmails
-            val matchingContactEmails = contact.contactEmails.filter { contactEmail ->
-                contactEmail.email.containsNoCase(query)
+        } else {
+            if (onlyMatchingContactEmails) {
+                val matchingContactEmails = contact.contactEmails.filter { contactEmail ->
+                    contactEmail.email.containsNoCase(query)
+                }
+                if (matchingContactEmails.isNotEmpty()) {
+                    contact.copy(contactEmails = matchingContactEmails)
+                } else null
+            } else {
+                if (contact.contactEmails.any { it.email.containsNoCase(query) }) {
+                    contact
+                } else null
             }
-
-            if (matchingContactEmails.isNotEmpty()) {
-                contact.copy(contactEmails = matchingContactEmails)
-            } else null
         }
     }
 }

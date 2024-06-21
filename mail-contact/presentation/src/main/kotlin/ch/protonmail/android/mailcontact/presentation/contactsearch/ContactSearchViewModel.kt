@@ -71,7 +71,7 @@ class ContactSearchViewModel @Inject constructor(
 
         if (action.searchValue.isNotBlank()) {
             searchContactsJob = combine(
-                searchContacts(primaryUserId(), action.searchValue),
+                searchContacts(primaryUserId(), action.searchValue, onlyMatchingContactEmails = false),
                 searchContactGroups(primaryUserId(), action.searchValue, returnEmpty = true)
             ) { contacts, contactGroups ->
                 val fromContacts = contactSearchUiModelMapper.contactsToContactSearchUiModelList(

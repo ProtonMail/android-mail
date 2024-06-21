@@ -785,7 +785,7 @@ class ComposerViewModel @Inject constructor(
 
         if (searchTerm.isNotBlank()) {
             searchContactsJobs[suggestionsField] = combine(
-                searchContacts(primaryUserId(), searchTerm),
+                searchContacts(primaryUserId(), searchTerm, onlyMatchingContactEmails = true),
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
