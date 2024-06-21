@@ -208,6 +208,7 @@ stopReview:
   extends: .stopReview
   tags:
     - shared-small
+  before_script: [ ]
   rules:
     # The cleanup is always manual on a Merge Request
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
