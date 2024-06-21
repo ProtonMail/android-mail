@@ -191,7 +191,7 @@ fun ContactSearchItem(
             )
             when (contactSearchUiModel) {
                 is ContactSearchUiModel.Contact -> Text(
-                    text = contactSearchUiModel.email,
+                    text = contactSearchUiModel.email ?: stringResource(id = R.string.no_contact_email),
                     style = ProtonTheme.typography.defaultSmallWeak
                 )
 

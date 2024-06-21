@@ -33,13 +33,25 @@ class ContactSearchUiModelMapper @Inject constructor(
 
     fun contactsToContactSearchUiModelList(contacts: List<Contact>): List<ContactSearchUiModel.Contact> {
         return contacts.flatMap { contact ->
-            contact.contactEmails.map { contactEmail ->
-                ContactSearchUiModel.Contact(
-                    id = contactEmail.contactId,
-                    name = contactEmail.name,
-                    email = contactEmail.email,
-                    initials = getInitials(contactEmail.name)
+            if (contact.contactEmails.isEmpty()) {
+                listOf(
+                    ContactSearchUiModel.Contact(
+                        id = contact.id,
+                        name = contact.name,
+                        email = contact.contactEmails.firstOrNull()?.email,
+                        initials = getInitials(contact.name)
+
+                    )
                 )
+            } else {
+                contact.contactEmails.map { contactEmail ->
+                    ContactSearchUiModel.Contact(
+                        id = contactEmail.contactId,
+                        name = contactEmail.name,
+                        email = contactEmail.email,
+                        initials = getInitials(contactEmail.name)
+                    )
+                }
             }
         }
     }

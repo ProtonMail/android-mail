@@ -27,7 +27,7 @@ sealed interface ContactSearchUiModel {
     data class Contact(
         val id: ContactId,
         val name: String,
-        val email: String,
+        val email: String?,
         val initials: String
     ) : ContactSearchUiModel
 

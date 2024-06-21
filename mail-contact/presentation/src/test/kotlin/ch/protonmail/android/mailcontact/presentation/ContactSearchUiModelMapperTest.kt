@@ -107,6 +107,29 @@ class ContactSearchUiModelMapperTest {
     }
 
     @Test
+    fun `maps Contact without ContactEmails UiModel`() {
+        val contacts = listOf(
+            ContactTestData.buildContactWith(
+                contactEmails = emptyList(),
+                name = "Contact without ContactEmails"
+            )
+        )
+
+        val actual = contactSearchUiModelMapper.contactsToContactSearchUiModelList(contacts)
+
+        val expected = listOf(
+            ContactSearchUiModel.Contact(
+                contacts[0].id,
+                contacts[0].name,
+                null,
+                "CC"
+            )
+        )
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `maps list of ContactGroups to list of UiModel`() {
         val label = LabelTestData.buildLabel(
             "LabelId1",
