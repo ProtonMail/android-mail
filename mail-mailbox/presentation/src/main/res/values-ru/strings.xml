@@ -106,7 +106,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Очистить папку Спам</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Вы уверены, что хотите навсегда удалить все сообщения в \"Корзина\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Вы уверены, что хотите навсегда удалить все сообщения в \"Спам\"?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Вы уверены, что хотите навсегда удалить все цепочки писем в \"Корзина\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы уверены, что хотите навсегда удалить все цепочки писем в \"Спам\"?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
   <!--    Storage Limit Warning-->

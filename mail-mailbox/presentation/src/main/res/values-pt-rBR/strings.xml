@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar pasta de spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Tem certeza de que deseja excluir permanentemente todas as mensagens de \"Lixeira\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Tem certeza que deseja excluir permanentemente todas as mensagens de \"Spam\"?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Tem certeza que deseja excluir permanentemente todas as conversas de \"Lixeira\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Tem certeza que deseja excluir permanentemente todas as conversas de \"Spam\"?</string>
   <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está programada"</string>
   <!--    Storage Limit Warning-->

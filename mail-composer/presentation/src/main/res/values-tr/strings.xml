@@ -43,7 +43,7 @@
   <string name="composer_original_message_quote">Özgün ileti</string>
   <string name="composer_sender_quote">%s zamanında, %s &lt;%s&gt; şunu yazdı:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">Tamam</string>
-  <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya sınırına ulaşıldı</string>
+  <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya boyutu sınırına ulaşıldı</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>

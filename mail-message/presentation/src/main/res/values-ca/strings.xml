@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">Veure detalls del contacte</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Es requereix permís.</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail necessita permís per llegir els seus contactes i suggerir destinataris.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail necessita permís per llegir els vostres contactes i suggerir destinataris.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">D\'acord</string>
   <string name="device_contacts_permission_dialog_action_button">Sol·licitar permís</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Denega</string>

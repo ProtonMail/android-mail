@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα \"Διαγραμμένα\";</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στα \"Ανεπιθύμητα\";</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στα \"Διαγραμμένα\";</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στα \"Ανεπιθύμητα\";</string>
   <string name="mailbox_action_clear_operation_scheduled">"Έχει προγραμματιστεί η λειτουργία εκκαθάρισης"</string>
   <!--    Storage Limit Warning-->

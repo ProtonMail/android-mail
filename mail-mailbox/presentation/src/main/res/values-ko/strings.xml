@@ -79,7 +79,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">스팸 폴더 비우기</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">\'휴지통\' 내에 있는 전체 메시지를 완전히 삭제하시겠어요?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">\'스팸함\' 내에 있는 전체 메시지를 완전히 삭제하시겠어요?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">\'휴지통\' 내에 있는 전체 대화를 완전히 삭제하시겠어요?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">\'스팸함\' 내에 있는 모든 메시지를 완전히 삭제하시겠어요?</string>
   <string name="mailbox_action_clear_operation_scheduled">"삭제 작업이 예약되어 있습니다."</string>
   <!--    Storage Limit Warning-->

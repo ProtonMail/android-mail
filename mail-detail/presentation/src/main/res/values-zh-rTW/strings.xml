@@ -44,9 +44,9 @@
   <string name="error_move_to_trash_failed">郵件扔進垃圾桶失敗。請再試一次。</string>
   <string name="message_moved_to_trash">郵件已移至垃圾桶</string>
   <string name="message_moved_to_archive">郵件訊息已移至封存檔</string>
-  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
-  <string name="message_moved_to_spam">Message moved to Spam</string>
-  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
+  <string name="error_move_to_archive_failed">郵件移至封存失敗。請再試一次。</string>
+  <string name="message_moved_to_spam">訊息移至垃圾郵件</string>
+  <string name="error_move_to_spam_failed">郵件扔進垃圾訊息失敗。請再試一次。</string>
   <string name="message_moved_to_selected_destination">郵件已移至 %1$s</string>
   <string name="error_move_message_failed">無法移動郵件。請再試一次。</string>
   <string name="conversation_moved_to_trash">無法將往來對話訊息丟進垃圾桶</string>

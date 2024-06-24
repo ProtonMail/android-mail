@@ -66,7 +66,7 @@
   <string name="detail_error_retrieving_message_body">Pesan tidak dapat diambil</string>
   <string name="message_body_error_no_webview">Anda harus menginstal WebView untuk melihat konten pesan ini.</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Pemuatan gambar tersemat secara otomatis dimatikan. Ini dapat diubah dalam pengaturan.</string>
+  <string name="message_body_embedded_images_banner_text">Pemuatan otomatis gambar yang tersemat sedang dinonaktifkan. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_remote_content_banner_text">Remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_phishing_banner_text">Sistem kami menandai pesan ini sebagai phishing. Mohon periksa keabsahan pesan.</string>

@@ -79,7 +79,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">清空垃圾郵件資料夾</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">您確定要永久刪除垃圾桶裡的全部訊息？</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">您確定要永久刪除垃圾郵件匣裡的全部訊息？</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">您確定要永久刪除垃圾桶裡的全部對話內容？</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">您確定要永久刪除垃圾郵件匣裡的全部對話內容？</string>
   <string name="mailbox_action_clear_operation_scheduled">"清除作業已排程"</string>
   <!--    Storage Limit Warning-->

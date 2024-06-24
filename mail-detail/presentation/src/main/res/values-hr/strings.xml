@@ -102,7 +102,7 @@
   <string name="message_report_phishing_dialog_confim_button_offline">U redu</string>
   <string name="message_report_phishing_dialog_title">Potvrdi izvještaj o krađi identiteta</string>
   <string name="message_report_phishing_dialog_message">Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.</string>
-  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
+  <string name="message_report_phishing_dialog_confim_button">Potvrdi</string>
   <string name="message_report_phishing_dialog_cancel_button">Poništi</string>
   <string name="open_on_protoncalendar_banner_title">Otvori u Proton Calendaru</string>
   <string name="open_on_protoncalendar_banner_description">Osiguraj šifrirani kalendar</string>

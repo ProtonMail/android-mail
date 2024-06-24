@@ -106,7 +106,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Очистити теку спаму</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Ви дійсно хочете остаточно видалити всі повідомлення в теці \"Смітник\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Ви дійсно хочете остаточно видалити всі повідомлення в теці \"Спам\"?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Ви дійсно хочете остаточно видалити всі розмови в теці \"Смітник\"?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Ви дійсно хочете остаточно видалити всі розмови в теці \"Спам\"?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Заплановано операцію з очищення"</string>
   <!--    Storage Limit Warning-->

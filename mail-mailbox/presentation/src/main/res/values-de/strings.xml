@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Spam-Ordner leeren</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Bist du sicher, dass du alle Nachrichten im \"Papierkorb\" dauerhaft löschen möchtest?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Bist du sicher, dass du alle Nachrichten im \"Spam\" dauerhaft löschen möchtest?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Bist du sicher, dass du alle Unterhaltungen im \"Papierkorb\" dauerhaft löschen möchtest?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Bist du sicher, dass du alle Unterhaltungen im \"Spam\" dauerhaft löschen möchtest?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Lösche geplante Aufgabe"</string>
   <!--    Storage Limit Warning-->

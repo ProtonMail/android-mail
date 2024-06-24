@@ -57,7 +57,7 @@
   <string name="composer_bottom_bar_expiration_time_three_days">3 dies</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 setmana</string>
   <string name="composer_bottom_bar_expiration_time_custom">Personalitza</string>
-  <string name="composer_error_setting_expiration_time">Ha fallat l\'establiment del temps de caducitat</string>
+  <string name="composer_error_setting_expiration_time">No s\'ha pogut establir el temps de caducitat.</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Caducitat no suportada</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomanem configurar una contrasenya pels destinataris següents:</string>

@@ -66,5 +66,5 @@
   <string name="device_contacts_permission_dialog_message">Proton Mail memerlukan izin untuk membaca kontak Anda untuk dapat menyarankan penerima.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Minta izin</string>
-  <string name="device_contacts_permission_dialog_action_button_deny">Deny</string>
+  <string name="device_contacts_permission_dialog_action_button_deny">Tolak</string>
 </resources>

@@ -129,14 +129,14 @@
   <string name="contact_group_form_update_success">S\'ha actualitzat el grup de contactes</string>
   <string name="contact_group_form_save_error">S\'ha produït un error en desar el grup de contactes. Torneu-ho a provar més tard</string>
   <string name="contact_group_form_save_error_already_exists">Ja existeix un grup amb aquest nom</string>
-  <string name="contact_group_form_subscription_error">Millori a un pla de pagament per crear grups de contacte</string>
+  <string name="contact_group_form_subscription_error">Milloreu a un pla de pagament per crear grups de contacte</string>
   <string name="members_loading_error">S\'ha produït un error en carregar els membres. Proveu de nou més tard.</string>
   <string name="members_done">Fet</string>
-  <string name="add_members_error">S\'ha produït un error en afegir membres. Torni-ho a provar més tard</string>
+  <string name="add_members_error">S\'ha produït un error en afegir membres. Torneu-ho a provar més tard</string>
   <string name="manage_members_title">Gestiona els membres</string>
   <string name="search_contact">Cerca un contacte</string>
   <string name="search_contacts_description">Cercar contactes</string>
-  <string name="member_update_error">S\'ha produït un error en actualitzar el membre, si us plau, torni-ho a provar més tard</string>
+  <string name="member_update_error">S\'ha produït un error en actualitzar el membre, si us plau, torneu-ho a provar més tard</string>
   <string name="contact_group_color">Color del grup de contactes</string>
   <plurals name="contact_search_contact_group_counter">
     <item quantity="one">%d membre</item>

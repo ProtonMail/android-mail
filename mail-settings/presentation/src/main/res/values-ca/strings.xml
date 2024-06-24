@@ -23,7 +23,7 @@
   <string name="mail_settings_account_settings">Configuració del compte</string>
   <string name="mail_settings_app_settings">Configuració de l\'aplicació</string>
   <string name="mail_settings_theme">Tema</string>
-  <string name="mail_settings_push_notifications">Notificacions push</string>
+  <string name="mail_settings_push_notifications">Notificacions automàtiques</string>
   <string name="mail_settings_auto_lock">Bloqueig automàtic</string>
   <string name="mail_settings_alternative_routing">Enrutament alternatiu</string>
   <string name="mail_settings_app_language">Idioma de l\'aplicació</string>
@@ -89,7 +89,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Evita les captures de pantalla</string>
   <string name="mail_settings_privacy_request_link_confirmation">Demana confirmació dels enllaços</string>
   <string name="mail_settings_privacy_background_sync">Sincronització en segon pla</string>
-  <string name="mail_settings_privacy_background_sync_description">Si aquesta opció està habilitada, l\'aplicació se sincronitzarà amb el servidor en segon pla. Desactivar aquesta característica també desactivarà les notificacions push.</string>
+  <string name="mail_settings_privacy_background_sync_description">Si aquesta opció està habilitada, l\'aplicació se sincronitzarà amb el servidor en segon pla. Desactivar aquesta característica també desactivarà les notificacions automàtiques.</string>
   <string name="mail_settings_privacy_error_updating">S\'ha produït un error en actualitzar les preferències</string>
   <string name="mail_settings_privacy_error_loading">S\'ha produït un error en carregar les preferències</string>
   <!-- Swipe Actions -->
@@ -108,10 +108,10 @@
   <string name="mail_settings_swipe_action_star_description">Destaca/no destaquis</string>
   <string name="mail_settings_swipe_action_trash_description">Mou a la paperera</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Notificacions push</string>
+  <string name="mail_settings_notifications_title">Notificacions automàtiques</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificacions ampliades</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Activeu aquesta característica per veure el remitent dels correus electrònics a les notificacions push.</string>
-  <string name="mail_settings_notifications_notifications_settings">Preferències de les notificacions</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Activeu aquesta característica per a veure el remitent dels correus electrònics a les notificacions automàtiques.</string>
+  <string name="mail_settings_notifications_notifications_settings">Configuració de les notificacions</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navega a les preferències de notificacions del sistema</string>
   <string name="mail_settings_notifications_update_error">S\'ha produït un error en actualitzar les preferències.</string>
   <string name="mail_settings_notifications_loading_error">S\'ha produït un error en carregar les preferències.</string>

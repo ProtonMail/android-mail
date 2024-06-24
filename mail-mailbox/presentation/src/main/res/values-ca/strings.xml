@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Buida la carpeta del correu brossa</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Segur que voleu eliminar permanentment tots els missatges de la paperera?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Segur que voleu eliminar permanentment tots els missatges del correu brossa?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Segur que voleu eliminar permanentment totes les converses de la paperera?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Segur que voleu eliminar permanentment totes les converses del correu brossa?</string>
   <string name="mailbox_action_clear_operation_scheduled">"S'ha programat una operació de neteja."</string>
   <!--    Storage Limit Warning-->

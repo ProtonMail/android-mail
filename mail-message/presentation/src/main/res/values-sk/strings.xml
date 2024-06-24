@@ -66,7 +66,7 @@
   <string name="contact_actions_view_contact_details_description">Zobraziť podrobnosti o kontakte</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Vyžaduje sa oprávnenie</string>
-  <string name="device_contacts_permission_dialog_message">Služba Proton Mail potrebuje oprávnenie na čítanie vašich kontaktov, aby mohla navrhnúť príjemcov.</string>
+  <string name="device_contacts_permission_dialog_message">Služba Proton Mail potrebuje oprávnenie na čítanie vašich kontaktov z dôvodu návrhu príjemcov.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Vyžiadanie povolenia</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Zamietnuť</string>

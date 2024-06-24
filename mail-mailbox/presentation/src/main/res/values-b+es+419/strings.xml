@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Vaciar spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">¿Está seguro de que quiere eliminar permanentemente todos los mensajes en la carpeta ‘Papelera’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">¿Está seguro de que quiere eliminar permanentemente todos los mensajes en la carpeta ‘Spam’?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">¿Está seguro de que quiere eliminar permanentemente todas las conversaciones en ‘Papelera’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">¿Está seguro de que quiere eliminar permanentemente todas las conversaciones en ‘Spam’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada"</string>
   <!--    Storage Limit Warning-->

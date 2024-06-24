@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">კონტაქტის დეტალების ნახვა</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">საჭიროა წვდომა</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail-ს სჭირდება უფლება, რომ თქვენი კონტაქტები წაიკითხოთ და მიმღებები გირჩიოთ.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">დიახ</string>
   <string name="device_contacts_permission_dialog_action_button">წვდომის მოთხოვნა</string>
   <string name="device_contacts_permission_dialog_action_button_deny">უარყოფა</string>

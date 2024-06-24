@@ -88,7 +88,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Spam-map leegmaken</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Weet u zeker dat u alle berichten in de prullenbak definitief wilt verwijderen?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Weet u zeker dat u alle berichten in de Spam map definitief wilt verwijderen</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Weet u zeker dat u alle gesprekken in de prullenbak definitief wilt verwijderen?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Weet u zeker dat u alle gesprekken in de Spam map definitief wilt verwijderen?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Optie om op te ruimen is gepland"</string>
   <!--    Storage Limit Warning-->

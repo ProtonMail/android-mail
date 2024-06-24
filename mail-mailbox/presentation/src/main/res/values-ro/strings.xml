@@ -97,7 +97,6 @@
   <string name="mailbox_action_clear_spam_dialog_title">Golire folder «Nedorite»</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din «Gunoi»?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din «Nedorite»?</string>
-  <string name="mailbox_action_clear_trash_dialog_body_conversation">Sigur doriți să ștergeți definitiv toate conversațiile din «Gunoi»?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Sigur doriți să ștergeți definitiv toate conversațiile din «Nedorite»?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operația de golire este programată."</string>
   <!--    Storage Limit Warning-->
