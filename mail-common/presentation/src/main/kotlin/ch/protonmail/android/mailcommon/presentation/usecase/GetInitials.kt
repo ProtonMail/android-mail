@@ -33,7 +33,7 @@ class GetInitials @Inject constructor() {
                 it.getOrNull(1)?.let { followingChar ->
                     stringBuilder.append(followingChar)
                 }
-            } else if (!firstChar.isLetter()) return@mapNotNull null
+            } else if (!firstChar.isDefined()) return@mapNotNull null
 
             stringBuilder.toString()
         }.reduceOrNull { acc, s -> acc + s } ?: return ""

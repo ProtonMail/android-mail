@@ -63,4 +63,43 @@ class GetInitialsTest {
         // Then
         assertEquals(actual, expectedInitials)
     }
+
+    @Test
+    fun `get initials for multiple word name starting with numbers`() {
+        // Given
+        val name = "0 1 2 3"
+        val expectedInitials = "03"
+
+        // When
+        val actual = getInitials(name)
+
+        // Then
+        assertEquals(actual, expectedInitials)
+    }
+
+    @Test
+    fun `get initials for multiple word name starting with non-letter, non-digit characters`() {
+        // Given
+        val name = "#abc !def %ghi"
+        val expectedInitials = "#%"
+
+        // When
+        val actual = getInitials(name)
+
+        // Then
+        assertEquals(actual, expectedInitials)
+    }
+
+    @Test
+    fun `get initials for name with emojis only`() {
+        // Given
+        val name = "\uD83D\uDE0A\uD83D\uDE0D"
+        val expectedInitials = "\uD83D\uDE0A"
+
+        // When
+        val actual = getInitials(name)
+
+        // Then
+        assertEquals(actual, expectedInitials)
+    }
 }
