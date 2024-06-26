@@ -28,6 +28,8 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
@@ -113,6 +115,25 @@ class SendMessageWorkerTest {
     }
 
     @Test
+    fun `worker updates draft state for error when sendMessage fails with a message already sent error`() = runTest {
+        // Given
+        val userId = UserIdSample.Primary
+        val messageId = MessageIdSample.LocalDraft
+        val sendingError = SendingError.MessageAlreadySent
+        givenInputData(userId, messageId)
+        givenSendMessageFailsWithSendingToApiError(userId, messageId)
+        givenUpdateDraftSyncStateSucceeds(userId, messageId, DraftSyncState.ErrorSending)
+        givenUpdateDraftStateForErrorSucceeds(userId, messageId, sendingError)
+
+        // When
+        val actual = sendMessageWorker.doWork()
+
+        // Then
+        coVerify { updateDraftStateForErrorMock(userId, messageId, DraftSyncState.ErrorSending, sendingError) }
+        assertEquals(Result.failure(), actual)
+    }
+
+    @Test
     fun `worker returns success and updates DraftSyncState when sendMessage succeeds`() = runTest {
         // Given
         val userId = UserIdSample.Primary
@@ -171,6 +192,12 @@ class SendMessageWorkerTest {
 
     private fun givenSendMessageFailsWithDraftNotFound(userId: UserId, messageId: MessageId) {
         coEvery { sendMessageMock(userId, messageId) } returns SendMessage.Error.DraftNotFound.left()
+    }
+
+    private fun givenSendMessageFailsWithSendingToApiError(userId: UserId, messageId: MessageId) {
+        coEvery {
+            sendMessageMock(userId, messageId)
+        } returns SendMessage.Error.SendingToApi(DataError.Remote.Proton(ProtonError.MessageAlreadySent)).left()
     }
 
     private fun givenSendMessageSucceeds(userId: UserId, messageId: MessageId) {

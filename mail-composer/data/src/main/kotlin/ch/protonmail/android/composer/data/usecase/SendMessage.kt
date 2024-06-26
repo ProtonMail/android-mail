@@ -24,6 +24,8 @@ import arrow.core.raise.either
 import arrow.core.right
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentError
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
@@ -116,7 +118,7 @@ class SendMessage @Inject constructor(
                 autoSaveContacts = autoSaveContacts.toInt(),
                 packages = messagePackages
             )
-        ).mapLeft { Error.SendingToApi }
+        ).mapLeft { Error.SendingToApi(it) }
 
         response.onLeft {
             Timber.e("API error sending message ID: $messageId", it)
@@ -178,7 +180,7 @@ class SendMessage @Inject constructor(
 
         object GeneratingPackages : Error
 
-        object SendingToApi : Error
+        data class SendingToApi(val remoteDataError: DataError.Remote) : Error
 
         object DownloadingAttachments : Error
 
@@ -206,6 +208,14 @@ class SendMessage @Inject constructor(
                             }
                         }
                     )
+                }
+
+                is SendingToApi -> {
+                    if (this.remoteDataError.isMessageAlreadySentError()) {
+                        SendingError.MessageAlreadySent
+                    } else {
+                        SendingError.Other
+                    }
                 }
 
                 else -> SendingError.Other

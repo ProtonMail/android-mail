@@ -280,7 +280,9 @@ class SendMessageTest {
     fun `when remote data source fails to send the message, the error is propagated to the calling site`() = runTest {
         // Given
         val sendPreferences = expectObtainSendPreferencesSucceeds { generateSendPreferences() }
-        val expectedError = SendMessage.Error.SendingToApi.left()
+        val expectedError = SendMessage.Error.SendingToApi(
+            DataError.Remote.Proton(ProtonError.Unknown)
+        ).left()
 
         expectFindLocalDraftSucceeds()
         expectResolveUserAddressSucceeds()
