@@ -29,10 +29,13 @@ import arrow.core.right
 import ch.protonmail.android.composer.data.usecase.AttachmentUploadError
 import ch.protonmail.android.composer.data.usecase.UploadAttachments
 import ch.protonmail.android.mailcommon.data.worker.Enqueuer
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
 import io.mockk.coEvery
@@ -134,7 +137,9 @@ class UploadAttachmentsWorkerTest {
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
         givenInputData(userId, messageId)
-        givenUploadAttachmentsFails(userId, messageId)
+        givenUploadAttachmentsFails(
+            userId, messageId, AttachmentUploadError.UploadFailed(DataError.Remote.Proton(ProtonError.UploadFailure))
+        )
         givenUpdateDraftStateForErrorSucceeds(userId, messageId)
 
         // When
@@ -146,16 +151,56 @@ class UploadAttachmentsWorkerTest {
         assertEquals(ListenableWorker.Result.failure(), actual)
     }
 
+    @Test
+    fun `worker updates draft state for error when upload attachment fails with a message already sent error`() =
+        runTest {
+            // Given
+            val userId = UserIdSample.Primary
+            val messageId = MessageIdSample.LocalDraft
+            givenInputData(userId, messageId)
+            givenUploadAttachmentsFails(
+                userId,
+                messageId,
+                AttachmentUploadError.UploadFailed(
+                    DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent)
+                )
+            )
+            givenUpdateDraftStateForErrorSucceeds(userId, messageId, SendingError.MessageAlreadySent)
+
+            // When
+            val actual = uploadAttachmentWorker.doWork()
+
+            // Then
+            coVerify { uploadAttachments(userId, messageId) }
+            coVerify {
+                updateDraftStateForError(
+                    userId,
+                    messageId,
+                    DraftSyncState.ErrorUploadAttachments,
+                    SendingError.MessageAlreadySent
+                )
+            }
+            assertEquals(ListenableWorker.Result.failure(), actual)
+        }
+
     private fun givenUploadAttachmentsSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadAttachments(userId, messageId) } returns Unit.right()
     }
 
-    private fun givenUpdateDraftStateForErrorSucceeds(userId: UserId, messageId: MessageId) {
-        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, null) }
+    private fun givenUpdateDraftStateForErrorSucceeds(
+        userId: UserId,
+        messageId: MessageId,
+        sendingError: SendingError? = null
+    ) {
+        coJustRun { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, sendingError) }
     }
 
-    private fun givenUploadAttachmentsFails(userId: UserId, messageId: MessageId) {
-        coEvery { uploadAttachments(userId, messageId) } returns AttachmentUploadError.UploadFailed.left()
+    private fun givenUploadAttachmentsFails(
+        userId: UserId,
+        messageId: MessageId,
+        error: AttachmentUploadError
+    ) {
+        coEvery { uploadAttachments(userId, messageId) } returns error.left()
     }
 
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {

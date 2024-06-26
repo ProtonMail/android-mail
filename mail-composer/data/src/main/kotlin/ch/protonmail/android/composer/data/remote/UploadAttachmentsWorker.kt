@@ -22,11 +22,14 @@ import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import ch.protonmail.android.composer.data.usecase.AttachmentUploadError
 import ch.protonmail.android.composer.data.usecase.UploadAttachments
+import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentError
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -49,11 +52,22 @@ class UploadAttachmentsWorker @AssistedInject constructor(
         return uploadAttachments(userId, messageId).fold(
             ifLeft = {
                 Timber.e("UploadAttachmentsWorker doWork failed: $it")
-                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments)
+                updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadAttachments, it.toSendingError())
                 Result.failure()
             },
             ifRight = { Result.success() }
         )
+    }
+
+    private fun AttachmentUploadError.toSendingError() = when (this) {
+        is AttachmentUploadError.UploadFailed -> {
+            if (this.remoteDataError.isMessageAlreadySentError()) {
+                SendingError.MessageAlreadySent
+            } else {
+                null
+            }
+        }
+        else -> null
     }
 
     companion object {

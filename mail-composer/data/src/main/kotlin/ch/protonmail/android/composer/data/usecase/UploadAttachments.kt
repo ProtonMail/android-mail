@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.composer.data.remote.AttachmentRemoteDataSource
 import ch.protonmail.android.composer.data.remote.UploadAttachmentModel
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
@@ -83,7 +84,7 @@ class UploadAttachments @Inject constructor(
             val response = attachmentRemoteDataSource.uploadAttachment(userId, uploadAttachment)
                 .mapLeft {
                     Timber.e("Failed to upload attachment: $it")
-                    AttachmentUploadError.UploadFailed
+                    AttachmentUploadError.UploadFailed(it)
                 }
                 .bind()
 
@@ -110,7 +111,7 @@ sealed interface AttachmentUploadError {
     object AttachmentFileNotFound : AttachmentUploadError
     object AttachmentInfoNotFound : AttachmentUploadError
     object FailedToEncryptAttachment : AttachmentUploadError
-    object UploadFailed : AttachmentUploadError
+    data class UploadFailed(val remoteDataError: DataError.Remote) : AttachmentUploadError
     object FailedToUpdateAttachmentId : AttachmentUploadError
     object FailedToStoreAttachmentInfo : AttachmentUploadError
 }
