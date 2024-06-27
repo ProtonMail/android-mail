@@ -53,6 +53,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
@@ -191,7 +192,7 @@ fun ContactSearchItem(
             )
             when (contactSearchUiModel) {
                 is ContactSearchUiModel.Contact -> Text(
-                    text = contactSearchUiModel.email ?: stringResource(id = R.string.no_contact_email),
+                    text = contactSearchUiModel.email.string(),
                     style = ProtonTheme.typography.defaultSmallWeak
                 )
 

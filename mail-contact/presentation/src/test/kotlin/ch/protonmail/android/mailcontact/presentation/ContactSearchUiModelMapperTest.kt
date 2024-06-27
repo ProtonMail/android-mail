@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.presentation
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
@@ -92,13 +93,13 @@ class ContactSearchUiModelMapperTest {
             ContactSearchUiModel.Contact(
                 contacts[0].id,
                 contacts[0].name,
-                contacts[0].contactEmails[0].email,
+                TextUiModel.Text(contacts[0].contactEmails[0].email),
                 "FN"
             ),
             ContactSearchUiModel.Contact(
                 contacts[1].id,
                 contacts[1].name,
-                contacts[1].contactEmails[0].email,
+                TextUiModel.Text(contacts[1].contactEmails[0].email),
                 "SN"
             )
         )
@@ -121,7 +122,7 @@ class ContactSearchUiModelMapperTest {
             ContactSearchUiModel.Contact(
                 contacts[0].id,
                 contacts[0].name,
-                null,
+                TextUiModel.TextRes(R.string.no_contact_email),
                 "CC"
             )
         )

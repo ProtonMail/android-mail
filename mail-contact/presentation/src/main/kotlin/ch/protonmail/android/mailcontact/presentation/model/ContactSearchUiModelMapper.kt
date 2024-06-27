@@ -21,8 +21,10 @@ package ch.protonmail.android.mailcontact.presentation.model
 import androidx.compose.ui.graphics.Color
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.mailcontact.presentation.R
 import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
 
@@ -38,7 +40,7 @@ class ContactSearchUiModelMapper @Inject constructor(
                     ContactSearchUiModel.Contact(
                         id = contact.id,
                         name = contact.name,
-                        email = null,
+                        email = TextUiModel.TextRes(R.string.no_contact_email),
                         initials = getInitials(contact.name)
                     )
                 )
@@ -47,7 +49,7 @@ class ContactSearchUiModelMapper @Inject constructor(
                     ContactSearchUiModel.Contact(
                         id = contactEmail.contactId,
                         name = contactEmail.name,
-                        email = contactEmail.email,
+                        email = TextUiModel.Text(contactEmail.email),
                         initials = getInitials(contactEmail.name)
                     )
                 }

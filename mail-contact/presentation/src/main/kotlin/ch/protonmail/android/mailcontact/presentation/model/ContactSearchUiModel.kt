@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.model
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -27,7 +28,7 @@ sealed interface ContactSearchUiModel {
     data class Contact(
         val id: ContactId,
         val name: String,
-        val email: String?,
+        val email: TextUiModel,
         val initials: String
     ) : ContactSearchUiModel
 

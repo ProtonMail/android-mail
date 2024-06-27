@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
@@ -48,13 +49,13 @@ internal class ContactSearchReducerTest(
             ContactSearchUiModel.Contact(
                 id = ContactId("result 1 ID"),
                 name = "result 1 name",
-                email = "result1@proton.me",
+                email = TextUiModel.Text("result1@proton.me"),
                 initials = "R1"
             ),
             ContactSearchUiModel.Contact(
                 id = ContactId("result 2 ID"),
                 name = "result 2 name",
-                email = "result2@proton.me",
+                email = TextUiModel.Text("result2@proton.me"),
                 initials = "R2"
             ),
             ContactSearchUiModel.ContactGroup(

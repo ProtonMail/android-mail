@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
@@ -89,13 +90,13 @@ class ContactSearchViewModelTest {
         ContactSearchUiModel.Contact(
             expectedContacts[0].id,
             expectedContacts[0].name,
-            expectedContacts[0].contactEmails.first().email,
+            TextUiModel.Text(expectedContacts[0].contactEmails.first().email),
             "S"
         ),
         ContactSearchUiModel.Contact(
             expectedContacts[1].id,
             expectedContacts[1].name,
-            expectedContacts[1].contactEmails.first().email,
+            TextUiModel.Text(expectedContacts[1].contactEmails.first().email),
             "F"
         )
     )
