@@ -22,4 +22,9 @@ import me.proton.core.network.domain.hasProtonErrorCode
 
 fun Throwable.isAlreadyExistsApiError() = this.hasProtonErrorCode(PROTON_RESPONSE_CODE_ALREADY_EXISTS)
 
+fun Throwable.isContactLimitReachedApiError() = this.hasProtonErrorCode(PROTON_RESPONSE_CODE_CONTACT_LIMIT_REACHED)
+
 const val PROTON_RESPONSE_CODE_ALREADY_EXISTS = 2500
+
+@Suppress("VariableMaxLength")
+const val PROTON_RESPONSE_CODE_CONTACT_LIMIT_REACHED = 2024

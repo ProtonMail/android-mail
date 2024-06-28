@@ -196,9 +196,16 @@ class ContactFormReducerTest(
             ),
             TestInput(
                 currentState = loadedUpdateContactState,
-                event = ContactFormEvent.SaveContactError,
+                event = ContactFormEvent.SaveContactError.Generic,
                 expectedState = loadedUpdateContactState.copy(
                     showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error))
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactState,
+                event = ContactFormEvent.SaveContactError.ContactLimitReached,
+                expectedState = loadedUpdateContactState.copy(
+                    showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error_limit_reached))
                 )
             ),
             TestInput(

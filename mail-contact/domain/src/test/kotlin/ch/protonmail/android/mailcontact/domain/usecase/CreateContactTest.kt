@@ -28,6 +28,8 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.ContactCard
 import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.entity.UserId
+import me.proton.core.network.domain.ApiException
+import me.proton.core.network.domain.ApiResult
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -71,6 +73,32 @@ class CreateContactTest {
 
         // Then
         assertEquals(CreateContact.CreateContactErrors.FailedToCreateContact.left(), result)
+    }
+
+    @Test
+    fun `should return NumberOfContactsReached when create contact failed because of limit`() = runTest {
+        // Given
+        val decryptedContact = DecryptedContact(
+            id = null,
+            formattedName = ContactProperty.FormattedName(value = "Mario_ClearText@protonmail.com")
+        )
+        coEvery { contactRepository.createContact(userId, any()) } throws ApiException(
+            ApiResult.Error.Http(
+                httpCode = 422,
+                message = "",
+                proton = ApiResult.Error.ProtonData(
+                    code = 2024,
+                    error = "Number of contacts limit reached"
+                )
+            )
+        )
+        coEvery { encryptAndSignContactCards(userId, decryptedContact) } returns listOf<ContactCard>().right()
+
+        // When
+        val result = createContact(userId, decryptedContact)
+
+        // Then
+        assertEquals(CreateContact.CreateContactErrors.MaximumNumberOfContactsReached.left(), result)
     }
 
     @Test

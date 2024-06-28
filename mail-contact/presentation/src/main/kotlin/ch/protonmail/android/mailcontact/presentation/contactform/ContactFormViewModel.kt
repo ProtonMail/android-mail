@@ -342,7 +342,9 @@ class ContactFormViewModel @Inject constructor(
             userId = primaryUserId(),
             decryptedContact = decryptedContact
         ).getOrElse {
-            return emitNewStateFor(ContactFormEvent.SaveContactError)
+            return if (it is CreateContact.CreateContactErrors.MaximumNumberOfContactsReached) {
+                emitNewStateFor(ContactFormEvent.SaveContactError.ContactLimitReached)
+            } else emitNewStateFor(ContactFormEvent.SaveContactError.Generic)
         }
 
         emitNewStateFor(ContactFormEvent.ContactCreated)
@@ -350,14 +352,14 @@ class ContactFormViewModel @Inject constructor(
 
     private suspend fun handleUpdateContact(contact: ContactFormUiModel) {
         val contactId = contact.id ?: run {
-            return emitNewStateFor(ContactFormEvent.SaveContactError)
+            return emitNewStateFor(ContactFormEvent.SaveContactError.Generic)
         }
         val decryptedContact = observeDecryptedContact(
             userId = primaryUserId(),
             contactId = contactId
         ).firstOrNull()?.getOrNull() ?: run {
             Timber.e("Error while getting contact in handleUpdateContact")
-            return emitNewStateFor(ContactFormEvent.SaveContactError)
+            return emitNewStateFor(ContactFormEvent.SaveContactError.Generic)
         }
         val updatedDecryptedContact = contactFormUiModelMapper.toDecryptedContact(
             contact = contact,
@@ -371,7 +373,7 @@ class ContactFormViewModel @Inject constructor(
             decryptedContact = updatedDecryptedContact,
             contactId = contactId
         ).getOrElse {
-            return emitNewStateFor(ContactFormEvent.SaveContactError)
+            return emitNewStateFor(ContactFormEvent.SaveContactError.Generic)
         }
 
         emitNewStateFor(ContactFormEvent.ContactUpdated)

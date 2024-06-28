@@ -30,19 +30,24 @@ sealed interface ContactFormViewAction : ContactFormOperation {
     data class OnUpdateDisplayName(
         val displayName: String
     ) : ContactFormViewAction
+
     data class OnUpdateFirstName(
         val firstName: String
     ) : ContactFormViewAction
+
     data class OnUpdateLastName(
         val lastName: String
     ) : ContactFormViewAction
+
     data class OnAddItemClick(
         val section: Section
     ) : ContactFormViewAction
+
     data class OnRemoveItemClick(
         val section: Section,
         val fieldId: String
     ) : ContactFormViewAction
+
     data class OnUpdateItem(
         val section: Section,
         val fieldId: String,
@@ -54,11 +59,17 @@ sealed interface ContactFormEvent : ContactFormOperation {
     data class ContactLoaded(
         val contactFormUiModel: ContactFormUiModel
     ) : ContactFormEvent
+
     data class UpdateContactForm(
         val contact: ContactFormUiModel
     ) : ContactFormEvent
-    object LoadContactError : ContactFormEvent
-    object SaveContactError : ContactFormEvent
+
+    data object LoadContactError : ContactFormEvent
+    sealed interface SaveContactError : ContactFormEvent {
+        data object Generic : SaveContactError
+        data object ContactLimitReached : SaveContactError
+    }
+
     object SavingContact : ContactFormEvent
     object ContactCreated : ContactFormEvent
     object ContactUpdated : ContactFormEvent

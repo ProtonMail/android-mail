@@ -32,7 +32,7 @@ class ContactFormReducer @Inject constructor() {
             is ContactFormEvent.UpdateContactForm -> reduceUpdateContactForm(currentState, event)
             ContactFormEvent.LoadContactError -> reduceLoadContactError(currentState)
             ContactFormEvent.CloseContactForm -> reduceCloseContactForm(currentState)
-            ContactFormEvent.SaveContactError -> reduceSaveContactError(currentState)
+            is ContactFormEvent.SaveContactError -> reduceSaveContactError(currentState, event)
             ContactFormEvent.ContactCreated -> reduceContactCreated(currentState)
             ContactFormEvent.ContactUpdated -> reduceContactUpdated(currentState)
             ContactFormEvent.SavingContact -> reduceSavingContact(currentState)
@@ -69,10 +69,14 @@ class ContactFormReducer @Inject constructor() {
         }
     }
 
-    private fun reduceSaveContactError(currentState: ContactFormState): ContactFormState {
+    private fun reduceSaveContactError(currentState: ContactFormState, event: ContactFormEvent): ContactFormState {
         return when (currentState) {
             is ContactFormState.Data -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_form_save_error)),
+                showErrorSnackbar = if (event is ContactFormEvent.SaveContactError.ContactLimitReached) {
+                    Effect.of(TextUiModel(R.string.contact_form_save_error_limit_reached))
+                } else {
+                    Effect.of(TextUiModel(R.string.contact_form_save_error))
+                },
                 displaySaveLoader = false
             )
             is ContactFormState.Loading -> currentState

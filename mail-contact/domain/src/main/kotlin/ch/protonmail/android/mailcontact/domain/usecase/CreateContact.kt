@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcontact.domain.usecase
 import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.left
+import ch.protonmail.android.mailcontact.domain.mapper.isContactLimitReachedApiError
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.entity.UserId
@@ -38,12 +39,15 @@ class CreateContact @Inject constructor(
         return Either.catch {
             contactRepository.createContact(userId, contactCards)
         }.mapLeft {
-            CreateContactErrors.FailedToCreateContact
+            if (it.isContactLimitReachedApiError()) {
+                CreateContactErrors.MaximumNumberOfContactsReached
+            } else CreateContactErrors.FailedToCreateContact
         }
     }
 
     sealed interface CreateContactErrors {
-        object FailedToEncryptAndSignContactCards : CreateContactErrors
-        object FailedToCreateContact : CreateContactErrors
+        data object FailedToEncryptAndSignContactCards : CreateContactErrors
+        data object FailedToCreateContact : CreateContactErrors
+        data object MaximumNumberOfContactsReached : CreateContactErrors
     }
 }
