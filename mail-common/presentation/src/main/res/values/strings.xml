@@ -79,6 +79,18 @@
     <string name="action_more_content_description">More</string>
     <string name="common_error_loading_actions">Failed loading actions</string>
     <string name="yesterday">Yesterday</string>
+    <plurals name="expiration_minutes_full_word">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="expiration_hours_full_word">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="expiration_days_full_word">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
 
     <!-- notification channels -->
     <string name="attachment_download_notification_channel_name">Attachments</string>
