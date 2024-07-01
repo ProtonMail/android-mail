@@ -45,7 +45,7 @@
   <string name="action_view_in_dark_mode_description">Ver mensaje en modo oscuro</string>
   <string name="action_print_description">Imprimir</string>
   <string name="action_view_headers_description">Ver los encabezados</string>
-  <string name="action_view_html_description">Ver HTML</string>
+  <string name="action_view_html_description">Ver el código HTML</string>
   <string name="action_report_phishing_description">Denunciar suplantación de identidad</string>
   <string name="action_remind_description">Recordarme</string>
   <string name="action_save_pdf_description">Guardar como PDF</string>

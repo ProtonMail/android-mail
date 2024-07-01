@@ -59,7 +59,7 @@
   <string name="composer_bottom_bar_expiration_time_custom">Personalitza</string>
   <string name="composer_error_setting_expiration_time">No s\'ha pogut establir el temps de caducitat.</string>
   <!-- Send expiring message to external recipients dialog -->
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Caducitat no suportada</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Caducitat no admesa</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Recomanem configurar una contrasenya pels destinataris següents:</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel·la</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Envia de totes maneres</string>

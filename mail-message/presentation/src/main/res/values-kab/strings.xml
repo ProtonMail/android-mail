@@ -65,7 +65,7 @@
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Tasiregt tettusra</string>
   <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
-  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">IH</string>
   <string name="device_contacts_permission_dialog_action_button">Request permission</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Deny</string>
 </resources>

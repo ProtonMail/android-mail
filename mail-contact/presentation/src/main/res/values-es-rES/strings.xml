@@ -26,7 +26,7 @@
   <string name="add_contact">Añadir un contacto</string>
   <string name="add_contact_group">Añadir un grupo de contactos</string>
   <string name="add_contact_content_description">Añadir un contacto</string>
-  <string name="all_title">Todo</string>
+  <string name="all_title">Todos</string>
   <string name="groups_title">Grupos</string>
   <string name="group_member_count">%1$s miembro</string>
   <string name="group_members_count">%1$s miembros</string>

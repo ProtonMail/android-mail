@@ -61,7 +61,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Biztos, hogy véglegesen törli ezt az üzenetet?</item>
-    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
+    <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Üzenet véglegesen törölve</item>

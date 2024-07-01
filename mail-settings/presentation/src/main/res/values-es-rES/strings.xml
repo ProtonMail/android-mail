@@ -128,7 +128,7 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 día de inactividad</string>
   <string name="mail_settings_auto_lock_update_error">Error al actualizar los ajustes</string>
   <string name="mail_settings_pin_insertion_input_title">Introduce el código PIN</string>
-  <string name="mail_settings_pin_insertion_set_title">Establecer el código PIN</string>
+  <string name="mail_settings_pin_insertion_set_title">Definir el código PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmar el código PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icono de bloqueo</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Código PIN de puntos</string>

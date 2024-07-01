@@ -67,8 +67,8 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Jeste li sigurni da želite trajno izbrisati ovu poruku?</item>
-    <item quantity="few">Are you sure you want to permanently delete these messages?</item>
-    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
+    <item quantity="few">Are you sure you want to permanently delete these message?</item>
+    <item quantity="other">Are you sure you want to permanently delete these message?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>

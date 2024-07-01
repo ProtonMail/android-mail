@@ -22,7 +22,7 @@
   <string name="no_contacts">Контакты не найдены</string>
   <string name="no_contact_groups">Контактные группы не найдены</string>
   <string name="no_contacts_description">Улучшите ваш опыт работы с электронной почтой, создав новый контакт или импортировав существующие.</string>
-  <string name="no_contact_groups_description">Improve your email experience by creating a new contact group.</string>
+  <string name="no_contact_groups_description">Улучшите работу с электронной почтой, создав новую группу контактов.</string>
   <string name="add_contact">Добавить контакт</string>
   <string name="add_contact_group">Добавить группу контактов</string>
   <string name="add_contact_content_description">Добавить контакт</string>
@@ -45,9 +45,9 @@
   <string name="contact_type_phone">Телефон</string>
   <string name="contact_type_home">Главная</string>
   <string name="contact_type_work">Рабочий</string>
-  <string name="contact_type_other">Other</string>
+  <string name="contact_type_other">Другое</string>
   <string name="contact_type_mobile">Мобильный</string>
-  <string name="contact_type_main">Main</string>
+  <string name="contact_type_main">Главное</string>
   <string name="contact_type_fax">Факс</string>
   <string name="contact_type_pager">Пейджер</string>
   <string name="contact_type_address">Адрес</string>
@@ -85,7 +85,7 @@
   <string name="phone_number">Номер телефона</string>
   <string name="additional_info">Дополнительная информация</string>
   <string name="remove_contact_property">Удалить свойства контакта</string>
-  <string name="property_type">Property type</string>
+  <string name="property_type">Тип собственности</string>
   <string name="property_label">Ярлык</string>
   <string name="address_street">Улица</string>
   <string name="address_postal_code">Почтовый индекс</string>
@@ -114,11 +114,11 @@
   <string name="contact_form_invalid_email_error">Ошибка при сохранении контакта, он содержит недействительный адрес электронной почты</string>
   <string name="contact_group_details_loading_error">Ошибка при загрузке группы контактов, повторите попытку позже</string>
   <string name="contact_group_details_deletion_success">Группа контактов удалена</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_details_deletion_error">Ошибка при удалении группы контактов</string>
+  <string name="contact_group_delete_dialog_title">Удалить %s группу из контактов?</string>
+  <string name="contact_group_delete_dialog_message">Группа будет расформирована, но установленные в ней контакты останутся незатронутыми.</string>
   <string name="contact_group_delete_dialog_confirm">Удалить</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
+  <string name="contact_group_delete_dialog_dismiss">Оставить</string>
   <string name="contact_group_delete_button_text">Удалить группу</string>
   <string name="contact_group_form_loading_error">Ошибка при загрузке группы контактов, повторите попытку позже</string>
   <string name="edit_contact_group_content_description">Изменение группы контактов</string>
@@ -133,7 +133,7 @@
   <string name="contact_group_form_update_success">Группа контактов обновлена</string>
   <string name="contact_group_form_save_error">Ошибка при сохранении группы контактов, попробуйте ещё раз позже</string>
   <string name="contact_group_form_save_error_already_exists">Группа с таким именем уже существует</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Перейдите на платный тариф, чтобы создавать группы контактов</string>
   <string name="members_loading_error">Ошибка при загрузке участников, повторите попытку позже</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Ошибка при добавлении участников, повторите попытку позже</string>

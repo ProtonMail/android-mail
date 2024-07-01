@@ -149,8 +149,8 @@
   <string name="mail_settings_pin_insertion_signout_text">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Sign Out</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Tebɣiḍ ad teffɣeḍ?</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Yes</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ih</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_cancel">Ala</string>
   <string name="mail_settings_pin_insertion_created_success">PIN code created successfully.</string>
   <string name="mail_settings_pin_insertion_changed_success">PIN code changed successfully.</string>
   <!-- Local storage -->

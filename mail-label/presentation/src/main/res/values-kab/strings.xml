@@ -71,8 +71,8 @@
   <string name="folder_settings_parent_color">Inherit parent folder color</string>
   <string name="folder_list_loading_error">Error loading folders, please try again later</string>
   <string name="folder_loading_error">Error loading folder, please try again later</string>
-  <string name="switch_on">On</string>
-  <string name="switch_off">Off</string>
+  <string name="switch_on">Yermed</string>
+  <string name="switch_off">Yekfa</string>
   <string name="folder_form_parent">Akaram amaraw</string>
   <string name="folder_form_no_parent">None</string>
   <string name="folder_form_notifications">Ilɣa</string>

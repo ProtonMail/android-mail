@@ -24,16 +24,16 @@
   <string name="upselling_plus_description_override">Чтобы разблокировать больше места в хранилище и платные функции</string>
   <string name="upselling_plus_feature_storage">15 ГБ хранилища</string>
   <string name="upselling_plus_feature_email_addresses">10 адресов электронной почты</string>
-  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
-  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
+  <string name="upselling_plus_feature_custom_domain">Поддержка пользовательских доменов электронной почты</string>
+  <string name="upselling_plus_feature_desktop_app">Новое приложение для настольных компьютеров Proton Mail</string>
+  <string name="upselling_plus_feature_folders_labels">Неограниченное количество папок, ярлыков и фильтров</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Ваш платная подписка \"все в одном\"</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_storage">Хранилище на 500 ГБ с возможностью резервного копирования фотографий</string>
   <string name="upselling_unlimited_feature_mail_calendar">Все платные функции Mail и Calendar</string>
   <string name="upselling_unlimited_feature_vpn">VPN (больше 90 стран)</string>
   <string name="upselling_unlimited_feature_drive">Безопасное облачное хранилище</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Менеджер паролей с шифрованием</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">Сэкономьте %s%%</string>
   <string name="upselling_month">/в месяц</string>

@@ -48,9 +48,9 @@
   <string name="bottom_sheet_more_header_message_from">Сообщение от %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Копировать ссылку</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
+  <string name="message_link_long_click_copy_description">Текст скопирован из Proton Mail</string>
   <string name="message_link_long_click_share">Поделиться ссылкой</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_share_via">Поделиться ссылкой через</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Копировать адрес</string>
   <string name="contact_actions_copy_address_description">Копировать адрес контакта</string>

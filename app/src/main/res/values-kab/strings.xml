@@ -20,7 +20,7 @@
   <string name="dialog_sign_out_account_title">Asenser</string>
   <string name="dialog_sign_out_account_description">Tebɣiḍ ad teffɣeḍ?</string>
   <string name="dialog_sign_out_account_confirm">Ih</string>
-  <string name="dialog_sign_out_account_cancel">No</string>
+  <string name="dialog_sign_out_account_cancel">Ala</string>
   <string name="dialog_remove_account_title">Kkes amiḍan</string>
   <string name="dialog_remove_account_description">Ad teffɣeḍ syen kkes talɣut akk yeqqnen ɣer umiḍan-a.</string>
   <string name="dialog_remove_account_confirm">Remove</string>
