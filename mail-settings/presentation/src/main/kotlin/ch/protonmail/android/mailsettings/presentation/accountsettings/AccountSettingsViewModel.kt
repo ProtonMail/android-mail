@@ -34,18 +34,22 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.auth.domain.feature.IsFido2Enabled
 import me.proton.core.compose.viewmodel.stopTimeoutMillis
 import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.usersettings.domain.entity.UserSettings
+import me.proton.core.usersettings.domain.usecase.ObserveRegisteredSecurityKeys
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
     accountManager: AccountManager,
+    private val isFido2Enabled: IsFido2Enabled,
     private val observeUser: ObserveUser,
     private val observeUserSettings: ObserveUserSettings,
-    private val observeMailSettings: ObserveMailSettings
+    private val observeMailSettings: ObserveMailSettings,
+    private val observeRegisteredSecurityKeys: ObserveRegisteredSecurityKeys
 ) : ViewModel() {
 
     val state: StateFlow<AccountSettingsState> = accountManager.getPrimaryUserId().flatMapLatest { userId ->
@@ -56,14 +60,17 @@ class AccountSettingsViewModel @Inject constructor(
         combine(
             observeUser(userId),
             observeUserSettings(userId),
-            observeMailSettings(userId)
-        ) { user, userSettings, mailSettings ->
+            observeMailSettings(userId),
+            observeRegisteredSecurityKeys(userId)
+        ) { user, userSettings, mailSettings, securityKeys ->
             Data(
                 getRecoveryEmail(userSettings),
                 user?.maxSpace,
                 user?.usedSpace,
                 user?.email,
-                mailSettings?.viewMode?.enum?.let { it == ConversationGrouping }
+                mailSettings?.viewMode?.enum?.let { it == ConversationGrouping },
+                registeredSecurityKeys = securityKeys,
+                securityKeysVisible = isFido2Enabled(userId)
             )
         }
     }.stateIn(

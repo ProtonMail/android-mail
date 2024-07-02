@@ -30,22 +30,29 @@ import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserTestData
 import ch.protonmail.android.testdata.usersettings.UserSettingsTestData
+import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.accountmanager.domain.AccountManager
+import me.proton.core.auth.domain.feature.IsFido2Enabled
+import me.proton.core.auth.fido.domain.entity.Fido2RegisteredKey
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.user.domain.entity.User
 import me.proton.core.usersettings.domain.entity.UserSettings
+import me.proton.core.usersettings.domain.usecase.ObserveRegisteredSecurityKeys
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
 class AccountSettingsViewModelTest {
 
@@ -67,18 +74,30 @@ class AccountSettingsViewModelTest {
         every { this@mockk(userId) } returns mailSettingsFlow
     }
 
+    private val registeredSecurityKeys = listOf<Fido2RegisteredKey>(mockk())
+    private val observeRegisteredSecurityKeys = mockk<ObserveRegisteredSecurityKeys> {
+        every { this@mockk(userId) } returns MutableStateFlow(registeredSecurityKeys)
+    }
+
+    private val isFido2Enabled = mockk<IsFido2Enabled> {
+        every { this@mockk.invoke(userId) } returns true
+    }
+
     private val viewModel by lazy {
         AccountSettingsViewModel(
             accountManager = accountManager,
+            isFido2Enabled = isFido2Enabled,
             observeUser = observeUser,
             observeUserSettings = observeUserSettings,
-            observeMailSettings = observeMailSettings
+            observeMailSettings = observeMailSettings,
+            observeRegisteredSecurityKeys = observeRegisteredSecurityKeys
         )
     }
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+        MockKAnnotations.init(this)
     }
 
     @Test
@@ -238,6 +257,25 @@ class AccountSettingsViewModelTest {
 
             // then
             assertEquals(NotLoggedIn, awaitItem())
+        }
+    }
+
+    @Test
+    fun `security keys item is visible if fido2 flag is enabled`() = runTest {
+        // given
+        every { isFido2Enabled(userId) } returns true
+
+        viewModel.state.test {
+            // given
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsExist()
+
+            // then
+            val data = awaitItem() as Data
+            assertTrue(data.securityKeysVisible)
+            assertSame(registeredSecurityKeys, data.registeredSecurityKeys)
         }
     }
 

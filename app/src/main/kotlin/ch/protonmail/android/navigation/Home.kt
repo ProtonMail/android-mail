@@ -429,7 +429,7 @@ fun Home(
                     }
                 )
                 // settings
-                addAccountSettings(navController, launcherActions)
+                addAccountSettings(navController, launcherActions, activityActions)
                 addContacts(
                     navController,
                     showErrorSnackbar = { message ->

@@ -72,6 +72,7 @@ object Dependencies {
         add(Proton.Core.accountManager)
         add(Proton.Core.accountRecovery)
         add(Proton.Core.auth)
+        add(Proton.Core.authFido)
         add(Proton.Core.challenge)
         add(Proton.Core.contact)
         add(Proton.Core.country)

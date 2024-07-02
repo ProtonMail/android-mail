@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
+import me.proton.core.auth.fido.domain.entity.Fido2RegisteredKey
+
 sealed interface AccountSettingsState {
     /**
      * @param mailboxSize max mailbox size in Bytes
@@ -28,7 +30,9 @@ sealed interface AccountSettingsState {
         val mailboxSize: Long?,
         val mailboxUsedSpace: Long?,
         val defaultEmail: String?,
-        val isConversationMode: Boolean?
+        val isConversationMode: Boolean?,
+        val registeredSecurityKeys: List<Fido2RegisteredKey>,
+        val securityKeysVisible: Boolean
     ) : AccountSettingsState
 
     object Loading : AccountSettingsState

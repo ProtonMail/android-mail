@@ -23,6 +23,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import ch.protonmail.android.LockScreenActivity
+import ch.protonmail.android.MainActivity
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
@@ -44,13 +45,18 @@ import ch.protonmail.android.navigation.Launcher
 import ch.protonmail.android.navigation.model.Destination.Screen
 import me.proton.core.compose.navigation.require
 
-fun NavGraphBuilder.addAccountSettings(navController: NavHostController, launcherActions: Launcher.Actions) {
+fun NavGraphBuilder.addAccountSettings(
+    navController: NavHostController,
+    launcherActions: Launcher.Actions,
+    activityActions: MainActivity.Actions
+) {
     composable(route = Screen.AccountSettings.route) {
         AccountSettingScreen(
             actions = AccountSettingScreen.Actions(
                 onBackClick = { navController.navigateBack() },
                 onPasswordManagementClick = launcherActions.onPasswordManagement,
                 onRecoveryEmailClick = launcherActions.onRecoveryEmail,
+                onSecurityKeysClick = activityActions.openSecurityKeys,
                 onConversationModeClick = { navController.navigate(Screen.ConversationModeSettings.route) },
                 onDefaultEmailAddressClick = { navController.navigate(Screen.DefaultEmailSettings.route) },
                 onDisplayNameClick = { navController.navigate(Screen.DisplayNameSettings.route) },

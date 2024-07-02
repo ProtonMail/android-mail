@@ -33,6 +33,7 @@ import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 import dagger.hilt.android.testing.HiltAndroidTest
+import me.proton.core.accountmanager.presentation.compose.R.string as CoreString
 import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +47,9 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
         mailboxSize = 20_000,
         mailboxUsedSpace = 15_000,
         defaultEmail = "contact@protonmail.ch",
-        isConversationMode = true
+        isConversationMode = true,
+        registeredSecurityKeys = emptyList(),
+        securityKeysVisible = true
     )
 
     @Before
@@ -59,6 +62,7 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
                         onBackClick = {},
                         onPasswordManagementClick = {},
                         onRecoveryEmailClick = {},
+                        onSecurityKeysClick = {},
                         onConversationModeClick = {},
                         onDefaultEmailAddressClick = {},
                         onDisplayNameClick = {},
@@ -92,6 +96,11 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
         composeTestRule
             .onNodeWithText(string.mail_settings_recovery_email)
             .assertTextContains("recovery-email@protonmail.com")
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText(CoreString.account_settings_list_item_security_keys_header)
+            .assertTextContains("Not set")
             .assertIsDisplayed()
 
         // Assert values individually as android's `Formatter.formatShortFileSize` method

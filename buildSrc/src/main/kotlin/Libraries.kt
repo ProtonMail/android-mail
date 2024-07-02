@@ -330,6 +330,7 @@ object Proton {
         val accountRecovery = coreArtifact("account-recovery", Versions.Proton.core)
         val accountRecoveryTest = coreArtifact("account-recovery-test", Versions.Proton.core)
         val auth = coreArtifact("auth", Versions.Proton.core)
+        val authFido = coreArtifact("auth-fido", Versions.Proton.core)
         val authTest = coreArtifact("auth-test", Versions.Proton.core)
         val challenge = coreArtifact("challenge", Versions.Proton.core)
         val contact = coreArtifact("contact", Versions.Proton.core)

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailsettings.presentation.R.string
+import me.proton.core.accountmanager.presentation.compose.SecurityKeysSettingsItem
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsHeader
@@ -104,6 +105,15 @@ fun AccountSettingScreen(
                         onClick = actions.onRecoveryEmailClick
                     )
                     Divider()
+                }
+                if (state.securityKeysVisible) {
+                    item {
+                        SecurityKeysSettingsItem(
+                            onSecurityKeysClick = actions.onSecurityKeysClick,
+                            registeredSecurityKeys = state.registeredSecurityKeys
+                        )
+                        Divider()
+                    }
                 }
                 item {
                     MailboxSizeItem(state)
@@ -202,6 +212,7 @@ object AccountSettingScreen {
         val onBackClick: () -> Unit,
         val onPasswordManagementClick: () -> Unit,
         val onRecoveryEmailClick: () -> Unit,
+        val onSecurityKeysClick: () -> Unit,
         val onConversationModeClick: () -> Unit,
         val onDefaultEmailAddressClick: () -> Unit,
         val onDisplayNameClick: () -> Unit,
@@ -229,12 +240,15 @@ fun AccountSettingsScreenPreview() {
             mailboxSize = 20_000,
             mailboxUsedSpace = 4000,
             defaultEmail = "hello@protonmail.ch",
-            isConversationMode = true
+            isConversationMode = true,
+            registeredSecurityKeys = emptyList(),
+            securityKeysVisible = true
         ),
         actions = AccountSettingScreen.Actions(
             onBackClick = {},
             onPasswordManagementClick = {},
             onRecoveryEmailClick = {},
+            onSecurityKeysClick = {},
             onConversationModeClick = {},
             onDefaultEmailAddressClick = {},
             onDisplayNameClick = {},
