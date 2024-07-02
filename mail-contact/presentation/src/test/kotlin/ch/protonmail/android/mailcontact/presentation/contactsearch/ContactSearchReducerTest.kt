@@ -19,8 +19,10 @@
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
 import androidx.compose.ui.graphics.Color
+import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test
@@ -45,49 +47,68 @@ internal class ContactSearchReducerTest(
 
     companion object {
 
-        private val searchResults = listOf(
-            ContactSearchUiModel.Contact(
+        private val searchResultsContacts = listOf(
+            ContactListItemUiModel.Contact(
                 id = ContactId("result 1 ID"),
                 name = "result 1 name",
-                email = TextUiModel.Text("result1@proton.me"),
-                initials = "R1"
+                emailSubtext = TextUiModel.Text("result1@proton.me"),
+                avatar = AvatarUiModel.ParticipantInitial("R1")
             ),
-            ContactSearchUiModel.Contact(
+            ContactListItemUiModel.Contact(
                 id = ContactId("result 2 ID"),
                 name = "result 2 name",
-                email = TextUiModel.Text("result2@proton.me"),
-                initials = "R2"
-            ),
-            ContactSearchUiModel.ContactGroup(
-                id = LabelId("result 3 ID"),
+                emailSubtext = TextUiModel.Text("result2@proton.me"),
+                avatar = AvatarUiModel.ParticipantInitial("R2")
+            )
+        )
+
+        private val searchResultsContactGroups = listOf(
+            ContactGroupItemUiModel(
+                labelId = LabelId("result 3 ID"),
                 name = "result 3 group name",
-                color = Color(1f, 1f, 1f),
-                emailCount = 10
+                memberCount = 10,
+                color = Color(1f, 1f, 1f)
             )
         )
 
         private val emptyState = ContactSearchState()
         private val noResultsState = ContactSearchState(
-            uiModels = emptyList()
+            contactUiModels = emptyList(),
+            groupUiModels = emptyList()
         )
-        private val someResultsState = ContactSearchState(
-            uiModels = searchResults
+        private val someResultsContactsState = ContactSearchState(
+            contactUiModels = searchResultsContacts,
+            groupUiModels = emptyList()
+        )
+        private val someResultsContactGroupsState = ContactSearchState(
+            contactUiModels = emptyList(),
+            groupUiModels = searchResultsContactGroups
         )
 
         private val transitionsFromEmptyState = listOf(
             TestInput(
                 currentState = emptyState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = emptyList()
+                    contacts = emptyList(),
+                    groups = emptyList()
                 ),
                 expectedState = noResultsState
             ),
             TestInput(
                 currentState = emptyState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = searchResults
+                    contacts = searchResultsContacts,
+                    groups = emptyList()
                 ),
-                expectedState = someResultsState
+                expectedState = someResultsContactsState
+            ),
+            TestInput(
+                currentState = emptyState,
+                event = ContactSearchEvent.ContactsLoaded(
+                    contacts = emptyList(),
+                    groups = searchResultsContactGroups
+                ),
+                expectedState = someResultsContactGroupsState
             ),
             TestInput(
                 currentState = emptyState,
@@ -100,16 +121,26 @@ internal class ContactSearchReducerTest(
             TestInput(
                 currentState = noResultsState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = emptyList()
+                    contacts = emptyList(),
+                    groups = emptyList()
                 ),
                 expectedState = noResultsState
             ),
             TestInput(
                 currentState = noResultsState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = searchResults
+                    contacts = searchResultsContacts,
+                    groups = emptyList()
                 ),
-                expectedState = someResultsState
+                expectedState = someResultsContactsState
+            ),
+            TestInput(
+                currentState = noResultsState,
+                event = ContactSearchEvent.ContactsLoaded(
+                    contacts = emptyList(),
+                    groups = searchResultsContactGroups
+                ),
+                expectedState = someResultsContactGroupsState
             ),
             TestInput(
                 currentState = noResultsState,
@@ -120,23 +151,36 @@ internal class ContactSearchReducerTest(
 
         private val transitionsFromSomeResultsState = listOf(
             TestInput(
-                currentState = someResultsState,
+                currentState = someResultsContactsState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = emptyList()
+                    contacts = emptyList(),
+                    groups = emptyList()
                 ),
                 expectedState = noResultsState
             ),
             TestInput(
-                currentState = someResultsState,
+                currentState = someResultsContactsState,
                 event = ContactSearchEvent.ContactsLoaded(
-                    contacts = searchResults.take(1)
+                    contacts = searchResultsContacts.take(1),
+                    groups = emptyList()
                 ),
-                expectedState = someResultsState.copy(
-                    uiModels = searchResults.take(1)
+                expectedState = someResultsContactsState.copy(
+                    contactUiModels = searchResultsContacts.take(1)
                 )
             ),
             TestInput(
-                currentState = someResultsState,
+                currentState = someResultsContactGroupsState,
+                event = ContactSearchEvent.ContactsLoaded(
+                    contacts = emptyList(),
+                    groups = searchResultsContactGroups.take(1)
+                ),
+                expectedState = someResultsContactsState.copy(
+                    contactUiModels = emptyList(),
+                    groupUiModels = searchResultsContactGroups.take(1)
+                )
+            ),
+            TestInput(
+                currentState = someResultsContactsState,
                 event = ContactSearchEvent.ContactsCleared,
                 expectedState = emptyState
             )

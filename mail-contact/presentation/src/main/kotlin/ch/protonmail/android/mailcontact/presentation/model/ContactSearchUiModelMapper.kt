@@ -21,49 +21,20 @@ package ch.protonmail.android.mailcontact.presentation.model
 import androidx.compose.ui.graphics.Color
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
-import ch.protonmail.android.mailcontact.presentation.R
-import me.proton.core.contact.domain.entity.Contact
 import javax.inject.Inject
 
 class ContactSearchUiModelMapper @Inject constructor(
-    private val getInitials: GetInitials,
     private val colorMapper: ColorMapper
 ) {
 
-    fun contactsToContactSearchUiModelList(contacts: List<Contact>): List<ContactSearchUiModel.Contact> {
-        return contacts.flatMap { contact ->
-            if (contact.contactEmails.isEmpty()) {
-                listOf(
-                    ContactSearchUiModel.Contact(
-                        id = contact.id,
-                        name = contact.name,
-                        email = TextUiModel.TextRes(R.string.no_contact_email),
-                        initials = getInitials(contact.name)
-                    )
-                )
-            } else {
-                contact.contactEmails.map { contactEmail ->
-                    ContactSearchUiModel.Contact(
-                        id = contactEmail.contactId,
-                        name = contactEmail.name,
-                        email = TextUiModel.Text(contactEmail.email),
-                        initials = getInitials(contactEmail.name)
-                    )
-                }
-            }
-        }
-    }
-
-    fun contactGroupsToContactSearchUiModelList(contactGroups: List<ContactGroup>): List<ContactSearchUiModel> {
+    fun contactGroupsToContactSearchUiModelList(contactGroups: List<ContactGroup>): List<ContactGroupItemUiModel> {
         return contactGroups.map { contactGroup ->
-            ContactSearchUiModel.ContactGroup(
-                id = contactGroup.labelId,
-                name = contactGroup.name,
-                color = colorMapper.toColor(contactGroup.color).getOrElse { Color.Black },
-                emailCount = contactGroup.members.size
+            ContactGroupItemUiModel(
+                contactGroup.labelId,
+                contactGroup.name,
+                contactGroup.members.size,
+                colorMapper.toColor(contactGroup.color).getOrElse { Color.Black }
             )
         }
     }

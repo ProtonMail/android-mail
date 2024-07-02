@@ -18,7 +18,8 @@
 
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
-import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
 
 sealed interface ContactSearchOperation
 
@@ -32,7 +33,8 @@ sealed interface ContactSearchViewAction : ContactSearchOperation {
 
 sealed interface ContactSearchEvent : ContactSearchOperation {
     data class ContactsLoaded(
-        val contacts: List<ContactSearchUiModel>
+        val contacts: List<ContactListItemUiModel.Contact>,
+        val groups: List<ContactGroupItemUiModel>
     ) : ContactSearchEvent
 
     data object ContactsCleared : ContactSearchEvent

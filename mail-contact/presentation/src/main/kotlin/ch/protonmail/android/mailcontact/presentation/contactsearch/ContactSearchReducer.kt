@@ -24,17 +24,22 @@ class ContactSearchReducer @Inject constructor() {
 
     internal fun newStateFrom(currentState: ContactSearchState, event: ContactSearchEvent): ContactSearchState {
         return when (event) {
-            is ContactSearchEvent.ContactsLoaded -> reduceMembersLoaded(currentState, event)
-            is ContactSearchEvent.ContactsCleared -> reduceMembersCleared(currentState)
+            is ContactSearchEvent.ContactsLoaded -> reduceSearchLoaded(currentState, event)
+            is ContactSearchEvent.ContactsCleared -> reduceSearchCleared(currentState)
         }
     }
 
-    private fun reduceMembersLoaded(
+    private fun reduceSearchLoaded(
         currentState: ContactSearchState,
         event: ContactSearchEvent.ContactsLoaded
-    ): ContactSearchState = currentState.copy(uiModels = event.contacts)
+    ): ContactSearchState = currentState.copy(
+        contactUiModels = event.contacts,
+        groupUiModels = event.groups
+    )
 
-    private fun reduceMembersCleared(currentState: ContactSearchState): ContactSearchState =
-        currentState.copy(uiModels = null)
+    private fun reduceSearchCleared(currentState: ContactSearchState): ContactSearchState = currentState.copy(
+        contactUiModels = null,
+        groupUiModels = null
+    )
 
 }

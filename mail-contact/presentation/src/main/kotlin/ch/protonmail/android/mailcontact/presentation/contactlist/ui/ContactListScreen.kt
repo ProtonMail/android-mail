@@ -181,6 +181,14 @@ object ContactListScreen {
                 onSubscriptionUpgradeRequired = {},
                 exitWithErrorMessage = {}
             )
+
+            fun fromContactSearchActions(
+                onContactClick: (ContactId) -> Unit = {},
+                onContactGroupClick: (LabelId) -> Unit = {}
+            ) = Empty.copy(
+                onContactSelected = onContactClick,
+                onContactGroupSelected = onContactGroupClick
+            )
         }
     }
 }

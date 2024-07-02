@@ -16,53 +16,42 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+
 package ch.protonmail.android.mailcontact.presentation.contactsearch
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
+import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListGroupItem
+import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListItem
+import ch.protonmail.android.mailcontact.presentation.contactlist.ui.ContactListScreen
 import ch.protonmail.android.uicomponents.SearchView
+import ch.protonmail.android.uicomponents.dismissKeyboard
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import me.proton.core.compose.flow.rememberAsState
-import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
@@ -73,7 +62,7 @@ fun ContactSearchScreen(actions: ContactSearchScreen.Actions, viewModel: Contact
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val state = rememberAsState(flow = viewModel.state, initial = ContactSearchViewModel.initialState).value
+    val state = viewModel.state.collectAsStateWithLifecycle().value
 
     Scaffold(
         topBar = {
@@ -117,18 +106,33 @@ fun ContactSearchContent(
     actions: ContactSearchContent.Actions
 ) {
 
-    if (state.uiModels?.isEmpty() == true) {
+    if (state.contactUiModels?.isEmpty() == true && state.groupUiModels?.isEmpty() == true) {
         NoResultsContent()
     }
 
     LazyColumn(
         modifier = modifier.fillMaxSize()
     ) {
-        state.uiModels?.let {
-            items(state.uiModels) {
-                ContactSearchItem(
-                    contactSearchUiModel = it,
-                    actions = actions
+        state.contactUiModels?.let {
+            items(state.contactUiModels) {
+                ContactListItem(
+                    modifier = Modifier.animateItemPlacement(),
+                    contact = it,
+                    actions = ContactListScreen.Actions.fromContactSearchActions(
+                        onContactClick = actions.onContactClick
+                    )
+                )
+            }
+        }
+
+        state.groupUiModels?.let {
+            items(state.groupUiModels) {
+                ContactListGroupItem(
+                    modifier = Modifier.animateItemPlacement(),
+                    contact = it,
+                    actions = ContactListScreen.Actions.fromContactSearchActions(
+                        onContactGroupClick = actions.onContactGroupClick
+                    )
                 )
             }
         }
@@ -147,104 +151,6 @@ fun NoResultsContent(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             style = ProtonTheme.typography.defaultSmallWeak
         )
-    }
-}
-
-@Composable
-fun ContactSearchItem(
-    modifier: Modifier = Modifier,
-    actions: ContactSearchContent.Actions,
-    contactSearchUiModel: ContactSearchUiModel
-) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(
-                role = Role.Button,
-                onClick = {
-                    when (contactSearchUiModel) {
-                        is ContactSearchUiModel.Contact -> actions.onContactClick(contactSearchUiModel.id)
-                        is ContactSearchUiModel.ContactGroup -> actions.onContactGroupClick(contactSearchUiModel.id)
-                    }
-                }
-            )
-            .padding(start = ProtonDimens.DefaultSpacing),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ContactSearchAvatar(contactSearchUiModel)
-
-        Column(
-            modifier = Modifier
-                .padding(
-                    start = ProtonDimens.ListItemTextStartPadding,
-                    top = ProtonDimens.ListItemTextStartPadding,
-                    bottom = ProtonDimens.ListItemTextStartPadding,
-                    end = ProtonDimens.DefaultSpacing
-                )
-                .weight(1f)
-        ) {
-            Text(
-                text = when (contactSearchUiModel) {
-                    is ContactSearchUiModel.Contact -> contactSearchUiModel.name
-                    is ContactSearchUiModel.ContactGroup -> contactSearchUiModel.name
-                },
-                style = ProtonTheme.typography.defaultNorm
-            )
-            when (contactSearchUiModel) {
-                is ContactSearchUiModel.Contact -> Text(
-                    text = contactSearchUiModel.email.string(),
-                    style = ProtonTheme.typography.defaultSmallWeak
-                )
-
-                is ContactSearchUiModel.ContactGroup -> Text(
-                    text = pluralStringResource(
-                        R.plurals.contact_search_contact_group_counter,
-                        contactSearchUiModel.emailCount,
-                        contactSearchUiModel.emailCount
-                    ),
-                    style = ProtonTheme.typography.defaultSmallWeak
-                )
-            }
-
-        }
-    }
-}
-
-@Composable
-private fun ContactSearchAvatar(contactSearchUiModel: ContactSearchUiModel) {
-    Box(
-        modifier = Modifier
-            .sizeIn(
-                minWidth = MailDimens.AvatarMinSize,
-                minHeight = MailDimens.AvatarMinSize
-            )
-            .background(
-                color = when (contactSearchUiModel) {
-                    is ContactSearchUiModel.Contact -> ProtonTheme.colors.interactionWeakNorm
-                    is ContactSearchUiModel.ContactGroup -> contactSearchUiModel.color
-                },
-                shape = ProtonTheme.shapes.medium
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        when (contactSearchUiModel) {
-            is ContactSearchUiModel.Contact -> {
-                Text(
-                    textAlign = TextAlign.Center,
-                    text = contactSearchUiModel.initials
-                )
-            }
-
-            is ContactSearchUiModel.ContactGroup -> {
-                Icon(
-                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                    painter = painterResource(id = R.drawable.ic_proton_users_filled),
-                    tint = Color.White,
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-
-            }
-        }
     }
 }
 
@@ -330,7 +236,8 @@ object ContactSearchContent {
 private fun ManageMembersContentPreview() {
     ContactSearchContent(
         state = ContactSearchState(
-            uiModels = emptyList()
+            contactUiModels = emptyList(),
+            groupUiModels = emptyList()
         ),
         actions = ContactSearchContent.Actions.Empty
     )
@@ -341,7 +248,8 @@ private fun ManageMembersContentPreview() {
 private fun EmptyManageMembersContentPreview() {
     ContactSearchContent(
         state = ContactSearchState(
-            uiModels = emptyList()
+            contactUiModels = emptyList(),
+            groupUiModels = emptyList()
         ),
         actions = ContactSearchContent.Actions.Empty
     )

@@ -23,7 +23,8 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContactGroups
 import ch.protonmail.android.mailcontact.domain.usecase.SearchContacts
-import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactSearchUiModelMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -42,6 +43,7 @@ import javax.inject.Inject
 class ContactSearchViewModel @Inject constructor(
     private val reducer: ContactSearchReducer,
     private val contactSearchUiModelMapper: ContactSearchUiModelMapper,
+    private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val searchContacts: SearchContacts,
     private val searchContactGroups: SearchContactGroups,
     observePrimaryUserId: ObservePrimaryUserId
@@ -74,21 +76,19 @@ class ContactSearchViewModel @Inject constructor(
                 searchContacts(primaryUserId(), action.searchValue, onlyMatchingContactEmails = false),
                 searchContactGroups(primaryUserId(), action.searchValue, returnEmpty = true)
             ) { contacts, contactGroups ->
-                val fromContacts = contactSearchUiModelMapper.contactsToContactSearchUiModelList(
-                    contacts.getOrNull() ?: emptyList()
-                )
-                val fromContactGroups = contactSearchUiModelMapper.contactGroupsToContactSearchUiModelList(
-                    contactGroups.getOrNull() ?: emptyList()
+
+                val fromContacts =
+                    contactListItemUiModelMapper.toContactListItemUiModel(contacts.getOrNull() ?: emptyList())
+                        .filterIsInstance<ContactListItemUiModel.Contact>()
+
+                val fromGroups = contactSearchUiModelMapper.contactGroupsToContactSearchUiModelList(
+                    contactGroups.getOrNull()?.sortedBy { it.name } ?: emptyList()
                 )
 
                 emitNewStateFor(
                     ContactSearchEvent.ContactsLoaded(
-                        contacts = (fromContacts + fromContactGroups).sortedBy {
-                            when (it) {
-                                is ContactSearchUiModel.Contact -> it.name
-                                is ContactSearchUiModel.ContactGroup -> it.name
-                            }
-                        }
+                        contacts = fromContacts,
+                        groups = fromGroups
                     )
                 )
             }.launchIn(viewModelScope)
@@ -115,7 +115,8 @@ class ContactSearchViewModel @Inject constructor(
     companion object {
 
         val initialState: ContactSearchState = ContactSearchState(
-            uiModels = null
+            contactUiModels = null,
+            groupUiModels = null
         )
     }
 }
