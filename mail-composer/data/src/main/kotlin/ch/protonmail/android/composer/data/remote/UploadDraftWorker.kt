@@ -24,7 +24,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentError
+import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentDraftError
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
@@ -61,7 +61,7 @@ internal class UploadDraftWorker @AssistedInject constructor(
     }
 
     private fun DataError.toSendingError() = when {
-        this.isMessageAlreadySentError() -> SendingError.MessageAlreadySent
+        this.isMessageAlreadySentDraftError() -> SendingError.MessageAlreadySent
         else -> null
     }
 
