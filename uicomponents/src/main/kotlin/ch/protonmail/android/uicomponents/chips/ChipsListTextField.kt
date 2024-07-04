@@ -2,6 +2,7 @@ package ch.protonmail.android.uicomponents.chips
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -202,10 +203,16 @@ fun ChipsListTextField(
 
             var suggestionItemSize by remember { mutableStateOf(IntSize.Zero) }
 
+            val dropDownMenuBackground = if (isSystemInDarkTheme()) {
+                ProtonTheme.colors.backgroundSecondary
+            } else {
+                ProtonTheme.colors.backgroundNorm
+            }
+
             if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
                 DropdownMenu(
                     modifier = Modifier
-                        .background(ProtonTheme.colors.backgroundNorm)
+                        .background(dropDownMenuBackground)
                         .width(textMaxWidth)
                         .exposedDropdownSize(false)
                         .requiredSizeIn(
