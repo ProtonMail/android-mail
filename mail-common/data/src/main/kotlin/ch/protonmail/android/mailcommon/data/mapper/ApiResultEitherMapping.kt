@@ -36,7 +36,10 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
 
     is ApiResult.Error.Http -> {
         when {
-            isMessageAlreadySentError() -> DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
+            isMessageAlreadySentDraftError() -> DataError.Remote.Proton(ProtonError.MessageUpdateDraftNotDraft).left()
+            isMessageAlreadySentAttachmentError() ->
+                DataError.Remote.Proton(ProtonError.AttachmentUploadMessageAlreadySent).left()
+            isMessageAlreadySentSendingError() -> DataError.Remote.Proton(ProtonError.MessageAlreadySent).left()
             else -> DataError.Remote.Http(
                 NetworkError.fromHttpCode(httpCode),
                 this.extractApiErrorInfo(),
@@ -55,9 +58,17 @@ fun <T : Any> ApiResult<T>.toEither(): Either<DataError.Remote, T> = when (this)
     }
 }
 
-private fun ApiResult.Error.Http.isMessageAlreadySentError() =
+private fun ApiResult.Error.Http.isMessageAlreadySentDraftError() =
     NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
         ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageUpdateDraftNotDraft
+
+private fun ApiResult.Error.Http.isMessageAlreadySentAttachmentError() =
+    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
+        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.AttachmentUploadMessageAlreadySent
+
+private fun ApiResult.Error.Http.isMessageAlreadySentSendingError() =
+    NetworkError.fromHttpCode(this.httpCode) == NetworkError.UnprocessableEntity &&
+        ProtonError.fromProtonCode(this.proton?.code) == ProtonError.MessageAlreadySent
 
 private fun Throwable?.tryExtractError() = this?.cause?.message ?: "No error message found"
 
