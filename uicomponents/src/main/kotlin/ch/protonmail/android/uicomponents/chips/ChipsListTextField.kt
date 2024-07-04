@@ -10,11 +10,11 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSizeIn
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -61,7 +61,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -72,7 +71,6 @@ import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.takeIfNotBlank
-import kotlin.math.roundToInt
 
 @Stable
 sealed class ChipItem(open val value: String) {
@@ -213,15 +211,9 @@ fun ChipsListTextField(
                 DropdownMenu(
                     modifier = Modifier
                         .background(dropDownMenuBackground)
-                        .width(textMaxWidth)
                         .exposedDropdownSize(false)
-                        .requiredSizeIn(
-                            maxHeight =
-                            suggestionsDropdownMaxHeight(
-                                localDensity,
-                                suggestionItemSize
-                            )
-                        ),
+                        .fillMaxWidth(DROP_DOWN_WIDTH_PERCENT)
+                        .fillMaxHeight(DROP_DOWN_HEIGHT_PERCENT),
                     properties = PopupProperties(focusable = false),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
@@ -477,17 +469,10 @@ internal class ChipsListState(
     }
 }
 
-private fun suggestionsDropdownMaxHeight(localDensity: Density, suggestionItemSize: IntSize): Dp {
-    val dropdownVerticalPadding = (2 * 8).dp // "DropdownMenuVerticalPadding" is internal in Menu.kt
-
-    val factor = 1.0 + 0.35 // full item + 35% of height for peek
-
-    return with(localDensity) {
-        (suggestionItemSize.height * factor).roundToInt().toDp()
-    } + dropdownVerticalPadding
-}
-
 private val chipShape = RoundedCornerShape(16.dp)
+
+private const val DROP_DOWN_HEIGHT_PERCENT = 0.8f
+private const val DROP_DOWN_WIDTH_PERCENT = 0.9f
 
 @Stable
 internal sealed class ChipItemsList {
