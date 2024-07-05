@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -62,7 +63,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import me.proton.core.compose.theme.ProtonDimens
@@ -199,7 +199,7 @@ fun ChipsListTextField(
                 textStyle = textStyle
             )
 
-            var suggestionItemSize by remember { mutableStateOf(IntSize.Zero) }
+            val suggestionScrollState = rememberScrollState(initial = 0)
 
             val dropDownMenuBackground = if (isSystemInDarkTheme()) {
                 ProtonTheme.colors.backgroundSecondary
@@ -208,6 +208,11 @@ fun ChipsListTextField(
             }
 
             if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
+                LaunchedEffect(contactSuggestionState.contactSuggestionItems) {
+                    // auto-scroll to first item on each contact suggestions change
+                    suggestionScrollState.animateScrollTo(0)
+                }
+
                 DropdownMenu(
                     modifier = Modifier
                         .background(dropDownMenuBackground)
@@ -218,7 +223,8 @@ fun ChipsListTextField(
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
                         actions.onSuggestionsDismissed()
-                    }
+                    },
+                    scrollState = suggestionScrollState
                 ) {
                     contactSuggestionState.contactSuggestionItems.forEach { selectionOption ->
                         DropdownMenuItem(
@@ -247,10 +253,7 @@ fun ChipsListTextField(
                                 }
                                 actions.onSuggestionsDismissed()
                             },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                            modifier = Modifier.onSizeChanged {
-                                suggestionItemSize = it
-                            }
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                         )
                     }
                 }
