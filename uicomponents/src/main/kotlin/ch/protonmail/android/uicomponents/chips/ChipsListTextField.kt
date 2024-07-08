@@ -56,6 +56,7 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
@@ -120,6 +121,7 @@ fun ChipsListTextField(
 
     val focusManager = LocalFocusManager.current
     val localDensity = LocalDensity.current
+    val localConfiguration = LocalConfiguration.current
     var textMaxWidth by remember { mutableStateOf(Dp.Unspecified) }
     FlowRow(
         modifier = modifier
@@ -205,6 +207,12 @@ fun ChipsListTextField(
                 ProtonTheme.colors.backgroundSecondary
             } else {
                 ProtonTheme.colors.backgroundNorm
+            }
+
+            LaunchedEffect(localConfiguration.orientation) {
+                if (contactSuggestionState.areSuggestionsExpanded) {
+                    actions.onSuggestionsDismissed()
+                }
             }
 
             if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
