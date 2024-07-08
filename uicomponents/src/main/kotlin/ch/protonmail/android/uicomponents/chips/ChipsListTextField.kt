@@ -25,7 +25,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -65,7 +64,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -221,13 +219,12 @@ fun ChipsListTextField(
                     suggestionScrollState.animateScrollTo(0)
                 }
 
-                DropdownMenu(
+                ExposedDropdownMenu(
                     modifier = Modifier
                         .background(dropDownMenuBackground)
                         .exposedDropdownSize(false)
                         .fillMaxWidth(DROP_DOWN_WIDTH_PERCENT)
                         .fillMaxHeight(DROP_DOWN_HEIGHT_PERCENT),
-                    properties = PopupProperties(focusable = false),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
                         actions.onSuggestionsDismissed()
