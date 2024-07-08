@@ -44,8 +44,8 @@
   <string name="mailbox_is_empty_spam_description">La carpeta de spam está vacía.</string>
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">El mensaje fue movido a la papelera.</item>
-    <item quantity="other">%d mensajes fueron movidos a la papelera.</item>
+    <item quantity="one">Mensaje movido a la papelera</item>
+    <item quantity="other">%d mensajes movidos a la papelera</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar la conversación</item>
@@ -76,7 +76,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de movimiento</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_trash_message">El mensaje fue movido a la carpeta Papelera.</string>
+  <string name="mailbox_action_trash_message">Mensaje movido a la papelera</string>
   <string name="mailbox_action_archive_message">El mensaje fue movido a la carpeta Archivo.</string>
   <string name="mailbox_action_spam_message">El mensaje fue movido a la carpeta Spam.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>

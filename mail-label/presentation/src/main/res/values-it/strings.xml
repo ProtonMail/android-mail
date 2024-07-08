@@ -52,7 +52,7 @@
   <string name="add_a_folder_name_hint">Aggiungi un nome alla cartella</string>
   <string name="input_field_max_characters_count">%1d / %2d caratteri</string>
   <string name="color_picker_title">Colore</string>
-  <string name="save_label_error">Salvataggio dell\'etichetta non riuscito. Riprova più tardi.</string>
+  <string name="save_label_error">Salvataggio dell\'etichetta non riuscito.</string>
   <string name="save_folder_error">Salvataggio della cartella non riuscito. Riprova più tardi.</string>
   <string name="label_already_exists">Esiste già un\'etichetta o una cartella con questo nome</string>
   <string name="label_limit_reached_error">Limite di etichette raggiunto</string>

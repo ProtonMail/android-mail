@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">İptal</string>
   <string name="contact_details_delete_dialog_confirm_button">Tamam</string>
   <string name="contact_form_save_error">Kişi kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
+  <string name="contact_form_save_error_limit_reached">Kişi sayısı sınırına ulaşıldı</string>
   <string name="all_contacts_tab">Kişiler</string>
   <string name="contact_groups_tab">Gruplar</string>
   <plurals name="contact_group_details_member_count">

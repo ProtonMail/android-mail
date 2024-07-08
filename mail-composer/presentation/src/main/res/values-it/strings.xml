@@ -30,13 +30,13 @@
   <string name="composer_error_invalid_sender">Indirizzo mittente non valido</string>
   <string name="change_sender_button_content_description">Cambia il mittente</string>
   <string name="composer_change_sender_paid_feature">Effettua l\'upgrade per modificare l\'indirizzo mittente</string>
-  <string name="composer_error_change_sender_failed_getting_subscription">Impossibile modificare il mittente poiché il caricamento dell\'abbonamento dell\'utente non è riuscito. Riprova.</string>
+  <string name="composer_error_change_sender_failed_getting_subscription">Caricamento dell\'abbonamento non riuscito. Cambio del mittente non riuscito. Riprova.</string>
   <string name="composer_error_store_draft_sender_address">Salvataggio dell\'indirizzo mittente di questa bozza non riuscito</string>
   <string name="composer_error_store_draft_body">Salvataggio del contenuto di questa bozza non riuscito</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>
   <string name="composer_error_store_draft_subject">Salvataggio dell\'oggetto di questa bozza non riuscito</string>
   <string name="composer_error_store_draft_recipients">Salvataggio dei destinatari di questa bozza non riuscito</string>
-  <string name="composer_error_loading_draft">Il contenuto di questa bozza non è al momento disponibile. Modificarla sovrascriverà qualsiasi contenuto già esistente.</string>
+  <string name="composer_error_loading_draft">Contenuto della bozza momentaneamente non disponibile. Modificarla sovrascriverà qualsiasi contenuto già esistente.</string>
   <string name="composer_add_attachments_content_description">Aggiungi degli allegati</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importa da...</string>
   <string name="composer_error_loading_parent_message">Caricamento delle informazioni del messaggio non riuscito</string>

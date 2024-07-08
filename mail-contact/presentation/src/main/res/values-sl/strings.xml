@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Prekliči</string>
   <string name="contact_details_delete_dialog_confirm_button">V redu</string>
   <string name="contact_form_save_error">Napaka pri shranjevanju stika, poskusite znova pozneje</string>
+  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
   <string name="all_contacts_tab">Stiki</string>
   <string name="contact_groups_tab">Skupine</string>
   <plurals name="contact_group_details_member_count">

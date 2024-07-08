@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Annullér</string>
   <string name="contact_details_delete_dialog_confirm_button">Ok</string>
   <string name="contact_form_save_error">Fejl ved lagring af kontakt. Prøv igen senere</string>
+  <string name="contact_form_save_error_limit_reached">Kontaktgrænse nået</string>
   <string name="all_contacts_tab">Kontakter</string>
   <string name="contact_groups_tab">Grupper</string>
   <plurals name="contact_group_details_member_count">

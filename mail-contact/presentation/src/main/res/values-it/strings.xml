@@ -21,7 +21,7 @@
   <string name="contact_list_loading_error">Caricamento dei contatti non riuscito. Riprova più tardi.</string>
   <string name="no_contacts">Nessun contatto trovato</string>
   <string name="no_contact_groups">Nessun gruppo trovato</string>
-  <string name="no_contacts_description">Migliora la tua esperienza con le email aggiungendo un nuovo contatto o importando quelli esistenti.</string>
+  <string name="no_contacts_description">Migliora la tua esperienza con le email creando un nuovo contatto o importando quelli esistenti.</string>
   <string name="no_contact_groups_description">Migliora la tua esperienza con le email creando un nuovo gruppo di contatti.</string>
   <string name="add_contact">Aggiungi un contatto</string>
   <string name="add_contact_group">Crea un gruppo</string>
@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Annulla</string>
   <string name="contact_details_delete_dialog_confirm_button">Elimina</string>
   <string name="contact_form_save_error">Salvataggio del contatto non riuscito. Riprova più tardi.</string>
+  <string name="contact_form_save_error_limit_reached">Limite di contatti raggiunto</string>
   <string name="all_contacts_tab">Contatti</string>
   <string name="contact_groups_tab">Gruppi</string>
   <plurals name="contact_group_details_member_count">
@@ -107,7 +108,7 @@
     <item quantity="one">Membro (%1$d)</item>
     <item quantity="other">Membri (%1$d)</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Salvataggio del contatto non riuscito a causa di un indirizzo email non valido</string>
+  <string name="contact_form_invalid_email_error">Indirizzo email non valido. Salvataggio del contatto non riuscito.</string>
   <string name="contact_group_details_loading_error">Caricamento del gruppo non riuscito. Riprova più tardi.</string>
   <string name="contact_group_details_deletion_success">Gruppo eliminato</string>
   <string name="contact_group_details_deletion_error">Eliminazione del gruppo non riuscita</string>

@@ -41,7 +41,7 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Sposta in...</string>
   <string name="bottom_sheet_done_action">Fatto</string>
-  <string name="bottom_sheet_archive_action">Sposta nell\'archivio dopo l\'etichettatura</string>
+  <string name="bottom_sheet_archive_action">Sposta nell\'archivio</string>
   <string name="bottom_sheet_label_as_title">Etichetta come...</string>
   <string name="bottom_sheet_more_header_message_from">Messaggio da %s</string>
   <!-- Message body link actions -->

@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">გაუქმება</string>
   <string name="contact_details_delete_dialog_confirm_button">დიახ</string>
   <string name="contact_form_save_error">კონტაქტის შენახვის შეცდომა. მოგვიანებით სცადეთ</string>
+  <string name="contact_form_save_error_limit_reached">მიღწეულია კონტაქტების ლიმიტი</string>
   <string name="all_contacts_tab">კონტაქტები</string>
   <string name="contact_groups_tab">ჯგუფები</string>
   <plurals name="contact_group_details_member_count">

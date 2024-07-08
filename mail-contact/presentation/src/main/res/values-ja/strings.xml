@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">キャンセル</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">連絡先の保存中にエラーが発生しました。後でもう一度お試しください。</string>
+  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
   <string name="all_contacts_tab">連絡先</string>
   <string name="contact_groups_tab">グループ</string>
   <plurals name="contact_group_details_member_count">

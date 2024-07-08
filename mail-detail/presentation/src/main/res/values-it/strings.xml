@@ -56,17 +56,17 @@
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito. Riprova.</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
-  <string name="error_offline_loading_message">Sei offline. È necessaria una connessione a Internet per mostrare i contenuti di questo messaggio.</string>
+  <string name="error_offline_loading_message">Sei offline. Caricamento dei contenuti del messaggio non riuscito.</string>
   <string name="error_get_attachment_failed">Caricamento dell\'allegato non riuscito</string>
   <string name="error_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
-  <string name="error_get_attachment_not_enough_memory">Caricamento dell\'allegato non riuscito a causa di memoria insufficiente</string>
+  <string name="error_get_attachment_not_enough_memory">Memoria non sufficiente. Caricamento dell\'allegato non riuscito.</string>
   <string name="reload">Ricarica</string>
   <string name="error_relabel_message_failed">Nuova etichettatura del messaggio non riuscita. Riprova.</string>
   <string name="error_relabel_conversation_failed">Nuova etichettatura della conversazione non riuscita. Riprova.</string>
   <string name="please_go_back_online_to_load_messages">Sei offline. Torna online per caricare i messaggi.</string>
   <string name="decryption_error">Decrittografia del messaggio non riuscita</string>
   <string name="detail_error_retrieving_message_body">Caricamento del messaggio non riuscito</string>
-  <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto di questo messaggio</string>
+  <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto del messaggio</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
   <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
@@ -88,9 +88,9 @@
   <string name="message_delete_dialog_message">Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
   <string name="message_deleted">Messaggio eliminato</string>
   <string name="error_delete_message_failed">Eliminazione del messaggio non riuscita</string>
-  <string name="error_delete_message_failed_wrong_folder">Impossibile eliminare il messaggio a causa della sua posizione</string>
+  <string name="error_delete_message_failed_wrong_folder">Posizione non valida. Eliminazione del messaggio non riuscita.</string>
   <string name="error_delete_conversation_failed">Eliminazione della conversazione non riuscita</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Impossibile eliminare la conversazione a causa della sua posizione</string>
+  <string name="error_delete_conversation_failed_wrong_folder">Posizione non valida. Eliminazione della conversazione non riuscita.</string>
   <string name="conversation_deleted">Conversazione eliminata</string>
   <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
@@ -98,9 +98,9 @@
   <string name="message_report_phishing_dialog_title_offline">Attenzione</string>
   <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
-  <string name="message_report_phishing_dialog_title">Conferma la segnalazione di phishing</string>
-  <string name="message_report_phishing_dialog_message">Segnalare un messaggio come tentativo di phishing ci invierà il messaggio, così potremo analizzarlo e migliorare i nostri filtri. Ciò significa che potremo vedere integralmente il contenuto del messaggio.</string>
-  <string name="message_report_phishing_dialog_confim_button">Conferma</string>
+  <string name="message_report_phishing_dialog_title">Segnala come phishing</string>
+  <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>
+  <string name="message_report_phishing_dialog_confim_button">Segnala</string>
   <string name="message_report_phishing_dialog_cancel_button">Annulla</string>
   <string name="open_on_protoncalendar_banner_title">Apri in Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendario crittografato sicuro</string>

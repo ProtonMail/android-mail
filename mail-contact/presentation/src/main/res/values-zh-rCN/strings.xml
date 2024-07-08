@@ -97,6 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">关闭</string>
   <string name="contact_details_delete_dialog_confirm_button">好的</string>
   <string name="contact_form_save_error">Error saving contact, please try again later</string>
+  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
   <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">群组</string>
   <plurals name="contact_group_details_member_count">

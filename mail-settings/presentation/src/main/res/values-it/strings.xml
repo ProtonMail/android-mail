@@ -33,7 +33,7 @@
   <string name="mail_settings_local_cache_clear_button">Cancella la cache</string>
   <string name="mail_settings_swipe_actions">Azioni di scorrimento</string>
   <string name="mail_settings_combined_contacts_hint">Abilita questa opzione per completare automaticamente gli indirizzi email con i contatti di tutti gli account a cui hai effettuato l\'accesso.</string>
-  <string name="mail_settings_alternative_routing_hint">Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all\'app di provare l\'indirizzamento di rete alternativo per raggiungere Proton, che può essere utile per evitare firewall o problemi di rete. Consigliamo di mantenere attiva questa impostazione per una maggiore affidabilità.</string>
+  <string name="mail_settings_alternative_routing_hint">Abilita questa opzione per consentire a Proton Mail di provare l\'indirizzamento di rete alternativo, utile per evitare firewall o problemi di rete che non permettono la connessione ai server. Mantieni abilitata questa opzione per una maggiore affidabilità.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Predefinito di sistema</string>
   <string name="mail_settings_theme_light">Chiaro</string>
