@@ -173,6 +173,7 @@ fun ChipsListTextField(
                     .onFocusChanged { focusChange ->
                         state.typeWord(state.getTypedText())
                         state.setFocusState(focusChange.isFocused)
+                        if (!focusChange.hasFocus) actions.onSuggestionsDismissed()
                     }
                     .menuAnchor(),
                 value = state.getTypedText(),
