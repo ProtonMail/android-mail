@@ -53,5 +53,12 @@ fun WebResourceRequest.getSecuredWebResourceResponse(): WebResourceResponse {
             "",
             null
         )
+    } catch (e: IllegalArgumentException) {
+        Timber.d("Error in upgradeToSecuredWebResourceResponse", e)
+        WebResourceResponse(
+            "",
+            "",
+            null
+        )
     }
 }
