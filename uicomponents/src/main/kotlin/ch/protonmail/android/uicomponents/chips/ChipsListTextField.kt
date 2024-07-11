@@ -64,6 +64,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.uicomponents.verticalScrollbar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -225,7 +226,8 @@ fun ChipsListTextField(
                         .background(dropDownMenuBackground)
                         .exposedDropdownSize(false)
                         .fillMaxWidth(DROP_DOWN_WIDTH_PERCENT)
-                        .fillMaxHeight(DROP_DOWN_HEIGHT_PERCENT),
+                        .fillMaxHeight(DROP_DOWN_HEIGHT_PERCENT)
+                        .verticalScrollbar(suggestionScrollState),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
                     onDismissRequest = {
                         actions.onSuggestionsDismissed()
