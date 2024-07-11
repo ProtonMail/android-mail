@@ -18,6 +18,7 @@
 
 package ch.protonmail.upselling.domain.repository
 
+import java.time.Instant
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
@@ -37,6 +38,7 @@ import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -49,6 +51,7 @@ import me.proton.core.test.kotlin.TestDispatcherProvider
 import org.junit.Test
 import javax.inject.Provider
 import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 
 internal class UpsellingTelemetryRepositoryImplTest {
 
@@ -71,6 +74,11 @@ internal class UpsellingTelemetryRepositoryImplTest {
         )
 
     private val user = UserSample.Primary
+
+    @BeforeTest
+    fun setup() {
+        mockInstant()
+    }
 
     @AfterTest
     fun teardown() {
@@ -241,6 +249,11 @@ internal class UpsellingTelemetryRepositoryImplTest {
 
     private fun expectTelemetryDisabled() {
         every { telemetryEnabled.get() } returns false
+    }
+
+    private fun mockInstant() {
+        mockkStatic(Instant::class)
+        every { Instant.now() } returns mockk { every { epochSecond } returns 0 }
     }
 
     private companion object {
