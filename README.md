@@ -12,8 +12,7 @@ Copyright (c) 2024 Proton Technologies AG
 - Clone this repository (Use `git clone git@github.com:ProtonMail/android-mail.git`.)
 - Setup `google-services.json` file by running `./scripts/setup_google_services.sh`
 - Build with any of the following:
-  - Execute `./gradlew assembleDevDebug` in a terminal
-  - Execute `bundle exec fastlane assembleDevDebug` in a terminal
+  - Execute `./gradlew assembleAlphaDebug` in a terminal
   - Open Android Studio and build the `:app` module
 
 ## CI / CD
@@ -34,7 +33,8 @@ UI tests are executed on Firebase Test Lab through the CI. UI tests must run on 
 While instrumented tests can be run locally with no additional setup, in order to run the tests located in the `app/src/uiTest` folder, some assets (`users.json` and `internal_api.json` for instance) might need to be downloaded and configured.
 
 ## Deploy
-Each merge to `master` branch builds the branch's HEAD and deploys it to [Firebase App Distribution](https://firebase.google.com/docs/app-distribution).
+Each merge to `main` branch builds the branch's HEAD and deploys it
+to [Firebase App Distribution](https://firebase.google.com/docs/app-distribution).
 
 ## Signing
 All `release` builds done on CI are automatically signed with ProtonMail's keystore. In order to perform signing locally, the keystore will need to be placed into the `keystore/` directory and the credentials will be read from `private.properties` file.
