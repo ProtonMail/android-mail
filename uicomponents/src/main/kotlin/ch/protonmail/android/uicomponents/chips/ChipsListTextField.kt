@@ -216,8 +216,11 @@ fun ChipsListTextField(
             }
 
             if (contactSuggestionState.contactSuggestionItems.isNotEmpty()) {
-                LaunchedEffect(contactSuggestionState.contactSuggestionItems) {
+                LaunchedEffect(contactSuggestionState) {
                     // auto-scroll to first item on each contact suggestions change
+                    //
+                    // we do it also when suggestions visibility changes,
+                    // because we want to scroll even if the results are the same
                     suggestionScrollState.animateScrollTo(0)
                 }
 
