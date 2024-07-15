@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Telah kedaluwarsa</string>
+  <string name="expiration_expired">Kedaluwarsa</string>
   <string name="expiration_days_arg">%d h</string>
   <string name="expiration_hours_arg">%d j</string>
   <string name="expiration_minutes_arg">%d mnt</string>
@@ -44,7 +44,7 @@
   <string name="action_view_in_light_mode_description">Tampilkan pesan dalam mode terang</string>
   <string name="action_view_in_dark_mode_description">Tampilkan pesan dalam mode gelap</string>
   <string name="action_print_description">Cetak</string>
-  <string name="action_view_headers_description">Lihat tajuk</string>
+  <string name="action_view_headers_description">Lihat header</string>
   <string name="action_view_html_description">Lihat HTML</string>
   <string name="action_report_phishing_description">Laporkan upaya phishing</string>
   <string name="action_remind_description">Ingatkan saya</string>
@@ -83,11 +83,11 @@
   <string name="attachment_download_notification_channel_name">Lampiran</string>
   <string name="attachment_download_notification_channel_description">Notifikasi untuk unduhan lampiran</string>
   <string name="email_notification_channel_name">Email</string>
-  <string name="login_notification_channel_name">Peringatan masuk</string>
+  <string name="login_notification_channel_name">Peringatan Entri Masuk</string>
   <string name="email_notification_channel_description">Notifikasi email masuk</string>
-  <string name="login_notification_channel_description">Pemberitahuan masuk terbaru</string>
+  <string name="login_notification_channel_description">Notifikasi entri masuk baru</string>
   <string name="auth_badge_official">Resmi</string>
-  <string name="intent_failure_no_app_found_to_handle_this_action">Aplikasi untuk menangani tindakan ini tidak ditemukan</string>
+  <string name="intent_failure_no_app_found_to_handle_this_action">Tidak ada aplikasi yang ditemukan untuk menangani tindakan ini</string>
   <string name="action_copied_to_clipboard">Disalin ke papan klip</string>
   <string name="mailbox_action_delete_dialog_button_cancel">Batalkan</string>
   <string name="mailbox_action_delete_dialog_button_delete">Hapus</string>

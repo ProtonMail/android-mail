@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Račun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Naročnina</string>
-  <string name="mail_settings_password_management">Upravljanje gesla</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">E-poštni naslov za obnovitev</string>
   <string name="mail_settings_mailbox_size">Velikost nabiralnika</string>
   <string name="mail_settings_addresses">Naslovi</string>

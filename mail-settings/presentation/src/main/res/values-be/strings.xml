@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Уліковы запіс</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Падпіска</string>
-  <string name="mail_settings_password_management">Кіраванне паролямі</string>
+  <string name="mail_settings_password_management">Змяніць пароль</string>
   <string name="mail_settings_recovery_email">Электронная пошта для аднаўлення доступу</string>
   <string name="mail_settings_mailbox_size">Памер паштовай скрыні</string>
   <string name="mail_settings_addresses">Адрасы</string>

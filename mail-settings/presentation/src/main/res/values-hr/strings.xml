@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Korisnički račun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Pretplata</string>
-  <string name="mail_settings_password_management">Upravitelj lozinkama</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">E-pošta za oporavak</string>
   <string name="mail_settings_mailbox_size">Veličina sandučića e-pošte</string>
   <string name="mail_settings_addresses">Adrese</string>

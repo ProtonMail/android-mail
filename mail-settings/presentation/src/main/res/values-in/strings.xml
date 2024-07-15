@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Akun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Langganan</string>
-  <string name="mail_settings_password_management">Pengelolaan kata sandi</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">Alamat email pemulihan</string>
   <string name="mail_settings_mailbox_size">Ukuran kotak surat</string>
   <string name="mail_settings_addresses">Alamat</string>
@@ -110,7 +110,7 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notifikasi push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notifikasi terperinci</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Aktifkan fitur ini untuk melihat nama pengirim email dalam notifikasi push yang diterima.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Aktifkan fitur ini untuk menampilkan nama pengirim email dalam notifikasi push yang diterima.</string>
   <string name="mail_settings_notifications_notifications_settings">Pengaturan notifikasi</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Tuju pengaturan notifikasi sistem</string>
   <string name="mail_settings_notifications_update_error">Terdapat kesalahan dalam memperbarui pengaturan</string>

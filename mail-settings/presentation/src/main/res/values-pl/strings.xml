@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Subskrypcja</string>
-  <string name="mail_settings_password_management">Zarządzanie hasłem</string>
+  <string name="mail_settings_password_management">Zmień hasło</string>
   <string name="mail_settings_recovery_email">Adres pomocniczy</string>
   <string name="mail_settings_mailbox_size">Rozmiar skrzynki pocztowej</string>
   <string name="mail_settings_addresses">Adresy</string>

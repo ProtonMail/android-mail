@@ -47,7 +47,7 @@
   <string name="upselling_snackbar_error_no_user_id">Une erreur s’est produite.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Les abonnements n\'ont pas pu être récupérés.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Changement d\'abonnement en cours…</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Amélioration de l\'abonnement en cours…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Une erreur est survenue lors de l\'enregistrement de votre abonnement.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Une erreur s\'est produite. Veuillez réessayer.</string>
 </resources>

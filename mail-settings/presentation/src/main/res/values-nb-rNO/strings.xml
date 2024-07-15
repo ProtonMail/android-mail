@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonnement</string>
-  <string name="mail_settings_password_management">Passordhåndtering</string>
+  <string name="mail_settings_password_management">Endre passord</string>
   <string name="mail_settings_recovery_email">E-post for gjenoppretting</string>
   <string name="mail_settings_mailbox_size">Postboksstørrelse</string>
   <string name="mail_settings_addresses">Adresser</string>

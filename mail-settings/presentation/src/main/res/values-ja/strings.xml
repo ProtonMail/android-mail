@@ -50,7 +50,7 @@
   <string name="mail_settings_account">アカウント</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">サブスクリプション</string>
-  <string name="mail_settings_password_management">パスワード管理</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">回復用メールアドレス</string>
   <string name="mail_settings_mailbox_size">メールボックスの容量</string>
   <string name="mail_settings_addresses">アドレス</string>

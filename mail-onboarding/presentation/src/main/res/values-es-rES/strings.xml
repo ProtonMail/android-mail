@@ -19,7 +19,7 @@
 <resources>
   <!--  Spotlight V6 GA  -->
   <string name="onboarding_headline_ga">Te damos la bienvenida a la nueva aplicación</string>
-  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva aplicación de Proton Mail de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
+  <string name="onboarding_description_ga">Completamente reconstruida desde cero, la nueva aplicación de Proton Mail fue creada para brindar estabilidad y rendimiento.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Privacidad para todos</string>
   <string name="onboarding_privacy_for_all_description">Invita a más personas a Proton Mail para beneficiar del cifrado de extremo a extremo.</string>

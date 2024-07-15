@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Conta</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Assinatura</string>
-  <string name="mail_settings_password_management">Gerenciamento de senhas</string>
+  <string name="mail_settings_password_management">Alterar senha</string>
   <string name="mail_settings_recovery_email">E-mail de recuperação</string>
   <string name="mail_settings_mailbox_size">Tamanho da caixa de correio</string>
   <string name="mail_settings_addresses">Endereços</string>

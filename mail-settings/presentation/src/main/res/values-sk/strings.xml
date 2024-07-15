@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Účet</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Predplatné</string>
-  <string name="mail_settings_password_management">Správa hesiel</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">Email na obnovenie</string>
   <string name="mail_settings_mailbox_size">Veľkosť poštovej schránky</string>
   <string name="mail_settings_addresses">Adresy</string>

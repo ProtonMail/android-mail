@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Аккаунт</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Подписка</string>
-  <string name="mail_settings_password_management">Управление паролями</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">Резервный адрес электронной почты</string>
   <string name="mail_settings_mailbox_size">Объём почтового ящика</string>
   <string name="mail_settings_addresses">Адреса</string>

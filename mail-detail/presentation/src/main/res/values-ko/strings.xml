@@ -31,7 +31,7 @@
   <string name="from">보낸 이:</string>
   <string name="to">받는 사람:</string>
   <string name="cc">참조:</string>
-  <string name="bcc">숨은 참조:</string>
+  <string name="bcc">숨은참조:</string>
   <string name="date">날짜:</string>
   <plurals name="attachment">
     <item quantity="other">첨부 파일 %d개</item>

@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Compte</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Subscripció</string>
-  <string name="mail_settings_password_management">Administrador de contrasenyes</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">Correu electrònic de recuperació</string>
   <string name="mail_settings_mailbox_size">Mida de la bústia</string>
   <string name="mail_settings_addresses">Adreces</string>

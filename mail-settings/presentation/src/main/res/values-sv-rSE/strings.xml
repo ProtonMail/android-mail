@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Prenumeration</string>
-  <string name="mail_settings_password_management">Lösenordshantering</string>
+  <string name="mail_settings_password_management">Ändra lösenord</string>
   <string name="mail_settings_recovery_email">E-post för återställning</string>
   <string name="mail_settings_mailbox_size">Brevlådestorlek</string>
   <string name="mail_settings_addresses">Adresser</string>

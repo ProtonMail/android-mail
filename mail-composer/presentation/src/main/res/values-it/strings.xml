@@ -91,9 +91,9 @@
   <string name="set_message_password_supporting_error_text_repeat">Password non corrispondente</string>
   <string name="set_message_password_button_show">Mostra la password</string>
   <string name="set_message_password_button_hide">Nascondi la password</string>
-  <string name="set_message_password_button_apply">Applica la password</string>
-  <string name="set_message_password_button_save_changes">Salva le modifiche</string>
-  <string name="set_message_password_button_remove_password">Rimuovi la password</string>
+  <string name="set_message_password_button_apply">Applica</string>
+  <string name="set_message_password_button_save_changes">Salva</string>
+  <string name="set_message_password_button_remove_password">Rimuovi</string>
   <string name="respondInline">Rispondi in linea</string>
   <plurals name="composer_recipient_suggestion_contacts">
     <item quantity="one">%d contatto</item>

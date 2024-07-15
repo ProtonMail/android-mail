@@ -50,7 +50,7 @@
   <string name="mail_settings_account">계정</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">구독</string>
-  <string name="mail_settings_password_management">비밀번호 관리</string>
+  <string name="mail_settings_password_management">Change password</string>
   <string name="mail_settings_recovery_email">복구 이메일</string>
   <string name="mail_settings_mailbox_size">메일함 크기</string>
   <string name="mail_settings_addresses">주소</string>
