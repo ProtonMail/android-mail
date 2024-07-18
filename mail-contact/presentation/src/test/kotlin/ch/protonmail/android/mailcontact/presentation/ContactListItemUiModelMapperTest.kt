@@ -54,7 +54,8 @@ class ContactListItemUiModelMapperTest {
                         ContactId("1"),
                         "firstcontact@protonmail.com",
                         emptyList(),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             ),
@@ -73,7 +74,8 @@ class ContactListItemUiModelMapperTest {
                         ContactId("1.1"),
                         "firstcontactbis@protonmail.com",
                         emptyList(),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             ),
@@ -92,7 +94,8 @@ class ContactListItemUiModelMapperTest {
                         ContactId("2"),
                         "secondcontact@protonmail.com",
                         emptyList(),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             )

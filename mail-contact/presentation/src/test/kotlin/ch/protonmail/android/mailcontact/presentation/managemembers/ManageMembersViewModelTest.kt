@@ -61,7 +61,8 @@ class ManageMembersViewModelTest {
                 ContactId("ContactId1"),
                 "johndoe@protonmail.com",
                 emptyList(),
-                true
+                true,
+                lastUsedTime = 0
             ),
             ContactEmail(
                 UserIdTestData.userId,
@@ -73,7 +74,8 @@ class ManageMembersViewModelTest {
                 ContactId("ContactId1"),
                 "janedoe@protonmail.com",
                 emptyList(),
-                true
+                true,
+                lastUsedTime = 0
             )
         )
     )

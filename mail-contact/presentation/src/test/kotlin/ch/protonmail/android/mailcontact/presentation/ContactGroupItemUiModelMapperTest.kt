@@ -62,7 +62,8 @@ class ContactGroupItemUiModelMapperTest {
                         ContactId("1"),
                         "firstcontact@protonmail.com",
                         listOf("LabelId1"),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             ),
@@ -81,7 +82,8 @@ class ContactGroupItemUiModelMapperTest {
                         ContactId("1.1"),
                         "firstcontactbis@protonmail.com",
                         listOf("LabelId1"),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             ),
@@ -100,7 +102,8 @@ class ContactGroupItemUiModelMapperTest {
                         ContactId("2"),
                         "secondcontact@protonmail.com",
                         listOf("LabelId1", "LabelId2"),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             )

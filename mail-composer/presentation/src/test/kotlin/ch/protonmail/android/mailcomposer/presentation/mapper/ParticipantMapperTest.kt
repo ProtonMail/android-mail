@@ -49,7 +49,8 @@ class ParticipantMapperTest {
                     ContactIdTestData.contactId1,
                     "test1@protonmail.com",
                     emptyList(),
-                    true
+                    true,
+                    lastUsedTime = 0
                 )
             )
         ),
@@ -66,7 +67,8 @@ class ParticipantMapperTest {
                     ContactIdTestData.contactId2,
                     "test2@protonmail.com",
                     emptyList(),
-                    false
+                    false,
+                    lastUsedTime = 0
                 ),
                 ContactEmail(
                     UserIdTestData.userId,
@@ -78,7 +80,8 @@ class ParticipantMapperTest {
                     ContactIdTestData.contactId1,
                     "test3@protonmail.com",
                     emptyList(),
-                    false
+                    false,
+                    lastUsedTime = 0
                 )
             )
         )

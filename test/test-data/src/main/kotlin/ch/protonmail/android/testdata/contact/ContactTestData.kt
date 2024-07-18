@@ -63,7 +63,8 @@ object ContactTestData {
         contactId = contactId,
         canonicalEmail = address,
         labelIds = emptyList(),
-        isProton = null
+        isProton = null,
+        lastUsedTime = 0
     )
 }
 

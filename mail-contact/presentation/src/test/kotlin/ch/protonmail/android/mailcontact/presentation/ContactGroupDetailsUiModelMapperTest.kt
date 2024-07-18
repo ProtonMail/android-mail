@@ -69,7 +69,8 @@ class ContactGroupDetailsUiModelMapperTest {
                     ContactIdTestData.contactId1,
                     "test1@protonmail.com",
                     listOf("LabelId1"),
-                    true
+                    true,
+                    lastUsedTime = 0
                 ),
                 ContactEmail(
                     UserIdTestData.userId,
@@ -81,7 +82,8 @@ class ContactGroupDetailsUiModelMapperTest {
                     ContactIdTestData.contactId1,
                     "test2@protonmail.com",
                     emptyList(),
-                    true
+                    true,
+                    lastUsedTime = 0
                 )
             )
         )

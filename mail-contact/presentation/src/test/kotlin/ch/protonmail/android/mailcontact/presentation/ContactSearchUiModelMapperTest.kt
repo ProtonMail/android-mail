@@ -71,7 +71,8 @@ class ContactSearchUiModelMapperTest {
                         ContactIdTestData.contactId1,
                         "",
                         emptyList(),
-                        true
+                        true,
+                        lastUsedTime = 0
                     )
                 )
             )

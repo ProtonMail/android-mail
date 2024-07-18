@@ -79,7 +79,8 @@ class ContactGroupDetailsViewModelTest {
                 ContactIdTestData.contactId1,
                 "test1@protonmail.com",
                 listOf("LabelId1"),
-                true
+                true,
+                lastUsedTime = 0
             )
         )
     )

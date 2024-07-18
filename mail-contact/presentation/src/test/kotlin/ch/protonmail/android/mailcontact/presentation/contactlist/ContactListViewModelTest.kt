@@ -89,7 +89,8 @@ class ContactListViewModelTest {
                 ContactId("1"),
                 "firstcontact@protonmail.com",
                 listOf(defaultTestContactGroupLabel.labelId.id),
-                true
+                true,
+                lastUsedTime = 0
             )
         )
     )
