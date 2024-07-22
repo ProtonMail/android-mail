@@ -40,7 +40,7 @@
   <string name="action_trash_description">Mover a la papelera</string>
   <string name="action_delete_description">Eliminar</string>
   <string name="action_archive_description">Archivar</string>
-  <string name="action_spam_description">Mover a la carpeta Spam</string>
+  <string name="action_spam_description">Mover a la carpeta de spam</string>
   <string name="action_view_in_light_mode_description">Ver mensaje en modo claro</string>
   <string name="action_view_in_dark_mode_description">Ver mensaje en modo oscuro</string>
   <string name="action_print_description">Imprimir</string>

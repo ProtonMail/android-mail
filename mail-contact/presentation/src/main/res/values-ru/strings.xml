@@ -101,10 +101,10 @@
   <string name="all_contacts_tab">Контакты</string>
   <string name="contact_groups_tab">Группы</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="few">%1$d members</item>
-    <item quantity="many">%1$d members</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d член</item>
+    <item quantity="few">%1$d участников</item>
+    <item quantity="many">%1$d членов</item>
+    <item quantity="other">%1$d член</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Участник (%1$d)</item>

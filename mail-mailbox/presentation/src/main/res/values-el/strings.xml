@@ -78,7 +78,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
   <string name="mailbox_action_trash_message">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</string>
   <string name="mailbox_action_archive_message">Το μήνυμα μετακινήθηκε στα Αρχειοθετημένα</string>
-  <string name="mailbox_action_spam_message">μήνυμα μετακινήθηκε στα Ενοχλητικά</string>
+  <string name="mailbox_action_spam_message">Το μήνυμα μετακινήθηκε στα ανεπιθύμητα</string>
   <string name="mailbox_search_placeholder_text">Αναζήτηση μηνυμάτων</string>
   <string name="mailbox_search_no_results_title">Δε βρέθηκαν αποτελέσματα</string>
   <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλεκτρονικού ταχυδρομείου ή γραμμή θέματος</string>
@@ -94,7 +94,7 @@
   <string name="storage_limit_warning_dialog_title">Προειδοποίηση</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 80%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 90%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>
-  <string name="storage_limit_warning_dialog_do_not_remind_button">Μην μου υπενθυμίσεις ξανά</string>
+  <string name="storage_limit_warning_dialog_do_not_remind_button">Μη μου υπενθυμίσεις ξανά</string>
   <string name="storage_limit_warning_dialog_confirm_button">ΟΚ</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Προειδοποίηση</string>

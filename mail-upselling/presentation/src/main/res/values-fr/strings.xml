@@ -18,10 +18,10 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Bouton de changement d\'abonnement</string>
+  <string name="upselling_button_item_content_description">Bouton d\'amélioration de l\'abonnement</string>
   <string name="upselling_title">Passer à</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Pour débloquer plus d\'espace de stockage et des fonctionnalités premium</string>
+  <string name="upselling_plus_description_override">Pour débloquer plus d\'espace de stockage et de fonctionnalités premium</string>
   <string name="upselling_plus_feature_storage">15 Go d\'espace de stockage</string>
   <string name="upselling_plus_feature_email_addresses">10 adresses e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Prise en charge de domaine de messagerie personnalisé</string>
@@ -43,11 +43,11 @@
     <item quantity="other">%d mois</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Les options de changement d\'abonnement n\'ont pas pu être récupérées.</string>
+  <string name="upselling_unable_retrieve_options">Les options d\'amélioration de l\'abonnement n\'ont pas pu être récupérées.</string>
   <string name="upselling_snackbar_error_no_user_id">Une erreur s’est produite.</string>
   <string name="upselling_snackbar_error_no_subscriptions">Les abonnements n\'ont pas pu être récupérés.</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Amélioration de l\'abonnement en cours…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Une erreur est survenue lors de l\'enregistrement de votre abonnement.</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Une erreur est survenue lors de l\'amélioration de votre abonnement.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Une erreur s\'est produite. Veuillez réessayer.</string>
 </resources>

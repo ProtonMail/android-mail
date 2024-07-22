@@ -101,8 +101,8 @@
   <string name="all_contacts_tab">Contacts</string>
   <string name="contact_groups_tab">Groups</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d n uεeggal</item>
+    <item quantity="other">%1$d n yiεeggalen</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Member (%1$d)</item>

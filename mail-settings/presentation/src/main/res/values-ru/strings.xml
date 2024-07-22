@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Аккаунт</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Подписка</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Изменить пароль</string>
   <string name="mail_settings_recovery_email">Резервный адрес электронной почты</string>
   <string name="mail_settings_mailbox_size">Объём почтового ящика</string>
   <string name="mail_settings_addresses">Адреса</string>
@@ -84,7 +84,7 @@
   <string name="mail_settings_identity_error_updating">Ошибка сохранения настроек</string>
   <string name="mail_settings_identity_error_loading">Ошибка загрузки настроек</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Авто-показ внешнего содержимого</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Автоматическое отображение внешнего содержимого</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Авто-показ встроенных изображений</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Предотвратить снятие снимков экрана</string>
   <string name="mail_settings_privacy_request_link_confirmation">Запрашивать подтверждение при переходе по ссылкам</string>
@@ -110,7 +110,7 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Push-уведомления</string>
   <string name="mail_settings_notifications_extended_notifications_title">Расширенные уведомления</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Включите эту функцию, чтобы видеть отправителя\nписем в push-уведомлениях.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Включите эту функцию, чтобы видеть отправителя писем в push-уведомлениях.</string>
   <string name="mail_settings_notifications_notifications_settings">Настройки уведомлений</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Перейти к настройкам системных оповещений</string>
   <string name="mail_settings_notifications_update_error">Ошибка сохранения настроек</string>

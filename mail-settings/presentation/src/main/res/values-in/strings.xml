@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Akun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Langganan</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Ubah kata sandi</string>
   <string name="mail_settings_recovery_email">Alamat email pemulihan</string>
   <string name="mail_settings_mailbox_size">Ukuran kotak surat</string>
   <string name="mail_settings_addresses">Alamat</string>

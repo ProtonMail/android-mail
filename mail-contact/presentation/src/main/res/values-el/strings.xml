@@ -101,8 +101,8 @@
   <string name="all_contacts_tab">Επαφές</string>
   <string name="contact_groups_tab">Ομάδες</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d μέλος</item>
+    <item quantity="other">%1$d μέλη</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Μέλος (%1$d)</item>

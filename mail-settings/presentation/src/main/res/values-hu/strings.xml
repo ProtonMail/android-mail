@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Fiók</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Előfizetés</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Jelszó módosítása</string>
   <string name="mail_settings_recovery_email">Helyreállító e-mail</string>
   <string name="mail_settings_mailbox_size">Postafiók mérete</string>
   <string name="mail_settings_addresses">Címek</string>

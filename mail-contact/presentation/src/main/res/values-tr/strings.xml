@@ -102,7 +102,7 @@
   <string name="contact_groups_tab">Gruplar</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d üye</item>
-    <item quantity="other">%1$d üyeler</item>
+    <item quantity="other">%1$d üye</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Üye (%1$d)</item>

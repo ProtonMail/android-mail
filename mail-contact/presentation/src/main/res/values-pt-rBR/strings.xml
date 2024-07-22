@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancelar</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Erro ao salvar o contato. Tente novamente mais tarde</string>
-  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
+  <string name="contact_form_save_error_limit_reached">Limite de contato atingido</string>
   <string name="all_contacts_tab">Contatos</string>
   <string name="contact_groups_tab">Grupos</string>
   <plurals name="contact_group_details_member_count">

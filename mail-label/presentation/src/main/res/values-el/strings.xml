@@ -61,7 +61,7 @@
   <string name="input_field_clear_content_description">Διαγραφή κειμένου</string>
   <string name="label_list_item_content_description">Εφαρμογή ετικέτας στο στοιχείο λίστας</string>
   <string name="folder_list_item_content_description">Προσθέστε στο φάκελο το στοιχείο λίστας</string>
-  <string name="folder_list_no_folders_found">Δεν βρέθηκαν φάκελοι.</string>
+  <string name="folder_list_no_folders_found">Δε βρέθηκαν φάκελοι.</string>
   <string name="folder_list_create_folder_placeholder_description">Δημιουργήστε μια φάκελο για να βελτιώσετε την εμπειρία ηλεκτρονικού ταχυδρομείου σας.</string>
   <string name="create_folder_content_description">Προσθήκη φακέλου</string>
   <string name="folder_settings_content_description">Ρυθμίσεις φακέλου</string>

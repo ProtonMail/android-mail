@@ -101,9 +101,9 @@
   <string name="all_contacts_tab">Contacte</string>
   <string name="contact_groups_tab">Grupuri</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="one">%1$d member</item>
-    <item quantity="few">%1$d members</item>
-    <item quantity="other">%1$d members</item>
+    <item quantity="one">%1$d membru</item>
+    <item quantity="few">%1$d membri</item>
+    <item quantity="other">%1$d de membri</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="one">Membri (%1$d)</item>

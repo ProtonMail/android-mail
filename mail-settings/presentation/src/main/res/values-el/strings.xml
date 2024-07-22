@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Λογαριασμός</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Συνδρομή</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Αλλαγή κωδικού πρόσβασης</string>
   <string name="mail_settings_recovery_email">Διεύθυνση ανάκτησης</string>
   <string name="mail_settings_mailbox_size">Μέγεθος θυρίδας</string>
   <string name="mail_settings_addresses">Διευθύνσεις</string>

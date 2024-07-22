@@ -24,8 +24,8 @@
   <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
   <string name="upselling_plus_feature_storage">15 GB storage</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>
-  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
-  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="upselling_plus_feature_custom_domain">自有域名支持</string>
+  <string name="upselling_plus_feature_desktop_app">新 Proton Mail 桌面应用程序</string>
   <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>

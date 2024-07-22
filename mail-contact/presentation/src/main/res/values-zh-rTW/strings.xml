@@ -101,7 +101,7 @@
   <string name="all_contacts_tab">聯絡人</string>
   <string name="contact_groups_tab">群組</string>
   <plurals name="contact_group_details_member_count">
-    <item quantity="other">%1$d members</item>
+    <item quantity="other">%1$d 個成員</item>
   </plurals>
   <plurals name="contact_group_form_member_count">
     <item quantity="other">成員 (%1$d 個)</item>

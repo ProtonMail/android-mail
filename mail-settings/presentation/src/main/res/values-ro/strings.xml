@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Cont</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonament</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Schimbare parolă</string>
   <string name="mail_settings_recovery_email">E-mail de recuperare</string>
   <string name="mail_settings_mailbox_size">Mărime stocare mesaje</string>
   <string name="mail_settings_addresses">Adrese</string>

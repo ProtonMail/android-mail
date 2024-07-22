@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Amiḍan</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Amultaɣ</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Senfel awal uffir</string>
   <string name="mail_settings_recovery_email">Imayl n tririt</string>
   <string name="mail_settings_mailbox_size">Tiddi n tnaka n urmas</string>
   <string name="mail_settings_addresses">Tansiwin</string>

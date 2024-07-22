@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Обліковий запис</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Передплата</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Змінити пароль</string>
   <string name="mail_settings_recovery_email">Резервна е-пошта</string>
   <string name="mail_settings_mailbox_size">Розмір поштової скриньки</string>
   <string name="mail_settings_addresses">Адреси</string>

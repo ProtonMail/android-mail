@@ -50,7 +50,7 @@
   <string name="mail_settings_account">帳號</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">訂購授權</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">變更密碼</string>
   <string name="mail_settings_recovery_email">復原電郵</string>
   <string name="mail_settings_mailbox_size">信箱大小</string>
   <string name="mail_settings_addresses">電郵位址</string>

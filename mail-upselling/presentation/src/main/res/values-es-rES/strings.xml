@@ -35,7 +35,7 @@
   <string name="upselling_unlimited_feature_drive">Almacenamiento seguro en la nube</string>
   <string name="upselling_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">AHORRA %s%%</string>
+  <string name="upselling_discount_tag">AHORRA UN %s%%</string>
   <string name="upselling_month">/mes</string>
   <string name="upselling_get_button">Obtener %s</string>
   <plurals name="upselling_month">

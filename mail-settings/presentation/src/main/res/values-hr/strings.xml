@@ -50,7 +50,7 @@
   <string name="mail_settings_account">Korisnički račun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Pretplata</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">Promjena lozinke</string>
   <string name="mail_settings_recovery_email">E-pošta za oporavak</string>
   <string name="mail_settings_mailbox_size">Veličina sandučića e-pošte</string>
   <string name="mail_settings_addresses">Adrese</string>
@@ -139,8 +139,8 @@
   <string name="mail_settings_pin_insertion_error_no_match">PIN codes do not match.</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s remaining attempt.</item>
-    <item quantity="few">%s remaining attempts.</item>
-    <item quantity="other">%s remaining attempts.</item>
+    <item quantity="few">Preostalo %s pokušaja.</item>
+    <item quantity="other">Preostalo %s pokušaja.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="one">%s remaining attempt until secure data wipe.</item>

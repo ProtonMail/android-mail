@@ -50,7 +50,7 @@
   <string name="mail_settings_account">账户</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">账户等级</string>
-  <string name="mail_settings_password_management">Change password</string>
+  <string name="mail_settings_password_management">更改密码</string>
   <string name="mail_settings_recovery_email">密保邮箱</string>
   <string name="mail_settings_mailbox_size">邮箱容量</string>
   <string name="mail_settings_addresses">地址</string>
