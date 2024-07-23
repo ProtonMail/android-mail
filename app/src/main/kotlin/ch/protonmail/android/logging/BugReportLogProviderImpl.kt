@@ -19,10 +19,11 @@
 package ch.protonmail.android.logging
 
 import java.io.File
-import java.io.IOException
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.report.domain.provider.BugReportLogProvider
@@ -44,23 +45,20 @@ class BugReportLogProviderImpl @Inject constructor(
             return null
         }
 
-        return try {
+        return runCatching {
+            withContext(Dispatchers.IO) {
+                File(logDirectoryName(userId)).apply { mkdirs() }
 
-            File(logDirectoryName(userId)).apply { mkdirs() }
+                val logFileName = "${System.currentTimeMillis()}.log"
+                val logFile = File(logDirectoryName(userId), logFileName).apply { this.createNewFile() }
 
-            val logFileName = "${System.currentTimeMillis()}.log"
-            val logFile = File(logDirectoryName(userId), logFileName).apply { this.createNewFile() }
+                // dump the log to a file
+                Runtime.getRuntime().exec("logcat -d -v time -f " + logFile.absolutePath)
 
-            // dump the log to a file
-            Runtime.getRuntime().exec("logcat -d -v time -f " + logFile.absolutePath)
-
-            logFile
-
-        } catch (e: IOException) {
-            Timber.e(e, "exception creating log file for bug report")
-            null
-        } catch (e: SecurityException) {
-            Timber.e(e, "exception creating log file for bug report")
+                logFile
+            }
+        }.getOrElse {
+            Timber.e(it, "exception creating log file for bug report")
             null
         }
     }
