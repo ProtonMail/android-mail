@@ -116,7 +116,7 @@
   <string name="mail_settings_notifications_update_error">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_notifications_loading_error">Error loading settings</string>
   <!-- Auto lock -->
-  <string name="mail_settings_auto_lock_title">Auto lock</string>
+  <string name="mail_settings_auto_lock_title">Automatsko zaključavanje</string>
   <string name="mail_settings_auto_lock_item_title">Automatsko zaključavanje aplikacije</string>
   <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Promijenite PIN kod</string>

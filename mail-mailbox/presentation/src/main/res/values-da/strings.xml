@@ -34,9 +34,9 @@
   </plurals>
   <string name="mailbox_default_recipient">(Ingen modtager)</string>
   <string name="mailbox_default_sender">(Ingen afsender)</string>
-  <string name="mailbox_error_message_offline">Du er offline og kan ikke hente emner</string>
+  <string name="mailbox_error_message_offline">Du er offline og kan ikke hente elementer</string>
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
-  <string name="mailbox_error_message_unexpected">Noget gik uventet galt</string>
+  <string name="mailbox_error_message_unexpected">Et eller andet gik uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen beskeder</string>
   <string name="mailbox_is_empty_description">Du er ajourført</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Ingen ulæste beskeder</string>

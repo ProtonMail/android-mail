@@ -95,8 +95,8 @@
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Azioni di scorrimento</string>
   <string name="mail_settings_swipe_actions_subtitle">Configura i gesti di scorrimento per accedere alle azioni più usate.</string>
-  <string name="mail_settings_swipe_right_name">Da sinistra a destra</string>
-  <string name="mail_settings_swipe_left_name">Da destra a sinistra</string>
+  <string name="mail_settings_swipe_right_name">Sinistra-destra</string>
+  <string name="mail_settings_swipe_left_name">Destra-sinistra</string>
   <string name="mail_settings_swipe_action_archive_title">Archivio</string>
   <string name="mail_settings_swipe_action_read_title">Letto</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>

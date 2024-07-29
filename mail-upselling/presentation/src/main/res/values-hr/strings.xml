@@ -36,8 +36,8 @@
   <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">UŠTEDITE %s%%</string>
-  <string name="upselling_month">/month</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_month">/mjesec</string>
+  <string name="upselling_get_button">Nabavite %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mjesec</item>
     <item quantity="few">%d mjeseca</item>

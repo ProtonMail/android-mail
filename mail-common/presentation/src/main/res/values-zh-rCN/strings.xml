@@ -37,7 +37,7 @@
   <string name="action_unstar_description">取消星标</string>
   <string name="action_label_description">标记为</string>
   <string name="action_move_description">移动到</string>
-  <string name="action_trash_description">Move to trash</string>
+  <string name="action_trash_description">移至回收站</string>
   <string name="action_delete_description">刪除</string>
   <string name="action_archive_description">归档</string>
   <string name="action_spam_description">标为垃圾邮件</string>

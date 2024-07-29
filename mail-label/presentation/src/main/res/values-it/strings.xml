@@ -68,7 +68,7 @@
   <string name="folder_settings_title">Impostazioni</string>
   <string name="folder_settings_done_button">Chiudi</string>
   <string name="folder_settings_folder_colors">Visualizzazione dei colori</string>
-  <string name="folder_settings_parent_color">Uso del colore della cartella superiore</string>
+  <string name="folder_settings_parent_color">Semplificazione dei colori</string>
   <string name="folder_list_loading_error">Caricamento delle cartelle non riuscito</string>
   <string name="folder_loading_error">Caricamento della cartella non riuscito</string>
   <string name="switch_on">Abilitato</string>

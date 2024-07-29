@@ -17,11 +17,11 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_toolbar_compose_button_content_description">Scrivi un nuovo messaggio</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Esci dalla modalità di selezione</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Scrivi un messaggio</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Chiudi la modalità di selezione</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cerca</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Esci dalla modalità di ricerca</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Chiudi la modalità di ricerca</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Cancella la parola chiave</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Inserisci una parola chiave</string>
   <plurals name="mailbox_toolbar_selected_count">

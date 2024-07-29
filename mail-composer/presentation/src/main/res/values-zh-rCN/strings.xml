@@ -38,7 +38,7 @@
   <string name="composer_error_store_draft_recipients">无法存储此草稿的收件人信息</string>
   <string name="composer_error_loading_draft">此草稿的内容暂时无法加载，继续编辑将覆盖此前保存的内容。</string>
   <string name="composer_add_attachments_content_description">添加附件</string>
-  <string name="composer_add_attachments_bottom_sheet_import_from">Import from…</string>
+  <string name="composer_add_attachments_bottom_sheet_import_from">导入自…</string>
   <string name="composer_error_loading_parent_message">Could not load the message\'s information</string>
   <string name="composer_original_message_quote">Original Message</string>
   <string name="composer_sender_quote">%s，%s &lt;%s&gt;，来信：</string>
@@ -50,21 +50,21 @@
   <string name="composer_button_add_password">添加密码</string>
   <string name="composer_button_set_expiration">设置有效期</string>
   <string name="composer_expiration_time_bottom_sheet_title">邮件有效期</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
-  <string name="composer_bottom_bar_expiration_time_none">None</string>
+  <string name="composer_expiration_time_bottom_sheet_done">设置</string>
+  <string name="composer_bottom_bar_expiration_time_none">无</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 小时</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 天</string>
   <string name="composer_bottom_bar_expiration_time_three_days">3 天</string>
   <string name="composer_bottom_bar_expiration_time_one_week">1 周</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
+  <string name="composer_bottom_bar_expiration_time_custom">其他</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">不支持设置有效期</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">我们建议为下列收件人改为设置邮件阅读密码：</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">取消</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">仍然发送</string>
   <!-- Sender changed dialog -->
-  <string name="composer_sender_changed_dialog_title">Sending notice</string>
+  <string name="composer_sender_changed_dialog_title">提示</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_dialog_confirm_button">好的</string>
@@ -90,9 +90,9 @@
   <string name="set_message_password_supporting_text_repeat">两次输入的密码必须一致</string>
   <string name="set_message_password_supporting_error_text_repeat">两次密码不匹配</string>
   <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_hide">隐藏密码</string>
+  <string name="set_message_password_button_apply">确认密码</string>
+  <string name="set_message_password_button_save_changes">保存更改</string>
   <string name="set_message_password_button_remove_password">移除密码</string>
   <string name="respondInline">纯文本引用</string>
   <plurals name="composer_recipient_suggestion_contacts">

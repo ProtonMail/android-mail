@@ -43,9 +43,9 @@
   <string name="contact_groups_content_description">Grupa kontakata</string>
   <string name="contact_type_email">E-pošta</string>
   <string name="contact_type_phone">Telefon</string>
-  <string name="contact_type_home">Home</string>
+  <string name="contact_type_home">Početna</string>
   <string name="contact_type_work">Posao</string>
-  <string name="contact_type_other">Other</string>
+  <string name="contact_type_other">Ostalo</string>
   <string name="contact_type_mobile">Mobitel</string>
   <string name="contact_type_main">Glavno</string>
   <string name="contact_type_fax">Faks</string>
@@ -134,7 +134,7 @@
   <string name="contact_group_form_save_error_already_exists">Grupa s ovim nazivom već postoji</string>
   <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Error loading members, please try again later</string>
-  <string name="members_done">Done</string>
+  <string name="members_done">Gotovo</string>
   <string name="add_members_error">Error adding members, please try again later</string>
   <string name="manage_members_title">Manage members</string>
   <string name="search_contact">Search for contact</string>

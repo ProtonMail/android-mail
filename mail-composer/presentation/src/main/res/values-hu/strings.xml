@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Jelszó hozzáadása</string>
   <string name="composer_button_set_expiration">Időkorlát megadása</string>
   <string name="composer_expiration_time_bottom_sheet_title">Időkorlátos üzenet</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Beállítás</string>
   <string name="composer_bottom_bar_expiration_time_none">Nincs</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 óra</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 nap</string>

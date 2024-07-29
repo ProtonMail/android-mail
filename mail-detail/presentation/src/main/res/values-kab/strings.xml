@@ -25,15 +25,15 @@
     <item quantity="one">%d n yizen</item>
     <item quantity="other">%d n yiznan</item>
   </plurals>
-  <string name="quick_reply_button_content_description">Reply</string>
-  <string name="quick_reply_all_button_content_description">Reply All</string>
+  <string name="quick_reply_button_content_description">Err</string>
+  <string name="quick_reply_all_button_content_description">Err-asen akk</string>
   <string name="more_button_content_description">Ugar</string>
   <string name="subject">Subject:</string>
   <string name="from">From:</string>
   <string name="to">Ɣer:</string>
   <string name="cc">Anɣ. I:</string>
   <string name="bcc">Anɣ. Uff. I:</string>
-  <string name="date">Date:</string>
+  <string name="date">Azemz:</string>
   <plurals name="attachment">
     <item quantity="one">%d umedday</item>
     <item quantity="other">%d n yimeddayen</item>
@@ -77,14 +77,14 @@
   <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">Ur d-ssutur ara tikkelt niḍen</string>
   <string name="external_link_confirmation_dialog_cancel_button">Sefsex</string>
-  <string name="external_link_confirmation_dialog_continue_button">Continue</string>
+  <string name="external_link_confirmation_dialog_continue_button">Kemmel</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Ɣur-k•m: yettban d yir asmel web</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Aseɣwen-a yettawi ɣer usmel web i yettaɛraḍen ahat ad yaker talɣut-ik, am wawalen uffiren d telqayt n tkarḍa n usmad.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">For your security, do not continue.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Uɣal ɣer deffir (yettwasemter)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Zgel alɣu, tkemmkeḍ</string>
-  <string name="message_delete_dialog_title">Delete message</string>
+  <string name="message_delete_dialog_title">Kkes ien</string>
   <string name="message_delete_dialog_message">Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi izen-a?</string>
   <string name="message_deleted">Izen yettwakkes</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
@@ -95,13 +95,13 @@
   <string name="message_body_load_remote_content_button_text">Sali-d agbur anmeggag</string>
   <string name="message_body_load_embedded_images_button_text">Sali tugniwin tusliɣin</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
-  <string name="message_report_phishing_dialog_title_offline">Attention</string>
+  <string name="message_report_phishing_dialog_title_offline">Γur-k·m</string>
   <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">IH</string>
   <string name="message_report_phishing_dialog_title">Sentem tuzna n uneqqis n phishing</string>
   <string name="message_report_phishing_dialog_message">Ma temmeleḍ izen d aneɛruḍ n ukellex ad yettwazen	yizen-nni ɣur-nneɣ, swakka ad nizmir ad t-nesleḍ yerna ad nwenneɛ tistayin-nneɣ. Ayag yebɣa ad d-yinin belli ad nizmir ad nwali akk agbur n yizen.</string>
-  <string name="message_report_phishing_dialog_confim_button">Confirm</string>
-  <string name="message_report_phishing_dialog_cancel_button">Cancel</string>
+  <string name="message_report_phishing_dialog_confim_button">Sentem</string>
+  <string name="message_report_phishing_dialog_cancel_button">Sefsex</string>
   <string name="open_on_protoncalendar_banner_title">Ldi di Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Awitay awgelhan aɣelsan</string>
   <string name="error_print_failed">Failed to print message</string>

@@ -22,7 +22,7 @@
   <string name="upselling_title">Upgrade to</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>
   <string name="upselling_plus_feature_custom_domain">自有域名支持</string>
   <string name="upselling_plus_feature_desktop_app">新 Proton Mail 桌面应用程序</string>
@@ -37,7 +37,7 @@
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SAVE %s%%</string>
   <string name="upselling_month">/月</string>
-  <string name="upselling_get_button">Get %s</string>
+  <string name="upselling_get_button">获得 %s</string>
   <plurals name="upselling_month">
     <item quantity="other">%d 月</item>
   </plurals>

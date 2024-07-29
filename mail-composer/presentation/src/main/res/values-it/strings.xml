@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Indirizzo email non valido</string>
   <string name="composer_error_invalid_sender">Indirizzo mittente non valido</string>
   <string name="change_sender_button_content_description">Cambia il mittente</string>
-  <string name="composer_change_sender_paid_feature">Effettua l\'upgrade per modificare l\'indirizzo mittente</string>
+  <string name="composer_change_sender_paid_feature">Effettua l\'upgrade per cambiare l\'indirizzo mittente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Caricamento dell\'abbonamento non riuscito. Cambio del mittente non riuscito.</string>
   <string name="composer_error_store_draft_sender_address">Salvataggio del mittente della bozza non riuscito</string>
   <string name="composer_error_store_draft_body">Salvataggio del contenuto della bozza non riuscito</string>
@@ -49,8 +49,8 @@
   <string name="composer_warning_local_data_shown">Caricamento dell\'ultima versione della bozza non riuscito. Qualsiasi modifica sovrascriverà il suo contenuto.</string>
   <string name="composer_button_add_password">Aggiungi una password</string>
   <string name="composer_button_set_expiration">Imposta la scadenza</string>
-  <string name="composer_expiration_time_bottom_sheet_title">Scadenza del messaggio</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Imposta</string>
+  <string name="composer_expiration_time_bottom_sheet_title">Scadenza</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Salva</string>
   <string name="composer_bottom_bar_expiration_time_none">Nessuna</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>
@@ -74,11 +74,11 @@
   <string name="composer_send_without_subject_dialog_confirm_button">Invia</string>
   <string name="composer_send_without_subject_dialog_reject_button">Annulla</string>
   <!-- Message sending error dialog -->
-  <string name="message_sending_error_dialog_header">Errore nell\'invio del messaggio</string>
+  <string name="message_sending_error_dialog_header">Invio del messaggio non riuscito</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
   <string name="message_sending_error_dialog_text_error">Invio del messaggio all\'indirizzo inserito non riuscito a causa del seguente motivo:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Non ci sono chiavi attendibili: %s</string>
-  <string name="message_sending_error_dialog_text_reason_address_disabled">L\'indirizzo non esiste: %s</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Nessuna chiave attendibile: %s</string>
+  <string name="message_sending_error_dialog_text_reason_address_disabled">Indirizzo non esistente: %s</string>
   <string name="set_message_password_title">Crittografa il messaggio</string>
   <string name="set_message_password_info_message">Imposta una password per crittografare questo messaggio per gli utenti che non usano Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Scopri di più</a></string>

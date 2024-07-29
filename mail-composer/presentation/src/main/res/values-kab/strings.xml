@@ -47,32 +47,32 @@
   <string name="composer_attachment_size_exceeded_dialog_message">The size limit for attachments is %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Reencryption of attachment failed. For security reasons all attachments got removed.</string>
   <string name="composer_warning_local_data_shown">The latest version of this draft failed to load. Any change will override its content.</string>
-  <string name="composer_button_add_password">Add password</string>
+  <string name="composer_button_add_password">Rnu awal uffir</string>
   <string name="composer_button_set_expiration">Sbadu azemz n ufati</string>
   <string name="composer_expiration_time_bottom_sheet_title">Afati n yizen</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Set</string>
-  <string name="composer_bottom_bar_expiration_time_none">None</string>
-  <string name="composer_bottom_bar_expiration_time_one_hour">1 hour</string>
-  <string name="composer_bottom_bar_expiration_time_one_day">1 day</string>
-  <string name="composer_bottom_bar_expiration_time_three_days">3 days</string>
-  <string name="composer_bottom_bar_expiration_time_one_week">1 week</string>
-  <string name="composer_bottom_bar_expiration_time_custom">Custom</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Wennez</string>
+  <string name="composer_bottom_bar_expiration_time_none">Ula yiwen</string>
+  <string name="composer_bottom_bar_expiration_time_one_hour">1 n usrag</string>
+  <string name="composer_bottom_bar_expiration_time_one_day">1 n wass</string>
+  <string name="composer_bottom_bar_expiration_time_three_days">3 n wussan</string>
+  <string name="composer_bottom_bar_expiration_time_one_week">1 umalas</string>
+  <string name="composer_bottom_bar_expiration_time_custom">Yugen</string>
   <string name="composer_error_setting_expiration_time">Setting expiration time failed</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Tanzagt ur tettusefrak ara</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Ad nsemter aseɣwer n wawal uffir i yiuɣerwaḍen-agi:</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Cancel</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Send anyway</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Sefsex</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Azen akken ibɣu yili</string>
   <!-- Sender changed dialog -->
-  <string name="composer_sender_changed_dialog_title">Sending notice</string>
+  <string name="composer_sender_changed_dialog_title">Tuzzna n tamawt</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending messages from @pm.me is a paid feature. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_original_address_disabled">The selected sender address is disabled. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_dialog_confirm_button">IH</string>
   <!-- Message sending without subject dialog -->
-  <string name="composer_send_without_subject_dialog_title">Compose</string>
+  <string name="composer_send_without_subject_dialog_title">Aru</string>
   <string name="composer_send_without_subject_dialog_text">Azen izen s war asentel?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Ih</string>
-  <string name="composer_send_without_subject_dialog_reject_button">No</string>
+  <string name="composer_send_without_subject_dialog_reject_button">Uhu</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Mdel</string>
@@ -90,9 +90,9 @@
   <string name="set_message_password_supporting_text_repeat">Awalen uffiren ilaq ad ilin kifkif</string>
   <string name="set_message_password_supporting_error_text_repeat">Sin n wawalen uffiren mgarraden</string>
   <string name="set_message_password_button_show">Show password</string>
-  <string name="set_message_password_button_hide">Hide password</string>
-  <string name="set_message_password_button_apply">Apply password</string>
-  <string name="set_message_password_button_save_changes">Save changes</string>
+  <string name="set_message_password_button_hide">Ffer awal uffir</string>
+  <string name="set_message_password_button_apply">Snes awal uffir</string>
+  <string name="set_message_password_button_save_changes">Sekles ibeddilen</string>
   <string name="set_message_password_button_remove_password">Kkes wawal uffir</string>
   <string name="respondInline">Err degi imayl</string>
   <plurals name="composer_recipient_suggestion_contacts">

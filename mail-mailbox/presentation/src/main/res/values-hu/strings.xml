@@ -44,32 +44,32 @@
   <string name="mailbox_is_empty_spam_description">A kéretlen üzenetek mappája üres</string>
   <string name="mailbox_is_empty_trash_description">A lomtár üres</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Üzenet áthelyezve a lomtárba</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Üzenet áthelyezve a Lomtárba</item>
+    <item quantity="other">%d üzenet áthelyezve a Lomtárba</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Beszélgetés törlése</item>
-    <item quantity="other">Delete %d conversations</item>
+    <item quantity="other">%d beszélgetés törlése</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Üzenet törlése</item>
-    <item quantity="other">Delete %d messages</item>
+    <item quantity="other">%d üzenet törlése</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Biztos, hogy végleg törölni szeretné ezt a beszélgetést?</item>
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="other">Biztos, hogy végleg törölni szeretné ezeket a beszélgetéseket?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Biztos, hogy véglegesen törli ezt az üzenetet?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="other">Biztos, hogy véglegesen törli ezeket az üzeneteket?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Üzenet véglegesen törölve</item>
-    <item quantity="other">%d messages permanently deleted</item>
+    <item quantity="other">%d üzenet véglegesen törölve</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Üzenet véglegesen törölve</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="one">Beszélgetés véglegesen törölve</item>
+    <item quantity="other">%d beszélgetés véglegesen törölve</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Címke művelet sikertelen</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Nem sikerült betölteni a címkéket</string>

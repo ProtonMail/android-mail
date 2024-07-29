@@ -28,15 +28,15 @@
   <string name="action_reply_all">全員に返信</string>
   <string name="action_forward">転送</string>
   <string name="action_reply_description">返信</string>
-  <string name="action_reply_to_description">Reply to %s</string>
+  <string name="action_reply_to_description">%s に返信</string>
   <string name="action_reply_all_description">全員に返信</string>
   <string name="action_forward_description">転送</string>
   <string name="action_mark_read_description">既読にする</string>
   <string name="action_mark_unread_description">未読にする</string>
   <string name="action_star_description">星印を付ける</string>
   <string name="action_unstar_description">星印を外す</string>
-  <string name="action_label_description">Label as</string>
-  <string name="action_move_description">Move to</string>
+  <string name="action_label_description">ラベル付け</string>
+  <string name="action_move_description">移動先</string>
   <string name="action_trash_description">ごみ箱に移動</string>
   <string name="action_delete_description">削除</string>
   <string name="action_archive_description">アーカイブ</string>
@@ -51,7 +51,7 @@
   <string name="action_save_pdf_description">PDFとして保存</string>
   <string name="action_sender_emails_description">この送信者からのメールに既定の動作を設定</string>
   <string name="action_save_attachments_description">添付ファイルを保存</string>
-  <string name="action_more_description">More</string>
+  <string name="action_more_description">もっと見る</string>
   <string name="action_reply_content_description">返信</string>
   <string name="action_reply_to_content_description">%s に返信</string>
   <string name="action_reply_all_content_description">全員に返信</string>
