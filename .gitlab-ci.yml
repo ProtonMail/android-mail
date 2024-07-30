@@ -371,7 +371,7 @@ distribute_debug_mr:
     - MAIN_APK=app/build/outputs/apk/dev/debug/app-dev-debug.apk
     - TEST_APK=app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
     - /usr/local/bin/nexus/mr_created_commit_pushed.py
-      --token "$PRIVATE_TOKEN_GITLAB_API_PROTON_CI"
+      --token "$MAIL_ANDROID_READ_ACCESS_TOKEN"
       --component "/Mail/Android"
       --file_paths "$MAIN_APK" "$TEST_APK"
       --file_names "mail-dev-debug.apk" "mail-dev-debug-test.apk"
@@ -389,7 +389,7 @@ distribute_debug_post_merge:
     - MAIN_APK=app/build/outputs/apk/dev/debug/app-dev-debug.apk
     - TEST_APK=app/build/outputs/apk/androidTest/dev/debug/app-dev-debug-androidTest.apk
     - /usr/local/bin/nexus/mr_merged_with_post_merge_pipeline.py
-      --token "$PRIVATE_TOKEN_GITLAB_API_PROTON_CI"
+      --token "$MAIL_ANDROID_READ_ACCESS_TOKEN"
       --component "/Mail/Android"
       --file_paths "$MAIN_APK" "$TEST_APK"
       --file_names "mail-dev-debug.apk" "mail-dev-debug-test.apk"
