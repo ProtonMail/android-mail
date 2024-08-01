@@ -199,6 +199,12 @@ object MessageSample {
         time = MaySecond2023
     )
 
+    val ReadMessageMayThird = build(
+        messageId = MessageIdSample.UnreadMessageMayThird,
+        unread = false,
+        time = MayThird2023
+    )
+
     val UnreadMessageMayFirst = build(
         messageId = MessageIdSample.UnreadMessageMayFirst,
         unread = true,

@@ -1,5 +1,6 @@
 package ch.protonmail.android.maildetail.presentation
 
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -20,7 +21,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages)
+        val result = getMessageIdToExpand(messages, null)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
@@ -35,7 +36,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages)
+        val result = getMessageIdToExpand(messages, null)
 
         // Then
         assertEquals(MessageIdSample.UnreadMessageMayFirst, result)
@@ -50,7 +51,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages)
+        val result = getMessageIdToExpand(messages, null)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
@@ -67,7 +68,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages)
+        val result = getMessageIdToExpand(messages, null)
 
         // Then
         assertEquals(MessageIdSample.UnreadMessageMayFirst, result)
@@ -84,9 +85,33 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages)
+        val result = getMessageIdToExpand(messages, null)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMayFirst, result)
+    }
+
+    @Test
+    fun `return latest non-draft message id that is located where the conversation was opened from`() {
+        // Given
+        val messages = listOf(
+            MessageWithLabelsSample.build(MessageSample.ReadMessageMayFirst),
+            MessageWithLabelsSample.build(
+                MessageSample.ReadMessageMaySecond.copy(
+                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                )
+            ),
+            MessageWithLabelsSample.build(
+                MessageSample.ReadMessageMayThird.copy(
+                    labelIds = listOf(MailLabelId.System.Archive.labelId, SystemLabelId.AllDrafts.labelId)
+                )
+            )
+        )
+
+        // When
+        val result = getMessageIdToExpand(messages, MailLabelId.System.Archive.labelId)
+
+        // Then
+        assertEquals(MessageIdSample.ReadMessageMaySecond, result)
     }
 }

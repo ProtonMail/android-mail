@@ -18,14 +18,22 @@
 
 package ch.protonmail.android.maildetail.presentation
 
+import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import me.proton.core.label.domain.entity.LabelId
 import javax.inject.Inject
 
 class GetMessageIdToExpand @Inject constructor() {
 
-    operator fun invoke(messages: List<MessageWithLabels>) = when {
-        messages.isLatestMessageRead() -> messages.latestNonDraftMessageId()
-        else -> messages.oldestNonDraftUnreadMessageId()
+    operator fun invoke(messages: List<MessageWithLabels>, openedFromLocation: LabelId?): MessageId? {
+        val filteredMessages = if (openedFromLocation != null) {
+            messages.filter { it.message.labelIds.contains(openedFromLocation) }
+        } else messages
+
+        return when {
+            filteredMessages.isLatestMessageRead() -> filteredMessages.latestNonDraftMessageId()
+            else -> filteredMessages.oldestNonDraftUnreadMessageId()
+        }
     }
 
     private fun List<MessageWithLabels>.isLatestMessageRead() = filterNot { it.message.isDraft() }
