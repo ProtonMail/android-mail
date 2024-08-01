@@ -84,7 +84,8 @@ internal fun NavGraphBuilder.addMailbox(
                                     ConversationId(request.itemId.value),
                                     request.subItemId?.let { mailboxItemId ->
                                         MessageId(mailboxItemId.value)
-                                    }
+                                    },
+                                    request.openedFromLocation
                                 )
                         }
                     }

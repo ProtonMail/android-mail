@@ -33,8 +33,10 @@ import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScr
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen.ContactFormContactIdKey
 import ch.protonmail.android.mailcontact.presentation.contactgroupdetails.ContactGroupDetailsScreen.ContactGroupDetailsLabelIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
+import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.OpenedFromLocationKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
+import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen.FolderFormLabelIdKey
 import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen.ParentFolderListLabelIdKey
 import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolderListScreen.ParentFolderListParentLabelIdKey
@@ -56,12 +58,16 @@ sealed class Destination(val route: String) {
         object Mailbox : Destination("mailbox")
 
         object Conversation : Destination(
-            "mailbox/conversation/${ConversationIdKey.wrap()}/${ScrollToMessageIdKey.wrap()}"
+            "mailbox/conversation/${ConversationIdKey.wrap()}/" +
+                "${ScrollToMessageIdKey.wrap()}/${OpenedFromLocationKey.wrap()}"
         ) {
-            operator fun invoke(conversationId: ConversationId, scrollToMessageId: MessageId? = null) =
-                route.replace(ConversationIdKey.wrap(), conversationId.id).replace(
-                    ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null"
-                )
+            operator fun invoke(
+                conversationId: ConversationId,
+                scrollToMessageId: MessageId? = null,
+                openedFromLocation: MailLabel? = null
+            ) = route.replace(ConversationIdKey.wrap(), conversationId.id)
+                .replace(ScrollToMessageIdKey.wrap(), scrollToMessageId?.id ?: "null")
+                .replace(OpenedFromLocationKey.wrap(), openedFromLocation?.id?.labelId?.id ?: "null")
         }
 
         object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {

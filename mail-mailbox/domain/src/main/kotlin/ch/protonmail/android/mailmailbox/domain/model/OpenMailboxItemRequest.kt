@@ -18,9 +18,12 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+
 data class OpenMailboxItemRequest(
     val itemId: MailboxItemId,
     val itemType: MailboxItemType,
     val shouldOpenInComposer: Boolean,
-    val subItemId: MailboxItemId? = null
+    val subItemId: MailboxItemId? = null,
+    val openedFromLocation: MailLabel? = null
 )

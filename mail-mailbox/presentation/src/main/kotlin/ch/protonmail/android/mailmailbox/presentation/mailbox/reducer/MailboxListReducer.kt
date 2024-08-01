@@ -235,20 +235,28 @@ class MailboxListReducer @Inject constructor() {
                         null
                     }
 
+                val currentLocation = if (currentState is MailboxListState.Data) {
+                    currentState.currentMailLabel
+                } else {
+                    null
+                }
+
                 val isSentMessageWithNoAssignedConvId = operation.item.conversationId.id.isEmpty()
                 if (isSentMessageWithNoAssignedConvId) {
                     OpenMailboxItemRequest(
                         itemId = MailboxItemId(operation.item.id),
                         itemType = MailboxItemType.Message,
                         shouldOpenInComposer = false,
-                        subItemId = searchedItemId
+                        subItemId = searchedItemId,
+                        openedFromLocation = currentLocation
                     )
                 } else {
                     OpenMailboxItemRequest(
                         itemId = MailboxItemId(operation.item.conversationId.id),
                         itemType = MailboxItemType.Conversation,
                         shouldOpenInComposer = false,
-                        subItemId = searchedItemId
+                        subItemId = searchedItemId,
+                        openedFromLocation = currentLocation
                     )
                 }
             }
