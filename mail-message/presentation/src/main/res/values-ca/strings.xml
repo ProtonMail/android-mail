@@ -61,7 +61,7 @@
   <string name="contact_actions_add_contact">Afegeix un contacte</string>
   <string name="contact_actions_add_contact_description">Desa aquest destinatari com a contacte</string>
   <string name="contact_actions_view_contact_details">Mostra el detalls del contacte</string>
-  <string name="contact_actions_view_contact_details_description">Veure detalls del contacte</string>
+  <string name="contact_actions_view_contact_details_description">Visualitza els detalls del contacte</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Es requereix permís.</string>
   <string name="device_contacts_permission_dialog_message">Proton Mail necessita permís per llegir els vostres contactes i suggerir destinataris.</string>

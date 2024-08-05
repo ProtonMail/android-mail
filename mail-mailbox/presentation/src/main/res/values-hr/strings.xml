@@ -18,16 +18,16 @@
   -->
 <resources>
   <string name="mailbox_toolbar_compose_button_content_description">Stvori novu poruku</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Izađite iz načina odabira</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Izađi iz načina odabira</string>
   <string name="mailbox_toolbar_menu_button_content_description">Izbornik</string>
-  <string name="mailbox_toolbar_search_button_content_description">Pretraga</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Exit search mode</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Clear search query</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Enter search query</string>
+  <string name="mailbox_toolbar_search_button_content_description">Pretraži</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Izađi iz načina za pretraživanje</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Očisti upit za pretraživanje</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Unesi upit za pretraživanje</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d Odabrano</item>
     <item quantity="few">%d Odabrano</item>
-    <item quantity="other">%d Odabrano</item>
+    <item quantity="other">%d odabranih</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s nepročitane</item>
@@ -36,19 +36,19 @@
   </plurals>
   <string name="mailbox_default_recipient">(Nema primatelja)</string>
   <string name="mailbox_default_sender">(Nema pošiljatelja)</string>
-  <string name="mailbox_error_message_offline">You are offline, unable to retrieve items</string>
-  <string name="mailbox_error_message_generic">Loading mailbox failed</string>
-  <string name="mailbox_error_message_unexpected">Something went unexpectedly wrong</string>
+  <string name="mailbox_error_message_offline">Izvan mreže ste, nije moguće dohvatiti stavke</string>
+  <string name="mailbox_error_message_generic">Učitavanje poštanskog sandučića nije uspjelo</string>
+  <string name="mailbox_error_message_unexpected">Nešto je pošlo po zlu</string>
   <string name="mailbox_is_empty_title">Nema poruka</string>
   <string name="mailbox_is_empty_description">You are up to date</string>
-  <string name="mailbox_is_empty_no_unread_messages_title">No unread messages</string>
+  <string name="mailbox_is_empty_no_unread_messages_title">Nema nepročitanih poruka</string>
   <string name="mailbox_is_empty_folder_description">Ova mapa je prazna</string>
   <string name="mailbox_is_empty_spam_description">Vaša mapa neželjene pošte je prazna</string>
   <string name="mailbox_is_empty_trash_description">Otpad je prazan.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Message moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Poruka je premještena u otpad</item>
+    <item quantity="few">%d poruke premještene su u otpad</item>
+    <item quantity="other">%d poruka premješteno je u otpad</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Izbriši razgovor</item>
@@ -57,56 +57,56 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Izbriši poruku</item>
-    <item quantity="few">Delete %d poruke</item>
+    <item quantity="few">Izbriši %d poruke</item>
     <item quantity="other">Izbriši %d poruka</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
     <item quantity="one">Jeste li sigurni da želite trajno izbrisati ovaj razgovor?</item>
-    <item quantity="few">Are you sure you want to permanently delete these conversations?</item>
-    <item quantity="other">Are you sure you want to permanently delete these conversations?</item>
+    <item quantity="few">Jeste li sigurni da želite trajno izbrisati ove razgovore?</item>
+    <item quantity="other">Jeste li sigurni da želite trajno izbrisati ove razgovore?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Jeste li sigurni da želite trajno izbrisati ovu poruku?</item>
-    <item quantity="few">Are you sure you want to permanently delete these message?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="few">Jeste li sigurni da želite trajno izbrisati ove poruke?</item>
+    <item quantity="other">Jeste li sigurni da želite trajno izbrisati ove poruke?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">Message permanently deleted</item>
-    <item quantity="few">%d messages permanently deleted</item>
-    <item quantity="other">%d messages permanently deleted</item>
+    <item quantity="one">Poruka je trajno izbrisana</item>
+    <item quantity="few">%d poruke trajno su izbrisane</item>
+    <item quantity="other">%d poruka trajno je izbrisano</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversation permanently deleted</item>
-    <item quantity="few">%d conversations permanently deleted</item>
-    <item quantity="other">%d conversations permanently deleted</item>
+    <item quantity="one">Razgovor je trajno izbrisan</item>
+    <item quantity="few">%d razgovora trajno su izbrisana</item>
+    <item quantity="other">%d razgovora trajno je izbrisano</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Label operation failed</string>
+  <string name="mailbox_action_label_messages_failed">Radnja oznake nije uspjela</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Neuspješno dohvaćanje oznaka</string>
-  <string name="mailbox_action_failed_retrieving_colors">Failed to get color settings</string>
-  <string name="mailbox_action_move_messages_failed">Move operation failed</string>
-  <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
+  <string name="mailbox_action_failed_retrieving_colors">Dohvaćanje postavki boja nije uspjelo</string>
+  <string name="mailbox_action_move_messages_failed">Radnja premještanja nije uspjela</string>
+  <string name="mailbox_action_move_messages_failed_retrieving_folders">Dohvaćanje mapa nije uspjelo</string>
   <string name="mailbox_action_trash_message">Poruka premještena u otpad</string>
-  <string name="mailbox_action_archive_message">Message moved to archive</string>
-  <string name="mailbox_action_spam_message">Message moved to spam</string>
+  <string name="mailbox_action_archive_message">Poruka je premještena u arhivu</string>
+  <string name="mailbox_action_spam_message">Poruka je premještena u neželjenu poštu</string>
   <string name="mailbox_search_placeholder_text">Pretraži poruke</string>
   <string name="mailbox_search_no_results_title">Nema rezultata</string>
-  <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>
+  <string name="mailbox_search_no_results_explanation">Traži datum, ime, adresu e-pošte ili predmet</string>
   <string name="mailbox_action_button_clear_trash">Isprazni otpad</string>
   <string name="mailbox_action_button_clear_spam">Izbriši svu neželjenu poštu</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Pražnjenje mape otpada</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Pražnjenje mape neželjene pošte</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Jeste li sigurni da želite trajno izbrisati sve poruke u \"Otpadu\"?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Jeste li sigurni da želite trajno izbrisati sve poruke u \"Neželjenoj pošti\"?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Jeste li sigurni da želite trajno izbrisati sve razgovore u \"Neželjenoj pošti\"?</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Radnja čišćenja je zakazana"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Upozorenje</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 80% full. Free up space or upgrade for more storage.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Your Proton account storage is more than 90% full. Free up space or upgrade for more storage.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Pohrana vašeg Proton računa puna je više od 80%. Oslobodite prostor ili nadogradite za više pohrane.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Pohrana vašeg Proton računa puna je više od 90%. Oslobodite prostor ili nadogradite za više pohrane.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Ne podsjećaj me više</string>
   <string name="storage_limit_warning_dialog_confirm_button">U redu</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Upozorenje</string>
-  <string name="storage_quota_over_dialog_text">Your Proton account storage is 100% full. You won\'t be able to send or receive emails unless you permanently delete some emails or upgrade for more storage.</string>
+  <string name="storage_quota_over_dialog_text">Pohrana vašeg Proton računa puna je 100%. Nećete moći slati ni primati e-poštu, ako trajno ne izbrišite nekoliko e-poruka ili nadogradite za više pohrane.</string>
   <string name="storage_quota_over_dialog_confirm_button">U redu</string>
 </resources>

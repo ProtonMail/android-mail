@@ -46,11 +46,11 @@
   <string name="action_print_description">Imprimir</string>
   <string name="action_view_headers_description">Ver los encabezados</string>
   <string name="action_view_html_description">Ver el código HTML</string>
-  <string name="action_report_phishing_description">Denunciar suplantación de identidad</string>
+  <string name="action_report_phishing_description">Denunciar una suplantación de identidad</string>
   <string name="action_remind_description">Recordarme</string>
   <string name="action_save_pdf_description">Guardar como PDF</string>
   <string name="action_sender_emails_description">Definir acciones para futuros correos de este remitente</string>
-  <string name="action_save_attachments_description">Guardar adjuntos</string>
+  <string name="action_save_attachments_description">Guardar los adjuntos</string>
   <string name="action_more_description">Más</string>
   <string name="action_reply_content_description">Responder</string>
   <string name="action_reply_to_content_description">Responder a %s</string>
@@ -113,6 +113,6 @@
   <string name="color_olive">Aceituna</string>
   <string name="color_pickle">Pepinillo</string>
   <string name="undo_button_label">Deshacer</string>
-  <string name="undo_success_message">Acción revertida</string>
+  <string name="undo_success_message">Se ha cancelado la acción.</string>
   <string name="undo_failure_message">Error en revertir la acción</string>
 </resources>

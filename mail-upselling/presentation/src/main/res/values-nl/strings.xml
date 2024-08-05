@@ -33,7 +33,7 @@
   <string name="upselling_unlimited_feature_mail_calendar">Alle betaalde Mail- en Calendar-functies</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90+ landen)</string>
   <string name="upselling_unlimited_feature_drive">Veilige cloudopslag</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">BESPAAR %s%%</string>
   <string name="upselling_month">/maand</string>

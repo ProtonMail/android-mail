@@ -71,7 +71,7 @@
   <string name="folder_settings_parent_color">Inherit parent folder color</string>
   <string name="folder_list_loading_error">Error loading folders, please try again later</string>
   <string name="folder_loading_error">Error loading folder, please try again later</string>
-  <string name="switch_on">Oključeno</string>
+  <string name="switch_on">Uključeno</string>
   <string name="switch_off">Isključeno</string>
   <string name="folder_form_parent">Glavna mapa</string>
   <string name="folder_form_no_parent">Ništa</string>

@@ -66,10 +66,10 @@
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Zadana adresa e-pošte</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Neaktivne adrese</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">No inactive addresses</string>
-  <string name="mail_settings_default_email_address_error_loading">Error loading settings</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">Nema neaktivnih adresa</string>
+  <string name="mail_settings_default_email_address_error_loading">Greška kod učitavanja postavki</string>
   <string name="mail_settings_default_email_address_error_update">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Nadogradite na plaćeni plan kako biste ovu adresu postavili kao zadanu</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Zaslonski naziv i potpis</string>
   <string name="mail_settings_identity_save_button">Spremi</string>
@@ -78,20 +78,20 @@
   <string name="mail_settings_identity_signature">Potpis</string>
   <string name="mail_settings_identity_signature_hint">Potpis</string>
   <string name="mail_settings_identity_mobile_footer">Podnožje na mobitelu</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Podnožje se dodaje nakon Vašeg potpisa.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Podnožje na mobitelu</string>
-  <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
+  <string name="mail_settings_identity_mobile_footer_default_free">Poslano iz Proton Maila za Android</string>
   <string name="mail_settings_identity_error_updating">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_identity_error_loading">Error loading settings</string>
+  <string name="mail_settings_identity_error_loading">Greška kod učitavanja postavki</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">Auto show remote content</string>
-  <string name="mail_settings_privacy_auto_show_embedded_images">Auto show embedded images</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">Automatski prikaži udaljeni sadržaj</string>
+  <string name="mail_settings_privacy_auto_show_embedded_images">Automatski prikaži ugrađene slike</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Spriječite snimanje snimki zaslona</string>
   <string name="mail_settings_privacy_request_link_confirmation">Zatražite potvrdu poveznice</string>
   <string name="mail_settings_privacy_background_sync">Sinkronizacija u pozadini</string>
   <string name="mail_settings_privacy_background_sync_description">Ako je ova opcija omogućena, aplikacija će se u pozadini sinkronizirati s poslužiteljem. Onemogućavanjem ove značajke onemogućiti ćete i push obavijesti.</string>
   <string name="mail_settings_privacy_error_updating">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_privacy_error_loading">Error loading settings</string>
+  <string name="mail_settings_privacy_error_loading">Greška kod učitavanja postavki</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Swipe akcije</string>
   <string name="mail_settings_swipe_actions_subtitle">Postavite pokrete povlačenja za pristup najčešće korištenim radnjama.</string>
@@ -109,27 +109,27 @@
   <string name="mail_settings_swipe_action_trash_description">Premjesti u otpad</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Obavijesti</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Extended notifications</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Proširene obavijesti</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Uključite ovu značajku da biste vidjeli\npošiljatelja e-pošte u push obavijestima.</string>
-  <string name="mail_settings_notifications_notifications_settings">Notifications settings</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings">Postavke obavijesti</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">Otvori postavke obavijesti sustava</string>
   <string name="mail_settings_notifications_update_error">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_notifications_loading_error">Error loading settings</string>
+  <string name="mail_settings_notifications_loading_error">Greška kod učitavanja postavki</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Automatsko zaključavanje</string>
   <string name="mail_settings_auto_lock_item_title">Automatsko zaključavanje aplikacije</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
+  <string name="mail_settings_auto_lock_item_description">Uključite ovu funkciju za automatsko zaključavanje aplikacije i otključavanje pomoću PIN-a.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Promijenite PIN kod</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Auto lock timer</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Vrijeme automatskog zaključavanja</string>
   <string name="mail_settings_auto_lock_immediately">Odmah</string>
-  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minutes inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hour inactivity</string>
-  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 day inactivity</string>
+  <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuta neaktivnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuta neaktivnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 sat neaktivnosti</string>
+  <string name="mail_settings_auto_lock_item_timer_description_one_day">1 dan neaktivnosti</string>
   <string name="mail_settings_auto_lock_update_error">Pogreška prilikom ažuriranja postavki</string>
-  <string name="mail_settings_pin_insertion_input_title">Insert PIN code</string>
+  <string name="mail_settings_pin_insertion_input_title">Unesite PIN kôd</string>
   <string name="mail_settings_pin_insertion_set_title">Postavite PIN kôd</string>
-  <string name="mail_settings_pin_insertion_confirm_title">Confirm PIN code</string>
+  <string name="mail_settings_pin_insertion_confirm_title">Potvrdite PIN kȏd</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Lock icon</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>

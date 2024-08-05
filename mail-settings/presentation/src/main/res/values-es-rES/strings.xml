@@ -29,10 +29,10 @@
   <string name="mail_settings_app_language">Idioma de la aplicación</string>
   <string name="mail_settings_combined_contacts">Contactos combinados</string>
   <string name="mail_settings_local_cache">Caché local</string>
-  <string name="mail_settings_local_cache_hint">Espacio utilizado: %s</string>
+  <string name="mail_settings_local_cache_hint">Espacio usado: %s</string>
   <string name="mail_settings_local_cache_clear_button">Limpiar los datos</string>
   <string name="mail_settings_swipe_actions">Gestos de deslizamiento</string>
-  <string name="mail_settings_combined_contacts_hint">Activa esta función para completar automáticamente las direcciones utilizando los contactos de todas tus cuentas conectadas.</string>
+  <string name="mail_settings_combined_contacts_hint">Activa esta función para completar automáticamente las direcciones usando los contactos de todas tus cuentas conectadas.</string>
   <string name="mail_settings_alternative_routing_hint">En caso de que los servicios de Proton estén bloqueados, esta configuración permite a la aplicación intentar un enrutamiento alternativo para llegar a Proton, lo que puede ser útil para evitar los cortafuegos o los problemas de red. Recomendamos mantener esta configuración activada para una mayor fiabilidad.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Igual que el sistema</string>
@@ -127,7 +127,7 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 hora de inactividad</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 día de inactividad</string>
   <string name="mail_settings_auto_lock_update_error">Error al actualizar los ajustes</string>
-  <string name="mail_settings_pin_insertion_input_title">Introduce el código PIN</string>
+  <string name="mail_settings_pin_insertion_input_title">Ingresa el código PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Definir el código PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Confirmar el código PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Icono de bloqueo</string>

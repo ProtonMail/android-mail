@@ -30,7 +30,7 @@
     <item quantity="other">Selectate: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s necitite</item>
+    <item quantity="one">%s necitit</item>
     <item quantity="few">%s necitite</item>
     <item quantity="other">%s necitite</item>
   </plurals>

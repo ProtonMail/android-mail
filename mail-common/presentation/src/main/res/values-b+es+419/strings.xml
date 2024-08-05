@@ -113,6 +113,6 @@
   <string name="color_olive">Olivo</string>
   <string name="color_pickle">Pepinillo</string>
   <string name="undo_button_label">Deshacer</string>
-  <string name="undo_success_message">Acción revertida</string>
+  <string name="undo_success_message">Se canceló la acción.</string>
   <string name="undo_failure_message">Error al revertir la acción</string>
 </resources>

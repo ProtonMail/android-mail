@@ -36,7 +36,7 @@
   <string name="no_contact_email">No hay dirección de correo electrónico.</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <string name="contact_details_loading_error">Error al cargar los contactos. Intenta de nuevo más tarde.</string>
-  <string name="contact_details_delete_success">El contacto ha sido eliminado.</string>
+  <string name="contact_details_delete_success">Se ha eliminado el contacto.</string>
   <string name="edit_contact_content_description">Editar el contacto</string>
   <string name="delete_contact_content_description">Eliminar el contacto</string>
   <string name="contact_avatar_image_content_description">Avatar del contacto</string>
@@ -66,9 +66,9 @@
   <string name="contact_property_language">Idioma</string>
   <string name="contact_property_time_zone">Zona horaria</string>
   <string name="contact_form_loading_error">Error al cargar los contactos. Intenta de nuevo más tarde.</string>
-  <string name="contact_form_save_success">El contacto ha sido guardado.</string>
-  <string name="contact_form_create_success">El contacto ha sido creado.</string>
-  <string name="contact_form_update_success">El contacto ha sido actualizado.</string>
+  <string name="contact_form_save_success">Se ha guardado el contacto.</string>
+  <string name="contact_form_create_success">Se ha creado el contacto.</string>
+  <string name="contact_form_update_success">Se ha actualizado el contacto.</string>
   <string name="save_contact_content_description">Guardar el contacto</string>
   <string name="contact_form_save">Guardar</string>
   <string name="add_new">Añadir</string>
