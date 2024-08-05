@@ -89,6 +89,7 @@ internal class ConversationDetailScreenTest : HiltInstrumentedTest() {
 
             is ConversationDetailMessageUiModel.Expanded -> Unit
             is ConversationDetailMessageUiModel.Expanding -> Unit
+            is ConversationDetailMessageUiModel.Hidden -> Unit
         }
     }
 
@@ -121,6 +122,7 @@ internal class ConversationDetailScreenTest : HiltInstrumentedTest() {
                 }
 
                 is ConversationDetailMessageUiModel.Expanding -> Unit
+                is ConversationDetailMessageUiModel.Hidden -> Unit
             }
         }
     }
@@ -231,6 +233,7 @@ internal class ConversationDetailScreenTest : HiltInstrumentedTest() {
                 }
 
                 is ConversationDetailMessageUiModel.Expanding -> Unit
+                is ConversationDetailMessageUiModel.Hidden -> Unit
             }
         }
     }

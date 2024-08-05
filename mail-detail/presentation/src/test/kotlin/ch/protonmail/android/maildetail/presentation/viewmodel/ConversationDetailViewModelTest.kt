@@ -106,6 +106,7 @@ import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
+import ch.protonmail.android.maildetail.presentation.usecase.ShouldMessageBeHidden
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
@@ -324,6 +325,9 @@ class ConversationDetailViewModelTest {
     private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet>()
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
     private val moveMessage = mockk<MoveMessage>()
+    private val shouldMessageBeHidden = mockk<ShouldMessageBeHidden> {
+        every { this@mockk.invoke(any(), any()) } returns false
+    }
 
     private val viewModel by lazy {
         ConversationDetailViewModel(
@@ -369,7 +373,8 @@ class ConversationDetailViewModelTest {
             getMessageIdToExpand = getMessageIdToExpand,
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
-            moveMessage = moveMessage
+            moveMessage = moveMessage,
+            shouldMessageBeHidden = shouldMessageBeHidden
         )
     }
 
@@ -2046,7 +2051,7 @@ class ConversationDetailViewModelTest {
             )
         } returns
             InvoiceWithLabelExpanded
-        every { conversationMessageMapper.toUiModel(any()) } returns
+        every { conversationMessageMapper.toUiModel(any<ConversationDetailMessageUiModel.Collapsed>()) } returns
             InvoiceWithLabelExpanding
         return Pair(allCollapsed.map { it.messageId }, InvoiceWithLabelExpanded)
     }

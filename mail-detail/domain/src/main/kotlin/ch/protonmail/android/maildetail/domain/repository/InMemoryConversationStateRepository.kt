@@ -33,8 +33,9 @@ interface InMemoryConversationStateRepository {
     suspend fun collapseMessage(messageId: MessageId)
 
     sealed class MessageState {
-        object Collapsed : MessageState()
-        object Expanding : MessageState()
+        data object Hidden : MessageState()
+        data object Collapsed : MessageState()
+        data object Expanding : MessageState()
         data class Expanded(val decryptedBody: DecryptedMessageBody) : MessageState()
     }
 }

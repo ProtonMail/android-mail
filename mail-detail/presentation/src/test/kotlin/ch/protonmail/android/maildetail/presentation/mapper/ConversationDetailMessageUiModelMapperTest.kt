@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
 import ch.protonmail.android.maildetail.presentation.sample.MessageDetailBodyUiModelSample
@@ -202,6 +203,21 @@ internal class ConversationDetailMessageUiModelMapperTest {
         assertEquals(result.messageId.id, messageWithLabels.message.messageId.id)
         coVerify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
         coVerify { messageBodyUiModelMapper.toUiModel(messageWithLabels.message.userId, decryptedMessageBody) }
+    }
+
+    @Test
+    fun `map to ui model returns hidden model`() = runTest {
+        // Given
+        val messageWithLabels = MessageWithLabelsSample.AugWeatherForecast
+        val expectedResult = ConversationDetailMessageUiModel.Hidden(
+            MessageIdUiModel(messageWithLabels.message.messageId.id), messageWithLabels.message.unread
+        )
+
+        // When
+        val result = mapper.toUiModel(messageWithLabels)
+
+        // Then
+        assertEquals(expectedResult, result)
     }
 
     @Test

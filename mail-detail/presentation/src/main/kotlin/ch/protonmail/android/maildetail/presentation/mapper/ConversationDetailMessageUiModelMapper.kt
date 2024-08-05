@@ -152,6 +152,13 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         )
     }
 
+    fun toUiModel(messageWithLabels: MessageWithLabels): ConversationDetailMessageUiModel.Hidden {
+        return ConversationDetailMessageUiModel.Hidden(
+            messageId = messageIdUiModelMapper.toUiModel(messageWithLabels.message.messageId),
+            isUnread = messageWithLabels.message.unread
+        )
+    }
+
     private fun getForwardedIcon(isForwarded: Boolean): ConversationDetailMessageUiModel.ForwardedIcon = when {
         isForwarded -> ConversationDetailMessageUiModel.ForwardedIcon.Forwarded
         else -> ConversationDetailMessageUiModel.ForwardedIcon.None

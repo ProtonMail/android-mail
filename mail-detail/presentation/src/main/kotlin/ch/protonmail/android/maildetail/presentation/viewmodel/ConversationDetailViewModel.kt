@@ -109,6 +109,7 @@ import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
+import ch.protonmail.android.maildetail.presentation.usecase.ShouldMessageBeHidden
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
@@ -192,7 +193,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val getMessageIdToExpand: GetMessageIdToExpand,
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
-    private val moveMessage: MoveMessage
+    private val moveMessage: MoveMessage,
+    private val shouldMessageBeHidden: ShouldMessageBeHidden
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -384,7 +386,13 @@ class ConversationDetailViewModel @Inject constructor(
                     )
                 }
 
-                else -> buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
+                else -> {
+                    if (shouldMessageBeHidden(filterByLocation, messageWithLabels.message.labelIds)) {
+                        buildHiddenMessage(messageWithLabels)
+                    } else {
+                        buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
+                    }
+                }
             }
         }
         return messagesList
@@ -415,6 +423,9 @@ class ConversationDetailViewModel @Inject constructor(
         }
         return requestScrollTo
     }
+
+    private fun buildHiddenMessage(messageWithLabels: MessageWithLabels): ConversationDetailMessageUiModel.Hidden =
+        conversationMessageMapper.toUiModel(messageWithLabels)
 
     private suspend fun buildCollapsedMessage(
         messageWithLabels: MessageWithLabels,
