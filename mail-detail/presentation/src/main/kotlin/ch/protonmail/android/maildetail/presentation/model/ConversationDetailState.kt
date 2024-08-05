@@ -41,7 +41,8 @@ data class ConversationDetailState(
     val scrollToMessage: MessageIdUiModel?,
     val requestLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState,
-    val reportPhishingDialogState: ReportPhishingDialogState
+    val reportPhishingDialogState: ReportPhishingDialogState,
+    val trashedMessagesBannerState: TrashedMessagesBannerState
 ) {
 
     companion object {
@@ -60,7 +61,8 @@ data class ConversationDetailState(
             scrollToMessage = null,
             requestLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+            trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
         )
     }
 }

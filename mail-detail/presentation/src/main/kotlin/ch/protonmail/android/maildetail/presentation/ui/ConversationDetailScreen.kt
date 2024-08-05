@@ -85,6 +85,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.scrollOffsetDp
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
@@ -534,6 +535,7 @@ fun ConversationDetailScreen(
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
+                    trashedMessagesBannerState = state.trashedMessagesBannerState,
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
@@ -563,6 +565,7 @@ fun ConversationDetailScreen(
 @Suppress("LongParameterList", "ComplexMethod")
 private fun MessagesContent(
     uiModels: ImmutableList<ConversationDetailMessageUiModel>,
+    trashedMessagesBannerState: TrashedMessagesBannerState,
     padding: PaddingValues,
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
@@ -667,6 +670,18 @@ private fun MessagesContent(
         verticalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing),
         state = listState
     ) {
+
+        when (trashedMessagesBannerState) {
+            is TrashedMessagesBannerState.Shown -> {
+                item {
+                    TrashedMessagesBanner(
+                        uiModel = trashedMessagesBannerState.trashedMessagesBannerUiModel,
+                        onActionClick = {}
+                    )
+                }
+            }
+            is TrashedMessagesBannerState.Hidden -> Unit
+        }
 
         itemsIndexed(uiModels) { index, uiModel ->
             val isLastItem = index == uiModels.size - 1
