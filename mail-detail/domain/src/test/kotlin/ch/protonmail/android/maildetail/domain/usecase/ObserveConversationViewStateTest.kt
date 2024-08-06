@@ -38,9 +38,12 @@ class ObserveConversationViewStateTest {
     fun `Should emit the current conversation state`() = runTest {
         // Given
         val useCase = buildUseCase()
-        val conversationState = (0 until Random().nextInt(100)).associate {
-            Pair(MessageId(it.toString()), Collapsed)
-        }
+        val conversationState = InMemoryConversationStateRepository.MessagesState(
+            (0 until Random().nextInt(100)).associate {
+                Pair(MessageId(it.toString()), Collapsed)
+            },
+            shouldHideMessagesBasedOnTrashFilter = true
+        )
         every { repo.conversationState } returns flowOf(conversationState)
 
         // When

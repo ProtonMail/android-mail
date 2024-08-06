@@ -341,10 +341,12 @@ class ConversationDetailViewModel @Inject constructor(
                     val initialScrollTo = initialScrollToMessageId
                         ?: getMessageIdToExpand(messages, filterByLocation)
                             ?.let { messageIdUiModelMapper.toUiModel(it) }
-                    if (stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState)) {
+                    if (
+                        stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState.messagesState)
+                    ) {
                         ConversationDetailEvent.MessagesData(messagesUiModels, initialScrollTo)
                     } else {
-                        val requestScrollTo = requestScrollToMessageId(conversationViewState)
+                        val requestScrollTo = requestScrollToMessageId(conversationViewState.messagesState)
                         ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
                     }
                 }
@@ -367,12 +369,12 @@ class ConversationDetailViewModel @Inject constructor(
         messages: NonEmptyList<MessageWithLabels>,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings,
-        currentViewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>
+        currentViewState: InMemoryConversationStateRepository.MessagesState
     ): NonEmptyList<ConversationDetailMessageUiModel> {
         val messagesList = messages.map { messageWithLabels ->
             val existingMessageState = getExistingExpandedMessageUiState(messageWithLabels.message.messageId)
 
-            when (val viewState = currentViewState[messageWithLabels.message.messageId]) {
+            when (val viewState = currentViewState.messagesState[messageWithLabels.message.messageId]) {
                 is InMemoryConversationStateRepository.MessageState.Expanding ->
                     buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
 
@@ -387,7 +389,13 @@ class ConversationDetailViewModel @Inject constructor(
                 }
 
                 else -> {
-                    if (shouldMessageBeHidden(filterByLocation, messageWithLabels.message.labelIds)) {
+                    if (
+                        shouldMessageBeHidden(
+                            filterByLocation,
+                            messageWithLabels.message.labelIds,
+                            currentViewState.shouldHideMessagesBasedOnTrashFilter
+                        )
+                    ) {
                         buildHiddenMessage(messageWithLabels)
                     } else {
                         buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)

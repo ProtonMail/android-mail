@@ -326,7 +326,7 @@ class ConversationDetailViewModelTest {
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
     private val moveMessage = mockk<MoveMessage>()
     private val shouldMessageBeHidden = mockk<ShouldMessageBeHidden> {
-        every { this@mockk.invoke(any(), any()) } returns false
+        every { this@mockk.invoke(any(), any(), any()) } returns false
     }
 
     private val viewModel by lazy {

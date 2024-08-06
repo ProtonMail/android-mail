@@ -19,7 +19,6 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -27,6 +26,6 @@ class ObserveConversationViewState @Inject constructor(
     private val inMemoryConversationStateRepository: InMemoryConversationStateRepository
 ) {
 
-    operator fun invoke(): Flow<Map<MessageId, InMemoryConversationStateRepository.MessageState>> =
+    operator fun invoke(): Flow<InMemoryConversationStateRepository.MessagesState> =
         inMemoryConversationStateRepository.conversationState
 }

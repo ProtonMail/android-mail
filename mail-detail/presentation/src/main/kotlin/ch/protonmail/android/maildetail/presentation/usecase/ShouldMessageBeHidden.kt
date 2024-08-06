@@ -24,7 +24,12 @@ import javax.inject.Inject
 
 class ShouldMessageBeHidden @Inject constructor() {
 
-    operator fun invoke(filterByLocation: LabelId?, labelIds: List<LabelId>) =
-        (filterByLocation == SystemLabelId.Trash.labelId && labelIds.contains(SystemLabelId.Trash.labelId).not()) ||
-            (filterByLocation != SystemLabelId.Trash.labelId && labelIds.contains(SystemLabelId.Trash.labelId))
+    operator fun invoke(
+        filterByLocation: LabelId?,
+        labelIds: List<LabelId>,
+        shouldHideMessagesBasedOnTrashFilter: Boolean
+    ) = shouldHideMessagesBasedOnTrashFilter && (
+        filterByLocation == SystemLabelId.Trash.labelId && labelIds.contains(SystemLabelId.Trash.labelId).not() ||
+            filterByLocation != SystemLabelId.Trash.labelId && labelIds.contains(SystemLabelId.Trash.labelId)
+        )
 }
