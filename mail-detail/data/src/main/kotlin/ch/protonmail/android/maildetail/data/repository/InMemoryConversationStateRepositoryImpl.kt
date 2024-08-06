@@ -58,4 +58,9 @@ class InMemoryConversationStateRepositoryImpl @Inject constructor() :
         conversationCache[messageId] = MessageState.Collapsed
         conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
     }
+
+    override suspend fun switchTrashedMessagesFilter() {
+        shouldHideMessagesBasedOnTrashFilter = shouldHideMessagesBasedOnTrashFilter.not()
+        conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
+    }
 }

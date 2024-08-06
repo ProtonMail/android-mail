@@ -27,7 +27,7 @@ import ch.protonmail.android.mailmessage.domain.model.MimeType
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 
 class SetMessageViewStateTest {
 
@@ -77,6 +77,18 @@ class SetMessageViewStateTest {
 
         // Then
         coVerify { repo.expandingMessage(messageId) }
+    }
+
+    @Test
+    fun `should switch filter on switch filter`() = runTest {
+        // Given
+        val useCase = buildUseCase()
+
+        // When
+        useCase.switchTrashedMessagesFilter()
+
+        // Then
+        coVerify { repo.switchTrashedMessagesFilter() }
     }
 
     private fun buildUseCase() = SetMessageViewState(repo)

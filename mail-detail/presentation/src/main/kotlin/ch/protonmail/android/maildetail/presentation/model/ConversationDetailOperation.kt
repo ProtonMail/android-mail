@@ -230,4 +230,6 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class RequestMessageMoveToBottomSheet(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
+    data object ChangeVisibilityOfMessages : ConversationDetailViewAction
 }

@@ -249,6 +249,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ArchiveMessage -> handleArchiveMessage(action)
             is ConversationDetailViewAction.MoveMessageToSpam -> handleMoveMessageToSpam(action)
 
+            is ConversationDetailViewAction.ChangeVisibilityOfMessages -> handleChangeVisibilityOfMessages()
+
             is ConversationDetailViewAction.DeleteRequested,
             is ConversationDetailViewAction.DeleteDialogDismissed,
             is DismissBottomSheet,
@@ -894,6 +896,12 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun onCollapseMessage(messageId: MessageIdUiModel) {
         viewModelScope.launch { setMessageViewState.collapsed(MessageId(messageId.id)) }
+    }
+
+    private fun handleChangeVisibilityOfMessages() {
+        viewModelScope.launch {
+            setMessageViewState.switchTrashedMessagesFilter()
+        }
     }
 
     private fun onDoNotAskLinkConfirmationChecked() {

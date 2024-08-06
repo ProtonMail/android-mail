@@ -2217,6 +2217,49 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
+    fun `emit shown trashed messages when opening the conversation from a non-trash location after show action`() =
+        runTest {
+            // Given
+            val message1 = MessageWithLabelsSample.build(
+                message = MessageSample.build(
+                    messageId = MessageIdSample.AugWeatherForecast,
+                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                )
+            )
+            val message2 = MessageWithLabelsSample.build(
+                message = MessageSample.build(
+                    messageId = MessageIdSample.SepWeatherForecast,
+                    labelIds = listOf(MailLabelId.System.Trash.labelId)
+                )
+            )
+            val messages = nonEmptyListOf(message1, message2)
+            coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+            coEvery {
+                observeMessage(userId, MessageIdSample.AugWeatherForecast)
+            } returns flowOf(message1.message.right())
+            coEvery {
+                observeMessageWithLabels(userId, MessageIdSample.AugWeatherForecast)
+            } returns flowOf(message1.right())
+
+            val viewModel = buildConversationDetailViewModel()
+
+            viewModel.state.test {
+                skipItems(4)
+
+                // When
+                viewModel.submit(ConversationDetailViewAction.ChangeVisibilityOfMessages)
+
+                val item = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
+
+                // Then
+                assertIs<Collapsed>(item[0])
+                assertIs<Collapsed>(item[1])
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `should emit hidden non-trashed messages when opening the conversation from the trash location`() = runTest {
         // Given
         val message1 = MessageWithLabelsSample.build(
@@ -2257,6 +2300,52 @@ class ConversationDetailViewModelIntegrationTest {
             cancelAndIgnoreRemainingEvents()
         }
     }
+
+    @Test
+    fun `emit shown non-trashed messages when opening the conversation from the trash location after show action`() =
+        runTest {
+            // Given
+            val message1 = MessageWithLabelsSample.build(
+                message = MessageSample.build(
+                    messageId = MessageIdSample.AugWeatherForecast,
+                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                )
+            )
+            val message2 = MessageWithLabelsSample.build(
+                message = MessageSample.build(
+                    messageId = MessageIdSample.SepWeatherForecast,
+                    labelIds = listOf(MailLabelId.System.Trash.labelId)
+                )
+            )
+            val messages = nonEmptyListOf(message1, message2)
+            every {
+                savedStateHandle.get<String>(ConversationDetailScreen.FilterByLocationKey)
+            } returns MailLabelId.System.Trash.labelId.id
+            coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+            coEvery {
+                observeMessage(userId, MessageIdSample.AugWeatherForecast)
+            } returns flowOf(message1.message.right())
+            coEvery {
+                observeMessageWithLabels(userId, MessageIdSample.AugWeatherForecast)
+            } returns flowOf(message1.right())
+
+            val viewModel = buildConversationDetailViewModel()
+
+            viewModel.state.test {
+                skipItems(4)
+
+                // When
+                viewModel.submit(ConversationDetailViewAction.ChangeVisibilityOfMessages)
+
+                val item = (awaitItem().messagesState as ConversationDetailsMessagesState.Data).messages
+
+                // Then
+                assertIs<Collapsed>(item[0])
+                assertIs<Collapsed>(item[1])
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
 
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(

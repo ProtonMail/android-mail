@@ -32,6 +32,8 @@ interface InMemoryConversationStateRepository {
 
     suspend fun collapseMessage(messageId: MessageId)
 
+    suspend fun switchTrashedMessagesFilter()
+
     data class MessagesState(
         val messagesState: Map<MessageId, MessageState>,
         val shouldHideMessagesBasedOnTrashFilter: Boolean

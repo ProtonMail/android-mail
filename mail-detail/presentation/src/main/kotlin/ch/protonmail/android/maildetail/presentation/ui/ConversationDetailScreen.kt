@@ -350,6 +350,9 @@ fun ConversationDetailScreen(
                             avatarUiModel
                         )
                     )
+                },
+                onTrashedMessagesBannerClick = {
+                    viewModel.submit(ConversationDetailViewAction.ChangeVisibilityOfMessages)
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -539,6 +542,7 @@ fun ConversationDetailScreen(
                     padding = innerPadding,
                     scrollToMessageId = scrollToMessageId,
                     actions = conversationDetailItemActions,
+                    onTrashedMessagesBannerClick = actions.onTrashedMessagesBannerClick,
                     paddingOffsetDp = scrollBehavior.state.heightOffset.pxToDp()
                 )
             }
@@ -570,6 +574,7 @@ private fun MessagesContent(
     scrollToMessageId: String?,
     modifier: Modifier = Modifier,
     actions: ConversationDetailItem.Actions,
+    onTrashedMessagesBannerClick: () -> Unit,
     paddingOffsetDp: Dp = 0f.dp
 ) {
     val listState = rememberLazyListState()
@@ -676,7 +681,7 @@ private fun MessagesContent(
                 item {
                     TrashedMessagesBanner(
                         uiModel = trashedMessagesBannerState.trashedMessagesBannerUiModel,
-                        onActionClick = {}
+                        onActionClick = onTrashedMessagesBannerClick
                     )
                 }
             }
@@ -799,7 +804,8 @@ object ConversationDetailScreen {
         val onOpenComposer: (MessageIdUiModel) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onTrashedMessagesBannerClick: () -> Unit
     ) {
 
         companion object {
@@ -838,7 +844,8 @@ object ConversationDetailScreen {
                 onOpenComposer = {},
                 onPrint = { _ -> },
                 onAvatarClicked = { _, _ -> },
-                onParticipantClicked = { _, _ -> }
+                onParticipantClicked = { _, _ -> },
+                onTrashedMessagesBannerClick = {}
             )
         }
     }

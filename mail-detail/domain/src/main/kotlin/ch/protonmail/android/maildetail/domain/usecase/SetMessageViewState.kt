@@ -38,4 +38,8 @@ class SetMessageViewState @Inject constructor(
     suspend fun collapsed(messageId: MessageId) {
         inMemoryConversationStateRepository.collapseMessage(messageId)
     }
+
+    suspend fun switchTrashedMessagesFilter() {
+        inMemoryConversationStateRepository.switchTrashedMessagesFilter()
+    }
 }

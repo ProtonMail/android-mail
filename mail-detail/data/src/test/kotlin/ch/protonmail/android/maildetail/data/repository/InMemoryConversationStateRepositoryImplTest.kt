@@ -30,8 +30,9 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class InMemoryConversationStateRepositoryImplTest {
 
@@ -150,6 +151,22 @@ class InMemoryConversationStateRepositoryImplTest {
 
             // Then
             assertEquals(itemCount, conversationState.messagesState.size)
+        }
+    }
+
+    @Test
+    fun `should emit the opposite filter value when switching the trashed messages filter`() = runTest {
+        // Given
+        val repository = buildRepository()
+
+        repository.conversationState.test {
+            val illegal = awaitItem().shouldHideMessagesBasedOnTrashFilter
+
+            // When
+            repository.switchTrashedMessagesFilter()
+
+            // Then
+            assertNotEquals(illegal, awaitItem().shouldHideMessagesBasedOnTrashFilter)
         }
     }
 
