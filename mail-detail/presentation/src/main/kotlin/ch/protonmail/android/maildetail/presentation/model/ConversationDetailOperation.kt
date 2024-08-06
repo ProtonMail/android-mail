@@ -30,6 +30,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingReportPhishingDialog
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingTrashedMessagesBanner
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
@@ -47,6 +48,7 @@ sealed interface ConversationDetailOperation {
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
     sealed interface AffectingReportPhishingDialog
+    sealed interface AffectingTrashedMessagesBanner
 }
 
 sealed interface ConversationDetailEvent : ConversationDetailOperation {
@@ -64,8 +66,11 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     data class MessagesData(
         val messagesUiModels: ImmutableList<ConversationDetailMessageUiModel>,
-        val requestScrollToMessageId: MessageIdUiModel?
-    ) : ConversationDetailEvent, AffectingMessages
+        val messagesLabelIds: Map<MessageId, List<LabelId>>,
+        val requestScrollToMessageId: MessageIdUiModel?,
+        val filterByLocation: LabelId?,
+        val shouldHideMessagesBasedOnTrashFilter: Boolean
+    ) : ConversationDetailEvent, AffectingMessages, AffectingTrashedMessagesBanner
 
     data class ConversationBottomSheetEvent(
         val bottomSheetOperation: BottomSheetOperation

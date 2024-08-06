@@ -331,6 +331,7 @@ class ConversationDetailViewModel @Inject constructor(
                     val messages = messagesEither.getOrElse {
                         return@combine ConversationDetailEvent.ErrorLoadingMessages
                     }
+                    val messagesLabelIds = messages.associate { it.message.messageId to it.message.labelIds }
                     val messagesUiModels = buildMessagesUiModels(
                         messages = messages,
                         contacts = contacts,
@@ -344,10 +345,22 @@ class ConversationDetailViewModel @Inject constructor(
                     if (
                         stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState.messagesState)
                     ) {
-                        ConversationDetailEvent.MessagesData(messagesUiModels, initialScrollTo)
+                        ConversationDetailEvent.MessagesData(
+                            messagesUiModels,
+                            messagesLabelIds,
+                            initialScrollTo,
+                            filterByLocation,
+                            conversationViewState.shouldHideMessagesBasedOnTrashFilter
+                        )
                     } else {
                         val requestScrollTo = requestScrollToMessageId(conversationViewState.messagesState)
-                        ConversationDetailEvent.MessagesData(messagesUiModels, requestScrollTo)
+                        ConversationDetailEvent.MessagesData(
+                            messagesUiModels,
+                            messagesLabelIds,
+                            requestScrollTo,
+                            filterByLocation,
+                            conversationViewState.shouldHideMessagesBasedOnTrashFilter
+                        )
                     }
                 }
             }

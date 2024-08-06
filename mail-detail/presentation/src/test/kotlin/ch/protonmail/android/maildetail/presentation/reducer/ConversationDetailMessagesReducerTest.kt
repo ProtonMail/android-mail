@@ -108,7 +108,13 @@ class ConversationDetailMessagesReducerTest(
 
             Input(
                 currentState = ConversationDetailsMessagesState.Loading,
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
+                operation = ConversationDetailEvent.MessagesData(
+                    messagesUiModels = allMessages,
+                    messagesLabelIds = emptyMap(),
+                    requestScrollToMessageId = null,
+                    filterByLocation = null,
+                    shouldHideMessagesBasedOnTrashFilter = false
+                ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             ),
 
@@ -130,7 +136,10 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Loading,
                 operation = ConversationDetailEvent.MessagesData(
                     messagesUiModels = allMessagesFirstExpanded,
-                    allMessagesFirstExpanded.first().messageId
+                    messagesLabelIds = emptyMap(),
+                    requestScrollToMessageId = allMessagesFirstExpanded.first().messageId,
+                    filterByLocation = null,
+                    shouldHideMessagesBasedOnTrashFilter = false
                 ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessagesFirstExpanded)
             )
@@ -162,7 +171,13 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Error(
                     message = TextUiModel(commonString.x_error_not_logged_in)
                 ),
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
+                operation = ConversationDetailEvent.MessagesData(
+                    messagesUiModels = allMessages,
+                    messagesLabelIds = emptyMap(),
+                    requestScrollToMessageId = null,
+                    filterByLocation = null,
+                    shouldHideMessagesBasedOnTrashFilter = false
+                ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             )
         )
@@ -193,7 +208,13 @@ class ConversationDetailMessagesReducerTest(
                 currentState = ConversationDetailsMessagesState.Data(
                     messages = emptyList<ConversationDetailMessageUiModel>().toImmutableList()
                 ),
-                operation = ConversationDetailEvent.MessagesData(messagesUiModels = allMessages, null),
+                operation = ConversationDetailEvent.MessagesData(
+                    messagesUiModels = allMessages,
+                    messagesLabelIds = emptyMap(),
+                    requestScrollToMessageId = null,
+                    filterByLocation = null,
+                    shouldHideMessagesBasedOnTrashFilter = false
+                ),
                 expectedState = ConversationDetailsMessagesState.Data(messages = allMessages)
             ),
 

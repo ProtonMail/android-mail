@@ -113,6 +113,7 @@ import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailM
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationReportPhishingDialogReducer
+import ch.protonmail.android.maildetail.presentation.reducer.TrashedMessagesBannerReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyWithoutQuote
@@ -414,7 +415,8 @@ class ConversationDetailViewModelIntegrationTest {
             upsellingBottomSheetReducer = UpsellingBottomSheetReducer()
         ),
         deleteDialogReducer = ConversationDeleteDialogReducer(),
-        reportPhishingDialogReducer = ConversationReportPhishingDialogReducer()
+        reportPhishingDialogReducer = ConversationReportPhishingDialogReducer(),
+        trashedMessagesBannerReducer = TrashedMessagesBannerReducer()
     )
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()

@@ -66,13 +66,15 @@ class ConversationDetailReducerTest(
     private val bottomSheetReducer = mockk<BottomSheetReducer>(relaxed = true)
     private val deleteDialogReducer = mockk<ConversationDeleteDialogReducer>(relaxed = true)
     private val reportPhishingDialogReducer = mockk<ConversationReportPhishingDialogReducer>(relaxed = true)
+    private val trashedMessagesBannerReducer = mockk<TrashedMessagesBannerReducer>(relaxed = true)
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
         metadataReducer = metadataReducer,
         bottomSheetReducer = bottomSheetReducer,
         deleteDialogReducer = deleteDialogReducer,
-        reportPhishingDialogReducer = reportPhishingDialogReducer
+        reportPhishingDialogReducer = reportPhishingDialogReducer,
+        trashedMessagesBannerReducer = trashedMessagesBannerReducer
     )
 
     @Test
@@ -137,6 +139,12 @@ class ConversationDetailReducerTest(
             } else {
                 verify { deleteDialogReducer wasNot Called }
             }
+
+            if (reducesTrashedMessagesBanner) {
+                verify { trashedMessagesBannerReducer.newStateFrom(any()) }
+            } else {
+                verify { trashedMessagesBannerReducer wasNot Called }
+            }
         }
     }
 
@@ -151,7 +159,8 @@ class ConversationDetailReducerTest(
         val reducesBottomSheet: Boolean,
         val reducesLinkClick: Boolean,
         val reducesMessageScroll: Boolean,
-        val reducesDeleteDialog: Boolean
+        val reducesDeleteDialog: Boolean,
+        val reducesTrashedMessagesBanner: Boolean
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -237,14 +246,19 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
             ConversationDetailEvent.MessagesData(
-                emptyList<ConversationDetailMessageUiModel>()
-                    .toImmutableList(),
-                null
-            ) affects Messages,
+                emptyList<ConversationDetailMessageUiModel>().toImmutableList(),
+                emptyMap(),
+                null,
+                null,
+                false
+            ) affects listOf(Messages, TrashedMessagesBanner),
             ConversationDetailEvent.MessagesData(
                 allMessagesFirstExpanded,
-                allMessagesFirstExpanded.first().messageId
-            ) affects listOf(Messages, MessageScroll),
+                emptyMap(),
+                allMessagesFirstExpanded.first().messageId,
+                null,
+                false
+            ) affects listOf(Messages, MessageScroll, TrashedMessagesBanner),
             ConversationDetailEvent.ExpandDecryptedMessage(
                 MessageIdUiModel(UUID.randomUUID().toString()),
                 ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded
@@ -288,7 +302,8 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesBottomSheet = entities.contains(BottomSheet),
     reducesLinkClick = entities.contains(LinkClick),
     reducesMessageScroll = entities.contains(MessageScroll),
-    reducesDeleteDialog = entities.contains(DeleteDialog)
+    reducesDeleteDialog = entities.contains(DeleteDialog),
+    reducesTrashedMessagesBanner = entities.contains(TrashedMessagesBanner)
 )
 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
@@ -304,6 +319,7 @@ private object BottomSheet : Entity
 private object LinkClick : Entity
 private object MessageScroll : Entity
 private object DeleteDialog : Entity
+private object TrashedMessagesBanner : Entity
 
 private val allMessagesFirstExpanded = listOf(
     ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,

@@ -55,6 +55,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
+import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
@@ -67,7 +68,8 @@ class ConversationDetailReducer @Inject constructor(
     private val messagesReducer: ConversationDetailMessagesReducer,
     private val bottomSheetReducer: BottomSheetReducer,
     private val deleteDialogReducer: ConversationDeleteDialogReducer,
-    private val reportPhishingDialogReducer: ConversationReportPhishingDialogReducer
+    private val reportPhishingDialogReducer: ConversationReportPhishingDialogReducer,
+    private val trashedMessagesBannerReducer: TrashedMessagesBannerReducer
 ) {
 
     fun newStateFrom(
@@ -87,7 +89,8 @@ class ConversationDetailReducer @Inject constructor(
             openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
             scrollToMessage = currentState.toScrollToMessageState(operation),
             deleteDialogState = currentState.toNewDeleteDialogState(operation),
-            reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation)
+            reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation),
+            trashedMessagesBannerState = currentState.toNewTrashedMessagesBannerState(operation)
         )
     }
 
@@ -264,6 +267,16 @@ class ConversationDetailReducer @Inject constructor(
             reportPhishingDialogReducer.newStateFrom(operation)
         } else {
             reportPhishingDialogState
+        }
+    }
+
+    private fun ConversationDetailState.toNewTrashedMessagesBannerState(
+        operation: ConversationDetailOperation
+    ): TrashedMessagesBannerState {
+        return if (operation is ConversationDetailOperation.AffectingTrashedMessagesBanner) {
+            trashedMessagesBannerReducer.newStateFrom(operation)
+        } else {
+            trashedMessagesBannerState
         }
     }
 }
