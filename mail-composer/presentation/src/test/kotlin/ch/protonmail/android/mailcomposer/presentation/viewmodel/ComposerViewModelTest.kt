@@ -806,10 +806,6 @@ class ComposerViewModelTest {
         assertEquals(
             mapOf(
                 ContactSuggestionsField.BCC to listOf(
-                    ContactSuggestionUiModel.ContactGroup(
-                        expectedContactGroups[0].name,
-                        expectedContactGroups[0].members.map { it.email }
-                    ),
                     ContactSuggestionUiModel.Contact(
                         expectedContacts[0].contactEmails.first().name,
                         expectedContacts[0].contactEmails.first().email
@@ -817,6 +813,10 @@ class ComposerViewModelTest {
                     ContactSuggestionUiModel.Contact(
                         expectedContacts[1].contactEmails.first().name,
                         expectedContacts[1].contactEmails.first().email
+                    ),
+                    ContactSuggestionUiModel.ContactGroup(
+                        expectedContactGroups[0].name,
+                        expectedContactGroups[0].members.map { it.email }
                     )
                 )
             ),

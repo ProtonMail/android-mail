@@ -801,14 +801,24 @@ class ComposerViewModel @Inject constructor(
                 } else emptyList()
 
                 val fromContacts = contacts.getOrNull()?.asSequence()?.flatMap { contact ->
-                    contact.contactEmails.map { contactEmail ->
-                        ContactSuggestionUiModel.Contact(
-                            name = contactEmail.name.takeIfNotBlank()
-                                ?: contact.name.takeIfNotBlank()
-                                ?: contactEmail.email,
-                            email = contactEmail.email
-                        )
+                    contact.contactEmails.map {
+                        contact.copy(
+                            contactEmails = listOf(it)
+                        ) // flatMap into Contacts containing only one ContactEmail because we need to sort by them
                     }
+                }?.sortedBy {
+                    val lastUsedTimeDescending = Long.MAX_VALUE - it.contactEmails.first().lastUsedTime
+
+                    // LastUsedTime, name, email
+                    "$lastUsedTimeDescending ${it.name} ${it.contactEmails.first().email ?: ""}"
+                }?.map { contact ->
+                    val contactEmail = contact.contactEmails.first()
+                    ContactSuggestionUiModel.Contact(
+                        name = contactEmail.name.takeIfNotBlank()
+                            ?: contact.name.takeIfNotBlank()
+                            ?: contactEmail.email,
+                        email = contactEmail.email
+                    )
                 } ?: emptySequence()
 
                 val fromContactGroups = contactGroups.getOrNull()?.asSequence()?.map { contactGroup ->
@@ -818,9 +828,11 @@ class ComposerViewModel @Inject constructor(
                     )
                 } ?: emptySequence()
 
-                val suggestions = (fromDeviceContacts + fromContacts + fromContactGroups).sortedBy {
+                val fromDeviceAndContactGroups = (fromDeviceContacts + fromContactGroups).sortedBy {
                     it.name
-                }.take(maxContactAutocompletionCount)
+                }
+
+                val suggestions = (fromContacts + fromDeviceAndContactGroups).take(maxContactAutocompletionCount)
 
                 emitNewStateFor(
                     ComposerEvent.UpdateContactSuggestions(
