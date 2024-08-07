@@ -40,7 +40,6 @@ interface InMemoryConversationStateRepository {
     )
 
     sealed class MessageState {
-        data object Hidden : MessageState()
         data object Collapsed : MessageState()
         data object Expanding : MessageState()
         data class Expanded(val decryptedBody: DecryptedMessageBody) : MessageState()

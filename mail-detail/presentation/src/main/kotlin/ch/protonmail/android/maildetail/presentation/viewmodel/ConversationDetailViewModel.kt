@@ -389,30 +389,30 @@ class ConversationDetailViewModel @Inject constructor(
         val messagesList = messages.map { messageWithLabels ->
             val existingMessageState = getExistingExpandedMessageUiState(messageWithLabels.message.messageId)
 
-            when (val viewState = currentViewState.messagesState[messageWithLabels.message.messageId]) {
-                is InMemoryConversationStateRepository.MessageState.Expanding ->
-                    buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
+            if (
+                shouldMessageBeHidden(
+                    filterByLocation,
+                    messageWithLabels.message.labelIds,
+                    currentViewState.shouldHideMessagesBasedOnTrashFilter
+                )
+            ) {
+                buildHiddenMessage(messageWithLabels)
+            } else {
+                when (val viewState = currentViewState.messagesState[messageWithLabels.message.messageId]) {
+                    is InMemoryConversationStateRepository.MessageState.Expanding ->
+                        buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
 
-                is InMemoryConversationStateRepository.MessageState.Expanded -> {
-                    buildExpandedMessage(
-                        messageWithLabels,
-                        existingMessageState,
-                        contacts,
-                        viewState.decryptedBody,
-                        folderColorSettings
-                    )
-                }
-
-                else -> {
-                    if (
-                        shouldMessageBeHidden(
-                            filterByLocation,
-                            messageWithLabels.message.labelIds,
-                            currentViewState.shouldHideMessagesBasedOnTrashFilter
+                    is InMemoryConversationStateRepository.MessageState.Expanded -> {
+                        buildExpandedMessage(
+                            messageWithLabels,
+                            existingMessageState,
+                            contacts,
+                            viewState.decryptedBody,
+                            folderColorSettings
                         )
-                    ) {
-                        buildHiddenMessage(messageWithLabels)
-                    } else {
+                    }
+
+                    else -> {
                         buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
                     }
                 }
