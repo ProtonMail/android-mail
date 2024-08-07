@@ -25,5 +25,5 @@ data class OpenMailboxItemRequest(
     val itemType: MailboxItemType,
     val shouldOpenInComposer: Boolean,
     val subItemId: MailboxItemId? = null,
-    val openedFromLocation: MailLabel? = null
+    val filterByLocation: MailLabel? = null
 )

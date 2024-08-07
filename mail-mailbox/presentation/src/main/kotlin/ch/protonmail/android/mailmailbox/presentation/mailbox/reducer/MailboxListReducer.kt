@@ -248,7 +248,7 @@ class MailboxListReducer @Inject constructor() {
                         itemType = MailboxItemType.Message,
                         shouldOpenInComposer = false,
                         subItemId = searchedItemId,
-                        openedFromLocation = currentLocation
+                        filterByLocation = currentLocation
                     )
                 } else {
                     OpenMailboxItemRequest(
@@ -256,7 +256,7 @@ class MailboxListReducer @Inject constructor() {
                         itemType = MailboxItemType.Conversation,
                         shouldOpenInComposer = false,
                         subItemId = searchedItemId,
-                        openedFromLocation = currentLocation
+                        filterByLocation = currentLocation
                     )
                 }
             }

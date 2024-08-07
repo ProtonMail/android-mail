@@ -746,7 +746,7 @@ object ConversationDetailScreen {
 
     const val ConversationIdKey = "conversation id"
     const val ScrollToMessageIdKey = "scroll to message id"
-    const val OpenedFromLocationKey = "opened from location"
+    const val FilterByLocationKey = "opened from location"
 
     val scrollOffsetDp: Dp = (-30).dp
 

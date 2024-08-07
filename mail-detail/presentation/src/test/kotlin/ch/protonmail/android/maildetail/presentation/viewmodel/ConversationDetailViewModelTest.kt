@@ -266,7 +266,7 @@ class ConversationDetailViewModelTest {
     private val savedStateHandle: SavedStateHandle = mockk {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
         every { get<String>(ConversationDetailScreen.ScrollToMessageIdKey) } returns null
-        every { get<String>(ConversationDetailScreen.OpenedFromLocationKey) } returns null
+        every { get<String>(ConversationDetailScreen.FilterByLocationKey) } returns null
     }
     private val starConversations: StarConversations = mockk {
         coEvery { this@mockk.invoke(any(), any()) } returns listOf(ConversationTestData.starredConversation).right()

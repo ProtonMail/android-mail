@@ -290,7 +290,7 @@ class ConversationDetailViewModelIntegrationTest {
         every { get<String>(ConversationDetailScreen.ConversationIdKey) } returns conversationId.id
         every { get<String>(ConversationDetailScreen.ScrollToMessageIdKey) } returns "null"
         every {
-            get<String>(ConversationDetailScreen.OpenedFromLocationKey)
+            get<String>(ConversationDetailScreen.FilterByLocationKey)
         } returns MailLabelId.System.Archive.labelId.id
     }
     private val starConversations: StarConversations = mockk()

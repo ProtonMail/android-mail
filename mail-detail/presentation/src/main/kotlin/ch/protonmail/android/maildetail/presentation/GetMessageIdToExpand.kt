@@ -25,9 +25,9 @@ import javax.inject.Inject
 
 class GetMessageIdToExpand @Inject constructor() {
 
-    operator fun invoke(messages: List<MessageWithLabels>, openedFromLocation: LabelId?): MessageId? {
-        val filteredMessages = if (openedFromLocation != null) {
-            messages.filter { it.message.labelIds.contains(openedFromLocation) }
+    operator fun invoke(messages: List<MessageWithLabels>, filterByLocation: LabelId?): MessageId? {
+        val filteredMessages = if (filterByLocation != null) {
+            messages.filter { it.message.labelIds.contains(filterByLocation) }
         } else messages
 
         return when {

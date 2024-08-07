@@ -199,7 +199,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val mutableDetailState = MutableStateFlow(initialState)
     private val conversationId = requireConversationId()
     private val initialScrollToMessageId = getInitialScrollToMessageId()
-    private val openedFromLocation = getOpenedFromLocation()
+    private val filterByLocation = getFilterByLocation()
     private val observedAttachments = mutableListOf<AttachmentId>()
 
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
@@ -337,7 +337,7 @@ class ConversationDetailViewModel @Inject constructor(
                     ).toImmutableList()
 
                     val initialScrollTo = initialScrollToMessageId
-                        ?: getMessageIdToExpand(messages, openedFromLocation)
+                        ?: getMessageIdToExpand(messages, filterByLocation)
                             ?.let { messageIdUiModelMapper.toUiModel(it) }
                     if (stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState)) {
                         ConversationDetailEvent.MessagesData(messagesUiModels, initialScrollTo)
@@ -713,8 +713,8 @@ class ConversationDetailViewModel @Inject constructor(
         return messageIdStr?.let { if (it == "null") null else MessageIdUiModel(it) }
     }
 
-    private fun getOpenedFromLocation(): LabelId? {
-        val labelId = savedStateHandle.get<String>(ConversationDetailScreen.OpenedFromLocationKey)
+    private fun getFilterByLocation(): LabelId? {
+        val labelId = savedStateHandle.get<String>(ConversationDetailScreen.FilterByLocationKey)
         return labelId?.let { LabelId(it) }
     }
 
