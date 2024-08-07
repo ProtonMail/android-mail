@@ -1,6 +1,5 @@
 package ch.protonmail.android.maildetail.presentation
 
-import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
@@ -98,18 +97,18 @@ class GetMessageIdToExpandTest {
             MessageWithLabelsSample.build(MessageSample.ReadMessageMayFirst),
             MessageWithLabelsSample.build(
                 MessageSample.ReadMessageMaySecond.copy(
-                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                    labelIds = listOf(SystemLabelId.Archive.labelId)
                 )
             ),
             MessageWithLabelsSample.build(
                 MessageSample.ReadMessageMayThird.copy(
-                    labelIds = listOf(MailLabelId.System.Archive.labelId, SystemLabelId.AllDrafts.labelId)
+                    labelIds = listOf(SystemLabelId.Archive.labelId, SystemLabelId.AllDrafts.labelId)
                 )
             )
         )
 
         // When
-        val result = getMessageIdToExpand(messages, MailLabelId.System.Archive.labelId)
+        val result = getMessageIdToExpand(messages, SystemLabelId.Archive.labelId)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
