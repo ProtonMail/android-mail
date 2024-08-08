@@ -79,4 +79,32 @@ object ContactEmailSample {
         false,
         lastUsedTime = 0
     )
+
+    val contactEmailLastUsedRecently = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId5,
+        "Testing LastUsedTime",
+        "testing@last.used.time -- recently",
+        0,
+        2,
+        ContactIdTestData.contactId5,
+        "canonical testing@last.used.time",
+        emptyList(),
+        false,
+        lastUsedTime = 100
+    )
+
+    val contactEmailLastUsedLongTimeAgo = ContactEmail(
+        UserIdTestData.Primary,
+        ContactIdTestData.contactEmailId6,
+        "Testing LastUsedTime",
+        "testing@last.used.time -- long time ago",
+        0,
+        2,
+        ContactIdTestData.contactId6,
+        "canonical testing@last.used.time",
+        emptyList(),
+        false,
+        lastUsedTime = 1
+    )
 }

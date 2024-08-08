@@ -27,9 +27,13 @@ object ContactIdTestData {
     val contactId2 = ContactId("2")
     val contactId3 = ContactId("3")
     val contactId4 = ContactId("4")
+    val contactId5 = ContactId("5")
+    val contactId6 = ContactId("6")
 
     val contactEmailId1 = ContactEmailId("1")
     val contactEmailId2 = ContactEmailId("2")
     val contactEmailId3 = ContactEmailId("3")
     val contactEmailId4 = ContactEmailId("4")
+    val contactEmailId5 = ContactEmailId("5")
+    val contactEmailId6 = ContactEmailId("6")
 }
