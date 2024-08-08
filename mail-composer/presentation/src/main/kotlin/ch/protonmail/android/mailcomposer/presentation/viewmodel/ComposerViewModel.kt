@@ -74,7 +74,6 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
-import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
@@ -85,6 +84,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlai
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
+import ch.protonmail.android.mailcomposer.presentation.usecase.SortContactsForSuggestions
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.DeviceContactsSuggestionsPrompt
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
@@ -112,7 +112,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.deserialize
-import me.proton.core.util.kotlin.takeIfNotBlank
 import me.proton.core.util.kotlin.takeIfNotEmpty
 import timber.log.Timber
 import javax.inject.Inject
@@ -133,6 +132,7 @@ class ComposerViewModel @Inject constructor(
     private val searchDeviceContacts: SearchDeviceContacts,
     private val deviceContactsSuggestionsPrompt: DeviceContactsSuggestionsPrompt,
     private val searchContactGroups: SearchContactGroups,
+    private val sortContactsForSuggestions: SortContactsForSuggestions,
     private val participantMapper: ParticipantMapper,
     private val reducer: ComposerReducer,
     private val isValidEmailAddress: IsValidEmailAddress,
@@ -789,54 +789,20 @@ class ComposerViewModel @Inject constructor(
                 searchContactGroups(primaryUserId(), searchTerm)
             ) { contacts, contactGroups ->
 
-                val fromDeviceContacts = if (state.value.isDeviceContactsSuggestionsEnabled) {
-                    val deviceContacts = searchDeviceContacts(searchTerm)
-
-                    deviceContacts.getOrNull()?.map {
-                        ContactSuggestionUiModel.Contact(
-                            name = it.name,
-                            email = it.email
-                        )
-                    } ?: emptyList()
+                val deviceContacts = if (state.value.isDeviceContactsSuggestionsEnabled) {
+                    searchDeviceContacts(searchTerm).getOrNull() ?: emptyList()
                 } else emptyList()
 
-                val fromContacts = contacts.getOrNull()?.asSequence()?.flatMap { contact ->
-                    contact.contactEmails.map {
-                        contact.copy(
-                            contactEmails = listOf(it)
-                        ) // flatMap into Contacts containing only one ContactEmail because we need to sort by them
-                    }
-                }?.sortedBy {
-                    val lastUsedTimeDescending = Long.MAX_VALUE - it.contactEmails.first().lastUsedTime
-
-                    // LastUsedTime, name, email
-                    "$lastUsedTimeDescending ${it.name} ${it.contactEmails.first().email ?: ""}"
-                }?.map { contact ->
-                    val contactEmail = contact.contactEmails.first()
-                    ContactSuggestionUiModel.Contact(
-                        name = contactEmail.name.takeIfNotBlank()
-                            ?: contact.name.takeIfNotBlank()
-                            ?: contactEmail.email,
-                        email = contactEmail.email
-                    )
-                } ?: emptySequence()
-
-                val fromContactGroups = contactGroups.getOrNull()?.asSequence()?.map { contactGroup ->
-                    ContactSuggestionUiModel.ContactGroup(
-                        name = contactGroup.name,
-                        emails = contactGroup.members.map { it.email }
-                    )
-                } ?: emptySequence()
-
-                val fromDeviceAndContactGroups = (fromDeviceContacts + fromContactGroups).sortedBy {
-                    it.name
-                }
-
-                val suggestions = (fromContacts + fromDeviceAndContactGroups).take(maxContactAutocompletionCount)
+                val suggestions = sortContactsForSuggestions(
+                    contacts.getOrNull() ?: emptyList(),
+                    deviceContacts,
+                    contactGroups.getOrNull() ?: emptyList(),
+                    maxContactAutocompletionCount
+                )
 
                 emitNewStateFor(
                     ComposerEvent.UpdateContactSuggestions(
-                        suggestions.toList(),
+                        suggestions,
                         suggestionsField
                     )
                 )

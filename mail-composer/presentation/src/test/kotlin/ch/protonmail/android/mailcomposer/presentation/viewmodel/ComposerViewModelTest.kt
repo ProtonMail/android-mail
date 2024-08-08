@@ -89,6 +89,7 @@ import ch.protonmail.android.mailcomposer.presentation.usecase.ConvertHtmlToPlai
 import ch.protonmail.android.mailcomposer.presentation.usecase.FormatMessageSendingError
 import ch.protonmail.android.mailcomposer.presentation.usecase.InjectAddressSignature
 import ch.protonmail.android.mailcomposer.presentation.usecase.ParentMessageToDraftFields
+import ch.protonmail.android.mailcomposer.presentation.usecase.SortContactsForSuggestions
 import ch.protonmail.android.mailcomposer.presentation.usecase.StyleQuotedHtml
 import ch.protonmail.android.mailcontact.domain.DeviceContactsSuggestionsPrompt
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
@@ -214,6 +215,7 @@ class ComposerViewModelTest {
     private val convertHtmlToPlainText = mockk<ConvertHtmlToPlainText>()
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
+    private val sortContactsForSuggestions = SortContactsForSuggestions()
     private val reducer = ComposerReducer(attachmentUiModelMapper)
 
     private val viewModel by lazy {
@@ -230,6 +232,7 @@ class ComposerViewModelTest {
             searchDeviceContactsMock,
             deviceContactsSuggestionsPromptMock,
             searchContactGroupsMock,
+            sortContactsForSuggestions,
             participantMapperMock,
             reducer,
             isValidEmailAddressMock,
