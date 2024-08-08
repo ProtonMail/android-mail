@@ -239,7 +239,7 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
                     respondWith "/mail/v4/conversations/conversation-id/conversation-id_185419_2.json"
                     withStatusCode 200 matchWildcards true,
                 get("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_185419.json"
+                    respondWith "/mail/v4/messages/message-id/message-id_185419_3.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }

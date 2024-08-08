@@ -137,9 +137,6 @@ internal class ConversationDetailAuthenticityBadgeTests :
                     withStatusCode 200 matchWildcards true serveOnce true,
                 get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_192144.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                get("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_192144_2.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
@@ -168,9 +165,6 @@ internal class ConversationDetailAuthenticityBadgeTests :
                     withStatusCode 200 matchWildcards true serveOnce true,
                 get("/mail/v4/messages/*")
                     respondWith "/mail/v4/messages/message-id/message-id_192146.json"
-                    withStatusCode 200 matchWildcards true serveOnce true,
-                get("/mail/v4/messages/*")
-                    respondWith "/mail/v4/messages/message-id/message-id_192146_2.json"
                     withStatusCode 200 matchWildcards true serveOnce true
             )
         }
