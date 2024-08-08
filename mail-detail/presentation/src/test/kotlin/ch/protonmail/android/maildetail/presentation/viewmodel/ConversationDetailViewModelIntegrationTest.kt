@@ -2183,13 +2183,13 @@ class ConversationDetailViewModelIntegrationTest {
         val message1 = MessageWithLabelsSample.build(
             message = MessageSample.build(
                 messageId = MessageIdSample.AugWeatherForecast,
-                labelIds = listOf(MailLabelId.System.Archive.labelId)
+                labelIds = listOf(SystemLabelId.Archive.labelId)
             )
         )
         val message2 = MessageWithLabelsSample.build(
             message = MessageSample.build(
                 messageId = MessageIdSample.SepWeatherForecast,
-                labelIds = listOf(MailLabelId.System.Trash.labelId)
+                labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         )
         val messages = nonEmptyListOf(message1, message2)
@@ -2223,13 +2223,13 @@ class ConversationDetailViewModelIntegrationTest {
             val message1 = MessageWithLabelsSample.build(
                 message = MessageSample.build(
                     messageId = MessageIdSample.AugWeatherForecast,
-                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                    labelIds = listOf(SystemLabelId.Archive.labelId)
                 )
             )
             val message2 = MessageWithLabelsSample.build(
                 message = MessageSample.build(
                     messageId = MessageIdSample.SepWeatherForecast,
-                    labelIds = listOf(MailLabelId.System.Trash.labelId)
+                    labelIds = listOf(SystemLabelId.Trash.labelId)
                 )
             )
             val messages = nonEmptyListOf(message1, message2)
@@ -2265,19 +2265,19 @@ class ConversationDetailViewModelIntegrationTest {
         val message1 = MessageWithLabelsSample.build(
             message = MessageSample.build(
                 messageId = MessageIdSample.AugWeatherForecast,
-                labelIds = listOf(MailLabelId.System.Archive.labelId)
+                labelIds = listOf(SystemLabelId.Archive.labelId)
             )
         )
         val message2 = MessageWithLabelsSample.build(
             message = MessageSample.build(
                 messageId = MessageIdSample.SepWeatherForecast,
-                labelIds = listOf(MailLabelId.System.Trash.labelId)
+                labelIds = listOf(SystemLabelId.Trash.labelId)
             )
         )
         val messages = nonEmptyListOf(message1, message2)
         every {
             savedStateHandle.get<String>(ConversationDetailScreen.FilterByLocationKey)
-        } returns MailLabelId.System.Trash.labelId.id
+        } returns SystemLabelId.Trash.labelId.id
         coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
         coEvery {
             observeMessage(userId, MessageIdSample.AugWeatherForecast)
@@ -2308,19 +2308,19 @@ class ConversationDetailViewModelIntegrationTest {
             val message1 = MessageWithLabelsSample.build(
                 message = MessageSample.build(
                     messageId = MessageIdSample.AugWeatherForecast,
-                    labelIds = listOf(MailLabelId.System.Archive.labelId)
+                    labelIds = listOf(SystemLabelId.Archive.labelId)
                 )
             )
             val message2 = MessageWithLabelsSample.build(
                 message = MessageSample.build(
                     messageId = MessageIdSample.SepWeatherForecast,
-                    labelIds = listOf(MailLabelId.System.Trash.labelId)
+                    labelIds = listOf(SystemLabelId.Trash.labelId)
                 )
             )
             val messages = nonEmptyListOf(message1, message2)
             every {
                 savedStateHandle.get<String>(ConversationDetailScreen.FilterByLocationKey)
-            } returns MailLabelId.System.Trash.labelId.id
+            } returns SystemLabelId.Trash.labelId.id
             coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
             coEvery {
                 observeMessage(userId, MessageIdSample.AugWeatherForecast)

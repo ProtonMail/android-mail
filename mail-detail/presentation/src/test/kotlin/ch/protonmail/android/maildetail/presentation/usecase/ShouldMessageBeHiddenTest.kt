@@ -1,7 +1,7 @@
 package ch.protonmail.android.maildetail.presentation.usecase
 
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Trash
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Archive
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Trash
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

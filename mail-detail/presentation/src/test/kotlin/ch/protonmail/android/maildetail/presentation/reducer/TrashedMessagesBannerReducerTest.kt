@@ -6,9 +6,9 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerState
 import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerUiModel
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Archive
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Inbox
-import ch.protonmail.android.maillabel.domain.model.MailLabelId.System.Trash
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Archive
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Inbox
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Trash
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import kotlinx.collections.immutable.toImmutableList
 import org.junit.runner.RunWith
