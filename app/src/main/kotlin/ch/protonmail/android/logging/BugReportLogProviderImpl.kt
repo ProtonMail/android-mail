@@ -21,14 +21,8 @@ package ch.protonmail.android.logging
 import java.io.File
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.withContext
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.domain.entity.UserId
 import me.proton.core.report.domain.provider.BugReportLogProvider
-import me.proton.core.util.kotlin.HashUtils
-import timber.log.Timber
 import javax.inject.Inject
 
 class BugReportLogProviderImpl @Inject constructor(
@@ -36,36 +30,8 @@ class BugReportLogProviderImpl @Inject constructor(
     private val accountManager: AccountManager
 ) : BugReportLogProvider {
 
-    override suspend fun getLog(): File? {
-
-        val userId = accountManager.getPrimaryUserId().firstOrNull()
-
-        if (userId == null) {
-            Timber.e("could not get PrimaryUserId in BugReportLogProviderImpl")
-            return null
-        }
-
-        return runCatching {
-            withContext(Dispatchers.IO) {
-                File(logDirectoryName(userId)).apply { mkdirs() }
-
-                val logFileName = "${System.currentTimeMillis()}.log"
-                val logFile = File(logDirectoryName(userId), logFileName).apply { this.createNewFile() }
-
-                // dump the log to a file
-                Runtime.getRuntime().exec("logcat -d -v time -f " + logFile.absolutePath)
-
-                logFile
-            }
-        }.getOrElse {
-            Timber.e(it, "exception creating log file for bug report")
-            null
-        }
-    }
+    override suspend fun getLog(): File? = null // bring this back when we resolve issues with logs
 
     override suspend fun releaseLog(log: File) {}
-
-    private fun logDirectoryName(userId: UserId): String =
-        "${applicationContext.cacheDir}/${HashUtils.sha256(userId.id)}/logs"
 
 }
