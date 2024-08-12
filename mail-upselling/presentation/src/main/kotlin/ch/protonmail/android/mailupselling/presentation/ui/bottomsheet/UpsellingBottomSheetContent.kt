@@ -32,12 +32,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
@@ -47,6 +49,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.compose.theme.headlineNorm
+import me.proton.core.compose.theme.headlineSmallNorm
 
 @Composable
 internal fun UpsellingBottomSheetContent(
@@ -58,6 +61,8 @@ internal fun UpsellingBottomSheetContent(
     val backgroundColor = Color(LocalContext.current.getColor(UpsellingColors.BottomSheetBackgroundColor))
     val dynamicPlansModel = state.plans
 
+    val isNarrowScreen = LocalConfiguration.current.screenWidthDp <= MailDimens.NarrowScreenWidth.value
+
     LazyColumn(
         modifier = modifier
             .fillMaxWidth()
@@ -65,18 +70,26 @@ internal fun UpsellingBottomSheetContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Image(
-                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                painter = painterResource(id = R.drawable.illustration_upselling),
-                contentDescription = NO_CONTENT_DESCRIPTION
-            )
+            if (!isNarrowScreen) {
+                Image(
+                    modifier = Modifier.padding(
+                        start = ProtonDimens.DefaultSpacing,
+                        end = ProtonDimens.DefaultSpacing,
+                        top = ProtonDimens.DefaultSpacing
+                    ),
+                    painter = painterResource(id = R.drawable.illustration_upselling),
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            }
         }
 
         item {
             Text(
-                modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
+                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
                 text = "${stringResource(id = R.string.upselling_title)} ${dynamicPlansModel.title.text.string()}",
-                style = ProtonTheme.typography.headlineNorm,
+                style = if (isNarrowScreen) {
+                    ProtonTheme.typography.headlineSmallNorm
+                } else ProtonTheme.typography.headlineNorm,
                 color = contentColors.textNorm
             )
         }
