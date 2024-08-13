@@ -34,7 +34,7 @@ class TrashedMessagesBannerReducer @Inject constructor() {
 
     private fun reduceMessagesData(operation: ConversationDetailEvent.MessagesData) = with(operation) {
         when {
-            filterByLocation == Trash.labelId && messagesLabelIds.none { it.value.contains(Trash.labelId) } -> {
+            filterByLocation == Trash.labelId && messagesLabelIds.any { it.value.contains(Trash.labelId).not() } -> {
                 when {
                     shouldHideMessagesBasedOnTrashFilter -> TrashedMessagesBannerState.Shown(
                         TrashedMessagesBannerUiModel(R.string.non_trashed_messages_banner, R.string.show)
