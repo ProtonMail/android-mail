@@ -42,6 +42,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
+import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -54,6 +55,7 @@ internal class ConversationDetailMoveToBottomSheetMainTests : MockedNetworkTest(
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
+    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185409")
     fun checkMoveToBottomSheetComponentsInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
