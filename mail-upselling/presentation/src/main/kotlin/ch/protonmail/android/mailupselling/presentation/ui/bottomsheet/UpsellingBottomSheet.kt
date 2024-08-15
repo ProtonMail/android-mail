@@ -24,11 +24,20 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 
 @Composable
-fun UpsellingBottomSheet(modifier: Modifier = Modifier, bottomSheetActions: UpsellingBottomSheet.Actions) {
-    val viewModel: UpsellingBottomSheetViewModel = hiltViewModel()
+fun UpsellingBottomSheet(
+    modifier: Modifier = Modifier,
+    bottomSheetActions: UpsellingBottomSheet.Actions,
+    upsellingEntryPoint: UpsellingEntryPoint
+) {
+
+    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory> { factory ->
+        factory.create(upsellingEntryPoint)
+    }
+
     val actions = bottomSheetActions.copy(
         onDisplayed = { viewModel.updateLastSeenTimestamp() },
         onPlanSelected = { viewModel.trackUpgradeAttempt(it) },

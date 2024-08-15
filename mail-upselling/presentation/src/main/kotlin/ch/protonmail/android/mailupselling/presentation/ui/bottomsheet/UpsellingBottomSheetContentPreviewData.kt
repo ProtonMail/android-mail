@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
@@ -51,6 +52,7 @@ internal object UpsellingBottomSheetContentPreviewData {
 
     val Base = UpsellingBottomSheetContentState.Data(
         DynamicPlansUiModel(
+            icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
             title = DynamicPlanTitleUiModel(TextUiModel.Text("Mail Plus")),
             description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
             entitlements = listOf(

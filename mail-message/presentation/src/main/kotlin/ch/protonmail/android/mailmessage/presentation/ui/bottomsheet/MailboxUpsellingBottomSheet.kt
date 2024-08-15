@@ -20,9 +20,10 @@ package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 
 @Composable
 fun MailboxUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
-    UpsellingBottomSheet(modifier, bottomSheetActions = actions)
+    UpsellingBottomSheet(modifier, bottomSheetActions = actions, upsellingEntryPoint = UpsellingEntryPoint.Mailbox)
 }

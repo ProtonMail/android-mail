@@ -77,7 +77,7 @@ internal fun UpsellingBottomSheetContent(
                         end = ProtonDimens.DefaultSpacing,
                         top = ProtonDimens.DefaultSpacing
                     ),
-                    painter = painterResource(id = R.drawable.illustration_upselling),
+                    painter = painterResource(id = dynamicPlansModel.icon.iconResId),
                     contentDescription = NO_CONTENT_DESCRIPTION
                 )
             }

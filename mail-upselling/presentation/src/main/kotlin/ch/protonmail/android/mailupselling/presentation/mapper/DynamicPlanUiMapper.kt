@@ -20,11 +20,13 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject
 
 internal class DynamicPlanUiMapper @Inject constructor(
+    private val iconUiMapper: DynamicPlanIconUiMapper,
     private val titleUiMapper: DynamicPlanTitleUiMapper,
     private val descriptionUiMapper: DynamicPlanDescriptionUiMapper,
     private val planInstanceUiMapper: DynamicPlanInstanceUiMapper,
@@ -32,8 +34,13 @@ internal class DynamicPlanUiMapper @Inject constructor(
     private val getDiscountRate: GetDiscountRate
 ) {
 
-    fun toUiModel(userId: UserId, plan: DynamicPlan): DynamicPlansUiModel {
+    fun toUiModel(
+        userId: UserId,
+        plan: DynamicPlan,
+        upsellingEntryPoint: UpsellingEntryPoint
+    ): DynamicPlansUiModel {
         val emptyUiModel = DynamicPlansUiModel(
+            icon = iconUiMapper.toUiModel(upsellingEntryPoint),
             title = titleUiMapper.toUiModel(plan.title),
             description = descriptionUiMapper.toUiModel(plan),
             entitlements = entitlementsUiMapper.toUiModel(plan),

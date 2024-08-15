@@ -29,6 +29,7 @@ import ch.protonmail.android.mailupselling.domain.usecase.FilterDynamicPlansByUs
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.UpdateUpsellingOneClickLastTimestamp
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 import io.mockk.coEvery
@@ -64,6 +65,7 @@ internal class UpsellingBottomSheetViewModelTest {
     private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
     private val viewModel: UpsellingBottomSheetViewModel by lazy {
         UpsellingBottomSheetViewModel(
+            UpsellingEntryPoint.Mailbox,
             observePrimaryUser,
             getDynamicPlansAdjustedPrices,
             filterDynamicPlansByUserSubscription,

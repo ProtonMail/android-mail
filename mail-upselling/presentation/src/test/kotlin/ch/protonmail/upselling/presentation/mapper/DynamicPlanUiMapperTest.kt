@@ -23,15 +23,18 @@ import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanDescriptionUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper
+import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanIconUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanTitleUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithIdenticalInstances
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithNoInstances
@@ -47,12 +50,14 @@ import kotlin.test.assertEquals
 
 internal class DynamicPlanUiMapperTest {
 
+    private val iconUiMapper = mockk<DynamicPlanIconUiMapper>()
     private val titleUiMapper = mockk<DynamicPlanTitleUiMapper>()
     private val descriptionUiMapper = mockk<DynamicPlanDescriptionUiMapper>()
     private val planInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper>()
     private val entitlementsUiMapper = mockk<DynamicPlanEntitlementsUiMapper>()
     private val getDiscountRate = mockk<GetDiscountRate>()
     private val mapper = DynamicPlanUiMapper(
+        iconUiMapper,
         titleUiMapper,
         descriptionUiMapper,
         planInstanceUiMapper,
@@ -68,12 +73,14 @@ internal class DynamicPlanUiMapperTest {
     @Test
     fun `should return a plan with no options if the instances are not present`() {
         // Given
+        expectIconUiModel()
         expectTitleUiModel()
         expectDescriptionUiModel()
         expectEntitlementsUiModel()
 
         val plan = DynamicPlanPlusWithNoInstances
         val expected = DynamicPlansUiModel(
+            icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = listOf(ExpectedEntitlementsUiModel),
@@ -81,7 +88,7 @@ internal class DynamicPlanUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UserId, plan)
+        val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -90,6 +97,7 @@ internal class DynamicPlanUiMapperTest {
     @Test
     fun `should return a plan with only one option if the instances are the same`() {
         // Given
+        expectIconUiModel()
         expectTitleUiModel()
         expectDescriptionUiModel()
         expectEntitlementsUiModel()
@@ -119,6 +127,7 @@ internal class DynamicPlanUiMapperTest {
         )
 
         val expectedPlansUiModel = DynamicPlansUiModel(
+            icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = listOf(ExpectedEntitlementsUiModel),
@@ -126,7 +135,7 @@ internal class DynamicPlanUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UserId, plan)
+        val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Mailbox)
 
         // Then
         assertEquals(expectedPlansUiModel, actual)
@@ -135,6 +144,7 @@ internal class DynamicPlanUiMapperTest {
     @Test
     fun `should return a plan with two options if the instances are different`() {
         // Given
+        expectIconUiModel()
         expectTitleUiModel()
         expectDescriptionUiModel()
         expectEntitlementsUiModel()
@@ -186,6 +196,7 @@ internal class DynamicPlanUiMapperTest {
         )
 
         val expectedPlansUiModel = DynamicPlansUiModel(
+            icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = listOf(ExpectedEntitlementsUiModel),
@@ -193,10 +204,14 @@ internal class DynamicPlanUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UserId, plan)
+        val actual = mapper.toUiModel(UserId, plan, UpsellingEntryPoint.Mailbox)
 
         // Then
         assertEquals(expectedPlansUiModel, actual)
+    }
+
+    private fun expectIconUiModel() {
+        every { iconUiMapper.toUiModel(any()) } returns ExpectedIconUiModel
     }
 
     private fun expectTitleUiModel() {
@@ -229,6 +244,7 @@ internal class DynamicPlanUiMapperTest {
 
     private companion object {
 
+        val ExpectedIconUiModel = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
         val ExpectedDescriptionUiModel = DynamicPlanDescriptionUiModel(TextUiModel.Text("description"))
         val ExpectedEntitlementsUiModel = DynamicEntitlementUiModel.Default(TextUiModel.Text("item"), "")
         val ExpectedTitleUiModel = DynamicPlanTitleUiModel(TextUiModel.Text("title"))

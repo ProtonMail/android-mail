@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 
@@ -33,7 +34,11 @@ internal sealed interface UpsellingBottomSheetContentState {
 
         sealed interface UpsellingBottomSheetContentEvent : UpsellingBottomSheetContentOperation {
 
-            data class DataLoaded(val userId: UserId, val plans: DynamicPlan) : UpsellingBottomSheetContentEvent
+            data class DataLoaded(
+                val userId: UserId,
+                val plans: DynamicPlan,
+                val upsellingEntryPoint: UpsellingEntryPoint
+            ) : UpsellingBottomSheetContentEvent
             sealed interface LoadingError : UpsellingBottomSheetContentEvent {
                 data object NoUserId : LoadingError
                 data object NoSubscriptions : LoadingError

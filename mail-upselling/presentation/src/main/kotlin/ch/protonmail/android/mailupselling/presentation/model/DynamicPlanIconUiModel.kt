@@ -18,10 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
-internal data class DynamicPlansUiModel(
-    val icon: DynamicPlanIconUiModel,
-    val title: DynamicPlanTitleUiModel,
-    val description: DynamicPlanDescriptionUiModel,
-    val entitlements: List<DynamicEntitlementUiModel>,
-    val plans: List<DynamicPlanInstanceUiModel>
-)
+import androidx.annotation.DrawableRes
+
+@JvmInline
+internal value class DynamicPlanIconUiModel(@DrawableRes val iconResId: Int)

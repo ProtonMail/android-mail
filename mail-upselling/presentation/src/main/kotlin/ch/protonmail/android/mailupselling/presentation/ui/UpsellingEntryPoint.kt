@@ -16,12 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.model
+package ch.protonmail.android.mailupselling.presentation.ui
 
-internal data class DynamicPlansUiModel(
-    val icon: DynamicPlanIconUiModel,
-    val title: DynamicPlanTitleUiModel,
-    val description: DynamicPlanDescriptionUiModel,
-    val entitlements: List<DynamicEntitlementUiModel>,
-    val plans: List<DynamicPlanInstanceUiModel>
-)
+sealed interface UpsellingEntryPoint {
+    data object Mailbox : UpsellingEntryPoint
+    data object ContactGroups : UpsellingEntryPoint
+    data object Labels : UpsellingEntryPoint
+    data object Folders : UpsellingEntryPoint
+    data object MobileSignature : UpsellingEntryPoint
+}

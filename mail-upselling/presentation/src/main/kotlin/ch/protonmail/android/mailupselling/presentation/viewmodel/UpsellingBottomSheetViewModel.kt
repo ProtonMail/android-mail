@@ -31,7 +31,11 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomShe
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation.UpsellingBottomSheetContentEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.UpdateUpsellingOneClickLastTimestamp
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,10 +44,10 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
 import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
 import me.proton.core.util.kotlin.takeIfNotEmpty
-import javax.inject.Inject
 
-@HiltViewModel
-internal class UpsellingBottomSheetViewModel @Inject constructor(
+@HiltViewModel(assistedFactory = UpsellingBottomSheetViewModel.Factory::class)
+internal class UpsellingBottomSheetViewModel @AssistedInject constructor(
+    @Assisted val upsellingEntryPoint: UpsellingEntryPoint,
     observePrimaryUser: ObservePrimaryUser,
     private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
     private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
@@ -51,6 +55,12 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
     private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
     private val upsellingBottomSheetContentReducer: UpsellingBottomSheetContentReducer
 ) : ViewModel() {
+
+    @AssistedFactory
+    interface Factory {
+
+        fun create(upsellingEntryPoint: UpsellingEntryPoint): UpsellingBottomSheetViewModel
+    }
 
     private val mutableState = MutableStateFlow<UpsellingBottomSheetContentState>(Loading)
     val state = mutableState.asStateFlow()
@@ -67,7 +77,7 @@ internal class UpsellingBottomSheetViewModel @Inject constructor(
             val dynamicPlan = filterDynamicPlansByUserSubscription(userId, dynamicPlans).takeIfNotEmpty()?.first()
                 ?: return@mapLatest emitNewStateFrom(UpsellingBottomSheetContentEvent.LoadingError.NoSubscriptions)
 
-            emitNewStateFrom(UpsellingBottomSheetContentEvent.DataLoaded(userId, dynamicPlan))
+            emitNewStateFrom(UpsellingBottomSheetContentEvent.DataLoaded(userId, dynamicPlan, upsellingEntryPoint))
         }.launchIn(viewModelScope)
     }
 
