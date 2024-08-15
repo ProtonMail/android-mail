@@ -219,7 +219,7 @@ internal class DynamicPlanUiMapperTest {
     }
 
     private fun expectDescriptionUiModel() {
-        every { descriptionUiMapper.toUiModel(any()) } returns ExpectedDescriptionUiModel
+        every { descriptionUiMapper.toUiModel(any(), any()) } returns ExpectedDescriptionUiModel
     }
 
     private fun expectEntitlementsUiModel() {

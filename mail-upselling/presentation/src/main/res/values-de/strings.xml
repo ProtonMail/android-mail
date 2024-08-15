@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Schaltfläche \"Upgrade\"</string>
   <string name="upselling_title">Upgrade auf</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
+  <string name="upselling_mailbox_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
   <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_custom_domain">Unterstützung für eigene E-Mail-Domain</string>

@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Yükseltme düğmesi</string>
   <string name="upselling_title">Şuna yükselt</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Daha fazla depolama alanı ve ücretli özellikler alın</string>
+  <string name="upselling_mailbox_plus_description_override">Daha fazla depolama alanı ve ücretli özellikler alın</string>
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
   <string name="upselling_plus_feature_custom_domain">Özel e-posta etki alanı desteği</string>

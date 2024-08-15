@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Przycisk ulepszenia</string>
   <string name="upselling_title">Ulepsz konto, aby</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Odblokuj więcej przestrzeni dyskowej i funkcje premium</string>
+  <string name="upselling_mailbox_plus_description_override">Odblokuj więcej przestrzeni dyskowej i funkcje premium</string>
   <string name="upselling_plus_feature_storage">15 GB przestrzeni dyskowej</string>
   <string name="upselling_plus_feature_email_addresses">10 adresów e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Wsparcie dla niestandardowej domeny</string>

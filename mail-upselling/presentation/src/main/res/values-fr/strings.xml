@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Bouton d\'amélioration de l\'abonnement</string>
   <string name="upselling_title">Passer à</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Pour débloquer plus d\'espace de stockage et de fonctionnalités premium</string>
+  <string name="upselling_mailbox_plus_description_override">Pour débloquer plus d\'espace de stockage et de fonctionnalités premium</string>
   <string name="upselling_plus_feature_storage">15 Go d\'espace de stockage</string>
   <string name="upselling_plus_feature_email_addresses">10 adresses e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Prise en charge de domaine de messagerie personnalisé</string>

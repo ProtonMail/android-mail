@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanDescriptionUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -51,22 +52,82 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Mailbox)
 
         // Then
         assertEquals(expected, actual)
     }
 
     @Test
-    fun `should return the local description when override is set`() {
+    fun `should return the local description when override is set, for Mailbox entry point`() {
         // Given
         every { forceOverride.get() } returns true
         val expected = DynamicPlanDescriptionUiModel(
-            text = TextUiModel.TextRes(R.string.upselling_plus_description_override)
+            text = TextUiModel.TextRes(R.string.upselling_mailbox_plus_description_override)
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Mailbox)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return the local description when override is set, for Mobile Signature entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_mobile_signature_plus_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.MobileSignature)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return the local description when override is set, for Contact Groups entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_contact_groups_plus_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.ContactGroups)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return the local description when override is set, for Folders entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_folders_plus_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Folders)
+
+        // Then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `should return the local description when override is set, for Labels entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_labels_plus_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Labels)
 
         // Then
         assertEquals(expected, actual)

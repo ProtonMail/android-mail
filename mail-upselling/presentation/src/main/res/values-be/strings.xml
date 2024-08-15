@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Кнопка паляпшэння</string>
   <string name="upselling_title">Палепшыць да</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
+  <string name="upselling_mailbox_plus_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
   <string name="upselling_plus_feature_email_addresses">10 адрасоў электроннай пошты</string>
   <string name="upselling_plus_feature_custom_domain">Падтрымка карыстальніцкіх даменаў электроннай пошты</string>

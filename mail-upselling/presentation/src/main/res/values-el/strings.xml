@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Κουμπί αναβάθμισης</string>
   <string name="upselling_title">Αναβάθμιση σε</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες</string>
+  <string name="upselling_mailbox_plus_description_override">Για να ξεκλειδώσετε περισσότερο χώρο αποθήκευσης και premium λειτουργίες</string>
   <string name="upselling_plus_feature_storage">15 GB αποθηκευτικός χώρος</string>
   <string name="upselling_plus_feature_email_addresses">10 διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>
   <string name="upselling_plus_feature_custom_domain">Υποστήριξη προσαρμοσμένου τομέα ηλεκτρονικού ταχυδρομείου</string>

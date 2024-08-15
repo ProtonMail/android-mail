@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Knap til opgradering</string>
   <string name="upselling_title">Opgrader til</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">For at få mere lagerplads og premium-funktioner</string>
+  <string name="upselling_mailbox_plus_description_override">For at få mere lagerplads og premium-funktioner</string>
   <string name="upselling_plus_feature_storage">15 GB lagerplads</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadresser</string>
   <string name="upselling_plus_feature_custom_domain">Understøttelse af brugerdefinerede e-maildomæner</string>

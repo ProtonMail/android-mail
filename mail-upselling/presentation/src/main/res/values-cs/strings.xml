@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Tlačítko navýšení</string>
   <string name="upselling_title">Navýšit na</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Pro odemknutí většího úložného prostoru a prémiových funkcí</string>
+  <string name="upselling_mailbox_plus_description_override">Pro odemknutí většího úložného prostoru a prémiových funkcí</string>
   <string name="upselling_plus_feature_storage">15 GB prostoru</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailových adres</string>
   <string name="upselling_plus_feature_custom_domain">Podpora vlastní e-mailové domény</string>

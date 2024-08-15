@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">სატარიფო გეგმის განახლების ღილაკი</string>
   <string name="upselling_title">სატარიფო გეგმის განახლება</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">მეტი საცავი და ფასიანი თვისებების მისაღებად</string>
+  <string name="upselling_mailbox_plus_description_override">მეტი საცავი და ფასიანი თვისებების მისაღებად</string>
   <string name="upselling_plus_feature_storage">15 გბ საცავი</string>
   <string name="upselling_plus_feature_email_addresses">10 ელფოსტის მისამართი</string>
   <string name="upselling_plus_feature_custom_domain">თქვენი ელფოსტის დომენების მხარდაჭერა</string>

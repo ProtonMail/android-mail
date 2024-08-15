@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Botó d\'actualització</string>
   <string name="upselling_title">Milloreu a</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
+  <string name="upselling_mailbox_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>
   <string name="upselling_plus_feature_email_addresses">10 adreces de correu electrònic</string>
   <string name="upselling_plus_feature_custom_domain">Suport de domini de correu electrònic personalitzat</string>

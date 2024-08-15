@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Botão de fazer upgrade</string>
   <string name="upselling_title">Faça upgrade para</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Obtenha mais armazenamento e recursos premium</string>
+  <string name="upselling_mailbox_plus_description_override">Obtenha mais armazenamento e recursos premium</string>
   <string name="upselling_plus_feature_storage">15 GB de armazenamento</string>
   <string name="upselling_plus_feature_email_addresses">10 endereços de e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Suporte para domínios de email personalizados</string>

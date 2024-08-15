@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">업그레이드 버튼</string>
   <string name="upselling_title">업그레이드하기</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
+  <string name="upselling_mailbox_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
   <string name="upselling_plus_feature_storage">저장공간 15GB</string>
   <string name="upselling_plus_feature_email_addresses">이메일 주소 10개</string>
   <string name="upselling_plus_feature_custom_domain">사용자 지정 이메일 도메인 지원</string>

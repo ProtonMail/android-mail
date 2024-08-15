@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Buton modificare plan</string>
   <string name="upselling_title">Trecere la</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Pentru a debloca mai mult spațiu și funcții premium</string>
+  <string name="upselling_mailbox_plus_description_override">Pentru a debloca mai mult spațiu și funcții premium</string>
   <string name="upselling_plus_feature_storage">15 GiB spațiu de stocare</string>
   <string name="upselling_plus_feature_email_addresses">10 adrese de e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Suport pentru domeniu personal de e-mail</string>

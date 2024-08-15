@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Tlačidlo aktualizácie</string>
   <string name="upselling_title">Upgradovať na</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Na získanie väčšieho úložiska a prémiových funkcií</string>
+  <string name="upselling_mailbox_plus_description_override">Na získanie väčšieho úložiska a prémiových funkcií</string>
   <string name="upselling_plus_feature_storage">15 GB úložného priestoru</string>
   <string name="upselling_plus_feature_email_addresses">10 emailových adries</string>
   <string name="upselling_plus_feature_custom_domain">Podpora vlastnej emailovej domény</string>

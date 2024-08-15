@@ -42,7 +42,7 @@ internal class DynamicPlanUiMapper @Inject constructor(
         val emptyUiModel = DynamicPlansUiModel(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint),
             title = titleUiMapper.toUiModel(plan.title),
-            description = descriptionUiMapper.toUiModel(plan),
+            description = descriptionUiMapper.toUiModel(plan, upsellingEntryPoint),
             entitlements = entitlementsUiMapper.toUiModel(plan),
             plans = listOf()
         )

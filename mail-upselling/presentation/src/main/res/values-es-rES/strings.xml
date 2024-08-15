@@ -21,7 +21,7 @@
   <string name="upselling_button_item_content_description">Botón de mejora</string>
   <string name="upselling_title">Mejorar a</string>
   <!-- Mail Plus -->
-  <string name="upselling_plus_description_override">Para desbloquear más almacenamiento y funciones premium</string>
+  <string name="upselling_mailbox_plus_description_override">Para desbloquear más almacenamiento y funciones premium</string>
   <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>
   <string name="upselling_plus_feature_email_addresses">10 direcciones de correo electrónico</string>
   <string name="upselling_plus_feature_custom_domain">Soporte de dominio de correo personalizado</string>
