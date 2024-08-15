@@ -43,7 +43,7 @@ internal class DynamicPlanUiMapper @Inject constructor(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint),
             title = titleUiMapper.toUiModel(plan.title),
             description = descriptionUiMapper.toUiModel(plan, upsellingEntryPoint),
-            entitlements = entitlementsUiMapper.toUiModel(plan),
+            entitlements = entitlementsUiMapper.toUiModel(plan, upsellingEntryPoint),
             plans = listOf()
         )
 

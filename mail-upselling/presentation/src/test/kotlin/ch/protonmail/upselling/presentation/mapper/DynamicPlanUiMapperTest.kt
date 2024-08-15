@@ -223,7 +223,7 @@ internal class DynamicPlanUiMapperTest {
     }
 
     private fun expectEntitlementsUiModel() {
-        every { entitlementsUiMapper.toUiModel(any()) } returns listOf(ExpectedEntitlementsUiModel)
+        every { entitlementsUiMapper.toUiModel(any(), any()) } returns listOf(ExpectedEntitlementsUiModel)
     }
 
     @Suppress("LongParameterList")

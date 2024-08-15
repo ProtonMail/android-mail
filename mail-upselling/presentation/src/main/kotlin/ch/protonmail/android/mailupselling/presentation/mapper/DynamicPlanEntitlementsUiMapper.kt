@@ -23,6 +23,7 @@ import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsel
 import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import me.proton.core.plan.domain.entity.DynamicEntitlement
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject
@@ -31,11 +32,11 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
     @ForceOneClickUpsellingDetailsOverride private val shouldOverrideEntitlementsList: Boolean
 ) {
 
-    fun toUiModel(plan: DynamicPlan): List<DynamicEntitlementUiModel> {
+    fun toUiModel(plan: DynamicPlan, upsellingEntryPoint: UpsellingEntryPoint): List<DynamicEntitlementUiModel> {
         if (!shouldOverrideEntitlementsList) return mapToDefaults(plan.entitlements)
 
         return when (plan.name) {
-            DynamicPlansOneClickIds.PlusPlanId -> PlusOverriddenEntitlements
+            DynamicPlansOneClickIds.PlusPlanId -> getPlusEntitlements(upsellingEntryPoint)
             DynamicPlansOneClickIds.UnlimitedPlanId -> UnlimitedOverriddenEntitlements
             else -> mapToDefaults(plan.entitlements)
         }
@@ -48,9 +49,17 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
             .toList()
     }
 
+    private fun getPlusEntitlements(upsellingEntryPoint: UpsellingEntryPoint) = when (upsellingEntryPoint) {
+        UpsellingEntryPoint.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
+        UpsellingEntryPoint.Folders -> FoldersPlusOverriddenEntitlements
+        UpsellingEntryPoint.Labels -> LabelsPlusOverriddenEntitlements
+        UpsellingEntryPoint.Mailbox -> MailboxPlusOverriddenEntitlements
+        UpsellingEntryPoint.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
+    }
+
     private companion object {
 
-        val PlusOverriddenEntitlements = listOf(
+        val MailboxPlusOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
                 localResource = R.drawable.ic_upselling_storage
@@ -72,6 +81,32 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
                 localResource = R.drawable.ic_upselling_tag
             )
         )
+
+        val ContactGroupsPlusOverriddenEntitlements = listOf(
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
+                localResource = R.drawable.ic_upselling_storage
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
+                localResource = R.drawable.ic_upselling_inbox
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
+                localResource = R.drawable.ic_upselling_globe
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_plus_feature_plus_7_features),
+                localResource = R.drawable.ic_upselling_gift
+            )
+        )
+
+        val FoldersPlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
+
+        val LabelsPlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
+
+        @Suppress("VariableMaxLength")
+        val MobileSignaturePlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
 
         val UnlimitedOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(
