@@ -53,7 +53,7 @@ internal object UpsellingBottomSheetContentPreviewData {
     val Base = UpsellingBottomSheetContentState.Data(
         DynamicPlansUiModel(
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
-            title = DynamicPlanTitleUiModel(TextUiModel.Text("Mail Plus")),
+            title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
             description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
             entitlements = listOf(
                 DynamicEntitlementUiModel.Overridden(
@@ -71,7 +71,7 @@ internal object UpsellingBottomSheetContentPreviewData {
             ),
             plans = listOf(
                 DynamicPlanInstanceUiModel(
-                    name = "Mail Plus",
+                    name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
                     discount = null,
@@ -82,7 +82,7 @@ internal object UpsellingBottomSheetContentPreviewData {
                     dynamicPlan = dynPlan
                 ),
                 DynamicPlanInstanceUiModel(
-                    name = "Mail Plus",
+                    name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
                     discount = TextUiModel.Text("SAVE 20%"),

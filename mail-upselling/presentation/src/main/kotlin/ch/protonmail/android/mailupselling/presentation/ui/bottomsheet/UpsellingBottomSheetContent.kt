@@ -35,13 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import me.proton.core.compose.theme.ProtonDimens
@@ -86,7 +84,7 @@ internal fun UpsellingBottomSheetContent(
         item {
             Text(
                 modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                text = "${stringResource(id = R.string.upselling_title)} ${dynamicPlansModel.title.text.string()}",
+                text = dynamicPlansModel.title.text.string(),
                 style = if (isNarrowScreen) {
                     ProtonTheme.typography.headlineSmallNorm
                 } else ProtonTheme.typography.headlineNorm,

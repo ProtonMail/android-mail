@@ -19,25 +19,41 @@
 package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanTitleUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@Suppress("MaxLineLength")
 internal class DynamicPlanTitleUiMapperTest {
 
     private val mapper = DynamicPlanTitleUiMapper()
 
     @Test
-    fun `should map to the corresponding ui model`() {
+    fun `should map to the corresponding ui models`() {
         // Given
-        val title = "Title"
-        val expected = DynamicPlanTitleUiModel(TextUiModel.Text(title))
+        val expected = mapOf(
+            UpsellingEntryPoint.ContactGroups to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_contact_groups_plus_title)),
+            UpsellingEntryPoint.Folders to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title)),
+            UpsellingEntryPoint.Labels to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title)),
+            UpsellingEntryPoint.MobileSignature to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title)),
+            UpsellingEntryPoint.Mailbox to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
+        )
 
         // When
-        val actual = mapper.toUiModel(title)
+        val actual = mapOf(
+            UpsellingEntryPoint.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.ContactGroups),
+            UpsellingEntryPoint.Folders to mapper.toUiModel(UpsellingEntryPoint.Folders),
+            UpsellingEntryPoint.Labels to mapper.toUiModel(UpsellingEntryPoint.Labels),
+            UpsellingEntryPoint.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.MobileSignature),
+            UpsellingEntryPoint.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Mailbox)
+        )
 
         // Then
-        assertEquals(expected, actual)
+        for (pair in expected) {
+            assertEquals(pair.value, actual[pair.key])
+        }
     }
 }

@@ -19,22 +19,26 @@
 <resources>
     <!-- Upselling -->
     <string name="upselling_button_item_content_description">Upgrade button</string>
-    <string name="upselling_title">Upgrade to</string>
 
     <!-- Upselling: Mailbox -->
     <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
+    <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
 
     <!-- Upselling: Contact Groups -->
     <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
+    <string name="upselling_contact_groups_plus_title">Group your contacts</string>
 
     <!-- Upselling: Labels -->
     <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+    <string name="upselling_labels_plus_title">Need more labels or folders?</string>
 
     <!-- Upselling: Folders -->
     <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+    <string name="upselling_folders_plus_title">Need more labels or folders?</string>
 
     <!-- Upselling: Mobile Signature -->
     <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
+    <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
 
     <!-- Mail Plus -->
     <string name="upselling_plus_feature_storage">15 GB storage</string>
