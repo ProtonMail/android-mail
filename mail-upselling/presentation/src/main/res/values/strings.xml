@@ -19,6 +19,7 @@
 <resources>
     <!-- Upselling -->
     <string name="upselling_button_item_content_description">Upgrade button</string>
+    <string name="upselling_close_button_content_description">Close button</string>
 
     <!-- Upselling: Mailbox -->
     <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>

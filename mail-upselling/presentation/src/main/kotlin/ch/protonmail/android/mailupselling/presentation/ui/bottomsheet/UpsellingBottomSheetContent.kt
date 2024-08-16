@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,6 +28,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -35,11 +40,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import me.proton.core.compose.theme.ProtonDimens
@@ -61,72 +68,84 @@ internal fun UpsellingBottomSheetContent(
 
     val isNarrowScreen = LocalConfiguration.current.screenWidthDp <= MailDimens.NarrowScreenWidth.value
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(color = backgroundColor),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            if (!isNarrowScreen) {
-                Image(
-                    modifier = Modifier.padding(
-                        start = ProtonDimens.DefaultSpacing,
-                        end = ProtonDimens.DefaultSpacing,
-                        top = ProtonDimens.DefaultSpacing
-                    ),
-                    painter = painterResource(id = dynamicPlansModel.icon.iconResId),
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-            }
-        }
-
-        item {
-            Text(
-                modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
-                text = dynamicPlansModel.title.text.string(),
-                style = if (isNarrowScreen) {
-                    ProtonTheme.typography.headlineSmallNorm
-                } else ProtonTheme.typography.headlineNorm,
-                color = contentColors.textNorm
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
-        }
-
-        item {
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = ProtonDimens.DefaultSpacing)
-                    .padding(top = ProtonDimens.SmallSpacing),
-                text = dynamicPlansModel.description.text.string(),
-                style = ProtonTheme.typography.defaultWeak,
-                color = contentColors.textWeak,
-                textAlign = TextAlign.Center
-            )
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
-        }
-
-        dynamicPlansModel.entitlements.forEachIndexed { index, model ->
-
-            item { UpsellingEntitlementListItem(entitlementUiModel = model, color = contentColors.textWeak) }
-
-            if (index != dynamicPlansModel.entitlements.lastIndex) {
-                item {
-                    Divider(
-                        modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
-                        color = UpsellingColors.EntitlementsRowDivider
+    Box {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(color = backgroundColor),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                if (!isNarrowScreen) {
+                    Image(
+                        modifier = Modifier.padding(
+                            start = ProtonDimens.DefaultSpacing,
+                            end = ProtonDimens.DefaultSpacing,
+                            top = ProtonDimens.DefaultSpacing
+                        ),
+                        painter = painterResource(id = dynamicPlansModel.icon.iconResId),
+                        contentDescription = NO_CONTENT_DESCRIPTION
                     )
                 }
             }
+
+            item {
+                Text(
+                    modifier = Modifier.padding(ProtonDimens.DefaultSpacing),
+                    text = dynamicPlansModel.title.text.string(),
+                    style = if (isNarrowScreen) {
+                        ProtonTheme.typography.headlineSmallNorm
+                    } else ProtonTheme.typography.headlineNorm,
+                    color = contentColors.textNorm
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
+            }
+
+            item {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = ProtonDimens.DefaultSpacing)
+                        .padding(top = ProtonDimens.SmallSpacing),
+                    text = dynamicPlansModel.description.text.string(),
+                    style = ProtonTheme.typography.defaultWeak,
+                    color = contentColors.textWeak,
+                    textAlign = TextAlign.Center
+                )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+            }
+
+            dynamicPlansModel.entitlements.forEachIndexed { index, model ->
+
+                item { UpsellingEntitlementListItem(entitlementUiModel = model, color = contentColors.textWeak) }
+
+                if (index != dynamicPlansModel.entitlements.lastIndex) {
+                    item {
+                        Divider(
+                            modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
+                            color = UpsellingColors.EntitlementsRowDivider
+                        )
+                    }
+                }
+            }
+
+            item { UpsellingPlansList(modifier = Modifier.padding(ProtonDimens.DefaultSpacing), state.plans, actions) }
         }
 
-        item { UpsellingPlansList(modifier = Modifier.padding(ProtonDimens.DefaultSpacing), state.plans, actions) }
+        IconButton(
+            onClick = actions.onDismiss
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                tint = ProtonTheme.colors.iconWeak,
+                contentDescription = stringResource(R.string.upselling_close_button_content_description)
+            )
+        }
     }
 
     LaunchedEffect(key1 = Unit) {
