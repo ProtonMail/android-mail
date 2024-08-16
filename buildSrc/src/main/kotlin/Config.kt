@@ -20,7 +20,7 @@ object Config {
     const val applicationId = "ch.protonmail.android"
     const val compileSdk = 34
     const val minSdk = 28
-    const val targetSdk = 33
+    const val targetSdk = 34
     const val testInstrumentationRunner = "ch.protonmail.android.uitest.HiltTestRunner"
     const val versionCode = 1
     const val versionName = "4.0.19"
