@@ -36,4 +36,7 @@ class UpsellingTelemetryEventDimensions {
 
     fun addSelectedPlanCycle(value: Int) =
         mutableMap.put(UpsellingTelemetryEventDimensionsKey.SelectedCycle.name, value.toString())
+
+    fun addUpsellEntryPoint(value: String) =
+        mutableMap.put(UpsellingTelemetryEventDimensionsKey.UpsellEntryPoint.name, value)
 }

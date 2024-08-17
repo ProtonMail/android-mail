@@ -20,7 +20,7 @@ package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 
 @Composable

@@ -21,6 +21,8 @@ package ch.protonmail.android.mailupselling.domain.repository
 import arrow.core.getOrElse
 import arrow.core.raise.either
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.Folders.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
@@ -51,28 +53,41 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
 
     // Note that the user preference check is delegated to the TelemetryManager from core.
     // If the user has opted out, we will discard the event and not send it.
-    override fun trackEvent(eventType: UpsellingTelemetryEventType) = onSupervisedScope {
-        if (!isOneClickTelemetryEnabled) return@onSupervisedScope
-        val user = getPrimaryUser() ?: return@onSupervisedScope
+    override fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint) =
+        onSupervisedScope {
+            if (!isOneClickTelemetryEnabled) return@onSupervisedScope
+            val user = getPrimaryUser() ?: return@onSupervisedScope
 
-        val event = when (eventType) {
-            is Base -> createBaseEvent(eventType, user)
-            is Upgrade -> createUpgradeEvent(eventType, user)
-        }.getOrElse { return@onSupervisedScope }
+            val event = when (eventType) {
+                is Base -> createBaseEvent(eventType, user, upsellingEntryPoint)
+                is Upgrade -> createUpgradeEvent(eventType, user, upsellingEntryPoint)
+            }.getOrElse { return@onSupervisedScope }
 
-        telemetryManager.enqueue(user.userId, event, TelemetryPriority.Immediate)
-    }
+            telemetryManager.enqueue(user.userId, event, TelemetryPriority.Immediate)
+        }
 
-    private suspend fun createBaseEvent(event: Base, user: User) = either {
-        val dimensions = buildTelemetryDimensions(user).getOrElse { raise(CreateTelemetryEventError) }
+    private suspend fun createBaseEvent(
+        event: Base,
+        user: User,
+        upsellingEntryPoint: UpsellingEntryPoint
+    ) = either {
+        val dimensions = buildTelemetryDimensions(user, upsellingEntryPoint).getOrElse {
+            raise(CreateTelemetryEventError)
+        }
 
         when (event) {
             Base.MailboxButtonTap -> UpsellingTelemetryEvent.UpsellButtonTapped(dimensions).toTelemetryEvent()
         }
     }
 
-    private suspend fun createUpgradeEvent(event: Upgrade, user: User) = either {
-        val dimensions = buildTelemetryDimensions(user, event.payload).getOrElse { raise(CreateTelemetryEventError) }
+    private suspend fun createUpgradeEvent(
+        event: Upgrade,
+        user: User,
+        upsellingEntryPoint: UpsellingEntryPoint
+    ) = either {
+        val dimensions = buildTelemetryDimensions(user, event.payload, upsellingEntryPoint).getOrElse {
+            raise(CreateTelemetryEventError)
+        }
 
         when (event) {
             is Upgrade.UpgradeAttempt -> UpsellingTelemetryEvent.UpgradeAttempt(dimensions)
@@ -82,7 +97,7 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         }.toTelemetryEvent()
     }
 
-    private suspend fun buildTelemetryDimensions(user: User) = either {
+    private suspend fun buildTelemetryDimensions(user: User, upsellingEntryPoint: UpsellingEntryPoint) = either {
         val accountAgeInDays = getAccountAgeInDays(user).toUpsellingTelemetryDimensionValue()
         val subscriptionName = getSubscriptionName(user.userId).bind()
 
@@ -90,11 +105,16 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
             addPlanBeforeUpgrade(subscriptionName.value)
             addDaysSinceAccountCreation(accountAgeInDays)
             addUpsellModalVersion()
+            addUpsellEntryPoint(upsellingEntryPoint.getDimensionValue())
         }
     }
 
-    private suspend fun buildTelemetryDimensions(user: User, payload: UpsellingTelemetryTargetPlanPayload) = either {
-        buildTelemetryDimensions(user).bind().apply {
+    private suspend fun buildTelemetryDimensions(
+        user: User,
+        payload: UpsellingTelemetryTargetPlanPayload,
+        upsellingEntryPoint: UpsellingEntryPoint
+    ) = either {
+        buildTelemetryDimensions(user, upsellingEntryPoint).bind().apply {
             addSelectedPlan(payload.planName)
             addSelectedPlanCycle(payload.planCycle)
         }

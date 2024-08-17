@@ -21,7 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import javax.inject.Inject
 
 internal class DynamicPlanTitleUiMapper @Inject constructor() {

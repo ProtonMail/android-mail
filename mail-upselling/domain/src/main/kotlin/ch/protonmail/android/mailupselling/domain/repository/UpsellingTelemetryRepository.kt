@@ -18,9 +18,10 @@
 
 package ch.protonmail.android.mailupselling.domain.repository
 
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 
 interface UpsellingTelemetryRepository {
 
-    fun trackEvent(eventType: UpsellingTelemetryEventType)
+    fun trackEvent(eventType: UpsellingTelemetryEventType, upsellingEntryPoint: UpsellingEntryPoint)
 }

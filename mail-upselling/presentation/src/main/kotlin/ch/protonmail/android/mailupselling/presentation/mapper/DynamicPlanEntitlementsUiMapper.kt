@@ -23,7 +23,7 @@ import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsel
 import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import me.proton.core.plan.domain.entity.DynamicEntitlement
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject

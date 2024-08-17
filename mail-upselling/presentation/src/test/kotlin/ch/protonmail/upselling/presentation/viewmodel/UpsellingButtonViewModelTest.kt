@@ -19,6 +19,7 @@
 package ch.protonmail.upselling.presentation.viewmodel
 
 import app.cash.turbine.test
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Base
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
@@ -90,6 +91,8 @@ internal class UpsellingButtonViewModelTest {
         viewModel.trackButtonInteraction()
 
         // Then
-        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap) }
+        coVerify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Mailbox)
+        }
     }
 }

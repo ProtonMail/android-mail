@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingButtonState
@@ -49,7 +50,10 @@ class UpsellingButtonViewModel @Inject constructor(
     }
 
     fun trackButtonInteraction() {
-        upsellingTelemetryRepository.trackEvent(UpsellingTelemetryEventType.Base.MailboxButtonTap)
+        upsellingTelemetryRepository.trackEvent(
+            UpsellingTelemetryEventType.Base.MailboxButtonTap,
+            UpsellingEntryPoint.Mailbox
+        )
     }
 
     companion object {

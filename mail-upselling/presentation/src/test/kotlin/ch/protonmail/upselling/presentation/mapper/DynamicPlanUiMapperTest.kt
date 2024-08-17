@@ -34,7 +34,7 @@ import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanc
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithIdenticalInstances
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithNoInstances

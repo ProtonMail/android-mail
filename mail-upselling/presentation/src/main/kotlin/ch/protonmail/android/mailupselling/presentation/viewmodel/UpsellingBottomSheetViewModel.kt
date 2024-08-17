@@ -31,7 +31,7 @@ import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomShe
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState.UpsellingBottomSheetContentOperation.UpsellingBottomSheetContentEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.UpsellingBottomSheetContentReducer
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.UpdateUpsellingOneClickLastTimestamp
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -86,19 +86,19 @@ internal class UpsellingBottomSheetViewModel @AssistedInject constructor(
     }
 
     fun trackUpgradeAttempt(payload: UpsellingTelemetryTargetPlanPayload) {
-        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeAttempt(payload))
+        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeAttempt(payload), upsellingEntryPoint)
     }
 
     fun trackUpgradeCancelled(payload: UpsellingTelemetryTargetPlanPayload) {
-        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeCancelled(payload))
+        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeCancelled(payload), upsellingEntryPoint)
     }
 
     fun trackUpgradeErrored(payload: UpsellingTelemetryTargetPlanPayload) {
-        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeErrored(payload))
+        upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeErrored(payload), upsellingEntryPoint)
     }
 
     fun trackPurchaseCompleted(payload: UpsellingTelemetryTargetPlanPayload) {
-        upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(payload))
+        upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(payload), upsellingEntryPoint)
     }
 
     private fun emitNewStateFrom(operation: UpsellingBottomSheetContentOperation) {

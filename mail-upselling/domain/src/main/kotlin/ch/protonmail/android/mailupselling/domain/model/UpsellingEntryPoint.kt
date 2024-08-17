@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui
+package ch.protonmail.android.mailupselling.domain.model
 
 sealed interface UpsellingEntryPoint {
     data object Mailbox : UpsellingEntryPoint
@@ -24,4 +24,12 @@ sealed interface UpsellingEntryPoint {
     data object Labels : UpsellingEntryPoint
     data object Folders : UpsellingEntryPoint
     data object MobileSignature : UpsellingEntryPoint
+
+    fun UpsellingEntryPoint.getDimensionValue(): String = when (this) {
+        ContactGroups -> "contact_groups"
+        Folders -> "folders_creation"
+        Labels -> "labels_creation"
+        Mailbox -> "mailbox_top_bar"
+        MobileSignature -> "mobile_signature_edit"
+    }
 }
