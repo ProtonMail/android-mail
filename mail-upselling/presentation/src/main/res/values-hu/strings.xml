@@ -29,7 +29,7 @@
   <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_feature_storage">500 GB tárhely, fotók mentésével</string>
   <string name="upselling_unlimited_feature_mail_calendar">Minden fizetős Mail és Calendar funkció</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
   <string name="upselling_unlimited_feature_drive">Biztonságos felhőtárhely</string>

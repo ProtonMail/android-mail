@@ -163,7 +163,7 @@
   <string name="mail_settings_generic_error_message">Wystąpił błąd. Spróbuj ponownie.</string>
   <!-- strings used for biometric enrollment -->
   <string name="no_biometric_data_enrolled">Brak zapisanych danych biometrycznych</string>
-  <string name="log_in_using_biometric_credential">Odblokuj przy użyciu danych biometrycznych</string>
-  <string name="unlock_using_biometrics">Odblokuj przy użyciu biometrii</string>
+  <string name="log_in_using_biometric_credential">Odblokuj za pomocą biometrii</string>
+  <string name="unlock_using_biometrics">Odblokuj za pomocą biometrii</string>
   <string name="biometric_error_hw_not_available">Sprzęt biometryczny nie jest dostępny.</string>
 </resources>

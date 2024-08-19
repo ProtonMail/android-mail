@@ -103,4 +103,8 @@
   <string name="open_on_protoncalendar_banner_title">Buka di Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Kalender terenkripsi yang aman</string>
   <string name="error_print_failed">Pesan gagal dicetak</string>
+  <string name="trashed_messages_banner">Percakapan ini berisi pesan yang dibuang.</string>
+  <string name="non_trashed_messages_banner">Percakapan ini berisi pesan yang tidak dibuang.</string>
+  <string name="show">Tampilkan</string>
+  <string name="hide">Sembunyikan</string>
 </resources>

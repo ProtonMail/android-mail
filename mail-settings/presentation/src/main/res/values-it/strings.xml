@@ -134,9 +134,9 @@
   <string name="mail_settings_pin_insertion_pin_dot_description">Cifra del PIN</string>
   <string name="mail_settings_pin_insertion_backspace_description">Cancella</string>
   <string name="mail_settings_pin_insertion_biometric_description">Autenticazione biometrica</string>
-  <string name="mail_settings_pin_insertion_button_create">Applica</string>
-  <string name="mail_settings_pin_insertion_button_confirm">Conferma</string>
-  <string name="mail_settings_pin_insertion_error_no_match">I codici PIN non corrispondono</string>
+  <string name="mail_settings_pin_insertion_button_create">Salva</string>
+  <string name="mail_settings_pin_insertion_button_confirm">Continua</string>
+  <string name="mail_settings_pin_insertion_error_no_match">Conferma correttamente il nuovo codice PIN</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="one">%s tentativo rimasto</item>
     <item quantity="other">%s tentativi rimasti</item>

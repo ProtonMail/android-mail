@@ -110,7 +110,7 @@
   </plurals>
   <string name="contact_form_invalid_email_error">Error al guardar contacto. Contiene una dirección de correo inválida.</string>
   <string name="contact_group_details_loading_error">Error al cargar el grupo de contactos. Intenta de nuevo más tarde.</string>
-  <string name="contact_group_details_deletion_success">El grupo de contactos ha sido eliminado.</string>
+  <string name="contact_group_details_deletion_success">Se ha eliminado el grupo de contactos.</string>
   <string name="contact_group_details_deletion_error">Error al eliminar el grupo de contactos</string>
   <string name="contact_group_delete_dialog_title">¿Borrar el grupo %s de los contactos?</string>
   <string name="contact_group_delete_dialog_message">El grupo se disolverá pero los contactos asignados no se verán afectados.</string>
@@ -126,8 +126,8 @@
   <string name="remove_member_content_description">Borrar el miembro</string>
   <string name="add_members">Añadir miembros</string>
   <string name="change_color">Cambiar el color</string>
-  <string name="contact_group_form_create_success">El grupo de contactos ha sido creado.</string>
-  <string name="contact_group_form_update_success">El grupo de contactos ha sido actualizado.</string>
+  <string name="contact_group_form_create_success">Se ha creado el grupo de contactos.</string>
+  <string name="contact_group_form_update_success">Se ha actualizado el grupo de contactos.</string>
   <string name="contact_group_form_save_error">Error al guardar el grupo de contactos. Intenta de nuevo más tarde.</string>
   <string name="contact_group_form_save_error_already_exists">Ya existe un grupo con este nombre</string>
   <string name="contact_group_form_subscription_error">Mejora a un plan de pago para crear grupos de contactos.</string>

@@ -68,10 +68,10 @@
   <string name="detail_error_retrieving_message_body">Caricamento del messaggio non riuscito</string>
   <string name="message_body_error_no_webview">Installa una WebView per visualizzare il contenuto del messaggio</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
-  <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disabilitato. Puoi cambiare questa opzione nelle impostazioni.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disabilitato. Puoi cambiare queste opzioni nelle impostazioni.</string>
-  <string name="message_phishing_banner_text">Il nostro sistema ha segnalato questo messaggio come tentativo di phishing. Verifica che sia legittimo.</string>
+  <string name="message_body_embedded_images_banner_text">Il caricamento automatico delle immagini incorporate è disabilitato nelle impostazioni.</string>
+  <string name="message_body_remote_content_banner_text">Il caricamento automatico dei contenuti remoti è disabilitato nelle impostazioni.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Il caricamento automatico delle immagini incorporate e dei contenuti remoti è disabilitato nelle impostazioni.</string>
+  <string name="message_phishing_banner_text">Messaggio identificato come tentativo di phishing. Verifica che sia legittimo.</string>
   <string name="message_expiration_banner_text">Questo messaggio scadrà tra %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Sei sicuro di voler uscire dall\'app e continuare nel seguente sito?</string>
@@ -105,4 +105,8 @@
   <string name="open_on_protoncalendar_banner_title">Apri in Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendario crittografato sicuro</string>
   <string name="error_print_failed">Stampa del messaggio non riuscita</string>
+  <string name="trashed_messages_banner">Conversazione contenente messaggi spostati nel cestino</string>
+  <string name="non_trashed_messages_banner">Conversazione contenente messaggi non spostati nel cestino</string>
+  <string name="show">Mostra</string>
+  <string name="hide">Nascondi</string>
 </resources>

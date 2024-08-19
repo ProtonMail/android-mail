@@ -103,4 +103,8 @@
   <string name="open_on_protoncalendar_banner_title">在 Proton 行事曆開啟</string>
   <string name="open_on_protoncalendar_banner_description">安全加密行事曆</string>
   <string name="error_print_failed">顯示信件失敗</string>
+  <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
+  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="show">顯示</string>
+  <string name="hide">隱藏</string>
 </resources>

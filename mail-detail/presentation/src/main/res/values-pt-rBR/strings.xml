@@ -105,4 +105,8 @@
   <string name="open_on_protoncalendar_banner_title">Abrir no Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Calendário criptografado seguro</string>
   <string name="error_print_failed">Falha ao imprimir a mensagem</string>
+  <string name="trashed_messages_banner">Esta conversa contém mensagens na lixeira.</string>
+  <string name="non_trashed_messages_banner">Esta conversa contém mensagens que não estão na lixeira.</string>
+  <string name="show">Mostrar</string>
+  <string name="hide">Ocultar</string>
 </resources>

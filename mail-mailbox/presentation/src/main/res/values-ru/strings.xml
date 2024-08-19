@@ -23,7 +23,7 @@
   <string name="mailbox_toolbar_search_button_content_description">Поиск</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Выйти из режима поиска</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковой запрос</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковый запрос</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">%d выбран</item>
     <item quantity="few">%d выбраны</item>

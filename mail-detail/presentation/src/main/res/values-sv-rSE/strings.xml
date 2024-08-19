@@ -105,4 +105,8 @@
   <string name="open_on_protoncalendar_banner_title">Öppna i Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Säker krypterad kalender</string>
   <string name="error_print_failed">Misslyckades att skriva ut meddelande</string>
+  <string name="trashed_messages_banner">Denna konversation innehåller kastade meddelanden.</string>
+  <string name="non_trashed_messages_banner">Denna konversation innehåller icke kastade meddelanden.</string>
+  <string name="show">Visa</string>
+  <string name="hide">Dölj</string>
 </resources>

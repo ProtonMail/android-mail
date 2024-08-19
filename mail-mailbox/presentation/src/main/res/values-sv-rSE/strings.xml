@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_toolbar_compose_button_content_description">Skriv ett nytt meddelande</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Skriv nytt meddelande</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Stäng valläget</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meny</string>
   <string name="mailbox_toolbar_search_button_content_description">Sök</string>

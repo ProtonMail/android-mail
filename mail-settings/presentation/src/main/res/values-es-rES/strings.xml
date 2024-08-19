@@ -86,8 +86,8 @@
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Mostrar contenido remoto automáticamente</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Mostrar imágenes incrustadas automáticamente</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Prevenir capturas de pantalla</string>
-  <string name="mail_settings_privacy_request_link_confirmation">Solicitar confirmación de enlace</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Evitar capturas de pantalla</string>
+  <string name="mail_settings_privacy_request_link_confirmation">Solicitar una confirmación para los enlaces</string>
   <string name="mail_settings_privacy_background_sync">Sincronizar en segundo plano</string>
   <string name="mail_settings_privacy_background_sync_description">Si esta opción está activada, la aplicación se sincronizará con el servidor en segundo plano. Al desactivar esta función también se desactivarán las notificaciones push.</string>
   <string name="mail_settings_privacy_error_updating">Error al actualizar los ajustes</string>

@@ -44,8 +44,8 @@
   <string name="mailbox_is_empty_spam_description">Tu carpeta de spam está vacía.</string>
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">El mensaje ha sido movido a la papelera.</item>
-    <item quantity="other">%d mensajes han sido movidos a la papelera.</item>
+    <item quantity="one">Se ha movido el mensaje a la papelera.</item>
+    <item quantity="other">Se han movido %d mensajes a la papelera.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar la conversación</item>
@@ -64,29 +64,29 @@
     <item quantity="other">¿Estás seguro de que quieres eliminar permanentemente estos mensajes?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
-    <item quantity="one">El mensaje ha sido eliminado permanentemente.</item>
-    <item quantity="other">%d mensajes han sido eliminados permanentemente.</item>
+    <item quantity="one">Se ha eliminado el mensaje permanentemente.</item>
+    <item quantity="other">Se han eliminado %d mensajes permanentemente.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">La conversación ha sido eliminada permanentemente.</item>
-    <item quantity="other">%d conversaciones han sido eliminadas permanentemente.</item>
+    <item quantity="one">Se ha eliminado la conversación permanentemente.</item>
+    <item quantity="other">Se han eliminado %d conversaciones permanentemente.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Error con la operación sobre la etiqueta</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Error al obtener las etiquetas</string>
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
-  <string name="mailbox_action_move_messages_failed">Error en la operación de movimiento</string>
+  <string name="mailbox_action_move_messages_failed">Error en la operación de traslado</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_trash_message">El mensaje ha sido movido a la carpeta Papelera.</string>
-  <string name="mailbox_action_archive_message">El mensaje ha sido movido a la carpeta Archivo.</string>
-  <string name="mailbox_action_spam_message">El mensaje ha sido movido a la carpeta Spam.</string>
+  <string name="mailbox_action_trash_message">Se ha movido el mensaje a la papelera.</string>
+  <string name="mailbox_action_archive_message">Se ha archivado el mensaje.</string>
+  <string name="mailbox_action_spam_message">Se ha movido el mensaje a la carpeta Spam.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se han encontrado resultados.</string>
   <string name="mailbox_search_no_results_explanation">Búsqueda por fecha, nombre, dirección de correo electrónico o asunto</string>
   <string name="mailbox_action_button_clear_trash">Vaciar la papelera</string>
   <string name="mailbox_action_button_clear_spam">Vaciar la carpeta de spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Vaciar la papelera</string>
-  <string name="mailbox_action_clear_spam_dialog_title">Vaciar la carpeta Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes en la carpeta ‘Papelera’?</string>
+  <string name="mailbox_action_clear_spam_dialog_title">Vaciar spam</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes en la papelera?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes en la carpeta ‘Spam’?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">¿Estás seguro de que quieres eliminar permanentemente todas las conversaciones en la carpeta ‘Spam’?</string>
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada."</string>

@@ -66,8 +66,8 @@
   <string name="contact_actions_view_contact_details_description">Переглянути інформацію про контакт</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Потрібен дозвіл</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail потребує дозволу на читання ваших контактів, щоб пропонувати одержувачів.</string>
+  <string name="device_contacts_permission_dialog_message">Щоб пропонувати отримувачів, Proton Mail потребує дозволу на читання ваших контактів.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
-  <string name="device_contacts_permission_dialog_action_button">Запит дозволу</string>
+  <string name="device_contacts_permission_dialog_action_button">Запитати дозвіл</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Заборонити</string>
 </resources>

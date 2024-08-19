@@ -17,8 +17,8 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_toolbar_compose_button_content_description">撰写邮件</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">关闭选择模式</string>
+  <string name="mailbox_toolbar_compose_button_content_description">写邮件</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">退出选择模式</string>
   <string name="mailbox_toolbar_menu_button_content_description">菜单</string>
   <string name="mailbox_toolbar_search_button_content_description">搜索</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">退出搜索模式</string>
@@ -34,15 +34,15 @@
   <string name="mailbox_default_sender">（无发件人）</string>
   <string name="mailbox_error_message_offline">网络未连接，无法获取数据</string>
   <string name="mailbox_error_message_generic">邮箱数据加载失败</string>
-  <string name="mailbox_error_message_unexpected">发生意外错误。</string>
+  <string name="mailbox_error_message_unexpected">发生意外错误</string>
   <string name="mailbox_is_empty_title">无邮件</string>
-  <string name="mailbox_is_empty_description">已是最新版本.</string>
+  <string name="mailbox_is_empty_description">已是最新版本</string>
   <string name="mailbox_is_empty_no_unread_messages_title">没有未读邮件</string>
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
   <string name="mailbox_is_empty_trash_description">回收站为空</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="other">%d 封邮件已移至废件箱</item>
+    <item quantity="other">%d 封邮件已移至回收站</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">删除 %d 项会话</item>

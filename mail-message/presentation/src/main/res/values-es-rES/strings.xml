@@ -55,7 +55,7 @@
   <string name="contact_actions_copy_address_performed">La dirección ha sido copiada al portapapeles.</string>
   <string name="contact_actions_copy_name">Copiar el nombre</string>
   <string name="contact_actions_copy_name_description">Copiar el nombre del contacto</string>
-  <string name="contact_actions_copy_name_performed">El nombre ha sido copiado al portapapeles.</string>
+  <string name="contact_actions_copy_name_performed">Se ha copiado el nombre al portapapeles.</string>
   <string name="contact_actions_new_message">Nuevo mensaje</string>
   <string name="contact_actions_new_message_description">Comienza a escribir un mensaje a este contacto.</string>
   <string name="contact_actions_add_contact">Añadir un contacto</string>

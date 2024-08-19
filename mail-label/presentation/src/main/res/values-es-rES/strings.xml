@@ -52,8 +52,8 @@
   <string name="add_a_folder_name_hint">Añadir un nombre de carpeta</string>
   <string name="input_field_max_characters_count">%1d / %2d caracteres</string>
   <string name="color_picker_title">Color</string>
-  <string name="save_label_error">Error al guardar la etiqueta. intenta de nuevo más tarde.</string>
-  <string name="save_folder_error">Error al guardar la carpeta. Inténtalo de nuevo más tarde.</string>
+  <string name="save_label_error">Error al guardar la etiqueta. Intenta de nuevo más tarde.</string>
+  <string name="save_folder_error">Error al guardar la carpeta. Intenta de nuevo más tarde.</string>
   <string name="label_already_exists">Ya existe una etiqueta o carpeta con este nombre.</string>
   <string name="label_limit_reached_error">Se ha alcanzado el límite de etiquetas.</string>
   <string name="folder_limit_reached_error">Se ha alcanzado el límite de carpetas.</string>
@@ -69,7 +69,7 @@
   <string name="folder_settings_done_button">Terminado</string>
   <string name="folder_settings_folder_colors">Usar los colores de las carpetas</string>
   <string name="folder_settings_parent_color">Aplicar el color de la carpeta principal</string>
-  <string name="folder_list_loading_error">Error al cargar las carpetas. Inténtalo de nuevo más tarde.</string>
+  <string name="folder_list_loading_error">Error al cargar las carpetas. Intenta de nuevo más tarde.</string>
   <string name="folder_loading_error">Error al cargar la carpeta. Inténtalo de nuevo más tarde.</string>
   <string name="switch_on">Activado</string>
   <string name="switch_off">Desactivado</string>
