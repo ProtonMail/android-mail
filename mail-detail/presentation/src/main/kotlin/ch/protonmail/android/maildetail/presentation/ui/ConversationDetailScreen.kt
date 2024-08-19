@@ -688,8 +688,10 @@ private fun MessagesContent(
             is TrashedMessagesBannerState.Hidden -> Unit
         }
 
-        itemsIndexed(uiModels) { index, uiModel ->
-            val isLastItem = index == uiModels.size - 1
+        val visibleUiModels = uiModels.filter { it !is ConversationDetailMessageUiModel.Hidden }
+
+        itemsIndexed(visibleUiModels) { index, uiModel ->
+            val isLastItem = index == visibleUiModels.size - 1
 
             ConversationDetailItem(
                 uiModel = uiModel,
@@ -721,7 +723,7 @@ private fun MessagesContent(
                     // message again by changing initialPlaceholderHeightCalculated to true. We need this scrolling
                     // only when sum of all item heights is less than the LazyColumn height (which means we have
                     // few messages in the conversation)
-                    if (itemsHeight.size == uiModels.size) {
+                    if (itemsHeight.size == visibleUiModels.size) {
                         initialPlaceholderHeightCalculated = true
                     }
                 }
