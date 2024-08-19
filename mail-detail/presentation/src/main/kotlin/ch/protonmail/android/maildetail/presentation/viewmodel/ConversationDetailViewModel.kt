@@ -342,8 +342,9 @@ class ConversationDetailViewModel @Inject constructor(
                     ).toImmutableList()
 
                     val initialScrollTo = initialScrollToMessageId
-                        ?: getMessageIdToExpand(messages, filterByLocation)
-                            ?.let { messageIdUiModelMapper.toUiModel(it) }
+                        ?: getMessageIdToExpand(
+                            messages, filterByLocation, conversationViewState.shouldHideMessagesBasedOnTrashFilter
+                        )?.let { messageIdUiModelMapper.toUiModel(it) }
                     if (
                         stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState.messagesState)
                     ) {

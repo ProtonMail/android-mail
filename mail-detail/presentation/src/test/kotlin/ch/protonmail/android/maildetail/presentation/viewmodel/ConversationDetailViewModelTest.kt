@@ -320,7 +320,7 @@ class ConversationDetailViewModelTest {
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
     private val getMessageIdToExpand = mockk<GetMessageIdToExpand> {
-        coEvery { this@mockk.invoke(any(), any()) } returns MessageIdSample.build()
+        coEvery { this@mockk.invoke(any(), any(), any()) } returns MessageIdSample.build()
     }
     private val loadDataForMessageLabelAsBottomSheet = mockk<LoadDataForMessageLabelAsBottomSheet>()
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()

@@ -20,7 +20,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, null)
+        val result = getMessageIdToExpand(messages, null, false)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
@@ -35,7 +35,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, null)
+        val result = getMessageIdToExpand(messages, null, false)
 
         // Then
         assertEquals(MessageIdSample.UnreadMessageMayFirst, result)
@@ -50,7 +50,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, null)
+        val result = getMessageIdToExpand(messages, null, false)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
@@ -67,7 +67,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, null)
+        val result = getMessageIdToExpand(messages, null, false)
 
         // Then
         assertEquals(MessageIdSample.UnreadMessageMayFirst, result)
@@ -84,7 +84,7 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, null)
+        val result = getMessageIdToExpand(messages, null, false)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMayFirst, result)
@@ -108,9 +108,37 @@ class GetMessageIdToExpandTest {
         )
 
         // When
-        val result = getMessageIdToExpand(messages, SystemLabelId.Archive.labelId)
+        val result = getMessageIdToExpand(messages, SystemLabelId.Archive.labelId, false)
 
         // Then
         assertEquals(MessageIdSample.ReadMessageMaySecond, result)
+    }
+
+    @Test
+    fun `return latest non-draft non-trash message id when messages are hidden based on the trash filter`() {
+        // Given
+        val messages = listOf(
+            MessageWithLabelsSample.build(
+                MessageSample.ReadMessageMayFirst.copy(
+                    labelIds = listOf(SystemLabelId.Archive.labelId)
+                )
+            ),
+            MessageWithLabelsSample.build(
+                MessageSample.ReadMessageMaySecond.copy(
+                    labelIds = listOf(SystemLabelId.Trash.labelId)
+                )
+            ),
+            MessageWithLabelsSample.build(
+                MessageSample.ReadMessageMayThird.copy(
+                    labelIds = listOf(SystemLabelId.Archive.labelId, SystemLabelId.AllDrafts.labelId)
+                )
+            )
+        )
+
+        // When
+        val result = getMessageIdToExpand(messages, SystemLabelId.Archive.labelId, true)
+
+        // Then
+        assertEquals(MessageIdSample.ReadMessageMayFirst, result)
     }
 }
