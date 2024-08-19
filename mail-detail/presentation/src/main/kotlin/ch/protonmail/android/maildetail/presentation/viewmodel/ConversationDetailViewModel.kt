@@ -750,7 +750,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun getFilterByLocation(): LabelId? {
         val labelId = savedStateHandle.get<String>(ConversationDetailScreen.FilterByLocationKey)
-        return labelId?.let { LabelId(it) }
+        return labelId?.let { if (it == "null") null else LabelId(it) }
     }
 
     private suspend fun emitNewStateFrom(event: ConversationDetailOperation) {
