@@ -44,7 +44,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -70,7 +69,6 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     )
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185411")
     fun checkMoveToBottomSheetComponentsWithNoCustomFolders() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
@@ -111,7 +109,6 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185412")
     fun checkMoveToBottomSheetComponentsWithCustomFolders() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
@@ -155,7 +152,6 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185414")
     fun checkMoveToBottomSheetComponentsSelection() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
@@ -204,7 +200,6 @@ internal class DetailMoveToBottomSheetMainTests : MockedNetworkTest() {
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185415")
     fun checkMoveToBottomSheetSelectionIsGoneAfterDismissal() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(

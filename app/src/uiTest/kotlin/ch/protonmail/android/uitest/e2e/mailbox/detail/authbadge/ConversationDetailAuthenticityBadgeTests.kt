@@ -45,7 +45,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -121,7 +120,6 @@ internal class ConversationDetailAuthenticityBadgeTests :
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("192144", "192145")
     fun testAuthBadgeInConversationCollapsedExpandedHeaderWhenIsProtonOfficial() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
@@ -149,7 +147,6 @@ internal class ConversationDetailAuthenticityBadgeTests :
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("192144/2", "192146", "192147")
     fun testAuthBadgeInConversationCollapsedExpandedHeaderWhenIsNotProtonOfficial() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {

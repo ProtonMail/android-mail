@@ -56,7 +56,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -167,7 +166,6 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185419/2", "185421")
     fun checkMoveToBottomSheetCustomToSystemFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(
@@ -211,7 +209,6 @@ internal class DetailMoveToBottomSheetActionTests : MockedNetworkTest() {
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("185419/3", "185423")
     fun checkMoveToBottomSheetSystemToCustomFolder() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(

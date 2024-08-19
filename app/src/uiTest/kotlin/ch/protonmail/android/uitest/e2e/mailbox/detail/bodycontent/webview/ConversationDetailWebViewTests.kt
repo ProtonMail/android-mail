@@ -41,7 +41,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
@@ -54,7 +53,6 @@ internal class ConversationDetailWebViewTests : MockedNetworkTest(), MockedWebVi
     val serverProofValidation: ValidateServerProof = mockk(relaxUnitFun = true)
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("225746")
     fun testWebViewProviderNotPresentShowsWarningMessageInPlaceOfBodyInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
@@ -88,7 +86,6 @@ internal class ConversationDetailWebViewTests : MockedNetworkTest(), MockedWebVi
     }
 
     @Test
-    @Ignore("To be enabled once this test reflects the new logic for expanding messages introduced in MAILANDR-1850")
     @TestId("225746/2", "225748")
     fun testWebViewProviderPresentButDisabledShowsWarningMessageInPlaceOfBodyInConversationMode() {
         mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
