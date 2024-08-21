@@ -598,9 +598,11 @@ private fun MessagesContent(
     var initialPlaceholderHeightCalculated by remember { mutableStateOf(false) }
     var scrollCount by remember { mutableStateOf(0) }
 
-    var scrollToIndex = remember(scrollToMessageId, uiModels) {
+    val visibleUiModels = uiModels.filter { it !is ConversationDetailMessageUiModel.Hidden }
+
+    var scrollToIndex = remember(scrollToMessageId, visibleUiModels) {
         if (scrollToMessageId == null) return@remember -1
-        else uiModels.indexOfFirst { uiModel -> uiModel.messageId.id == scrollToMessageId }
+        else visibleUiModels.indexOfFirst { uiModel -> uiModel.messageId.id == scrollToMessageId }
     }
 
     // Sometimes we do not get all conversation items in the first call. The complete list of items can be provided
@@ -687,8 +689,6 @@ private fun MessagesContent(
             }
             is TrashedMessagesBannerState.Hidden -> Unit
         }
-
-        val visibleUiModels = uiModels.filter { it !is ConversationDetailMessageUiModel.Hidden }
 
         itemsIndexed(visibleUiModels) { index, uiModel ->
             val isLastItem = index == visibleUiModels.size - 1
