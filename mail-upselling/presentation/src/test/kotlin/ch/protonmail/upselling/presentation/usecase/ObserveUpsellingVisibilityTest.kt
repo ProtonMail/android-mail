@@ -75,7 +75,7 @@ internal class ObserveUpsellingVisibilityTest {
         expectedUser(null)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(true)
-        val expectedFeatureFlagEnabled = flowOf(true)
+        val expectedFeatureFlagEnabled = true
 
         // When + Then
         sut(expectedFeatureFlagEnabled).test {
@@ -90,7 +90,7 @@ internal class ObserveUpsellingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(false)
-        val expectedFeatureFlagEnabled = flowOf(true)
+        val expectedFeatureFlagEnabled = true
 
         // When + Then
         sut(expectedFeatureFlagEnabled).test {
@@ -106,7 +106,7 @@ internal class ObserveUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
-        val expectedFeatureFlagEnabled = flowOf(true)
+        val expectedFeatureFlagEnabled = true
 
         // When + Then
         sut(expectedFeatureFlagEnabled).test {
@@ -123,7 +123,7 @@ internal class ObserveUpsellingVisibilityTest {
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
-        val expectedFeatureFlagEnabled = flowOf(true)
+        val expectedFeatureFlagEnabled = true
 
         // When + Then
         sut(expectedFeatureFlagEnabled).test {
@@ -140,7 +140,7 @@ internal class ObserveUpsellingVisibilityTest {
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-        val expectedFeatureFlagEnabled = flowOf(false)
+        val expectedFeatureFlagEnabled = false
 
         // When + Then
         sut(expectedFeatureFlagEnabled).test {
@@ -159,7 +159,7 @@ internal class ObserveUpsellingVisibilityTest {
             expectCanUpgradeFromMobile(true)
             expectPendingPurchasesValue(UserSample.Primary.userId, false)
             expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-            val expectedFeatureFlagEnabled = flowOf(true)
+            val expectedFeatureFlagEnabled = true
 
             // When + Then
             sut(expectedFeatureFlagEnabled).test {

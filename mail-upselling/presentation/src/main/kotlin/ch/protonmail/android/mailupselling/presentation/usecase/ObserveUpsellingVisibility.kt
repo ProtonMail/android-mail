@@ -36,15 +36,14 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val userHasPendingPurchases: UserHasPendingPurchases
 ) {
 
-    operator fun invoke(isFeatureFlagEnabled: Flow<Boolean>): Flow<Boolean> = combine(
+    operator fun invoke(isFeatureFlagEnabled: Boolean): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
-        purchaseManager.observePurchases(),
-        isFeatureFlagEnabled
-    ) { user, purchases, featureFlag ->
+        purchaseManager.observePurchases()
+    ) { user, purchases ->
         if (user == null) return@combine false
         if (!canUpgradeFromMobile()) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
-        if (featureFlag.not()) return@combine false
+        if (isFeatureFlagEnabled.not()) return@combine false
 
         userHasAvailablePlans(user.userId)
     }
