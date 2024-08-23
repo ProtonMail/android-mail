@@ -19,21 +19,29 @@
 package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -44,10 +52,12 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.uicomponents.text.defaultTextFieldColors
+import kotlinx.coroutines.launch
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun BodyTextField(
     initialValue: String,
@@ -72,27 +82,54 @@ internal fun BodyTextField(
         }
     }
 
-    TextField(
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
+    var cursorRect by remember { mutableStateOf(Rect.Zero) }
+    var isFocused by remember { mutableStateOf(false) }
+
+    // If the cursorRect is already displayed completely, the requester does nothing
+    // and the following call becomes a no-op, no need to put any guards.
+    // See ContentInViewNode#bringChildIntoView#L120 for reference.
+    val bringRectIntoView: (rect: Rect) -> Unit = {
+        coroutineScope.launch { bringIntoViewRequester.bringIntoView(it) }
+    }
+
+    LaunchedEffect(cursorRect, isFocused) {
+        if (isFocused && cursorRect != Rect.Zero) {
+            bringRectIntoView(cursorRect)
+        }
+    }
+
+    BasicTextField(
         value = text,
+        modifier = modifier
+            .fillMaxSize()
+            .padding(ProtonDimens.DefaultSpacing)
+            .focusRequester(focusRequester)
+            .bringIntoViewRequester(bringIntoViewRequester)
+            .onFocusChanged { isFocused = it.isFocused },
+        onTextLayout = {
+            cursorRect = it.getCursorRect(text.selection.end)
+        },
         onValueChange = {
             text = it
             onBodyChange(it.text)
             userUpdated = true
         },
-        modifier = modifier
-            .fillMaxSize()
-            .focusRequester(focusRequester),
-        textStyle = ProtonTheme.typography.defaultNorm,
         minLines = bodyMinLines,
-        colors = TextFieldDefaults.defaultTextFieldColors(),
         keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
-        placeholder = {
-            Text(
-                modifier = Modifier.testTag(ComposerTestTags.MessageBodyPlaceholder),
-                text = stringResource(R.string.compose_message_placeholder),
-                color = ProtonTheme.colors.textHint,
-                style = ProtonTheme.typography.defaultNorm
-            )
+        textStyle = ProtonTheme.typography.defaultNorm,
+        cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
+        decorationBox = @Composable { innerTextField ->
+            if (text.text.isEmpty()) {
+                Text(
+                    modifier = Modifier.testTag(ComposerTestTags.MessageBodyPlaceholder),
+                    text = stringResource(R.string.compose_message_placeholder),
+                    color = ProtonTheme.colors.textHint,
+                    style = ProtonTheme.typography.defaultNorm
+                )
+            }
+            innerTextField()
         }
     )
 
