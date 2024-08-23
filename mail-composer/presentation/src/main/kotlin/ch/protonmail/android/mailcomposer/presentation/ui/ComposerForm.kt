@@ -253,7 +253,6 @@ internal fun ComposerForm(
                 shouldRequestFocus = shouldForceBodyTextFocus,
                 replaceDraftBody = replaceDraftBody,
                 onBodyChange = actions.onBodyChanged,
-                onScrollToTopRequested = actions.onScrollToTopRequested,
                 modifier = maxWidthModifier
                     .testTag(ComposerTestTags.MessageBody)
                     .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
