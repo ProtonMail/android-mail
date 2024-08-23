@@ -79,7 +79,9 @@ class MessageLocalDataSourceImpl @Inject constructor(
         }
 
     override suspend fun deleteMessages(userId: UserId, ids: List<MessageId>) {
-        messageDao.delete(userId, ids.map { it.id })
+        ids.chunked(SQL_CHUNK_SIZE).forEach { chunkedIds ->
+            messageDao.delete(userId, chunkedIds.map { it.id })
+        }
         ids.forEach { messageBodyFileStorage.deleteMessageBody(userId, it) }
     }
 
@@ -419,5 +421,9 @@ class MessageLocalDataSourceImpl @Inject constructor(
         )
     } else {
         this
+    }
+
+    companion object {
+        const val SQL_CHUNK_SIZE = 100
     }
 }

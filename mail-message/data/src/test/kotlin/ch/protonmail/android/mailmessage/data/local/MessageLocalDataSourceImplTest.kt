@@ -340,6 +340,22 @@ class MessageLocalDataSourceImplTest {
     }
 
     @Test
+    fun `should delete messages from the db chunked to not exceed defined maximum`() = runTest {
+        // Given
+        val deletedIds = (1..MessageLocalDataSourceImpl.SQL_CHUNK_SIZE * 3).map { MessageId("$it") }
+        val chunkedDeletedRawIds = deletedIds.map { it.id }.chunked(MessageLocalDataSourceImpl.SQL_CHUNK_SIZE)
+        coEvery { messageBodyFileStorage.deleteMessageBody(userId1, any()) } returns true
+
+        // When
+        messageLocalDataSource.deleteMessages(userId1, deletedIds)
+
+        // Then
+        coVerify { messageDao.delete(userId1, chunkedDeletedRawIds[0]) }
+        coVerify { messageDao.delete(userId1, chunkedDeletedRawIds[1]) }
+        coVerify { messageDao.delete(userId1, chunkedDeletedRawIds[2]) }
+    }
+
+    @Test
     fun `returns Unit when delete messages from the db and corresponding message body files is successful`() = runTest {
         // Given
         val deletedIds = listOf(
