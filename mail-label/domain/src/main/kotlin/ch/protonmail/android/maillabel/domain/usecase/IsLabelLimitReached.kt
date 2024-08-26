@@ -41,8 +41,10 @@ class IsLabelLimitReached @Inject constructor(
     suspend operator fun invoke(userId: UserId, labelType: LabelType): Either<DataError, Boolean> = Either.catch {
         val isPaidUser = observeUser(userId).filterNotNull().first().hasSubscription()
         if (!isPaidUser) {
-            val labelList = labelRepository.getLabels(userId, labelType)
-            if (labelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
+            val nonSystemLabelList = labelRepository.getLabels(userId, labelType).filter {
+                it.labelId.id.toIntOrNull() == null
+            }
+            if (nonSystemLabelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
         }
         return@catch false
     }.mapLeft {

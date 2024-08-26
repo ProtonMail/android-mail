@@ -96,4 +96,50 @@ class IsLabelLimitReachedTest {
         coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
         assertEquals(expectedResult.right(), result)
     }
+
+    @Test
+    fun `given user is below limit but has system labels, when free user, then return false`() = runTest {
+        // Given
+        val expectedResult = false
+        coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
+        coEvery {
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+        } returns LabelTestData.systemLabels.map {
+            LabelTestData.buildLabel(id = it.id.labelId.id)
+        } + listOf(
+            LabelTestData.buildLabel(id = "Custom Label")
+        )
+
+        // When
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
+
+        // Then
+        coVerify { observeUser(UserIdTestData.userId) }
+        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        assertEquals(expectedResult.right(), result)
+    }
+
+    @Test
+    fun `given user has 3 custom labels and system labels, when free user, then return true`() = runTest {
+        // Given
+        val expectedResult = true
+        coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
+        coEvery {
+            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+        } returns LabelTestData.systemLabels.map {
+            LabelTestData.buildLabel(id = it.id.labelId.id)
+        } + listOf(
+            LabelTestData.buildLabel(id = "Custom Label 1"),
+            LabelTestData.buildLabel(id = "Custom Label 2"),
+            LabelTestData.buildLabel(id = "Custom Label 3")
+        )
+
+        // When
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
+
+        // Then
+        coVerify { observeUser(UserIdTestData.userId) }
+        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        assertEquals(expectedResult.right(), result)
+    }
 }
