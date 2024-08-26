@@ -70,7 +70,7 @@
   <string name="composer_sender_changed_dialog_confirm_button">Invia</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Invia il messaggio</string>
-  <string name="composer_send_without_subject_dialog_text">Sei sicuro di voler inviare il messaggio senza oggetto?</string>
+  <string name="composer_send_without_subject_dialog_text">Sei sicuro di voler inviare il messaggio senza un oggetto?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Invia</string>
   <string name="composer_send_without_subject_dialog_reject_button">Annulla</string>
   <!-- Message sending error dialog -->

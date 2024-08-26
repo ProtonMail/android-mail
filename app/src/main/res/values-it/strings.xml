@@ -26,12 +26,12 @@
   <string name="dialog_remove_account_confirm">Rimuovi</string>
   <string name="dialog_remove_account_cancel">Annulla</string>
   <string name="user_select_other_account_content_description">Seleziona un altro account</string>
-  <string name="you_are_offline">Sei offline</string>
+  <string name="you_are_offline">Nessuna connessione a Internet</string>
   <string name="feature_coming_soon">Funzionalità in arrivo…</string>
   <string name="mailbox_draft_saved">Bozza salvata</string>
   <string name="mailbox_draft_discard">Scarta</string>
   <string name="mailbox_message_sending">Invio del messaggio in corso</string>
-  <string name="mailbox_message_sending_offline">Sei offline. Messaggio in coda per l\'invio.</string>
+  <string name="mailbox_message_sending_offline">Nessuna connessione a Internet. Invio del messaggio sospeso.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
   <string name="mailbox_message_sending_error">Invio del messaggio non riuscito</string>
   <string name="mailbox_message_sending_error_action">Vai alle bozze</string>

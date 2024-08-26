@@ -68,7 +68,7 @@
   <string name="mailbox_action_move_messages_failed">無法進行移動操作</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">無法擷取資料夾</string>
   <string name="mailbox_action_trash_message">郵件丟進垃圾桶</string>
-  <string name="mailbox_action_archive_message">要移動到至「封存」的郵件</string>
+  <string name="mailbox_action_archive_message">郵件訊息已移至封存檔</string>
   <string name="mailbox_action_spam_message">訊息移至垃圾郵件</string>
   <string name="mailbox_search_placeholder_text">搜尋訊息</string>
   <string name="mailbox_search_no_results_title">未找到任何結果</string>

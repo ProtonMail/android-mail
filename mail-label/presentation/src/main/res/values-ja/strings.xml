@@ -62,7 +62,7 @@
   <string name="label_list_item_content_description">Label list item</string>
   <string name="folder_list_item_content_description">Folder list item</string>
   <string name="folder_list_no_folders_found">フォルダーが見つかりませんでした.</string>
-  <string name="folder_list_create_folder_placeholder_description">Create a folder to enhance your email experience.</string>
+  <string name="folder_list_create_folder_placeholder_description">フォルダーを作成してメールエクスペリエンスを向上させます。</string>
   <string name="create_folder_content_description">フォルダーを追加</string>
   <string name="folder_settings_content_description">フォルダー設定</string>
   <string name="folder_settings_title">設定</string>

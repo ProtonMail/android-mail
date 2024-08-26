@@ -56,7 +56,7 @@
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
-  <string name="error_offline_loading_message">Sei offline. Caricamento dei contenuti del messaggio non riuscito.</string>
+  <string name="error_offline_loading_message">Nessuna connessione a Internet. Caricamento dei contenuti del messaggio non riuscito.</string>
   <string name="error_get_attachment_failed">Caricamento dell\'allegato non riuscito</string>
   <string name="error_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Memoria non sufficiente. Caricamento dell\'allegato non riuscito.</string>
@@ -95,11 +95,11 @@
   <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
-  <string name="message_report_phishing_dialog_title_offline">Attenzione</string>
-  <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
+  <string name="message_report_phishing_dialog_title_offline">Avviso</string>
+  <string name="message_report_phishing_dialog_message_offline">Nessuna connessione a Internet. Segnalazione non riuscita.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Segnala come phishing</string>
-  <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>
+  <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>
   <string name="message_report_phishing_dialog_confim_button">Segnala</string>
   <string name="message_report_phishing_dialog_cancel_button">Annulla</string>
   <string name="open_on_protoncalendar_banner_title">Apri in Proton Calendar</string>

@@ -18,21 +18,21 @@
   -->
 <resources>
   <string name="mailbox_toolbar_compose_button_content_description">Compunere mesaj</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din modul de selecție</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din mod selecție</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
   <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Ieșire din mod căutare</string>
-  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Golire text căutare</string>
-  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Introducere text căutare</string>
+  <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Golire text căutat</string>
+  <string name="mailbox_toolbar_searchview_query_text_field_content_description">Introducere text căutat</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Selectate: %d</item>
     <item quantity="few">Selectate: %d</item>
     <item quantity="other">Selectate: %d</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="one">%s necitit</item>
-    <item quantity="few">%s necitite</item>
-    <item quantity="other">%s necitite</item>
+    <item quantity="one">Necitite: %s</item>
+    <item quantity="few">Necitite: %s</item>
+    <item quantity="other">Necitite: %s</item>
   </plurals>
   <string name="mailbox_default_recipient">(Fără destinatar)</string>
   <string name="mailbox_default_sender">(Fără expeditor)</string>
@@ -40,11 +40,11 @@
   <string name="mailbox_error_message_generic">Eroare la încărcarea mesajelor.</string>
   <string name="mailbox_error_message_unexpected">Ceva nu a funcționat bine.</string>
   <string name="mailbox_is_empty_title">Nu sunt mesaje</string>
-  <string name="mailbox_is_empty_description">Nimic nou aici</string>
+  <string name="mailbox_is_empty_description">Sunteți la zi</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Nu sunt mesaje necitite</string>
   <string name="mailbox_is_empty_folder_description">Acest folder este gol</string>
   <string name="mailbox_is_empty_spam_description">Folderul de mesaje nedorite este gol</string>
-  <string name="mailbox_is_empty_trash_description">Coșul de gunoi este gol</string>
+  <string name="mailbox_is_empty_trash_description">Folderul gunoi este gol</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mesajul a fost mutat în «Gunoi».</item>
     <item quantity="few">S-au mutat %d mesaje în «Gunoi».</item>
@@ -68,7 +68,7 @@
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Sigur doriți să ștergeți definitiv acest mesaj?</item>
     <item quantity="few">Sigur doriți să ștergeți permanent aceste mesaje?</item>
-    <item quantity="other">Sigur doriți să ștergeți permanent aceste mesaje?</item>
+    <item quantity="other">Sigur doriți să ștergeți definitiv aceste mesaje?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Mesajul a fost șters definitiv.</item>
@@ -76,9 +76,9 @@
     <item quantity="other">%d de mesaje au fost șterse definitiv.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Conversația a fost ștearsă permanent.</item>
+    <item quantity="one">Conversația a fost ștearsă definitiv.</item>
     <item quantity="few">%d conversații au fost șterse permanent.</item>
-    <item quantity="other">%d de conversații au fost șterse permanent.</item>
+    <item quantity="other">S-au șters definitiv %d de conversații.</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Operația de etichetare a eșuat.</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Eșuare obținere etichete.</string>

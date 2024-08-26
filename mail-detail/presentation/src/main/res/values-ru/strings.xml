@@ -109,8 +109,8 @@
   <string name="open_on_protoncalendar_banner_title">Открыть в Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Защищенный зашифрованный календарь</string>
   <string name="error_print_failed">Не удалось распечатать сообщение</string>
-  <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
-  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="trashed_messages_banner">В этой цепочке писем есть удаленные сообщения.</string>
+  <string name="non_trashed_messages_banner">В этой цепочке писем есть неудаленные сообщения.</string>
   <string name="show">Показать</string>
-  <string name="hide">Hide</string>
+  <string name="hide">Скрыть</string>
 </resources>
