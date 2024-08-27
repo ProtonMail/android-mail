@@ -53,8 +53,6 @@ internal class ChipsListState(
         else -> ChipItemsList.Focused(items)
     }
 
-    fun getTypedText(): String = typedText.value
-
     fun type(newValue: String) {
         when {
             typedText.value + newValue.trim() == EmptyString -> clearTypedText()
@@ -115,7 +113,7 @@ internal class ChipsListState(
         focusedState.value = focused
     }
 
-    fun clearTypedText() {
+    private fun clearTypedText() {
         typedText.value = EmptyString
     }
 

@@ -1,5 +1,6 @@
 package ch.protonmail.android.uicomponents.chips
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -13,27 +14,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
@@ -45,10 +51,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import ch.protonmail.android.uicomponents.verticalScrollbar
+import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -67,7 +76,8 @@ import me.proton.core.util.kotlin.takeIfNotBlank
  */
 @OptIn(
     ExperimentalLayoutApi::class,
-    ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class,
+    ExperimentalFoundationApi::class
 )
 @Composable
 fun ChipsListTextField(
@@ -84,6 +94,8 @@ fun ChipsListTextField(
     contactSuggestionState: ContactSuggestionState
 ) {
     val state by remember { mutableStateOf(ChipsListState(chipValidator, onListChanged)) }
+    var textFieldValue by remember { mutableStateOf(initialTextFieldValue) }
+    val textValue by remember { derivedStateOf { textFieldValue.text } }
 
     state.updateItems(value)
 
@@ -91,6 +103,23 @@ fun ChipsListTextField(
     val localDensity = LocalDensity.current
     val localConfiguration = LocalConfiguration.current
     var textMaxWidth by remember { mutableStateOf(Dp.Unspecified) }
+
+    var rect by remember { mutableStateOf(Rect.Zero) }
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
+
+    // Similar to what we do for the Message body, we need to ensure
+    // that the cursor is always on screen when the user types.
+    fun bringRectIntoView(rect: Rect) = coroutineScope.launch { bringIntoViewRequester.bringIntoView(rect) }
+
+    LaunchedEffect(textValue) {
+        state.type(textValue)
+        if (textValue.endsWith(EMPTY_SPACE)) textFieldValue = initialTextFieldValue
+
+        bringRectIntoView(rect)
+        actions.onSuggestionTermTyped(textFieldValue.text)
+    }
+
     FlowRow(
         modifier = modifier
             .defaultMinSize(minWidth = 50.dp)
@@ -125,46 +154,51 @@ fun ChipsListTextField(
             BasicTextField(
                 modifier = Modifier
                     .testTag(ChipsTestTags.BasicTextField)
+                    .bringIntoViewRequester(bringIntoViewRequester)
                     .thenIf(focusRequester != null) {
                         focusRequester(focusRequester!!)
                     }
                     .thenIf(!state.isFocused()) {
                         height(0.dp)
                     }
-                    .padding(16.dp)
+                    .padding(ProtonDimens.DefaultSpacing)
                     .onKeyEvent { keyEvent ->
                         if (keyEvent.key == Key.Backspace) {
                             state.onDelete()
+                            bringRectIntoView(rect)
                             true
                         } else {
                             false
                         }
                     }
                     .onFocusChanged { focusChange ->
-                        state.typeWord(state.getTypedText())
                         state.setFocusState(focusChange.isFocused)
-                        if (!focusChange.hasFocus) actions.onSuggestionsDismissed()
+
+                        if (!focusChange.hasFocus) {
+                            state.typeWord(textFieldValue.text) // This is somehow redundant
+                            actions.onSuggestionsDismissed()
+                            textFieldValue = initialTextFieldValue
+                        }
                     }
                     .menuAnchor(),
-                value = state.getTypedText(),
+                value = textFieldValue,
                 keyboardOptions = keyboardOptions,
                 keyboardActions = KeyboardActions(
                     onNext = {
-                        state.typeWord(state.getTypedText())
                         focusManager.moveFocus(FocusDirection.Next)
                     },
                     onDone = {
-                        state.typeWord(state.getTypedText())
                         focusManager.clearFocus()
                     },
                     onPrevious = {
-                        state.typeWord(state.getTypedText())
                         focusManager.moveFocus(FocusDirection.Previous)
                     }
                 ),
-                onValueChange = { newText ->
-                    state.type(newText)
-                    actions.onSuggestionTermTyped(newText)
+                onValueChange = {
+                    textFieldValue = it
+                },
+                onTextLayout = {
+                    rect = it.getCursorRect(textFieldValue.selection.end)
                 },
                 cursorBrush = SolidColor(cursorColor),
                 textStyle = textStyle
@@ -193,7 +227,10 @@ fun ChipsListTextField(
                     suggestionScrollState.animateScrollTo(0)
                 }
 
-                ExposedDropdownMenu(
+                // Do not use ExposedDropDownMenu as it prevents hardware keyboard input to work.
+                // Doing that would break tests, emulators, and also external keyboard attached to the device usage.
+                // https://slack-chats.kotlinlang.org/t/18828953/has-anyone-else-noticed-the-exposeddropdownmenubox-component
+                DropdownMenu(
                     modifier = Modifier
                         .background(dropDownMenuBackground)
                         .exposedDropdownSize(false)
@@ -201,6 +238,11 @@ fun ChipsListTextField(
                         .fillMaxHeight(DROP_DOWN_HEIGHT_PERCENT)
                         .verticalScrollbar(suggestionScrollState),
                     expanded = contactSuggestionState.areSuggestionsExpanded,
+                    properties = PopupProperties(
+                        focusable = false,
+                        dismissOnBackPress = false,
+                        dismissOnClickOutside = false
+                    ),
                     onDismissRequest = {
                         actions.onSuggestionsDismissed()
                     },
@@ -232,6 +274,7 @@ fun ChipsListTextField(
                                     state.typeWord(it)
                                 }
                                 actions.onSuggestionsDismissed()
+                                textFieldValue = initialTextFieldValue
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
                         )
@@ -239,10 +282,11 @@ fun ChipsListTextField(
                 }
             }
         }
-
     }
 }
 
+private val initialTextFieldValue = TextFieldValue("")
+private const val EMPTY_SPACE = ' '
 private const val DROP_DOWN_HEIGHT_PERCENT = 0.8f
 private const val DROP_DOWN_WIDTH_PERCENT = 0.9f
 
