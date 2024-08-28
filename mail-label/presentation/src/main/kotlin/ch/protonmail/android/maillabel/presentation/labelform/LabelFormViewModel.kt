@@ -33,6 +33,8 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +57,8 @@ class LabelFormViewModel @Inject constructor(
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
+    private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val reducer: LabelFormReducer,
     private val colorMapper: ColorMapper,
     observePrimaryUserId: ObservePrimaryUserId,
@@ -115,6 +119,7 @@ class LabelFormViewModel @Inject constructor(
                     LabelFormViewAction.OnCloseLabelFormClick -> emitNewStateFor(LabelFormEvent.CloseLabelForm)
                     LabelFormViewAction.OnDeleteClick -> handleOnDeleteClick()
                     LabelFormViewAction.OnSaveClick -> handleOnSaveClick()
+                    LabelFormViewAction.HideUpselling -> handleHideUpselling()
                 }
             }
         }
@@ -147,14 +152,26 @@ class LabelFormViewModel @Inject constructor(
         }
     }
 
+    private fun handleHideUpselling() {
+        val currentState = state.value
+        if (currentState is LabelFormState.Data.Create) {
+            emitNewStateFor(LabelFormEvent.HideUpselling)
+        }
+    }
+
     @SuppressWarnings("ReturnCount")
     private suspend fun createLabel(name: String, color: String) {
         emitNewStateFor(LabelFormEvent.CreatingLabel)
-
         val isLabelLimitReached = isLabelLimitReached(primaryUserId(), LabelType.MessageLabel).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
-        if (isLabelLimitReached) return emitNewStateFor(LabelFormEvent.LabelLimitReached)
+        if (isLabelLimitReached) {
+            val shouldShowUpselling = observeUpsellingVisibility(isUpsellingLabelsEnabled()).first()
+
+            return if (shouldShowUpselling) {
+                emitNewStateFor(LabelFormEvent.ShowUpselling)
+            } else emitNewStateFor(LabelFormEvent.LabelLimitReached)
+        }
 
         val isLabelNameAllowed = isLabelNameAllowed(primaryUserId(), name).getOrElse {
             return emitNewStateFor(LabelFormEvent.SaveLabelError)

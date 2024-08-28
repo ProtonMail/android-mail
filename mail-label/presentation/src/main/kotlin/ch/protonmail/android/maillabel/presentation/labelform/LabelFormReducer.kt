@@ -19,6 +19,7 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
 class LabelFormReducer @Inject constructor() {
@@ -36,6 +37,8 @@ class LabelFormReducer @Inject constructor() {
             LabelFormEvent.SaveLabelError -> reduceSaveLabelError(currentState)
             LabelFormEvent.CloseLabelForm -> reduceCloseLabelForm(currentState)
             LabelFormEvent.CreatingLabel -> reduceCreatingLabel(currentState)
+            LabelFormEvent.ShowUpselling -> reduceShowUpselling(currentState)
+            LabelFormEvent.HideUpselling -> reduceHideUpselling(currentState)
         }
     }
 
@@ -57,6 +60,7 @@ class LabelFormReducer @Inject constructor() {
             )
         }
     }
+
     private fun reduceUpdateLabelName(currentState: LabelFormState, labelName: String): LabelFormState {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(isSaveEnabled = labelName.isNotEmpty(), name = labelName)
@@ -111,6 +115,7 @@ class LabelFormReducer @Inject constructor() {
                 showLabelAlreadyExistsSnackbar = Effect.of(Unit),
                 displayCreateLoader = false
             )
+
             is LabelFormState.Data.Update -> currentState.copy(showLabelAlreadyExistsSnackbar = Effect.of(Unit))
             is LabelFormState.Loading -> currentState
         }
@@ -122,6 +127,7 @@ class LabelFormReducer @Inject constructor() {
                 showLabelLimitReachedSnackbar = Effect.of(Unit),
                 displayCreateLoader = false
             )
+
             is LabelFormState.Data.Update -> currentState.copy(showLabelLimitReachedSnackbar = Effect.of(Unit))
             is LabelFormState.Loading -> currentState
         }
@@ -133,6 +139,7 @@ class LabelFormReducer @Inject constructor() {
                 showSaveLabelErrorSnackbar = Effect.of(Unit),
                 displayCreateLoader = false
             )
+
             is LabelFormState.Data.Update -> currentState.copy(showSaveLabelErrorSnackbar = Effect.of(Unit))
             is LabelFormState.Loading -> currentState
         }
@@ -141,6 +148,29 @@ class LabelFormReducer @Inject constructor() {
     private fun reduceCreatingLabel(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(displayCreateLoader = true)
+            is LabelFormState.Data.Update -> currentState
+            is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceShowUpselling(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Data.Create -> currentState.copy(
+                upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show),
+                displayCreateLoader = false
+            )
+
+            is LabelFormState.Data.Update -> currentState
+            is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceHideUpselling(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Data.Create -> currentState.copy(
+                upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+
             is LabelFormState.Data.Update -> currentState
             is LabelFormState.Loading -> currentState
         }

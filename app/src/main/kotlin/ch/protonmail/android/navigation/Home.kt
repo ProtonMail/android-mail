@@ -50,9 +50,9 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
-import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
@@ -385,7 +385,23 @@ fun Home(
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
-                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
+                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
+                    showNormalSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
+                            )
+                        }
+                    },
+                    showErrorSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostErrorState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    }
                 )
                 addFolderList(
                     navController,

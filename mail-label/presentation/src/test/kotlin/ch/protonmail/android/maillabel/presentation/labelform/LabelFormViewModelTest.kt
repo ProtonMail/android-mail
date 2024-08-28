@@ -35,7 +35,10 @@ import ch.protonmail.android.maillabel.domain.usecase.GetLabelColors
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -50,6 +53,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@Suppress("MaxLineLength")
 class LabelFormViewModelTest {
 
     @get:Rule
@@ -96,6 +100,12 @@ class LabelFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
+    private val isUpsellingLabelsEnabled = mockk<IsUpsellingLabelsEnabled> {
+        every { this@mockk.invoke(any()) } returns false
+    }
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk.invoke(any()) } returns flowOf(false)
+    }
 
     private val reducer = LabelFormReducer()
 
@@ -112,6 +122,8 @@ class LabelFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
+            isUpsellingLabelsEnabled,
+            observeUpsellingVisibility,
             reducer,
             colorMapper,
             observePrimaryUserId,
@@ -398,6 +410,58 @@ class LabelFormViewModelTest {
                     name = defaultTestUpdatedName,
                     isSaveEnabled = true,
                     showLabelLimitReachedSnackbar = Effect.of(Unit)
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given create state and limit reached, when action label save and observeUpsellingVisibility is true, emits ShowUpselling`() =
+        runTest {
+            // Given
+            val loadedState = loadedCreateState
+            every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
+            coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
+            coEvery { observeUpsellingVisibility.invoke(any()) } returns flowOf(true)
+
+            labelFormViewModel.state.test {
+                // Initial loaded state
+                val actual = awaitItem()
+                assertEquals(loadedState, actual)
+
+                // When
+                labelFormViewModel.submit(LabelFormViewAction.OnSaveClick)
+                // Then
+                assertEquals(
+                    loadedState.copy(
+                        upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show),
+                        displayCreateLoader = false
+                    ),
+                    awaitItem()
+                )
+            }
+        }
+
+    @Test
+    fun `given create state with upselling shown, when action hide upselling, emits hide upselling`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.HideUpselling)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide),
+                    displayCreateLoader = false
                 ),
                 awaitItem()
             )

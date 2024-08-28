@@ -232,14 +232,18 @@ internal fun NavGraphBuilder.addLabelList(
 internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
-    showLabelDeletedSnackbar: () -> Unit
+    showLabelDeletedSnackbar: () -> Unit,
+    showNormalSnackbar: (String) -> Unit,
+    showErrorSnackbar: (String) -> Unit
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
             navController.navigateBack()
         },
         showLabelSavedSnackbar = showLabelSavedSnackbar,
-        showLabelDeletedSnackbar = showLabelDeletedSnackbar
+        showLabelDeletedSnackbar = showLabelDeletedSnackbar,
+        showNormalSnackbar = showNormalSnackbar,
+        showErrorSnackbar = showErrorSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }
