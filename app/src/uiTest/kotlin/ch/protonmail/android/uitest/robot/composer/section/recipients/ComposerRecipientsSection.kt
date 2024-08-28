@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.robot.composer.section.recipients
 
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
@@ -61,12 +60,10 @@ internal abstract class ComposerRecipientsSection(
         entryModel.tapChipDeletionIconAt(position)
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     fun tapBackspace() = apply {
         entryModel.tapKey(Key.Backspace)
     }
 
-    @OptIn(ExperimentalComposeUiApi::class)
     private fun tapSpacebar() = apply {
         entryModel.tapKey(Key.Spacebar)
     }
