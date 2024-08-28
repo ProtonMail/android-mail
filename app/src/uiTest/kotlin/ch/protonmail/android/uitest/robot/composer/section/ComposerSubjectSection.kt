@@ -23,6 +23,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
@@ -43,20 +44,25 @@ internal class ComposerSubjectSection : ComposeSectionRobot() {
         useUnmergedTree = true
     )
 
-    fun focusField() {
+    fun focusField() = withSubjectDisplayed {
         subject.performClick()
     }
 
-    fun typeSubject(value: String) {
+    fun typeSubject(value: String) = withSubjectDisplayed {
         subject.performTextInput(value)
     }
 
-    fun clearField() {
+    fun clearField() = withSubjectDisplayed {
         subject.performTextClearance()
     }
 
-    fun performImeAction() {
+    fun performImeAction() = withSubjectDisplayed {
         subject.performImeAction()
+    }
+
+    private fun withSubjectDisplayed(block: ComposerSubjectSection.() -> Unit) = apply {
+        subject.performScrollTo()
+        block()
     }
 
     @VerifiesOuter
