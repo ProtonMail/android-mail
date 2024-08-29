@@ -35,6 +35,18 @@ object MessageAttachmentSample {
         headers = emptyMap()
     )
 
+    val invoiceWithBinaryContentType = MessageAttachment(
+        attachmentId = AttachmentId("invoice_binary_content_type"),
+        name = "invoice.pdf",
+        size = 5678,
+        mimeType = "application/octet-stream",
+        disposition = null,
+        keyPackets = "keyPackets",
+        signature = null,
+        encSignature = null,
+        headers = emptyMap()
+    )
+
     val publicKey = MessageAttachment(
         attachmentId = AttachmentId("publicKey"),
         name = "publickey - example@protonmail.com - 0x61DD734E.asc",

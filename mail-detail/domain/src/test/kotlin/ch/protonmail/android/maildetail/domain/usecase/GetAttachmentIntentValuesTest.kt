@@ -179,6 +179,32 @@ class GetAttachmentIntentValuesTest {
     }
 
     @Test
+    @Suppress("MaxLineLength")
+    fun `should return intent values with fixed mime-type when mime attachment is successfully saved, metadata is available and content-type is binary but file extension is well-known`() =
+        runTest {
+            // Given
+            val messageWithBody = MessageWithBodySample.PgpMimeMessageWithPdfAttachmentWithBinaryContentType
+            coEvery {
+                messageRepository.getMessageWithBody(userId, messageId)
+            } returns messageWithBody.right()
+            coEvery {
+                attachmentRepository.saveMimeAttachmentToPublicStorage(
+                    userId = userId,
+                    messageId = messageId,
+                    attachmentId = AttachmentId("invoice_binary_content_type")
+                )
+            } returns uri.right()
+
+            // When
+            val result = getAttachmentIntentValues(userId, messageId, AttachmentId("invoice_binary_content_type"))
+
+            println(result)
+
+            // Then
+            assertEquals(OpenAttachmentIntentValues("application/pdf", uri).right(), result)
+        }
+
+    @Test
     fun `should return error if saving mime attachment to public storage fails`() = runTest {
         // Given
         coEvery { messageRepository.getMessageWithBody(userId, messageId) } returns pgpMimeMessageWithBody.right()

@@ -83,4 +83,13 @@ object AttachmentUiModelSample {
         size = 1234,
         mimeType = "text/calendar"
     )
+
+    val invoiceWithBinaryContentType = AttachmentUiModel(
+        attachmentId = "invoice_binary_content_type",
+        fileName = "invoice",
+        extension = "pdf",
+        size = 1234,
+        mimeType = "application/pdf"
+    )
+
 }
