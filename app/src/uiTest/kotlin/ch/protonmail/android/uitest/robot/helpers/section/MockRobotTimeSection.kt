@@ -30,6 +30,7 @@ internal class MockRobotTimeSection : ProtonMailSectionRobot {
 
     fun forceCurrentMillisTo(millis: Long) {
         every { Instant.now() } returns mockk {
+            every { nano } returns 0
             every { epochSecond } returns millis
         }
     }
