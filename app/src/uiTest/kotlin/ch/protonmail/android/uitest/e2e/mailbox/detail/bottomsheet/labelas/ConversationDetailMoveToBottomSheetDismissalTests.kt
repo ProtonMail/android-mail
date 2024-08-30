@@ -155,4 +155,47 @@ internal class ConversationDetailMoveToBottomSheetDismissalTests : MockedNetwork
             }
         }
     }
+
+    @Test
+    @TestId("458329")
+    fun checkConversationMoveToBottomSheetDismissalWithDoneButton() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                get("/mail/v4/settings")
+                    respondWith "/mail/v4/settings/mail-v4-settings_458329.json"
+                    withStatusCode 200,
+                get("/mail/v4/conversations")
+                    respondWith "/mail/v4/conversations/conversations_458329.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                get("/mail/v4/conversations/*")
+                    respondWith "/mail/v4/conversations/conversation-id/conversation-id_458329.json"
+                    withStatusCode 200 matchWildcards true,
+                get("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_458329.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.Inbox)
+        }
+
+        mailboxRobot {
+            listSection { clickMessageByPosition(0) }
+        }
+
+        conversationDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
+
+            moveToBottomSheetSection {
+                verify { isShown() }
+
+                tapDoneButton()
+                verify { isHidden() }
+            }
+
+            verify { conversationDetailScreenIsShown() }
+        }
+    }
 }

@@ -82,7 +82,6 @@ internal class MessageDetailMoveToBottomSheetMainTests : MockedNetworkTest() {
                 verify {
                     headerTextIsShown()
                     doneButtonIsShown()
-                    doneButtonIsDisabled()
                 }
             }
         }

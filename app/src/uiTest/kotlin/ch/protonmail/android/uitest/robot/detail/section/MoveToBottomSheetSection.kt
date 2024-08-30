@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
@@ -92,10 +91,6 @@ internal class MoveToBottomSheetSection : ComposeSectionRobot() {
 
         fun headerTextIsShown() {
             headerText.assertTextEquals(getTestString(testR.string.test_bottom_sheet_move_to_title))
-        }
-
-        fun doneButtonIsDisabled() {
-            doneButton.assertIsNotEnabled()
         }
 
         fun doneButtonIsShown() {
