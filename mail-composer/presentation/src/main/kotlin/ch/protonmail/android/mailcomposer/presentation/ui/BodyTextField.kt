@@ -89,9 +89,7 @@ internal fun BodyTextField(
     // If the cursorRect is already displayed completely, the requester does nothing
     // and the following call becomes a no-op, no need to put any guards.
     // See ContentInViewNode#bringChildIntoView#L120 for reference.
-    val bringRectIntoView: (rect: Rect) -> Unit = {
-        coroutineScope.launch { bringIntoViewRequester.bringIntoView(it) }
-    }
+    fun bringRectIntoView(rect: Rect) = coroutineScope.launch { bringIntoViewRequester.bringIntoView(rect) }
 
     LaunchedEffect(cursorRect, isFocused) {
         if (isFocused && cursorRect != Rect.Zero) {
