@@ -21,6 +21,8 @@ package ch.protonmail.android.mailmessage.data.remote.worker
 import android.app.Notification
 import android.app.NotificationChannel
 import android.content.Context
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.os.Build
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -108,7 +110,20 @@ class GetAttachmentWorker @AssistedInject constructor(
 
     private fun createForegroundInfo(attachmentId: AttachmentId): ForegroundInfo {
         val channel = notificationProvider.provideNotificationChannel(NotificationProvider.ATTACHMENT_CHANNEL_ID)
-        return ForegroundInfo(attachmentId.id.hashCode(), createNotification(channel))
+
+        // On API >= 34, foreground service type needs to be explicitly defined.
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            ForegroundInfo(
+                attachmentId.id.hashCode(),
+                createNotification(channel),
+                FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            )
+        } else {
+            ForegroundInfo(
+                attachmentId.id.hashCode(),
+                createNotification(channel)
+            )
+        }
     }
 
     private fun createNotification(notificationChannel: NotificationChannel): Notification {
