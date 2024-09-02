@@ -35,7 +35,7 @@
   <string name="upselling_unlimited_feature_drive">安全的云存储</string>
   <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">立省 %s%%</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_get_button">获得 %s</string>
   <plurals name="upselling_month">

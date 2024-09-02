@@ -163,7 +163,7 @@
   <string name="mail_settings_generic_error_message">Došlo k chybě. Zkuste to znovu.</string>
   <!-- strings used for biometric enrollment -->
   <string name="no_biometric_data_enrolled">Nebyly zapsány žádné biometrické údaje</string>
-  <string name="log_in_using_biometric_credential">Odemknout pomocí Vašich biometrických údajů</string>
+  <string name="log_in_using_biometric_credential">Odemknout pomocí vašich biometrických údajů</string>
   <string name="unlock_using_biometrics">Odemknout pomocí biometrie</string>
   <string name="biometric_error_hw_not_available">Biometrický hardware není k dispozici.</string>
 </resources>

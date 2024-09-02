@@ -82,7 +82,7 @@
   <string name="external_link_confirmation_dialog_continue_button">Continuare</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Avertisment: suspectare site fals</string>
-  <string name="phishing_link_confirmation_dialog_content_part_1">Această legătură duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Această legătură web duce la un site web care ar putea încerca să vă fure informațiile, cum ar fi parolele și detaliile cărților de credit.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">Din motive de securitate, nu continuați.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Revenire (recomandat)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Ignorare avertisment și continuare</string>

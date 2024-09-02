@@ -21,7 +21,7 @@
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Keluar mode pemilihan</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menu</string>
   <string name="mailbox_toolbar_search_button_content_description">Cari</string>
-  <string name="mailbox_toolbar_exit_search_mode_content_description">Keluar mode pencarian</string>
+  <string name="mailbox_toolbar_exit_search_mode_content_description">Keluar dari mode pencarian</string>
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Hapus kueri pencarian</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Masukkan kueri pencarian</string>
   <plurals name="mailbox_toolbar_selected_count">
@@ -62,7 +62,7 @@
   <plurals name="mailbox_action_delete_conversation">
     <item quantity="other">%d percakapan dihapus secara permanen</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Pelabelan gagal dilangsungkan</string>
+  <string name="mailbox_action_label_messages_failed">Proses pelabelan gagal dilakukan</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Label gagal diperoleh</string>
   <string name="mailbox_action_failed_retrieving_colors">Pengaturan warna gagal diperoleh</string>
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal dilangsungkan</string>

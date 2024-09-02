@@ -28,13 +28,13 @@
   <string name="add_contact_content_description">添加联系人</string>
   <string name="all_title">全部</string>
   <string name="groups_title">群组</string>
-  <string name="group_member_count">%1$s member</string>
+  <string name="group_member_count">%1$s 位成員</string>
   <string name="group_members_count">%1$s 位成員</string>
   <string name="new_contact">新建联系人</string>
   <string name="new_group">新建群组</string>
   <string name="import_contact">上传本机通讯录</string>
   <string name="no_contact_email">无邮箱地址</string>
-  <string name="multiple_contact_emails">%1$s, +%2$d</string>
+  <string name="multiple_contact_emails">%1$s，+%2$d</string>
   <string name="contact_details_loading_error">加载联系人时出错，请稍后再试</string>
   <string name="contact_details_delete_success">联系人已删除</string>
   <string name="edit_contact_content_description">编辑联系人</string>
@@ -92,7 +92,7 @@
   <string name="address_city">城市</string>
   <string name="address_region">区域</string>
   <string name="address_country">国家</string>
-  <string name="contact_details_delete_dialog_title">Delete Contact</string>
+  <string name="contact_details_delete_dialog_title">删除联系人</string>
   <string name="contact_details_delete_dialog_text">Are you sure you want to delete this contact?</string>
   <string name="contact_details_delete_dialog_cancel_button">关闭</string>
   <string name="contact_details_delete_dialog_confirm_button">好的</string>

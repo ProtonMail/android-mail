@@ -99,6 +99,6 @@
     <item quantity="one">%d stik</item>
     <item quantity="two">%d stika</item>
     <item quantity="few">%d stiki</item>
-    <item quantity="other">%d stiki</item>
+    <item quantity="other">%d stikov</item>
   </plurals>
 </resources>
