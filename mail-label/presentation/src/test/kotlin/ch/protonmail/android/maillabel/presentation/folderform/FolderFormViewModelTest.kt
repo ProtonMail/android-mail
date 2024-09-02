@@ -37,9 +37,12 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -54,6 +57,7 @@ import org.junit.Rule
 import org.junit.Test
 import kotlin.test.assertEquals
 
+@Suppress("MaxLineLength")
 class FolderFormViewModelTest {
 
     @get:Rule
@@ -128,6 +132,12 @@ class FolderFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
+    private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled> {
+        every { this@mockk.invoke(any()) } returns false
+    }
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk.invoke(any()) } returns flowOf(false)
+    }
 
     private val reducer = FolderFormReducer()
 
@@ -144,6 +154,8 @@ class FolderFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
+            isUpsellingFoldersEnabled,
+            observeUpsellingVisibility,
             observeFolderColorSettings,
             reducer,
             colorMapper,
@@ -518,6 +530,58 @@ class FolderFormViewModelTest {
                     name = defaultTestUpdatedName,
                     isSaveEnabled = true,
                     showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given create state and limit reached, when action folder save and observeUpsellingVisibility is true, emits ShowUpselling`() =
+        runTest {
+            // Given
+            val loadedState = loadedCreateState
+            every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
+            coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns true.right()
+            coEvery { observeUpsellingVisibility.invoke(any()) } returns flowOf(true)
+
+            folderFormViewModel.state.test {
+                // Initial loaded state
+                val actual = awaitItem()
+                assertEquals(loadedState, actual)
+
+                // When
+                folderFormViewModel.submit(FolderFormViewAction.OnSaveClick)
+                // Then
+                assertEquals(
+                    loadedState.copy(
+                        upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show),
+                        displayCreateLoader = false
+                    ),
+                    awaitItem()
+                )
+            }
+        }
+
+    @Test
+    fun `given create state with upselling shown, when action hide upselling, emits hide upselling`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns true.right()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.HideUpselling)
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide),
+                    displayCreateLoader = false
                 ),
                 awaitItem()
             )

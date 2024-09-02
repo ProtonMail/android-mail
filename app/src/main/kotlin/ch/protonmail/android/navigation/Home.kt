@@ -431,6 +431,14 @@ fun Home(
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
+                    },
+                    showNormSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
+                            )
+                        }
                     }
                 )
                 addParentFolderList(

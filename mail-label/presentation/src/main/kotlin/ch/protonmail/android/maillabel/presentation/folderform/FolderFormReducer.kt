@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.folderform
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import me.proton.core.label.domain.entity.Label
 import javax.inject.Inject
 
@@ -46,6 +47,8 @@ class FolderFormReducer @Inject constructor() {
             FolderFormEvent.CloseFolderForm -> reduceCloseFolderForm(currentState)
             FolderFormEvent.LoadFolderError -> reduceLoadFolderError()
             FolderFormEvent.CreatingFolder -> reduceCreatingFolder(currentState)
+            FolderFormEvent.HideUpselling -> reduceHideUpselling(currentState)
+            FolderFormEvent.ShowUpselling -> reduceShowUpselling(currentState)
         }
     }
 
@@ -220,6 +223,29 @@ class FolderFormReducer @Inject constructor() {
     private fun reduceCreatingFolder(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(displayCreateLoader = true)
+            is FolderFormState.Data.Update -> currentState
+            is FolderFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceShowUpselling(currentState: FolderFormState): FolderFormState {
+        return when (currentState) {
+            is FolderFormState.Data.Create -> currentState.copy(
+                upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show),
+                displayCreateLoader = false
+            )
+
+            is FolderFormState.Data.Update -> currentState
+            is FolderFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceHideUpselling(currentState: FolderFormState): FolderFormState {
+        return when (currentState) {
+            is FolderFormState.Data.Create -> currentState.copy(
+                upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+
             is FolderFormState.Data.Update -> currentState
             is FolderFormState.Loading -> currentState
         }

@@ -19,6 +19,7 @@
 package ch.protonmail.android.maillabel.presentation.folderform
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,15 +29,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -55,14 +61,20 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPreviewData.createFolderFormState
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPreviewData.editFolderFormState
 import ch.protonmail.android.maillabel.presentation.ui.ColorPicker
 import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
+import ch.protonmail.android.maillabel.presentation.upselling.FoldersUpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSettingsToggleItem
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
@@ -76,6 +88,7 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.label.domain.entity.LabelId
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FolderFormScreen(
     actions: FolderFormScreen.Actions,
@@ -117,57 +130,98 @@ fun FolderFormScreen(
         }
     )
 
-    Scaffold(
-        topBar = {
-            FolderFormTopBar(
-                state = state,
-                onCloseFolderFormClick = {
-                    viewModel.submit(FolderFormViewAction.OnCloseFolderFormClick)
-                },
-                onSaveFolderClick = {
-                    viewModel.submit(FolderFormViewAction.OnSaveClick)
-                }
-            )
-        },
-        content = { paddingValues ->
-            when (state) {
-                is FolderFormState.Data -> {
-                    FolderFormContent(
-                        state = state,
-                        actions = customActions,
-                        modifier = Modifier.padding(paddingValues)
-                    )
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+    val scope = rememberCoroutineScope()
 
-                    ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
-                        actions.exitWithSuccessMessage(message)
-                    }
-                    ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
-                        snackbarHostErrorState.showSnackbar(
-                            message = message,
-                            type = ProtonSnackbarType.ERROR
-                        )
-                    }
-                }
-                is FolderFormState.Loading -> {
-                    ProtonCenteredProgress(
-                        modifier = Modifier
-                            .padding(paddingValues)
-                            .fillMaxSize()
-                    )
+    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) { onDispose { viewModel.submit(FolderFormViewAction.HideUpselling) } }
+    }
 
-                    ConsumableTextEffect(effect = state.errorLoading) { message ->
-                        actions.exitWithErrorMessage(message)
-                    }
+    BackHandler(bottomSheetState.isVisible) {
+        viewModel.submit(FolderFormViewAction.HideUpselling)
+    }
+
+    if (state is FolderFormState.Data.Create) {
+        ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetVisibilityEffect.Hide -> scope.launch {
+                    bottomSheetState.hide()
+                }
+                BottomSheetVisibilityEffect.Show -> scope.launch {
+                    dismissKeyboard(context, view, keyboardController)
+                    bottomSheetState.show()
                 }
             }
-        },
-        snackbarHost = {
-            DismissableSnackbarHost(
-                modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                protonSnackbarHostState = snackbarHostErrorState
+        }
+    }
+
+    ProtonModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = bottomSheetHeightConstrainedContent {
+            FoldersUpsellingBottomSheet(
+                actions = UpsellingBottomSheet.Actions.Empty.copy(
+                    onDismiss = { viewModel.submit(FolderFormViewAction.HideUpselling) },
+                    onUpgrade = { message -> actions.showUpsellingSnackbar(message) },
+                    onError = { message -> actions.showUpsellingErrorSnackbar(message) }
+                )
             )
         }
-    )
+    ) {
+        Scaffold(
+            topBar = {
+                FolderFormTopBar(
+                    state = state,
+                    onCloseFolderFormClick = {
+                        viewModel.submit(FolderFormViewAction.OnCloseFolderFormClick)
+                    },
+                    onSaveFolderClick = {
+                        viewModel.submit(FolderFormViewAction.OnSaveClick)
+                    }
+                )
+            },
+            content = { paddingValues ->
+                when (state) {
+                    is FolderFormState.Data -> {
+                        FolderFormContent(
+                            state = state,
+                            actions = customActions,
+                            modifier = Modifier.padding(paddingValues)
+                        )
+
+                        ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
+                            actions.exitWithSuccessMessage(message)
+                        }
+                        ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
+                            snackbarHostErrorState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    }
+                    is FolderFormState.Loading -> {
+                        ProtonCenteredProgress(
+                            modifier = Modifier
+                                .padding(paddingValues)
+                                .fillMaxSize()
+                        )
+
+                        ConsumableTextEffect(effect = state.errorLoading) { message ->
+                            actions.exitWithErrorMessage(message)
+                        }
+                    }
+                }
+            },
+            snackbarHost = {
+                DismissableSnackbarHost(
+                    modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
+                    protonSnackbarHostState = snackbarHostErrorState
+                )
+            }
+        )
+    }
 
     ConsumableLaunchedEffect(effect = state.close) {
         dismissKeyboard(context, view, keyboardController)
@@ -344,7 +398,9 @@ object FolderFormScreen {
         val onFolderNotificationsChanged: (Boolean) -> Unit,
         val onFolderParentClick: (LabelId?, LabelId?) -> Unit,
         val onSaveClick: () -> Unit,
-        val onDeleteClick: () -> Unit
+        val onDeleteClick: () -> Unit,
+        val showUpsellingSnackbar: (String) -> Unit,
+        val showUpsellingErrorSnackbar: (String) -> Unit
     ) {
 
         companion object {
@@ -358,7 +414,9 @@ object FolderFormScreen {
                 onFolderNotificationsChanged = {},
                 onFolderParentClick = { _, _ -> },
                 onSaveClick = {},
-                onDeleteClick = {}
+                onDeleteClick = {},
+                showUpsellingSnackbar = {},
+                showUpsellingErrorSnackbar = {}
             )
         }
     }
