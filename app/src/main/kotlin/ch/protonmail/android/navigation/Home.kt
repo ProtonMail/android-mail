@@ -220,6 +220,20 @@ fun Home(
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
 
+    fun showUpsellingSnackbar(message: String) = scope.launch {
+        snackbarHostNormState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.NORM
+        )
+    }
+
+    fun showUpsellingErrorSnackbar(message: String) = scope.launch {
+        snackbarHostErrorState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.ERROR
+        )
+    }
+
     val labelListErrorLoadingText = stringResource(id = R.string.label_list_loading_error)
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
@@ -386,22 +400,8 @@ fun Home(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
                     showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
-                    showNormalSnackbar = { message ->
-                        scope.launch {
-                            snackbarHostNormState.showSnackbar(
-                                message = message,
-                                type = ProtonSnackbarType.NORM
-                            )
-                        }
-                    },
-                    showErrorSnackbar = { message ->
-                        scope.launch {
-                            snackbarHostErrorState.showSnackbar(
-                                message = message,
-                                type = ProtonSnackbarType.ERROR
-                            )
-                        }
-                    }
+                    showUpsellingSnackbar = { showUpsellingSnackbar(it) },
+                    showUpsellingErrorSnackbar = { showUpsellingErrorSnackbar(it) }
                 )
                 addFolderList(
                     navController,

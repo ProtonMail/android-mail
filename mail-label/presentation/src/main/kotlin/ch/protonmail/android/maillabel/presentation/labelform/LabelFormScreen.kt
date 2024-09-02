@@ -146,8 +146,8 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             LabelsUpsellingBottomSheet(
                 actions = UpsellingBottomSheet.Actions.Empty.copy(
                     onDismiss = { viewModel.submit(LabelFormViewAction.HideUpselling) },
-                    onUpgrade = { message -> actions.showNormalSnackbar(message) },
-                    onError = { message -> actions.showErrorSnackbar(message) }
+                    onUpgrade = { message -> actions.showUpsellingSnackbar(message) },
+                    onError = { message -> actions.showUpsellingErrorSnackbar(message) }
                 )
             )
         }
@@ -341,8 +341,8 @@ object LabelFormScreen {
         val onBackClick: () -> Unit,
         val showLabelSavedSnackbar: () -> Unit,
         val showLabelDeletedSnackbar: () -> Unit,
-        val showNormalSnackbar: (String) -> Unit,
-        val showErrorSnackbar: (String) -> Unit,
+        val showUpsellingSnackbar: (String) -> Unit,
+        val showUpsellingErrorSnackbar: (String) -> Unit,
         val onLabelNameChanged: (String) -> Unit,
         val onLabelColorChanged: (Color) -> Unit,
         val onSaveClick: () -> Unit,
@@ -355,8 +355,8 @@ object LabelFormScreen {
                 onBackClick = {},
                 showLabelSavedSnackbar = {},
                 showLabelDeletedSnackbar = {},
-                showNormalSnackbar = {},
-                showErrorSnackbar = {},
+                showUpsellingSnackbar = {},
+                showUpsellingErrorSnackbar = {},
                 onLabelNameChanged = {},
                 onLabelColorChanged = {},
                 onSaveClick = {},
