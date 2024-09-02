@@ -416,11 +416,11 @@ include:
       - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
     local: /ci/cache-policy-pull.yml
 
-  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.4
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/kits/devsecops/generic@0.0.14
     inputs:
       stage: analyse
 
-  - component: gitlab.protontech.ch/proton/devops/cicd-components/community/gradle-wrapper/validate@0.0.2
+  - component: gitlab.protontech.ch/proton/devops/cicd-components/community/gradle-wrapper/validate@0.0.3
     inputs:
       stage: analyse
 
