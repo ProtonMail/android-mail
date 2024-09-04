@@ -24,6 +24,7 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
@@ -41,10 +42,10 @@ class IsLabelLimitReached @Inject constructor(
     suspend operator fun invoke(userId: UserId, labelType: LabelType): Either<DataError, Boolean> = Either.catch {
         val isPaidUser = observeUser(userId).filterNotNull().first().hasSubscription()
         if (!isPaidUser) {
-            val nonSystemLabelList = labelRepository.getLabels(userId, labelType).filter {
-                it.labelId.id.toIntOrNull() == null
+            val customLabelList = labelRepository.getLabels(userId, labelType).filter {
+                !it.labelId.isReservedSystemLabelId()
             }
-            if (nonSystemLabelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
+            if (customLabelList.size >= FREE_USER_LABEL_LIMIT) return@catch true
         }
         return@catch false
     }.mapLeft {
