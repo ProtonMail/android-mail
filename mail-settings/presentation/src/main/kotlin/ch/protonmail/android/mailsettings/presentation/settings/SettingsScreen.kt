@@ -55,10 +55,6 @@ import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.usersettings.presentation.compose.view.CrashReportSettingToggleItem
 import me.proton.core.usersettings.presentation.compose.view.TelemetrySettingToggleItem
 
-const val TEST_TAG_SETTINGS_SCREEN = "SettingsScreenTestTag"
-const val TEST_TAG_SETTINGS_LIST = "SettingsListTestTag"
-const val TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM = "AccountSettingsItemTestTag"
-
 @Composable
 fun MainSettingsScreen(
     modifier: Modifier = Modifier,
@@ -95,7 +91,7 @@ fun MainSettingsScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier.testTag(TEST_TAG_SETTINGS_SCREEN),
+        modifier = modifier.testTag(SettingsScreenTestTags.RootItem),
         topBar = {
             ProtonSettingsTopBar(
                 title = stringResource(id = string.mail_settings_settings),
@@ -105,13 +101,13 @@ fun MainSettingsScreen(
     ) { contentPadding ->
         ProtonSettingsList(
             modifier = modifier
-                .testTag(TEST_TAG_SETTINGS_LIST)
+                .testTag(SettingsScreenTestTags.SettingsList)
                 .padding(contentPadding)
         ) {
             item { ProtonSettingsHeader(title = string.mail_settings_account_settings) }
             item {
                 AccountSettingsItem(
-                    modifier = Modifier.testTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM),
+                    modifier = Modifier.testTag(SettingsScreenTestTags.AccountSettingsItem),
                     accountInfo = state.account,
                     onAccountClicked = actions.onAccountClick
                 )
@@ -344,4 +340,10 @@ fun PreviewMainSettingsScreen() {
             actions = SettingsScreenPreviewData.Actions
         )
     }
+}
+
+object SettingsScreenTestTags {
+    const val RootItem = "SettingsScreenTestTag"
+    const val SettingsList = "SettingsListTestTag"
+    const val AccountSettingsItem = "AccountSettingsItemTestTag"
 }
