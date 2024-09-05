@@ -82,7 +82,7 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
             )
         )
 
-        val ContactGroupsPlusOverriddenEntitlements = listOf(
+        private val SharedPlusOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
                 localResource = R.drawable.ic_upselling_storage
@@ -101,12 +101,14 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
             )
         )
 
-        val FoldersPlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
+        val ContactGroupsPlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
 
-        val LabelsPlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
+        val FoldersPlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
+
+        val LabelsPlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
 
         @Suppress("VariableMaxLength")
-        val MobileSignaturePlusOverriddenEntitlements = ContactGroupsPlusOverriddenEntitlements
+        val MobileSignaturePlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
 
         val UnlimitedOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(
