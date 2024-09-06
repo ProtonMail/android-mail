@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import kotlinx.coroutines.flow.combine
@@ -51,6 +52,9 @@ class ObserveExclusiveDestinationMailLabels @Inject constructor(
 
     private fun observeMessageFolders(userId: UserId) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
         .mapSuccessValueOrNull()
-        .mapLatest { list -> list.orEmpty().sortedBy { it.order } }
-
+        .mapLatest { list ->
+            list.orEmpty()
+                .filter { !it.labelId.isReservedSystemLabelId() }
+                .sortedBy { it.order }
+        }
 }

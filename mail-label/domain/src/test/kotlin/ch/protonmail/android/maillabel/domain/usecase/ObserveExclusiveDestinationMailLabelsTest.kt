@@ -24,6 +24,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
+import ch.protonmail.android.testdata.label.LabelTestData.systemLabelsAsMessageFolders
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData.buildCustomFolder
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.every
@@ -51,9 +52,9 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
             DataResult.Success(
                 source = ResponseSource.Local,
                 value = listOf(
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "1", order = 1),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "2", order = 2)
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 0),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "B", order = 1),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "C", order = 2)
                 )
             )
         )
@@ -86,9 +87,9 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
                 expected = MailLabels(
                     systemLabels = SystemLabelId.exclusiveDestinationList.map { it.toMailLabelSystem() },
                     folders = listOf(
-                        buildCustomFolder("0", order = 0),
-                        buildCustomFolder("1", order = 1),
-                        buildCustomFolder("2", order = 2)
+                        buildCustomFolder("A", order = 0),
+                        buildCustomFolder("B", order = 1),
+                        buildCustomFolder("C", order = 2)
                     ),
                     labels = emptyList()
                 ),
@@ -102,11 +103,11 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
     fun `return correct folder hierarchy on success`() = runTest {
         // Given
         val labels = listOf(
-            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
-            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 0, parentId = "0"),
-            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2", order = 1, parentId = "0"),
-            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.1", order = 0, parentId = "0.2"),
-            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.2.2", order = 1, parentId = "0.2")
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 0),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.B", order = 0, parentId = "A"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.C", order = 1, parentId = "A"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.C.D", order = 0, parentId = "A.C"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.C.E", order = 1, parentId = "A.C")
         )
         every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
             DataResult.Success(
@@ -120,11 +121,11 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
             // Then
             val item = awaitItem()
 
-            val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.1", "0.2"))
-            val f01 = buildCustomFolder("0.1", level = 1, order = 0, parent = f0)
-            val f02 = buildCustomFolder("0.2", level = 1, order = 1, parent = f0, children = listOf("0.2.1", "0.2.2"))
-            val f021 = buildCustomFolder("0.2.1", level = 2, order = 0, parent = f02)
-            val f022 = buildCustomFolder("0.2.2", level = 2, order = 1, parent = f02)
+            val f0 = buildCustomFolder("A", level = 0, order = 0, parent = null, children = listOf("A.B", "A.C"))
+            val f01 = buildCustomFolder("A.B", level = 1, order = 0, parent = f0)
+            val f02 = buildCustomFolder("A.C", level = 1, order = 1, parent = f0, children = listOf("A.C.D", "A.C.E"))
+            val f021 = buildCustomFolder("A.C.D", level = 2, order = 0, parent = f02)
+            val f022 = buildCustomFolder("A.C.E", level = 2, order = 1, parent = f02)
             assertEquals(
                 expected = listOf(f0, f01, f02, f021, f022),
                 actual = item.folders
@@ -140,11 +141,11 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
             DataResult.Success(
                 source = ResponseSource.Local,
                 value = listOf(
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.1", order = 1, parentId = "0"),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0.0", order = 0, parentId = "0"),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "2", order = 2),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "0", order = 0),
-                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "1", order = 1)
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 0),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.A", order = 0, parentId = "A"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.B", order = 1, parentId = "A"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "B", order = 1),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "C", order = 2)
                 )
             )
         )
@@ -154,11 +155,11 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
             // Then
             val item = awaitItem()
 
-            val f0 = buildCustomFolder("0", level = 0, order = 0, parent = null, children = listOf("0.0", "0.1"))
-            val f00 = buildCustomFolder("0.0", level = 1, order = 0, parent = f0)
-            val f01 = buildCustomFolder("0.1", level = 1, order = 1, parent = f0)
-            val f1 = buildCustomFolder("1", level = 0, order = 1, parent = null)
-            val f2 = buildCustomFolder("2", level = 0, order = 2, parent = null)
+            val f0 = buildCustomFolder("A", level = 0, order = 0, parent = null, children = listOf("A.A", "A.B"))
+            val f00 = buildCustomFolder("A.A", level = 1, order = 0, parent = f0)
+            val f01 = buildCustomFolder("A.B", level = 1, order = 1, parent = f0)
+            val f1 = buildCustomFolder("B", level = 0, order = 1, parent = null)
+            val f2 = buildCustomFolder("C", level = 0, order = 2, parent = null)
 
             assertEquals(
                 expected = listOf(f0, f00, f01, f1, f2),
@@ -168,4 +169,37 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
         }
     }
 
+    @Test
+    fun `does not return system folders as custom folders`() = runTest {
+        // Given
+        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
+            DataResult.Success(
+                source = ResponseSource.Local,
+                value = listOf(
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 2),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.A", order = 0, parentId = "A"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.B", order = 1, parentId = "A"),
+                    buildLabel(userId = userId, type = LabelType.MessageFolder, id = "B", order = 2),
+                    *systemLabelsAsMessageFolders(userId)
+                )
+            )
+        )
+
+        // When
+        observeMailLabels.invoke(userId).test {
+            // Then
+            val item = awaitItem()
+
+            val f0 = buildCustomFolder("A", level = 0, order = 2, parent = null, children = listOf("A.A", "A.B"))
+            val f00 = buildCustomFolder("A.A", level = 1, order = 0, parent = f0)
+            val f01 = buildCustomFolder("A.B", level = 1, order = 1, parent = f0)
+            val f1 = buildCustomFolder("B", level = 0, order = 2, parent = null)
+
+            assertEquals(
+                expected = listOf(f0, f00, f01, f1),
+                actual = item.folders
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
 }

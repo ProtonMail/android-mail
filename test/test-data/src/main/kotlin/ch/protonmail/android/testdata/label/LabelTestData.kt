@@ -20,6 +20,7 @@ package ch.protonmail.android.testdata.label
 
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
@@ -84,4 +85,12 @@ object LabelTestData {
         isExpanded = isExpanded,
         isSticky = isSticky
     )
+
+    /**
+     * Returns the known `SystemLabelId`s to `Label` by setting the type to `MessageFolder` instead of `SystemFolder`.
+     * This test method is needed to check the workaround introduced to address MAILANDR-2143 and INBE-1628.
+     */
+    fun systemLabelsAsMessageFolders(userId: UserId) = SystemLabelId.entries.map {
+        buildLabel(userId = userId, type = LabelType.MessageFolder, id = it.labelId.id)
+    }.toTypedArray()
 }
