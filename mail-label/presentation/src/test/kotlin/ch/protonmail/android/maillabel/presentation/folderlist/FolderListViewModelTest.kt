@@ -37,6 +37,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.UpdateEnableFolderColor
 import ch.protonmail.android.mailsettings.domain.usecase.UpdateInheritFolderColor
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData
+import ch.protonmail.android.testdata.label.LabelTestData.systemLabelsAsMessageFolders
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
@@ -59,6 +60,11 @@ class FolderListViewModelTest {
         type = LabelType.MessageFolder,
         color = Color.Red.getHexStringFromColor()
     )
+    private val mixedTestFolders = buildList {
+        add(defaultTestFolder)
+        addAll(systemLabelsAsMessageFolders(userId))
+    }
+
     private val defaultFolderColorSettings = FolderColorSettings(
         useFolderColor = true,
         inheritParentFolderColor = false
@@ -112,6 +118,27 @@ class FolderListViewModelTest {
         coEvery {
             observeLabels(userId = userId, labelType = LabelType.MessageFolder)
         } returns flowOf(listOf(defaultTestFolder).right())
+
+        // When
+        folderListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = FolderListState.ListLoaded.Data(
+                useFolderColor = true,
+                inheritParentFolderColor = false,
+                folders = listOf(defaultTestFolder).toFolderUiModel(defaultFolderColorSettings, colorMapper)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given folder list, when init, then emits data state with filtered non-system folders`() = runTest {
+        // Given
+        coEvery {
+            observeLabels(userId = userId, labelType = LabelType.MessageFolder)
+        } returns flowOf(mixedTestFolders.right())
 
         // When
         folderListViewModel.state.test {

@@ -24,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.maillabel.presentation.model.toParentFolderUiModel
@@ -37,7 +38,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
@@ -84,24 +84,22 @@ class ParentFolderListViewModel @Inject constructor(
         return combine(
             observeLabels(userId, LabelType.MessageFolder),
             observeFolderColorSettings(userId)
-        ) { folders, folderColorSettings ->
-            folders.map {
-                ParentFolderListEvent.FolderListLoaded(
-                    folderList = it.toFolderUiModel(
-                        folderColorSettings,
-                        colorMapper
-                    ).toParentFolderUiModel(labelId, parentLabelId),
-                    labelId = labelId,
-                    parentLabelId = parentLabelId,
-                    useFolderColor = folderColorSettings.useFolderColor,
-                    inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
-                )
-            }
-        }.map {
-            it.getOrElse {
-                Timber.e("Error while observing custom folders")
-                return@map ParentFolderListEvent.ErrorLoadingFolderList
-            }
+        ) { foldersResult, folderColorSettings ->
+            val folders = foldersResult.getOrElse {
+                Timber.e("Unable to fetch custom folders list.")
+                return@combine ParentFolderListEvent.ErrorLoadingFolderList
+            }.filter { !it.labelId.isReservedSystemLabelId() }
+
+            ParentFolderListEvent.FolderListLoaded(
+                folderList = folders.toFolderUiModel(
+                    folderColorSettings,
+                    colorMapper
+                ).toParentFolderUiModel(labelId, parentLabelId),
+                labelId = labelId,
+                parentLabelId = parentLabelId,
+                useFolderColor = folderColorSettings.useFolderColor,
+                inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+            )
         }
     }
 

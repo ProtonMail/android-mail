@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.maillabel.presentation.model.toFolderUiModel
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -37,7 +38,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -93,19 +93,17 @@ class FolderListViewModel @Inject constructor(
         return combine(
             observeLabels(userId, LabelType.MessageFolder),
             observeFolderColorSettings(userId)
-        ) { folders, folderColorSettings ->
-            folders.map {
-                FolderListEvent.FolderListLoaded(
-                    folderList = it.toFolderUiModel(folderColorSettings, colorMapper),
-                    useFolderColor = folderColorSettings.useFolderColor,
-                    inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
-                )
-            }
-        }.map {
-            it.getOrElse {
-                Timber.e("Error while observing custom folders")
-                return@map FolderListEvent.ErrorLoadingFolderList
-            }
+        ) { foldersResult, folderColorSettings ->
+            val folders = foldersResult.getOrElse {
+                Timber.e("Unable to fetch custom folders list.")
+                return@combine FolderListEvent.ErrorLoadingFolderList
+            }.filter { !it.labelId.isReservedSystemLabelId() }
+
+            FolderListEvent.FolderListLoaded(
+                folderList = folders.toFolderUiModel(folderColorSettings, colorMapper),
+                useFolderColor = folderColorSettings.useFolderColor,
+                inheritParentFolderColor = folderColorSettings.inheritParentFolderColor
+            )
         }
     }
 

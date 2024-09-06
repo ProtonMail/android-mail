@@ -37,7 +37,9 @@ import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.label.LabelTestData
+import ch.protonmail.android.testdata.label.LabelTestData.systemLabelsAsMessageFolders
 import ch.protonmail.android.testdata.user.UserIdTestData
+import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -62,6 +64,11 @@ class ParentFolderListViewModelTest {
         type = LabelType.MessageFolder,
         color = Color.Red.getHexStringFromColor()
     )
+    private val mixedTestFolders = buildList {
+        add(defaultTestFolder)
+        addAll(systemLabelsAsMessageFolders(userId))
+    }
+
     private val defaultFolderColorSettings = FolderColorSettings(
         useFolderColor = true,
         inheritParentFolderColor = false
@@ -125,6 +132,39 @@ class ParentFolderListViewModelTest {
         coEvery {
             observeLabels(userId = UserIdTestData.userId, labelType = LabelType.MessageFolder)
         } returns flowOf(listOf(defaultTestFolder).right())
+
+        // When
+        parentFolderListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ParentFolderListState.ListLoaded.Data(
+                labelId = null,
+                parentLabelId = null,
+                useFolderColor = true,
+                inheritParentFolderColor = false,
+                folders = listOf(defaultTestFolder)
+                    .toFolderUiModel(defaultFolderColorSettings, colorMapper)
+                    .toParentFolderUiModel(labelId, parentLabelId)
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given folder list, when init, then emits data state with filtered non-system folders`() = runTest {
+        // Given
+        val labelId = null
+        val parentLabelId = null
+        every {
+            savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListLabelIdKey)
+        } returns labelId
+        every {
+            savedStateHandle.get<String>(ParentFolderListScreen.ParentFolderListParentLabelIdKey)
+        } returns parentLabelId
+        coEvery {
+            observeLabels(userId = UserIdTestData.userId, labelType = LabelType.MessageFolder)
+        } returns flowOf(mixedTestFolders.right())
 
         // When
         parentFolderListViewModel.state.test {
