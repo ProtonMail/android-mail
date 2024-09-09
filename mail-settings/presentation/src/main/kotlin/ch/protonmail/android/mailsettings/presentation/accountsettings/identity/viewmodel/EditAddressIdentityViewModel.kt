@@ -37,7 +37,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +58,6 @@ class EditAddressIdentityViewModel @Inject constructor(
     private val updatePrimaryAddressIdentity: UpdatePrimaryAddressIdentity,
     private val updatePrimaryUserMobileFooter: UpdatePrimaryUserMobileFooter,
     private val reducer: EditAddressIdentityReducer,
-    private val isUpsellingMobileSignatureEnabled: IsUpsellingMobileSignatureEnabled,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility
 ) : ViewModel() {
 
@@ -81,7 +80,7 @@ class EditAddressIdentityViewModel @Inject constructor(
             val mobileFooter = getMobileFooter(userId).getOrElse {
                 return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
             }.let {
-                val shouldShowUpselling = observeUpsellingVisibility(isUpsellingMobileSignatureEnabled()).first()
+                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.MobileSignature).first()
 
                 if (shouldShowUpselling) {
                     MobileFooter.FreeUserUpsellingMobileFooter(it.value)
@@ -118,7 +117,7 @@ class EditAddressIdentityViewModel @Inject constructor(
                 }
 
                 is EditAddressIdentityViewAction.MobileFooter.ToggleState -> {
-                    val shouldShowUpselling = observeUpsellingVisibility(isUpsellingMobileSignatureEnabled()).first()
+                    val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.MobileSignature).first()
 
                     if (!action.enabled && shouldShowUpselling) {
                         emitNewStateFrom(EditAddressIdentityEvent.ShowUpselling)

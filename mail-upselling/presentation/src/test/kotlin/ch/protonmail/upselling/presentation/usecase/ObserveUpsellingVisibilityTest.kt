@@ -21,8 +21,14 @@ package ch.protonmail.upselling.presentation.usecase
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.coEvery
 import io.mockk.every
@@ -34,6 +40,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.entity.FeatureFlag
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
@@ -50,13 +57,23 @@ internal class ObserveUpsellingVisibilityTest {
     private val purchaseManager = mockk<PurchaseManager>()
     private val userHasPendingPurchases = mockk<UserHasPendingPurchases>()
     private val canUpgradeFromMobile = mockk<CanUpgradeFromMobile>()
+    private val isUpsellingMobileSignatureEnabled = mockk<IsUpsellingMobileSignatureEnabled>()
+    private val isUpsellingLabelsEnabled = mockk<IsUpsellingLabelsEnabled>()
+    private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled>()
+    private val isUpsellingContactGroupsEnabled = mockk<IsUpsellingContactGroupsEnabled>()
+    private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
     private val sut: ObserveUpsellingVisibility
         get() = ObserveUpsellingVisibility(
             observePrimaryUser,
             purchaseManager,
             canUpgradeFromMobile,
             userHasAvailablePlans,
-            userHasPendingPurchases
+            userHasPendingPurchases,
+            isUpsellingMobileSignatureEnabled,
+            isUpsellingLabelsEnabled,
+            isUpsellingFoldersEnabled,
+            isUpsellingContactGroupsEnabled,
+            observeOneClickUpsellingEnabled
         )
 
     @BeforeTest
@@ -75,10 +92,10 @@ internal class ObserveUpsellingVisibilityTest {
         expectedUser(null)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(true)
-        val expectedFeatureFlagEnabled = true
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, true)
 
         // When + Then
-        sut(expectedFeatureFlagEnabled).test {
+        sut(UpsellingEntryPoint.ContactGroups).test {
             assertEquals(false, awaitItem())
             awaitComplete()
         }
@@ -90,10 +107,10 @@ internal class ObserveUpsellingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectPurchases(emptyList())
         expectCanUpgradeFromMobile(false)
-        val expectedFeatureFlagEnabled = true
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, true)
 
         // When + Then
-        sut(expectedFeatureFlagEnabled).test {
+        sut(UpsellingEntryPoint.ContactGroups).test {
             assertEquals(false, awaitItem())
             awaitComplete()
         }
@@ -106,10 +123,10 @@ internal class ObserveUpsellingVisibilityTest {
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
-        val expectedFeatureFlagEnabled = true
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, true)
 
         // When + Then
-        sut(expectedFeatureFlagEnabled).test {
+        sut(UpsellingEntryPoint.ContactGroups).test {
             assertEquals(false, awaitItem())
             awaitComplete()
         }
@@ -123,27 +140,95 @@ internal class ObserveUpsellingVisibilityTest {
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
-        val expectedFeatureFlagEnabled = true
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, true)
 
         // When + Then
-        sut(expectedFeatureFlagEnabled).test {
+        sut(UpsellingEntryPoint.ContactGroups).test {
             assertEquals(false, awaitItem())
             awaitComplete()
         }
     }
 
     @Test
-    fun `should return false if passed Feature Flag is disabled`() = runTest {
+    fun `should return false if ContactGroups FF is disabled`() = runTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
         expectCanUpgradeFromMobile(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-        val expectedFeatureFlagEnabled = false
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, false)
 
         // When + Then
-        sut(expectedFeatureFlagEnabled).test {
+        sut(UpsellingEntryPoint.ContactGroups).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return false if Mailbox FF is disabled`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.Mailbox, false)
+
+        // When + Then
+        sut(UpsellingEntryPoint.Mailbox).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return false if Labels FF is disabled`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.Labels, false)
+
+        // When + Then
+        sut(UpsellingEntryPoint.Labels).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return false if Folders FF is disabled`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.Folders, false)
+
+        // When + Then
+        sut(UpsellingEntryPoint.Folders).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return false if MobileSignature FF is disabled`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.MobileSignature, false)
+
+        // When + Then
+        sut(UpsellingEntryPoint.MobileSignature).test {
             assertEquals(false, awaitItem())
             awaitComplete()
         }
@@ -159,10 +244,10 @@ internal class ObserveUpsellingVisibilityTest {
             expectCanUpgradeFromMobile(true)
             expectPendingPurchasesValue(UserSample.Primary.userId, false)
             expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-            val expectedFeatureFlagEnabled = true
+            expectUpsellingFeatureFlag(UpsellingEntryPoint.ContactGroups, true)
 
             // When + Then
-            sut(expectedFeatureFlagEnabled).test {
+            sut(UpsellingEntryPoint.ContactGroups).test {
                 assertEquals(true, awaitItem())
                 awaitComplete()
             }
@@ -187,5 +272,29 @@ internal class ObserveUpsellingVisibilityTest {
     private fun expectCanUpgradeFromMobile(value: Boolean) {
         coEvery { canUpgradeFromMobile() } returns value
     }
+
+    private fun expectUpsellingFeatureFlag(upsellingEntryPoint: UpsellingEntryPoint, value: Boolean) {
+        when (upsellingEntryPoint) {
+            UpsellingEntryPoint.ContactGroups -> every { isUpsellingContactGroupsEnabled.invoke() } returns value
+
+            UpsellingEntryPoint.Folders -> every { isUpsellingFoldersEnabled.invoke() } returns value
+
+            UpsellingEntryPoint.Labels -> every { isUpsellingLabelsEnabled.invoke() } returns value
+            UpsellingEntryPoint.Mailbox -> {
+                val featureFlag = FeatureFlag(
+                    userId = null,
+                    featureId = mockk(),
+                    scope = mockk(),
+                    defaultValue = false,
+                    value = value
+                )
+                every { observeOneClickUpsellingEnabled(null) } returns flowOf(featureFlag)
+            }
+            UpsellingEntryPoint.MobileSignature -> every { isUpsellingMobileSignatureEnabled.invoke() } returns value
+        }
+
+        return Unit
+    }
+
 
 }

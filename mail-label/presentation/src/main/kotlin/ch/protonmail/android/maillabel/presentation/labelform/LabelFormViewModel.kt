@@ -33,7 +33,7 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -57,7 +57,6 @@ class LabelFormViewModel @Inject constructor(
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
-    private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val reducer: LabelFormReducer,
     private val colorMapper: ColorMapper,
@@ -166,7 +165,7 @@ class LabelFormViewModel @Inject constructor(
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
         if (isLabelLimitReached) {
-            val shouldShowUpselling = observeUpsellingVisibility(isUpsellingLabelsEnabled()).first()
+            val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Labels).first()
 
             return if (shouldShowUpselling) {
                 emitNewStateFor(LabelFormEvent.ShowUpselling)

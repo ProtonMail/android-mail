@@ -36,7 +36,6 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelLimitReached
 import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -100,9 +99,6 @@ class LabelFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
-    private val isUpsellingLabelsEnabled = mockk<IsUpsellingLabelsEnabled> {
-        every { this@mockk.invoke(any()) } returns false
-    }
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
         every { this@mockk.invoke(any()) } returns flowOf(false)
     }
@@ -122,7 +118,6 @@ class LabelFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
-            isUpsellingLabelsEnabled,
             observeUpsellingVisibility,
             reducer,
             colorMapper,

@@ -40,7 +40,6 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -132,9 +131,6 @@ class FolderFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
-    private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled> {
-        every { this@mockk.invoke(any()) } returns false
-    }
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
         every { this@mockk.invoke(any()) } returns flowOf(false)
     }
@@ -154,7 +150,6 @@ class FolderFormViewModelTest {
             getLabelColors,
             isLabelNameAllowed,
             isLabelLimitReached,
-            isUpsellingFoldersEnabled,
             observeUpsellingVisibility,
             observeFolderColorSettings,
             reducer,

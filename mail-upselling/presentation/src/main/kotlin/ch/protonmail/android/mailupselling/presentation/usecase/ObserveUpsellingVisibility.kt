@@ -19,11 +19,18 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import javax.inject.Inject
@@ -33,17 +40,30 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val purchaseManager: PurchaseManager,
     private val canUpgradeFromMobile: CanUpgradeFromMobile,
     private val userHasAvailablePlans: UserHasAvailablePlans,
-    private val userHasPendingPurchases: UserHasPendingPurchases
+    private val userHasPendingPurchases: UserHasPendingPurchases,
+    private val isUpsellingMobileSignatureEnabled: IsUpsellingMobileSignatureEnabled,
+    private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
+    private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
+    private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
+    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled
 ) {
 
-    operator fun invoke(isFeatureFlagEnabled: Boolean): Flow<Boolean> = combine(
+    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases()
     ) { user, purchases ->
         if (user == null) return@combine false
         if (!canUpgradeFromMobile()) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
-        if (isFeatureFlagEnabled.not()) return@combine false
+
+        if (!when (upsellingEntryPoint) {
+                UpsellingEntryPoint.ContactGroups -> isUpsellingContactGroupsEnabled()
+                UpsellingEntryPoint.Folders -> isUpsellingFoldersEnabled()
+                UpsellingEntryPoint.Labels -> isUpsellingLabelsEnabled()
+                UpsellingEntryPoint.Mailbox -> observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
+                UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled()
+            }
+        ) return@combine false
 
         userHasAvailablePlans(user.userId)
     }

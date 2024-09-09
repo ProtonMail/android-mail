@@ -34,7 +34,7 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +58,6 @@ class FolderFormViewModel @Inject constructor(
     private val getLabelColors: GetLabelColors,
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
-    private val isUpsellingLabelsEnabled: IsUpsellingFoldersEnabled,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val reducer: FolderFormReducer,
@@ -222,7 +221,7 @@ class FolderFormViewModel @Inject constructor(
         }
 
         if (isFolderLimitReached) {
-            val shouldShowUpselling = observeUpsellingVisibility(isUpsellingLabelsEnabled()).first()
+            val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Folders).first()
 
             return if (shouldShowUpselling) {
                 emitNewStateFor(FolderFormEvent.ShowUpselling)
