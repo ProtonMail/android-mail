@@ -108,20 +108,6 @@ fun EditAddressIdentityScreen(
         onDismissUpselling()
     }
 
-    if (state is EditAddressIdentityState.DataLoaded) {
-        ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
-            when (bottomSheetEffect) {
-                BottomSheetVisibilityEffect.Hide -> scope.launch {
-                    bottomSheetState.hide()
-                }
-
-                BottomSheetVisibilityEffect.Show -> scope.launch {
-                    bottomSheetState.show()
-                }
-            }
-        }
-    }
-
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
@@ -163,6 +149,17 @@ fun EditAddressIdentityScreen(
                         }
                         ConsumableLaunchedEffect(state.close) {
                             onCloseScreen()
+                        }
+                        ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
+                            when (bottomSheetEffect) {
+                                BottomSheetVisibilityEffect.Hide -> scope.launch {
+                                    bottomSheetState.hide()
+                                }
+
+                                BottomSheetVisibilityEffect.Show -> scope.launch {
+                                    bottomSheetState.show()
+                                }
+                            }
                         }
                     }
                 }

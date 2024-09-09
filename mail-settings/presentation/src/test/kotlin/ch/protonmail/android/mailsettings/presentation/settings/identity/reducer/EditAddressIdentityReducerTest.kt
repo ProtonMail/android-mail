@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailsettings.presentation.settings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
@@ -33,6 +32,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import io.mockk.unmockkAll
 import org.junit.After
 import org.junit.Test

@@ -24,7 +24,6 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.MobileFooterPreference
@@ -45,6 +44,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.called
 import io.mockk.coEvery
