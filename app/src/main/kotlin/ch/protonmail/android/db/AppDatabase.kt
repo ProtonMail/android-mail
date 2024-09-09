@@ -54,6 +54,10 @@ import me.proton.core.account.data.entity.AccountEntity
 import me.proton.core.account.data.entity.AccountMetadataEntity
 import me.proton.core.account.data.entity.SessionDetailsEntity
 import me.proton.core.account.data.entity.SessionEntity
+import me.proton.core.auth.data.db.AuthConverters
+import me.proton.core.auth.data.db.AuthDatabase
+import me.proton.core.auth.data.entity.AuthDeviceEntity
+import me.proton.core.auth.data.entity.DeviceSecretEntity
 import me.proton.core.challenge.data.db.ChallengeConverters
 import me.proton.core.challenge.data.db.ChallengeDatabase
 import me.proton.core.challenge.data.entity.ChallengeFrameEntity
@@ -125,6 +129,9 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         AccountMetadataEntity::class,
         SessionEntity::class,
         SessionDetailsEntity::class,
+        // auth-data
+        AuthDeviceEntity::class,
+        DeviceSecretEntity::class,
         // user-data
         UserEntity::class,
         UserKeyEntity::class,
@@ -218,7 +225,8 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
     AttachmentWorkerStatusConverters::class,
     UriConverter::class,
     DraftStateConverters::class,
-    AttachmentStateConverters::class
+    AttachmentStateConverters::class,
+    AuthConverters::class
 )
 @Suppress("UnnecessaryAbstractClass")
 abstract class AppDatabase :
@@ -248,12 +256,13 @@ abstract class AppDatabase :
     TelemetryDatabase,
     DraftStateDatabase,
     SearchResultsDatabase,
-    DeviceRecoveryDatabase {
+    DeviceRecoveryDatabase,
+    AuthDatabase {
 
     companion object {
 
         const val name = "db-mail"
-        const val version = 36
+        const val version = 37
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -290,7 +299,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_32_33,
             AppDatabaseMigrations.MIGRATION_33_34,
             AppDatabaseMigrations.MIGRATION_34_35,
-            AppDatabaseMigrations.MIGRATION_35_36
+            AppDatabaseMigrations.MIGRATION_35_36,
+            AppDatabaseMigrations.MIGRATION_36_37
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)
