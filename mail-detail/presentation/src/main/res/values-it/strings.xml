@@ -56,7 +56,7 @@
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
-  <string name="error_offline_loading_message">Nessuna connessione a Internet. Caricamento dei contenuti del messaggio non riuscito.</string>
+  <string name="error_offline_loading_message">Nessuna connessione a Internet. Caricamento dei contenuti del messaggio non riuscito.</string>
   <string name="error_get_attachment_failed">Caricamento dell\'allegato non riuscito</string>
   <string name="error_attachment_download_in_progress">Attendi il completamento dello scaricamento attuale prima di avviarne uno nuovo.</string>
   <string name="error_get_attachment_not_enough_memory">Memoria non sufficiente. Caricamento dell\'allegato non riuscito.</string>

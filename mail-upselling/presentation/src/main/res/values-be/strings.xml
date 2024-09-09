@@ -19,14 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Кнопка паляпшэння</string>
-  <string name="upselling_title">Палепшыць да</string>
+  <string name="upselling_close_button_content_description">Close button</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
   <!-- Mail Plus -->
-  <string name="upselling_mailbox_plus_description_override">Для разблакіроўкі большага памеру сховішча і прэміяльных функцый</string>
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
   <string name="upselling_plus_feature_email_addresses">10 адрасоў электроннай пошты</string>
   <string name="upselling_plus_feature_custom_domain">Падтрымка карыстальніцкіх даменаў электроннай пошты</string>
   <string name="upselling_plus_feature_desktop_app">Новая настольная праграма Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Неабмежаваная колькасць папак, метак і фільтраў</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Ваша ўніверсальная прэміяльная падпіска</string>
   <string name="upselling_unlimited_feature_storage">500 ГБ сховішча з рэзерваваннем фатаграфій</string>

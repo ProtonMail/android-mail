@@ -19,14 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Botó d\'actualització</string>
-  <string name="upselling_title">Milloreu a</string>
+  <string name="upselling_close_button_content_description">Botó per tancar</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_mailbox_plus_title">Millora a Mail Plus</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Agrupeu els vostres contactes</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
   <!-- Mail Plus -->
-  <string name="upselling_mailbox_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>
   <string name="upselling_plus_feature_email_addresses">10 adreces de correu electrònic</string>
   <string name="upselling_plus_feature_custom_domain">Suport de domini de correu electrònic personalitzat</string>
   <string name="upselling_plus_feature_desktop_app">Nova aplicació d\'escriptori de Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Carpetes, etiquetes, filtres il·limitats</string>
+  <string name="upselling_plus_feature_plus_7_features">+ 7 característiques prèmium</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">La subscripció prèmium tot en un</string>
   <string name="upselling_unlimited_feature_storage">500 GB d\'emmagatzematge amb còpia de seguretat de fotos</string>

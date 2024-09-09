@@ -19,14 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Bouton d\'amélioration de l\'abonnement</string>
-  <string name="upselling_title">Passer à</string>
+  <string name="upselling_close_button_content_description">Bouton Fermer</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">Pour accéder à plus d\'espace de stockage et de fonctionnalités premium</string>
+  <string name="upselling_mailbox_plus_title">Je passe à Mail Plus</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Envoyez facilement des e-mails à un groupe et profitez d\'autres fonctionnalités premium avec Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Groupez vos contacts</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Bénéficiez-en ainsi que d\'autres fonctionnalités premium en passant à Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Vous avez besoin de plus de dossiers ou de labels ?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Bénéficiez-en ainsi que d\'autres fonctionnalités premium en passant à Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Vous avez besoin de plus de dossiers ou de labels ?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Utilisez votre propre signature mobile et profitez d\'autres fonctionnalités premium avec Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Personnalisez votre signature</string>
   <!-- Mail Plus -->
-  <string name="upselling_mailbox_plus_description_override">Pour débloquer plus d\'espace de stockage et de fonctionnalités premium</string>
   <string name="upselling_plus_feature_storage">15 Go d\'espace de stockage</string>
   <string name="upselling_plus_feature_email_addresses">10 adresses e-mail</string>
   <string name="upselling_plus_feature_custom_domain">Prise en charge de domaine de messagerie personnalisé</string>
   <string name="upselling_plus_feature_desktop_app">Nouvelle application de bureau Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Nombre illimité de dossiers, labels et filtres</string>
+  <string name="upselling_plus_feature_plus_7_features">+ 7 fonctionnalités premium</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Tous vos abonnements premium en un</string>
   <string name="upselling_unlimited_feature_storage">500 Go de stockage avec sauvegarde de photos</string>

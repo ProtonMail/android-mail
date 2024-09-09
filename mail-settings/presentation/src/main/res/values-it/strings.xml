@@ -120,7 +120,7 @@
   <string name="mail_settings_auto_lock_item_title">Blocco automatico</string>
   <string name="mail_settings_auto_lock_item_description">Abilita questa opzione per bloccare automaticamente l\'app dopo un determinato periodo di tempo. Se questa opzione è abilitata, l\'app viene sbloccata con un codice PIN o con la biometria.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Cambio del codice PIN</string>
-  <string name="mail_settings_auto_lock_item_timer_title">Blocco automatico per inattività</string>
+  <string name="mail_settings_auto_lock_item_timer_title">Blocco per inattività</string>
   <string name="mail_settings_auto_lock_immediately">Immediato</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">5 minuti</string>
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 minuti</string>

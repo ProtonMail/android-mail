@@ -19,14 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Knap til opgradering</string>
-  <string name="upselling_title">Opgrader til</string>
+  <string name="upselling_close_button_content_description">Close button</string>
+  <!-- Upselling: Mailbox -->
+  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
+  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <!-- Upselling: Contact Groups -->
+  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <!-- Upselling: Labels -->
+  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Folders -->
+  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
   <!-- Mail Plus -->
-  <string name="upselling_mailbox_plus_description_override">For at få mere lagerplads og premium-funktioner</string>
   <string name="upselling_plus_feature_storage">15 GB lagerplads</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadresser</string>
   <string name="upselling_plus_feature_custom_domain">Understøttelse af brugerdefinerede e-maildomæner</string>
   <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-skrivebordsapp</string>
   <string name="upselling_plus_feature_folders_labels">Ubegrænsede mapper, etiketter og filtre</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Dit premium-abonnement med alt i ét</string>
   <string name="upselling_unlimited_feature_storage">500 GB lagerplads med sikkerhedskopiering af fotos</string>

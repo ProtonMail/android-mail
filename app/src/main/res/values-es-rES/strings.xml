@@ -31,7 +31,7 @@
   <string name="mailbox_draft_saved">Se ha guardado el borrador.</string>
   <string name="mailbox_draft_discard">Descartar</string>
   <string name="mailbox_message_sending">Enviando el mensaje…</string>
-  <string name="mailbox_message_sending_offline">Sin conexión: el mensaje está puesto en la cola de envío.</string>
+  <string name="mailbox_message_sending_offline">Sin conexión: El mensaje está puesto en la cola de envío.</string>
   <string name="mailbox_message_sending_success">Se ha enviado el mensaje.</string>
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
   <string name="mailbox_message_sending_error_action">Ir a la carpeta de borradores</string>
