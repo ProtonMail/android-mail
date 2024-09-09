@@ -17,11 +17,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcontact.presentation.R
-import ch.protonmail.android.mailcontact.presentation.contactlist.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListState
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewAction
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewModel
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress

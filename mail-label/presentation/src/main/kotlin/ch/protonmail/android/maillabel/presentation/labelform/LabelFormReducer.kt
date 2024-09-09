@@ -19,7 +19,7 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
 class LabelFormReducer @Inject constructor() {

@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 
 sealed interface ContactListState {
 
@@ -69,7 +70,3 @@ sealed interface ContactListState {
     }
 }
 
-sealed interface BottomSheetVisibilityEffect {
-    data object Show : BottomSheetVisibilityEffect
-    data object Hide : BottomSheetVisibilityEffect
-}

@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface LabelFormState {

@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.folderlist
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.model.FolderUiModel
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 
 sealed interface FolderListState {
 
@@ -50,9 +51,4 @@ sealed interface FolderListState {
             override val openFolderForm: Effect<Unit> = Effect.empty()
         ) : ListLoaded
     }
-}
-
-sealed interface BottomSheetVisibilityEffect {
-    object Show : BottomSheetVisibilityEffect
-    object Hide : BottomSheetVisibilityEffect
 }

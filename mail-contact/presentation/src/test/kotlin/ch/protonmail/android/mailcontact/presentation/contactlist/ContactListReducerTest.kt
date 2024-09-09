@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModel
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 import org.junit.Test

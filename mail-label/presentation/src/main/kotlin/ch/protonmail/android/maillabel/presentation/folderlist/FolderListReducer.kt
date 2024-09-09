@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.folderlist
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maillabel.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
 class FolderListReducer @Inject constructor() {

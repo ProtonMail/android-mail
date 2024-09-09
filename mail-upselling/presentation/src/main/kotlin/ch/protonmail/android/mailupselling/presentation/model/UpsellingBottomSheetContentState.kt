@@ -46,3 +46,8 @@ internal sealed interface UpsellingBottomSheetContentState {
         }
     }
 }
+
+sealed interface BottomSheetVisibilityEffect {
+    object Show : BottomSheetVisibilityEffect
+    object Hide : BottomSheetVisibilityEffect
+}

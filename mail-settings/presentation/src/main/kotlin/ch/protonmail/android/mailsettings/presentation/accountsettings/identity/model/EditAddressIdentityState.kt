@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 
 sealed interface EditAddressIdentityState {
 

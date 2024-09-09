@@ -19,12 +19,12 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.mapper.EditAddressIdentityMapper
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityEvent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityOperation
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
 class EditAddressIdentityReducer @Inject constructor(
