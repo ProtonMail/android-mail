@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.MobileFooterPreference
@@ -43,6 +44,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -73,6 +76,8 @@ internal class EditAddressIdentityViewModelTest {
     private val updatePrimaryAddressIdentity = mockk<UpdatePrimaryAddressIdentity>()
     private val updatePrimaryUserMobileFooter = mockk<UpdatePrimaryUserMobileFooter>()
     private val reducer = spyk(EditAddressIdentityReducer(EditAddressIdentityMapper()))
+    private val isUpsellingMobileSignatureEnabled = mockk<IsUpsellingMobileSignatureEnabled>()
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility>()
     private val viewModel by lazy {
         EditAddressIdentityViewModel(
             observePrimaryUserId,
@@ -81,7 +86,9 @@ internal class EditAddressIdentityViewModelTest {
             getMobileFooter,
             updatePrimaryAddressIdentity,
             updatePrimaryUserMobileFooter,
-            reducer
+            reducer,
+            isUpsellingMobileSignatureEnabled,
+            observeUpsellingVisibility
         )
     }
 
@@ -196,6 +203,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
 
         // Then
         viewModel.state.test {
@@ -215,6 +224,25 @@ internal class EditAddressIdentityViewModelTest {
         confirmVerified(reducer)
     }
 
+    @Suppress("MaxLineLength")
+    @Test
+    fun `should load data when all details can be fetched and make mobile toggle toggleable for upselling if ON`() =
+        runTest {
+            // Given
+            expectValidUserId()
+            expectValidDisplayName()
+            expectValidSignature()
+            coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeUpsellingFooter.right()
+            expectObserverUpsellingVisibility(true)
+            expectIsUpsellingMobileSignatureEnabled(true)
+
+            // Then
+            viewModel.state.test {
+                val actualState = awaitItem()
+                assertEquals(BaseFreeUserUpsellingLoadedState, actualState)
+            }
+        }
+
     @Test
     fun `should update the state when the display name is changed`() = runTest {
         // Given
@@ -222,6 +250,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         val newValue = "display-name-2"
 
         // When + Then
@@ -259,6 +289,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         val newValue = "display-name-2"
 
         // When + Then
@@ -296,6 +328,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         val newValue = false
 
         // When + Then
@@ -333,6 +367,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         val newValue = "mobile-footer-2"
 
         // When + Then
@@ -346,7 +382,8 @@ internal class EditAddressIdentityViewModelTest {
                         MobileFooterUiModel(
                             newValue,
                             enabled = true,
-                            isFieldEnabled = true
+                            isFieldEnabled = true,
+                            isToggleEnabled = true
                         )
                     )
                 ),
@@ -376,6 +413,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         val newValue = false
 
         // When + Then
@@ -385,7 +424,9 @@ internal class EditAddressIdentityViewModelTest {
             viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(newValue))
             assertEquals(
                 BaseLoadedState.copy(
-                    mobileFooterState = BaseMobileFooterState.copy(MobileFooterUiModel("footer", newValue, true))
+                    mobileFooterState = BaseMobileFooterState.copy(
+                        MobileFooterUiModel("footer", newValue, true, true)
+                    )
                 ),
                 awaitItem()
             )
@@ -407,12 +448,38 @@ internal class EditAddressIdentityViewModelTest {
     }
 
     @Test
+    fun `should show upselling when mobile footer is toggled OFF and upselling is ON`() = runTest {
+        // Given
+        expectValidUserId()
+        expectValidDisplayName()
+        expectValidSignature()
+        coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeUpsellingFooter.right()
+        expectObserverUpsellingVisibility(true)
+        expectIsUpsellingMobileSignatureEnabled(true)
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(false))
+            assertEquals(
+                BaseFreeUserUpsellingLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
     fun `should save the settings and close the screen if no error occurs`() = runTest {
         // Given
         expectValidUserId()
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         coEvery { updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature) } returns Unit.right()
         coEvery { updatePrimaryUserMobileFooter(BaseMobileFooterPreference) } returns Unit.right()
 
@@ -444,12 +511,49 @@ internal class EditAddressIdentityViewModelTest {
     }
 
     @Test
+    fun `should hide upselling when action is triggered`() = runTest {
+        // Given
+        expectValidUserId()
+        expectValidDisplayName()
+        expectValidSignature()
+        expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(EditAddressIdentityViewAction.HideUpselling)
+            assertEquals(
+                BaseLoadedState.copy(upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)), awaitItem()
+            )
+        }
+        coVerifySequence {
+            reducer.newStateFrom(
+                EditAddressIdentityState.Loading,
+                EditAddressIdentityEvent.Data.ContentLoaded(
+                    BaseDisplayName,
+                    BaseSignature,
+                    BaseMobileFooter
+                )
+            )
+            reducer.newStateFrom(
+                BaseLoadedState,
+                EditAddressIdentityEvent.HideUpselling
+            )
+        }
+    }
+
+    @Test
     fun `should not close the screen if the display name and signature cannot be updated`() = runTest {
         // Given
         expectValidUserId()
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         coEvery {
             updatePrimaryAddressIdentity(
                 BaseDisplayName,
@@ -491,6 +595,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidDisplayName()
         expectValidSignature()
         expectValidMobileFooter()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         coEvery {
             updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature)
         } returns Unit.right()
@@ -531,6 +637,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidUserId()
         expectValidDisplayName()
         expectValidSignature()
+        expectObserverUpsellingVisibility(false)
+        expectIsUpsellingMobileSignatureEnabled(false)
         coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeFooter.right()
         coEvery {
             updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature)
@@ -581,6 +689,14 @@ internal class EditAddressIdentityViewModelTest {
         coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFooter.right()
     }
 
+    private fun expectObserverUpsellingVisibility(value: Boolean) {
+        coEvery { observeUpsellingVisibility(any()) } returns flowOf(value)
+    }
+
+    private fun expectIsUpsellingMobileSignatureEnabled(value: Boolean) {
+        coEvery { isUpsellingMobileSignatureEnabled(any()) } returns value
+    }
+
     private companion object {
 
         private val BaseUserId = UserId("user-id")
@@ -588,6 +704,7 @@ internal class EditAddressIdentityViewModelTest {
         private val BaseSignature = Signature(enabled = true, SignatureValue("signature"))
         private val BaseMobileFooter = MobileFooter.PaidUserMobileFooter("footer", enabled = true)
         private val BaseMobileFreeFooter = MobileFooter.FreeUserMobileFooter("footer")
+        private val BaseMobileFreeUpsellingFooter = MobileFooter.FreeUserUpsellingMobileFooter("footer")
         private val BaseDisplayNameState = EditAddressIdentityState.DisplayNameState(
             DisplayNameUiModel("display-name")
         )
@@ -595,10 +712,14 @@ internal class EditAddressIdentityViewModelTest {
             AddressSignatureUiModel("signature", enabled = true)
         )
         private val BaseMobileFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("footer", enabled = true, isFieldEnabled = true)
+            MobileFooterUiModel("footer", enabled = true, isFieldEnabled = true, isToggleEnabled = true)
+        )
+        private val BaseMobileUpsellingFooterState = EditAddressIdentityState.MobileFooterState(
+            MobileFooterUiModel("footer", enabled = true, isFieldEnabled = false, isToggleEnabled = true)
         )
         private val BaseError = Effect.empty<Unit>()
         private val BaseClose = Effect.empty<Unit>()
+        private val BaseUpsellingVisibility = Effect.empty<BottomSheetVisibilityEffect>()
         private val BaseMobileFooterPreference = MobileFooterPreference(
             BaseMobileFooter.value, BaseMobileFooter.enabled
         )
@@ -608,13 +729,18 @@ internal class EditAddressIdentityViewModelTest {
             BaseSignatureState,
             BaseMobileFooterState,
             BaseError,
-            BaseClose
+            BaseClose,
+            BaseUpsellingVisibility
         )
 
         private val BaseFreeUserLoadedState = BaseLoadedState.copy(
             mobileFooterState = BaseMobileFooterState.copy(
-                MobileFooterUiModel("footer", enabled = true, isFieldEnabled = false)
+                MobileFooterUiModel("footer", enabled = true, isFieldEnabled = false, isToggleEnabled = false)
             )
+        )
+
+        private val BaseFreeUserUpsellingLoadedState = BaseLoadedState.copy(
+            mobileFooterState = BaseMobileUpsellingFooterState
         )
     }
 }

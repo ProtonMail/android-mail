@@ -33,10 +33,16 @@ internal object EditAddressIdentityScreenPreviewData {
             AddressSignatureUiModel("", enabled = true)
         ),
         mobileFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("Sent with Proton Mail for Android", enabled = true, isFieldEnabled = true)
+            MobileFooterUiModel(
+                "Sent with Proton Mail for Android",
+                enabled = true,
+                isFieldEnabled = true,
+                isToggleEnabled = true
+            )
         ),
         updateError = Effect.empty(),
-        close = Effect.empty()
+        close = Effect.empty(),
+        upsellingVisibility = Effect.empty()
     )
 
     val listActions = EditAddressIdentityScreenList.Actions(

@@ -39,7 +39,7 @@ fun MobileFooterDisplaySetting(
             SettingsToggleItem(
                 name = stringResource(R.string.mail_settings_identity_mobile_footer),
                 value = uiModel.enabled,
-                isFieldEnabled = uiModel.isFieldEnabled,
+                isFieldEnabled = uiModel.isToggleEnabled,
                 onToggle = {
                     onToggleSwitched(it)
                 },

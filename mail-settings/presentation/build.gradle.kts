@@ -72,6 +72,10 @@ dependencies {
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-upselling:domain"))
+    implementation(project(":mail-upselling:presentation"))
+    implementation(project(":mail-message:presentation"))
+    implementation(project(":mail-label:presentation"))
     implementation(project(":uicomponents"))
 
     testImplementation(Dependencies.testLibs)

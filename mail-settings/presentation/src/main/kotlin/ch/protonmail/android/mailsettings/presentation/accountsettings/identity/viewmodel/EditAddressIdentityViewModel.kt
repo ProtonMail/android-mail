@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
+import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.MobileFooterPreference
 import ch.protonmail.android.mailsettings.domain.model.Signature
 import ch.protonmail.android.mailsettings.domain.model.SignatureValue
@@ -36,9 +37,12 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -53,7 +57,9 @@ class EditAddressIdentityViewModel @Inject constructor(
     private val getMobileFooter: GetMobileFooter,
     private val updatePrimaryAddressIdentity: UpdatePrimaryAddressIdentity,
     private val updatePrimaryUserMobileFooter: UpdatePrimaryUserMobileFooter,
-    private val reducer: EditAddressIdentityReducer
+    private val reducer: EditAddressIdentityReducer,
+    private val isUpsellingMobileSignatureEnabled: IsUpsellingMobileSignatureEnabled,
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility
 ) : ViewModel() {
 
     private val mutableState =
@@ -74,9 +80,21 @@ class EditAddressIdentityViewModel @Inject constructor(
 
             val mobileFooter = getMobileFooter(userId).getOrElse {
                 return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
+            }.let {
+                val shouldShowUpselling = observeUpsellingVisibility(isUpsellingMobileSignatureEnabled()).first()
+
+                if (shouldShowUpselling) {
+                    MobileFooter.FreeUserUpsellingMobileFooter(it.value)
+                } else it
             }
 
-            emitNewStateFrom(EditAddressIdentityEvent.Data.ContentLoaded(displayName, signature, mobileFooter))
+            emitNewStateFrom(
+                EditAddressIdentityEvent.Data.ContentLoaded(
+                    displayName,
+                    signature,
+                    mobileFooter
+                )
+            )
         }.launchIn(viewModelScope)
     }
 
@@ -100,10 +118,20 @@ class EditAddressIdentityViewModel @Inject constructor(
                 }
 
                 is EditAddressIdentityViewAction.MobileFooter.ToggleState -> {
-                    emitNewStateFrom(EditAddressIdentityViewAction.MobileFooter.ToggleState(action.enabled))
+                    val shouldShowUpselling = observeUpsellingVisibility(isUpsellingMobileSignatureEnabled()).first()
+
+                    if (!action.enabled && shouldShowUpselling) {
+                        emitNewStateFrom(EditAddressIdentityEvent.ShowUpselling)
+                    } else {
+                        emitNewStateFrom(EditAddressIdentityViewAction.MobileFooter.ToggleState(action.enabled))
+                    }
                 }
 
                 is EditAddressIdentityViewAction.Save -> saveSettings()
+
+                is EditAddressIdentityViewAction.HideUpselling -> emitNewStateFrom(
+                    EditAddressIdentityEvent.HideUpselling
+                )
             }
         }
     }

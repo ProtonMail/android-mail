@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.mapper.EditAddressIdentityMapper
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityEvent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityOperation
@@ -56,6 +57,14 @@ class EditAddressIdentityReducer @Inject constructor(
                     close = Effect.of(Unit)
                 )
 
+                EditAddressIdentityEvent.HideUpselling -> this.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+                )
+
+                EditAddressIdentityEvent.ShowUpselling -> this.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                )
+
                 else -> this
             }
 
@@ -80,6 +89,8 @@ class EditAddressIdentityReducer @Inject constructor(
                     currentState,
                     newValue
                 )
+
+                EditAddressIdentityViewAction.HideUpselling -> hideUpselling(currentState)
 
                 else -> currentState
             }
@@ -138,6 +149,12 @@ class EditAddressIdentityReducer @Inject constructor(
         )
     }
 
+    private fun hideUpselling(currentState: EditAddressIdentityState.DataLoaded): EditAddressIdentityState.DataLoaded {
+        return currentState.copy(
+            upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+        )
+    }
+
     private fun EditAddressIdentityEvent.Data.ContentLoaded.toDataState(): EditAddressIdentityState.DataLoaded {
         val displayNameUiModel = editAddressIdentityMapper.toDisplayNameUiModel(displayName)
         val signatureUiModel = editAddressIdentityMapper.toSignatureUiModel(signature)
@@ -147,6 +164,7 @@ class EditAddressIdentityReducer @Inject constructor(
             EditAddressIdentityState.DisplayNameState(displayNameUiModel),
             EditAddressIdentityState.SignatureState(signatureUiModel),
             EditAddressIdentityState.MobileFooterState(mobileFooterUiModel),
+            Effect.empty(),
             Effect.empty(),
             Effect.empty()
         )

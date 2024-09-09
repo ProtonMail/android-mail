@@ -16,14 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model
+package ch.protonmail.android.maillabel.presentation.upselling
 
-import androidx.compose.runtime.Stable
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 
-@Stable
-data class MobileFooterUiModel(
-    val textValue: String,
-    val enabled: Boolean,
-    val isFieldEnabled: Boolean,
-    val isToggleEnabled: Boolean
-)
+@Composable
+fun MobileSignatureUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
+    UpsellingBottomSheet(
+        modifier,
+        bottomSheetActions = actions,
+        upsellingEntryPoint = UpsellingEntryPoint.MobileSignature
+    )
+}

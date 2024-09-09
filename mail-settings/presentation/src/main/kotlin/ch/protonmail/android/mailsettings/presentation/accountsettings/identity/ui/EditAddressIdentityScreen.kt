@@ -18,23 +18,35 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.maillabel.presentation.upselling.MobileSignatureUpsellingBottomSheet
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.previewdata.EditAddressIdentityScreenPreviewData
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.theme.ProtonTheme
@@ -62,10 +74,12 @@ fun EditAddressIdentityScreen(
         onBackClick = onBackClick,
         onSaveClick = { viewModel.submit(EditAddressIdentityViewAction.Save) },
         onCloseScreen = onCloseScreen,
+        onDismissUpselling = { viewModel.submit(EditAddressIdentityViewAction.HideUpselling) },
         listActions = listActions
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 @Suppress("UseComposableActions")
 fun EditAddressIdentityScreen(
@@ -74,37 +88,88 @@ fun EditAddressIdentityScreen(
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit,
     onCloseScreen: () -> Unit,
+    onDismissUpselling: () -> Unit,
     listActions: EditAddressIdentityScreenList.Actions
 ) {
     val snackbarHostState = ProtonSnackbarHostState()
     val updateErrorMessage = stringResource(id = R.string.mail_settings_identity_error_updating)
 
-    Scaffold(
-        modifier = modifier,
-        topBar = { EditAddressIdentityTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
-        snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
-        content = { paddingValues ->
-            when (state) {
-                EditAddressIdentityState.Loading -> ProtonCenteredProgress()
-                EditAddressIdentityState.LoadingError -> EditAddressIdentityErrorScreen()
-                is EditAddressIdentityState.DataLoaded -> {
-                    EditAddressIdentityScreenList(
-                        modifier = Modifier.padding(paddingValues),
-                        displayNameState = state.displayNameState,
-                        signatureState = state.signatureState,
-                        mobileFooterState = state.mobileFooterState,
-                        actions = listActions
-                    )
-                    ConsumableLaunchedEffect(state.updateError) {
-                        snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = updateErrorMessage)
-                    }
-                    ConsumableLaunchedEffect(state.close) {
-                        onCloseScreen()
-                    }
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+    val scope = rememberCoroutineScope()
+
+    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) { onDispose { onDismissUpselling() } }
+    }
+
+    BackHandler(bottomSheetState.isVisible) {
+        onDismissUpselling()
+    }
+
+    if (state is EditAddressIdentityState.DataLoaded) {
+        ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetVisibilityEffect.Hide -> scope.launch {
+                    bottomSheetState.hide()
+                }
+
+                BottomSheetVisibilityEffect.Show -> scope.launch {
+                    bottomSheetState.show()
                 }
             }
         }
-    )
+    }
+
+    ProtonModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = bottomSheetHeightConstrainedContent {
+            MobileSignatureUpsellingBottomSheet(
+                actions = UpsellingBottomSheet.Actions.Empty.copy(
+                    onDismiss = onDismissUpselling,
+                    onUpgrade = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message = message)
+                        }
+                    },
+                    onError = { message ->
+                        scope.launch {
+                            snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = message)
+                        }
+                    }
+                )
+            )
+        }
+    ) {
+        Scaffold(
+            modifier = modifier,
+            topBar = { EditAddressIdentityTopBar(onBackClick = onBackClick, onSaveClick = onSaveClick) },
+            snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
+            content = { paddingValues ->
+                when (state) {
+                    EditAddressIdentityState.Loading -> ProtonCenteredProgress()
+                    EditAddressIdentityState.LoadingError -> EditAddressIdentityErrorScreen()
+                    is EditAddressIdentityState.DataLoaded -> {
+                        EditAddressIdentityScreenList(
+                            modifier = Modifier.padding(paddingValues),
+                            displayNameState = state.displayNameState,
+                            signatureState = state.signatureState,
+                            mobileFooterState = state.mobileFooterState,
+                            actions = listActions
+                        )
+                        ConsumableLaunchedEffect(state.updateError) {
+                            snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = updateErrorMessage)
+                        }
+                        ConsumableLaunchedEffect(state.close) {
+                            onCloseScreen()
+                        }
+                    }
+                }
+            }
+        )
+    }
+
 }
 
 @Preview
@@ -116,6 +181,7 @@ private fun EditAddressIdentityScreenPreview() {
             onBackClick = {},
             onSaveClick = {},
             onCloseScreen = {},
+            onDismissUpselling = {},
             listActions = EditAddressIdentityScreenPreviewData.listActions
         )
     }

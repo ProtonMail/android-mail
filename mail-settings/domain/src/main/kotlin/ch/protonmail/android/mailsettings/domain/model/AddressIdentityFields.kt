@@ -26,9 +26,26 @@ value class SignatureValue(val text: String)
 
 data class Signature(val enabled: Boolean, val value: SignatureValue)
 
-sealed class MobileFooter(val value: String, val enabled: Boolean, val editable: Boolean) {
+sealed class MobileFooter(val value: String, val enabled: Boolean, val editable: Boolean, val toggleable: Boolean) {
 
-    class PaidUserMobileFooter(value: String, enabled: Boolean) : MobileFooter(value, enabled, editable = true)
+    class PaidUserMobileFooter(value: String, enabled: Boolean) : MobileFooter(
+        value,
+        enabled,
+        editable = true,
+        toggleable = true
+    )
 
-    class FreeUserMobileFooter(value: String) : MobileFooter(value, enabled = true, editable = false)
+    class FreeUserMobileFooter(value: String) : MobileFooter(
+        value,
+        enabled = true,
+        editable = false,
+        toggleable = false
+    )
+
+    class FreeUserUpsellingMobileFooter(value: String) : MobileFooter(
+        value,
+        enabled = true,
+        editable = false,
+        toggleable = true
+    )
 }

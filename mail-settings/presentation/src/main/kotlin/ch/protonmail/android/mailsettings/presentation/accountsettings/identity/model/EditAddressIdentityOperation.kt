@@ -41,6 +41,8 @@ sealed interface EditAddressIdentityViewAction : EditAddressIdentityOperation {
         data class ToggleState(val enabled: Boolean) : MobileFooter
         data class UpdateValue(val newValue: String) : MobileFooter
     }
+
+    data object HideUpselling : EditAddressIdentityViewAction
 }
 
 sealed interface EditAddressIdentityEvent : EditAddressIdentityOperation {
@@ -61,4 +63,7 @@ sealed interface EditAddressIdentityEvent : EditAddressIdentityOperation {
             val mobileFooter: MobileFooter
         ) : Data()
     }
+
+    data object HideUpselling : EditAddressIdentityEvent
+    data object ShowUpselling : EditAddressIdentityEvent
 }

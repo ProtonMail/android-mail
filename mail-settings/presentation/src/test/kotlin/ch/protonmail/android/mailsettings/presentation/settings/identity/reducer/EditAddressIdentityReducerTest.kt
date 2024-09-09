@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
@@ -72,17 +73,19 @@ internal class EditAddressIdentityReducerTest(
             AddressSignatureUiModel("signature", enabled = true)
         )
         private val baseMobileFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("mobile-footer", enabled = true, isFieldEnabled = false)
+            MobileFooterUiModel("mobile-footer", enabled = true, isFieldEnabled = false, isToggleEnabled = false)
         )
         private val baseError = Effect.empty<Unit>()
         private val baseClose = Effect.empty<Unit>()
+        private val BaseUpsellingVisibility = Effect.empty<BottomSheetVisibilityEffect>()
 
         private val baseLoadedState = EditAddressIdentityState.DataLoaded(
             baseDisplayNameState,
             baseSignatureState,
             baseMobileFooterState,
             baseError,
-            baseClose
+            baseClose,
+            BaseUpsellingVisibility
         )
 
         private val transitionFromLoadingState = listOf(
@@ -135,7 +138,8 @@ internal class EditAddressIdentityReducerTest(
                         MobileFooterUiModel(
                             "mobile-footer-2",
                             enabled = true,
-                            isFieldEnabled = false
+                            isFieldEnabled = false,
+                            isToggleEnabled = false
                         )
                     )
                 )
@@ -148,7 +152,8 @@ internal class EditAddressIdentityReducerTest(
                         MobileFooterUiModel(
                             "mobile-footer",
                             enabled = false,
-                            isFieldEnabled = false
+                            isFieldEnabled = false,
+                            isToggleEnabled = false
                         )
                     )
                 )
@@ -163,6 +168,31 @@ internal class EditAddressIdentityReducerTest(
                 event = EditAddressIdentityEvent.Navigation.Close,
                 expectedState = baseLoadedState.copy(
                     close = Effect.of(Unit)
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.ShowUpselling,
+                expectedState = baseLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                ),
+                event = EditAddressIdentityEvent.HideUpselling,
+                expectedState = baseLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                ),
+                event = EditAddressIdentityViewAction.HideUpselling,
+                expectedState = baseLoadedState.copy(
+                    upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
                 )
             )
         )

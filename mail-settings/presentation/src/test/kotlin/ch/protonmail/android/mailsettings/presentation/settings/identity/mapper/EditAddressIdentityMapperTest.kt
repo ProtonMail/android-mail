@@ -69,7 +69,12 @@ internal class EditAddressIdentityMapperTest {
     @Test
     fun `should correctly map the free mobile footer to the corresponding ui model`() {
         // Given
-        val expectedUiModel = MobileFooterUiModel(textValue = "123", enabled = true, isFieldEnabled = false)
+        val expectedUiModel = MobileFooterUiModel(
+            textValue = "123",
+            enabled = true,
+            isFieldEnabled = false,
+            isToggleEnabled = false
+        )
         val mobileFooter = MobileFooter.FreeUserMobileFooter("123")
 
         // When
@@ -82,7 +87,12 @@ internal class EditAddressIdentityMapperTest {
     @Test
     fun `should correctly map the paid mobile footer to the corresponding ui model`() {
         // Given
-        val expectedUiModel = MobileFooterUiModel(textValue = "123", enabled = false, isFieldEnabled = true)
+        val expectedUiModel = MobileFooterUiModel(
+            textValue = "123",
+            enabled = false,
+            isFieldEnabled = true,
+            isToggleEnabled = true
+        )
         val mobileFooter = MobileFooter.PaidUserMobileFooter("123", enabled = false)
 
         // When
