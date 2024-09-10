@@ -39,6 +39,8 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiMo
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -107,6 +109,12 @@ class ContactListViewModelTest {
     private val isContactSearchEnabledMock = mockk<IsContactSearchEnabled> {
         every { this@mockk() } returns true
     }
+    private val observeUpsellingVisibilityMock = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk(any()) } returns flowOf(false)
+    }
+    private val isUpsellingContactGroupsEnabledMock = mockk<IsUpsellingContactGroupsEnabled> {
+        every { this@mockk() } returns true
+    }
 
     private val reducer = ContactListReducer()
 
@@ -125,6 +133,8 @@ class ContactListViewModelTest {
             contactListItemUiModelMapper,
             contactGroupItemUiModelMapper,
             isContactGroupsCrudEnabledMock,
+            observeUpsellingVisibilityMock,
+            isUpsellingContactGroupsEnabledMock,
             isContactSearchEnabledMock,
             observePrimaryUserId
         )
@@ -262,6 +272,32 @@ class ContactListViewModelTest {
                 ),
                 isContactGroupsCrudEnabled = true,
                 isContactSearchEnabled = false
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when ObserveUpsellingVisibility is true then emit appropriate event`() = runTest {
+        // Given
+        expectContactsData()
+        coEvery { observeUpsellingVisibilityMock(any()) } returns flowOf(true)
+
+        // When
+        contactListViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+            val expected = ContactListState.Loaded.Data(
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
+                isContactGroupsCrudEnabled = true,
+                isContactGroupsUpsellingVisible = true,
+                isContactSearchEnabled = true
             )
 
             assertEquals(expected, actual)

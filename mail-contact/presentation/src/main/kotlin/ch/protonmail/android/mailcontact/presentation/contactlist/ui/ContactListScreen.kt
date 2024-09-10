@@ -63,6 +63,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         sheetContent = bottomSheetHeightConstrainedContent {
             ContactBottomSheetContent(
                 isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled,
+                isContactGroupsUpsellingVisible = state.isContactGroupsUpsellingVisible,
                 actions = ContactBottomSheet.Actions(
                     onNewContactClick = {
                         viewModel.submit(ContactListViewAction.OnNewContactClick)

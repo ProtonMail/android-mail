@@ -89,6 +89,7 @@ internal class ContactListReducerTest(
             contacts = loadedContactListItemUiModels,
             contactGroups = loadedContactGroupItemUiModels,
             isContactGroupsCrudEnabled = true,
+            isContactGroupsUpsellingVisible = true,
             isContactSearchEnabled = true
         )
 
@@ -99,6 +100,7 @@ internal class ContactListReducerTest(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
                     isContactGroupsCrudEnabled = true,
+                    isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
@@ -109,6 +111,7 @@ internal class ContactListReducerTest(
                     emptyList(),
                     emptyList(),
                     isContactGroupsCrudEnabled = false,
+                    isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
@@ -157,6 +160,7 @@ internal class ContactListReducerTest(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
                     isContactGroupsCrudEnabled = true,
+                    isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
@@ -169,6 +173,7 @@ internal class ContactListReducerTest(
                     emptyList(),
                     emptyList(),
                     isContactGroupsCrudEnabled = false,
+                    isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty().copy(
@@ -242,6 +247,7 @@ internal class ContactListReducerTest(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
                     isContactGroupsCrudEnabled = true,
+                    isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
                 expectedState = dataLoadedState
@@ -252,6 +258,7 @@ internal class ContactListReducerTest(
                     emptyList(),
                     emptyList(),
                     isContactGroupsCrudEnabled = false,
+                    isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()

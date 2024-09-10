@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.ui.UpsellingIcon
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
@@ -46,6 +47,7 @@ import me.proton.core.compose.theme.defaultNorm
 internal fun ContactBottomSheetContent(
     modifier: Modifier = Modifier,
     isContactGroupsCrudEnabled: Boolean,
+    isContactGroupsUpsellingVisible: Boolean,
     actions: ContactBottomSheet.Actions
 ) {
     Column(
@@ -66,6 +68,7 @@ internal fun ContactBottomSheetContent(
                 modifier = Modifier,
                 titleResId = R.string.new_group,
                 iconResId = R.drawable.ic_proton_users_plus,
+                isUpsellingVisible = isContactGroupsUpsellingVisible,
                 onClick = actions.onNewContactGroupClick
             )
         }
@@ -85,6 +88,7 @@ private fun ContactBottomSheetItem(
     modifier: Modifier = Modifier,
     titleResId: Int,
     iconResId: Int,
+    isUpsellingVisible: Boolean = false,
     onClick: () -> Unit
 ) {
     Row(
@@ -107,6 +111,9 @@ private fun ContactBottomSheetItem(
             text = stringResource(id = titleResId),
             style = ProtonTheme.typography.defaultNorm
         )
+        if (isUpsellingVisible) {
+            UpsellingIcon(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing))
+        }
     }
 }
 
@@ -134,6 +141,7 @@ object ContactBottomSheet {
 private fun ContactBottomSheetScreenPreview() {
     ContactBottomSheetContent(
         isContactGroupsCrudEnabled = true,
+        isContactGroupsUpsellingVisible = true,
         actions = ContactBottomSheet.Actions.Empty
     )
 }
