@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
@@ -76,7 +77,9 @@ class GetMailboxItemLocationIcons @Inject constructor(
             }
 
             if (systemLabelId == SystemLabelId.Spam) {
-                mailboxItem.labels.firstOrNull { it.type == LabelType.MessageFolder }?.let {
+                mailboxItem.labels.firstOrNull {
+                    it.type == LabelType.MessageFolder && !it.labelId.isReservedSystemLabelId()
+                }?.let {
                     when (folderColorSettings.useFolderColor) {
                         true -> icons.add(
                             MailboxItemLocationUiModel(
@@ -84,6 +87,7 @@ class GetMailboxItemLocationIcons @Inject constructor(
                                 color = getLocationIconColor(it.userId, it, folderColorSettings)
                             )
                         )
+
                         false -> icons.add(MailboxItemLocationUiModel(R.drawable.ic_proton_folder))
                     }
                 }
