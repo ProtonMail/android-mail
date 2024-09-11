@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.maillabel.presentation.upselling
+package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
