@@ -143,13 +143,15 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            LabelsUpsellingBottomSheet(
-                actions = UpsellingBottomSheet.Actions.Empty.copy(
-                    onDismiss = { viewModel.submit(LabelFormViewAction.HideUpselling) },
-                    onUpgrade = { message -> actions.showUpsellingSnackbar(message) },
-                    onError = { message -> actions.showUpsellingErrorSnackbar(message) }
+            if (false) { // bring back after https://jira.protontech.ch/browse/MAILANDR-2159
+                LabelsUpsellingBottomSheet(
+                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                        onDismiss = { viewModel.submit(LabelFormViewAction.HideUpselling) },
+                        onUpgrade = { message -> actions.showUpsellingSnackbar(message) },
+                        onError = { message -> actions.showUpsellingErrorSnackbar(message) }
+                    )
                 )
-            )
+            }
         }
     ) {
         Scaffold(
