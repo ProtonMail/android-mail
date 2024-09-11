@@ -88,12 +88,18 @@ class ContactListViewModel @Inject constructor(
     }
 
     private suspend fun handleOnNewContactGroupClick() {
-        val isPaid = isPaidUser(primaryUserId()).getOrElse { false }
+        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.ContactGroups).first()
 
-        if (isPaid) {
-            emitNewStateFor(ContactListEvent.OpenContactGroupForm)
+        if (shouldShowUpselling) {
+            emitNewStateFor(ContactListEvent.OpenUpsellingBottomSheet)
         } else {
-            emitNewStateFor(ContactListEvent.SubscriptionUpgradeRequiredError)
+            val isPaid = isPaidUser(primaryUserId()).getOrElse { false }
+
+            if (isPaid) {
+                emitNewStateFor(ContactListEvent.OpenContactGroupForm)
+            } else {
+                emitNewStateFor(ContactListEvent.SubscriptionUpgradeRequiredError)
+            }
         }
     }
 

@@ -21,7 +21,9 @@ import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListSta
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewAction
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewModel
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
+import ch.protonmail.android.mailcontact.presentation.upselling.ContactGroupsUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -32,7 +34,11 @@ import me.proton.core.label.domain.entity.LabelId
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: ContactListViewModel = hiltViewModel()) {
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+
     val scope = rememberCoroutineScope()
 
     val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -40,15 +46,6 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
     val actions = listActions.copy(
         onNewGroupClick = { viewModel.submit(ContactListViewAction.OnNewContactGroupClick) }
     )
-
-    if (state is ContactListState.Loaded) {
-        ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
-            when (bottomSheetEffect) {
-                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-            }
-        }
-    }
 
     if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
         DisposableEffect(Unit) { onDispose { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) } }
@@ -61,21 +58,44 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            ContactBottomSheetContent(
-                isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled,
-                isContactGroupsUpsellingVisible = state.isContactGroupsUpsellingVisible,
-                actions = ContactBottomSheet.Actions(
-                    onNewContactClick = {
-                        viewModel.submit(ContactListViewAction.OnNewContactClick)
-                    },
-                    onNewContactGroupClick = {
-                        viewModel.submit(ContactListViewAction.OnNewContactGroupClick)
-                    },
-                    onImportContactClick = {
-                        viewModel.submit(ContactListViewAction.OnImportContactClick)
+            if (state is ContactListState.Loaded) {
+                ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+                    when (bottomSheetEffect) {
+                        BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                        BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
                     }
-                )
-            )
+                }
+
+                when (state.bottomSheetType) {
+                    ContactListState.BottomSheetType.Menu -> {
+                        ContactBottomSheetContent(
+                            isContactGroupsCrudEnabled = state.isContactGroupsCrudEnabled,
+                            isContactGroupsUpsellingVisible = state.isContactGroupsUpsellingVisible,
+                            actions = ContactBottomSheet.Actions(
+                                onNewContactClick = {
+                                    viewModel.submit(ContactListViewAction.OnNewContactClick)
+                                },
+                                onNewContactGroupClick = {
+                                    viewModel.submit(ContactListViewAction.OnNewContactGroupClick)
+                                },
+                                onImportContactClick = {
+                                    viewModel.submit(ContactListViewAction.OnImportContactClick)
+                                }
+                            )
+                        )
+                    }
+                    ContactListState.BottomSheetType.Upselling -> {
+                        ContactGroupsUpsellingBottomSheet(
+                            actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                onDismiss = { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) },
+                                onUpgrade = { message -> actions.showNormSnackbar(message) },
+                                onError = { message -> actions.showErrorSnackbar(message) }
+                            )
+                        )
+                    }
+                }
+            }
+
         }
     ) {
         Scaffold(
@@ -165,7 +185,9 @@ object ContactListScreen {
         val onNewGroupClick: () -> Unit,
         val openImportContact: () -> Unit,
         val onSubscriptionUpgradeRequired: (String) -> Unit,
-        val exitWithErrorMessage: (String) -> Unit
+        val exitWithErrorMessage: (String) -> Unit,
+        val showNormSnackbar: (String) -> Unit,
+        val showErrorSnackbar: (String) -> Unit
     ) {
 
         companion object {
@@ -180,7 +202,9 @@ object ContactListScreen {
                 openImportContact = {},
                 onNewGroupClick = {},
                 onSubscriptionUpgradeRequired = {},
-                exitWithErrorMessage = {}
+                exitWithErrorMessage = {},
+                showNormSnackbar = {},
+                showErrorSnackbar = {}
             )
 
             fun fromContactSearchActions(

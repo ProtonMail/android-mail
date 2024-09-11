@@ -37,6 +37,7 @@ class ContactListReducer @Inject constructor() {
             is ContactListEvent.OpenBottomSheet -> reduceOpenBottomSheet(currentState)
             is ContactListEvent.OpenContactSearch -> reduceOpenContactSearch(currentState)
             is ContactListEvent.SubscriptionUpgradeRequiredError -> reduceErrorSubscriptionUpgradeRequired(currentState)
+            is ContactListEvent.OpenUpsellingBottomSheet -> reduceOpenUpsellingBottomSheet(currentState)
         }
     }
 
@@ -145,11 +146,13 @@ class ContactListReducer @Inject constructor() {
         return when (currentState) {
             is ContactListState.Loading -> currentState
             is ContactListState.Loaded.Data -> currentState.copy(
-                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                bottomSheetType = ContactListState.BottomSheetType.Menu
             )
 
             is ContactListState.Loaded.Empty -> currentState.copy(
-                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                bottomSheetType = ContactListState.BottomSheetType.Menu
             )
         }
     }
@@ -163,6 +166,21 @@ class ContactListReducer @Inject constructor() {
 
             is ContactListState.Loaded.Empty -> currentState.copy(
                 openContactSearch = Effect.of(true)
+            )
+        }
+    }
+
+    private fun reduceOpenUpsellingBottomSheet(currentState: ContactListState): ContactListState {
+        return when (currentState) {
+            is ContactListState.Loading -> currentState
+            is ContactListState.Loaded.Data -> currentState.copy(
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                bottomSheetType = ContactListState.BottomSheetType.Upselling
+            )
+
+            is ContactListState.Loaded.Empty -> currentState.copy(
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                bottomSheetType = ContactListState.BottomSheetType.Upselling
             )
         }
     }

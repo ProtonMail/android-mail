@@ -42,6 +42,7 @@ internal sealed interface ContactListEvent : ContactListOperation {
     ) : ContactListEvent
     data object ErrorLoadingContactList : ContactListEvent
     data object SubscriptionUpgradeRequiredError : ContactListEvent
+    data object OpenUpsellingBottomSheet : ContactListEvent
     data object OpenContactForm : ContactListEvent
     data object OpenContactGroupForm : ContactListEvent
     data object OpenImportContact : ContactListEvent

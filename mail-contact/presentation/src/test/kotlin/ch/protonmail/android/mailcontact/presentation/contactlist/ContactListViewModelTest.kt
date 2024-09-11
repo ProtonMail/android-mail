@@ -134,7 +134,6 @@ class ContactListViewModelTest {
             contactGroupItemUiModelMapper,
             isContactGroupsCrudEnabledMock,
             observeUpsellingVisibilityMock,
-            isUpsellingContactGroupsEnabledMock,
             isContactSearchEnabledMock,
             observePrimaryUserId
         )
@@ -324,6 +323,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                bottomSheetType = ContactListState.BottomSheetType.Menu,
                 isContactGroupsCrudEnabled = true,
                 isContactSearchEnabled = true
             )
@@ -420,7 +420,7 @@ class ContactListViewModelTest {
     }
 
     @Test
-    fun `given free user contact list, when action new contact group, then emits open group form state`() = runTest {
+    fun `given free user contact list, when action new contact group, then emits subscription error state`() = runTest {
         // Given
         expectContactsData()
         expectPaidUser(false)
@@ -448,6 +448,41 @@ class ContactListViewModelTest {
             assertEquals(expected, actual)
         }
     }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `given free user contact list and ContactGroup upselling visibility = true, when action new contact group, then emits open upselling bottom sheet`() =
+        runTest {
+            // Given
+            expectContactsData()
+            expectPaidUser(false)
+            coEvery { observeUpsellingVisibilityMock(any()) } returns flowOf(true)
+
+            // When
+            contactListViewModel.state.test {
+                awaitItem()
+
+                contactListViewModel.submit(ContactListViewAction.OnNewContactGroupClick)
+
+                val actual = awaitItem()
+                val expected = ContactListState.Loaded.Data(
+                    contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                        listOf(defaultTestContact)
+                    ),
+                    contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                        listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                    ),
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                    bottomSheetType = ContactListState.BottomSheetType.Upselling,
+                    subscriptionError = Effect.empty(),
+                    isContactGroupsCrudEnabled = true,
+                    isContactSearchEnabled = true,
+                    isContactGroupsUpsellingVisible = true
+                )
+
+                assertEquals(expected, actual)
+            }
+        }
 
     @Test
     fun `given contact list, when action import contact, then emits open import state`() = runTest {

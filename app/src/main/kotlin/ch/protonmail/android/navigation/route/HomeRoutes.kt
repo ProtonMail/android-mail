@@ -387,6 +387,12 @@ internal fun NavGraphBuilder.addContacts(
                 exitWithErrorMessage = { message ->
                     navController.navigateBack()
                     showErrorSnackbar(message)
+                },
+                showNormSnackbar = { message ->
+                    showNormalSnackbar(message)
+                },
+                showErrorSnackbar = { message ->
+                    showErrorSnackbar(message)
                 }
             )
         )

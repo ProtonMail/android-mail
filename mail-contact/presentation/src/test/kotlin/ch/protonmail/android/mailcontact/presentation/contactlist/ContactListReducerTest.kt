@@ -217,6 +217,17 @@ internal class ContactListReducerTest(
                 )
             ),
             TestInput(
+                currentState = emptyLoadedState.copy(
+                    bottomSheetVisibilityEffect = Effect.empty(),
+                    bottomSheetType = ContactListState.BottomSheetType.Menu
+                ),
+                event = ContactListEvent.OpenUpsellingBottomSheet,
+                expectedState = emptyLoadedState.copy(
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                    bottomSheetType = ContactListState.BottomSheetType.Upselling
+                )
+            ),
+            TestInput(
                 currentState = emptyLoadedState,
                 event = ContactListEvent.OpenContactSearch,
                 expectedState = emptyLoadedState.copy(
@@ -296,7 +307,8 @@ internal class ContactListReducerTest(
                 currentState = dataLoadedState,
                 event = ContactListEvent.OpenBottomSheet,
                 expectedState = dataLoadedState.copy(
-                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
+                    bottomSheetType = ContactListState.BottomSheetType.Menu
                 )
             ),
             TestInput(
