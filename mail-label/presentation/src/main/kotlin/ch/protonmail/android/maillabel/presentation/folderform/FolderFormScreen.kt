@@ -40,9 +40,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -54,11 +56,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
@@ -71,8 +72,8 @@ import ch.protonmail.android.maillabel.presentation.upselling.FoldersUpsellingBo
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
+import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSettingsToggleItem
@@ -80,7 +81,6 @@ import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -99,7 +99,8 @@ fun FolderFormScreen(
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
-    val state = rememberAsState(flow = viewModel.state, initial = FolderFormState.Loading(Effect.empty())).value
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     currentParentLabelId?.value?.let {
         // Initial value will always be null when initializing the view,
@@ -134,11 +135,6 @@ fun FolderFormScreen(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
-    val scope = rememberCoroutineScope()
-
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(FolderFormViewAction.HideUpselling) } }
-    }
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(FolderFormViewAction.HideUpselling)
@@ -147,12 +143,14 @@ fun FolderFormScreen(
     if (state is FolderFormState.Data.Create) {
         ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
             when (bottomSheetEffect) {
-                BottomSheetVisibilityEffect.Hide -> scope.launch {
+                BottomSheetVisibilityEffect.Hide -> {
                     bottomSheetState.hide()
+                    showBottomSheet = false
                 }
-                BottomSheetVisibilityEffect.Show -> scope.launch {
-                    dismissKeyboard(context, view, keyboardController)
+
+                BottomSheetVisibilityEffect.Show -> {
                     bottomSheetState.show()
+                    showBottomSheet = true
                 }
             }
         }
@@ -161,7 +159,7 @@ fun FolderFormScreen(
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            if (false) { // bring back after https://jira.protontech.ch/browse/MAILANDR-2159
+            if (showBottomSheet) {
                 FoldersUpsellingBottomSheet(
                     actions = UpsellingBottomSheet.Actions.Empty.copy(
                         onDismiss = { viewModel.submit(FolderFormViewAction.HideUpselling) },
@@ -176,12 +174,8 @@ fun FolderFormScreen(
             topBar = {
                 FolderFormTopBar(
                     state = state,
-                    onCloseFolderFormClick = {
-                        viewModel.submit(FolderFormViewAction.OnCloseFolderFormClick)
-                    },
-                    onSaveFolderClick = {
-                        viewModel.submit(FolderFormViewAction.OnSaveClick)
-                    }
+                    onCloseFolderFormClick = customActions.onBackClick,
+                    onSaveFolderClick = customActions.onSaveClick
                 )
             },
             content = { paddingValues ->
