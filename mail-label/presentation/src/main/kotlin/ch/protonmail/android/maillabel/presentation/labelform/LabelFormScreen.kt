@@ -39,8 +39,10 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -51,8 +53,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
-import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
@@ -68,14 +70,12 @@ import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.Upselling
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongNorm
@@ -105,20 +105,13 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         }
     )
 
-    val state = rememberAsState(
-        flow = viewModel.state,
-        initial = LabelFormState.Loading(Effect.empty())
-    ).value
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val bottomSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
-    val scope = rememberCoroutineScope()
-
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(LabelFormViewAction.HideUpselling) } }
-    }
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(LabelFormViewAction.HideUpselling)
@@ -127,13 +120,14 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     if (state is LabelFormState.Data.Create) {
         ConsumableLaunchedEffect(effect = state.upsellingVisibility) { bottomSheetEffect ->
             when (bottomSheetEffect) {
-                BottomSheetVisibilityEffect.Hide -> scope.launch {
+                BottomSheetVisibilityEffect.Hide -> {
                     bottomSheetState.hide()
+                    showBottomSheet = false
                 }
 
-                BottomSheetVisibilityEffect.Show -> scope.launch {
-                    dismissKeyboard(context, view, keyboardController)
+                BottomSheetVisibilityEffect.Show -> {
                     bottomSheetState.show()
+                    showBottomSheet = true
                 }
             }
         }
@@ -142,7 +136,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            if (false) { // bring back after https://jira.protontech.ch/browse/MAILANDR-2159
+            if (showBottomSheet) {
                 LabelsUpsellingBottomSheet(
                     actions = UpsellingBottomSheet.Actions.Empty.copy(
                         onDismiss = { viewModel.submit(LabelFormViewAction.HideUpselling) },
@@ -157,12 +151,8 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             topBar = {
                 LabelFormTopBar(
                     state = state,
-                    onCloseLabelFormClick = {
-                        viewModel.submit(LabelFormViewAction.OnCloseLabelFormClick)
-                    },
-                    onSaveLabelClick = {
-                        viewModel.submit(LabelFormViewAction.OnSaveClick)
-                    }
+                    onCloseLabelFormClick = customActions.onBackClick,
+                    onSaveLabelClick = customActions.onSaveClick
                 )
             },
             content = { paddingValues ->
