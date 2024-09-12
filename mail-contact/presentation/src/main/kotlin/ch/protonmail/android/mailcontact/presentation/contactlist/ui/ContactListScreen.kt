@@ -8,8 +8,11 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,12 +23,11 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListState
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewAction
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewModel
-import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailcontact.presentation.upselling.ContactGroupsUpsellingBottomSheet
+import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.contact.domain.entity.ContactId
@@ -38,18 +40,13 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
-
     val scope = rememberCoroutineScope()
-
     val state = viewModel.state.collectAsStateWithLifecycle().value
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val actions = listActions.copy(
         onNewGroupClick = { viewModel.submit(ContactListViewAction.OnNewContactGroupClick) }
     )
-
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) } }
-    }
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(ContactListViewAction.OnDismissBottomSheet)
@@ -58,14 +55,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            if (state is ContactListState.Loaded) {
-                ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
-                    when (bottomSheetEffect) {
-                        BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                        BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-                    }
-                }
-
+            if (state is ContactListState.Loaded && showBottomSheet) {
                 when (state.bottomSheetType) {
                     ContactListState.BottomSheetType.Menu -> {
                         ContactBottomSheetContent(
@@ -84,6 +74,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                             )
                         )
                     }
+
                     ContactListState.BottomSheetType.Upselling -> {
                         ContactGroupsUpsellingBottomSheet(
                             actions = UpsellingBottomSheet.Actions.Empty.copy(
@@ -128,6 +119,19 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                     }
                     ConsumableLaunchedEffect(effect = state.openContactSearch) {
                         actions.onNavigateToContactSearch()
+                    }
+                    ConsumableLaunchedEffect(effect = state.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+                        when (bottomSheetEffect) {
+                            BottomSheetVisibilityEffect.Hide -> {
+                                bottomSheetState.hide()
+                                showBottomSheet = false
+                            }
+
+                            BottomSheetVisibilityEffect.Show -> {
+                                bottomSheetState.show()
+                                showBottomSheet = true
+                            }
+                        }
                     }
                 }
 
