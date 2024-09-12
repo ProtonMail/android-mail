@@ -25,14 +25,16 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
@@ -58,7 +60,7 @@ fun EditAddressIdentityScreen(
     onCloseScreen: () -> Unit = {},
     viewModel: EditAddressIdentityViewModel = hiltViewModel()
 ) {
-    val state: EditAddressIdentityState by viewModel.state.collectAsState()
+    val state: EditAddressIdentityState by viewModel.state.collectAsStateWithLifecycle()
 
     val listActions = EditAddressIdentityScreenList.Actions(
         onDisplayNameChanged = { viewModel.submit(EditAddressIdentityViewAction.DisplayName.UpdateValue(it)) },
@@ -98,11 +100,9 @@ fun EditAddressIdentityScreen(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
-    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
 
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { onDismissUpselling() } }
-    }
+    val scope = rememberCoroutineScope()
 
     BackHandler(bottomSheetState.isVisible) {
         onDismissUpselling()
@@ -111,21 +111,23 @@ fun EditAddressIdentityScreen(
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetContent = bottomSheetHeightConstrainedContent {
-            MobileSignatureUpsellingBottomSheet(
-                actions = UpsellingBottomSheet.Actions.Empty.copy(
-                    onDismiss = onDismissUpselling,
-                    onUpgrade = { message ->
-                        scope.launch {
-                            snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message = message)
+            if (showBottomSheet) {
+                MobileSignatureUpsellingBottomSheet(
+                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                        onDismiss = onDismissUpselling,
+                        onUpgrade = { message ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message = message)
+                            }
+                        },
+                        onError = { message ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = message)
+                            }
                         }
-                    },
-                    onError = { message ->
-                        scope.launch {
-                            snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = message)
-                        }
-                    }
+                    )
                 )
-            )
+            }
         }
     ) {
         Scaffold(
@@ -154,10 +156,12 @@ fun EditAddressIdentityScreen(
                             when (bottomSheetEffect) {
                                 BottomSheetVisibilityEffect.Hide -> scope.launch {
                                     bottomSheetState.hide()
+                                    showBottomSheet = false
                                 }
 
                                 BottomSheetVisibilityEffect.Show -> scope.launch {
                                     bottomSheetState.show()
+                                    showBottomSheet = true
                                 }
                             }
                         }
@@ -166,7 +170,6 @@ fun EditAddressIdentityScreen(
             }
         )
     }
-
 }
 
 @Preview
