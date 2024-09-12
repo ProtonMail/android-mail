@@ -63,7 +63,6 @@ import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
-import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.util.kotlin.takeIfNotBlank
 
@@ -90,7 +89,7 @@ fun ChipsListTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     focusRequester: FocusRequester? = null,
     cursorColor: Color = ProtonTheme.colors.brandDarken20,
-    textStyle: TextStyle = ProtonTheme.typography.defaultSmallNorm,
+    textStyle: TextStyle = ProtonTheme.typography.defaultNorm,
     animateChipsCreation: Boolean = false,
     actions: ChipsListTextField.Actions,
     contactSuggestionState: ContactSuggestionState
