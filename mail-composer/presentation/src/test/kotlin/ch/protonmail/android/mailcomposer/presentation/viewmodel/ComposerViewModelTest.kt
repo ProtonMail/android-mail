@@ -2699,6 +2699,7 @@ class ComposerViewModelTest {
             ),
             attachments = AttachmentGroupUiModel(attachments = emptyList()),
             premiumFeatureMessage = Effect.empty(),
+            recipientValidationError = Effect.empty(),
             error = Effect.empty(),
             isSubmittable = false,
             senderAddresses = emptyList(),
