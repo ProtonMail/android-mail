@@ -53,18 +53,22 @@ class ObserveUpsellingVisibility @Inject constructor(
         purchaseManager.observePurchases()
     ) { user, purchases ->
         if (user == null) return@combine false
+
+        if (isFeatureFlagOff(upsellingEntryPoint)) return@combine false
+
         if (!canUpgradeFromMobile()) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
-        if (!when (upsellingEntryPoint) {
-                UpsellingEntryPoint.ContactGroups -> isUpsellingContactGroupsEnabled()
-                UpsellingEntryPoint.Folders -> isUpsellingFoldersEnabled()
-                UpsellingEntryPoint.Labels -> isUpsellingLabelsEnabled()
-                UpsellingEntryPoint.Mailbox -> observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
-                UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled
-            }
-        ) return@combine false
-
         userHasAvailablePlans(user.userId)
+    }
+
+    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint): Boolean {
+        return !when (upsellingEntryPoint) {
+            UpsellingEntryPoint.ContactGroups -> isUpsellingContactGroupsEnabled()
+            UpsellingEntryPoint.Folders -> isUpsellingFoldersEnabled()
+            UpsellingEntryPoint.Labels -> isUpsellingLabelsEnabled()
+            UpsellingEntryPoint.Mailbox -> observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
+            UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled
+        }
     }
 }
