@@ -29,10 +29,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,9 +38,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
@@ -57,10 +57,10 @@ import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUi
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
-import ch.protonmail.android.uicomponents.chips.item.ChipItem
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.ContactSuggestionItem
 import ch.protonmail.android.uicomponents.chips.ContactSuggestionState
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
 import ch.protonmail.android.uicomponents.chips.thenIf
 import ch.protonmail.android.uicomponents.keyboardVisibilityAsState
 import me.proton.core.compose.theme.ProtonDimens
@@ -167,8 +167,11 @@ internal fun ComposerForm(
                             .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Open) {
                                 testTag(ComposerTestTags.CollapseExpandArrow)
                             }
-                            .rotate(recipientsButtonRotation.value),
-                        imageVector = Icons.Filled.KeyboardArrowUp,
+                            .rotate(recipientsButtonRotation.value)
+                            .size(ProtonDimens.SmallIconSize),
+                        imageVector = ImageVector.vectorResource(
+                            id = me.proton.core.presentation.R.drawable.ic_proton_chevron_up_filled
+                        ),
                         tint = ProtonTheme.colors.textWeak,
                         contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
                     )

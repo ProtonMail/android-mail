@@ -19,13 +19,12 @@
 package ch.protonmail.android.mailcomposer.presentation.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -35,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
@@ -87,19 +85,17 @@ internal fun PrefixedEmailSelector(
 
 @Composable
 private fun ChangeSenderButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Icon(
+    IconButton(
         modifier = modifier
-            .padding(horizontal = ProtonDimens.MediumSpacing)
-            .testTag(ComposerTestTags.ChangeSenderButton)
-            .clickable(
-                onClickLabel = stringResource(id = R.string.change_sender_button_content_description),
-                role = Role.Button,
-                onClick = onClick
-            ),
-        painter = painterResource(id = R.drawable.ic_proton_three_dots_vertical),
-        tint = ProtonTheme.colors.iconWeak,
-        contentDescription = NO_CONTENT_DESCRIPTION
-    )
+            .testTag(ComposerTestTags.ChangeSenderButton),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_proton_three_dots_vertical),
+            tint = ProtonTheme.colors.iconWeak,
+            contentDescription = NO_CONTENT_DESCRIPTION
+        )
+    }
 }
 
 object PrefixedEmailSelectorTestTags {
