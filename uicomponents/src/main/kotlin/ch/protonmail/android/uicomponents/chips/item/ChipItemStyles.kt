@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uicomponents.chips
+package ch.protonmail.android.uicomponents.chips.item
 
 import androidx.compose.material3.ChipColors
 import androidx.compose.material3.InputChipDefaults

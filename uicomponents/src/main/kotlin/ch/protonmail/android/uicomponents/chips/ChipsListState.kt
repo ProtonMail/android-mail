@@ -23,6 +23,8 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
+import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
 import me.proton.core.util.kotlin.endsWith
 import me.proton.core.util.kotlin.takeIfNotBlank
 

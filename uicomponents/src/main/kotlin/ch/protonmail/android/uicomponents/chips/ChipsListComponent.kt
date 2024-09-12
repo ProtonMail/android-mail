@@ -41,6 +41,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.uicomponents.chips.icons.LeadingChipIcon
 import ch.protonmail.android.uicomponents.chips.icons.TrailingChipIcon
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
+import ch.protonmail.android.uicomponents.chips.item.inputChipColor
+import ch.protonmail.android.uicomponents.chips.item.suggestionChipColor
+import ch.protonmail.android.uicomponents.chips.item.suggestionsTextStyle
+import ch.protonmail.android.uicomponents.chips.item.textStyle
 
 @Composable
 internal fun FocusedChipsList(

@@ -56,6 +56,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
+import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
 import ch.protonmail.android.uicomponents.verticalScrollbar
 import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonDimens

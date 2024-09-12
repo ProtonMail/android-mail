@@ -16,14 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uicomponents.chips
+package ch.protonmail.android.uicomponents.chips.item
 
 import androidx.compose.runtime.Stable
 
 @Stable
-sealed class ChipItem(open val value: String) {
+internal sealed class ChipItemsList {
 
-    data class Valid(override val value: String) : ChipItem(value)
-    data class Invalid(override val value: String) : ChipItem(value)
-    data class Counter(override val value: String) : ChipItem(value)
+    object Empty : ChipItemsList()
+
+    data class Focused(val items: List<ChipItem>) : ChipItemsList()
+
+    @Stable
+    sealed class Unfocused : ChipItemsList() {
+
+        data class Single(val item: ChipItem) : Unfocused()
+        data class Multiple(val item: ChipItem, val counter: ChipItem) : Unfocused()
+    }
 }

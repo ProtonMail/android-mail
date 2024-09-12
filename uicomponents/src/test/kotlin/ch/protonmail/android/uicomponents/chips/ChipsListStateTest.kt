@@ -5,6 +5,8 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import java.util.Random
 import java.util.UUID
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
+import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
 
 class ChipsListStateTest {
 
