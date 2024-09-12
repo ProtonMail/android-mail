@@ -25,43 +25,35 @@ import ch.protonmail.android.uitest.util.getTestString
 
 internal sealed class ComposerSnackbar(value: String, type: SnackbarType) : SnackbarEntry(value, type) {
 
-    object AttachmentUploadError : ComposerSnackbar(
+    data object AttachmentUploadError : ComposerSnackbar(
         getTestString(R.string.test_mailbox_attachment_uploading_error), SnackbarType.Error
     )
 
-    object DraftSaved : ComposerSnackbar(
+    data object DraftSaved : ComposerSnackbar(
         getTestString(R.string.test_mailbox_draft_saved), SnackbarType.Success
     )
 
-    object DraftOutOfSync : ComposerSnackbar(
+    data object DraftOutOfSync : ComposerSnackbar(
         getTestString(R.string.test_composer_error_loading_draft), SnackbarType.Default
     )
 
-    class DuplicateEmailAddress(recipient: String) : ComposerSnackbar(
-        getTestString(R.string.test_composer_error_duplicate_email, recipient), SnackbarType.Default
-    )
-
-    object InvalidEmailAddress : ComposerSnackbar(
-        getTestString(R.string.test_composer_error_invalid_email), SnackbarType.Default
-    )
-
-    object MessageSent : ComposerSnackbar(
+    data object MessageSent : ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending_success), SnackbarType.Success
     )
 
-    object MessageSentError : ComposerSnackbar(
+    data object MessageSentError : ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending_error), SnackbarType.Error
     )
 
-    object MessageQueued : ComposerSnackbar(
+    data object MessageQueued : ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending_offline), SnackbarType.Normal
     )
 
-    object SendingMessage : ComposerSnackbar(
+    data object SendingMessage : ComposerSnackbar(
         getTestString(R.string.test_mailbox_message_sending), SnackbarType.Normal
     )
 
-    object UpgradePlanToChangeSender : ComposerSnackbar(
+    data object UpgradePlanToChangeSender : ComposerSnackbar(
         getTestString(R.string.test_composer_change_sender_paid_feature), SnackbarType.Default
     )
 }

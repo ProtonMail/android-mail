@@ -26,13 +26,10 @@ import ch.protonmail.android.uitest.MockedNetworkTest
 import ch.protonmail.android.uitest.helpers.core.TestId
 import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
-import ch.protonmail.android.uitest.robot.common.section.snackbarSection
-import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.chips.ChipsCreationTrigger
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState
-import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ComposerRecipientsSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.bccRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.ccRecipientSection
@@ -75,8 +72,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
             toRecipientSection {
                 createAndVerifyInvalidChip()
             }
-
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -91,8 +86,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
             ccRecipientSection {
                 createAndVerifyInvalidChip()
             }
-
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -107,8 +100,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
             bccRecipientSection {
                 createAndVerifyInvalidChip()
             }
-
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -128,8 +119,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
             toRecipientSection {
                 verify { hasRecipientChips(expectedRecipientChip) }
             }
-
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -140,8 +129,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
             toRecipientSection {
                 createAndVerifyInvalidChip(trigger = ChipsCreationTrigger.Spacebar)
             }
-
-            snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
         }
     }
 
@@ -154,7 +141,6 @@ internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), Compos
                     typeRecipient(it.text, autoConfirm = true)
 
                     verify { hasRecipientChips(it) }
-                    snackbarSection { verify { isDisplaying(ComposerSnackbar.InvalidEmailAddress) } }
                 }
             }
         }

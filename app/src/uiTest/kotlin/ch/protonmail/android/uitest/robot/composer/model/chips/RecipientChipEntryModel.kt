@@ -26,8 +26,8 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.test.utils.ComposeTestRuleHolder
+import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.uitest.util.assertions.CustomSemanticsPropertyKeyNames
 import ch.protonmail.android.uitest.util.child
 import ch.protonmail.android.uitest.util.extensions.getKeyValueByName
@@ -44,7 +44,8 @@ internal class RecipientChipEntryModel(
         useUnmergedTree = true
     )
     private val text = parent.child { hasTestTag(ChipsTestTags.InputChipText) }
-    private val deleteIcon = parent.child { hasTestTag(ChipsTestTags.InputChipIcon) }
+    private val errorIcon = parent.child { hasTestTag(ChipsTestTags.InputChipLeadingIcon) }
+    private val deleteIcon = parent.child { hasTestTag(ChipsTestTags.InputChipTrailingIcon) }
 
     // region actions
     fun tapDeleteIcon() = withParentDisplayed {
@@ -67,6 +68,14 @@ internal class RecipientChipEntryModel(
 
     fun hasNoDeleteIcon() = withParentDisplayed {
         deleteIcon.assertDoesNotExist()
+    }
+
+    fun hasErrorIcon() = withParentDisplayed {
+        errorIcon.assertExists()
+    }
+
+    fun hasNoErrorIcon() = withParentDisplayed {
+        errorIcon.assertDoesNotExist()
     }
 
     fun doesNotExist() {

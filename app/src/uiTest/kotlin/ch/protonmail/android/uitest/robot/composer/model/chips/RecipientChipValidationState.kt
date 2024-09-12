@@ -19,6 +19,6 @@
 package ch.protonmail.android.uitest.robot.composer.model.chips
 
 internal sealed class RecipientChipValidationState(val value: Boolean) {
-    object Valid : RecipientChipValidationState(true)
-    object Invalid : RecipientChipValidationState(false)
+    data object Valid : RecipientChipValidationState(true)
+    data object Invalid : RecipientChipValidationState(false)
 }

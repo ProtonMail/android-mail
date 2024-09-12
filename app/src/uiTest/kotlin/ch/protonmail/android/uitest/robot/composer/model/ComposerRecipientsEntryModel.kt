@@ -33,10 +33,11 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.pressKey
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerTestTags
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uicomponents.chips.ChipsTestTags
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntry
 import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipEntryModel
-import ch.protonmail.android.test.utils.ComposeTestRuleHolder
+import ch.protonmail.android.uitest.robot.composer.model.chips.RecipientChipValidationState.Invalid
 import ch.protonmail.android.uitest.util.assertions.assertEmptyText
 import ch.protonmail.android.uitest.util.awaitHidden
 
@@ -110,7 +111,12 @@ internal sealed class ComposerRecipientsEntryModel(
             model
                 .hasText(chip.text)
                 .hasEmailValidationState(chip.state)
-                .also { if (chip.hasDeleteIcon) model.hasDeleteIcon() else model.hasNoDeleteIcon() }
+                .also {
+                    if (chip.hasDeleteIcon) model.hasDeleteIcon() else model.hasNoDeleteIcon()
+                }
+                .also {
+                    if (chip.state is Invalid) model.hasErrorIcon() else model.hasNoErrorIcon()
+                }
         }
     }
 
