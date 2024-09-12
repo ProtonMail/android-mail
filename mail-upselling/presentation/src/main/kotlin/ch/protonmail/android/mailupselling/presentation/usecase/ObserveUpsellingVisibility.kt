@@ -19,13 +19,13 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -41,7 +41,7 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val canUpgradeFromMobile: CanUpgradeFromMobile,
     private val userHasAvailablePlans: UserHasAvailablePlans,
     private val userHasPendingPurchases: UserHasPendingPurchases,
-    private val isUpsellingMobileSignatureEnabled: IsUpsellingMobileSignatureEnabled,
+    @UpsellingMobileSignatureEnabled private val isUpsellingMobileSignatureEnabled: Boolean,
     private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
     private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
     private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
@@ -61,7 +61,7 @@ class ObserveUpsellingVisibility @Inject constructor(
                 UpsellingEntryPoint.Folders -> isUpsellingFoldersEnabled()
                 UpsellingEntryPoint.Labels -> isUpsellingLabelsEnabled()
                 UpsellingEntryPoint.Mailbox -> observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
-                UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled()
+                UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled
             }
         ) return@combine false
 

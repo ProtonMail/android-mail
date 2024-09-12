@@ -27,7 +27,6 @@ import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchase
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.coEvery
@@ -45,6 +44,7 @@ import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
 import me.proton.core.user.domain.entity.User
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -57,7 +57,7 @@ internal class ObserveUpsellingVisibilityTest {
     private val purchaseManager = mockk<PurchaseManager>()
     private val userHasPendingPurchases = mockk<UserHasPendingPurchases>()
     private val canUpgradeFromMobile = mockk<CanUpgradeFromMobile>()
-    private val isUpsellingMobileSignatureEnabled = mockk<IsUpsellingMobileSignatureEnabled>()
+    private val provideUpsellingMobileSignatureEnabled = mockk<Provider<Boolean>>()
     private val isUpsellingLabelsEnabled = mockk<IsUpsellingLabelsEnabled>()
     private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled>()
     private val isUpsellingContactGroupsEnabled = mockk<IsUpsellingContactGroupsEnabled>()
@@ -69,7 +69,7 @@ internal class ObserveUpsellingVisibilityTest {
             canUpgradeFromMobile,
             userHasAvailablePlans,
             userHasPendingPurchases,
-            isUpsellingMobileSignatureEnabled,
+            provideUpsellingMobileSignatureEnabled.get(),
             isUpsellingLabelsEnabled,
             isUpsellingFoldersEnabled,
             isUpsellingContactGroupsEnabled,
@@ -79,6 +79,8 @@ internal class ObserveUpsellingVisibilityTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.MobileSignature, false)
     }
 
     @AfterTest
@@ -290,10 +292,8 @@ internal class ObserveUpsellingVisibilityTest {
                 )
                 every { observeOneClickUpsellingEnabled(null) } returns flowOf(featureFlag)
             }
-            UpsellingEntryPoint.MobileSignature -> every { isUpsellingMobileSignatureEnabled.invoke() } returns value
+            UpsellingEntryPoint.MobileSignature -> every { provideUpsellingMobileSignatureEnabled.get() } returns value
         }
-
-        return Unit
     }
 
 
