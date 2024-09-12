@@ -20,7 +20,6 @@ package ch.protonmail.android.mailcomposer.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
@@ -30,12 +29,13 @@ import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerEvent
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerOperation
-import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
-import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
-import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
+import ch.protonmail.android.mailcomposer.presentation.model.DraftUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
+import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
+import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
@@ -424,7 +424,7 @@ class ComposerReducer @Inject constructor(
                 cc = capturedCcDuplicates.cleanedRecipients,
                 bcc = capturedBccDuplicates.cleanedRecipients
             ),
-            error = error,
+            recipientValidationError = error,
             isSubmittable = allValid && notEmpty
         )
     }

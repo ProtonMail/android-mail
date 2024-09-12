@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import android.Manifest
 import android.text.format.Formatter
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -333,6 +334,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                 viewModel.clearSendingError()
             }
         )
+    }
+
+    ConsumableTextEffect(effect = state.recipientValidationError) { error ->
+        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
     }
 
     ConsumableTextEffect(effect = state.premiumFeatureMessage) { message ->

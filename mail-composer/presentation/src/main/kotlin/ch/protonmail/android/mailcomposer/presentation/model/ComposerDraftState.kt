@@ -30,6 +30,7 @@ data class ComposerDraftState(
     val fields: ComposerFields,
     val attachments: AttachmentGroupUiModel,
     val premiumFeatureMessage: Effect<TextUiModel>,
+    val recipientValidationError: Effect<TextUiModel>,
     val error: Effect<TextUiModel>,
     val isSubmittable: Boolean,
     val isDeviceContactsSuggestionsEnabled: Boolean,
@@ -79,6 +80,7 @@ data class ComposerDraftState(
                 attachments = emptyList()
             ),
             premiumFeatureMessage = Effect.empty(),
+            recipientValidationError = Effect.empty(),
             error = Effect.empty(),
             isSubmittable = isSubmittable,
             senderAddresses = emptyList(),
