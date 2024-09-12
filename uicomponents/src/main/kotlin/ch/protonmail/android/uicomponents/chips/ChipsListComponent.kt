@@ -21,14 +21,9 @@ package ch.protonmail.android.uicomponents.chips
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.runtime.Composable
@@ -39,14 +34,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.uicomponents.chips.icons.LeadingChipIcon
+import ch.protonmail.android.uicomponents.chips.icons.TrailingChipIcon
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FocusedChipsList(
     chipItems: List<ChipItem>,
@@ -74,22 +69,14 @@ internal fun FocusedChipsList(
                         .testTag(ChipsTestTags.InputChipText)
                         .widthIn(max = textMaxWidth - 64.dp),
                     text = chipItem.value,
-                    color = when (chipItem) {
-                        is ChipItem.Invalid -> Color.Red
-                        else -> Color.Unspecified
-                    }
+                    style = chipItem.textStyle()
                 )
             },
             shape = chipShape,
-            trailingIcon = {
-                Icon(
-                    Icons.Default.Clear,
-                    modifier = Modifier
-                        .testTag(ChipsTestTags.InputChipIcon)
-                        .size(16.dp),
-                    contentDescription = ""
-                )
-            }
+            colors = inputChipColor(chipItem),
+            border = null,
+            leadingIcon = { LeadingChipIcon(chipItem) },
+            trailingIcon = { TrailingChipIcon(chipItem) }
         )
         LaunchedEffect(key1 = index) {
             if (animateChipsCreation) {
@@ -121,13 +108,13 @@ internal fun UnFocusedChipsList(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = itemChip.value,
-                    color = when (itemChip) {
-                        is ChipItem.Invalid -> Color.Red
-                        else -> Color.Unspecified
-                    }
+                    style = itemChip.textStyle()
                 )
             },
-            shape = chipShape
+            colors = suggestionChipColor(itemChip),
+            icon = { LeadingChipIcon(itemChip) },
+            shape = chipShape,
+            border = null
         )
         if (counterChip != null) {
             SuggestionChip(
@@ -141,10 +128,12 @@ internal fun UnFocusedChipsList(
                         modifier = Modifier.testTag(ChipsTestTags.InputChipText),
                         maxLines = 1,
                         text = counterChip.value,
-                        color = Color.Unspecified
+                        style = itemChip.suggestionsTextStyle()
                     )
                 },
-                shape = chipShape
+                colors = suggestionChipColor(counterChip),
+                shape = chipShape,
+                border = null
             )
         }
     }
