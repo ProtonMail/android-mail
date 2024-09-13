@@ -70,9 +70,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
-import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
@@ -110,6 +110,8 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxM
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -192,7 +194,8 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val observeUpsellingVisibility: ObserveUpsellingVisibility
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility,
+    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -370,6 +373,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.UnStar -> handleUnStarAction(viewAction)
                 is MailboxViewAction.MoveToArchive,
                 is MailboxViewAction.MoveToSpam -> handleMoveToAction(viewAction)
+
                 is MailboxViewAction.EnterSearchMode -> emitNewStateFrom(viewAction)
                 is MailboxViewAction.ExitSearchMode -> handleExitSearchMode(viewAction)
                 is MailboxViewAction.SearchQuery -> emitNewStateFrom(viewAction)
@@ -532,7 +536,8 @@ class MailboxViewModel @Inject constructor(
                     selectedMailLabelId = if (query.isEmpty()) selectedMailLabel.id else MailLabelId.System.AllMail,
                     filterUnread = unreadFilterEnabled,
                     type = if (query.isEmpty()) viewMode.toMailboxItemType() else MailboxItemType.Message,
-                    searchQuery = query
+                    searchQuery = query,
+                    emptyLabelInProgressSignal = emptyLabelInProgressSignal
                 )
             }.flatMapLatest { mapPagingData(userId, it) }
         }
@@ -1074,7 +1079,11 @@ class MailboxViewModel @Inject constructor(
         }
         val userId = primaryUserId.filterNotNull().first()
         val viewMode = getViewModeForCurrentLocation(selectedMailLabelId.flow.value)
+
+        val emptyLabelId = EmptyLabelId(currentMailLabel.id)
+        emptyLabelInProgressSignal.emitOperationSignal(emptyLabelId)
         emitNewStateFrom(MailboxEvent.DeleteAllConfirmed(viewMode))
+
         when (viewMode) {
             ViewMode.ConversationGrouping -> deleteConversations(userId, currentMailLabel)
             ViewMode.NoConversationGrouping -> deleteMessages(userId, currentMailLabel)

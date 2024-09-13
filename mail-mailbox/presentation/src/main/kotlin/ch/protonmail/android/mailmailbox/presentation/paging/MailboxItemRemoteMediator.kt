@@ -30,6 +30,8 @@ import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataError
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -39,7 +41,11 @@ import timber.log.Timber
 @AssistedFactory
 interface MailboxItemRemoteMediatorFactory {
 
-    fun create(mailboxPageKey: MailboxPageKey, type: MailboxItemType): MailboxItemRemoteMediator
+    fun create(
+        mailboxPageKey: MailboxPageKey,
+        type: MailboxItemType,
+        emptyLabelInProgressSignal: EmptyLabelInProgressSignal
+    ): MailboxItemRemoteMediator
 }
 
 @OptIn(ExperimentalPagingApi::class)
@@ -47,6 +53,7 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
     private val getAdjacentPageKeys: GetAdjacentPageKeys,
+    @Assisted private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
     @Assisted private val mailboxPageKey: MailboxPageKey,
     @Assisted private val type: MailboxItemType
 ) : RemoteMediator<MailboxPageKey, MailboxItem>() {
@@ -55,6 +62,14 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
 
     override suspend fun load(loadType: LoadType, state: PagingState<MailboxPageKey, MailboxItem>): MediatorResult {
         val userId = mailboxPageKey.userIds.first()
+
+        // If an empty label operations has just been triggered for this labelId, avoid refetching data from remote.
+        val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+        if (emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId)) {
+            Timber.d("Paging: Empty label operation is ongoing for label $emptyLabelId, end of pagination.")
+            emptyLabelInProgressSignal.resetOperationSignal()
+            return MediatorResult.Success(endOfPaginationReached = true)
+        }
 
         if (loadType == LoadType.REFRESH) {
             Timber.d("Paging: fetchItems -> markAsStale")

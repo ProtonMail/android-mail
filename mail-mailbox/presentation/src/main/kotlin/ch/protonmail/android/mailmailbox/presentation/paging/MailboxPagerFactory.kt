@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
@@ -37,17 +38,19 @@ class MailboxPagerFactory @Inject constructor(
     private val remoteMediatorFactory: MailboxItemRemoteMediatorFactory
 ) {
 
+    @Suppress("LongParameterList")
     fun create(
         userIds: List<UserId>,
         selectedMailLabelId: MailLabelId,
         filterUnread: Boolean,
         type: MailboxItemType,
-        searchQuery: String
+        searchQuery: String,
+        emptyLabelInProgressSignal: EmptyLabelInProgressSignal
     ): Pager<MailboxPageKey, MailboxItem> {
         val mailboxPageKey = buildPageKey(filterUnread, selectedMailLabelId, userIds, searchQuery)
         return Pager(
             config = PagingConfig(PageKey.defaultPageSize),
-            remoteMediator = remoteMediatorFactory.create(mailboxPageKey, type),
+            remoteMediator = remoteMediatorFactory.create(mailboxPageKey, type, emptyLabelInProgressSignal),
             pagingSourceFactory = { pagingSourceFactory.create(mailboxPageKey, type) }
         )
     }
