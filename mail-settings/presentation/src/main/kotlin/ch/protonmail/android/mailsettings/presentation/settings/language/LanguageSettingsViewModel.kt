@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings.language
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
 import ch.protonmail.android.mailsettings.presentation.settings.language.LanguageSettingsState.Loading
@@ -39,10 +40,19 @@ class LanguageSettingsViewModel @Inject constructor(
 
     val state: Flow<LanguageSettingsState> = languageRepository
         .observe()
-        .mapLatest { selectedLang ->
-            val languages = getAppLanguageUiModels(selectedLang).sortedBy { it.name }
-            val isSystemDefault = selectedLang == null
-            LanguageSettingsState.Data(isSystemDefault, languages)
+        .mapLatest { either ->
+            when (either) {
+                is Either.Right -> {
+                    val selectedLang = either.value
+                    val languages = getAppLanguageUiModels(selectedLang).sortedBy { it.name }
+                    val isSystemDefault = selectedLang == null
+                    LanguageSettingsState.Data(isSystemDefault, languages)
+                }
+                is Either.Left -> {
+                    val defaultLanguages = getAppLanguageUiModels(null).sortedBy { it.name }
+                    LanguageSettingsState.Data(isSystemDefault = true, languages = defaultLanguages)
+                }
+            }
         }
         .stateIn(
             viewModelScope,
@@ -58,7 +68,7 @@ class LanguageSettingsViewModel @Inject constructor(
         languageRepository.clear()
     }
 
-    private fun getAppLanguageUiModels(selectedAppLanguage: AppLanguage?) = AppLanguage.values().map {
+    private fun getAppLanguageUiModels(selectedAppLanguage: AppLanguage?) = AppLanguage.entries.map {
         LanguageUiModel(
             language = it,
             isSelected = it == selectedAppLanguage,

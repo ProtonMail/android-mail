@@ -20,6 +20,9 @@ package ch.protonmail.android.mailsettings.data.repository
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import arrow.core.Either
+import arrow.core.raise.either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailcommon.domain.repository.AppLocaleRepository
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import ch.protonmail.android.mailsettings.domain.repository.AppLanguageRepository
@@ -30,31 +33,43 @@ import javax.inject.Inject
 class AppLanguageRepositoryImpl @Inject constructor(private val appLocaleRepository: AppLocaleRepository) :
     AppLanguageRepository {
 
-    private val languagePreferenceFlow = MutableSharedFlow<AppLanguage?>(replay = 1)
+    private val languagePreferenceFlow = MutableSharedFlow<Either<PreferencesError, AppLanguage?>>(replay = 1)
 
-    override fun observe(): Flow<AppLanguage?> {
-        val savedAppLocales = AppCompatDelegate.getApplicationLocales()
-        val languageTag = savedAppLocales[0]?.toLanguageTag()
+    init {
+        val result = either<PreferencesError, AppLanguage?> {
+            val savedAppLocales = AppCompatDelegate.getApplicationLocales()
+            val languageTag = savedAppLocales[0]?.toLanguageTag()
+            val appLanguage = AppLanguage.fromTag(languageTag)
+            appLanguage
+        }.mapLeft { _ -> PreferencesError }
 
-        languagePreferenceFlow.tryEmit(AppLanguage.fromTag(languageTag))
+        languagePreferenceFlow.tryEmit(result)
+    }
 
+    override fun observe(): Flow<Either<PreferencesError, AppLanguage?>> {
         return languagePreferenceFlow
     }
 
     override fun save(language: AppLanguage) {
         val locales = LocaleListCompat.forLanguageTags(language.langTag)
         AppCompatDelegate.setApplicationLocales(locales)
-        languagePreferenceFlow.tryEmit(language)
+        val result = either<PreferencesError, AppLanguage?> {
+            language
+        }.mapLeft { _ -> PreferencesError }
 
+        languagePreferenceFlow.tryEmit(result)
         appLocaleRepository.refresh()
     }
 
     override fun clear() {
         val emptyLocales = LocaleListCompat.getEmptyLocaleList()
         AppCompatDelegate.setApplicationLocales(emptyLocales)
-        languagePreferenceFlow.tryEmit(null)
 
+        val result = either<PreferencesError, AppLanguage?> {
+            null
+        }.mapLeft { _ -> PreferencesError }
+
+        languagePreferenceFlow.tryEmit(result)
         appLocaleRepository.refresh()
     }
-
 }

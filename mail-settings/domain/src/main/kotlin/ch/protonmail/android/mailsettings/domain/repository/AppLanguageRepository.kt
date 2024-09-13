@@ -18,11 +18,13 @@
 
 package ch.protonmail.android.mailsettings.domain.repository
 
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
 import ch.protonmail.android.mailsettings.domain.model.AppLanguage
 import kotlinx.coroutines.flow.Flow
 
 interface AppLanguageRepository {
-    fun observe(): Flow<AppLanguage?>
+    fun observe(): Flow<Either<PreferencesError, AppLanguage?>>
     fun save(language: AppLanguage)
     fun clear()
 }
