@@ -137,4 +137,40 @@ internal class MessageDetailMoveToBottomSheetDismissalTests : MockedNetworkTest(
             verify { messageDetailScreenIsShown() }
         }
     }
+
+    @Test
+    @TestId("485329")
+    fun checkMessageMoveToBottomSheetDismissalWithDoneButton() {
+        mockWebServer.dispatcher combineWith mockNetworkDispatcher(useDefaultMailSettings = false) {
+            addMockRequests(
+                get("/mail/v4/settings")
+                    respondWith "/mail/v4/settings/mail-v4-settings_458330.json"
+                    withStatusCode 200,
+                get("/mail/v4/messages")
+                    respondWith "/mail/v4/messages/messages_458330.json"
+                    withStatusCode 200 ignoreQueryParams true,
+                get("/mail/v4/messages/*")
+                    respondWith "/mail/v4/messages/message-id/message-id_458330.json"
+                    withStatusCode 200 matchWildcards true serveOnce true
+            )
+        }
+
+        navigator {
+            navigateTo(Destination.MailDetail(messagePosition = 0))
+        }
+
+        messageDetailRobot {
+            messageBodySection { waitUntilMessageIsShown() }
+            bottomBarSection { openMoveToBottomSheet() }
+
+            moveToBottomSheetSection {
+                verify { isShown() }
+
+                tapDoneButton()
+                verify { isHidden() }
+            }
+
+            verify { messageDetailScreenIsShown() }
+        }
+    }
 }

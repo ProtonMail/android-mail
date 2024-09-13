@@ -39,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -155,7 +156,7 @@ internal fun ComposerForm(
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
                 IconButton(
-                    modifier = Modifier,
+                    modifier = Modifier.focusProperties { canFocus = false },
                     onClick = { actions.onToggleRecipients(!recipientsOpen) }
                 ) {
                     Icon(

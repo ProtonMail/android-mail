@@ -34,7 +34,7 @@
   </plurals>
   <string name="mailbox_default_recipient">(Nessun destinatario)</string>
   <string name="mailbox_default_sender">(Nessun mittente)</string>
-  <string name="mailbox_error_message_offline">Nessuna connessone a Internet. Caricamento dei messaggi non riuscito.</string>
+  <string name="mailbox_error_message_offline">Nessuna connessone a Internet. Caricamento dei messaggi non riuscito.</string>
   <string name="mailbox_error_message_generic">Caricamento dei messaggi non riuscito</string>
   <string name="mailbox_error_message_unexpected">Si è verificato un errore imprevisto</string>
   <string name="mailbox_is_empty_title">Nessun messaggio</string>

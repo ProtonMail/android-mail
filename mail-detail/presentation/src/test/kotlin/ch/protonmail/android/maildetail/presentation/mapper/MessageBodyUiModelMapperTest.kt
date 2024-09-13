@@ -218,6 +218,56 @@ class MessageBodyUiModelMapperTest {
     }
 
     @Test
+    fun `plain text message body is correctly mapped to a message body ui model with broken PDF attachment`() =
+        runTest {
+            // Given
+            val messageId = MessageIdSample.build()
+            val messageBody = DecryptedMessageBody(
+                messageId,
+                decryptedMessageBody,
+                MimeType.PlainText,
+                listOf(
+                    MessageAttachmentSample.invoiceWithBinaryContentType
+                ),
+                userAddress = UserAddressSample.PrimaryAddress
+            )
+            val expected = MessageBodyUiModel(
+                messageId = messageId,
+                messageBody = decryptedMessageBody,
+                messageBodyWithoutQuote = decryptedMessageBody,
+                mimeType = MimeTypeUiModel.PlainText,
+                shouldShowEmbeddedImages = false,
+                shouldShowRemoteContent = false,
+                shouldShowEmbeddedImagesBanner = false,
+                shouldShowRemoteContentBanner = false,
+                shouldShowExpandCollapseButton = false,
+                shouldShowOpenInProtonCalendar = false,
+                attachments = AttachmentGroupUiModel(
+                    attachments = listOf(
+                        AttachmentUiModelSample.invoiceWithBinaryContentType
+                    )
+                ),
+                userAddress = UserAddressSample.PrimaryAddress,
+                viewModePreference = ViewModePreference.ThemeDefault,
+                printEffect = Effect.empty()
+            )
+
+            every {
+                attachmentUiModelMapper.toUiModel(
+                    MessageAttachmentSample.invoiceWithBinaryContentType.copy(
+                        mimeType = "application/pdf"
+                    )
+                )
+            } returns AttachmentUiModelSample.invoiceWithBinaryContentType
+
+            // When
+            val actual = messageBodyUiModelMapper.toUiModel(UserIdTestData.userId, messageBody)
+
+            // Then
+            assertEquals(expected, actual)
+        }
+
+    @Test
     fun `HTML message body is correctly mapped to a message body ui model`() = runTest {
         // Given
         val decryptedMessageBodyWithType = MessageBodyWithType(decryptedMessageBody, MimeTypeUiModel.Html)

@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailmessage.domain.model
 
+import me.proton.core.util.kotlin.equalsNoCase
+
 data class AttachmentId(val id: String)
 
 data class MessageAttachment(
@@ -32,4 +34,22 @@ data class MessageAttachment(
     val headers: Map<String, String>
 ) {
     fun isCalendarAttachment(): Boolean = mimeType.lowercase().split(";").any { it.contains("text/calendar") }
+
+    /**
+     * If Content-Type is binary and we can guess the proper mimeType from file extension,
+     * we apply it to [MessageAttachment].
+     */
+    fun fixBinaryContentTypes(): MessageAttachment {
+
+        val extension = this.name.split(".").last()
+
+        return if (mimeType.equalsNoCase("application/octet-stream")) {
+            if (extension.equalsNoCase("pdf")) {
+                this.copy(
+                    mimeType = "application/pdf"
+                )
+            } else this
+        } else this
+    }
+
 }

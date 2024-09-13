@@ -50,9 +50,9 @@ import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
-import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.HomeState
@@ -220,6 +220,20 @@ fun Home(
         snackbarHostSuccessState.showSnackbar(message = labelDeletedText, type = ProtonSnackbarType.SUCCESS)
     }
 
+    fun showUpsellingSnackbar(message: String) = scope.launch {
+        snackbarHostNormState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.NORM
+        )
+    }
+
+    fun showUpsellingErrorSnackbar(message: String) = scope.launch {
+        snackbarHostErrorState.showSnackbar(
+            message = message,
+            type = ProtonSnackbarType.ERROR
+        )
+    }
+
     val labelListErrorLoadingText = stringResource(id = R.string.label_list_loading_error)
     fun showLabelListErrorLoadingSnackbar() = scope.launch {
         snackbarHostErrorState.showSnackbar(message = labelListErrorLoadingText, type = ProtonSnackbarType.ERROR)
@@ -385,7 +399,9 @@ fun Home(
                 addLabelForm(
                     navController,
                     showLabelSavedSnackbar = { showLabelSavedSnackbar() },
-                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() }
+                    showLabelDeletedSnackbar = { showLabelDeletedSnackbar() },
+                    showUpsellingSnackbar = { showUpsellingSnackbar(it) },
+                    showUpsellingErrorSnackbar = { showUpsellingErrorSnackbar(it) }
                 )
                 addFolderList(
                     navController,
@@ -413,6 +429,14 @@ fun Home(
                             snackbarHostErrorState.showSnackbar(
                                 message = message,
                                 type = ProtonSnackbarType.ERROR
+                            )
+                        }
+                    },
+                    showNormSnackbar = { message ->
+                        scope.launch {
+                            snackbarHostNormState.showSnackbar(
+                                message = message,
+                                type = ProtonSnackbarType.NORM
                             )
                         }
                     }

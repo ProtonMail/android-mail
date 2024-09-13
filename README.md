@@ -2,6 +2,9 @@ Proton Mail for Android
 =======================
 Copyright (c) 2024 Proton Technologies AG
 
+## Contributing
+We’ve recently rebuilt the app and are focused on our current roadmap of features and fixes. Therefore, we are not accepting new issues or PRs at the moment: feel free to fork the repo for your own experiments. We appreciate your understanding and support.
+
 ## Build instructions
 - Install and configure the environment (two options available)
   - [Android Studio bundle](https://developer.android.com/studio/install)

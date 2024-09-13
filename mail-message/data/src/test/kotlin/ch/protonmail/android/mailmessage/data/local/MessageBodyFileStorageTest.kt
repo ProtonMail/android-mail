@@ -199,4 +199,32 @@ internal class MessageBodyFileStorageTest {
         // Then
         assertFalse(messagesDeleted)
     }
+
+    @Test
+    fun `should rename file for message body`() = runTest {
+        // Given
+        coEvery {
+            internalFileStorageMock.renameFile(
+                UserIdSample.Primary,
+                InternalFileStorage.Folder.MessageBodies,
+                InternalFileStorage.FileIdentifier(MessageIdSample.LocalDraft.id),
+                InternalFileStorage.FileIdentifier(MessageIdSample.RemoteDraft.id)
+            )
+        } returns true
+
+        // When
+        messageBodyFileStorage.updateFileNameForMessageBody(
+            UserIdSample.Primary, MessageIdSample.LocalDraft, MessageIdSample.RemoteDraft
+        )
+
+        // Then
+        coVerify {
+            internalFileStorageMock.renameFile(
+                UserIdSample.Primary,
+                InternalFileStorage.Folder.MessageBodies,
+                InternalFileStorage.FileIdentifier(MessageIdSample.LocalDraft.id),
+                InternalFileStorage.FileIdentifier(MessageIdSample.RemoteDraft.id)
+            )
+        }
+    }
 }

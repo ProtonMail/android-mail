@@ -41,7 +41,13 @@ internal class UpsellingBottomSheetContentReducer @Inject constructor(
 
     private fun reducePlansListToNewState(
         operation: UpsellingBottomSheetContentEvent.DataLoaded
-    ): UpsellingBottomSheetContentState = Data(dynamicPlanUiMapper.toUiModel(operation.userId, operation.plans))
+    ): UpsellingBottomSheetContentState = Data(
+        dynamicPlanUiMapper.toUiModel(
+            operation.userId,
+            operation.plans,
+            operation.upsellingEntryPoint
+        )
+    )
 
     private fun reduceErrorEvent(event: UpsellingBottomSheetContentEvent.LoadingError) = when (event) {
         UpsellingBottomSheetContentEvent.LoadingError.NoUserId -> UpsellingBottomSheetContentState.Error(

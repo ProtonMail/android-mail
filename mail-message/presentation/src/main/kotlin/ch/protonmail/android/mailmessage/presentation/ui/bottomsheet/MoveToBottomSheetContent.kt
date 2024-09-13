@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +60,7 @@ import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.default
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.interactionNorm
 import me.proton.core.label.domain.entity.LabelId
 
@@ -91,15 +91,14 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
             Text(
                 modifier = Modifier
                     .testTag(MoveToBottomSheetTestTags.DoneButton)
-                    .semantics { selectedMailLabel ?: disabled() }
                     .clickable {
                         selectedMailLabel?.let {
                             actions.onDoneClick(it, dataState.messageIdInConversation)
-                        }
+                        } ?: actions.onDismiss()
                     },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
-                style = ProtonTheme.typography.default,
-                color = ProtonTheme.colors.interactionNorm(dataState.selected != null)
+                style = ProtonTheme.typography.defaultNorm,
+                color = ProtonTheme.colors.interactionNorm()
             )
         }
         Divider(modifier = Modifier.testTag(MoveToBottomSheetTestTags.Divider))
@@ -186,7 +185,8 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onAddFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId) -> Unit,
-        val onDoneClick: (String, MessageId?) -> Unit
+        val onDoneClick: (String, MessageId?) -> Unit,
+        val onDismiss: () -> Unit
     )
 }
 
@@ -255,7 +255,8 @@ fun MoveToBottomSheetContentPreview() {
         actions = MoveToBottomSheetContent.Actions(
             onAddFolderClick = {},
             onFolderSelected = {},
-            onDoneClick = { _, _ -> }
+            onDoneClick = { _, _ -> },
+            onDismiss = {}
         )
     )
 }

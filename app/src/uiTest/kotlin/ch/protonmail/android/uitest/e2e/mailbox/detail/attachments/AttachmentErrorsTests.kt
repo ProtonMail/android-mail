@@ -144,10 +144,7 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
 
             snackbarSection { verify { isDisplaying(MessageDetailSnackbar.FailedToGetAttachment) } }
 
-            attachmentsSection {
-                tapItem()
-                verify { hasLoaderNotDisplayedForItem() }
-            }
+            attachmentsSection { tapItem() }
 
             deviceRobot {
                 intents { verify { actionViewIntentWasLaunched() } }
@@ -227,11 +224,7 @@ internal class AttachmentErrorsTests : MockedNetworkTest(loginType = LoginTestUs
 
         messageDetailRobot {
             messageBodySection { waitUntilMessageIsShown() }
-
-            attachmentsSection {
-                tapItem()
-                verify { hasLoaderNotDisplayedForItem() }
-            }
+            attachmentsSection { tapItem() }
 
             deviceRobot {
                 intents { verify { actionViewIntentWasLaunched() } }

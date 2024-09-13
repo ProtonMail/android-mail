@@ -54,6 +54,19 @@ class MessageBodyFileStorage @Inject constructor(
 
     suspend fun deleteAllMessageBodies(userId: UserId): Boolean =
         internalFileStorage.deleteFolder(userId, InternalFileStorage.Folder.MessageBodies)
+
+    suspend fun updateFileNameForMessageBody(
+        userId: UserId,
+        oldMessageId: MessageId,
+        newMessageId: MessageId
+    ) {
+        internalFileStorage.renameFile(
+            userId,
+            InternalFileStorage.Folder.MessageBodies,
+            InternalFileStorage.FileIdentifier(oldMessageId.id),
+            InternalFileStorage.FileIdentifier(newMessageId.id)
+        )
+    }
 }
 
 object MessageBodyFileReadException : RuntimeException()

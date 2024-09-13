@@ -16,22 +16,9 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.logging
+package ch.protonmail.android.mailnotifications.annotations
 
-import java.io.File
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
-import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.report.domain.provider.BugReportLogProvider
-import javax.inject.Inject
+import javax.inject.Qualifier
 
-class BugReportLogProviderImpl @Inject constructor(
-    @ApplicationContext private val applicationContext: Context,
-    private val accountManager: AccountManager
-) : BugReportLogProvider {
-
-    override suspend fun getLog(): File? = null // bring this back when we resolve issues with logs
-
-    override suspend fun releaseLog(log: File) {}
-
-}
+@Qualifier
+annotation class NotificationsMessagePrefetchDisabled

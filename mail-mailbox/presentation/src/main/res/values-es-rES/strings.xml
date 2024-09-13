@@ -92,12 +92,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertencia</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de tu cuenta Proton está lleno en más de un 80%. Libera espacio o mejore para obtener más almacenamiento.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está lleno en más de un 80%. Libera espacio o mejora para obtener más almacenamiento.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">El almacenamiento de tu cuenta Proton está lleno en más de un 90%. Libera espacio o mejora para obtener más almacenamiento.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">No volver a recordarme</string>
   <string name="storage_limit_warning_dialog_confirm_button">Aceptar</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advertencia</string>
-  <string name="storage_quota_over_dialog_text">El almacenamiento de tu cuenta Proton está al 100%. No podrás enviar ni recibir correos a menos que elimine permanentemente algunos correos o mejora para obtener más almacenamiento.</string>
+  <string name="storage_quota_over_dialog_text">El almacenamiento de la cuenta Proton está al 100%. No podrás enviar ni recibir correos a menos que elimines permanentemente algunos correos o mejores para obtener más almacenamiento.</string>
   <string name="storage_quota_over_dialog_confirm_button">Aceptar</string>
 </resources>

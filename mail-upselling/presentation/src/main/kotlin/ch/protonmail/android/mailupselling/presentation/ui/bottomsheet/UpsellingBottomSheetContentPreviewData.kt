@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
@@ -51,7 +52,8 @@ internal object UpsellingBottomSheetContentPreviewData {
 
     val Base = UpsellingBottomSheetContentState.Data(
         DynamicPlansUiModel(
-            title = DynamicPlanTitleUiModel(TextUiModel.Text("Mail Plus")),
+            icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
+            title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
             description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
             entitlements = listOf(
                 DynamicEntitlementUiModel.Overridden(
@@ -69,7 +71,7 @@ internal object UpsellingBottomSheetContentPreviewData {
             ),
             plans = listOf(
                 DynamicPlanInstanceUiModel(
-                    name = "Mail Plus",
+                    name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
                     discount = null,
@@ -80,7 +82,7 @@ internal object UpsellingBottomSheetContentPreviewData {
                     dynamicPlan = dynPlan
                 ),
                 DynamicPlanInstanceUiModel(
-                    name = "Mail Plus",
+                    name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
                     discount = TextUiModel.Text("SAVE 20%"),

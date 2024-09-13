@@ -118,4 +118,6 @@ object MailDimens {
     object ContactActions {
         val AvatarSize = 40.dp
     }
+
+    val NarrowScreenWidth = 360.dp
 }

@@ -366,6 +366,7 @@ class MessageLocalDataSourceImpl @Inject constructor(
         conversationId: ConversationId
     ) {
         messageDao.updateDraftRemoteIds(userId, localDraftId, apiAssignedId, conversationId)
+        messageBodyFileStorage.updateFileNameForMessageBody(userId, localDraftId, apiAssignedId)
         attachmentFileStorage.updateParentFolderForAttachments(userId, localDraftId, apiAssignedId)
     }
 

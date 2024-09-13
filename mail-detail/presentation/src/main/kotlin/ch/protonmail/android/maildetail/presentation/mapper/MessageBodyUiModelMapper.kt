@@ -92,7 +92,7 @@ class MessageBodyUiModelMapper @Inject constructor(
             attachments = if (decryptedMessageBody.attachments.isNotEmpty()) {
                 AttachmentGroupUiModel(
                     attachments = decryptedMessageBody.attachments.map {
-                        attachmentUiModelMapper.toUiModel(it)
+                        attachmentUiModelMapper.toUiModel(it.fixBinaryContentTypes())
                     }
                 )
             } else null,

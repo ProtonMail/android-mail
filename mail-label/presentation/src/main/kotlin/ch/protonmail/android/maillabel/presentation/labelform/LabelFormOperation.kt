@@ -29,6 +29,7 @@ internal sealed interface LabelFormViewAction : LabelFormOperation {
     object OnSaveClick : LabelFormViewAction
     object OnDeleteClick : LabelFormViewAction
     object OnCloseLabelFormClick : LabelFormViewAction
+    object HideUpselling : LabelFormViewAction
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {
@@ -38,18 +39,23 @@ sealed interface LabelFormEvent : LabelFormOperation {
         val color: String,
         val colorList: List<Color>
     ) : LabelFormEvent
+
     object CreatingLabel : LabelFormEvent
     object LabelCreated : LabelFormEvent
     object LabelUpdated : LabelFormEvent
     object LabelDeleted : LabelFormEvent
     object LabelAlreadyExists : LabelFormEvent
     object LabelLimitReached : LabelFormEvent
+    object ShowUpselling : LabelFormEvent
+    object HideUpselling : LabelFormEvent
     object SaveLabelError : LabelFormEvent
     data class UpdateLabelName(
         val name: String
     ) : LabelFormEvent
+
     data class UpdateLabelColor(
         val color: String
     ) : LabelFormEvent
+
     object CloseLabelForm : LabelFormEvent
 }

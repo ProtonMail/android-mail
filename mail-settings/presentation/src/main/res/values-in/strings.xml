@@ -126,7 +126,7 @@
   <string name="mail_settings_auto_lock_item_timer_description_fifteen_minutes">15 menit tidak aktif</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">1 jam tidak aktif</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">1 hari tidak aktif</string>
-  <string name="mail_settings_auto_lock_update_error">Terjadu kesalahan memperbarui pengaturan</string>
+  <string name="mail_settings_auto_lock_update_error">Terdapat kesalahan dalam memperbarui pengaturan</string>
   <string name="mail_settings_pin_insertion_input_title">Masukkan kode PIN</string>
   <string name="mail_settings_pin_insertion_set_title">Atur kode PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Konfirmasikan kode PIN</string>

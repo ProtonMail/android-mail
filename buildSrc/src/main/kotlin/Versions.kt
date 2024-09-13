@@ -34,10 +34,10 @@ object Versions {
         const val annotation = "1.2.0"
         const val appCompat = "1.6.1"
         const val biometrics = "1.2.0-alpha05"
-        const val compose = "1.6.2"
-        const val composeCompiler = "1.5.10"
-        const val composeFoundation = "1.6.2"
-        const val composeMaterial = "1.6.2"
+        const val compose = "1.6.8"
+        const val composeCompiler = "1.5.15"
+        const val composeFoundation = "1.6.8"
+        const val composeMaterial = "1.6.8"
         const val core = "1.11.0-beta02"
         const val composeTracing = "1.0.0-beta01"
         const val constraintLayoutCompose = "1.0.1"
@@ -46,7 +46,7 @@ object Versions {
         const val datastore = "1.0.0"
         const val hilt = "1.2.0"
         const val lifecycle = "2.6.1"
-        const val material3 = "1.1.2"
+        const val material3 = "1.2.1"
         const val navigation = "2.7.7"
         const val paging = "3.2.1"
         const val pagingCompose = "3.2.1"
@@ -99,7 +99,7 @@ object Versions {
 
     object Gradle {
 
-        const val androidGradlePlugin = "8.2.2"
+        const val androidGradlePlugin = "8.5.2"
         const val benManesVersionsPlugin = "0.48.0"
         const val googleServicesPlugin = "4.3.15"
         const val hiltAndroidGradlePlugin = Dagger.dagger
@@ -130,12 +130,12 @@ object Versions {
 
     object Ksp {
 
-        const val symbolProcessingApi = "1.9.22-1.0.17"
+        const val symbolProcessingApi = "1.9.25-1.0.20"
     }
 
     object Kotlin {
 
-        const val kotlin = "1.9.22"
+        const val kotlin = "1.9.25"
     }
 
     object KotlinCompileTesting {
@@ -167,7 +167,7 @@ object Versions {
 
     object Proton {
 
-        const val core = "26.0.1"
+        const val core = "27.1.0"
         const val corePlugin = "1.3.0"
     }
 

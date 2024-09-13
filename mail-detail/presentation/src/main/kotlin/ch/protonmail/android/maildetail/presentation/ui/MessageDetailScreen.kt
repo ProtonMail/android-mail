@@ -56,8 +56,8 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -175,6 +175,9 @@ fun MessageDetailScreen(
                         },
                         onDoneClick = { mailLabelText, _ ->
                             viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(mailLabelText))
+                        },
+                        onDismiss = {
+                            viewModel.submit(MessageViewAction.DismissBottomSheet)
                         }
                     )
                 )

@@ -22,6 +22,7 @@ import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Upgrade
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
@@ -62,8 +63,10 @@ internal class UpsellingBottomSheetViewModelTest {
     private val upsellingBottomSheetContentReducer = UpsellingBottomSheetContentReducer(dynamicPlanUiMapper)
     private val updateLastSeenUpsellingTimestamp = mockk<UpdateUpsellingOneClickLastTimestamp>(relaxUnitFun = true)
     private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
+    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.ContactGroups
     private val viewModel: UpsellingBottomSheetViewModel by lazy {
         UpsellingBottomSheetViewModel(
+            expectedUpsellingEntryPoint,
             observePrimaryUser,
             getDynamicPlansAdjustedPrices,
             filterDynamicPlansByUserSubscription,
@@ -177,7 +180,12 @@ internal class UpsellingBottomSheetViewModelTest {
         viewModel.trackUpgradeAttempt(expectedPayload)
 
         // Then
-        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Upgrade.UpgradeAttempt(expectedPayload)) }
+        coVerify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(
+                Upgrade.UpgradeAttempt(expectedPayload),
+                expectedUpsellingEntryPoint
+            )
+        }
     }
 
     @Test
@@ -194,7 +202,12 @@ internal class UpsellingBottomSheetViewModelTest {
         viewModel.trackPurchaseCompleted(expectedPayload)
 
         // Then
-        coVerify(exactly = 1) { upsellingTelemetryRepository.trackEvent(Upgrade.PurchaseCompleted(expectedPayload)) }
+        coVerify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(
+                Upgrade.PurchaseCompleted(expectedPayload),
+                expectedUpsellingEntryPoint
+            )
+        }
     }
 
     private fun expectPrimaryUser(user: User?) {

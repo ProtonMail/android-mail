@@ -126,7 +126,7 @@ class MessageLocalDataSourceImplTest {
             coroutine<suspend () -> Any>().coInvoke()
         }
     }
-    private val messageBodyFileStorage = mockk<MessageBodyFileStorage>()
+    private val messageBodyFileStorage = mockk<MessageBodyFileStorage>(relaxUnitFun = true)
     private val attachmentFileStorage = mockk<AttachmentFileStorage>(relaxUnitFun = true)
     private val searchResultsLocalDataSource = mockk<SearchResultsLocalDataSource>(relaxUnitFun = true)
     private val messageWithBodyEntityMapper = MessageWithBodyEntityMapper()
@@ -1164,6 +1164,7 @@ class MessageLocalDataSourceImplTest {
         // Then
         coVerifyOrder {
             messageDao.updateDraftRemoteIds(userId1, oldMessageId, newMessageId, newConversationId)
+            messageBodyFileStorage.updateFileNameForMessageBody(userId1, oldMessageId, newMessageId)
             attachmentFileStorage.updateParentFolderForAttachments(userId1, oldMessageId, newMessageId)
         }
     }

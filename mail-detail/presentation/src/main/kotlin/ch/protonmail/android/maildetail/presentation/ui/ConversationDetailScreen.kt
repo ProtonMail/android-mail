@@ -192,7 +192,8 @@ fun ConversationDetailScreen(
                                     messageIdInConversation
                                 )
                             )
-                        }
+                        },
+                        onDismiss = { viewModel.submit(ConversationDetailViewAction.DismissBottomSheet) }
                     )
                 )
 
@@ -687,6 +688,7 @@ private fun MessagesContent(
                     )
                 }
             }
+
             is TrashedMessagesBannerState.Hidden -> Unit
         }
 

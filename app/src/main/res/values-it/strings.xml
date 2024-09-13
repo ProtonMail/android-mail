@@ -31,7 +31,7 @@
   <string name="mailbox_draft_saved">Bozza salvata</string>
   <string name="mailbox_draft_discard">Scarta</string>
   <string name="mailbox_message_sending">Invio del messaggio in corso</string>
-  <string name="mailbox_message_sending_offline">Nessuna connessione a Internet. Invio del messaggio sospeso.</string>
+  <string name="mailbox_message_sending_offline">Nessuna connessione a Internet. Invio del messaggio sospeso.</string>
   <string name="mailbox_message_sending_success">Messaggio inviato</string>
   <string name="mailbox_message_sending_error">Invio del messaggio non riuscito</string>
   <string name="mailbox_message_sending_error_action">Vai alle bozze</string>

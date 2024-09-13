@@ -232,14 +232,18 @@ internal fun NavGraphBuilder.addLabelList(
 internal fun NavGraphBuilder.addLabelForm(
     navController: NavHostController,
     showLabelSavedSnackbar: () -> Unit,
-    showLabelDeletedSnackbar: () -> Unit
+    showLabelDeletedSnackbar: () -> Unit,
+    showUpsellingSnackbar: (String) -> Unit,
+    showUpsellingErrorSnackbar: (String) -> Unit
 ) {
     val actions = LabelFormScreen.Actions.Empty.copy(
         onBackClick = {
             navController.navigateBack()
         },
         showLabelSavedSnackbar = showLabelSavedSnackbar,
-        showLabelDeletedSnackbar = showLabelDeletedSnackbar
+        showLabelDeletedSnackbar = showLabelDeletedSnackbar,
+        showUpsellingSnackbar = showUpsellingSnackbar,
+        showUpsellingErrorSnackbar = showUpsellingErrorSnackbar
     )
     composable(route = Destination.Screen.CreateLabel.route) { LabelFormScreen(actions) }
     composable(route = Destination.Screen.EditLabel.route) { LabelFormScreen(actions) }
@@ -273,7 +277,8 @@ internal fun NavGraphBuilder.addFolderList(
 internal fun NavGraphBuilder.addFolderForm(
     navController: NavHostController,
     showSuccessSnackbar: (message: String) -> Unit,
-    showErrorSnackbar: (message: String) -> Unit
+    showErrorSnackbar: (message: String) -> Unit,
+    showNormSnackbar: (String) -> Unit
 ) {
     val actions = FolderFormScreen.Actions.Empty.copy(
         onBackClick = {
@@ -289,7 +294,9 @@ internal fun NavGraphBuilder.addFolderForm(
         exitWithErrorMessage = { message ->
             navController.navigateBack()
             showErrorSnackbar(message)
-        }
+        },
+        showUpsellingSnackbar = { showNormSnackbar(it) },
+        showUpsellingErrorSnackbar = { showErrorSnackbar(it) }
     )
     composable(route = Destination.Screen.CreateFolder.route) {
         FolderFormScreen(

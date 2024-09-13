@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.labelform
 
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maillabel.presentation.folderlist.BottomSheetVisibilityEffect
 import me.proton.core.label.domain.entity.LabelId
 
 sealed interface LabelFormState {
@@ -52,7 +53,8 @@ sealed interface LabelFormState {
             override val showLabelAlreadyExistsSnackbar: Effect<Unit> = Effect.empty(),
             override val showLabelLimitReachedSnackbar: Effect<Unit> = Effect.empty(),
             override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty(),
-            val displayCreateLoader: Boolean = false
+            val displayCreateLoader: Boolean = false,
+            val upsellingVisibility: Effect<BottomSheetVisibilityEffect> = Effect.empty()
         ) : Data
 
         data class Update(

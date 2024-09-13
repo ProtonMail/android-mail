@@ -32,6 +32,7 @@ internal sealed interface FolderFormViewAction : FolderFormOperation {
     object OnSaveClick : FolderFormViewAction
     object OnDeleteClick : FolderFormViewAction
     object OnCloseFolderFormClick : FolderFormViewAction
+    object HideUpselling : FolderFormViewAction
 }
 
 sealed interface FolderFormEvent : FolderFormOperation {
@@ -66,4 +67,6 @@ sealed interface FolderFormEvent : FolderFormOperation {
     object LoadFolderError : FolderFormEvent
     object SaveFolderError : FolderFormEvent
     object CloseFolderForm : FolderFormEvent
+    object ShowUpselling : FolderFormEvent
+    object HideUpselling : FolderFormEvent
 }

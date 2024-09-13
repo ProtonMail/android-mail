@@ -97,6 +97,13 @@ object MessageWithBodySample {
         attachments = listOf(MessageAttachmentSample.image)
     )
 
+    @Suppress("VariableMaxLength")
+    val PgpMimeMessageWithPdfAttachmentWithBinaryContentType = build(
+        message = MessageSample.PgpMimeMessage,
+        mimeType = MimeType.MultipartMixed,
+        attachments = listOf(MessageAttachmentSample.invoiceWithBinaryContentType)
+    )
+
     private fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,

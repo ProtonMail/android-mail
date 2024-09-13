@@ -31,8 +31,8 @@ import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformat
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsScreenTestTags
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
-import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_LIST
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
@@ -87,7 +87,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
         composeTestRule.onNodeWithText(string.mail_settings_account_settings).assertIsDisplayed()
         composeTestRule.onNodeWithText(string.mail_settings_app_settings).assertIsDisplayed()
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SETTINGS_LIST)
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_app_information))
             .assertIsDisplayed()
@@ -133,13 +133,13 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SETTINGS_LIST)
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_swipe_actions))
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SETTINGS_LIST)
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
             .onChild()
             .performScrollToNode(hasText(string.mail_settings_app_version))
 

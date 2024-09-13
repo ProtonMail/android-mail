@@ -25,15 +25,21 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
-import ch.protonmail.android.mailsettings.presentation.settings.TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM
+import ch.protonmail.android.mailsettings.presentation.settings.SettingsScreenTestTags
 import ch.protonmail.android.uitest.robot.ComposeRobot
 import ch.protonmail.android.uitest.robot.settings.account.AccountSettingsRobot
 import ch.protonmail.android.uitest.robot.settings.swipeactions.SwipeActionsRobot
+import ch.protonmail.android.uitest.util.awaitDisplayed
 import ch.protonmail.android.uitest.util.awaitProgressIsHidden
 import ch.protonmail.android.uitest.util.hasText
 import ch.protonmail.android.uitest.util.onNodeWithText
 
 internal class SettingsRobot : ComposeRobot() {
+    private val rootItem = composeTestRule.onNodeWithTag(SettingsScreenTestTags.RootItem)
+
+    init {
+        rootItem.awaitDisplayed()
+    }
 
     fun openLanguageSettings(): LanguageRobot {
         composeTestRule
@@ -60,7 +66,7 @@ internal class SettingsRobot : ComposeRobot() {
 
     fun openUserAccountSettings(): AccountSettingsRobot {
         composeTestRule
-            .onNodeWithTag(TEST_TAG_SETTINGS_SCREEN_ACCOUNT_ITEM)
+            .onNodeWithTag(SettingsScreenTestTags.AccountSettingsItem)
             .performClick()
 
         composeTestRule.awaitProgressIsHidden()

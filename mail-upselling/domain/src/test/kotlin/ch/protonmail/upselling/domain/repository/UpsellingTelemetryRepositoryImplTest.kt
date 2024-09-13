@@ -22,6 +22,8 @@ import java.time.Instant
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.Folders.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
@@ -63,6 +65,8 @@ internal class UpsellingTelemetryRepositoryImplTest {
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
+    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.ContactGroups
+
     private val repository: UpsellingTelemetryRepository
         get() = UpsellingTelemetryRepositoryImpl(
             getAccountAgeInDays,
@@ -92,7 +96,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         verify { telemetryManager wasNot called }
@@ -108,7 +112,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(BaseDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         coVerifySequence {
@@ -130,7 +134,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val expectedEvent = UpsellingTelemetryEvent.UpgradeAttempt(UpgradeDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         coVerifySequence {
@@ -152,7 +156,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         coVerifySequence {
@@ -174,7 +178,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         coVerifySequence {
@@ -196,7 +200,33 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val expectedEvent = UpsellingTelemetryEvent.PurchaseCompleted(UpgradeDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
+
+        // Then
+        coVerifySequence {
+            getPrimaryUser()
+            getAccountAgeInDays(user)
+            getSubscriptionName(user.userId)
+            telemetryManager.enqueue(user.userId, expectedEvent, TelemetryPriority.Immediate)
+        }
+    }
+
+    @Test
+    fun `should put correct UpsellingEntryPoint into Dimensions`() = runTest {
+        // Given
+        expectValidUserData()
+        expectTelemetryEnabled()
+        val customUpsellingEntryPoint = UpsellingEntryPoint.MobileSignature
+
+        val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
+        val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(
+            BaseDimensions.apply {
+                addUpsellEntryPoint(customUpsellingEntryPoint.getDimensionValue())
+            }
+        ).toTelemetryEvent()
+
+        // When
+        repository.trackEvent(eventType, customUpsellingEntryPoint)
 
         // Then
         coVerifySequence {
@@ -214,7 +244,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         verify { telemetryManager wasNot called }
@@ -231,7 +261,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
 
         // When
-        repository.trackEvent(eventType)
+        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
 
         // Then
         verify { telemetryManager wasNot called }
@@ -262,6 +292,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
             addPlanBeforeUpgrade("free")
             addDaysSinceAccountCreation("01-03")
             addUpsellModalVersion("A.1")
+            addUpsellEntryPoint("contact_groups")
         }
 
         val UpgradeDimensions = UpsellingTelemetryEventDimensions().apply {
@@ -270,6 +301,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
             addUpsellModalVersion("A.1")
             addSelectedPlan("mail2022")
             addSelectedPlanCycle(1)
+            addUpsellEntryPoint("contact_groups")
         }
     }
 }

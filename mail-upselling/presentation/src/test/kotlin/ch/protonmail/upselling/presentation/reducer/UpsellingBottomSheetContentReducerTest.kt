@@ -38,7 +38,7 @@ import kotlin.test.assertEquals
 internal class UpsellingBottomSheetContentReducerTest(private val testInput: TestInput) {
 
     private val plansUiMapper = mockk<DynamicPlanUiMapper> {
-        every { this@mockk.toUiModel(any(), any()) } returns expectedPlanUiModel
+        every { this@mockk.toUiModel(any(), any(), any()) } returns expectedPlanUiModel
     }
 
     private val reducer = UpsellingBottomSheetContentReducer(plansUiMapper)
@@ -72,7 +72,7 @@ internal class UpsellingBottomSheetContentReducerTest(private val testInput: Tes
                 )
             ),
             TestInput(
-                operation = UpsellingBottomSheetContentEvent.DataLoaded(mockk(), mockk()),
+                operation = UpsellingBottomSheetContentEvent.DataLoaded(mockk(), mockk(), mockk()),
                 expectedState = UpsellingBottomSheetContentState.Data(
                     plans = expectedPlanUiModel
                 )
