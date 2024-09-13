@@ -1,5 +1,5 @@
 default:
-  image: ${PROTON_CI_REGISTRY}/android-shared/docker-android/oci:v2.1.5
+  image: ${PROTON_CI_REGISTRY}/android-shared/docker-android/oci:v2.1.6
   interruptible: true
   tags:
     - shared-small
