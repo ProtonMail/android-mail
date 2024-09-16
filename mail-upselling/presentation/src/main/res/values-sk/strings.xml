@@ -19,29 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Tlačidlo aktualizácie</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_close_button_content_description">Tlačidlo na zatvorenie</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Na odomknutie väčšieho úložiska a prémiových funkcií</string>
+  <string name="upselling_mailbox_plus_title">Upgradovať na Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Jednoducho posielajte emaily skupine a užívajte si ďalšie prémiové funkcie s Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Zoskupujte svoje kontakty</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Získate ich a ďalšie prémiové funkcie po upgradovaní na Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Potrebujete viac štítkov alebo priečinkov?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Získate ich a ďalšie prémiové funkcie, keď upgradujete na Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Potrebujete viac štítkov alebo priečinkov?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Používajte vlastný mobilný podpis a užívajte si ďalšie prémiové funkcie s Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Prispôsobte si svoj podpis</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB úložného priestoru</string>
   <string name="upselling_plus_feature_email_addresses">10 emailových adries</string>
   <string name="upselling_plus_feature_custom_domain">Podpora vlastnej emailovej domény</string>
   <string name="upselling_plus_feature_desktop_app">Nová desktopová aplikácia Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Neobmedzený počet priečinkov, štítkov, filtrov</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 prémiových funkcií</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Vaše komplexné prémiové predplatné</string>
   <string name="upselling_unlimited_feature_storage">500 GB úložného priestoru so zálohovaním fotografií</string>

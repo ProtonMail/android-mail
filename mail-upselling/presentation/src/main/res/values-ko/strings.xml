@@ -19,29 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">업그레이드 버튼</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_close_button_content_description">닫기 버튼</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">더 많은 저장공간과 프리미엄 기능의 잠금 해제를 위해</string>
+  <string name="upselling_mailbox_plus_title">Mail Plus로 업그레이드</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Mail Plus로 그룹화하여 쉽게 이메일을 발송하고 다른 프리미엄 기능도 즐길 수 있어요.</string>
+  <string name="upselling_contact_groups_plus_title">연락처를 그룹화하기</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Mail Plus로 업그레이드하면 이 기능 및 기타 프리미엄 기능을 사용할 수 있습니다.</string>
+  <string name="upselling_labels_plus_title">라벨 또는 폴더가 더 필요하신가요?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Mail Plus로 업그레이드하면 이 기능 및 기타 프리미엄 기능을 사용할 수 있습니다.</string>
+  <string name="upselling_folders_plus_title">라벨 또는 폴더가 더 필요하신가요?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Mail Plus로 나만의 모바일 서명을 사용하고 다른 프리미엄 기능도 즐길 수 있어요.</string>
+  <string name="upselling_mobile_signature_plus_title">내 서명 사용자화</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">저장공간 15GB</string>
   <string name="upselling_plus_feature_email_addresses">이메일 주소 10개</string>
   <string name="upselling_plus_feature_custom_domain">사용자 지정 이메일 도메인 지원</string>
   <string name="upselling_plus_feature_desktop_app">새로운 Proton Mail 데스크톱 앱</string>
   <string name="upselling_plus_feature_folders_labels">무제한 폴더, 라벨, 필터</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_plus_7_features">+7개 프리미엄 기능</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">올인원 프리미엄 구독</string>
   <string name="upselling_unlimited_feature_storage">사진 백업 기능과 저장공간 500GB</string>

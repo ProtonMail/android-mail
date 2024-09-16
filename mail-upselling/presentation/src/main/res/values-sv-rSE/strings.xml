@@ -19,29 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Uppgraderingsknapp</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_close_button_content_description">Stäng-knapp</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">För att låsa upp mer lagringsutrymme och premiumfunktioner</string>
+  <string name="upselling_mailbox_plus_title">Uppgradera till Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Skicka enkelt e-post till en grupp och njut av andra premiumfunktioner med Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Gruppera dina kontakter</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Skaffa dem och andra premiumfunktioner när du uppgraderar till Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Behöver du fler etiketter eller mappar?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Skaffa dem och andra premiumfunktioner när du uppgraderar till Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Behöver du fler etiketter eller mappar?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Använd din egen mobilsignatur och njut av andra premiumfunktioner med Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Anpassa din signatur</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagringsutrymme</string>
   <string name="upselling_plus_feature_email_addresses">10 e-postadresser</string>
   <string name="upselling_plus_feature_custom_domain">Stöd för anpassad e-postdomän</string>
   <string name="upselling_plus_feature_desktop_app">Ny Proton Mail-app för stationär dator</string>
   <string name="upselling_plus_feature_folders_labels">Obegränsat antal mappar, etiketter och filter</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premiumfunktioner</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Din allt-i-ett premiumprenumeration</string>
   <string name="upselling_unlimited_feature_storage">500 GB lagringsutrymme för säkerhetskopiering av foton</string>

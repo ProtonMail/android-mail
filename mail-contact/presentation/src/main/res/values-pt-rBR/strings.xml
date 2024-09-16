@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Cancelar</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Erro ao salvar o contato. Tente novamente mais tarde</string>
-  <string name="contact_form_save_error_limit_reached">Limite de contato atingido</string>
+  <string name="contact_form_save_error_limit_reached">Limite de contatos atingido</string>
   <string name="all_contacts_tab">Contatos</string>
   <string name="contact_groups_tab">Grupos</string>
   <plurals name="contact_group_details_member_count">
@@ -108,11 +108,11 @@
     <item quantity="one">Membro (%1$d)</item>
     <item quantity="other">Membros (%1$d)</item>
   </plurals>
-  <string name="contact_form_invalid_email_error">Erro ao salvar o contato, pois contém um endereço de email inválido</string>
+  <string name="contact_form_invalid_email_error">Erro ao salvar contato, ele contém um endereço de e-mail inválido</string>
   <string name="contact_group_details_loading_error">Erro ao carregar o grupo de contatos, tente novamente mais tarde</string>
   <string name="contact_group_details_deletion_success">Grupo de contatos excluído</string>
   <string name="contact_group_details_deletion_error">Erro ao excluir o grupo de contatos</string>
-  <string name="contact_group_delete_dialog_title">Remover o grupo %s dos contatos?</string>
+  <string name="contact_group_delete_dialog_title">Remover o grupo %s dos Contatos?</string>
   <string name="contact_group_delete_dialog_message">O grupo será desfeito, mas os contatos atribuídos permanecerão inalterados.</string>
   <string name="contact_group_delete_dialog_confirm">Remover</string>
   <string name="contact_group_delete_dialog_dismiss">Manter</string>

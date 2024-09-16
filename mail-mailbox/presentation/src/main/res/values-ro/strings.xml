@@ -101,12 +101,12 @@
   <string name="mailbox_action_clear_operation_scheduled">"Operația de golire este programată."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Avertizare</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">Spațiul de stocare al contului Proton este ocupat peste 80%. Eliberați spațiu sau treceți la alt tip de plan pentru mai mult spațiu de stocare.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Spațiul de stocare al contului Proton este ocupat peste 90%. Eliberați spațiu sau treceți la alt tip de plan pentru mai mult spațiu de stocare.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">Spațiul de stocare al contului Proton este ocupat peste 80%. Eliberați spațiu sau treceți la un plan cu plată pentru a obține mai mult spațiu.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Spațiul de stocare al contului Proton este ocupat peste 90%. Eliberați spațiu sau treceți la un plan cu plată pentru a obține mai mult spațiu.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Nu-mi mai reaminti</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Avertizare</string>
-  <string name="storage_quota_over_dialog_text">Spațiul de stocare al contului Proton este plin 100%. Nu veți putea trimite sau primi mesaje decât dacă ștergeți definitiv unele mesaje sau treceți la alt tip de plan pentru mai mult spațiu de stocare.</string>
+  <string name="storage_quota_over_dialog_text">Spațiul de stocare al contului Proton este plin 100%. Nu veți putea trimite sau primi mesaje decât dacă ștergeți definitiv unele mesaje sau treceți la un plan cu plată pentru a obține mai mult spațiu.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>
