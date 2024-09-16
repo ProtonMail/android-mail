@@ -50,8 +50,8 @@ class ConversationDeleteDialogReducerTest(
             TestInput(
                 operation = ConversationDetailViewAction.DeleteRequested,
                 expectedState = DeleteDialogState.Shown(
-                    title = TextUiModel.TextRes(R.string.message_delete_dialog_title),
-                    message = TextUiModel.TextRes(R.string.message_delete_dialog_message)
+                    title = TextUiModel.TextRes(R.string.conversation_delete_dialog_title),
+                    message = TextUiModel.TextRes(R.string.conversation_delete_dialog_message)
                 )
             ),
             TestInput(

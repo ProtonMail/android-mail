@@ -38,8 +38,8 @@ class ConversationDeleteDialogReducer @Inject constructor() {
 
     private fun newStateFromDeleteRequested(): DeleteDialogState {
         return DeleteDialogState.Shown(
-            title = TextUiModel.TextRes(R.string.message_delete_dialog_title),
-            message = TextUiModel.TextRes(R.string.message_delete_dialog_message)
+            title = TextUiModel.TextRes(R.string.conversation_delete_dialog_title),
+            message = TextUiModel.TextRes(R.string.conversation_delete_dialog_message)
         )
     }
 }
