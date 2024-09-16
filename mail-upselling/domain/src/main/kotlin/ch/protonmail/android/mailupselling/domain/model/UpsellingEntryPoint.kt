@@ -19,17 +19,25 @@
 package ch.protonmail.android.mailupselling.domain.model
 
 sealed interface UpsellingEntryPoint {
-    data object Mailbox : UpsellingEntryPoint
-    data object ContactGroups : UpsellingEntryPoint
-    data object Labels : UpsellingEntryPoint
-    data object Folders : UpsellingEntryPoint
-    data object MobileSignature : UpsellingEntryPoint
+
+    sealed interface BottomSheet : UpsellingEntryPoint {
+
+        data object Mailbox : BottomSheet
+        data object ContactGroups : BottomSheet
+        data object Labels : BottomSheet
+        data object Folders : BottomSheet
+        data object MobileSignature : BottomSheet
+
+    }
+
+    data object PostOnboarding : UpsellingEntryPoint
 
     fun UpsellingEntryPoint.getDimensionValue(): String = when (this) {
-        ContactGroups -> "contact_groups"
-        Folders -> "folders_creation"
-        Labels -> "labels_creation"
-        Mailbox -> "mailbox_top_bar"
-        MobileSignature -> "mobile_signature_edit"
+        BottomSheet.ContactGroups -> "contact_groups"
+        BottomSheet.Folders -> "folders_creation"
+        BottomSheet.Labels -> "labels_creation"
+        BottomSheet.Mailbox -> "mailbox_top_bar"
+        BottomSheet.MobileSignature -> "mobile_signature_edit"
+        PostOnboarding -> "post_onboarding"
     }
 }

@@ -31,7 +31,7 @@ import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBotto
 fun UpsellingBottomSheet(
     modifier: Modifier = Modifier,
     bottomSheetActions: UpsellingBottomSheet.Actions,
-    upsellingEntryPoint: UpsellingEntryPoint
+    upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
 ) {
 
     val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory> { factory ->

@@ -165,7 +165,7 @@ class LabelFormViewModel @Inject constructor(
             return emitNewStateFor(LabelFormEvent.SaveLabelError)
         }
         if (isLabelLimitReached) {
-            val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Labels).first()
+            val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.Labels).first()
 
             return if (shouldShowUpselling) {
                 emitNewStateFor(LabelFormEvent.ShowUpselling)

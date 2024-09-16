@@ -22,7 +22,7 @@ import arrow.core.getOrElse
 import arrow.core.raise.either
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.Folders.getDimensionValue
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.BottomSheet.Folders.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType

@@ -28,6 +28,6 @@ fun FoldersUpsellingBottomSheet(modifier: Modifier = Modifier, actions: Upsellin
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.Folders
+        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.Folders
     )
 }

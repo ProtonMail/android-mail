@@ -23,7 +23,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.Folders.getDimensionValue
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.BottomSheet.Folders.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
@@ -65,7 +65,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
-    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.ContactGroups
+    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.BottomSheet.ContactGroups
 
     private val repository: UpsellingTelemetryRepository
         get() = UpsellingTelemetryRepositoryImpl(
@@ -216,7 +216,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         // Given
         expectValidUserData()
         expectTelemetryEnabled()
-        val customUpsellingEntryPoint = UpsellingEntryPoint.MobileSignature
+        val customUpsellingEntryPoint = UpsellingEntryPoint.BottomSheet.MobileSignature
 
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
         val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(

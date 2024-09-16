@@ -52,7 +52,7 @@ class UpsellingButtonViewModel @Inject constructor(
     fun trackButtonInteraction() {
         upsellingTelemetryRepository.trackEvent(
             UpsellingTelemetryEventType.Base.MailboxButtonTap,
-            UpsellingEntryPoint.Mailbox
+            UpsellingEntryPoint.BottomSheet.Mailbox
         )
     }
 

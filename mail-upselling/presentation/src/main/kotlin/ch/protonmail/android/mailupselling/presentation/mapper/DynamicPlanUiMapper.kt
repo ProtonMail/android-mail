@@ -37,7 +37,7 @@ internal class DynamicPlanUiMapper @Inject constructor(
     fun toUiModel(
         userId: UserId,
         plan: DynamicPlan,
-        upsellingEntryPoint: UpsellingEntryPoint
+        upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
     ): DynamicPlansUiModel {
         val emptyUiModel = DynamicPlansUiModel(
             icon = iconUiMapper.toUiModel(upsellingEntryPoint),

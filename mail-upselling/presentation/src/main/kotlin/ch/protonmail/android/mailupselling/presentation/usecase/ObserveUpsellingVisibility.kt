@@ -26,6 +26,7 @@ import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchase
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingPostOnboardingEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -45,7 +46,8 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
     private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
     private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
-    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled
+    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
+    private val isUpsellingPostOnboardingEnabled: IsUpsellingPostOnboardingEnabled
 ) {
 
     operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint): Flow<Boolean> = combine(
@@ -64,11 +66,14 @@ class ObserveUpsellingVisibility @Inject constructor(
 
     private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint): Boolean {
         return !when (upsellingEntryPoint) {
-            UpsellingEntryPoint.ContactGroups -> isUpsellingContactGroupsEnabled()
-            UpsellingEntryPoint.Folders -> isUpsellingFoldersEnabled()
-            UpsellingEntryPoint.Labels -> isUpsellingLabelsEnabled()
-            UpsellingEntryPoint.Mailbox -> observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
-            UpsellingEntryPoint.MobileSignature -> isUpsellingMobileSignatureEnabled
+            UpsellingEntryPoint.BottomSheet.ContactGroups -> isUpsellingContactGroupsEnabled()
+            UpsellingEntryPoint.BottomSheet.Folders -> isUpsellingFoldersEnabled()
+            UpsellingEntryPoint.BottomSheet.Labels -> isUpsellingLabelsEnabled()
+            UpsellingEntryPoint.BottomSheet.Mailbox -> {
+                observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
+            }
+            UpsellingEntryPoint.BottomSheet.MobileSignature -> isUpsellingMobileSignatureEnabled
+            UpsellingEntryPoint.PostOnboarding -> isUpsellingPostOnboardingEnabled()
         }
     }
 }

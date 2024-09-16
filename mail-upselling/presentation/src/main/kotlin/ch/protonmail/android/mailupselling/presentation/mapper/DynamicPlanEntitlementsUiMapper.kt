@@ -32,7 +32,10 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
     @ForceOneClickUpsellingDetailsOverride private val shouldOverrideEntitlementsList: Boolean
 ) {
 
-    fun toUiModel(plan: DynamicPlan, upsellingEntryPoint: UpsellingEntryPoint): List<DynamicEntitlementUiModel> {
+    fun toUiModel(
+        plan: DynamicPlan,
+        upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
+    ): List<DynamicEntitlementUiModel> {
         if (!shouldOverrideEntitlementsList) return mapToDefaults(plan.entitlements)
 
         return when (plan.name) {
@@ -49,12 +52,12 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
             .toList()
     }
 
-    private fun getPlusEntitlements(upsellingEntryPoint: UpsellingEntryPoint) = when (upsellingEntryPoint) {
-        UpsellingEntryPoint.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
-        UpsellingEntryPoint.Folders -> FoldersPlusOverriddenEntitlements
-        UpsellingEntryPoint.Labels -> LabelsPlusOverriddenEntitlements
-        UpsellingEntryPoint.Mailbox -> MailboxPlusOverriddenEntitlements
-        UpsellingEntryPoint.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
+    private fun getPlusEntitlements(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet) = when (upsellingEntryPoint) {
+        UpsellingEntryPoint.BottomSheet.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
+        UpsellingEntryPoint.BottomSheet.Folders -> FoldersPlusOverriddenEntitlements
+        UpsellingEntryPoint.BottomSheet.Labels -> LabelsPlusOverriddenEntitlements
+        UpsellingEntryPoint.BottomSheet.Mailbox -> MailboxPlusOverriddenEntitlements
+        UpsellingEntryPoint.BottomSheet.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
     }
 
     private companion object {

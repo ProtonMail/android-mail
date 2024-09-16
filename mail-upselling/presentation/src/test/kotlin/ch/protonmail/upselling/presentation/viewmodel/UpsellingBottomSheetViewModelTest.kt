@@ -63,7 +63,7 @@ internal class UpsellingBottomSheetViewModelTest {
     private val upsellingBottomSheetContentReducer = UpsellingBottomSheetContentReducer(dynamicPlanUiMapper)
     private val updateLastSeenUpsellingTimestamp = mockk<UpdateUpsellingOneClickLastTimestamp>(relaxUnitFun = true)
     private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
-    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.ContactGroups
+    private val expectedUpsellingEntryPoint = UpsellingEntryPoint.BottomSheet.ContactGroups
     private val viewModel: UpsellingBottomSheetViewModel by lazy {
         UpsellingBottomSheetViewModel(
             expectedUpsellingEntryPoint,

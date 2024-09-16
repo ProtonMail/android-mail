@@ -16,18 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
+package ch.protonmail.android.mailupselling.domain.usecase.featureflags
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-@Composable
-fun MailboxUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
-    UpsellingBottomSheet(
-        modifier,
-        bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.Mailbox
-    )
+class IsUpsellingPostOnboardingEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
+
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId? = null) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidUpsellingPostOnboarding"
+    }
 }

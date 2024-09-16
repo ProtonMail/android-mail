@@ -35,20 +35,20 @@ internal class DynamicPlanTitleUiMapperTest {
     fun `should map to the corresponding ui models`() {
         // Given
         val expected = mapOf(
-            UpsellingEntryPoint.ContactGroups to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_contact_groups_plus_title)),
-            UpsellingEntryPoint.Folders to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title)),
-            UpsellingEntryPoint.Labels to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title)),
-            UpsellingEntryPoint.MobileSignature to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title)),
-            UpsellingEntryPoint.Mailbox to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
+            UpsellingEntryPoint.BottomSheet.ContactGroups to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_contact_groups_plus_title)),
+            UpsellingEntryPoint.BottomSheet.Folders to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title)),
+            UpsellingEntryPoint.BottomSheet.Labels to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title)),
+            UpsellingEntryPoint.BottomSheet.MobileSignature to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title)),
+            UpsellingEntryPoint.BottomSheet.Mailbox to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
         )
 
         // When
         val actual = mapOf(
-            UpsellingEntryPoint.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.ContactGroups),
-            UpsellingEntryPoint.Folders to mapper.toUiModel(UpsellingEntryPoint.Folders),
-            UpsellingEntryPoint.Labels to mapper.toUiModel(UpsellingEntryPoint.Labels),
-            UpsellingEntryPoint.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.MobileSignature),
-            UpsellingEntryPoint.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Mailbox)
+            UpsellingEntryPoint.BottomSheet.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.ContactGroups),
+            UpsellingEntryPoint.BottomSheet.Folders to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Folders),
+            UpsellingEntryPoint.BottomSheet.Labels to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Labels),
+            UpsellingEntryPoint.BottomSheet.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.MobileSignature),
+            UpsellingEntryPoint.BottomSheet.Mailbox to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Mailbox)
         )
 
         // Then

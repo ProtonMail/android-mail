@@ -31,7 +31,10 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
     @ForceOneClickUpsellingDetailsOverride private val shouldOverrideEntitlementsList: Boolean
 ) {
 
-    fun toUiModel(dynamicPlan: DynamicPlan, upsellingEntryPoint: UpsellingEntryPoint): DynamicPlanDescriptionUiModel {
+    fun toUiModel(
+        dynamicPlan: DynamicPlan,
+        upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
+    ): DynamicPlanDescriptionUiModel {
         if (!shouldOverrideEntitlementsList) return DynamicPlanDescriptionUiModel(getDefaultDescription(dynamicPlan))
 
         val description = when (dynamicPlan.name) {
@@ -45,14 +48,20 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
 
     private fun getDefaultDescription(dynamicPlan: DynamicPlan) = TextUiModel.Text(dynamicPlan.description ?: "")
     private fun getUnlimitedDescription() = TextUiModel.TextRes(R.string.upselling_unlimited_description_override)
-    private fun getPlusDescription(upsellingEntryPoint: UpsellingEntryPoint) = when (upsellingEntryPoint) {
-        UpsellingEntryPoint.ContactGroups -> TextUiModel.TextRes(
+    private fun getPlusDescription(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet) = when (upsellingEntryPoint) {
+        UpsellingEntryPoint.BottomSheet.ContactGroups -> TextUiModel.TextRes(
             R.string.upselling_contact_groups_plus_description_override
         )
-        UpsellingEntryPoint.Folders -> TextUiModel.TextRes(R.string.upselling_folders_plus_description_override)
-        UpsellingEntryPoint.Labels -> TextUiModel.TextRes(R.string.upselling_labels_plus_description_override)
-        UpsellingEntryPoint.Mailbox -> TextUiModel.TextRes(R.string.upselling_mailbox_plus_description_override)
-        UpsellingEntryPoint.MobileSignature -> TextUiModel.TextRes(
+        UpsellingEntryPoint.BottomSheet.Folders -> TextUiModel.TextRes(
+            R.string.upselling_folders_plus_description_override
+        )
+        UpsellingEntryPoint.BottomSheet.Labels -> TextUiModel.TextRes(
+            R.string.upselling_labels_plus_description_override
+        )
+        UpsellingEntryPoint.BottomSheet.Mailbox -> TextUiModel.TextRes(
+            R.string.upselling_mailbox_plus_description_override
+        )
+        UpsellingEntryPoint.BottomSheet.MobileSignature -> TextUiModel.TextRes(
             R.string.upselling_mobile_signature_plus_description_override
         )
     }

@@ -88,7 +88,7 @@ class ContactListViewModel @Inject constructor(
     }
 
     private suspend fun handleOnNewContactGroupClick() {
-        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.ContactGroups).first()
+        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.ContactGroups).first()
 
         if (shouldShowUpselling) {
             emitNewStateFor(ContactListEvent.OpenUpsellingBottomSheet)
@@ -107,7 +107,7 @@ class ContactListViewModel @Inject constructor(
         return combine(
             observeContacts(userId),
             observeContactGroupLabels(userId),
-            observeUpsellingVisibility(UpsellingEntryPoint.ContactGroups)
+            observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.ContactGroups)
         ) { contacts, contactGroups, isContactGroupsUpsellingVisible ->
             val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled()
             val isContactSearchEnabled = isContactSearchEnabled()

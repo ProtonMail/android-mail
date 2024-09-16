@@ -55,7 +55,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -70,7 +70,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.BottomSheet.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -85,7 +85,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
 
         // Then
         assertTrue(actual.isNotEmpty())
@@ -149,11 +149,11 @@ internal class DynamicPlanEntitlementsUiMapperTest {
 
         // When
         val actual = listOf(
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Mailbox),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.ContactGroups),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Labels),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Folders),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.MobileSignature)
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.ContactGroups),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Labels),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Folders),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.MobileSignature)
         )
 
         // Then

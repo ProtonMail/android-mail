@@ -80,7 +80,9 @@ class EditAddressIdentityViewModel @Inject constructor(
             val mobileFooter = getMobileFooter(userId).getOrElse {
                 return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
             }.let {
-                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.MobileSignature).first()
+                val shouldShowUpselling = observeUpsellingVisibility(
+                    UpsellingEntryPoint.BottomSheet.MobileSignature
+                ).first()
 
                 if (shouldShowUpselling) {
                     MobileFooter.FreeUserUpsellingMobileFooter(it.value)
@@ -117,7 +119,9 @@ class EditAddressIdentityViewModel @Inject constructor(
                 }
 
                 is EditAddressIdentityViewAction.MobileFooter.ToggleState -> {
-                    val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.MobileSignature).first()
+                    val shouldShowUpselling = observeUpsellingVisibility(
+                        UpsellingEntryPoint.BottomSheet.MobileSignature
+                    ).first()
 
                     if (!action.enabled && shouldShowUpselling) {
                         emitNewStateFrom(EditAddressIdentityEvent.ShowUpselling)
