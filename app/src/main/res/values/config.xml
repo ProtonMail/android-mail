@@ -6,4 +6,5 @@
     <bool name="core_feature_notifications_enabled">true</bool>
     <!-- Mail already handle the Notification Permission (after successful login). -->
     <bool name="core_feature_notifications_permission_request_enabled">false</bool>
+    <integer name="core_feature_auth_user_check_max_free_user_count">2</integer>
 </resources>
