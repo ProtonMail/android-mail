@@ -22,6 +22,8 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.telemetry.data.AccountAge
+import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
@@ -64,6 +66,7 @@ internal class ObserveUpsellingVisibilityTest {
     private val isUpsellingContactGroupsEnabled = mockk<IsUpsellingContactGroupsEnabled>()
     private val isUpsellingPostOnboardingEnabled = mockk<IsUpsellingPostOnboardingEnabled>()
     private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
+    private val getAccountAgeInDays = mockk<GetAccountAgeInDays>()
     private val sut: ObserveUpsellingVisibility
         get() = ObserveUpsellingVisibility(
             observePrimaryUser,
@@ -76,7 +79,8 @@ internal class ObserveUpsellingVisibilityTest {
             isUpsellingFoldersEnabled,
             isUpsellingContactGroupsEnabled,
             observeOneClickUpsellingEnabled,
-            isUpsellingPostOnboardingEnabled
+            isUpsellingPostOnboardingEnabled,
+            getAccountAgeInDays
         )
 
     @BeforeTest
@@ -248,6 +252,25 @@ internal class ObserveUpsellingVisibilityTest {
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.PostOnboarding, false)
+        expectAccountAgeInDays(100)
+
+        // When + Then
+        sut(UpsellingEntryPoint.PostOnboarding).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `should return false if PostOnboarding FF is enabled but account was created today`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.PostOnboarding, true)
+        expectAccountAgeInDays(0)
 
         // When + Then
         sut(UpsellingEntryPoint.PostOnboarding).test {
@@ -321,5 +344,8 @@ internal class ObserveUpsellingVisibilityTest {
         }
     }
 
+    private fun expectAccountAgeInDays(ageInDays: Int) {
+        coEvery { getAccountAgeInDays(any()) } returns AccountAge(ageInDays)
+    }
 
 }
