@@ -19,12 +19,14 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
 import arrow.core.NonEmptyList
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -39,6 +41,7 @@ import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.mailconversation.domain.usecase.StarConversations
 import ch.protonmail.android.mailconversation.domain.usecase.UnStarConversations
+import ch.protonmail.android.maildetail.domain.annotations.ObservableFlowScope
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.DelayedMarkMessageAndConversationReadIfAllMessagesRead
@@ -54,12 +57,15 @@ import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessag
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
 import ch.protonmail.android.maildetail.domain.usecase.ObserveMessageAttachmentStatus
 import ch.protonmail.android.maildetail.domain.usecase.RelabelConversation
+import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
 import ch.protonmail.android.maildetail.domain.usecase.SetMessageViewState
+import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMessageUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction
@@ -73,8 +79,8 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MessageBodyLinkClicked
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationConfirmed
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.MoveToDestinationSelected
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestConversationLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestContactActionsBottomSheet
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestConversationLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestMoveToBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.RequestScrollTo
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ScrollRequestCompleted
@@ -87,6 +93,10 @@ import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
+import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
+import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
+import ch.protonmail.android.maildetail.presentation.usecase.ShouldMessageBeHidden
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
@@ -101,16 +111,9 @@ import ch.protonmail.android.mailmessage.domain.model.LabelSelectionList
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
+import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
-import ch.protonmail.android.maildetail.domain.usecase.ReportPhishingMessage
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
-import ch.protonmail.android.maildetail.presentation.GetMessageIdToExpand
-import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
-import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
-import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
-import ch.protonmail.android.maildetail.presentation.usecase.ShouldMessageBeHidden
-import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
@@ -123,6 +126,8 @@ import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -194,7 +199,9 @@ class ConversationDetailViewModel @Inject constructor(
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
     private val moveMessage: MoveMessage,
-    private val shouldMessageBeHidden: ShouldMessageBeHidden
+    private val shouldMessageBeHidden: ShouldMessageBeHidden,
+    @ObservableFlowScope private val observableFlowScope: CoroutineScope,
+    @AppScope private val appScope: CoroutineScope
 ) : ViewModel() {
 
     private val primaryUserId: Flow<UserId> = observePrimaryUserId().filterNotNull()
@@ -203,7 +210,6 @@ class ConversationDetailViewModel @Inject constructor(
     private val initialScrollToMessageId = getInitialScrollToMessageId()
     private val filterByLocation = getFilterByLocation()
     private val observedAttachments = mutableListOf<AttachmentId>()
-
     val state: StateFlow<ConversationDetailState> = mutableDetailState.asStateFlow()
 
     init {
@@ -229,6 +235,7 @@ class ConversationDetailViewModel @Inject constructor(
             is LabelAsConfirmed -> onLabelAsConfirmed(action)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
+
             is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> showMessageLabelAsBottomSheet(action)
             is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
 
@@ -314,7 +321,7 @@ class ConversationDetailViewModel @Inject constructor(
                 }
         }.onEach { event ->
             emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        }.launchIn(observableFlowScope)
     }
 
     private fun observeConversationMessages(conversationId: ConversationId) {
@@ -373,7 +380,7 @@ class ConversationDetailViewModel @Inject constructor(
                 emitNewStateFrom(event)
             }
             .flowOn(ioDispatcher)
-            .launchIn(viewModelScope)
+            .launchIn(observableFlowScope)
     }
 
     private fun stateIsLoading(): Boolean = state.value.messagesState == ConversationDetailsMessagesState.Loading
@@ -429,6 +436,7 @@ class ConversationDetailViewModel @Inject constructor(
                     .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
                     .firstOrNull { it.messageId.id == messageId.id }
             }
+
             else -> null
         }
     }
@@ -497,7 +505,7 @@ class ConversationDetailViewModel @Inject constructor(
             }
         }.onEach { event ->
             emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        }.launchIn(observableFlowScope)
     }
 
     private fun showMoveToBottomSheetAndLoadData(initialEvent: ConversationDetailViewAction) {
@@ -802,7 +810,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun handleDeleteConfirmed(action: ConversationDetailViewAction) {
-        viewModelScope.launch {
+        appScope.launch {
             val userId = primaryUserId.first()
             val conversation = observeConversation(userId, conversationId, false).first().getOrNull()
             if (conversation == null) {
@@ -818,6 +826,11 @@ class ConversationDetailViewModel @Inject constructor(
                 emitNewStateFrom(ConversationDetailEvent.ErrorDeletingNoApplicableFolder)
                 return@launch
             } else {
+                // We manually cancel the Observer Scope since the following deletion calls cause all the observers
+                // to emit, which could lead to race conditions as the observers re-insert the conversation and/or
+                // the messages in the DB on late changes, making the entry still re-appear in the mailbox list.
+                observableFlowScope.cancel()
+
                 emitNewStateFrom(action)
                 deleteConversations(userId, listOf(conversationId), currentDeletableLabel.labelId)
             }
@@ -959,7 +972,7 @@ class ConversationDetailViewModel @Inject constructor(
                 }
             }.onEach { event ->
                 emitNewStateFrom(event)
-            }.launchIn(viewModelScope)
+            }.launchIn(observableFlowScope)
         }
     }
 
@@ -1105,6 +1118,12 @@ class ConversationDetailViewModel @Inject constructor(
             moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Spam.labelId)
             emitNewStateFrom(action)
         }
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public override fun onCleared() {
+        super.onCleared()
+        observableFlowScope.cancel()
     }
 
     companion object {
