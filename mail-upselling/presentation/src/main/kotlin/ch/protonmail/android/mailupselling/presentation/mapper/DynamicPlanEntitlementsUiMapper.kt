@@ -135,5 +135,95 @@ internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
                 localResource = R.drawable.ic_upselling_pass
             )
         )
+
+        val OnboardingFreeOverriddenEntitlements = listOf(
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_free_feature_storage),
+                localResource = R.drawable.ic_upselling_storage
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_feature_e2e),
+                localResource = R.drawable.ic_upselling_lock
+            )
+        )
+
+        val OnboardingPlusOverriddenEntitlements = listOf(
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_plus_feature_storage),
+                localResource = R.drawable.ic_upselling_storage
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_feature_folders_labels),
+                localResource = R.drawable.ic_upselling_tag
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_feature_e2e),
+                localResource = R.drawable.ic_upselling_lock
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_plus_feature_email_addresses),
+                localResource = R.drawable.ic_upselling_envelopes
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_plus_feature_email_domains),
+                localResource = R.drawable.ic_upselling_globe
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_plus_feature_aliases),
+                localResource = R.drawable.ic_upselling_eye_slash
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_plus_feature_customer_support),
+                localResource = R.drawable.ic_upselling_life_ring
+            )
+        )
+
+        @Suppress("VariableMaxLength")
+        val OnboardingUnlimitedOverriddenEntitlements = listOf(
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_storage),
+                localResource = R.drawable.ic_upselling_storage
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_feature_folders_labels),
+                localResource = R.drawable.ic_upselling_tag
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_email_addresses),
+                localResource = R.drawable.ic_upselling_envelopes
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_feature_e2e),
+                localResource = R.drawable.ic_upselling_lock
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_email_domains),
+                localResource = R.drawable.ic_upselling_globe
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_aliases),
+                localResource = R.drawable.ic_upselling_eye_slash
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_customer_support),
+                localResource = R.drawable.ic_upselling_life_ring
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_vpn),
+                localResource = R.drawable.ic_upselling_vpn
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_pass),
+                localResource = R.drawable.ic_upselling_pass
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_drive),
+                localResource = R.drawable.ic_upselling_drive
+            ),
+            DynamicEntitlementUiModel.Overridden(
+                text = TextUiModel.TextRes(R.string.upselling_onboarding_unlimited_feature_sentinel),
+                localResource = R.drawable.ic_upselling_shield
+            )
+        )
     }
 }

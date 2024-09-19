@@ -57,6 +57,28 @@
     <string name="upselling_unlimited_feature_drive">Secure cloud storage</string>
     <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
 
+    <!-- Onboarding Upselling -->
+    <string name="upselling_onboarding_feature_e2e">End-to-end encryption</string>
+    <string name="upselling_onboarding_feature_folders_labels">Unlimited folders and labels</string>
+
+    <string name="upselling_onboarding_free_feature_storage">1 GB storage and 1 email address</string>
+
+    <string name="upselling_onboarding_plus_feature_storage">15 GB storage</string>
+    <string name="upselling_onboarding_plus_feature_email_addresses">10 extra email addresses for you</string>
+    <string name="upselling_onboarding_plus_feature_email_domains">Support for 1 custom email domain</string>
+    <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliases</string>
+    <string name="upselling_onboarding_plus_feature_customer_support">Priority customer support</string>
+
+    <string name="upselling_onboarding_unlimited_feature_storage">500 GB storage</string>
+    <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra email addresses for you</string>
+    <string name="upselling_onboarding_unlimited_feature_email_domains">Support for 3 custom email domains</string>
+    <string name="upselling_onboarding_unlimited_feature_aliases">Unlimited hide-my-email aliases</string>
+    <string name="upselling_onboarding_unlimited_feature_customer_support">Dedicated customer support</string>
+    <string name="upselling_onboarding_unlimited_feature_vpn">Ultra fast and private VPN</string>
+    <string name="upselling_onboarding_unlimited_feature_pass">Encrypted password manager</string>
+    <string name="upselling_onboarding_unlimited_feature_drive">Encrypted cloud storage for photos and documents</string>
+    <string name="upselling_onboarding_unlimited_feature_sentinel">Advanced account protection</string>
+
     <!-- Other UI Items -->
     <string name="upselling_discount_tag">SAVE %s%%</string>
     <string name="upselling_month">/month</string>
