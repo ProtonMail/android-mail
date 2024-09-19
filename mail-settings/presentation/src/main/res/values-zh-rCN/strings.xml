@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">称呼</string>
   <string name="mail_settings_identity_signature">落款</string>
   <string name="mail_settings_identity_signature_hint">落款</string>
-  <string name="mail_settings_identity_mobile_footer">移动端标识</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">这段标识文本将加在您的落款之后.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">移动端标识</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">通过 Proton Mail 移动端发送</string>
   <string name="mail_settings_identity_error_updating">更新设置时出现错误</string>
   <string name="mail_settings_identity_error_loading">加载设置时出现错误</string>

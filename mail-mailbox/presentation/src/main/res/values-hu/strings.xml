@@ -78,7 +78,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nem sikerült betölteni a mappákat</string>
   <string name="mailbox_action_trash_message">Üzenet áthelyezve a lomtárba</string>
   <string name="mailbox_action_archive_message">Üzenet áthelyezve az archívumba</string>
-  <string name="mailbox_action_spam_message">üzenet a levélszemét mappába áthelyezve</string>
+  <string name="mailbox_action_spam_message">Üzenet a levélszemét mappába áthelyezve</string>
   <string name="mailbox_search_placeholder_text">Üzenetek keresése</string>
   <string name="mailbox_search_no_results_title">Nincs találat</string>
   <string name="mailbox_search_no_results_explanation">Keresés dátum, név, e-mail cím vagy tárgy alapján</string>

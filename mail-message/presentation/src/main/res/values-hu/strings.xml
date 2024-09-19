@@ -46,22 +46,22 @@
   <string name="bottom_sheet_more_header_message_from">Üzenetek tőle: %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Link másolása</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
+  <string name="message_link_long_click_copy_description">Szöveg Proton Mail-ről másolva</string>
   <string name="message_link_long_click_share">Link megosztása</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_share_via">Link megosztása</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Cím másolása</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
+  <string name="contact_actions_copy_address_description">Névjegy címének másolása</string>
   <string name="contact_actions_copy_address_performed">Cím a vágólapra másolva</string>
   <string name="contact_actions_copy_name">Név másolása</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
+  <string name="contact_actions_copy_name_description">Névjegy nevének másolása</string>
+  <string name="contact_actions_copy_name_performed">Név a vágólapra másolva</string>
   <string name="contact_actions_new_message">Új üzenet</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">Új üzenet írása ennek a névjegynek</string>
   <string name="contact_actions_add_contact">Új névjegy</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
+  <string name="contact_actions_add_contact_description">Mentse ezt a címzettet névjegyként</string>
   <string name="contact_actions_view_contact_details">Névjegy részletei</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_view_contact_details_description">Névjegy részleteinek megtekintése</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Engedély szükséges</string>
   <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>

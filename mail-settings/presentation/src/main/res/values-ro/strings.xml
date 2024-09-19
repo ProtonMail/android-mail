@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Nume afișat</string>
   <string name="mail_settings_identity_signature">Semnătura</string>
   <string name="mail_settings_identity_signature_hint">Semnătura</string>
-  <string name="mail_settings_identity_mobile_footer">Mesaj subsol mobile</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Mesajul din subsol este adăugat după semnătură.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mesaj subsol mobile</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Trimis cu Proton Mail pentru Android</string>
   <string name="mail_settings_identity_error_updating">Eroare la actualizarea setărilor.</string>
   <string name="mail_settings_identity_error_loading">Eroare la încărcarea setărilor.</string>

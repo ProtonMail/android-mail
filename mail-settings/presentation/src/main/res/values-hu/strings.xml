@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Megjelenített név</string>
   <string name="mail_settings_identity_signature">Aláírás</string>
   <string name="mail_settings_identity_signature_hint">Aláírás</string>
-  <string name="mail_settings_identity_mobile_footer">Mobil aláírás</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">A lábléc az aláírása után jelenik meg.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobil aláírás</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android alkalmazásból küldve</string>
   <string name="mail_settings_identity_error_updating">Hiba az beállítások frissítése során</string>
   <string name="mail_settings_identity_error_loading">Hiba az beállítások betöltése során</string>
@@ -88,7 +88,7 @@
   <string name="mail_settings_privacy_auto_show_embedded_images">Beágyazott képek automatikus megjelenítése</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">Képernyőkép készítés megakadályozása</string>
   <string name="mail_settings_privacy_request_link_confirmation">Hivatkozás megnyitásának megerősítése</string>
-  <string name="mail_settings_privacy_background_sync">Háttérszinkronizálás</string>
+  <string name="mail_settings_privacy_background_sync">Szinkronizálás a háttérben</string>
   <string name="mail_settings_privacy_background_sync_description">Bekapcsolásakor az alkalmazás a háttérben is szinkronizál a szerverrel. Kikapcsolása letiltja az azonnali értesítéseket is.</string>
   <string name="mail_settings_privacy_error_updating">Hiba az beállítások frissítése során</string>
   <string name="mail_settings_privacy_error_loading">Hiba az beállítások betöltése során</string>

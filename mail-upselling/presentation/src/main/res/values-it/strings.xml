@@ -19,22 +19,22 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Effettua l\'upgrade</string>
-  <string name="upselling_close_button_content_description">Pulsante Chiudi</string>
+  <string name="upselling_close_button_content_description">Chiudi</string>
   <!-- Upselling: Mailbox -->
   <string name="upselling_mailbox_plus_description_override">Per sbloccare più spazio di archiviazione e funzionalità premium</string>
   <string name="upselling_mailbox_plus_title">Passa a Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Invia facilmente email a un gruppo e usufruisci di altre funzionalità premium con Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Raggruppa i tuoi contatti</string>
+  <string name="upselling_contact_groups_plus_description_override">Invia facilmente email a un gruppo e approfitta delle funzionalità premium con Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Crea gruppi di contatti</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Ottieni queste e altre funzionalità premium quando esegui l\'upgrade a Mail Plus.</string>
+  <string name="upselling_labels_plus_description_override">Passa a Mail Plus per ottenere queste e altre funzionalità premium.</string>
   <string name="upselling_labels_plus_title">Hai bisogno di più etichette o cartelle?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Ottieni queste e altre funzionalità premium quando esegui l\'upgrade a Mail Plus.</string>
+  <string name="upselling_folders_plus_description_override">Passa a Mail Plus per ottenere queste e altre funzionalità premium.</string>
   <string name="upselling_folders_plus_title">Hai bisogno di più etichette o cartelle?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Usa la tua firma mobile e goditi altre funzioni premium con Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Personalizza la tua firma</string>
+  <string name="upselling_mobile_signature_plus_description_override">Personalizza la firma mobile e approfitta di altre funzionalità premium con Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Personalizza la firma</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB di spazio di archiviazione</string>
   <string name="upselling_plus_feature_email_addresses">10 indirizzi email</string>

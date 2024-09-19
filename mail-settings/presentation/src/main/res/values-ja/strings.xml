@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">表示名</string>
   <string name="mail_settings_identity_signature">署名</string>
   <string name="mail_settings_identity_signature_hint">署名</string>
-  <string name="mail_settings_identity_mobile_footer">モバイルフッター</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">このフッターは署名の後に追加されます.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">モバイルフッター</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android から送信</string>
   <string name="mail_settings_identity_error_updating">設定更新エラー</string>
   <string name="mail_settings_identity_error_loading">設定の読み込みエラー</string>

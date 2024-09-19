@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Prikazano ime</string>
   <string name="mail_settings_identity_signature">Podpis</string>
   <string name="mail_settings_identity_signature_hint">Podpis</string>
-  <string name="mail_settings_identity_mobile_footer">Noga na mobilnem telefonu</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Noga se doda sporočilu za vašim podpisom.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Noga na mobilnem telefonu</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Poslano iz Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Napaka pri spreminjanju nastavitev</string>
   <string name="mail_settings_identity_error_loading">Napaka pri nalaganju nastavitev</string>

@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">Ver detalhes do contato</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Permissões necessárias</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail precisa da permissão para ler seus contatos para sugerir destinatário.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail precisa de permissão para ler seus contatos para poder sugerir destinatários.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Solicitar permissão</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Negar</string>

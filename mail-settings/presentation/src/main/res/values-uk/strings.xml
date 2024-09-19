@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Ім\'я</string>
   <string name="mail_settings_identity_signature">Підпис</string>
   <string name="mail_settings_identity_signature_hint">Підпис</string>
-  <string name="mail_settings_identity_mobile_footer">Мобільний колонтитул</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Нижній колонтитул додається під вашим підписом.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Мобільний колонтитул</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Надіслано з Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Помилка оновлення налаштувань</string>
   <string name="mail_settings_identity_error_loading">Помилка завантаження налаштувань</string>

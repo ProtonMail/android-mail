@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Zaslonski naziv</string>
   <string name="mail_settings_identity_signature">Potpis</string>
   <string name="mail_settings_identity_signature_hint">Potpis</string>
-  <string name="mail_settings_identity_mobile_footer">Podnožje na mobitelu</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Podnožje se dodaje nakon Vašeg potpisa.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Podnožje na mobitelu</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Poslano iz Proton Maila za Android</string>
   <string name="mail_settings_identity_error_updating">Pogreška prilikom ažuriranja postavki</string>
   <string name="mail_settings_identity_error_loading">Greška kod učitavanja postavki</string>

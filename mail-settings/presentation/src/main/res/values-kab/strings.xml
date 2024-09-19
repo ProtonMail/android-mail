@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Isem n uskan</string>
   <string name="mail_settings_identity_signature">Azmul</string>
   <string name="mail_settings_identity_signature_hint">Azmul</string>
-  <string name="mail_settings_identity_mobile_footer">Aḍar n usebter n uziraz</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">The footer is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Aḍar n usebter n uziraz</string>
+  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Sent from Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Error updating settings</string>
   <string name="mail_settings_identity_error_loading">Error loading settings</string>
