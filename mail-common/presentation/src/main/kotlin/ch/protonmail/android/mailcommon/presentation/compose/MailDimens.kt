@@ -26,6 +26,7 @@ object MailDimens {
     val ThinBorder = 0.5.dp
     val DefaultBorder = 1.dp
     val AvatarBorderLine = 1.5.dp
+    val OnboardingUpsellBestValueBorder = 2.dp
 
     val TinySpacing = 2.dp
 
@@ -120,4 +121,7 @@ object MailDimens {
     }
 
     val NarrowScreenWidth = 360.dp
+
+    val PlanSwitcherHeight = 68.dp
+    val OnboardingUpsellButtonHeight = 48.dp
 }

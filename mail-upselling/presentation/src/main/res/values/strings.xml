@@ -95,4 +95,19 @@
     <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
     <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
     <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+
+    <!-- Upselling: Onboarding -->
+    <string name="upselling_onboarding_title">Choose a plan</string>
+    <string name="upselling_onboarding_switcher_monthly">Monthly</string>
+    <string name="upselling_onboarding_switcher_annual">Annual</string>
+    <string name="upselling_onboarding_best_value">Best value</string>
+    <string name="upselling_onboarding_month">/month</string>
+    <plurals name="upselling_onboarding_more_features">
+        <item quantity="one">%d more feature</item>
+        <item quantity="other">%d more features</item>
+    </plurals>
+    <string name="upselling_onboarding_billing_monthly">Billed at %s %d every month.</string>
+    <string name="upselling_onboarding_billing_annual">Billed at %s %d every 12 months.</string>
+    <string name="upselling_onboarding_get_plan">Get %s</string>
+    <string name="upselling_onboarding_continue_with_proton_free">Continue with Proton Free</string>
 </resources>
