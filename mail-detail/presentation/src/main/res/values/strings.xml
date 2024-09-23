@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2022 Proton Technologies AG
   ~ This file is part of Proton Technologies AG and Proton Mail.
   ~
@@ -97,7 +98,7 @@
     <string name="message_body_load_embedded_images_button_text">Load embedded images</string>
     <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
     <string name="message_report_phishing_dialog_title_offline">Attention</string>
-    <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+    <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
     <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
     <string name="message_report_phishing_dialog_title">Confirm phishing report</string>
     <string name="message_report_phishing_dialog_message">Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</string>
