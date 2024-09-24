@@ -26,6 +26,7 @@ import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import me.proton.core.plan.domain.entity.DynamicPlanPrice
 import me.proton.core.plan.domain.entity.DynamicPlanState
 import me.proton.core.plan.domain.entity.DynamicPlanType
+import me.proton.core.plan.domain.entity.DynamicPlans
 
 object UpsellingTestData {
 
@@ -74,6 +75,8 @@ object UpsellingTestData {
             )
         )
     )
+
+    val DynamicPlans = DynamicPlans(null, listOf(UnlimitedPlan, PlusPlan))
 
     val DynamicPlanPlusWithNoInstances = DynamicPlan(
         name = "mail2022",

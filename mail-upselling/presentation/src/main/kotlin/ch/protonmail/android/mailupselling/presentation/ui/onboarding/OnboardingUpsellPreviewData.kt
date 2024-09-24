@@ -38,7 +38,7 @@ internal object OnboardingUpsellPreviewData {
                 title = "Unlimited",
                 currency = "CHF",
                 monthlyPrice = null,
-                monthlyPriceWithDiscount = 12.99f,
+                monthlyPriceWithDiscount = TextUiModel.Text("12.99"),
                 entitlements = listOf(
                     DynamicEntitlementUiModel.Overridden(
                         text = TextUiModel.Text("Entitlement 1"),
@@ -66,7 +66,7 @@ internal object OnboardingUpsellPreviewData {
                 title = "Mail Plus",
                 currency = "CHF",
                 monthlyPrice = null,
-                monthlyPriceWithDiscount = 4.99f,
+                monthlyPriceWithDiscount = TextUiModel.Text("4.99"),
                 entitlements = listOf(
                     DynamicEntitlementUiModel.Overridden(
                         text = TextUiModel.Text("Entitlement 1"),
@@ -111,8 +111,8 @@ internal object OnboardingUpsellPreviewData {
             OnboardingUpsellPlanUiModel(
                 title = "Unlimited",
                 currency = "CHF",
-                monthlyPrice = 12.99f,
-                monthlyPriceWithDiscount = 9.99f,
+                monthlyPrice = TextUiModel.Text("12.99"),
+                monthlyPriceWithDiscount = TextUiModel.Text("9.99"),
                 entitlements = listOf(
                     DynamicEntitlementUiModel.Overridden(
                         text = TextUiModel.Text("Entitlement 1"),
@@ -139,8 +139,8 @@ internal object OnboardingUpsellPreviewData {
             OnboardingUpsellPlanUiModel(
                 title = "Mail Plus",
                 currency = "CHF",
-                monthlyPrice = 4.99f,
-                monthlyPriceWithDiscount = 3.99f,
+                monthlyPrice = TextUiModel.Text("4.99"),
+                monthlyPriceWithDiscount = TextUiModel.Text("3.99"),
                 entitlements = listOf(
                     DynamicEntitlementUiModel.Overridden(
                         text = TextUiModel.Text("Entitlement 1"),
