@@ -167,7 +167,9 @@ private fun PlanSwitcher(
                 isSelected = selectedPlansType == PlansType.Annual
             )
         }
-        PlanSwitcherLabel(modifier = Modifier.align(Alignment.TopEnd), text = planSwitcherUiModel.discount)
+        planSwitcherUiModel.discount?.let {
+            PlanSwitcherLabel(modifier = Modifier.align(Alignment.TopEnd), text = planSwitcherUiModel.discount)
+        }
     }
 }
 

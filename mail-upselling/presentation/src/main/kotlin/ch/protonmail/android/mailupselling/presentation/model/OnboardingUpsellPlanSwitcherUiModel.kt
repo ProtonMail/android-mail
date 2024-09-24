@@ -21,5 +21,5 @@ package ch.protonmail.android.mailupselling.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 data class OnboardingUpsellPlanSwitcherUiModel(
-    val discount: TextUiModel
+    val discount: TextUiModel?
 )
