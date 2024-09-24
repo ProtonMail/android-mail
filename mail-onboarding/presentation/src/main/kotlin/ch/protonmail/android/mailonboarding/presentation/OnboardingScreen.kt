@@ -44,7 +44,13 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -56,6 +62,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -65,8 +73,8 @@ import me.proton.core.compose.theme.headlineNorm
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(onCloseOnboarding: () -> Unit) {
-    val contentMap = listOf(
+fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: () -> Unit) {
+    val contentMap = listOfNotNull(
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_ga,
             headlineId = R.string.onboarding_headline_ga,
@@ -86,10 +94,39 @@ fun OnboardingScreen(onCloseOnboarding: () -> Unit) {
             illustrationId = R.drawable.illustration_neat_and_tidy,
             headlineId = R.string.onboarding_neat_and_tidy_headline,
             descriptionId = R.string.onboarding_neat_and_tidy_description
-        )
+        ),
+        if (shouldShowUpselling) {
+            OnboardingUiModel(
+                illustrationId = R.drawable.empty,
+                headlineId = R.string.empty,
+                descriptionId = R.string.empty
+            )
+        } else null
     )
     val viewCount = contentMap.size
     val pagerState = rememberPagerState(pageCount = { viewCount })
+
+    var isSwipingToUpsellingPage by remember { mutableStateOf(false) }
+
+    LaunchedEffect(pagerState) {
+        snapshotFlow { Pair(pagerState.currentPage, pagerState.targetPage) }
+            .distinctUntilChanged()
+            .map { (currentPage, targetPage) ->
+
+                val fromPage = currentPage + 1
+                val toPage = targetPage + 1
+
+                // return true if we're showing upselling and are about to swipe to last page
+                shouldShowUpselling && fromPage == viewCount - 1 && toPage == viewCount
+            }
+            .collect { isSwipingToUpsellingPage = it }
+    }
+
+    LaunchedEffect(isSwipingToUpsellingPage) {
+        if (isSwipingToUpsellingPage) {
+            onCloseOnboarding()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -244,6 +281,7 @@ fun OnboardingIndexDots(pagerState: PagerState, viewCount: Int) {
 private fun OnboardingScreenPreview() {
     ProtonTheme {
         OnboardingScreen(
+            shouldShowUpselling = true,
             onCloseOnboarding = {}
         )
     }

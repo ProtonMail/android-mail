@@ -97,7 +97,8 @@ internal fun NavGraphBuilder.addMailbox(
                 showNormalSnackbar = showNormalSnackbar,
                 showErrorSnackbar = showErrorSnackbar,
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
-                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) }
+                onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
+                navigateToOnboardingUpselling = { navController.navigate(Destination.Screen.OnboardingUpselling.route) }
             )
         )
     }
@@ -578,3 +579,8 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
     }
 }
 
+internal fun NavGraphBuilder.addOnboardingUpselling() {
+    composable(route = Destination.Screen.OnboardingUpselling.route) {
+        // show Upselling Onboarding
+    }
+}

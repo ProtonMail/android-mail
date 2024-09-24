@@ -20,7 +20,12 @@ package ch.protonmail.android.mailonboarding.presentation.model
 
 sealed interface OnboardingState {
 
-    object Hidden : OnboardingState
+    data object Hidden : OnboardingState
 
-    object Shown : OnboardingState
+    sealed interface Shown : OnboardingState {
+
+        data object UpsellingOn : Shown
+        data object UpsellingOff : Shown
+
+    }
 }

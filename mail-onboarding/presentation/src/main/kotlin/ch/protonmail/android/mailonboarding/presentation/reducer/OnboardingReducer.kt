@@ -26,7 +26,8 @@ class OnboardingReducer @Inject constructor() {
 
     fun newStateFrom(operation: OnboardingOperation): OnboardingState {
         return when (operation) {
-            is OnboardingOperation.Event.ShowOnboarding -> OnboardingState.Shown
+            is OnboardingOperation.Event.ShowOnboarding.UpsellingOn -> OnboardingState.Shown.UpsellingOn
+            is OnboardingOperation.Event.ShowOnboarding.UpsellingOff -> OnboardingState.Shown.UpsellingOff
             is OnboardingOperation.Action.CloseOnboarding -> OnboardingState.Hidden
         }
     }

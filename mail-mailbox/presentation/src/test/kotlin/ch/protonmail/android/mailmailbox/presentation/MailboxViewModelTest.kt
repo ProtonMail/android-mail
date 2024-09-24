@@ -77,9 +77,9 @@ import ch.protonmail.android.mailmailbox.domain.usecase.ObserveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
+import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
-import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveOnboarding
 import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
@@ -94,7 +94,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
@@ -124,10 +123,12 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -290,6 +291,9 @@ class MailboxViewModelTest {
     }
     private val showRatingBooster = mockk<ShowRatingBooster>(relaxUnitFun = true)
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk.invoke(any()) } returns flowOf(false)
+    }
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -337,7 +341,8 @@ class MailboxViewModelTest {
             shouldUpgradeStorage = shouldUpgradeStorage,
             shouldShowRatingBooster = shouldShowRatingBooster,
             showRatingBooster = showRatingBooster,
-            recordRatingBoosterTriggered = recordRatingBoosterTriggered
+            recordRatingBoosterTriggered = recordRatingBoosterTriggered,
+            observeUpsellingVisibility = observeUpsellingVisibility
         )
     }
 
@@ -377,7 +382,8 @@ class MailboxViewModelTest {
                 bottomSheetState = null,
                 actionResult = Effect.empty(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                showOnboardingUpselling = Effect.empty()
             )
 
             assertEquals(expected, actual)
@@ -700,6 +706,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -717,6 +724,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -730,6 +738,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Visible.Button(TextUiModel("Clear All"))
             )
         )
@@ -786,6 +795,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1352,6 +1362,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1383,6 +1394,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -1414,6 +1426,7 @@ class MailboxViewModelTest {
                 refreshRequested = true,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3607,6 +3620,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             ),
             unreadFilterState = UnreadFilterState.Data(
@@ -3616,27 +3630,63 @@ class MailboxViewModelTest {
         )
     }
 
+    @Suppress("MaxLineLength")
     @Test
-    fun `onboarding state should be shown when repository emits the preference with value true`() = runTest {
-        // When
-        coEvery {
-            observeOnboarding()
-        } returns flowOf(OnboardingPreference(display = true).right())
-        every {
-            mailboxReducer.newStateFrom(
-                any(),
-                any()
-            )
-        } returns MailboxStateSampleData.OnboardingShown
+    fun `onboarding state should be shown with upselling OFF when repository emits the preference with value true`() {
+        runTest {
+            // When
+            coEvery {
+                observeOnboarding()
+            } returns flowOf(OnboardingPreference(display = true).right())
+            every {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    any()
+                )
+            } returns MailboxStateSampleData.OnboardingShown
+            val expectedUpsellingVisible = false
+            expectObserveUpsellingVisibility(expectedUpsellingVisible)
 
-        mailboxViewModel.state.test {
-            val currentState = awaitItem()
+            mailboxViewModel.state.test {
+                val currentState = awaitItem()
 
-            // Then
-            verify(exactly = 1) {
-                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowOnboarding)
+                // Then
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(any(), MailboxEvent.ShowOnboarding(expectedUpsellingVisible))
+                }
+                assertEquals(OnboardingState.Shown.UpsellingOff, currentState.onboardingState)
             }
-            assertEquals(OnboardingState.Shown, currentState.onboardingState)
+        }
+    }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `onboarding state should be shown with upselling ON when repository emits the preference with value true`() {
+        runTest {
+            // When
+            coEvery {
+                observeOnboarding()
+            } returns flowOf(OnboardingPreference(display = true).right())
+            every {
+                mailboxReducer.newStateFrom(
+                    any(),
+                    any()
+                )
+            } returns MailboxStateSampleData.OnboardingShown.copy(
+                onboardingState = OnboardingState.Shown.UpsellingOn
+            )
+            val expectedUpsellingVisible = true
+            expectObserveUpsellingVisibility(expectedUpsellingVisible)
+
+            mailboxViewModel.state.test {
+                val currentState = awaitItem()
+
+                // Then
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(any(), MailboxEvent.ShowOnboarding(expectedUpsellingVisible))
+                }
+                assertEquals(OnboardingState.Shown.UpsellingOn, currentState.onboardingState)
+            }
         }
     }
 
@@ -3674,6 +3724,40 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `should emit ShowOnboardingUpselling when closing onboarding`() = runTest {
+        // Given
+        coEvery {
+            saveOnboarding(display = false)
+        } returns Unit.right()
+
+        val initialMailboxState = createMailboxDataState().copy(
+            onboardingState = OnboardingState.Shown.UpsellingOn
+        )
+        val expectedState = initialMailboxState.copy(
+            showOnboardingUpselling = Effect.of(Unit)
+        )
+
+        every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        every {
+            mailboxReducer.newStateFrom(
+                initialMailboxState,
+                MailboxViewAction.CloseOnboarding
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.CloseOnboarding)
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            val actual = awaitItem()
+
+            assertEquals(Effect.of(Unit), actual.showOnboardingUpselling)
+        }
+    }
+
+    @Test
     fun `when enter search mode action is submitted, search mode is updated and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Inbox.copy(
@@ -3686,6 +3770,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NewSearch,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3718,6 +3803,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3753,6 +3839,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.SearchLoading,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3785,6 +3872,7 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.SearchData,
+                showOnboardingUpselling = Effect.empty(),
                 clearState = MailboxListState.Data.ClearState.Hidden
             )
         )
@@ -3919,6 +4007,36 @@ class MailboxViewModelTest {
 
         // Then
         verify { showRatingBooster(context) }
+    }
+
+    @Test
+    fun `should create new state for showing the Onboarding Upselling when it should be shown`() = runTest {
+        // Given
+        val initialMailboxState = createMailboxDataState()
+        val expectedState = initialMailboxState.copy(
+            showOnboardingUpselling = Effect.of(Unit)
+        )
+
+        every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        every {
+            mailboxReducer.newStateFrom(
+                initialMailboxState,
+                MailboxViewAction.ShowOnboardingUpselling
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+
+            awaitItem()
+
+            mailboxViewModel.submit(MailboxViewAction.ShowOnboardingUpselling)
+
+            val actual = awaitItem()
+
+            assertEquals(Effect.of(Unit), actual.showOnboardingUpselling)
+        }
     }
 
     private fun returnExpectedStateForBottomBarEvent(
@@ -4241,6 +4359,10 @@ class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(initialState, MailboxViewAction.RequestUpsellingBottomSheet)
         } returns initialState
+    }
+
+    private fun expectObserveUpsellingVisibility(visible: Boolean) {
+        every { observeUpsellingVisibility.invoke(any()) } returns flowOf(visible)
     }
 
     private fun expectUpsellingBottomSheetDataLoaded(initialState: MailboxState) {

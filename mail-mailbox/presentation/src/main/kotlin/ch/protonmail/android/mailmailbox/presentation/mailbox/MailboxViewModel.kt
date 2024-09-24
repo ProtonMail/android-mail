@@ -112,6 +112,8 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.Upsellin
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -189,7 +191,8 @@ class MailboxViewModel @Inject constructor(
     private val shouldUpgradeStorage: ShouldUpgradeStorage,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
-    private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered
+    private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -202,7 +205,8 @@ class MailboxViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             if (shouldDisplayOnboarding()) {
-                emitNewStateFrom(MailboxEvent.ShowOnboarding)
+                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.PostOnboarding).first()
+                emitNewStateFrom(MailboxEvent.ShowOnboarding(shouldShowUpselling))
             }
         }
 
@@ -376,6 +380,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.RequestUpsellingBottomSheet -> showUpsellingBottomSheet(viewAction)
                 is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
                 is MailboxViewAction.ShowRatingBooster -> showRatingBooster(viewAction)
+                is MailboxViewAction.ShowOnboardingUpselling -> { emitNewStateFrom(viewAction) }
             }.exhaustive
         }
     }
@@ -965,6 +970,9 @@ class MailboxViewModel @Inject constructor(
     private suspend fun handleCloseOnboarding() {
         viewModelScope.launch {
             saveOnboarding(display = false)
+            if (state.value.onboardingState is OnboardingState.Shown.UpsellingOn) {
+                emitNewStateFrom(MailboxViewAction.ShowOnboardingUpselling)
+            }
             emitNewStateFrom(MailboxViewAction.CloseOnboarding)
         }
     }
@@ -1303,7 +1311,8 @@ class MailboxViewModel @Inject constructor(
             bottomSheetState = null,
             actionResult = Effect.empty(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            showOnboardingUpselling = Effect.empty()
         )
     }
 }

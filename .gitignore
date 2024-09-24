@@ -71,6 +71,7 @@ scripts/uitests/AssetsFile.lock.bak
 .idea/androidTestResultsUserPreferences.xml
 .idea/assetWizardSettings.xml
 .idea/deploymentTargetDropDown.xml
+.idea/deploymentTargetSelector.xml
 .idea/vcs.xml
 .idea/**/shelf
 .idea/runConfigurations.xml

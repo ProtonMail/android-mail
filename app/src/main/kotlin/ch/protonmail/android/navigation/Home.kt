@@ -83,6 +83,7 @@ import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addManageMembers
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
+import ch.protonmail.android.navigation.route.addOnboardingUpselling
 import ch.protonmail.android.navigation.route.addParentFolderList
 import ch.protonmail.android.navigation.route.addPrivacySettings
 import ch.protonmail.android.navigation.route.addRemoveAccountDialog
@@ -594,6 +595,7 @@ fun Home(
                 addThemeSettings(navController)
                 addNotificationsSettings(navController)
                 addDeepLinkHandler(navController)
+                addOnboardingUpselling()
             }
         }
     }

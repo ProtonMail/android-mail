@@ -41,5 +41,6 @@ data class MailboxState(
     val bottomSheetState: BottomSheetState?,
     val actionResult: Effect<ActionResult>,
     val error: Effect<TextUiModel>,
-    val showRatingBooster: Effect<Unit>
+    val showRatingBooster: Effect<Unit>,
+    val showOnboardingUpselling: Effect<Unit>
 )

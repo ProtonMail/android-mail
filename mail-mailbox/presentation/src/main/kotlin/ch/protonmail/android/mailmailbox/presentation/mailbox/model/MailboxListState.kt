@@ -41,12 +41,14 @@ sealed interface MailboxListState {
         val swipeActions: SwipeActionsUiModel?
         val clearState: ClearState
         val searchState: MailboxSearchState
+        val showOnboardingUpselling: Effect<Unit>
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
             override val searchState: MailboxSearchState,
+            override val showOnboardingUpselling: Effect<Unit>,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
             val offlineEffect: Effect<Unit>,
@@ -62,6 +64,7 @@ sealed interface MailboxListState {
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
             override val searchState: MailboxSearchState,
+            override val showOnboardingUpselling: Effect<Unit>,
             val selectedMailboxItems: Set<SelectedMailboxItem>
         ) : Data {
 

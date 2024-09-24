@@ -48,8 +48,13 @@ internal class OnboardingReducerTest(
         private val transitionsFromHiddenState = listOf(
             TestInput(
                 currentState = OnboardingState.Hidden,
-                operation = Event.ShowOnboarding,
-                expectedState = OnboardingState.Shown
+                operation = Event.ShowOnboarding.UpsellingOn,
+                expectedState = OnboardingState.Shown.UpsellingOn
+            ),
+            TestInput(
+                currentState = OnboardingState.Hidden,
+                operation = Event.ShowOnboarding.UpsellingOff,
+                expectedState = OnboardingState.Shown.UpsellingOff
             ),
             TestInput(
                 currentState = OnboardingState.Hidden,
@@ -60,14 +65,34 @@ internal class OnboardingReducerTest(
 
         private val transitionsFromShownState = listOf(
             TestInput(
-                currentState = OnboardingState.Shown,
+                currentState = OnboardingState.Shown.UpsellingOn,
                 operation = Action.CloseOnboarding,
                 expectedState = OnboardingState.Hidden
             ),
             TestInput(
-                currentState = OnboardingState.Shown,
-                operation = Event.ShowOnboarding,
-                expectedState = OnboardingState.Shown
+                currentState = OnboardingState.Shown.UpsellingOff,
+                operation = Action.CloseOnboarding,
+                expectedState = OnboardingState.Hidden
+            ),
+            TestInput(
+                currentState = OnboardingState.Shown.UpsellingOn,
+                operation = Event.ShowOnboarding.UpsellingOn,
+                expectedState = OnboardingState.Shown.UpsellingOn
+            ),
+            TestInput(
+                currentState = OnboardingState.Shown.UpsellingOn,
+                operation = Event.ShowOnboarding.UpsellingOff,
+                expectedState = OnboardingState.Shown.UpsellingOff
+            ),
+            TestInput(
+                currentState = OnboardingState.Shown.UpsellingOff,
+                operation = Event.ShowOnboarding.UpsellingOn,
+                expectedState = OnboardingState.Shown.UpsellingOn
+            ),
+            TestInput(
+                currentState = OnboardingState.Shown.UpsellingOff,
+                operation = Event.ShowOnboarding.UpsellingOff,
+                expectedState = OnboardingState.Shown.UpsellingOff
             )
         )
 

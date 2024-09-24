@@ -24,6 +24,9 @@ sealed interface OnboardingOperation {
     }
 
     sealed interface Event : OnboardingOperation {
-        data object ShowOnboarding : Event
+        sealed interface ShowOnboarding : Event {
+            data object UpsellingOn : ShowOnboarding
+            data object UpsellingOff : ShowOnboarding
+        }
     }
 }

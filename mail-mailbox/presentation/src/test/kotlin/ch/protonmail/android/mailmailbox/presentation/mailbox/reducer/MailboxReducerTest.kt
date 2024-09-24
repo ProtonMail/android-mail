@@ -194,7 +194,8 @@ internal class MailboxReducerTest(
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = MailboxListState.Data.ClearState.Hidden,
+                showOnboardingUpselling = Effect.empty()
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text()
@@ -212,7 +213,8 @@ internal class MailboxReducerTest(
             bottomSheetState = null,
             storageLimitState = StorageLimitState.None,
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            showOnboardingUpselling = Effect.empty()
         )
 
         private val actions = listOf(
@@ -468,6 +470,18 @@ internal class MailboxReducerTest(
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = true,
                 shouldReduceStorageLimitState = false
+            ),
+            TestInput(
+                MailboxViewAction.ShowOnboardingUpselling,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                showOnboardingUpsellingState = Effect.of(Unit)
             )
         )
 
@@ -773,6 +787,18 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = false,
                 shouldReduceStorageLimitState = false,
                 showRatingBoosterState = Effect.of(Unit)
+            ),
+            TestInput(
+                MailboxEvent.ShowOnboardingUpselling,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                showOnboardingUpsellingState = Effect.of(Unit)
             )
         )
 
@@ -802,6 +828,7 @@ internal class MailboxReducerTest(
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceStorageLimitState: Boolean,
         val errorBarState: Effect<TextUiModel> = Effect.empty(),
-        val showRatingBoosterState: Effect<Unit> = Effect.empty()
+        val showRatingBoosterState: Effect<Unit> = Effect.empty(),
+        val showOnboardingUpsellingState: Effect<Unit> = Effect.empty()
     )
 }

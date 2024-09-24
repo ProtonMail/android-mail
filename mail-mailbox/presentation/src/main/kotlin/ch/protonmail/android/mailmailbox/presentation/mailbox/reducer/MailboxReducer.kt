@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -26,14 +27,12 @@ import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.StorageLimitState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
@@ -43,6 +42,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
@@ -74,7 +74,8 @@ class MailboxReducer @Inject constructor(
             bottomSheetState = currentState.toNewBottomSheetState(operation),
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation),
-            showRatingBooster = currentState.toNewShowRatingBoosterState(operation)
+            showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
+            showOnboardingUpselling = currentState.toNewShowOnboardingUpsellingState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -140,7 +141,9 @@ class MailboxReducer @Inject constructor(
         return if (operation is MailboxOperation.AffectingOnboarding) {
             val onboardingOperation = when (operation) {
                 MailboxViewAction.CloseOnboarding -> OnboardingOperation.Action.CloseOnboarding
-                MailboxEvent.ShowOnboarding -> OnboardingOperation.Event.ShowOnboarding
+                is MailboxEvent.ShowOnboarding -> if (operation.upsellingVisible) {
+                    OnboardingOperation.Event.ShowOnboarding.UpsellingOn
+                } else OnboardingOperation.Event.ShowOnboarding.UpsellingOff
             }
             onboardingReducer.newStateFrom(onboardingOperation)
         } else {
@@ -248,6 +251,14 @@ class MailboxReducer @Inject constructor(
             Effect.of(Unit)
         } else {
             showRatingBooster
+        }
+    }
+
+    private fun MailboxState.toNewShowOnboardingUpsellingState(operation: MailboxOperation): Effect<Unit> {
+        return if (operation is MailboxOperation.AffectingOnboardingUpselling) {
+            Effect.of(Unit)
+        } else {
+            showOnboardingUpselling
         }
     }
 }

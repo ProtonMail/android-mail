@@ -194,6 +194,8 @@ sealed class Destination(val route: String) {
         object ManageMembers : Destination("contacts/group/manageMembers")
 
         object ContactSearch : Destination("contacts/search")
+
+        object OnboardingUpselling : Destination("upselling")
     }
 
     object Dialog {

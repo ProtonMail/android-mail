@@ -176,7 +176,10 @@ fun MailboxScreen(
     Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
 
     if (mailboxState.onboardingState is OnboardingState.Shown) {
-        OnboardingScreen(onCloseOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) })
+        OnboardingScreen(
+            shouldShowUpselling = mailboxState.onboardingState is OnboardingState.Shown.UpsellingOn,
+            onCloseOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) }
+        )
     } else {
         val completeActions = actions.copy(
             onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
@@ -218,7 +221,8 @@ fun MailboxScreen(
             onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
             onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
             onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
-            onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) }
+            onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) },
+            onShowOnboardingUpselling = { viewModel.submit(MailboxViewAction.ShowOnboardingUpselling) }
         )
 
         mailboxState.bottomSheetState?.let {
@@ -331,6 +335,10 @@ fun MailboxScreen(
 
     ConsumableLaunchedEffect(mailboxState.showRatingBooster) {
         actions.onShowRatingBooster()
+    }
+
+    ConsumableLaunchedEffect(mailboxState.showOnboardingUpselling) {
+        actions.navigateToOnboardingUpselling()
     }
 
     DeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
@@ -1023,7 +1031,9 @@ object MailboxScreen {
         val onExitSearchMode: () -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit,
-        val onShowRatingBooster: () -> Unit
+        val onShowRatingBooster: () -> Unit,
+        val onShowOnboardingUpselling: () -> Unit,
+        val navigateToOnboardingUpselling: () -> Unit
     ) {
 
         companion object {
@@ -1070,7 +1080,9 @@ object MailboxScreen {
                 onSearchResult = {},
                 onOpenUpsellingPage = {},
                 onCloseUpsellingPage = {},
-                onShowRatingBooster = {}
+                onShowRatingBooster = {},
+                onShowOnboardingUpselling = {},
+                navigateToOnboardingUpselling = {}
             )
         }
     }
