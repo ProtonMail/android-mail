@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 
-import androidx.annotation.DrawableRes
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,6 +46,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -53,16 +55,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
+import coil.compose.AsyncImage
+import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -78,16 +87,27 @@ import me.proton.core.compose.theme.headlineNorm
 
 @Composable
 internal fun OnboardingUpsellScreen(
-    planSwitcherUiModel: OnboardingUpsellPlanSwitcherUiModel,
-    planUiModels: OnboardingUpsellPlanUiModels,
-    buttonsUiModel: OnboardingUpsellButtonsUiModel
+    modifier: Modifier = Modifier,
+    viewModel: OnboardingUpsellViewModel = hiltViewModel(),
+    exitScreen: () -> Unit
 ) {
+    when (val state = viewModel.state.collectAsStateWithLifecycle().value) {
+        is OnboardingUpsellState.Loading -> ProtonCenteredProgress()
+        is OnboardingUpsellState.Data -> OnboardingUpsellScreenContent(
+            modifier = modifier,
+            state = state
+        )
+        is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
+    }
+}
 
+@Composable
+private fun OnboardingUpsellScreenContent(modifier: Modifier = Modifier, state: OnboardingUpsellState.Data) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
     val selectedPlan = remember { mutableIntStateOf(0) }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -109,7 +129,7 @@ internal fun OnboardingUpsellScreen(
 
             item {
                 PlanSwitcher(
-                    planSwitcherUiModel = planSwitcherUiModel,
+                    planSwitcherUiModel = state.planSwitcherUiModel,
                     selectedPlansType = selectedPlansType.value,
                     onSwitch = { selectedPlansType.value = it }
                 )
@@ -117,8 +137,8 @@ internal fun OnboardingUpsellScreen(
             }
 
             val plans = when (selectedPlansType.value) {
-                PlansType.Monthly -> planUiModels.monthlyPlans
-                PlansType.Annual -> planUiModels.annualPlans
+                PlansType.Monthly -> state.planUiModels.monthlyPlans
+                PlansType.Annual -> state.planUiModels.annualPlans
             }
 
             itemsIndexed(plans) { index, item ->
@@ -133,18 +153,19 @@ internal fun OnboardingUpsellScreen(
             }
         }
 
-        UpsellButtons(selectedPlansType.value, buttonsUiModel)
+        UpsellButtons(selectedPlansType = selectedPlansType.value, buttonsUiModel = state.buttonsUiModel)
     }
 }
 
 @Suppress("MagicNumber")
 @Composable
 private fun PlanSwitcher(
+    modifier: Modifier = Modifier,
     planSwitcherUiModel: OnboardingUpsellPlanSwitcherUiModel,
     selectedPlansType: PlansType,
     onSwitch: (PlansType) -> Unit
 ) {
-    Box(modifier = Modifier.height(MailDimens.PlanSwitcherHeight)) {
+    Box(modifier = modifier.height(MailDimens.PlanSwitcherHeight)) {
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -210,6 +231,7 @@ private fun PlanSwitcherItem(
 
 @Composable
 private fun PlanCard(
+    modifier: Modifier = Modifier,
     plan: OnboardingUpsellPlanUiModel,
     isSelected: Boolean,
     isBestValue: Boolean,
@@ -218,8 +240,9 @@ private fun PlanCard(
 ) {
     val borderWidth = if (isSelected) MailDimens.OnboardingUpsellBestValueBorder else MailDimens.DefaultBorder
     val borderColor = if (isSelected) ProtonTheme.colors.interactionNorm else ProtonTheme.colors.separatorNorm
+
     ElevatedCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .border(width = borderWidth, color = borderColor, shape = ProtonTheme.shapes.large)
             .selectable(selected = isSelected, onClick = onClick),
@@ -243,18 +266,18 @@ private fun PlanCard(
                 .padding(ProtonDimens.DefaultSpacing)
         ) {
             PlanCheckmark(isSelected = isSelected)
-            PlanNameAndPrice(plan)
+            PlanNameAndPrice(plan = plan)
             Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-            PlanEntitlements(plan, numberOfEntitlementsToShow)
+            PlanEntitlements(plan = plan, numberOfEntitlementsToShow = numberOfEntitlementsToShow)
         }
     }
 }
 
 @Composable
-private fun PlanCheckmark(isSelected: Boolean) {
+private fun PlanCheckmark(modifier: Modifier = Modifier, isSelected: Boolean) {
     if (isSelected) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .size(ProtonDimens.DefaultIconSize)
                 .background(color = ProtonTheme.colors.interactionNorm, shape = CircleShape)
                 .padding(ProtonDimens.ExtraSmallSpacing)
@@ -267,7 +290,7 @@ private fun PlanCheckmark(isSelected: Boolean) {
         }
     } else {
         Icon(
-            modifier = Modifier.size(ProtonDimens.DefaultIconSize),
+            modifier = modifier.size(ProtonDimens.DefaultIconSize),
             painter = painterResource(id = R.drawable.ic_proton_empty_circle),
             contentDescription = NO_CONTENT_DESCRIPTION,
             tint = ProtonTheme.colors.iconDisabled
@@ -276,8 +299,8 @@ private fun PlanCheckmark(isSelected: Boolean) {
 }
 
 @Composable
-private fun PlanNameAndPrice(plan: OnboardingUpsellPlanUiModel) {
-    Row(verticalAlignment = Alignment.Bottom) {
+private fun PlanNameAndPrice(modifier: Modifier = Modifier, plan: OnboardingUpsellPlanUiModel) {
+    Row(modifier = modifier, verticalAlignment = Alignment.Bottom) {
         Column(modifier = Modifier.weight(1f)) {
             Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
             Text(
@@ -290,7 +313,7 @@ private fun PlanNameAndPrice(plan: OnboardingUpsellPlanUiModel) {
                 if (plan.monthlyPrice != null) {
                     Text(
                         modifier = Modifier.align(Alignment.End),
-                        text = "${plan.currency} ${plan.monthlyPrice}",
+                        text = "${plan.currency} ${plan.monthlyPrice.string()}",
                         style = ProtonTheme.typography.defaultSmallWeak.copy(
                             textDecoration = TextDecoration.LineThrough
                         )
@@ -298,7 +321,7 @@ private fun PlanNameAndPrice(plan: OnboardingUpsellPlanUiModel) {
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "${plan.currency} ${plan.monthlyPriceWithDiscount}",
+                        text = "${plan.currency} ${plan.monthlyPriceWithDiscount.string()}",
                         style = ProtonTheme.typography.headlineNorm.copy(fontWeight = FontWeight.W700)
                     )
                     Text(
@@ -312,13 +335,17 @@ private fun PlanNameAndPrice(plan: OnboardingUpsellPlanUiModel) {
 }
 
 @Composable
-private fun PlanEntitlements(plan: OnboardingUpsellPlanUiModel, numberOfEntitlementsToShow: Int) {
+private fun PlanEntitlements(
+    modifier: Modifier = Modifier,
+    plan: OnboardingUpsellPlanUiModel,
+    numberOfEntitlementsToShow: Int
+) {
     val showAllEntitlements = remember { mutableStateOf(false) }
 
-    Column {
+    Column(modifier = modifier) {
         plan.entitlements.forEachIndexed { index, item ->
             if (index < numberOfEntitlementsToShow || showAllEntitlements.value) {
-                PlanEntitlement(R.drawable.ic_proton_storage, item.text)
+                PlanEntitlement(entitlementUiModel = item)
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
             }
         }
@@ -334,28 +361,39 @@ private fun PlanEntitlements(plan: OnboardingUpsellPlanUiModel, numberOfEntitlem
 }
 
 @Composable
-private fun PlanEntitlement(@DrawableRes icon: Int, text: TextUiModel) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
+private fun PlanEntitlement(modifier: Modifier = Modifier, entitlementUiModel: DynamicEntitlementUiModel) {
+    val imageModel = when (entitlementUiModel) {
+        is DynamicEntitlementUiModel.Default -> entitlementUiModel.remoteResource
+        is DynamicEntitlementUiModel.Overridden -> entitlementUiModel.localResource
+    }
+
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        AsyncImage(
             modifier = Modifier
                 .size(ProtonDimens.LargeSpacing)
                 .background(color = ProtonTheme.colors.backgroundSecondary, shape = CircleShape)
                 .padding(ProtonDimens.SmallSpacing),
-            painter = painterResource(id = icon),
-            contentDescription = NO_CONTENT_DESCRIPTION
+            placeholder = painterResource(R.drawable.ic_logo_mail_mono),
+            model = imageModel,
+            contentDescription = NO_CONTENT_DESCRIPTION,
+            contentScale = ContentScale.Fit
         )
         Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
         Text(
-            text = text.string(),
+            text = entitlementUiModel.text.string(),
             style = ProtonTheme.typography.defaultSmallNorm
         )
     }
 }
 
 @Composable
-private fun MorePlanEntitlements(numberOfEntitlementsNotShown: Int, onClick: () -> Unit) {
+private fun MorePlanEntitlements(
+    modifier: Modifier = Modifier,
+    numberOfEntitlementsNotShown: Int,
+    onClick: () -> Unit
+) {
     Row(
-        modifier = Modifier.clickable { onClick() }
+        modifier = modifier.clickable { onClick() }
     ) {
         Text(
             text = pluralStringResource(
@@ -376,7 +414,11 @@ private fun MorePlanEntitlements(numberOfEntitlementsNotShown: Int, onClick: () 
 }
 
 @Composable
-private fun UpsellButtons(selectedPlansType: PlansType, buttonsUiModel: OnboardingUpsellButtonsUiModel) {
+private fun UpsellButtons(
+    modifier: Modifier = Modifier,
+    selectedPlansType: PlansType,
+    buttonsUiModel: OnboardingUpsellButtonsUiModel
+) {
     val billingMessage = when (selectedPlansType) {
         PlansType.Monthly -> buttonsUiModel.monthlyBillingMessage
         PlansType.Annual -> buttonsUiModel.annualBillingMessage
@@ -384,7 +426,7 @@ private fun UpsellButtons(selectedPlansType: PlansType, buttonsUiModel: Onboardi
 
     MailDivider()
     Column(
-        modifier = Modifier.padding(horizontal = ProtonDimens.LargeSpacing, vertical = ProtonDimens.SmallSpacing),
+        modifier = modifier.padding(horizontal = ProtonDimens.LargeSpacing, vertical = ProtonDimens.SmallSpacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -414,14 +456,26 @@ private fun UpsellButtons(selectedPlansType: PlansType, buttonsUiModel: Onboardi
     }
 }
 
+@Composable
+private fun OnboardingUpsellError(state: OnboardingUpsellState.Error, exitScreen: () -> Unit) {
+    val context = LocalContext.current
+
+    ConsumableTextEffect(effect = state.error) { message ->
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        exitScreen()
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-private fun OnboardingUpsellScreenPreview() {
+private fun OnboardingUpsellScreenContentPreview() {
     ProtonTheme {
-        OnboardingUpsellScreen(
-            planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
-            planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
-            buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel
+        OnboardingUpsellScreenContent(
+            state = OnboardingUpsellState.Data(
+                planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
+                planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
+                buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel
+            )
         )
     }
 }
