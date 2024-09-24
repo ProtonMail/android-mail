@@ -55,5 +55,5 @@ internal interface ViewModelBindings {
 object ScopeBindings {
     @Provides
     @ObservableFlowScope
-    fun provideObservableFlowScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    fun provideObservableFlowScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 }
