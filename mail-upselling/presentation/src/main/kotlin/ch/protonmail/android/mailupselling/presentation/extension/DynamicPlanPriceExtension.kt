@@ -27,3 +27,10 @@ internal fun DynamicPlanPrice.normalizedPrice(cycle: Int): TextUiModel {
     } ?: 0f
     return TextUiModel.Text(actualPrice.toDecimalString())
 }
+
+internal fun DynamicPlanPrice.totalPrice(): TextUiModel {
+    val actualPrice = (current / 100f).takeIf {
+        it != Float.POSITIVE_INFINITY && it != Float.NEGATIVE_INFINITY
+    } ?: 0f
+    return TextUiModel.Text(actualPrice.toDecimalString())
+}
