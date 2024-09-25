@@ -405,15 +405,7 @@ class ComposerReducer @Inject constructor(
         val hasDuplicates = hasDuplicates(capturedToDuplicates, capturedCcDuplicates, capturedBccDuplicates)
 
         val error = when {
-            hasDuplicates -> {
-                Effect.of(
-                    TextUiModel(
-                        R.string.composer_error_duplicate_recipient,
-                        getDuplicateEmailsError(capturedToDuplicates, capturedCcDuplicates, capturedBccDuplicates)
-                    )
-                )
-            }
-
+            hasDuplicates -> { Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient)) }
             hasInvalidRecipients -> Effect.of(TextUiModel(R.string.composer_error_invalid_email))
             else -> Effect.empty()
         }
@@ -436,23 +428,6 @@ class ComposerReducer @Inject constructor(
     ): Boolean = capturedToDuplicates.duplicatesFound.isNotEmpty() ||
         capturedCcDuplicates.duplicatesFound.isNotEmpty() ||
         capturedBccDuplicates.duplicatesFound.isNotEmpty()
-
-    private fun getDuplicateEmailsError(
-        capturedToDuplicates: CleanedRecipients,
-        capturedCcDuplicates: CleanedRecipients,
-        capturedBccDuplicates: CleanedRecipients
-    ): String {
-        val duplicates = capturedToDuplicates.duplicatesFound +
-            capturedCcDuplicates.duplicatesFound +
-            capturedBccDuplicates.duplicatesFound
-
-        val validDuplicates = duplicates.filterIsInstance<RecipientUiModel.Valid>()
-        val inValidDuplicates = duplicates.filterIsInstance<RecipientUiModel.Invalid>()
-
-        return (validDuplicates.map { it.address } + inValidDuplicates.map { it.address })
-            .distinct()
-            .joinToString(", ")
-    }
 
     private fun captureDuplicateEmails(recipients: List<RecipientUiModel>): CleanedRecipients {
         val itemsCounted = recipients.groupingBy { it }.eachCount()

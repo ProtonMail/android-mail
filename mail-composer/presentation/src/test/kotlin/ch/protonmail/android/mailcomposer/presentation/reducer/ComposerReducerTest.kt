@@ -344,12 +344,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     to = listOf(Valid(this.first())),
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            this.first()
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -362,12 +357,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     cc = listOf(Valid(this.first())),
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            this.first()
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -380,12 +370,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     bcc = listOf(Valid(this.first())),
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            this.first()
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -401,12 +386,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     to = expected,
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            expected.joinToString(", ") { it.address }
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -422,12 +402,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     cc = expected,
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            expected.joinToString(", ") { it.address }
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -443,12 +418,7 @@ class ComposerReducerTest(
                 expectedState = aSubmittableState(
                     draftId = messageId,
                     bcc = expected,
-                    recipientValidationError = Effect.of(
-                        TextUiModel(
-                            R.string.composer_error_duplicate_recipient,
-                            expected.joinToString(", ") { it.address }
-                        )
-                    )
+                    recipientValidationError = Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
                 )
             )
         }
@@ -462,7 +432,6 @@ class ComposerReducerTest(
                     draftId = messageId,
                     error = Effect.empty(),
                     draftBody = this.value
-
                 )
             )
         }
