@@ -23,6 +23,7 @@ import androidx.startup.AppInitializer
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.initializer.strictmode.StrictModeInitializer
+import ch.protonmail.android.mailupselling.domain.initializers.UpgradeStateInitializer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -75,6 +76,7 @@ class MainInitializer : Initializer<Unit> {
 
     private fun mailDependencies() = listOf(
         AccountStateHandlerInitializer::class.java,
+        UpgradeStateInitializer::class.java,
         EventManagerInitializer::class.java,
         LoggerInitializer::class.java,
         StrictModeInitializer::class.java,
