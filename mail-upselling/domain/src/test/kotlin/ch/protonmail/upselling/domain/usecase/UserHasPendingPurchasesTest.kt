@@ -18,8 +18,15 @@
 
 package ch.protonmail.upselling.domain.usecase
 
-import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
+import ch.protonmail.upselling.domain.UpsellingTestData.FakeAcknowledgedPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakeCancelledPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakeDeletedPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakeFailedPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakePendingPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakePurchasedPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.FakeSubscribedPurchase
+import ch.protonmail.upselling.domain.UpsellingTestData.userId
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -27,7 +34,6 @@ import kotlinx.coroutines.test.runTest
 import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.payment.domain.entity.Purchase
-import me.proton.core.payment.domain.entity.PurchaseState
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertFalse
@@ -49,7 +55,7 @@ internal class UserHasPendingPurchasesTest {
         val purchases = emptyList<Purchase>()
 
         // When
-        val actual = userHasPendingPurchases(purchases, UserId)
+        val actual = userHasPendingPurchases(purchases, userId)
 
         // Then
         assertFalse(actual)
@@ -59,10 +65,10 @@ internal class UserHasPendingPurchasesTest {
     fun `should return false when sessionId cannot be determined`() = runTest {
         // Given
         val purchases = listOf(FakeAcknowledgedPurchase)
-        coEvery { sessionManager.getSessionId(UserId) } returns null
+        coEvery { sessionManager.getSessionId(userId) } returns null
 
         // When
-        val actual = userHasPendingPurchases(purchases, UserId)
+        val actual = userHasPendingPurchases(purchases, userId)
 
         // Then
         assertFalse(actual)
@@ -79,10 +85,10 @@ internal class UserHasPendingPurchasesTest {
             FakeDeletedPurchase
         )
 
-        coEvery { sessionManager.getSessionId(UserId) } returns SessionId(UserId.id)
+        coEvery { sessionManager.getSessionId(userId) } returns SessionId(userId.id)
 
         // When
-        val actual = userHasPendingPurchases(purchases, UserId)
+        val actual = userHasPendingPurchases(purchases, userId)
 
         // Then
         assertFalse(actual)
@@ -92,10 +98,10 @@ internal class UserHasPendingPurchasesTest {
     fun `should return true when there are purchased state purchases`() = runTest {
         // Given
         val purchases = listOf(FakePurchasedPurchase)
-        coEvery { sessionManager.getSessionId(UserId) } returns SessionId(UserId.id)
+        coEvery { sessionManager.getSessionId(userId) } returns SessionId(userId.id)
 
         // When
-        val actual = userHasPendingPurchases(purchases, UserId)
+        val actual = userHasPendingPurchases(purchases, userId)
 
         // Then
         assertTrue(actual)
@@ -105,38 +111,12 @@ internal class UserHasPendingPurchasesTest {
     fun `should return true when there are subscribed state purchases`() = runTest {
         // Given
         val purchases = listOf(FakeSubscribedPurchase)
-        coEvery { sessionManager.getSessionId(UserId) } returns SessionId(UserId.id)
+        coEvery { sessionManager.getSessionId(userId) } returns SessionId(userId.id)
 
         // When
-        val actual = userHasPendingPurchases(purchases, UserId)
+        val actual = userHasPendingPurchases(purchases, userId)
 
         // Then
         assertTrue(actual)
-    }
-
-    private companion object {
-
-        val UserId = UserSample.Primary.userId
-
-        val BasePurchase = Purchase(
-            sessionId = SessionId(UserId.id),
-            planName = "Plan",
-            planCycle = 1,
-            purchaseState = PurchaseState.Acknowledged,
-            purchaseFailure = null,
-            paymentProvider = mockk(),
-            paymentOrderId = null,
-            paymentToken = null,
-            paymentCurrency = mockk(),
-            paymentAmount = 1L
-        )
-
-        val FakeFailedPurchase = BasePurchase.copy(purchaseState = PurchaseState.Failed)
-        val FakePurchasedPurchase = BasePurchase.copy(purchaseState = PurchaseState.Purchased)
-        val FakeSubscribedPurchase = BasePurchase.copy(purchaseState = PurchaseState.Subscribed)
-        val FakeAcknowledgedPurchase = BasePurchase.copy(purchaseState = PurchaseState.Acknowledged)
-        val FakePendingPurchase = BasePurchase.copy(purchaseState = PurchaseState.Pending)
-        val FakeCancelledPurchase = BasePurchase.copy(purchaseState = PurchaseState.Cancelled)
-        val FakeDeletedPurchase = BasePurchase.copy(purchaseState = PurchaseState.Deleted)
     }
 }
