@@ -35,6 +35,7 @@ import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,6 +60,7 @@ class FolderFormViewModel @Inject constructor(
     private val isLabelNameAllowed: IsLabelNameAllowed,
     private val isLabelLimitReached: IsLabelLimitReached,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
+    private val userUpgradeState: UserUpgradeState,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val reducer: FolderFormReducer,
     private val colorMapper: ColorMapper,
@@ -216,27 +218,36 @@ class FolderFormViewModel @Inject constructor(
     ) {
         emitNewStateFor(FolderFormEvent.CreatingFolder)
 
-        val isFolderLimitReached = isLabelLimitReached(primaryUserId(), LabelType.MessageFolder).getOrElse {
+        val userId = primaryUserId()
+        val isFolderLimitReached = isLabelLimitReached(userId, LabelType.MessageFolder).getOrElse {
             return emitNewStateFor(FolderFormEvent.SaveFolderError)
         }
 
-        if (isFolderLimitReached) {
-            val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.Folders).first()
+        when {
+            isFolderLimitReached && userUpgradeState.isUserPendingUpgrade -> {
+                return emitNewStateFor(FolderFormEvent.UpsellingInProgress)
+            }
 
-            return if (shouldShowUpselling) {
-                emitNewStateFor(FolderFormEvent.ShowUpselling)
-            } else emitNewStateFor(FolderFormEvent.FolderLimitReached)
+            isFolderLimitReached -> {
+                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.Folders).first()
+                return if (shouldShowUpselling) {
+                    emitNewStateFor(FolderFormEvent.ShowUpselling)
+                } else emitNewStateFor(FolderFormEvent.FolderLimitReached)
+            }
+
+            else -> Unit
         }
 
-        val isFolderNameAllowed = isLabelNameAllowed(primaryUserId(), name, parentId).getOrElse {
+        val isFolderNameAllowed = isLabelNameAllowed(userId, name, parentId).getOrElse {
             return emitNewStateFor(FolderFormEvent.SaveFolderError)
         }
         if (!isFolderNameAllowed) return emitNewStateFor(FolderFormEvent.FolderAlreadyExists)
 
-        createFolder(primaryUserId(), name, color, parentId, notifications).getOrElse {
-            return emitNewStateFor(FolderFormEvent.SaveFolderError)
-        }
-        emitNewStateFor(FolderFormEvent.FolderCreated)
+        createFolder(userId, name, color, parentId, notifications).fold(ifLeft = {
+            emitNewStateFor(FolderFormEvent.SaveFolderError)
+        }, ifRight = {
+            emitNewStateFor(FolderFormEvent.FolderCreated)
+        })
     }
 
     @SuppressWarnings("ComplexCondition")

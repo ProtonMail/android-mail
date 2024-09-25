@@ -40,6 +40,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
@@ -131,6 +132,10 @@ class FolderFormViewModelTest {
 
     private val isLabelNameAllowed = mockk<IsLabelNameAllowed>()
     private val isLabelLimitReached = mockk<IsLabelLimitReached>()
+    private val userUpgradeState = mockk<UserUpgradeState> {
+        every { this@mockk.isUserPendingUpgrade } returns false
+    }
+
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
         every { this@mockk.invoke(any()) } returns flowOf(false)
     }
@@ -151,6 +156,7 @@ class FolderFormViewModelTest {
             isLabelNameAllowed,
             isLabelLimitReached,
             observeUpsellingVisibility,
+            userUpgradeState,
             observeFolderColorSettings,
             reducer,
             colorMapper,
@@ -557,6 +563,33 @@ class FolderFormViewModelTest {
                 )
             }
         }
+
+    @Test
+    fun `given create state, limit reached, upselling in progress, emits upselling in progress`() = runTest {
+        // Given
+        val loadedState = loadedCreateState
+        every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
+        coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns true.right()
+        every { userUpgradeState.isUserPendingUpgrade } returns true
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnSaveClick)
+
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
+                    displayCreateLoader = false
+                ),
+                awaitItem()
+            )
+        }
+    }
 
     @Test
     fun `given create state with upselling shown, when action hide upselling, emits hide upselling`() = runTest {

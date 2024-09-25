@@ -49,6 +49,7 @@ class FolderFormReducer @Inject constructor() {
             FolderFormEvent.CreatingFolder -> reduceCreatingFolder(currentState)
             FolderFormEvent.HideUpselling -> reduceHideUpselling(currentState)
             FolderFormEvent.ShowUpselling -> reduceShowUpselling(currentState)
+            FolderFormEvent.UpsellingInProgress -> reduceUpsellingInProgress(currentState)
         }
     }
 
@@ -244,6 +245,18 @@ class FolderFormReducer @Inject constructor() {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(
                 upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+
+            is FolderFormState.Data.Update -> currentState
+            is FolderFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceUpsellingInProgress(currentState: FolderFormState): FolderFormState {
+        return when (currentState) {
+            is FolderFormState.Data.Create -> currentState.copy(
+                upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
+                displayCreateLoader = false
             )
 
             is FolderFormState.Data.Update -> currentState

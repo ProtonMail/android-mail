@@ -98,7 +98,7 @@ fun FolderFormScreen(
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
+    val snackbarHostState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
     val state = viewModel.state.collectAsStateWithLifecycle().value
     var showBottomSheet by remember { mutableStateOf(false) }
 
@@ -190,13 +190,19 @@ fun FolderFormScreen(
                         ConsumableTextEffect(effect = state.closeWithSuccess) { message ->
                             actions.exitWithSuccessMessage(message)
                         }
+
                         ConsumableTextEffect(effect = state.showErrorSnackbar) { message ->
-                            snackbarHostErrorState.showSnackbar(
-                                message = message,
-                                type = ProtonSnackbarType.ERROR
-                            )
+                            snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.ERROR)
+                        }
+
+                        if (state is FolderFormState.Data.Create) {
+                            ConsumableTextEffect(effect = state.upsellingInProgress) { message ->
+                                snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                                snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM)
+                            }
                         }
                     }
+
                     is FolderFormState.Loading -> {
                         ProtonCenteredProgress(
                             modifier = Modifier
@@ -213,7 +219,7 @@ fun FolderFormScreen(
             snackbarHost = {
                 DismissableSnackbarHost(
                     modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                    protonSnackbarHostState = snackbarHostErrorState
+                    protonSnackbarHostState = snackbarHostState
                 )
             }
         )

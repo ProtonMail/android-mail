@@ -29,10 +29,10 @@ internal sealed interface FolderFormViewAction : FolderFormOperation {
     data class FolderColorChanged(val color: Color) : FolderFormViewAction
     data class FolderParentChanged(val parentId: LabelId?) : FolderFormViewAction
     data class FolderNotificationsChanged(val enabled: Boolean) : FolderFormViewAction
-    object OnSaveClick : FolderFormViewAction
-    object OnDeleteClick : FolderFormViewAction
-    object OnCloseFolderFormClick : FolderFormViewAction
-    object HideUpselling : FolderFormViewAction
+    data object OnSaveClick : FolderFormViewAction
+    data object OnDeleteClick : FolderFormViewAction
+    data object OnCloseFolderFormClick : FolderFormViewAction
+    data object HideUpselling : FolderFormViewAction
 }
 
 sealed interface FolderFormEvent : FolderFormOperation {
@@ -46,27 +46,33 @@ sealed interface FolderFormEvent : FolderFormOperation {
         val useFolderColor: Boolean,
         val inheritParentFolderColor: Boolean
     ) : FolderFormEvent
+
     data class UpdateFolderName(
         val name: String
     ) : FolderFormEvent
+
     data class UpdateFolderColor(
         val color: String
     ) : FolderFormEvent
+
     data class UpdateFolderParent(
         val parent: Label?
     ) : FolderFormEvent
+
     data class UpdateFolderNotifications(
         val enabled: Boolean
     ) : FolderFormEvent
-    object CreatingFolder : FolderFormEvent
-    object FolderCreated : FolderFormEvent
-    object FolderUpdated : FolderFormEvent
-    object FolderDeleted : FolderFormEvent
-    object FolderAlreadyExists : FolderFormEvent
-    object FolderLimitReached : FolderFormEvent
-    object LoadFolderError : FolderFormEvent
-    object SaveFolderError : FolderFormEvent
-    object CloseFolderForm : FolderFormEvent
-    object ShowUpselling : FolderFormEvent
-    object HideUpselling : FolderFormEvent
+
+    data object CreatingFolder : FolderFormEvent
+    data object FolderCreated : FolderFormEvent
+    data object FolderUpdated : FolderFormEvent
+    data object FolderDeleted : FolderFormEvent
+    data object FolderAlreadyExists : FolderFormEvent
+    data object FolderLimitReached : FolderFormEvent
+    data object LoadFolderError : FolderFormEvent
+    data object SaveFolderError : FolderFormEvent
+    data object CloseFolderForm : FolderFormEvent
+    data object ShowUpselling : FolderFormEvent
+    data object HideUpselling : FolderFormEvent
+    data object UpsellingInProgress : FolderFormEvent
 }
