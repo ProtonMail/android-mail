@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.presentation.settings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
@@ -78,14 +79,15 @@ internal class EditAddressIdentityReducerTest(
         private val baseError = Effect.empty<Unit>()
         private val baseClose = Effect.empty<Unit>()
         private val BaseUpsellingVisibility = Effect.empty<BottomSheetVisibilityEffect>()
-
+        private val BaseUpsellingInProgress = Effect.empty<TextUiModel>()
         private val baseLoadedState = EditAddressIdentityState.DataLoaded(
             baseDisplayNameState,
             baseSignatureState,
             baseMobileFooterState,
             baseError,
             baseClose,
-            BaseUpsellingVisibility
+            BaseUpsellingVisibility,
+            BaseUpsellingInProgress
         )
 
         private val transitionFromLoadingState = listOf(

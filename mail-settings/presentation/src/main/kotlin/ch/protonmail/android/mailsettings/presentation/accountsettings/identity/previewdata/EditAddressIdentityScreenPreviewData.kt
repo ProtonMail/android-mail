@@ -42,7 +42,8 @@ internal object EditAddressIdentityScreenPreviewData {
         ),
         updateError = Effect.empty(),
         close = Effect.empty(),
-        upsellingVisibility = Effect.empty()
+        upsellingVisibility = Effect.empty(),
+        upsellingInProgress = Effect.empty()
     )
 
     val listActions = EditAddressIdentityScreenList.Actions(

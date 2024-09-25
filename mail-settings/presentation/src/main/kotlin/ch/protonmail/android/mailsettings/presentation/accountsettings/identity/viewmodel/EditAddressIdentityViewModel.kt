@@ -38,6 +38,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +59,8 @@ class EditAddressIdentityViewModel @Inject constructor(
     private val updatePrimaryAddressIdentity: UpdatePrimaryAddressIdentity,
     private val updatePrimaryUserMobileFooter: UpdatePrimaryUserMobileFooter,
     private val reducer: EditAddressIdentityReducer,
-    private val observeUpsellingVisibility: ObserveUpsellingVisibility
+    private val observeUpsellingVisibility: ObserveUpsellingVisibility,
+    private val userUpgradeState: UserUpgradeState
 ) : ViewModel() {
 
     private val mutableState =
@@ -118,17 +120,7 @@ class EditAddressIdentityViewModel @Inject constructor(
                     emitNewStateFrom(EditAddressIdentityViewAction.MobileFooter.UpdateValue(action.newValue))
                 }
 
-                is EditAddressIdentityViewAction.MobileFooter.ToggleState -> {
-                    val shouldShowUpselling = observeUpsellingVisibility(
-                        UpsellingEntryPoint.BottomSheet.MobileSignature
-                    ).first()
-
-                    if (!action.enabled && shouldShowUpselling) {
-                        emitNewStateFrom(EditAddressIdentityEvent.ShowUpselling)
-                    } else {
-                        emitNewStateFrom(EditAddressIdentityViewAction.MobileFooter.ToggleState(action.enabled))
-                    }
-                }
+                is EditAddressIdentityViewAction.MobileFooter.ToggleState -> handleToggleState(action)
 
                 is EditAddressIdentityViewAction.Save -> saveSettings()
 
@@ -139,7 +131,30 @@ class EditAddressIdentityViewModel @Inject constructor(
         }
     }
 
+    private suspend fun handleToggleState(action: EditAddressIdentityViewAction.MobileFooter.ToggleState) {
+        val isUpsellingInProgress = userUpgradeState.isUserPendingUpgrade
+
+        if (!action.enabled && isUpsellingInProgress) {
+            return emitNewStateFrom(EditAddressIdentityEvent.UpsellingInProgress)
+        }
+
+        val shouldShowUpselling = observeUpsellingVisibility(
+            UpsellingEntryPoint.BottomSheet.MobileSignature
+        ).first()
+
+        if (!action.enabled && shouldShowUpselling) {
+            emitNewStateFrom(EditAddressIdentityEvent.ShowUpselling)
+        } else {
+            emitNewStateFrom(EditAddressIdentityViewAction.MobileFooter.ToggleState(action.enabled))
+        }
+    }
+
+    @Suppress("ReturnCount")
     private suspend fun saveSettings() {
+        val isUpsellingInProgress = userUpgradeState.isUserPendingUpgrade
+
+        if (isUpsellingInProgress) return emitNewStateFrom(EditAddressIdentityEvent.UpsellingInProgress)
+
         val state = state.value as? EditAddressIdentityState.DataLoaded ?: return emitNewStateFrom(
             EditAddressIdentityEvent.Error.UpdateError
         )
@@ -154,7 +169,6 @@ class EditAddressIdentityViewModel @Inject constructor(
         }
 
         val mobileFooter = state.mobileFooterState.mobileFooterUiModel.let {
-            if (!it.isFieldEnabled) return emitNewStateFrom(EditAddressIdentityEvent.Navigation.Close)
             MobileFooterPreference(it.textValue.trim(), it.enabled)
         }
 

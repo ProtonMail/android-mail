@@ -24,6 +24,8 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.MobileFooterPreference
@@ -43,6 +45,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.usecase.GetMobileFooter
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.called
@@ -76,6 +79,8 @@ internal class EditAddressIdentityViewModelTest {
     private val updatePrimaryUserMobileFooter = mockk<UpdatePrimaryUserMobileFooter>()
     private val reducer = spyk(EditAddressIdentityReducer(EditAddressIdentityMapper()))
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility>()
+    private val userUpgradeState = mockk<UserUpgradeState>()
+
     private val viewModel by lazy {
         EditAddressIdentityViewModel(
             observePrimaryUserId,
@@ -85,7 +90,8 @@ internal class EditAddressIdentityViewModelTest {
             updatePrimaryAddressIdentity,
             updatePrimaryUserMobileFooter,
             reducer,
-            observeUpsellingVisibility
+            observeUpsellingVisibility,
+            userUpgradeState
         )
     }
 
@@ -405,6 +411,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidSignature()
         expectValidMobileFooter()
         expectObserverUpsellingVisibility(false)
+        expectUpsellingInProgress(false)
+
         val newValue = false
 
         // When + Then
@@ -445,6 +453,7 @@ internal class EditAddressIdentityViewModelTest {
         expectValidSignature()
         coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeUpsellingFooter.right()
         expectObserverUpsellingVisibility(true)
+        expectUpsellingInProgress(false)
 
         // When + Then
         viewModel.state.test {
@@ -461,6 +470,29 @@ internal class EditAddressIdentityViewModelTest {
     }
 
     @Test
+    fun `should show upselling in progress when mobile footer is toggled and user is being upgraded`() = runTest {
+        // Given
+        expectValidUserId()
+        expectValidDisplayName()
+        expectValidSignature()
+        coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeUpsellingFooter.right()
+        expectObserverUpsellingVisibility(true)
+        expectUpsellingInProgress(true)
+
+        val expectedState = BaseFreeUserUpsellingLoadedState.copy(
+            upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
+        )
+
+        // When + Then
+        viewModel.state.test {
+            skipItems(1)
+
+            viewModel.submit(EditAddressIdentityViewAction.MobileFooter.ToggleState(false))
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
     fun `should save the settings and close the screen if no error occurs`() = runTest {
         // Given
         expectValidUserId()
@@ -468,6 +500,7 @@ internal class EditAddressIdentityViewModelTest {
         expectValidSignature()
         expectValidMobileFooter()
         expectObserverUpsellingVisibility(false)
+        expectUpsellingInProgress(false)
         coEvery { updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature) } returns Unit.right()
         coEvery { updatePrimaryUserMobileFooter(BaseMobileFooterPreference) } returns Unit.right()
 
@@ -540,6 +573,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidSignature()
         expectValidMobileFooter()
         expectObserverUpsellingVisibility(false)
+        expectUpsellingInProgress(false)
+
         coEvery {
             updatePrimaryAddressIdentity(
                 BaseDisplayName,
@@ -582,6 +617,8 @@ internal class EditAddressIdentityViewModelTest {
         expectValidSignature()
         expectValidMobileFooter()
         expectObserverUpsellingVisibility(false)
+        expectUpsellingInProgress(false)
+
         coEvery {
             updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature)
         } returns Unit.right()
@@ -617,23 +654,25 @@ internal class EditAddressIdentityViewModelTest {
     }
 
     @Test
-    fun `should skip mobile footer updating if the field is not enabled (free user)`() = runTest {
+    fun `should return upselling in progress when performing a save action and user is being upgraded`() = runTest {
         // Given
         expectValidUserId()
         expectValidDisplayName()
         expectValidSignature()
+        expectValidMobileFooter()
         expectObserverUpsellingVisibility(false)
-        coEvery { getMobileFooter(BaseUserId) } returns BaseMobileFreeFooter.right()
-        coEvery {
-            updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature)
-        } returns Unit.right()
+        expectUpsellingInProgress(true)
+        coEvery { updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature) } returns Unit.right()
+        coEvery { updatePrimaryUserMobileFooter(BaseMobileFooterPreference) } returns Unit.right()
+        val expectedState = BaseLoadedState.copy(
+            upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
+        )
 
         // When + Then
         viewModel.state.test {
             skipItems(1)
-
             viewModel.submit(EditAddressIdentityViewAction.Save)
-            assertEquals(BaseFreeUserLoadedState.copy(close = Effect.of(Unit)), awaitItem())
+            assertEquals(expectedState, awaitItem())
         }
         coVerifySequence {
             reducer.newStateFrom(
@@ -641,20 +680,24 @@ internal class EditAddressIdentityViewModelTest {
                 EditAddressIdentityEvent.Data.ContentLoaded(
                     BaseDisplayName,
                     BaseSignature,
-                    BaseMobileFreeFooter
+                    BaseMobileFooter
                 )
             )
             reducer.newStateFrom(
-                BaseFreeUserLoadedState,
-                EditAddressIdentityEvent.Navigation.Close
+                BaseLoadedState,
+                EditAddressIdentityEvent.UpsellingInProgress
             )
         }
-        coVerify(exactly = 1) {
-            updatePrimaryAddressIdentity(BaseDisplayName, BaseSignature)
-        }
         coVerify {
+            updatePrimaryAddressIdentity wasNot called
             updatePrimaryUserMobileFooter wasNot called
         }
+
+        confirmVerified(reducer)
+    }
+
+    private fun expectUpsellingInProgress(value: Boolean) {
+        every { userUpgradeState.isUserPendingUpgrade } returns value
     }
 
     private fun expectValidUserId() {
@@ -700,6 +743,7 @@ internal class EditAddressIdentityViewModelTest {
         private val BaseError = Effect.empty<Unit>()
         private val BaseClose = Effect.empty<Unit>()
         private val BaseUpsellingVisibility = Effect.empty<BottomSheetVisibilityEffect>()
+        private val BaseUpsellingInProgress = Effect.empty<TextUiModel>()
         private val BaseMobileFooterPreference = MobileFooterPreference(
             BaseMobileFooter.value, BaseMobileFooter.enabled
         )
@@ -710,7 +754,8 @@ internal class EditAddressIdentityViewModelTest {
             BaseMobileFooterState,
             BaseError,
             BaseClose,
-            BaseUpsellingVisibility
+            BaseUpsellingVisibility,
+            BaseUpsellingInProgress
         )
 
         private val BaseFreeUserLoadedState = BaseLoadedState.copy(

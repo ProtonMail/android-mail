@@ -19,12 +19,13 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 
 sealed interface EditAddressIdentityState {
 
-    object Loading : EditAddressIdentityState
-    object LoadingError : EditAddressIdentityState
+    data object Loading : EditAddressIdentityState
+    data object LoadingError : EditAddressIdentityState
 
     data class DataLoaded(
         val displayNameState: DisplayNameState,
@@ -32,7 +33,8 @@ sealed interface EditAddressIdentityState {
         val mobileFooterState: MobileFooterState,
         val updateError: Effect<Unit>,
         val close: Effect<Unit>,
-        val upsellingVisibility: Effect<BottomSheetVisibilityEffect>
+        val upsellingVisibility: Effect<BottomSheetVisibilityEffect>,
+        val upsellingInProgress: Effect<TextUiModel>
     ) : EditAddressIdentityState
 
     data class DisplayNameState(val displayNameUiModel: DisplayNameUiModel)

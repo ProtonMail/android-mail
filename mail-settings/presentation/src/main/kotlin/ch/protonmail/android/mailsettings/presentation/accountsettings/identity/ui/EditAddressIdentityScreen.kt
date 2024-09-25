@@ -18,7 +18,6 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
@@ -36,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
@@ -93,7 +93,7 @@ fun EditAddressIdentityScreen(
     onDismissUpselling: () -> Unit,
     listActions: EditAddressIdentityScreenList.Actions
 ) {
-    val snackbarHostState = ProtonSnackbarHostState()
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
     val updateErrorMessage = stringResource(id = R.string.mail_settings_identity_error_updating)
 
     val bottomSheetState = rememberModalBottomSheetState(
@@ -103,10 +103,6 @@ fun EditAddressIdentityScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
-
-    BackHandler(bottomSheetState.isVisible) {
-        onDismissUpselling()
-    }
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -164,6 +160,10 @@ fun EditAddressIdentityScreen(
                                     showBottomSheet = true
                                 }
                             }
+                        }
+                        ConsumableTextEffect(effect = state.upsellingInProgress) { message ->
+                            snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                            snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message)
                         }
                     }
                 }

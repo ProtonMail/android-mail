@@ -19,6 +19,8 @@
 package ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.mapper.EditAddressIdentityMapper
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityEvent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityOperation
@@ -63,6 +65,10 @@ class EditAddressIdentityReducer @Inject constructor(
 
                 EditAddressIdentityEvent.ShowUpselling -> this.copy(
                     upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Show)
+                )
+
+                EditAddressIdentityEvent.UpsellingInProgress -> this.copy(
+                    upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
                 )
 
                 else -> this
@@ -164,6 +170,7 @@ class EditAddressIdentityReducer @Inject constructor(
             EditAddressIdentityState.DisplayNameState(displayNameUiModel),
             EditAddressIdentityState.SignatureState(signatureUiModel),
             EditAddressIdentityState.MobileFooterState(mobileFooterUiModel),
+            Effect.empty(),
             Effect.empty(),
             Effect.empty(),
             Effect.empty()
