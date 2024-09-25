@@ -14,11 +14,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
+import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListState
 import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListViewAction
@@ -28,8 +30,12 @@ import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.contact.domain.entity.ContactId
 import me.proton.core.label.domain.entity.LabelId
 
@@ -41,11 +47,23 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         skipHalfExpanded = true
     )
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
+
     val state = viewModel.state.collectAsStateWithLifecycle().value
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val actions = listActions.copy(
         onNewGroupClick = { viewModel.submit(ContactListViewAction.OnNewContactGroupClick) }
+    )
+
+    val bottomSheetActions = UpsellingBottomSheet.Actions.Empty.copy(
+        onDismiss = { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) },
+        onUpgrade = { message ->
+            scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message) }
+        },
+        onError = { message ->
+            scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message) }
+        }
     )
 
     BackHandler(bottomSheetState.isVisible) {
@@ -76,13 +94,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                     }
 
                     ContactListState.BottomSheetType.Upselling -> {
-                        ContactGroupsUpsellingBottomSheet(
-                            actions = UpsellingBottomSheet.Actions.Empty.copy(
-                                onDismiss = { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) },
-                                onUpgrade = { message -> actions.showNormSnackbar(message) },
-                                onError = { message -> actions.showErrorSnackbar(message) }
-                            )
-                        )
+                        ContactGroupsUpsellingBottomSheet(actions = bottomSheetActions)
                     }
                 }
             }
@@ -133,6 +145,10 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                             }
                         }
                     }
+                    ConsumableTextEffect(effect = state.upsellingInProgress) { message ->
+                        snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                        snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message)
+                    }
                 }
 
                 when (state) {
@@ -172,6 +188,12 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                         }
                     }
                 }
+            },
+            snackbarHost = {
+                DismissableSnackbarHost(
+                    modifier = Modifier.testTag(CommonTestTags.SnackbarHost),
+                    protonSnackbarHostState = snackbarHostState
+                )
             }
         )
     }
@@ -189,9 +211,7 @@ object ContactListScreen {
         val onNewGroupClick: () -> Unit,
         val openImportContact: () -> Unit,
         val onSubscriptionUpgradeRequired: (String) -> Unit,
-        val exitWithErrorMessage: (String) -> Unit,
-        val showNormSnackbar: (String) -> Unit,
-        val showErrorSnackbar: (String) -> Unit
+        val exitWithErrorMessage: (String) -> Unit
     ) {
 
         companion object {
@@ -206,9 +226,7 @@ object ContactListScreen {
                 openImportContact = {},
                 onNewGroupClick = {},
                 onSubscriptionUpgradeRequired = {},
-                exitWithErrorMessage = {},
-                showNormSnackbar = {},
-                showErrorSnackbar = {}
+                exitWithErrorMessage = {}
             )
 
             fun fromContactSearchActions(

@@ -38,6 +38,7 @@ class ContactListReducer @Inject constructor() {
             is ContactListEvent.OpenContactSearch -> reduceOpenContactSearch(currentState)
             is ContactListEvent.SubscriptionUpgradeRequiredError -> reduceErrorSubscriptionUpgradeRequired(currentState)
             is ContactListEvent.OpenUpsellingBottomSheet -> reduceOpenUpsellingBottomSheet(currentState)
+            is ContactListEvent.UpsellingInProgress -> reduceUpsellingInProgress(currentState)
         }
     }
 
@@ -194,6 +195,20 @@ class ContactListReducer @Inject constructor() {
 
             is ContactListState.Loaded.Empty -> currentState.copy(
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+        }
+    }
+
+    private fun reduceUpsellingInProgress(currentState: ContactListState): ContactListState {
+        val upsellingInProgressEffect = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
+        return when (currentState) {
+            is ContactListState.Loading -> currentState
+            is ContactListState.Loaded.Data -> currentState.copy(
+                upsellingInProgress = upsellingInProgressEffect
+            )
+
+            is ContactListState.Loaded.Empty -> currentState.copy(
+                upsellingInProgress = upsellingInProgressEffect
             )
         }
     }

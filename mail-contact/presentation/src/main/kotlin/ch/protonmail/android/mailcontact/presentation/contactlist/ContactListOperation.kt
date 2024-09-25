@@ -49,4 +49,5 @@ internal sealed interface ContactListEvent : ContactListOperation {
     data object OpenBottomSheet : ContactListEvent
     data object OpenContactSearch : ContactListEvent
     data object DismissBottomSheet : ContactListEvent
+    data object UpsellingInProgress : ContactListEvent
 }

@@ -45,6 +45,7 @@ sealed interface ContactListState {
         val openImportContact: Effect<Unit>
         val openContactSearch: Effect<Boolean>
         val subscriptionError: Effect<TextUiModel>
+        val upsellingInProgress: Effect<TextUiModel>
         val bottomSheetType: BottomSheetType
 
         data class Data(
@@ -54,6 +55,7 @@ sealed interface ContactListState {
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
+            override val upsellingInProgress: Effect<TextUiModel> = Effect.empty(),
             override val isContactGroupsCrudEnabled: Boolean = false,
             override val isContactGroupsUpsellingVisible: Boolean = false,
             override val isContactSearchEnabled: Boolean = false,
@@ -69,6 +71,7 @@ sealed interface ContactListState {
             override val openImportContact: Effect<Unit> = Effect.empty(),
             override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
+            override val upsellingInProgress: Effect<TextUiModel> = Effect.empty(),
             override val isContactGroupsCrudEnabled: Boolean = false,
             override val isContactGroupsUpsellingVisible: Boolean = false,
             override val isContactSearchEnabled: Boolean = false,

@@ -38,8 +38,8 @@ import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.test.utils.rule.MainDispatcherRule
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -112,8 +112,9 @@ class ContactListViewModelTest {
     private val observeUpsellingVisibilityMock = mockk<ObserveUpsellingVisibility> {
         every { this@mockk(any()) } returns flowOf(false)
     }
-    private val isUpsellingContactGroupsEnabledMock = mockk<IsUpsellingContactGroupsEnabled> {
-        every { this@mockk() } returns true
+
+    private val userUpgradeState = mockk<UserUpgradeState> {
+        every { this@mockk.isUserPendingUpgrade } returns false
     }
 
     private val reducer = ContactListReducer()
@@ -134,6 +135,7 @@ class ContactListViewModelTest {
             contactGroupItemUiModelMapper,
             isContactGroupsCrudEnabledMock,
             observeUpsellingVisibilityMock,
+            userUpgradeState,
             isContactSearchEnabledMock,
             observePrimaryUserId
         )
@@ -297,6 +299,38 @@ class ContactListViewModelTest {
                 isContactGroupsCrudEnabled = true,
                 isContactGroupsUpsellingVisible = true,
                 isContactSearchEnabled = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when user subscription upgrade is pending, emit the upselling in progress event`() = runTest {
+        // Given
+        expectContactsData()
+        coEvery { observeUpsellingVisibilityMock(any()) } returns flowOf(false)
+        every { userUpgradeState.isUserPendingUpgrade } returns true
+
+        // When
+        contactListViewModel.state.test {
+            // Then
+            skipItems(1)
+
+            contactListViewModel.submit(ContactListViewAction.OnNewContactGroupClick)
+
+            val actual = awaitItem()
+            val expected = ContactListState.Loaded.Data(
+                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
+                    listOf(defaultTestContact)
+                ),
+                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
+                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
+                ),
+                isContactGroupsCrudEnabled = true,
+                isContactGroupsUpsellingVisible = false,
+                isContactSearchEnabled = true,
+                upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
             )
 
             assertEquals(expected, actual)
