@@ -26,10 +26,10 @@ sealed interface LabelFormOperation
 internal sealed interface LabelFormViewAction : LabelFormOperation {
     data class LabelNameChanged(val name: String) : LabelFormViewAction
     data class LabelColorChanged(val color: Color) : LabelFormViewAction
-    object OnSaveClick : LabelFormViewAction
-    object OnDeleteClick : LabelFormViewAction
-    object OnCloseLabelFormClick : LabelFormViewAction
-    object HideUpselling : LabelFormViewAction
+    data object OnSaveClick : LabelFormViewAction
+    data object OnDeleteClick : LabelFormViewAction
+    data object OnCloseLabelFormClick : LabelFormViewAction
+    data object HideUpselling : LabelFormViewAction
 }
 
 sealed interface LabelFormEvent : LabelFormOperation {
@@ -40,15 +40,16 @@ sealed interface LabelFormEvent : LabelFormOperation {
         val colorList: List<Color>
     ) : LabelFormEvent
 
-    object CreatingLabel : LabelFormEvent
-    object LabelCreated : LabelFormEvent
-    object LabelUpdated : LabelFormEvent
-    object LabelDeleted : LabelFormEvent
-    object LabelAlreadyExists : LabelFormEvent
-    object LabelLimitReached : LabelFormEvent
-    object ShowUpselling : LabelFormEvent
-    object HideUpselling : LabelFormEvent
-    object SaveLabelError : LabelFormEvent
+    data object CreatingLabel : LabelFormEvent
+    data object LabelCreated : LabelFormEvent
+    data object LabelUpdated : LabelFormEvent
+    data object LabelDeleted : LabelFormEvent
+    data object LabelAlreadyExists : LabelFormEvent
+    data object LabelLimitReached : LabelFormEvent
+    data object ShowUpselling : LabelFormEvent
+    data object HideUpselling : LabelFormEvent
+    data object UpsellingInProgress : LabelFormEvent
+    data object SaveLabelError : LabelFormEvent
     data class UpdateLabelName(
         val name: String
     ) : LabelFormEvent
@@ -57,5 +58,5 @@ sealed interface LabelFormEvent : LabelFormOperation {
         val color: String
     ) : LabelFormEvent
 
-    object CloseLabelForm : LabelFormEvent
+    data object CloseLabelForm : LabelFormEvent
 }

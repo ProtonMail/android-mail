@@ -19,6 +19,8 @@
 package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
@@ -39,6 +41,7 @@ class LabelFormReducer @Inject constructor() {
             LabelFormEvent.CreatingLabel -> reduceCreatingLabel(currentState)
             LabelFormEvent.ShowUpselling -> reduceShowUpselling(currentState)
             LabelFormEvent.HideUpselling -> reduceHideUpselling(currentState)
+            LabelFormEvent.UpsellingInProgress -> reduceUpsellingInProgress(currentState)
         }
     }
 
@@ -169,6 +172,18 @@ class LabelFormReducer @Inject constructor() {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState.copy(
                 upsellingVisibility = Effect.of(BottomSheetVisibilityEffect.Hide)
+            )
+
+            is LabelFormState.Data.Update -> currentState
+            is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceUpsellingInProgress(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Data.Create -> currentState.copy(
+                upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
+                displayCreateLoader = false
             )
 
             is LabelFormState.Data.Update -> currentState

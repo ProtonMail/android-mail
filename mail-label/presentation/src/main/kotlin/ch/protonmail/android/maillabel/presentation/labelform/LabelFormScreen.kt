@@ -55,6 +55,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.maillabel.presentation.R
@@ -86,7 +87,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val snackbarHostErrorState = ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR)
+    val snackbarHostState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
 
     val customActions = actions.copy(
         onLabelNameChanged = {
@@ -170,25 +171,36 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                         }
                         val labelAlreadyExistsMessage = stringResource(id = R.string.label_already_exists)
                         ConsumableLaunchedEffect(effect = state.showLabelAlreadyExistsSnackbar) {
-                            snackbarHostErrorState.showSnackbar(
+                            snackbarHostState.showSnackbar(
                                 message = labelAlreadyExistsMessage,
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
                         val labelLimitReachedMessage = stringResource(id = R.string.label_limit_reached_error)
                         ConsumableLaunchedEffect(effect = state.showLabelLimitReachedSnackbar) {
-                            snackbarHostErrorState.showSnackbar(
+                            snackbarHostState.showSnackbar(
                                 message = labelLimitReachedMessage,
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
                         val saveLabelErrorMessage = stringResource(id = R.string.save_label_error)
                         ConsumableLaunchedEffect(effect = state.showSaveLabelErrorSnackbar) {
-                            snackbarHostErrorState.showSnackbar(
+                            snackbarHostState.showSnackbar(
                                 message = saveLabelErrorMessage,
                                 type = ProtonSnackbarType.ERROR
                             )
                         }
+
+                        if (state is LabelFormState.Data.Create) {
+                            ConsumableTextEffect(effect = state.upsellingInProgress) { message ->
+                                snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                                snackbarHostState.showSnackbar(
+                                    message = message,
+                                    type = ProtonSnackbarType.NORM
+                                )
+                            }
+                        }
+
                         if (state is LabelFormState.Data.Update) {
                             ConsumableLaunchedEffect(effect = state.closeWithDelete) {
                                 customActions.onBackClick()
@@ -209,7 +221,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
             snackbarHost = {
                 DismissableSnackbarHost(
                     modifier = Modifier.testTag(CommonTestTags.SnackbarHostError),
-                    protonSnackbarHostState = snackbarHostErrorState
+                    protonSnackbarHostState = snackbarHostState
                 )
             }
         )
