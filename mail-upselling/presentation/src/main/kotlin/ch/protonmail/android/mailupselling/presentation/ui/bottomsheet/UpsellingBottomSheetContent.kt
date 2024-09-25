@@ -96,7 +96,8 @@ internal fun UpsellingBottomSheetContent(
                     style = if (isNarrowScreen) {
                         ProtonTheme.typography.headlineSmallNorm
                     } else ProtonTheme.typography.headlineNorm,
-                    color = contentColors.textNorm
+                    color = contentColors.textNorm,
+                    textAlign = TextAlign.Center
                 )
             }
 
