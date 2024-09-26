@@ -33,24 +33,32 @@ import ch.protonmail.android.mailconversation.domain.repository.ConversationRepo
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
+import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailpagination.domain.AdjacentPageKeys
 import ch.protonmail.android.mailpagination.domain.GetAdjacentPageKeys
-import ch.protonmail.android.mailmailbox.presentation.paging.exception.DataErrorException
 import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.testdata.conversation.ConversationWithContextTestData
 import ch.protonmail.android.testdata.mailbox.MailboxTestData
 import ch.protonmail.android.testdata.message.MessageTestData
 import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.confirmVerified
+import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.verifySequence
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalPagingApi::class)
 class MailboxItemRemoteMediatorTest {
@@ -65,6 +73,7 @@ class MailboxItemRemoteMediatorTest {
     private val messageRepository = mockk<MessageRepository>(relaxUnitFun = true)
     private val conversationRepository = mockk<ConversationRepository>(relaxUnitFun = true)
     private val getAdjacentPageKeys = mockk<GetAdjacentPageKeys>()
+    private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
 
     private val mailboxItemRemoteMediator by lazy {
         MailboxItemRemoteMediator(
@@ -72,16 +81,20 @@ class MailboxItemRemoteMediatorTest {
             conversationRepository = conversationRepository,
             getAdjacentPageKeys = getAdjacentPageKeys,
             mailboxPageKey = mailboxPageKey,
-            type = mailboxItemType
+            type = mailboxItemType,
+            emptyLabelInProgressSignal = emptyLabelInProgressSignal
         )
     }
 
     @Test
     fun `returns success when mediator is called with refresh for message, then data is marked as stale`() = runTest {
         // Given
+        val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
         coEvery {
             messageRepository.getRemoteMessages(userId, mailboxPageKey.pageKey)
         } returns listOf(MessageTestData.message).right()
+        every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
         // When
         val result = mailboxItemRemoteMediator.load(
@@ -101,9 +114,12 @@ class MailboxItemRemoteMediatorTest {
         runTest {
             // Given
             mailboxItemType = MailboxItemType.Conversation
+            val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
             coEvery {
                 conversationRepository.getRemoteConversations(userId, mailboxPageKey.pageKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
+            every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
             // When
             val result = mailboxItemRemoteMediator.load(
@@ -127,6 +143,8 @@ class MailboxItemRemoteMediatorTest {
         val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
         val items = pages.flatMap { it.data }
         val pageSize = PageKey.defaultPageSize
+        val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
         coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
             prev = PageKey(),
             current = mailboxPageKey.pageKey,
@@ -138,6 +156,7 @@ class MailboxItemRemoteMediatorTest {
                 pageKey
             )
         } returns listOf(MessageTestData.message).right()
+        every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
         // When
         mailboxItemRemoteMediator.load(
@@ -151,6 +170,35 @@ class MailboxItemRemoteMediatorTest {
     }
 
     @Test
+    fun `returns end of pagination with ongoing empty label action, and resets the empty label action state`() =
+        runTest {
+            // Given
+            mailboxItemType = MailboxItemType.Conversation
+            val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+            every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns true
+            every { emptyLabelInProgressSignal.resetOperationSignal() } just runs
+
+            // When
+            val result = mailboxItemRemoteMediator.load(
+                loadType = LoadType.REFRESH,
+                state = buildPagingState()
+            )
+
+            // Then
+            coVerify(exactly = 0) { conversationRepository.getRemoteConversations(userId, mailboxPageKey.pageKey) }
+            coVerify(exactly = 0) { messageRepository.getRemoteMessages(userId, mailboxPageKey.pageKey) }
+            coVerify(exactly = 0) { conversationRepository.markAsStale(userId, mailboxPageKey.pageKey.filter.labelId) }
+            coVerify(exactly = 0) { messageRepository.markAsStale(any(), any()) }
+            verifySequence {
+                emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId)
+                emptyLabelInProgressSignal.resetOperationSignal()
+            }
+            assertIs<RemoteMediator.MediatorResult.Success>(result)
+            assertTrue(result.endOfPaginationReached, "End of pagination is not reached")
+            confirmVerified(conversationRepository, messageRepository, emptyLabelInProgressSignal)
+        }
+
+    @Test
     fun `returns error when mediator is called with append and message api call fails`() = runTest {
         // Given
         val expectedRemoteError = DataError.Remote.Http(NetworkError.Unreachable)
@@ -160,6 +208,8 @@ class MailboxItemRemoteMediatorTest {
         val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
         val items = pages.flatMap { it.data }
         val pageSize = PageKey.defaultPageSize
+        val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
         coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
             prev = PageKey(),
             current = mailboxPageKey.pageKey,
@@ -168,6 +218,7 @@ class MailboxItemRemoteMediatorTest {
         coEvery {
             messageRepository.getRemoteMessages(userId, pageKey)
         } returns expectedRemoteError.left()
+        every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
         // When
         val result = mailboxItemRemoteMediator.load(
@@ -194,6 +245,8 @@ class MailboxItemRemoteMediatorTest {
         val pages = emptyList<PagingSource.LoadResult.Page<MailboxPageKey, MailboxItem>>()
         val items = pages.flatMap { it.data }
         val pageSize = PageKey.defaultPageSize
+        val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
         coEvery { getAdjacentPageKeys(items, mailboxPageKey.pageKey, pageSize) } returns AdjacentPageKeys(
             prev = PageKey(),
             current = mailboxPageKey.pageKey,
@@ -203,6 +256,7 @@ class MailboxItemRemoteMediatorTest {
         coEvery {
             conversationRepository.getRemoteConversations(userId, pageKey)
         } returns expectedRemoteError.left()
+        every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
         // When
         val result = mailboxItemRemoteMediator.load(
@@ -241,9 +295,12 @@ class MailboxItemRemoteMediatorTest {
             )
             val pageSize = PageKey.defaultPageSize
             mailboxItemType = MailboxItemType.Conversation
+            val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
             coEvery {
                 conversationRepository.getRemoteConversations(userId, nextKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
+            every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
             // When
             val result = mailboxItemRemoteMediator.load(
@@ -279,9 +336,12 @@ class MailboxItemRemoteMediatorTest {
             )
             val pageSize = PageKey.defaultPageSize
             mailboxItemType = MailboxItemType.Conversation
+            val emptyLabelId = EmptyLabelId(mailboxPageKey.pageKey.filter.labelId.id)
+
             coEvery {
                 conversationRepository.getRemoteConversations(userId, prevKey)
             } returns listOf(ConversationWithContextTestData.conversation1).right()
+            every { emptyLabelInProgressSignal.isEmptyLabelInProgress(emptyLabelId) } returns false
 
             // When
             val result = mailboxItemRemoteMediator.load(

@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
 import ch.protonmail.android.mailpagination.domain.model.PageFilter
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
+import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
 import io.mockk.mockk
@@ -40,6 +41,7 @@ class MailboxPagerFactoryTest {
     private val readStatus = ReadStatus.All
     private val pageKey = PageKey(filter = PageFilter(labelId = selectedMailLabelId.labelId, read = readStatus))
 
+    private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
     private val mailboxPagerFactory = MailboxPagerFactory(pagingSourceFactory, remoteMediatorFactory)
 
     @Test
@@ -49,7 +51,9 @@ class MailboxPagerFactoryTest {
         val type = MailboxItemType.Message
         val mailboxPageKey = MailboxPageKey(userIds, pageKey)
         // Mediator mock needs to be relaxed to avoid exception "Failed to transform androidx/mediator"
-        every { remoteMediatorFactory.create(mailboxPageKey, type) } returns mockk(relaxed = true)
+        every {
+            remoteMediatorFactory.create(mailboxPageKey, type, emptyLabelInProgressSignal)
+        } returns mockk(relaxed = true)
         // The test works without the explicit mock for pagingSourceFactory.create method, but it should
         // not! We assume that the pager constructor somehow swallows the "mockk - missing method mock" exceptions
         every { pagingSourceFactory.create(mailboxPageKey, type) } returns mockk(relaxed = true)
@@ -60,12 +64,13 @@ class MailboxPagerFactoryTest {
             selectedMailLabelId = selectedMailLabelId,
             filterUnread = false,
             type = type,
-            searchQuery = ""
+            searchQuery = "",
+            emptyLabelInProgressSignal = emptyLabelInProgressSignal
         )
 
         // Then
         pager.flow.test {
-            verify { remoteMediatorFactory.create(mailboxPageKey, type) }
+            verify { remoteMediatorFactory.create(mailboxPageKey, type, emptyLabelInProgressSignal) }
             verify { pagingSourceFactory.create(mailboxPageKey, type) }
             cancelAndConsumeRemainingEvents()
         }
