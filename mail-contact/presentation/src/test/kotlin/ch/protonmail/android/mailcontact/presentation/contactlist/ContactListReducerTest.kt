@@ -248,6 +248,16 @@ internal class ContactListReducerTest(
                     subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error)),
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
                 )
+            ),
+            TestInput(
+                currentState = emptyLoadedState,
+                event = ContactListEvent.UpsellingInProgress,
+                expectedState = emptyLoadedState.copy(
+                    upsellingInProgress = Effect.of(
+                        TextUiModel.TextRes(R.string.upselling_snackbar_upgrade_in_progress)
+                    ),
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+                )
             )
         )
 
@@ -330,6 +340,16 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.SubscriptionUpgradeRequiredError,
                 expectedState = dataLoadedState.copy(
                     subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error)),
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
+                )
+            ),
+            TestInput(
+                currentState = dataLoadedState,
+                event = ContactListEvent.UpsellingInProgress,
+                expectedState = dataLoadedState.copy(
+                    upsellingInProgress = Effect.of(
+                        TextUiModel.TextRes(R.string.upselling_snackbar_upgrade_in_progress)
+                    ),
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
                 )
             )

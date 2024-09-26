@@ -204,11 +204,13 @@ class ContactListReducer @Inject constructor() {
         return when (currentState) {
             is ContactListState.Loading -> currentState
             is ContactListState.Loaded.Data -> currentState.copy(
-                upsellingInProgress = upsellingInProgressEffect
+                upsellingInProgress = upsellingInProgressEffect,
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
             )
 
             is ContactListState.Loaded.Empty -> currentState.copy(
-                upsellingInProgress = upsellingInProgressEffect
+                upsellingInProgress = upsellingInProgressEffect,
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
             )
         }
     }

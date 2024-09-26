@@ -330,6 +330,7 @@ class ContactListViewModelTest {
                 isContactGroupsCrudEnabled = true,
                 isContactGroupsUpsellingVisible = false,
                 isContactSearchEnabled = true,
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
             )
 
