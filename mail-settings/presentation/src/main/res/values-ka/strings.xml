@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">საჩვენებელი სახელი</string>
   <string name="mail_settings_identity_signature">ხელმოწერა</string>
   <string name="mail_settings_identity_signature_hint">ხელმოწერა</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">მობილური ხელმოწერა</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">ეს თქვენი ხელმოწერის შემდეგ დაემატება.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">მობილური ხელმოწერა</string>
   <string name="mail_settings_identity_mobile_footer_default_free">გამოგზავნილია Proton Mail Android-დან</string>
   <string name="mail_settings_identity_error_updating">პარამეტრების განახლების შეცდომა</string>
   <string name="mail_settings_identity_error_loading">პარამეტრების ჩატვირთვის შეცდომა</string>

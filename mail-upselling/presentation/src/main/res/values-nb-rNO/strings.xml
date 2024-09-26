@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ land)</string>
   <string name="upselling_unlimited_feature_drive">Sikker skylagring</string>
   <string name="upselling_unlimited_feature_pass">Kryptert passordbehandler</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">End-to-end encryption</string>
+  <string name="upselling_onboarding_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB storage and 1 email address</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB storage</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra email addresses for you</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Priority customer support</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB storage</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra email addresses for you</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Support for 3 custom email domains</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Unlimited hide-my-email aliases</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedicated customer support</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra fast and private VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Encrypted cloud storage for photos and documents</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Advanced account protection</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">Spar %s%%</string>
   <string name="upselling_month">/måned</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Abonnementsoppgradering pågår…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Det oppstod en feil under oppgradering av abonnementet ditt.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">En feil oppstod. Vennligst prøv igjen.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Choose a plan</string>
+  <string name="upselling_onboarding_switcher_monthly">Monthly</string>
+  <string name="upselling_onboarding_switcher_annual">Annual</string>
+  <string name="upselling_onboarding_best_value">Best value</string>
+  <string name="upselling_onboarding_month">/month</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d more feature</item>
+    <item quantity="other">%d more features</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %d every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %d every 12 months.</string>
+  <string name="upselling_onboarding_get_plan">Get %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Continue with Proton Free</string>
 </resources>

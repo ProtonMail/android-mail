@@ -18,39 +18,57 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_button_item_content_description">Mdel aɣawas</string>
+  <string name="upselling_close_button_content_description">Mdel taqeffalt</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Sgerrzet amiḍan tura ɣer uḥraz d tmahilin premium</string>
+  <string name="upselling_mailbox_plus_title">Sali ɣer Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Awi-d imaylen i agraw d tmahilin-nniḍen d Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Ḥeḍ aḍaw-k</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Awi-d am lettres d tmahilin d Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Nekkeḍ ɣef am tabzimt u am ikaram?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Awi-d am lettres d tmahilin d Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Nekkeḍ ɣef am tabzimt u am ikaram?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Tuzḳi sigwul-ik d tmahilin d Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Mudd udem i izmul-ik</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GAṬ n uḥraz</string>
   <string name="upselling_plus_feature_email_addresses">10 n tansiwin imayl</string>
-  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
-  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_custom_domain">Asefrek i tiɣula n yimayl udmawan</string>
+  <string name="upselling_plus_feature_desktop_app">Asnas n tnarit Proton Mail</string>
+  <string name="upselling_plus_feature_folders_labels">Ikaramen, tebzimin, d yimsizedgen</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 n tmahilin premium</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_description_override">D-yubden leqqam n umultaɣ afessas</string>
+  <string name="upselling_unlimited_feature_storage">500 GAṬ n uḥraz iḥlaz n aḥraz</string>
   <string name="upselling_unlimited_feature_mail_calendar">Akk timahilin n lexlaṣ i Mail d Calender</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (uɣar n 90 n tmura)</string>
   <string name="upselling_unlimited_feature_drive">Aḥraz n usigna aɣellsan</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Amsefrak n wawalen uffiren</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Awgelhen seg yixef ɣer yixef</string>
+  <string name="upselling_onboarding_feature_folders_labels">Ikaramen d tebzimin</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GAṬ n uḥraz d 1 tansa n yimayl</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GAṬ n uḥraz</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 am tansa n yimayl ɣef-k</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Asefrek i 1 taɣult n yimayl udmawan</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Tallalt n umsaɣ yezwaren</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GAṬ n uḥraz</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 am tansa n yimayl ɣef-k</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Asefrek i 3 tiɣula n yimayl udmawan</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Mefferisem n hide-my-email war tilas</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Tallalt n umsaɣ yezwaren</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN yelḍa d aslemmud</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Amsefrak n wawalen uffiren</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Aḥraz azgin s forḍasi d iziz</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Ḥifḍi n amiḍan anfeḍ</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">SEKLES %s%%</string>
   <string name="upselling_month">/ayyur</string>
   <string name="upselling_get_button">Awi-d %s</string>
   <plurals name="upselling_month">
@@ -58,11 +76,25 @@
     <item quantity="other">%d wayyuren</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">Ur izmir ara ad d-yawi imulsaw n iyigawen.</string>
   <string name="upselling_snackbar_error_no_user_id">Teḍra-d tuccḍa.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Ur izmir ara ad d-yawi amulteɣ.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Tazwara n subscription deg tazmert…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Teḍra-d tuccḍa deg amulteɣ-ik.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Teḍra-d tuccḍa. Ttxil-k ɛreḍ tikkelt niḍen.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Fren aɣawas</string>
+  <string name="upselling_onboarding_switcher_monthly">S waggur</string>
+  <string name="upselling_onboarding_switcher_annual">S useggas</string>
+  <string name="upselling_onboarding_best_value">Aḥsan n valur</string>
+  <string name="upselling_onboarding_month">/wayyur</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d n tmahilin</item>
+    <item quantity="other">%d n tmahilin</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Tura d %s %d yasn deg waya n waggur.</string>
+  <string name="upselling_onboarding_billing_annual">Tura d %s %d yasn deg 12 wayyuren.</string>
+  <string name="upselling_onboarding_get_plan">Awi-d %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Kemmel s Proton Free</string>
 </resources>

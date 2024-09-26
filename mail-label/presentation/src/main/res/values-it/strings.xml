@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Tutta la posta</string>
   <string name="label_title_all_drafts">Tutte le bozze</string>
   <string name="label_title_all_sent">Tutta la posta inviata</string>
-  <string name="label_title_all_scheduled">Tutta la posta programmata</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Posticipata</string>
   <string name="label_title_folders">Cartelle</string>
   <string name="label_title_parent_folder">Cartella superiore</string>

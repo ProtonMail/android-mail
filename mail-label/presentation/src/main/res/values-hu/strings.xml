@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_drafts">Minden piszkozat</string>
   <string name="label_title_all_sent">Minden elküldött</string>
-  <string name="label_title_all_scheduled">Összes időzített</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Elhalasztott</string>
   <string name="label_title_folders">Mappák</string>
   <string name="label_title_parent_folder">Szülő mappa</string>

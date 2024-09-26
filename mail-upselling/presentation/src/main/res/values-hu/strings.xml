@@ -18,39 +18,57 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_button_item_content_description">Frissítés gomb</string>
+  <string name="upselling_close_button_content_description">Bezárás gomb</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Több tároló és prémium funkciók feloldásához</string>
+  <string name="upselling_mailbox_plus_title">Frissítés a Mail Plus-ra</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Könnyedén küldhet e-maileket csoportoknak, és élvezheti a Mail Plus egyéb prémium funkcióit.</string>
+  <string name="upselling_contact_groups_plus_title">Csoportosítsa névjegyeit</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Szerezze be őket, és más prémium funkciókat, ha frissít a Mail Plus-ra.</string>
+  <string name="upselling_labels_plus_title">Szüksége van több címkére vagy mappára?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Szerezze be őket, és más prémium funkciókat, ha frissít a Mail Plus-ra.</string>
+  <string name="upselling_folders_plus_title">Szüksége van több címkére vagy mappára?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Használja a saját mobil aláírását, és élvezze a Mail Plus egyéb prémium funkcióit.</string>
+  <string name="upselling_mobile_signature_plus_title">Aláírás testreszabása</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB tárhely</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mail cím</string>
-  <string name="upselling_plus_feature_custom_domain">Custom email domain support</string>
-  <string name="upselling_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_custom_domain">Egyéni e-mail domain név támogatás</string>
+  <string name="upselling_plus_feature_desktop_app">Új Proton Mail asztali alkalmazás</string>
+  <string name="upselling_plus_feature_folders_labels">Korlátlan számú mappa, címke, szűrő</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 prémium funkció</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
+  <string name="upselling_unlimited_description_override">Ön minden egyben prémium előfizetése</string>
   <string name="upselling_unlimited_feature_storage">500 GB tárhely, fotók mentésével</string>
   <string name="upselling_unlimited_feature_mail_calendar">Minden fizetős Mail és Calendar funkció</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90+ ország)</string>
   <string name="upselling_unlimited_feature_drive">Biztonságos felhőtárhely</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">Titkosított jelszókezelő</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Végpontok közti titkosítás</string>
+  <string name="upselling_onboarding_feature_folders_labels">Korlátlan mappák és címkék</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB tárhely és 1 e-mail cím</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB tárhely</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra e-mail cím az Ön számára</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Támogatás 1 saját e-mail domain számára</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email ál­név</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Elsőbbségi felhasználói támogatás</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB tárhely</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra e-mail cím az Ön számára</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Támogatás 3 saját e-mail domain számára</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Korlátlan számú hide-my-email ál­név</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikált ügyfélszolgálat</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra gyors és privát VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Titkosított jelszókezelő</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Titkosított felhő tárhely fényképekhez és dokumentumokhoz</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Fejlett fiók védelmi rendszer</string>
   <!-- Other UI Items -->
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">TÖBB %s%%</string>
   <string name="upselling_month">/hó</string>
   <string name="upselling_get_button">%s beszerzése</string>
   <plurals name="upselling_month">
@@ -58,11 +76,25 @@
     <item quantity="other">%d hónap</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">Nem sikerült betölteni a frissítési lehetőségeket.</string>
   <string name="upselling_snackbar_error_no_user_id">Hiba történt.</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">Nem sikerült lekérni az előfizetéseket.</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">Feliratkozás verzió frissítése folyamatban…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Hiba történt az előfizetése frissítésekor.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">Hiba történt. Kérjük, próbálja újra.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Csomag kiválasztása</string>
+  <string name="upselling_onboarding_switcher_monthly">Havonta</string>
+  <string name="upselling_onboarding_switcher_annual">Évente</string>
+  <string name="upselling_onboarding_best_value">Legjobb ár-érték arány</string>
+  <string name="upselling_onboarding_month">/hó</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d további funkció</item>
+    <item quantity="other">%d további funkciók</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Számlázva %s %d havonta.</string>
+  <string name="upselling_onboarding_billing_annual">Számlázva %s %d 12 havonta.</string>
+  <string name="upselling_onboarding_get_plan">Szerezze be %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Folytatás Proton Free-el</string>
 </resources>

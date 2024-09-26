@@ -104,9 +104,9 @@
   <string name="mailbox_action_button_clear_spam">Vyprázdniť spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Vyprázdniť priečinok Kôš</string>
   <string name="mailbox_action_clear_spam_dialog_title">Vyprázdniť priečinok Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Koši\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v \'Spame\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Naozaj chcete natrvalo odstrániť všetky konverzácie v \'Spame\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v priečinku Kôš?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Naozaj chcete natrvalo odstrániť všetky správy v priečinku Spam?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operácia vyčistenia je naplánovaná"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Upozornenie</string>

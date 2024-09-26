@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed">Pogovora ni bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Pogovor izbrisan</string>
   <string name="message_body_load_remote_content_button_text">Naloži oddaljeno vsebino</string>
   <string name="message_body_load_embedded_images_button_text">Naloži vdelane slike</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Naloži oddaljeno in vdelano vsebino</string>
   <string name="message_report_phishing_dialog_title_offline">Pozor</string>
-  <string name="message_report_phishing_dialog_message_offline">Ta možnost je na voljo samo ob vzpostavljeni povezavi.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">V redu</string>
   <string name="message_report_phishing_dialog_title">Potrdite prijavo poskusa prevare</string>
   <string name="message_report_phishing_dialog_message">S prijavo lažnega predstavljanja nam boste poslali sporočilo v analizo, s katero bomo izboljšali svoje filtre. To pomeni, da nam bo vsebina sporočila v celoti vidna.</string>

@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Alle e-mails</string>
   <string name="label_title_all_drafts">Alle kladder</string>
   <string name="label_title_all_sent">Alle sendte</string>
-  <string name="label_title_all_scheduled">Alle planlagte</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Udsat</string>
   <string name="label_title_folders">Mapper</string>
   <string name="label_title_parent_folder">Overordnet mappe</string>

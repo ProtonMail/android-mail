@@ -89,12 +89,14 @@
   <string name="error_delete_message_failed_wrong_folder">メッセージは削除できる場所にありません</string>
   <string name="error_delete_conversation_failed">会話の削除に失敗しました</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">会話が削除されました</string>
   <string name="message_body_load_remote_content_button_text">外部コンテンツの読み込み</string>
   <string name="message_body_load_embedded_images_button_text">埋め込み画像を読み込む</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">この機能はオンライン時のみ利用可能です。</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">フィッシング報告の確認</string>
   <string name="message_report_phishing_dialog_message">フィッシング詐欺としてこのメッセージを報告すると、私たちにこのメッセージが送信され、私たちはこのメッセージを分析してフィルターを改善することができます。メッセージを報告すると、このメッセージのすべての内容を私たちが閲覧可能になるため、フィッシング詐欺以外のメッセージを報告しないようご注意ください。</string>

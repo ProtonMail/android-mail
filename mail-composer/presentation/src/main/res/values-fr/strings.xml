@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Modifier l\'expéditeur</string>
   <string name="composer_change_sender_paid_feature">Passez à un abonnement payant pour modifier l\'adresse de l\'expéditeur.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Impossible de changer l\'expéditeur : l\'abonnement de l\'utilisateur n\'a pu être obtenu. Veuillez réessayer.</string>
-  <string name="composer_error_store_draft_sender_address">L\'enregistrement de l\'adresse de l\'expéditeur du brouillon n\'a pas abouti.</string>
+  <string name="composer_error_store_draft_sender_address">L\'enregistrement de l\'adresse de l\'expéditeur n\'a pas abouti.</string>
   <string name="composer_error_store_draft_body">L\'enregistrement du corps du brouillon n\'a pas abouti.</string>
   <string name="composer_error_duplicate_recipient">Destinataire dupliqué retiré : %1$s</string>
-  <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet du brouillon n\'a pas abouti.</string>
+  <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet n\'a pas abouti.</string>
   <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>
   <string name="composer_add_attachments_content_description">Ajouter des pièces jointes</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 à 21 caractères</string>
   <string name="set_message_password_supporting_error_text">Le mot de passe doit contenir entre 4 et 21 caractères.</string>
   <string name="set_message_password_supporting_text_repeat">Les mots de passe doivent être identiques.</string>
-  <string name="set_message_password_supporting_error_text_repeat">Les 2 mots de passe ne sont pas identiques.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Les mots de passe ne correspondent pas.</string>
   <string name="set_message_password_button_show">Afficher le mot de passe</string>
   <string name="set_message_password_button_hide">Masquer le mot de passe</string>
   <string name="set_message_password_button_apply">Appliquer le mot de passe</string>

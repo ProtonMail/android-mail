@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Vsa pošta</string>
   <string name="label_title_all_drafts">Vsi osnutki</string>
   <string name="label_title_all_sent">Vse poslano</string>
-  <string name="label_title_all_scheduled">Vse načrtovano</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Dremež</string>
   <string name="label_title_folders">Mape</string>
   <string name="label_title_parent_folder">Nadrejena mapa</string>

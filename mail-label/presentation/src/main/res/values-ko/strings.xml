@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">모든 메일</string>
   <string name="label_title_all_drafts">모든 초안</string>
   <string name="label_title_all_sent">모든 보낸 메일</string>
-  <string name="label_title_all_scheduled">전체 예약</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">방해 금지 상태</string>
   <string name="label_title_folders">폴더</string>
   <string name="label_title_parent_folder">상위 폴더</string>

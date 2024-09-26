@@ -89,12 +89,14 @@
   <string name="error_delete_message_failed_wrong_folder">Pesan tidak terletak pada lokasi yang memungkinkan pesan untuk dihapus</string>
   <string name="error_delete_conversation_failed">Percakapan gagal dihapus</string>
   <string name="error_delete_conversation_failed_wrong_folder">Percakapan tidak terletak pada lokasi yang memungkinkan percakapan untuk dihapus</string>
+  <string name="conversation_delete_dialog_title">Hapus percakapan</string>
+  <string name="conversation_delete_dialog_message">Apakah Anda yakin ingin menghapus percakapan ini secara permanen?</string>
   <string name="conversation_deleted">Percakapan dihapus</string>
   <string name="message_body_load_remote_content_button_text">Muat remote content</string>
   <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
   <string name="message_report_phishing_dialog_title_offline">Perhatian</string>
-  <string name="message_report_phishing_dialog_message_offline">Fitur ini hanya tersedia secara online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Konfirmasi laporan phishing</string>
   <string name="message_report_phishing_dialog_message">Dengan melaporkan pesan sebagai upaya phishing, pesan tersebut akan dikirimkan kepada kami agar kami dapat menganalisanya dan meningkatkan filter kami. Hal ini berarti bahwa kami akan dapat melihat isi pesan tersebut secara utuh.</string>

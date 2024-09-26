@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90개 이상 국가)</string>
   <string name="upselling_unlimited_feature_drive">안전한 클라우드 저장 공간</string>
   <string name="upselling_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">종단간 암호화</string>
+  <string name="upselling_onboarding_feature_folders_labels">무제한 폴더 및 라벨</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB 스토리지 및 1개 이메일 주소</string>
+  <string name="upselling_onboarding_plus_feature_storage">15GB 저장공간</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">귀하를 위한 10개의 추가 이메일 주소</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">1개의 커스텀 이메일 도메인 지원</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10개의 hide-my-email 별칭</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">우선 고객 지원</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500GB 저장공간</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">귀하를 위한 15개의 추가 이메일 주소</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">3개의 커스텀 이메일 도메인 지원</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">무제한 hide-my-email 별칭</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">전담 고객 지원</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">초고속 및 개인 VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">사진 및 문서에 대한 암호화된 클라우드 스토리지</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">향상된 계정 보호</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">%s%% 절약</string>
   <string name="upselling_month">/월</string>
@@ -64,4 +82,17 @@
   <string name="upselling_snackbar_upgrade_in_progress">구독을 업그레이드 중입니다…</string>
   <string name="upselling_snackbar_upgrade_error_generic">구독을 업그레이드하던 중 오류가 발생했습니다.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">오류가 발생했습니다. 다시 시도해 주십시오.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">요금제 선택</string>
+  <string name="upselling_onboarding_switcher_monthly">매월</string>
+  <string name="upselling_onboarding_switcher_annual">연간</string>
+  <string name="upselling_onboarding_best_value">최고의 가치</string>
+  <string name="upselling_onboarding_month">/월</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="other">%d개 추가 기능</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">매월 %s %d로 청구됨.</string>
+  <string name="upselling_onboarding_billing_annual">12개월마다 %s %d로 청구됨.</string>
+  <string name="upselling_onboarding_get_plan">%s 받기</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Proton Free로 계속하기</string>
 </resources>

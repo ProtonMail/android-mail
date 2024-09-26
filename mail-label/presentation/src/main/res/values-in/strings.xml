@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Semua surat</string>
   <string name="label_title_all_drafts">Semua draf</string>
   <string name="label_title_all_sent">Semua surat terkirim</string>
-  <string name="label_title_all_scheduled">Terjadwal</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Ditunda</string>
   <string name="label_title_folders">Folder</string>
   <string name="label_title_parent_folder">Folder induk</string>

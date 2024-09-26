@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Cambia il mittente</string>
   <string name="composer_change_sender_paid_feature">Effettua l\'upgrade per cambiare l\'indirizzo mittente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Caricamento dell\'abbonamento non riuscito. Cambio del mittente non riuscito.</string>
-  <string name="composer_error_store_draft_sender_address">Salvataggio del mittente della bozza non riuscito</string>
-  <string name="composer_error_store_draft_body">Salvataggio del contenuto della bozza non riuscito</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicato rimosso: %1$s</string>
-  <string name="composer_error_store_draft_subject">Salvataggio dell\'oggetto della bozza non riuscito</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Salvataggio dei destinatari della bozza non riuscito</string>
   <string name="composer_error_loading_draft">Contenuto della bozza momentaneamente non disponibile. Modificarla sovrascriverà qualsiasi contenuto già esistente.</string>
   <string name="composer_add_attachments_content_description">Aggiungi degli allegati</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Invio del messaggio non riuscito</string>
   <string name="message_sending_error_dialog_button_dismiss">Chiudi</string>
-  <string name="message_sending_error_dialog_text_error">Invio del messaggio all\'indirizzo inserito non riuscito a causa del seguente motivo:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Nessuna chiave attendibile: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Indirizzo non esistente: %s</string>
   <string name="set_message_password_title">Crittografia esterna</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">Password compresa tra 4 e 21 caratteri</string>
   <string name="set_message_password_supporting_error_text">Inserisci una password compresa tra 4 e 21 caratteri</string>
   <string name="set_message_password_supporting_text_repeat">Password confermata</string>
-  <string name="set_message_password_supporting_error_text_repeat">Conferma correttamente la password</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Mostra la password</string>
   <string name="set_message_password_button_hide">Nascondi la password</string>
   <string name="set_message_password_button_apply">Salva</string>

@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">顯示名稱</string>
   <string name="mail_settings_identity_signature">簽名</string>
   <string name="mail_settings_identity_signature_hint">簽名檔</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">行動版簽名檔</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">這會被添加在簽名檔後。</string>
+  <string name="mail_settings_identity_mobile_footer_hint">行動版簽名檔</string>
   <string name="mail_settings_identity_mobile_footer_default_free">從 Proton Mail Android版送出</string>
   <string name="mail_settings_identity_error_updating">上傳設定時發生錯誤</string>
   <string name="mail_settings_identity_error_loading">載入設定時發生錯誤</string>

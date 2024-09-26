@@ -52,7 +52,7 @@
   <string name="contact_type_pager">Pager</string>
   <string name="contact_type_address">Adresa</string>
   <string name="contact_property_birthday">Data nașterii</string>
-  <string name="contact_property_note">Observații</string>
+  <string name="contact_property_note">Notiță</string>
   <string name="contact_property_photo">Fotografie</string>
   <string name="contact_property_logo">Siglă</string>
   <string name="contact_property_geo">Coordonate</string>
@@ -75,7 +75,7 @@
   <string name="email_section">E-mail</string>
   <string name="phone_section">Număr de telefon</string>
   <string name="address_section">Adresa</string>
-  <string name="note_section">Observații</string>
+  <string name="note_section">Notiță</string>
   <string name="birthday_section">Data nașterii</string>
   <string name="other_section">Informații suplimentare</string>
   <string name="display_name">Afișare nume</string>

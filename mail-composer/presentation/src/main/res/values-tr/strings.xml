@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Göndericiyi değiştir</string>
   <string name="composer_change_sender_paid_feature">Gönderici adresini değiştirebilmek için ücretli bir tarifeye geçin</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kuıllanıcının abonelik bilgileri alınamadığından gönderici değiştirilemedi. Yeniden deneyin.</string>
-  <string name="composer_error_store_draft_sender_address">Bu taslağın gönderici adresi kaydedilemedi</string>
-  <string name="composer_error_store_draft_body">Bu taslağın içeriği kaydedilemedi</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Yinelenen alıcı kaldırıldı: %1$s</string>
-  <string name="composer_error_store_draft_subject">Bu taslağın konusu kaydedilemedi</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Bu taslağın alıcıları kaydedilemedi</string>
   <string name="composer_error_loading_draft">Bu taslağın içeriği şu anda kullanılamıyor. Düzenleme daha önce var olan içerikleri değiştirecek.</string>
   <string name="composer_add_attachments_content_description">Dosyalar ekle</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Gönderme sorunu</string>
   <string name="message_sending_error_dialog_button_dismiss">Kapat</string>
-  <string name="message_sending_error_dialog_text_error">E-postanız şu nedenle belirtilen e-posta adresine gönderilemedi:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Herhangi bir güvenilen anahtar yok: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bulunamadı: %s</string>
   <string name="set_message_password_title">İletiyi şifrele</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 ile 21 karakter uzunluğunda</string>
   <string name="set_message_password_supporting_error_text">Parola uzunluğu 4 ile 21 karakter arasında olmalıdır</string>
   <string name="set_message_password_supporting_text_repeat">Parola ile onayı aynı değil</string>
-  <string name="set_message_password_supporting_error_text_repeat">Parola ile onayı aynı değil</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Parolayı görüntüle</string>
   <string name="set_message_password_button_hide">Parolayı gizle</string>
   <string name="set_message_password_button_apply">Parolayı uygula</string>

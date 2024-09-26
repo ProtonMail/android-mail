@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Уся пошта</string>
   <string name="label_title_all_drafts">Усі чернетки</string>
   <string name="label_title_all_sent">Усі надіслані</string>
-  <string name="label_title_all_scheduled">Все заплановано</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Відкладено</string>
   <string name="label_title_folders">Теки</string>
   <string name="label_title_parent_folder">Тека вищого рівня</string>

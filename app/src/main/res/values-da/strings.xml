@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Besked om fejlafsendelse</string>
   <string name="mailbox_message_sending_error_action">Gå til kladder</string>
   <string name="mailbox_attachment_uploading_error">Fejl ved upload af vedhæftning</string>
-  <string name="notification_switched_account">Skiftede til konto: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Etiket gemt</string>
   <string name="label_deleted">Etiket slettet</string>
   <string name="label_list_loading_error">Indlæsningsfejl af etikette. Prøv igen senere.</string>

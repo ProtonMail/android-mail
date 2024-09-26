@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Tüm e-postalar</string>
   <string name="label_title_all_drafts">Tüm taslaklar</string>
   <string name="label_title_all_sent">Tüm gönderilmişler</string>
-  <string name="label_title_all_scheduled">Tüm zamanlanmışlar</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Ertelenmişler</string>
   <string name="label_title_folders">Klasörler</string>
   <string name="label_title_parent_folder">Üst klasör</string>

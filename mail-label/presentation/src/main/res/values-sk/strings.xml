@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Všetky správy</string>
   <string name="label_title_all_drafts">Všetky koncepty</string>
   <string name="label_title_all_sent">Všetky odoslané</string>
-  <string name="label_title_all_scheduled">Všetko naplánované</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Odložené</string>
   <string name="label_title_folders">Priečinky</string>
   <string name="label_title_parent_folder">Nadradený priečinok</string>

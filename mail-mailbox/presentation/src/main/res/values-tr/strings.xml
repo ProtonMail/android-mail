@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">İstenmeyen kutusunu boşalt</string>
   <string name="mailbox_action_clear_trash_dialog_title">Çöp kutusunu boşalt</string>
   <string name="mailbox_action_clear_spam_dialog_title">İstenmeyen kutusunu boşalt</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">\'Çöp kutusu\' içindeki tüm iletileri silmek istediğinize emin misiniz?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">\'İstenmeyen kutusu\' içindeki tüm iletileri silmek istediğinize emin misiniz?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">\'İstenmeyen kutusu\' içindeki tüm yazışmaları silmek istediğinize emin misiniz?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Çöp kutusu içindeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">İstenmeyen klasöründeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">İstenmeyen klasöründeki tüm yazışmaları kalıcı olarak silmek istediğinize emin misiniz?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Temizleme işlemi zamanlandı"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Uyarı</string>

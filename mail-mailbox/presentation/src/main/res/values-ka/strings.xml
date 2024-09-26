@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">სპამის დაცარიელება</string>
   <string name="mailbox_action_clear_trash_dialog_title">ნაგვის ყუთის დაცარიელება</string>
   <string name="mailbox_action_clear_spam_dialog_title">სპამის საქაღალდის დაცარიელება</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ყველა შეტყობინება საქაღალდეში \'ნაგვის ყუთი\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ყველა შეტყობინება საქაღალდეში \'სპამი\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ყველა საუბარი საქაღალდეში \'სპამი\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"გასუფთავების ოპერაცია დაგეგმილია"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">გაფრთხილება</string>

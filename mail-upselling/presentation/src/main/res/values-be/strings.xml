@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (больш за 90 краін)</string>
   <string name="upselling_unlimited_feature_drive">Бяспечнае воблачнае сховішча</string>
   <string name="upselling_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Скразное шыфраванне</string>
+  <string name="upselling_onboarding_feature_folders_labels">Неабмежаваная колькасць папак і метак</string>
+  <string name="upselling_onboarding_free_feature_storage">1 ГБ сховішча і 1 адрас электроннай пошты</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 ГБ сховішча</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 дадатковых адрасоў электроннай пошты для вас</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Падтрымка для 1 карыстальніцкага дамена электроннай пошты</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 псеўданімаў hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Прыярытэтная падтрымка кліентаў</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 ГБ сховішча</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 дадатковых адрасоў электроннай пошты для вас</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Падтрымка для 3 карыстальніцкіх даменаў электроннай пошты</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Неабмежаваная колькасць псеўданімаў hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Прыхавана падтрымка кліентаў</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ультра хуткі і прыватны VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Зашыфраванае воблачнае сховішча для фатаграфій і дакументаў</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Дадатковае абарона ўліковага запісу</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ЭКАНОМІЯ %s%%</string>
   <string name="upselling_month">/месяц</string>
@@ -67,4 +85,20 @@
   <string name="upselling_snackbar_upgrade_in_progress">Адбываецца паляпшэнне падпіскі...</string>
   <string name="upselling_snackbar_upgrade_error_generic">Падчас паляпшэння вашай падпіскі адбылася памылка.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Выбар тарыфнага плана</string>
+  <string name="upselling_onboarding_switcher_monthly">Штомесяц</string>
+  <string name="upselling_onboarding_switcher_annual">Штогод</string>
+  <string name="upselling_onboarding_best_value">Лепшыя суадносіны кошту і якасці</string>
+  <string name="upselling_onboarding_month">/месяц</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">Яшчэ %d функцыя</item>
+    <item quantity="few">Яшчэ %d функцыі</item>
+    <item quantity="many">Яшчэ %d функцый</item>
+    <item quantity="other">Яшчэ %d функцый</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Спаганяецца сума ў памеры %s %d з інтэрвалам аплаты раз у месяц.</string>
+  <string name="upselling_onboarding_billing_annual">Спаганяецца сума ў памеры %s %d кожныя 12 месяцаў.</string>
+  <string name="upselling_onboarding_get_plan">Атрымаць %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Працягнуць бясплатнае выкарыстанне Proton</string>
 </resources>

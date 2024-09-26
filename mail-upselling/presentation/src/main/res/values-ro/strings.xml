@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (peste 90 de țări)</string>
   <string name="upselling_unlimited_feature_drive">Stocare securizată în cloud</string>
   <string name="upselling_unlimited_feature_pass">Manager criptat de parole</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Criptare bilaterală</string>
+  <string name="upselling_onboarding_feature_folders_labels">Foldere și etichete nelimitate</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GiB spațiu de stocare și o adresă de e-mail</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GiB spațiu de stocare</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 adrese de e-mail suplimentare pentru tine</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Suport pentru un domeniu personal de e-mail</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 aliasuri hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Asistență clienți prioritară</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GiB spațiu de stocare</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 adrese de e-mail suplimentare pentru tine</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Suport pentru 3 domenii personale de e-mail</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Aliasuri nelimitate hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Asistență dedicată clienți</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN rapid și privat</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Manager de parole criptat</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Stocare în cloud criptată pentru fotografii și documente</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Protecție avansată a contului</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ECONOMISIȚI %s%%</string>
   <string name="upselling_month">/lună</string>
@@ -66,4 +84,19 @@
   <string name="upselling_snackbar_upgrade_in_progress">Modificarea abonamentului este în desfășurare…</string>
   <string name="upselling_snackbar_upgrade_error_generic">A apărut o eroare în timpul modificării abonamentului.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">A apărut o eroare. Mai încercați.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Alegeți un plan</string>
+  <string name="upselling_onboarding_switcher_monthly">Lunar</string>
+  <string name="upselling_onboarding_switcher_annual">Anual</string>
+  <string name="upselling_onboarding_best_value">Cea mai bună valoare</string>
+  <string name="upselling_onboarding_month">/lună</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">Încă %d funcție</item>
+    <item quantity="few">Încă %d funcții</item>
+    <item quantity="other">Încă %d de funcții</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Facturat cu %s %d lunar.</string>
+  <string name="upselling_onboarding_billing_annual">Facturat cu %s %d la fiecare 12 luni.</string>
+  <string name="upselling_onboarding_get_plan">Luați %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Continuare cu Proton Free</string>
 </resources>

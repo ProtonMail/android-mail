@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Erro no envio da mensagem</string>
   <string name="mailbox_message_sending_error_action">Ir para Rascunhos</string>
   <string name="mailbox_attachment_uploading_error">Erro ao enviar anexo</string>
-  <string name="notification_switched_account">Mudou para a conta %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Marcador salvo</string>
   <string name="label_deleted">Marcador excluído</string>
   <string name="label_list_loading_error">Erro ao carregar o marcador, tente novamente mais tarde</string>

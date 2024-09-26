@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Tøm søppelpost</string>
   <string name="mailbox_action_clear_trash_dialog_title">Tøm papirkurvmappen</string>
   <string name="mailbox_action_clear_spam_dialog_title">Tøm søppelpostmappen</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Er du sikker på at du vil slette alle meldinger permanent i \'Papirkurv\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Er du sikker på at du vil slette alle meldinger permanent i \'Søppelpost\'?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler permanent i \'Søppelpost\'?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Er du sikker på at du vil slette alle meldinger i papirkurven permanent?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Er du sikker på at du vil slette alle meldinger i søppelpostmappen permanent?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på at du vil slette alle samtaler i søppelpostmappen permanent?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Tøm operasjon er planlagt"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>

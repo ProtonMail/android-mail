@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Alle e-mails</string>
   <string name="label_title_all_drafts">Alle concepten</string>
   <string name="label_title_all_sent">Alle verzonden</string>
-  <string name="label_title_all_scheduled">Alles gepland</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Gesnoozed</string>
   <string name="label_title_folders">Mappen</string>
   <string name="label_title_parent_folder">Bovenliggende map</string>

@@ -92,12 +92,14 @@ igen.</string>
   <string name="error_delete_message_failed_wrong_folder">Beskeden er ikke på en placering, hvor den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
   <string name="error_delete_conversation_failed_wrong_folder">Samtale er ikke på en placering, hvor den kan slettes</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Samtale slettet</string>
   <string name="message_body_load_remote_content_button_text">Indlæs eksternt indhold</string>
   <string name="message_body_load_embedded_images_button_text">Indlæs indlejrede billeder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Indlæs eksternt og indlejret indhold</string>
   <string name="message_report_phishing_dialog_title_offline">Bemærk</string>
-  <string name="message_report_phishing_dialog_message_offline">Denne funktion er kun tilgængelig online</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Ok</string>
   <string name="message_report_phishing_dialog_title">Bekræft phishing-anmeldelse</string>
   <string name="message_report_phishing_dialog_message">Rapporteres en besked som et phishing-forsøg videresendes beskeden til os, så vi kan analysere den og forbedre vores filtre. Det betyder, at vi vil kunne se hele beskedindholdet.</string>

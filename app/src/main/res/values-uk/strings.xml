@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Помилка надсилання повідомлення</string>
   <string name="mailbox_message_sending_error_action">Перейти до Чернеток</string>
   <string name="mailbox_attachment_uploading_error">Помилка вивантаження вкладення</string>
-  <string name="notification_switched_account">Змінено на обліковий запис: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Мітку збережено</string>
   <string name="label_deleted">Мітку видалено</string>
   <string name="label_list_loading_error">Помилка завантаження мітки, спробуйте знову пізніше</string>

@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Σφάλμα κατά την αποστολή του μηνύματος</string>
   <string name="mailbox_message_sending_error_action">Μετάβαση στα Πρόχειρα</string>
   <string name="mailbox_attachment_uploading_error">Σφάλμα κατά τη μεταφόρτωση συνημμένου</string>
-  <string name="notification_switched_account">Έγινε αλλαγή σε λογαριασμό: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Η ετικέτα αποθηκεύτηκε</string>
   <string name="label_deleted">Η ετικέτα διαγράφηκε</string>
   <string name="label_list_loading_error">Σφάλμα φόρτωσης ετικέτας, παρακαλούμε δοκιμάστε ξανά αργότερα</string>

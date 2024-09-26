@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Tot el correu</string>
   <string name="label_title_all_drafts">Tots els esborranys</string>
   <string name="label_title_all_sent">Tots els enviats</string>
-  <string name="label_title_all_scheduled">Totes les programacions</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Posposats</string>
   <string name="label_title_folders">Carpetes</string>
   <string name="label_title_parent_folder">Carpeta principal</string>

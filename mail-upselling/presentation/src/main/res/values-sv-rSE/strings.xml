@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ länder)</string>
   <string name="upselling_unlimited_feature_drive">Säker molnlagring</string>
   <string name="upselling_unlimited_feature_pass">Krypterad lösenordshanterare</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">End-to-end-kryptering</string>
+  <string name="upselling_onboarding_feature_folders_labels">Obegränsat antal mappar och etiketter</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB lagringsutrymme och 1 e-postadress</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB lagringsutrymme</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra e-postadresser för dig</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Stöd för 1 anpassad e-postdomän</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-alias</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Prioriterad kundsupport</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB lagringsutrymme</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra e-postadresser för dig</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Stöd för 3 anpassade e-postdomäner</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Obegränsat antal hide-my-email-alias</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikerad kundsupport</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultrasnabb och privat VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Krypterad lösenordshanterare</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Krypterad molnlagring för foton och dokument</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Avancerat kontoskydd</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPARA %s %%</string>
   <string name="upselling_month">/månad</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Prenumerationsuppgradering pågår…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Ett fel uppstod vid uppgradering av din prenumeration.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Ett fel uppstod. Försök igen.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Välj ett paket</string>
+  <string name="upselling_onboarding_switcher_monthly">Månadsvis</string>
+  <string name="upselling_onboarding_switcher_annual">Årlig</string>
+  <string name="upselling_onboarding_best_value">Bästa värde</string>
+  <string name="upselling_onboarding_month">/månad</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d till funktion</item>
+    <item quantity="other">%d fler funktioner</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Faktureras med %s %d varje månad.</string>
+  <string name="upselling_onboarding_billing_annual">Faktureras med %s %d var 12:e månad.</string>
+  <string name="upselling_onboarding_get_plan">Skaffa %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Fortsätt med Proton Free</string>
 </resources>

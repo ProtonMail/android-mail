@@ -104,9 +104,9 @@
   <string name="mailbox_action_button_clear_spam">Izprazni Neželeno pošto</string>
   <string name="mailbox_action_clear_trash_dialog_title">Izprazni mapo Smetnjak</string>
   <string name="mailbox_action_clear_spam_dialog_title">Izprazni mapo Neželena pošta</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Smetnjaku«?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Ali ste prepričani, da želite trajno izbrisati vsa sporočila v »Neželeni pošti«?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Ali ste prepričani, da želite trajno izbrisati vse pogovore v »Neželeni pošti«?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Načrtovana je operacija za čiščenje"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Opozorilo</string>

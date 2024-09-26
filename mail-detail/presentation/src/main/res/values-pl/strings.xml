@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Wiadomość znajduje się miejscu, gdzie nie może zostać usunięta</string>
   <string name="error_delete_conversation_failed">Nie udało się usunąć wątku</string>
   <string name="error_delete_conversation_failed_wrong_folder">Wątek znajduje się miejscu, gdzie nie może zostać usunięty</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Wątek został usunięty</string>
   <string name="message_body_load_remote_content_button_text">Załaduj zawartość zdalną</string>
   <string name="message_body_load_embedded_images_button_text">Załaduj osadzone obrazy</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Załaduj zawartość zdalną i osadzone obrazy</string>
   <string name="message_report_phishing_dialog_title_offline">Uwaga</string>
-  <string name="message_report_phishing_dialog_message_offline">Funkcja jest dostępna tylko online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Potwierdź próbę wyłudzenia informacji</string>
   <string name="message_report_phishing_dialog_message">Zgłoszenie wiadomości jako próby wyłudzenia informacji spowoduje wysłanie jej do nas w celu analizy i ulepszania filtrów antyspamowych. Oznacza to, że będziemy mogli zobaczyć pełną treść wiadomości.</string>

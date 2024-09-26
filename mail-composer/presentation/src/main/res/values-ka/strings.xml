@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">გამგზავნის შეცვლა</string>
   <string name="composer_change_sender_paid_feature">გამგზავნის მისამართის შესაცვლელად ფასიან ტარიფზე გადადით</string>
   <string name="composer_error_change_sender_failed_getting_subscription">გამგზავნის შეცვლა შეუძლებელია, რადგან მომხმარებლის გამოწერის მიღება ჩავარდა. თავიდან სცადეთ.</string>
-  <string name="composer_error_store_draft_sender_address">ამ მონახაზის გამგზავნის მისამართის შენახვა შეუძლებელია</string>
-  <string name="composer_error_store_draft_body">ამ მონახაზის შემცველობის შენახვა შეუძლებელია</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">წაშლილია %1$s გამეორებადი მიმღები</string>
-  <string name="composer_error_store_draft_subject">ამ მონახაზის სათაურის შენახვა შეუძლებელია</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">ამ მონახაზის მიმღებების შენახვა შეუძლებელია</string>
   <string name="composer_error_loading_draft">ამ მონახაზის შემცველობა ამჟამად ხელმისაწვდომი არაა. მისი ჩასწორება უკვე არსებულ შემცველობას გადაფარავს.</string>
   <string name="composer_add_attachments_content_description">მიმაგრებული ფაილის დამატება</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
   <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>
-  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზის გამო:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">სანდო გასაღებების გარეშე: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">მისამართი არ არსებობს: %s</string>
   <string name="set_message_password_title">შეტყობინების დაშიფრვა</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4-დან 15-მდე სიმბოლო</string>
   <string name="set_message_password_supporting_error_text">პაროლი სიგრძე 4 და 21 სიმბოლოს შორის უნდა მერყეობდეს</string>
   <string name="set_message_password_supporting_text_repeat">პაროლები უნდა ემთხვეოდეს</string>
-  <string name="set_message_password_supporting_error_text_repeat">ორი პაროლი ერთმანეთს არ ემთხვევა</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">პაროლის ჩვენება</string>
   <string name="set_message_password_button_hide">პაროლის დამალვა</string>
   <string name="set_message_password_button_apply">პაროლის დაყენება</string>

@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Вся почта</string>
   <string name="label_title_all_drafts">Все черновики</string>
   <string name="label_title_all_sent">Все отправленные</string>
-  <string name="label_title_all_scheduled">Все Запланированные</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Отложенные</string>
   <string name="label_title_folders">Папки</string>
   <string name="label_title_parent_folder">Родительская папка</string>

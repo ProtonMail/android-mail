@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">すべてのメール</string>
   <string name="label_title_all_drafts">すべての下書き</string>
   <string name="label_title_all_sent">すべての送信済み</string>
-  <string name="label_title_all_scheduled">All Scheduled</string>
+  <string name="label_title_all_scheduled">All scheduled</string>
   <string name="label_title_snoozed">Snoozed</string>
   <string name="label_title_folders">フォルダー</string>
   <string name="label_title_parent_folder">親フォルダー</string>

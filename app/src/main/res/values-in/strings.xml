@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Masalah dalam mengirim pesan</string>
   <string name="mailbox_message_sending_error_action">Ke Draf</string>
   <string name="mailbox_attachment_uploading_error">Kesalahan mengunggah lampiran</string>
-  <string name="notification_switched_account">Anda telah beralih ke akun: \'%s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Label disimpan</string>
   <string name="label_deleted">Label dihapus</string>
   <string name="label_list_loading_error">Terdapat kesalahan dalam memuat label, silakan coba lagi nanti</string>

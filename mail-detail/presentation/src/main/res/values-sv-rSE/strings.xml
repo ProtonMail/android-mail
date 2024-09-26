@@ -91,12 +91,14 @@
   <string name="error_delete_message_failed_wrong_folder">Meddelande är inte på en plats där det kan tas bort</string>
   <string name="error_delete_conversation_failed">Misslyckades att ta bort konversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Konversation är inte på en plats där den kan tas bort</string>
+  <string name="conversation_delete_dialog_title">Ta bort konversation</string>
+  <string name="conversation_delete_dialog_message">Är du säker på att du vill ta bort denna konversation permanent?</string>
   <string name="conversation_deleted">Konversation borttagen</string>
   <string name="message_body_load_remote_content_button_text">Ladda fjärrinnehåll</string>
   <string name="message_body_load_embedded_images_button_text">Ladda inbäddade bilder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Ladda fjärr och inbäddat innehåll</string>
   <string name="message_report_phishing_dialog_title_offline">Uppmärksamhet</string>
-  <string name="message_report_phishing_dialog_message_offline">Denna funktion är endast tillgänglig online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Bekräfta nätfiskerapport</string>
   <string name="message_report_phishing_dialog_message">Att rapportera ett meddelande som ett nätfiskeförsök kommer skicka meddelandet till oss så att vi kan analysera det och förbättra våra filter. Detta innebär att vi kommer kunna se innehållet i meddelandet i sin helhet.</string>

@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Fout bij verzenden bericht</string>
   <string name="mailbox_message_sending_error_action">Ga naar Concepten</string>
   <string name="mailbox_attachment_uploading_error">Fout bij het uploaden van bijlage</string>
-  <string name="notification_switched_account">Overgeschakeld naar account: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Label opgeslagen</string>
   <string name="label_deleted">Label verwijderd</string>
   <string name="label_list_loading_error">Fout tijdens laden label, probeer het later opnieuw</string>

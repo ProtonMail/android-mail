@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (más de 90 países)</string>
   <string name="upselling_unlimited_feature_drive">Almacenamiento seguro en la nube</string>
   <string name="upselling_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Cifrado de extremo a extremo</string>
+  <string name="upselling_onboarding_feature_folders_labels">Número ilimitado de carpetas y etiquetas</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB de almacenamiento y 1 dirección de correo</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB de espacio de almacenamiento</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 direcciones de correo adicionales para usted</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Soporte para 1 dominio de correo personalizado</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 alias de hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Soporte prioritario</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB de almacenamiento</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 direcciones de correo adicionales para usted</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Soporte para 3 dominios de correo personalizado</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Número ilimitado de alias de hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Soporte al cliente dedicado</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultrarrápida y privada</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Almacenamiento en la nube cifrado de fotos y documentos</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Protección de cuentas avanzada</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">AHORRE UN %s%%</string>
   <string name="upselling_month">/mes</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Mejora de la suscripción en progreso…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Ocurrió un error al mejorar la suscripción.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Ocurrió un error. Vuelva a intentarlo.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Elija un plan</string>
+  <string name="upselling_onboarding_switcher_monthly">Mensual</string>
+  <string name="upselling_onboarding_switcher_annual">Anual</string>
+  <string name="upselling_onboarding_best_value">Mejor valor</string>
+  <string name="upselling_onboarding_month">/mes</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d función más</item>
+    <item quantity="other">%d funciones más</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Al precio de %s %d cada mes.</string>
+  <string name="upselling_onboarding_billing_annual">Al precio de %s %d cada 12 meses.</string>
+  <string name="upselling_onboarding_get_plan">Obtenga %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Continúe con Proton Free</string>
 </resources>

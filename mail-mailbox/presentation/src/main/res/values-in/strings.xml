@@ -77,9 +77,9 @@
   <string name="mailbox_action_button_clear_spam">Kosongkan Spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Kosongkan folder Sampah</string>
   <string name="mailbox_action_clear_spam_dialog_title">Kosongkan folder Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam ‘Sampah’ secara permanen?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam ‘Spam’ secara permanen?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin ingin menghapus seluruh percakapan dalam ‘Spam’ secara permanen?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam folder Sampah Anda secara permanen?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Apakah Anda yakin ingin menghapus seluruh pesan dalam folder Spam Anda secara permanen?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Apakah Anda yakin ingin menghapus seluruh percakapan dalam folder Spam Anda secara permanen?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Tindakan pembersihan dijadwalkan"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Peringatan</string>

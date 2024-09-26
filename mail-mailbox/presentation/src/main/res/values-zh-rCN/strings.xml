@@ -78,8 +78,8 @@
   <string name="mailbox_action_clear_trash_dialog_title">清空废件箱</string>
   <string name="mailbox_action_clear_spam_dialog_title">清空垃圾邮件</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">确定要永久删除废件箱中的所有邮件吗？</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">确定要永久删除所有垃圾邮件吗？</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">确定要永久删除垃圾邮件涉及的所有会话吗？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">确定要永久删除垃圾文件夹中的所有邮件吗？</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">确定要永久删除垃圾文件夹中的所有会话吗？</string>
   <string name="mailbox_action_clear_operation_scheduled">"清除操作已经安排"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">警告</string>

@@ -18,37 +18,55 @@
   -->
 <resources>
   <!-- Upselling -->
-  <string name="upselling_button_item_content_description">Upgrade button</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_button_item_content_description">升级按钮</string>
+  <string name="upselling_close_button_content_description">关闭按钮</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">解锁更多存储空间和高级功能</string>
+  <string name="upselling_mailbox_plus_title">升级到 Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">轻松向群组发送邮件，享受更多 Mail Plus 的高级功能。</string>
+  <string name="upselling_contact_groups_plus_title">分组您的联系人</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">当您升级到 Mail Plus 时，获取它们及其他高级功能。</string>
+  <string name="upselling_labels_plus_title">需要更多标签或文件夹？</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">当您升级到 Mail Plus 时，获取它们及其他高级功能。</string>
+  <string name="upselling_folders_plus_title">需要更多标签或文件夹？</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">使用您的移动签名并享受更多 Mail Plus 的高级功能。</string>
+  <string name="upselling_mobile_signature_plus_title">自定义您的签名</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 存储空间</string>
   <string name="upselling_plus_feature_email_addresses">10 个邮箱地址</string>
   <string name="upselling_plus_feature_custom_domain">自有域名支持</string>
   <string name="upselling_plus_feature_desktop_app">新 Proton Mail 桌面应用程序</string>
-  <string name="upselling_plus_feature_folders_labels">Unlimited folders, labels, filters</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_folders_labels">不限量文件夹、标签和筛选规则</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 项高级功能</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">Your all-in-one premium subscription</string>
-  <string name="upselling_unlimited_feature_storage">500 GB storage with photo backup</string>
+  <string name="upselling_unlimited_description_override">您的一站式高级订阅</string>
+  <string name="upselling_unlimited_feature_storage">500 GB 存储空间及照片备份</string>
   <string name="upselling_unlimited_feature_mail_calendar">享受 Mail 与 Calendar 的所有付费功能</string>
-  <string name="upselling_unlimited_feature_vpn">VPN (90+ countries)</string>
+  <string name="upselling_unlimited_feature_vpn">VPN (90多个国家)</string>
   <string name="upselling_unlimited_feature_drive">安全的云存储</string>
-  <string name="upselling_unlimited_feature_pass">Encrypted password manager</string>
+  <string name="upselling_unlimited_feature_pass">加密的密码管理器</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">端到端加密</string>
+  <string name="upselling_onboarding_feature_folders_labels">不限量文件夹和标签</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB 存储和 1 个电子邮件地址</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB 存储空间</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">为您提供 10 个额外的电子邮件地址</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">支持 1 个自定义电子邮件域名</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 个 hide-my-email 别名</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">优先客服支持</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB 存储空间</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">为您提供 15 个额外的电子邮件地址</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">支持 3 个自定义电子邮件域名</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">无限制的 hide-my-email 别名</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">专属客服支持</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">超快且私密的 VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">加密的密码管理器</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">照片和文档的云端加密存储</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">高级账户保护</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">立省 %s%%</string>
   <string name="upselling_month">/月</string>
@@ -57,11 +75,24 @@
     <item quantity="other">%d 月</item>
   </plurals>
   <!-- Errors -->
-  <string name="upselling_unable_retrieve_options">Unable to retrieve upgrade options.</string>
+  <string name="upselling_unable_retrieve_options">无法获取升级选项。</string>
   <string name="upselling_snackbar_error_no_user_id">出错了。</string>
-  <string name="upselling_snackbar_error_no_subscriptions">Unable to fetch subscriptions.</string>
+  <string name="upselling_snackbar_error_no_subscriptions">无法获取订阅。</string>
   <!-- Snackbar texts -->
-  <string name="upselling_snackbar_upgrade_in_progress">Subscription upgrade in progress…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">An error occurred while upgrading your subscription.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">An error occurred. Please try again.</string>
+  <string name="upselling_snackbar_upgrade_in_progress">正在升级订阅…</string>
+  <string name="upselling_snackbar_upgrade_error_generic">升级您的订阅时发生错误。</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">发生错误。请重试。</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">选择套餐</string>
+  <string name="upselling_onboarding_switcher_monthly">每月</string>
+  <string name="upselling_onboarding_switcher_annual">按年</string>
+  <string name="upselling_onboarding_best_value">超值</string>
+  <string name="upselling_onboarding_month">/月</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="other">%d 个功能</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">每月以 %s %d 计费。</string>
+  <string name="upselling_onboarding_billing_annual">每 12 个月以 %s %d 计费。</string>
+  <string name="upselling_onboarding_get_plan">获取 %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">继续使用 Proton Free</string>
 </resources>

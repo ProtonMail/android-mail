@@ -93,12 +93,14 @@
   <string name="error_delete_message_failed_wrong_folder">Mesajul nu se află într-un loc unde poate fi șters.</string>
   <string name="error_delete_conversation_failed">Conversația nu s-a putut șterge.</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversația nu se află într-un loc unde poate fi șters.</string>
+  <string name="conversation_delete_dialog_title">Ștergere conversație</string>
+  <string name="conversation_delete_dialog_message">Sigur doriți să ștergeți definitiv această conversație?</string>
   <string name="conversation_deleted">Conversația a fost ștearsă.</string>
   <string name="message_body_load_remote_content_button_text">Încărcare conținut extern</string>
   <string name="message_body_load_embedded_images_button_text">Încărcare imagini incluse</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Încărcare conținut la distanță și încorporat</string>
   <string name="message_report_phishing_dialog_title_offline">Atenție</string>
-  <string name="message_report_phishing_dialog_message_offline">Această funcție este disponibilă doar online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Confirmare raport înșelăciune</string>
   <string name="message_report_phishing_dialog_message">Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și a îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.</string>

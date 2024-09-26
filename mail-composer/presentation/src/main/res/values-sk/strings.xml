@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Zmeniť odosielateľa</string>
   <string name="composer_change_sender_paid_feature">Prejdite na platenú verziu, aby ste mohli zmeniť adresu odosielateľa</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Nepodarilo sa zmeniť adresu odosielateľa, pretože získanie predplatného zlyhalo. Skúste znova.</string>
-  <string name="composer_error_store_draft_sender_address">Uloženie adresy odosielateľa tohto konceptu zlyhalo</string>
-  <string name="composer_error_store_draft_body">Uloženie obsahu tohto konceptu zlyhalo</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient"> Duplicitný príjemca odstránený: %1$s</string>
-  <string name="composer_error_store_draft_subject">Uloženie predmetu tohto konceptu sa nepodarilo</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Uloženie príjemcov tohto konceptu zlyhalo</string>
   <string name="composer_error_loading_draft">Obsah tohto konceptu nie je momentálne dostupný. Úpravou sa prepíše akýkoľvek už existujúci obsah.</string>
   <string name="composer_add_attachments_content_description">Pripojiť prílohy</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Chyba pri odosielaní</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavrieť</string>
-  <string name="message_sending_error_dialog_text_error">Váš email nemôže byť odoslaný na zadaný email z nasledovného dôvodu:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Žiadne dôveryhodné kľúče: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
   <string name="set_message_password_title">Šifrovať správu</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 až 21 znakov</string>
   <string name="set_message_password_supporting_error_text">Heslo musí mať dĺžku 4 až 21 znakov</string>
   <string name="set_message_password_supporting_text_repeat">Heslá sa musia zhodovať</string>
-  <string name="set_message_password_supporting_error_text_repeat">Tieto 2 heslá sa nezhodujú</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Zobraziť heslo</string>
   <string name="set_message_password_button_hide">Skryť heslo</string>
   <string name="set_message_password_button_apply">Použiť heslo</string>

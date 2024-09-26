@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">メッセージ送信エラー</string>
   <string name="mailbox_message_sending_error_action">下書きを開く</string>
   <string name="mailbox_attachment_uploading_error">添付ファイルのアップロードエラー</string>
-  <string name="notification_switched_account">アカウントを %s に切り替えました</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">ラベルが保存されました</string>
   <string name="label_deleted">ラベルが削除されました</string>
   <string name="label_list_loading_error">Error loading label, please try again later</string>

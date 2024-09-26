@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Nama tampilan</string>
   <string name="mail_settings_identity_signature">Tanda tangan</string>
   <string name="mail_settings_identity_signature_hint">Tanda tangan</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Tanda tangan seluler</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Teks ini akan ditambahkan setelah tanda tangan Anda.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Tanda tangan seluler</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Dikirim dari Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Terdapat kesalahan dalam memperbarui pengaturan</string>
   <string name="mail_settings_identity_error_loading">Terdapat kesalahan dalam memuat pengaturan</string>

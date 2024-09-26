@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Повідомлення знаходиться не в тому місці, де його можна видалити</string>
   <string name="error_delete_conversation_failed">Не вдалося видалити розмову</string>
   <string name="error_delete_conversation_failed_wrong_folder">Розмова знаходиться в тому місці, де її можна видалити</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Розмову видалено</string>
   <string name="message_body_load_remote_content_button_text">Завантажити зовнішній вміст</string>
   <string name="message_body_load_embedded_images_button_text">Завантажити вбудовані зображення</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Завантажувати віддалений і вбудований вміст</string>
   <string name="message_report_phishing_dialog_title_offline">Увага</string>
-  <string name="message_report_phishing_dialog_message_offline">Ці функції доступні лише в мережі.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Підтвердити звіт про шахрайство</string>
   <string name="message_report_phishing_dialog_message">Звітуючи про спробу шахрайства, ви надішлете це повідомлення нам, щоб ми змогли його проаналізувати та вдосконалити наші фільтри. Це означає, що ми матимемо змогу переглянути весь вміст цього повідомлення.</string>

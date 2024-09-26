@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">Usługa VPN (ponad 90 krajów)</string>
   <string name="upselling_unlimited_feature_drive">Bezpieczna przestrzeń dyskowa w chmurze</string>
   <string name="upselling_unlimited_feature_pass">Szyfrowany menedżer haseł</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Szyfrowanie end-to-end</string>
+  <string name="upselling_onboarding_feature_folders_labels">Nieograniczona liczba folderów i etykiet</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB przestrzeni dyskowej i 1 adres e-mail</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB przestrzeni dyskowej</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 dodatkowych adresów e-mail dla Ciebie</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Wsparcie dla 1 niestandardowej domeny</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 aliasów hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Priorytetowe wsparcie klienta</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB przestrzeni dyskowej</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 dodatkowych adresów e-mail dla Ciebie</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Wsparcie dla 3 niestandardowych domen</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Nieograniczona liczba aliasów hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedykowane wsparcie klienta</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Bardzo szybka i prywatna usługa VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Szyfrowany menedżer haseł</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Szyfrowana przestrzeń dyskowa w chmurze na zdjęcia i dokumenty</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Zaawansowana ochrona konta</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ZAOSZCZĘDŹ %s%%</string>
   <string name="upselling_month">/ miesiąc</string>
@@ -67,4 +85,20 @@
   <string name="upselling_snackbar_upgrade_in_progress">Ulepszanie subskrypcji w toku…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Wystąpił błąd podczas ulepszania subskrypcji.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Wystąpił błąd. Spróbuj ponownie.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Wybierz plan</string>
+  <string name="upselling_onboarding_switcher_monthly">Miesięcznie</string>
+  <string name="upselling_onboarding_switcher_annual">Rocznie</string>
+  <string name="upselling_onboarding_best_value">Najlepsza oferta</string>
+  <string name="upselling_onboarding_month">/ miesiąc</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d więcej funkcja</item>
+    <item quantity="few">%d więcej funkcje</item>
+    <item quantity="many">%d więcej funkcji</item>
+    <item quantity="other">%d więcej funkcji</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Płatne %s %d miesięcznie.</string>
+  <string name="upselling_onboarding_billing_annual">Płatne %s %d rocznie.</string>
+  <string name="upselling_onboarding_get_plan">Wybierz plan %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Kontynuuj z planem Proton Free</string>
 </resources>

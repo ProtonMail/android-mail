@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Cambiar el remitente</string>
   <string name="composer_change_sender_paid_feature">Mejore a un plan de pago para cambiar la dirección de remitente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">No se puede cambiar el remitente porque no pudo obtener la suscripción del usuario. Intente otra vez.</string>
-  <string name="composer_error_store_draft_sender_address">Error al guardar la dirección del remitente de este borrador</string>
+  <string name="composer_error_store_draft_sender_address">Error al guardar la dirección del remitente</string>
   <string name="composer_error_store_draft_body">Error al guardar el cuerpo de este borrador</string>
   <string name="composer_error_duplicate_recipient">Destinatario duplicado borrado: %1$s</string>
-  <string name="composer_error_store_draft_subject">Error al guardar el asunto de este borrador</string>
+  <string name="composer_error_store_draft_subject">Error al guardar el asunto</string>
   <string name="composer_error_store_draft_recipients">Error al guardar los destinatarios de este borrador</string>
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento. Editarlo sobrescribirá cualquier contenido preexistente.</string>
   <string name="composer_add_attachments_content_description">Añadir archivo adjunto</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error de envío</string>
   <string name="message_sending_error_dialog_button_dismiss">Cerrar</string>
-  <string name="message_sending_error_dialog_text_error">El correo electrónico no puede ser enviado al correo electrónico especificado debido a la siguiente razón:</string>
+  <string name="message_sending_error_dialog_text_error">No se puede enviar el correo electrónico a la dirección indicada debido a la siguiente razón:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">No hay claves de confianza: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">La dirección no existe: %s</string>
   <string name="set_message_password_title">Cifrar mensaje</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">Longitud de 4 a 21 caracteres</string>
   <string name="set_message_password_supporting_error_text">La contraseña debe tener entre 4 y 21 caracteres</string>
   <string name="set_message_password_supporting_text_repeat">Las contraseñas deben coincidir</string>
-  <string name="set_message_password_supporting_error_text_repeat">Las dos contraseñas no coinciden</string>
+  <string name="set_message_password_supporting_error_text_repeat">Las contraseñas no coinciden.</string>
   <string name="set_message_password_button_show">Mostrar contraseña</string>
   <string name="set_message_password_button_hide">Ocultar contraseña</string>
   <string name="set_message_password_button_apply">Aplicar contraseña</string>

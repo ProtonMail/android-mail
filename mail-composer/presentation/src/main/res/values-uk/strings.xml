@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Змінити відправника</string>
   <string name="composer_change_sender_paid_feature">Перейдіть на платний тарифний план, щоб змінити адресу відправника</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
-  <string name="composer_error_store_draft_sender_address">Не вдалося зберегти адресу відправника цієї чернетки</string>
-  <string name="composer_error_store_draft_body">Не вдалося зберегти вміст цієї чернетки</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Вилучено дублікат отримувача: %1$s</string>
-  <string name="composer_error_store_draft_subject">Не вдалося зберегти тему цієї чернетки</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
   <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний. Редагування перезапише будь-який попередній вміст.</string>
   <string name="composer_add_attachments_content_description">Додати вкладення</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Надсилання звіту про помилку</string>
   <string name="message_sending_error_dialog_button_dismiss">Закрити</string>
-  <string name="message_sending_error_dialog_text_error">Вашого листа неможливо надіслати на вказану адресу з такої причини:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Немає довірених ключів: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Адреса %s не існує</string>
   <string name="set_message_password_title">Зашифрувати повідомлення</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">Довжина від 4 до 21 символу</string>
   <string name="set_message_password_supporting_error_text">Пароль повинен мати від 4 до 21 символів</string>
   <string name="set_message_password_supporting_text_repeat">Паролі повинні збігатися</string>
-  <string name="set_message_password_supporting_error_text_repeat">2 паролі відрізняються</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Показати пароль</string>
   <string name="set_message_password_button_hide">Приховати пароль</string>
   <string name="set_message_password_button_apply">Застосувати пароль</string>

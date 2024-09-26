@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Canvia el remitent</string>
   <string name="composer_change_sender_paid_feature">Milloreu a un pla de pagament per canviar l\'adreça del remitent.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">No es pot canviar el remitent perquè no s\'ha pogut obtenir la subscripció de l\'usuari. Torna-ho a provar.</string>
-  <string name="composer_error_store_draft_sender_address">S\'ha produït un error en desar l\'adreça del remitent..</string>
-  <string name="composer_error_store_draft_body">S\'ha produït un error en desar el cos de l\'esborrany.</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Destinatari duplicat esborrat: %1$s</string>
-  <string name="composer_error_store_draft_subject">S\'ha produït un error en desar l\'assumpte de l\'esborrany.</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">S\'ha produït un error en desar els destinataris de l\'esborrany.</string>
   <string name="composer_error_loading_draft">El contingut d\'aquest esborrany no està disponible en aquest moment. L\'edició substituirà qualsevol contingut preexistent.</string>
   <string name="composer_add_attachments_content_description">Afegiu fitxers adjunts</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Error d\'enviament</string>
   <string name="message_sending_error_dialog_button_dismiss">Tanca</string>
-  <string name="message_sending_error_dialog_text_error">El vostre correu electrònic no es pot enviar al correu electrònic introduït pel motiu següent:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">No hi ha claus de confiança: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">L\'adreça no existeix: %s</string>
   <string name="set_message_password_title">Xifra el missatge</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">Longitud de 4 a 21 caràcters</string>
   <string name="set_message_password_supporting_error_text">La contrasenya ha de tenir entre 4 i 21 caràcters</string>
   <string name="set_message_password_supporting_text_repeat">Les contrasenyes han de coincidir</string>
-  <string name="set_message_password_supporting_error_text_repeat">Les 2 contrasenyes no coincideixen</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Mostra la contrasenya</string>
   <string name="set_message_password_button_hide">Amaga la contrasenya</string>
   <string name="set_message_password_button_apply">Aplica la contrasenya</string>

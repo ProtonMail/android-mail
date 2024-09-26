@@ -89,12 +89,14 @@
   <string name="error_delete_message_failed_wrong_folder">消息位于不可以删除的位置。</string>
   <string name="error_delete_conversation_failed">删除对话失败</string>
   <string name="error_delete_conversation_failed_wrong_folder">对话位于不可以删除的位置。</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">会话已删除</string>
   <string name="message_body_load_remote_content_button_text">加载外链内容</string>
   <string name="message_body_load_embedded_images_button_text">加载嵌入图像</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">加载远程及内嵌内容</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">此功能仅在联机时可用。</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">好的</string>
   <string name="message_report_phishing_dialog_title">确认举报欺诈邮件</string>
   <string name="message_report_phishing_dialog_message">您举报的邮件会被上传，以便我们分析并改进过滤机制。这意味着我们将得知此邮件的所有内容。</string>

@@ -104,9 +104,9 @@
   <string name="mailbox_action_button_clear_spam">Ачысціць спам</string>
   <string name="mailbox_action_clear_trash_dialog_title">Ачысціць папку Сметніцы</string>
   <string name="mailbox_action_clear_spam_dialog_title">Ачысціць папку Спам</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі ’Сметніца’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі ’Спам’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы сапраўды хочаце незваротна выдаліць усе размовы з папкі ’Спам’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі Сметніца?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Вы сапраўды хочаце незваротна выдаліць усе паведамленні з папкі Спам?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Вы сапраўды хочаце незваротна выдаліць усе размовы з папкі Спам?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Запланавана аперацыя па ачыстцы"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Папярэджанне</string>

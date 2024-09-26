@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ negara)</string>
   <string name="upselling_unlimited_feature_drive">Penyimpanan cloud yang aman</string>
   <string name="upselling_unlimited_feature_pass">Pengelola kata sandi terenkripsi</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Enkripsi end-to-end</string>
+  <string name="upselling_onboarding_feature_folders_labels">Tanpa batasan jumlah folder dan label</string>
+  <string name="upselling_onboarding_free_feature_storage">Ruang penyimpanan 1 GB dan 1 alamat email</string>
+  <string name="upselling_onboarding_plus_feature_storage">Ruang penyimpanan 15 GB</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 alamat email tambahan untuk Anda</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Dukungan untuk 1 domain email khusus</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 alias hide-my-email</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Dukungan pelanggan prioritas</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">Ruang penyimpanan 500 GB</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 alamat email tambahan untuk Anda</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Dukungan untuk 3 domain email khusus</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Tanpa batasan jumlah alias hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dukungan pelanggan khusus</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN yang ultra cepat dan privat</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Pengelola kata sandi terenkripsi</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Penyimpanan cloud terenkripsi untuk foto dan dokumen</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Perlindungan akun tingkat lanjut</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>
@@ -64,4 +82,17 @@
   <string name="upselling_snackbar_upgrade_in_progress">Peningkatan paket langganan sedang berlangsung…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Terdapat kesalahan pada saat meningkatkan paket langganan Anda.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Terdapat suatu kesalahan. Silakan coba lagi.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Pilih paket</string>
+  <string name="upselling_onboarding_switcher_monthly">Bulanan</string>
+  <string name="upselling_onboarding_switcher_annual">Tahunan</string>
+  <string name="upselling_onboarding_best_value">Penawaran terbaik</string>
+  <string name="upselling_onboarding_month">/bulan</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="other">%d fitur lainnya</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Tertagih dengan harga %s %d per bulannya.</string>
+  <string name="upselling_onboarding_billing_annual">Tertagih dengan harga %s %d setiap 12 bulan.</string>
+  <string name="upselling_onboarding_get_plan">Dapatkan %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Lanjut dengan Proton Free</string>
 </resources>

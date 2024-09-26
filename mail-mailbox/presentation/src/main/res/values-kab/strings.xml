@@ -61,7 +61,7 @@
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
     <item quantity="one">Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi izen-a?</item>
-    <item quantity="other">Are you sure you want to permanently delete these message?</item>
+    <item quantity="other">Are you sure you want to permanently delete these messages?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message">
     <item quantity="one">Message permanently deleted</item>
@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Silem aspam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Empty Trash folder</string>
   <string name="mailbox_action_clear_spam_dialog_title">Empty Spam folder</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Trash’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages within ‘Spam’?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations within ‘Spam’?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Alɣu</string>

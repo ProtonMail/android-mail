@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Бачнае імя</string>
   <string name="mail_settings_identity_signature">Подпіс</string>
   <string name="mail_settings_identity_signature_hint">Подпіс</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Мабільны подпіс</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Дадаецца пасля вашага подпісу.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Мабільны подпіс</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Адпраўлена з ProtonMail для Android</string>
   <string name="mail_settings_identity_error_updating">Памылка пры абнаўленні налад</string>
   <string name="mail_settings_identity_error_loading">Памылка пры загрузцы налад</string>

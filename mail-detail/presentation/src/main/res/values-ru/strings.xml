@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Сообщение находится не в том месте, где его можно удалить</string>
   <string name="error_delete_conversation_failed">Не удалось удалить цепочку писем</string>
   <string name="error_delete_conversation_failed_wrong_folder">Цепочка писем находится не в том месте, где её можно удалить</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Цепочка писем удалена</string>
   <string name="message_body_load_remote_content_button_text">Загрузить внешнее содержимое</string>
   <string name="message_body_load_embedded_images_button_text">Загрузить встроенные изображения</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Загрузить внешнее и встроенное содержимое</string>
   <string name="message_report_phishing_dialog_title_offline">Внимание</string>
-  <string name="message_report_phishing_dialog_message_offline">Эта функция доступна только в Интернете.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Да</string>
   <string name="message_report_phishing_dialog_title">Подтвердить жалобу на фишинг</string>
   <string name="message_report_phishing_dialog_message">Сообщение о попытке фишинга отправит сообщение нам, чтобы мы смогли проанализировать его и улучшить наши фильтры. Это означает, что мы будем способны увидеть содержимое сообщения полностью.</string>

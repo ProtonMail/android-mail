@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="mailbox_toolbar_compose_button_content_description">Compunere mesaj</string>
-  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din mod selecție</string>
+  <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Ieșire din mod selectare</string>
   <string name="mailbox_toolbar_menu_button_content_description">Meniu</string>
   <string name="mailbox_toolbar_search_button_content_description">Căutare</string>
   <string name="mailbox_toolbar_exit_search_mode_content_description">Ieșire din mod căutare</string>
@@ -95,9 +95,9 @@
   <string name="mailbox_action_button_clear_spam">Golire «Nedorite»</string>
   <string name="mailbox_action_clear_trash_dialog_title">Golire folder «Gunoi»</string>
   <string name="mailbox_action_clear_spam_dialog_title">Golire folder «Nedorite»</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din «Gunoi»?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din «Nedorite»?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sigur doriți să ștergeți definitiv toate conversațiile din «Nedorite»?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din folderul «Gunoi»?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Sigur doriți să ștergeți definitiv toate mesajele din folderul «Nedorite»?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sigur doriți să ștergeți definitiv toate mesajele din folderul «Nedorite»?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operația de golire este programată."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Avertizare</string>

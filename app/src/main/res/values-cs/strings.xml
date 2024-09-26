@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Chyba při odesílání zprávy</string>
   <string name="mailbox_message_sending_error_action">Přejít do Konceptů</string>
   <string name="mailbox_attachment_uploading_error">Chyba při nahrávání přílohy</string>
-  <string name="notification_switched_account">Přepnuto na účet: \'%s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Štítek uložen</string>
   <string name="label_deleted">Štítek smazán</string>
   <string name="label_list_loading_error">Chyba při načítání štítku, zkuste to prosím později</string>

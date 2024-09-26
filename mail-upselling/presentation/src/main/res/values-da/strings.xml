@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ lande)</string>
   <string name="upselling_unlimited_feature_drive">Sikker skylagring</string>
   <string name="upselling_unlimited_feature_pass">Krypteret adgangskodeadministrator</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">End-to-end kryptering</string>
+  <string name="upselling_onboarding_feature_folders_labels">Ubegrænsede mapper og etiketter</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB lagerplads og 1 e-mailadresse</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB lagerplads</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 ekstra e-mailadresser til dig</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Understøttelse af 1 brugerdefineret e-mail-domæne</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-aliasser</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Prioriteret kundesupport</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB lagerplads</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 ekstra e-mailadresser til dig</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Understøttelse af 3 brugerdefinerede e-mail-domæner</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Ubegrænsede hide-my-email-aliasser</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Dedikeret kundesupport</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra hurtig og privat VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Krypteret adgangskodeadministrator</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Krypteret sky-lagring til billeder og dokumenter</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Avanceret program til beskyttelse af konto</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPAR %s%%</string>
   <string name="upselling_month">/måned</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Abonnementsopgradering pågår...</string>
   <string name="upselling_snackbar_upgrade_error_generic">En fejl opstod under opgraderingen af dit abonnement.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Der opstod en fejl. Prøv venligst igen.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Vælg et abonnement</string>
+  <string name="upselling_onboarding_switcher_monthly">Månedligt</string>
+  <string name="upselling_onboarding_switcher_annual">Årligt</string>
+  <string name="upselling_onboarding_best_value">Bedste tilbud</string>
+  <string name="upselling_onboarding_month">/måned</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d flere funktioner</item>
+    <item quantity="other">%d flere funktioner</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Faktureres med %s %d hver måned.</string>
+  <string name="upselling_onboarding_billing_annual">Faktureres med %s %d hvert 12. måned.</string>
+  <string name="upselling_onboarding_get_plan">Få %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Fortsæt med Proton Free</string>
 </resources>

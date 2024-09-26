@@ -19,29 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Upgrade knop</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_close_button_content_description">Sluitknop</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Om meer opslag- en premiumfuncties te ontgrendelen</string>
+  <string name="upselling_mailbox_plus_title">Upgrade naar Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Stuur gemakkelijk e-mails naar een groep en geniet van andere premium functies met Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_title">Groepeer uw contacten</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Krijg ze en andere premium functies wanneer u upgraden naar Mail Plus.</string>
+  <string name="upselling_labels_plus_title">Heeft u meer labels of mappen nodig?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Krijg ze en andere premium functies wanneer u upgraden naar Mail Plus.</string>
+  <string name="upselling_folders_plus_title">Heeft u meer labels of mappen nodig?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Gebruik uw eigen mobiele handtekening en geniet van andere premium functies met Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Pas uw handtekening aan</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB opslagruimte</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadressen</string>
   <string name="upselling_plus_feature_custom_domain">Gepersonaliseerde e-maildomein ondersteuning</string>
   <string name="upselling_plus_feature_desktop_app">Nieuwe Proton Mail desktop-app</string>
   <string name="upselling_plus_feature_folders_labels">Onbeperkt aantal mappen, labels en filters</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premium functies</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Uw all-in-één Premium-abonnement</string>
   <string name="upselling_unlimited_feature_storage">500 GB opslag met foto back-up</string>
@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ landen)</string>
   <string name="upselling_unlimited_feature_drive">Veilige cloudopslag</string>
   <string name="upselling_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">End-to-end versleuteling</string>
+  <string name="upselling_onboarding_feature_folders_labels">Onbeperkte mappen en labels</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB opslagruimte en 1 e-mailadres</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB opslagruimte</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 extra e-mailadressen voor u</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Ondersteuning voor 1 aangepast e-maildomein</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-aliassen</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Klantondersteuning met hoge prioriteit</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB opslagruimte</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 extra e-mailadressen voor u</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Ondersteuning voor 3 aangepaste e-maildomeinen</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Onbeperkt aantal hide-my-email-aliassen</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Toegewijde klantondersteuning</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultrasnelle en privé VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Versleutelde cloudopslag voor foto\'s en documenten</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Geavanceerde accountbeveiliging</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">BESPAAR %s%%</string>
   <string name="upselling_month">/maand</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Abonnement upgrade is bezig…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Er is een fout opgetreden tijdens het updaten van uw abonnement.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Er is een fout opgetreden. Probeer het nog eens.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Kies een abonnement</string>
+  <string name="upselling_onboarding_switcher_monthly">Maandelijks</string>
+  <string name="upselling_onboarding_switcher_annual">Jaarlijks</string>
+  <string name="upselling_onboarding_best_value">Beste Koop</string>
+  <string name="upselling_onboarding_month">/maand</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d meer functie</item>
+    <item quantity="other">%d meer functies</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Gefactureerd als %s %d per maand.</string>
+  <string name="upselling_onboarding_billing_annual">Gefactureerd als %s %d per 12 maanden.</string>
+  <string name="upselling_onboarding_get_plan">Krijg %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Doorgaan met Proton Free</string>
 </resources>

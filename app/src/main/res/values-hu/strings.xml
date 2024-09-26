@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Hiba az üzenet küldése közben</string>
   <string name="mailbox_message_sending_error_action">Ugrás a piszkozatokhoz</string>
   <string name="mailbox_attachment_uploading_error">Hiba mellékletek feltöltésénél</string>
-  <string name="notification_switched_account">Átlépve a fiókba: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Címke mentve</string>
   <string name="label_deleted">Címke törölve</string>
   <string name="label_list_loading_error">Hiba a címke betöltése során, próbálja újra később</string>

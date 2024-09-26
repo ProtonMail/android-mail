@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ krajín)</string>
   <string name="upselling_unlimited_feature_drive">Bezpečné cloudové úložisko</string>
   <string name="upselling_unlimited_feature_pass">Šifrovaný správca hesiel</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Šifrovanie end-to-end</string>
+  <string name="upselling_onboarding_feature_folders_labels">Neobmedzené množstvo priečinkov a štítkov</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB úložisko a 1 emailová adresa</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB úložisko</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 ďalších emailových adries pre vás</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Podpora pre 1 vlastnú emailovú doménu</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email aliasov</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Prioritná zákaznícka podpora</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB úložisko</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 ďalších emailových adries pre vás</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Podpora pre 3 vlastné emailové domény</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Neobmedzený počet hide-my-email aliasov</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Účinná zákaznícka podpora</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultra rýchly a súkromný VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Šifrovaný správca hesiel</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Šifrované cloudové úložisko pre fotografie a dokumenty</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Rozšírená ochrana účtu</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">UŠETRÍTE %s%%</string>
   <string name="upselling_month">/mesiac</string>
@@ -67,4 +85,20 @@
   <string name="upselling_snackbar_upgrade_in_progress">Prebieha aktualizácia predplatného...</string>
   <string name="upselling_snackbar_upgrade_error_generic">Počas aktualizácie vášho predplatného došlo k chybe.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Vyskytla sa chyba. Skúste to znova, prosím.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Vyberte si plán</string>
+  <string name="upselling_onboarding_switcher_monthly">Mesačne</string>
+  <string name="upselling_onboarding_switcher_annual">Ročne</string>
+  <string name="upselling_onboarding_best_value">Najlepšia ponuka</string>
+  <string name="upselling_onboarding_month">/mesiac</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d ďalší funkcia</item>
+    <item quantity="few">%d ďalšie funkcie</item>
+    <item quantity="many">%d ďalšie funkcie</item>
+    <item quantity="other">%d ďalšie funkcie</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Účtovaná suma %s %d každý mesiac.</string>
+  <string name="upselling_onboarding_billing_annual">Účtovaná suma %s %d každých 12 mesiacov.</string>
+  <string name="upselling_onboarding_get_plan">Získajte %s</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Pokračovať s Proton Free</string>
 </resources>

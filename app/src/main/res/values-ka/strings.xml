@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">შეტყობინების გაგზავნის შეცდომა</string>
   <string name="mailbox_message_sending_error_action">მონახაზებზე გადასვლა</string>
   <string name="mailbox_attachment_uploading_error">მიმაგრებული ფაილის ატვირთვის შეცდომა</string>
-  <string name="notification_switched_account">გადაერთეთ ანგარიშზე: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">ჭდე შენახულია</string>
   <string name="label_deleted">ჭდე წაშლილია</string>
   <string name="label_list_loading_error">ჭდის ჩატვირთვის შეცდომა. მოგვიანებით სცადეთ</string>

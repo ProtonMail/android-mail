@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Ошибка при отправке сообщения</string>
   <string name="mailbox_message_sending_error_action">Перейти в Черновики</string>
   <string name="mailbox_attachment_uploading_error">Ошибка загрузки вложения</string>
-  <string name="notification_switched_account">Переключено на аккаунт: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Ярлык сохранён</string>
   <string name="label_deleted">Ярлык удалён</string>
   <string name="label_list_loading_error">Ошибка загрузки ярлыка, повторите попытку позже</string>

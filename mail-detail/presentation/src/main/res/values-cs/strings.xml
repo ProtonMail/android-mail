@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Zpráva se nenachází v místě, kde ji lze smazat</string>
   <string name="error_delete_conversation_failed">Smazání konverzace selhalo</string>
   <string name="error_delete_conversation_failed_wrong_folder">Konverzace se nenachází v místě, kde ji lze smazat</string>
+  <string name="conversation_delete_dialog_title">Smazat konverzaci</string>
+  <string name="conversation_delete_dialog_message">Jste si jisti, že chcete trvale smazat tuto konverzaci?</string>
   <string name="conversation_deleted">Konverzace smazána</string>
   <string name="message_body_load_remote_content_button_text">Načíst vzdálený obsah</string>
   <string name="message_body_load_embedded_images_button_text">Načíst vložené obrázky</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Načíst vzdálený a vložený obsah</string>
   <string name="message_report_phishing_dialog_title_offline">Upozornění</string>
-  <string name="message_report_phishing_dialog_message_offline">Tyto funkce jsou dostupné pouze online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Potvrdit oznámení phishingu</string>
   <string name="message_report_phishing_dialog_message">Nahlášení této zprávy jako pokusu o phishing odešle tuto zprávu nám, abychom ji mohli analyzovat a zlepšit tím naše filtry. To znamená, že uvidíme kompletně celý obsah této zprávy.</string>

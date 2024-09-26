@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Beddel amazan</string>
   <string name="composer_change_sender_paid_feature">Ali ɣer uɣawas s yidrimen akken ad tbeddleḍ tansa n umazan</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Anermas uslig yettwakkes: %1$s</string>
-  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
   <string name="composer_add_attachments_content_description">Rnu imeddayen</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Mdel</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
   <string name="set_message_password_title">Wgelhen izen</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">8 ar 21 n yisekkilen</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">Awalen uffiren ilaq ad ilin kifkif</string>
-  <string name="set_message_password_supporting_error_text_repeat">Sin n wawalen uffiren mgarraden</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Show password</string>
   <string name="set_message_password_button_hide">Ffer awal uffir</string>
   <string name="set_message_password_button_apply">Snes awal uffir</string>

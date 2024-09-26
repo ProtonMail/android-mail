@@ -93,12 +93,14 @@
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Razgovor izbrisan</string>
   <string name="message_body_load_remote_content_button_text">Učitaj udaljeni sadržaj</string>
   <string name="message_body_load_embedded_images_button_text">Učitaj ugrađene slike</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
   <string name="message_report_phishing_dialog_title_offline">Pažnja</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">U redu</string>
   <string name="message_report_phishing_dialog_title">Potvrdi izvještaj o krađi identiteta</string>
   <string name="message_report_phishing_dialog_message">Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.</string>

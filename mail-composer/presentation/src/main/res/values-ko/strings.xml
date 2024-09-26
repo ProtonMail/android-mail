@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">보낸 사람 변경</string>
   <string name="composer_change_sender_paid_feature">보낸 사람의 주소를 변경하려면 유료 플랜으로 업그레이드 하세요</string>
   <string name="composer_error_change_sender_failed_getting_subscription">사용자의 구독을 실패했기 때문에 발신자를 변경할 수 없습니다. 다시 시도하십시오.</string>
-  <string name="composer_error_store_draft_sender_address">이 초안의 발신자 주소를 저장하는 데 실패했습니다.</string>
-  <string name="composer_error_store_draft_body">이 초안의 본문을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">중복된 수신자를 삭제했습니다: %1$s</string>
-  <string name="composer_error_store_draft_subject">이 초안의 제목을 저장하는 것을 실패했습니다.</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">이 초안의 수신자를 저장하는 것을 실패했습니다.</string>
   <string name="composer_error_loading_draft">이 초안의 내용은 현재 사용할 수 없습니다. 기존 내용의 편집을 사용할 수 없습니댜.</string>
   <string name="composer_add_attachments_content_description">첨부 파일 추가</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">발송 실패</string>
   <string name="message_sending_error_dialog_button_dismiss">닫기</string>
-  <string name="message_sending_error_dialog_text_error">다음 이유로 인해 입력한 주소로 이메일이 전송되지 못했습니다:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">신뢰 키가 없습니다: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">주소가 존재하지 않습니다: %s</string>
   <string name="set_message_password_title">메시지 암호화</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4~21자로 작성해주세요</string>
   <string name="set_message_password_supporting_error_text">비밀번호는 4자에서 21자 사이여야 합니다.</string>
   <string name="set_message_password_supporting_text_repeat">비밀번호가 일치해야 합니다</string>
-  <string name="set_message_password_supporting_error_text_repeat">비밀번호가 일치하지 않습니다</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">비밀번호 표시</string>
   <string name="set_message_password_button_hide">비밀번호 숨김</string>
   <string name="set_message_password_button_apply">비밀번호 적용</string>

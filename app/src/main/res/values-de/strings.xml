@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Fehler beim Senden der Nachricht</string>
   <string name="mailbox_message_sending_error_action">Zu den Entwürfen</string>
   <string name="mailbox_attachment_uploading_error">Fehler beim Hochladen des Anhangs.</string>
-  <string name="notification_switched_account">Zu Konto „%s“ gewechselt</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Kategorie gespeichert</string>
   <string name="label_deleted">Kategorie gelöscht</string>
   <string name="label_list_loading_error">Fehler beim Laden der Kategorie. Bitte versuche es später erneut.</string>

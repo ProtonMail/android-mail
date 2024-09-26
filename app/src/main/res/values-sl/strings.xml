@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Napaka pri pošiljanju sporočila</string>
   <string name="mailbox_message_sending_error_action">Pojdi v mapo Osnutki</string>
   <string name="mailbox_attachment_uploading_error">Napaka pri nalaganju priponke</string>
-  <string name="notification_switched_account">Preklopili ste na račun: %s</string>
+  <string name="notification_switched_account">Switched to account %s</string>
   <string name="label_saved">Oznaka shranjena</string>
   <string name="label_deleted">Oznaka izbrisana</string>
   <string name="label_list_loading_error">Napaka pri nalaganju oznake, poskusite znova pozneje</string>

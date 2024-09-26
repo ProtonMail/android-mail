@@ -19,29 +19,29 @@
 <resources>
   <!-- Upselling -->
   <string name="upselling_button_item_content_description">Schaltfläche \"Upgrade\"</string>
-  <string name="upselling_close_button_content_description">Close button</string>
+  <string name="upselling_close_button_content_description">Schließen-Schaltfläche</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">To unlock more storage and premium features</string>
-  <string name="upselling_mailbox_plus_title">Upgrade to Mail Plus</string>
+  <string name="upselling_mailbox_plus_description_override">Um mehr Speicherplatz und Premium-Funktionen freizuschalten</string>
+  <string name="upselling_mailbox_plus_title">Auf Mail Plus upgraden</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Easily send emails to a group and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Group your contacts</string>
+  <string name="upselling_contact_groups_plus_description_override">Mit Mail Plus kannst du mühelos E-Mails an eine Gruppe senden und weitere Premium-Funktionen nutzen.</string>
+  <string name="upselling_contact_groups_plus_title">Gruppiere deine Kontakte</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_labels_plus_title">Need more labels or folders?</string>
+  <string name="upselling_labels_plus_description_override">Erhalte diese und andere Premium-Funktionen, wenn du ein Upgrade auf Mail Plus durchführst.</string>
+  <string name="upselling_labels_plus_title">Benötigst du weitere Kategorien oder Ordner?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Get them and other premium features when you upgrade to Mail Plus.</string>
-  <string name="upselling_folders_plus_title">Need more labels or folders?</string>
+  <string name="upselling_folders_plus_description_override">Erhalte diese und andere Premium-Funktionen, wenn du ein Upgrade auf Mail Plus durchführst.</string>
+  <string name="upselling_folders_plus_title">Benötigst du weitere Kategorien oder Ordner?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
-  <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
+  <string name="upselling_mobile_signature_plus_description_override">Verwende deine eigene mobile Signatur und genieße weitere Premium-Funktionen mit Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_title">Passe deine Signatur an</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
   <string name="upselling_plus_feature_custom_domain">Unterstützung für eigene E-Mail-Domain</string>
   <string name="upselling_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
   <string name="upselling_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern, Kategorien und Filtern.</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium features</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 Premium-Funktionen</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Dein All-In-One-Premium-Abonnement</string>
   <string name="upselling_unlimited_feature_storage">500 GB Speicherplatz mit Fotosicherung</string>
@@ -49,6 +49,24 @@
   <string name="upselling_unlimited_feature_vpn">VPN (90+ Länder)</string>
   <string name="upselling_unlimited_feature_drive">Sicherer Cloud-Speicher</string>
   <string name="upselling_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
+  <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_feature_e2e">Ende-zu-Ende-Verschlüsselung</string>
+  <string name="upselling_onboarding_feature_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
+  <string name="upselling_onboarding_free_feature_storage">1 GB Speicherplatz und 1 E-Mail-Adresse</string>
+  <string name="upselling_onboarding_plus_feature_storage">15 GB Speicherplatz</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 zusätzliche E-Mail-Adressen für dich</string>
+  <string name="upselling_onboarding_plus_feature_email_domains">Unterstützung für 1 eigene E-Mail-Domain</string>
+  <string name="upselling_onboarding_plus_feature_aliases">10 hide-my-email-Aliasse</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Vorrangiger Kundensupport</string>
+  <string name="upselling_onboarding_unlimited_feature_storage">500 GB Speicherplatz</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 zusätzliche E-Mail-Adressen für dich</string>
+  <string name="upselling_onboarding_unlimited_feature_email_domains">Unterstützung für 3 eigene E-Mail-Domains</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Unbegrenzte hide-my-email-Aliasse</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Engagierter Kundensupport</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Ultraschnelles und privates VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Verschlüsselter Cloud-Speicher für Fotos und Dokumente</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Erweiterter Schutz von Konten</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">SPARE %s%%</string>
   <string name="upselling_month">/Monat</string>
@@ -65,4 +83,18 @@
   <string name="upselling_snackbar_upgrade_in_progress">Upgrade des Abonnements wird durchgeführt…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Fehler beim Upgraden deines Abonnements.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Ein Fehler ist aufgetreten. Bitte versuche es erneut.</string>
+  <!-- Upselling: Onboarding -->
+  <string name="upselling_onboarding_title">Wähle ein Abonnement</string>
+  <string name="upselling_onboarding_switcher_monthly">Monatlich</string>
+  <string name="upselling_onboarding_switcher_annual">Jährlich</string>
+  <string name="upselling_onboarding_best_value">Bester Preis</string>
+  <string name="upselling_onboarding_month">/Monat</string>
+  <plurals name="upselling_onboarding_more_features">
+    <item quantity="one">%d weitere Funktion</item>
+    <item quantity="other">%d weitere Funktionen</item>
+  </plurals>
+  <string name="upselling_onboarding_billing_monthly">Dir werden %s %d pro Monat in Rechnung gestellt.</string>
+  <string name="upselling_onboarding_billing_annual">Dir werden %s %d alle 12 Monate in Rechnung gestellt.</string>
+  <string name="upselling_onboarding_get_plan">%s holen</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Mit Proton Free fortfahren</string>
 </resources>

@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Error al enviar el mensaje</string>
   <string name="mailbox_message_sending_error_action">Ir a la carpeta de borradores</string>
   <string name="mailbox_attachment_uploading_error">Error al cargar el archivo adjunto</string>
-  <string name="notification_switched_account">Se ha cambiado a la cuenta: %s</string>
+  <string name="notification_switched_account">Se ha cambiado a la cuenta %s</string>
   <string name="label_saved">Se ha guardado la etiqueta.</string>
   <string name="label_deleted">Se ha eliminado la etiqueta.</string>
   <string name="label_list_loading_error">Error al cargar la etiqueta. Intenta de nuevo más tarde.</string>

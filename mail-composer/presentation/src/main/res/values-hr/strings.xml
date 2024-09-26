@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Change sender</string>
   <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
-  <string name="composer_error_store_draft_sender_address">Storing this draft\'s sender address failed</string>
-  <string name="composer_error_store_draft_body">Storing this draft\'s body failed</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Removed duplicate recipient: %1$s</string>
-  <string name="composer_error_store_draft_subject">Storing this draft\'s subject failed</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>
   <string name="composer_add_attachments_content_description">Dodaj privitke</string>
@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sending error</string>
   <string name="message_sending_error_dialog_button_dismiss">Zatvori</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the email entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">There are no Trusted Keys: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Address does not exist: %s</string>
   <string name="set_message_password_title">Encrypt message</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 do 21 znakova dugo</string>
   <string name="set_message_password_supporting_error_text">The password must be between 4 and 21 characters</string>
   <string name="set_message_password_supporting_text_repeat">Lozinke se moraju poklapati</string>
-  <string name="set_message_password_supporting_error_text_repeat">Dvije lozinke se ne podudaraju</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Pokaži lozinku</string>
   <string name="set_message_password_button_hide">Sakrij lozinku</string>
   <string name="set_message_password_button_apply">Primjeni lozinku</string>

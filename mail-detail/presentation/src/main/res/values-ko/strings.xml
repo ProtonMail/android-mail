@@ -89,12 +89,14 @@
   <string name="error_delete_message_failed_wrong_folder">메시지가 삭제 가능한 위치에 있지 않습니다.</string>
   <string name="error_delete_conversation_failed">대화 삭제를 실패했습니다.</string>
   <string name="error_delete_conversation_failed_wrong_folder">대화가 삭제 가능한 위치에 있지 않습니다.</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">대화 지움</string>
   <string name="message_body_load_remote_content_button_text">외부 콘텐츠 로드</string>
   <string name="message_body_load_embedded_images_button_text">삽입된 이미지 불러오기</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">외부 및 삽입된 이미지 불러오기</string>
   <string name="message_report_phishing_dialog_title_offline">주의</string>
-  <string name="message_report_phishing_dialog_message_offline">이 기능은 온라인에서만 사용 가능합니다.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">확인</string>
   <string name="message_report_phishing_dialog_title">피싱 신고 확인</string>
   <string name="message_report_phishing_dialog_message">피싱 시도로 메시지를 보고하면 메시지를 분석하여 필터를 개선할 수 있습니다. 다만, 분석을 위해 Proton에서 메시지의 내용을 전반적으로 확인할 수 있습니다.</string>

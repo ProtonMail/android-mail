@@ -91,6 +91,8 @@
   <string name="error_delete_message_failed_wrong_folder">Le message ne se trouve pas à un emplacement permettant sa suppression.</string>
   <string name="error_delete_conversation_failed">La conversation n\'a pas pu être supprimée.</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversation ne se trouve pas à un emplacement permettant sa suppression.</string>
+  <string name="conversation_delete_dialog_title">Supprimer la conversation</string>
+  <string name="conversation_delete_dialog_message">Voulez-vous vraiment supprimer définitivement cette conversation ?</string>
   <string name="conversation_deleted">La conversation a été supprimée.</string>
   <string name="message_body_load_remote_content_button_text">Charger le contenu distant</string>
   <string name="message_body_load_embedded_images_button_text">Charger les images intégrées</string>

@@ -91,12 +91,14 @@
   <string name="error_delete_message_failed_wrong_folder">Meldingen er ikke på en plassering der den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
   <string name="error_delete_conversation_failed_wrong_folder">Samtalen er ikke på en plassering der den kan slettes</string>
+  <string name="conversation_delete_dialog_title">Slett samtalen</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Samtale slettet</string>
   <string name="message_body_load_remote_content_button_text">Last eksternt innhold</string>
   <string name="message_body_load_embedded_images_button_text">Last innebygde bilder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Last inn eksternt og innebygd innhold</string>
   <string name="message_report_phishing_dialog_title_offline">Oppmerksomhet</string>
-  <string name="message_report_phishing_dialog_message_offline">Denne funksjonen er kun tilgjengelig på nett.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Bekreft rapporten om nettfisking</string>
   <string name="message_report_phishing_dialog_message">Hvis du rapporterer en melding som et forsøk på nettfisking, sendes meldingen til oss, slik at vi kan analysere den og forbedre filtrene våre. Dette betyr at vi vil kunne se innholdet i meldingen i sin helhet.</string>

@@ -91,12 +91,14 @@
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Erro ao eliminar a conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="conversation_delete_dialog_title">Eliminar a conversa</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Conversa eliminada</string>
   <string name="message_body_load_remote_content_button_text">Carregar o conteúdo remoto</string>
   <string name="message_body_load_embedded_images_button_text">Carregar as imagens incorporadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Load remote and embedded content</string>
   <string name="message_report_phishing_dialog_title_offline">Atenção</string>
-  <string name="message_report_phishing_dialog_message_offline">This features is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Aceitar</string>
   <string name="message_report_phishing_dialog_title">Confirmar relatório de phishing</string>
   <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing, enviará a mensagem para nós, para que possamos analisá-la e melhorar os nossos filtros. Isto significa que poderemos ver o conteúdo da mensagem na íntegra.</string>
@@ -108,5 +110,5 @@
   <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
   <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
   <string name="show">Mostrar</string>
-  <string name="hide">Hide</string>
+  <string name="hide">Ocultar</string>
 </resources>

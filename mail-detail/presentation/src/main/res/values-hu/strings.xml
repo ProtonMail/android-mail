@@ -91,12 +91,14 @@
   <string name="error_delete_message_failed_wrong_folder">Az üzenet nem olyan helyen van, ahonnan törölhető</string>
   <string name="error_delete_conversation_failed">Beszélgetés törlése nem sikerült</string>
   <string name="error_delete_conversation_failed_wrong_folder">A beszélgetés nem olyan helyen van, ahonnan törölhető</string>
+  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Beszélgetés törölve</string>
   <string name="message_body_load_remote_content_button_text">Távoli tartalom betöltése</string>
   <string name="message_body_load_embedded_images_button_text">Beágyazott képek betöltése</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Távoli, beágyazott tartalom betöltése</string>
   <string name="message_report_phishing_dialog_title_offline">Figyelem</string>
-  <string name="message_report_phishing_dialog_message_offline">Ez a lehetőség csak internethez kapcsolódva érhető el.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Erősítse meg az adathalász bejelentést</string>
   <string name="message_report_phishing_dialog_message">Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.</string>

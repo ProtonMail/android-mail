@@ -95,12 +95,14 @@
   <string name="error_delete_message_failed_wrong_folder">Змяніце размяшчэнне паведамлення, каб выдаліць яго</string>
   <string name="error_delete_conversation_failed">Не ўдалося выдаліць размову</string>
   <string name="error_delete_conversation_failed_wrong_folder">Змяніце размяшчэнне размовы, каб выдаліць яе</string>
+  <string name="conversation_delete_dialog_title">Выдаліць размову</string>
+  <string name="conversation_delete_dialog_message">Вы сапраўды хочаце незваротна выдаліць гэту размову?</string>
   <string name="conversation_deleted">Размова выдалена</string>
   <string name="message_body_load_remote_content_button_text">Загружаць аддаленае змесціва</string>
   <string name="message_body_load_embedded_images_button_text">Загружаць убудаваныя відарысы</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Загружаць аддаленае і ўбудаванае змесціва</string>
   <string name="message_report_phishing_dialog_title_offline">Увага</string>
-  <string name="message_report_phishing_dialog_message_offline">Гэта функцыя даступна толькі калі вы ў сетцы.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Добра</string>
   <string name="message_report_phishing_dialog_title">Пацвердзіць скаргу на фішынг</string>
   <string name="message_report_phishing_dialog_message">Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.</string>

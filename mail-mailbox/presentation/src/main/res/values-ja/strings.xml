@@ -79,9 +79,9 @@
   <string name="mailbox_action_button_clear_spam">迷惑メールを空にする</string>
   <string name="mailbox_action_clear_trash_dialog_title">ごみ箱フォルダーを空にする</string>
   <string name="mailbox_action_clear_spam_dialog_title">迷惑メールフォルダーを空にする</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">「ごみ箱」内のすべてのメッセージを完全に削除してよろしいですか？</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">「迷惑メール」内のすべてのメッセージを完全に削除してよろしいですか？</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">「迷惑メール」内のすべての会話を完全に削除してよろしいですか？</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Clear operation is scheduled"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">警告</string>
