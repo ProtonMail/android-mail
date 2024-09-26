@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke endre avsender da innhenting av brukerens abonnement mislyktes. Prøv igjen.</string>
   <string name="composer_error_store_draft_sender_address">Lagring av avsenderadressen til dette utkastet mislyktes</string>
   <string name="composer_error_store_draft_body">Lagring av meldingsinnholdet til dette utkastet mislyktes</string>
-  <string name="composer_error_duplicate_recipient">Fjernet duplisert mottaker: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Fjernet duplisert mottaker</string>
   <string name="composer_error_store_draft_subject">Lagring av meldingsemnet til dette utkastet mislyktes</string>
   <string name="composer_error_store_draft_recipients">Lagring av mottakerne til dette utkastet mislyktes</string>
   <string name="composer_error_loading_draft">Innholdet i dette utkastet er ikke tilgjengelig på dette tidspunktet. Redigering vil overstyre eksisterende innhold.</string>

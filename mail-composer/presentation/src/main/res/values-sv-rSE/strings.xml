@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Kan inte att ändra avsändare eftersom det misslyckades att hämta användarens prenumeration. Försök igen.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Tog bort duplicerad mottagare: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Tog bort duplicerad mottagare</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Misslyckades att lagra mottagare för detta utkast</string>
   <string name="composer_error_loading_draft">Innehållet i detta utkast är inte tillgängligt för närvarande. Redigering kommer att åsidosätta allt redan existerande innehåll.</string>

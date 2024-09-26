@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Nie można zmienić nadawcy, ponieważ pobranie informacji o subskrypcji użytkownika nie powiodło się. Spróbuj ponownie.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Zduplikowany odbiorca %1$s został usunięty</string>
+  <string name="composer_error_duplicate_recipient">Zduplikowany odbiorca został usunięty</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Zapisanie odbiorców szkicu nie powiodło się</string>
   <string name="composer_error_loading_draft">Zawartość szkicu nie jest dostępna. Edycja zastąpi obecną zawartość.</string>

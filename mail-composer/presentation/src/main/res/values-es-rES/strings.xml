@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">No se puede cambiar el remitente porque no se ha podido obtener la suscripción del usuario. Intenta otra vez.</string>
   <string name="composer_error_store_draft_sender_address">Error al guardar la dirección del remitente</string>
   <string name="composer_error_store_draft_body">Error al guardar el cuerpo de este borrador</string>
-  <string name="composer_error_duplicate_recipient">Destinatario duplicado borrado: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Destinatario duplicado borrado</string>
   <string name="composer_error_store_draft_subject">Error al guardar el asunto</string>
   <string name="composer_error_store_draft_recipients">Error al guardar los destinatarios de este borrador</string>
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento. Editarlo sobrescribirá cualquier contenido preexistente.</string>

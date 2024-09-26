@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Вилучено дублікат отримувача: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Вилучено дублікат отримувача</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Не вдалося зберегти отримувачів цієї чернетки</string>
   <string name="composer_error_loading_draft">Наразі вміст цієї чернетки недоступний. Редагування перезапише будь-який попередній вміст.</string>

@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Nu se poate schimba expeditorul deoarece obținerea datelor abonamentului utilizatorului a eșuat. Mai încercați.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Destinatar duplicat eliminat: %1$s</string>
+  <string name="composer_error_duplicate_recipient">Destinatar duplicat eliminat</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Stocarea destinatarului acestei ciorne a eșuat.</string>
   <string name="composer_error_loading_draft">Conținutul acestei ciorne nu este disponibil momentan. Editarea va înlocui orice conținut preexistent.</string>
