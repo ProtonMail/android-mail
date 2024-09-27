@@ -40,6 +40,7 @@ import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
@@ -544,7 +545,7 @@ class FolderFormViewModelTest {
             val loadedState = loadedCreateState
             every { savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey) } returns null
             coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageFolder) } returns true.right()
-            coEvery { observeUpsellingVisibility.invoke(any()) } returns flowOf(true)
+            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.BottomSheet.Folders) } returns flowOf(true)
 
             folderFormViewModel.state.test {
                 // Initial loaded state

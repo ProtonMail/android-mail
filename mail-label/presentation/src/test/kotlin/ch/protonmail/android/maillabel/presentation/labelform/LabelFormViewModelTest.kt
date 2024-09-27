@@ -38,6 +38,7 @@ import ch.protonmail.android.maillabel.domain.usecase.IsLabelNameAllowed
 import ch.protonmail.android.maillabel.domain.usecase.UpdateLabel
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
@@ -426,7 +427,7 @@ class LabelFormViewModelTest {
             val loadedState = loadedCreateState
             every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
             coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
-            coEvery { observeUpsellingVisibility.invoke(any()) } returns flowOf(true)
+            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.BottomSheet.Labels) } returns flowOf(true)
 
             labelFormViewModel.state.test {
                 // Initial loaded state
