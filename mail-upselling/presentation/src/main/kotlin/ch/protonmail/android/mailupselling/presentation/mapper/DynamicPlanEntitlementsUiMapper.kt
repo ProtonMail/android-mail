@@ -28,7 +28,7 @@ import me.proton.core.plan.domain.entity.DynamicEntitlement
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject
 
-internal class DynamicPlanEntitlementsUiMapper @Inject constructor(
+class DynamicPlanEntitlementsUiMapper @Inject constructor(
     @ForceOneClickUpsellingDetailsOverride private val shouldOverrideEntitlementsList: Boolean
 ) {
 

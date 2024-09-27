@@ -29,7 +29,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellSt
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import javax.inject.Inject
 
-internal class OnboardingUpsellReducer @Inject constructor(
+class OnboardingUpsellReducer @Inject constructor(
     private val planSwitcherUiModelMapper: OnboardingUpsellPlanSwitcherUiModelMapper,
     private val planUiModelsMapper: OnboardingUpsellPlanUiModelsMapper,
     private val buttonsUiModelMapper: OnboardingUpsellButtonsUiModelMapper

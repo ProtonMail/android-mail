@@ -26,7 +26,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPl
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 
-internal class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
+class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
     private val dynamicPlanEntitlementsUiMapper: DynamicPlanEntitlementsUiMapper
 ) {
 

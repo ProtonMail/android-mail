@@ -21,7 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.model
 import androidx.annotation.DrawableRes
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-internal sealed class DynamicEntitlementUiModel(open val text: TextUiModel) {
+sealed class DynamicEntitlementUiModel(open val text: TextUiModel) {
 
     data class Default(override val text: TextUiModel, val remoteResource: String) : DynamicEntitlementUiModel(text)
 

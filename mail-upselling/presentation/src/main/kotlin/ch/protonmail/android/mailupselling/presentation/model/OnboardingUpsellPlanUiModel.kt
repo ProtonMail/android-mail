@@ -20,12 +20,12 @@ package ch.protonmail.android.mailupselling.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-internal data class OnboardingUpsellPlanUiModels(
+data class OnboardingUpsellPlanUiModels(
     val monthlyPlans: List<OnboardingUpsellPlanUiModel>,
     val annualPlans: List<OnboardingUpsellPlanUiModel>
 )
 
-internal data class OnboardingUpsellPlanUiModel(
+data class OnboardingUpsellPlanUiModel(
     val title: String,
     val currency: String?,
     val monthlyPrice: TextUiModel?,

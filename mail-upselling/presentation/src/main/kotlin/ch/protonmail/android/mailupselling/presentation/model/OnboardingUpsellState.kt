@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.plan.domain.entity.DynamicPlans
 
-internal interface OnboardingUpsellState {
+interface OnboardingUpsellState {
 
     object Loading : OnboardingUpsellState
 

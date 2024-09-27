@@ -595,7 +595,7 @@ fun Home(
                 addThemeSettings(navController)
                 addNotificationsSettings(navController)
                 addDeepLinkHandler(navController)
-                addOnboardingUpselling()
+                addOnboardingUpselling(navController)
             }
         }
     }

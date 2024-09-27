@@ -35,7 +35,7 @@ import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
 import javax.inject.Inject
 
 @HiltViewModel
-internal class OnboardingUpsellViewModel @Inject constructor(
+class OnboardingUpsellViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
     private val onboardingUpsellReducer: OnboardingUpsellReducer

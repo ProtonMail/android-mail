@@ -86,7 +86,7 @@ import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
 
 @Composable
-internal fun OnboardingUpsellScreen(
+fun OnboardingUpsellScreen(
     modifier: Modifier = Modifier,
     viewModel: OnboardingUpsellViewModel = hiltViewModel(),
     exitScreen: () -> Unit
