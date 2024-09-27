@@ -44,7 +44,6 @@ import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
-import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -179,13 +178,7 @@ class MailboxReducer @Inject constructor(
 
                         SystemLabelId.Spam.labelId -> DeleteDialogState.Shown(
                             title = TextUiModel(R.string.mailbox_action_clear_spam_dialog_title),
-                            message = when (operation.viewMode) {
-                                ViewMode.ConversationGrouping ->
-                                    TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_conversation)
-
-                                ViewMode.NoConversationGrouping ->
-                                    TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_message)
-                            }
+                            message = TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_message)
                         )
 
                         else -> DeleteDialogState.Hidden

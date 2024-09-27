@@ -679,7 +679,7 @@ internal class MailboxReducerTest(
                 shouldReduceDeleteDialog = false,
                 deleteAllDialogState = DeleteDialogState.Shown(
                     title = TextUiModel(R.string.mailbox_action_clear_spam_dialog_title),
-                    message = TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_conversation)
+                    message = TextUiModel(R.string.mailbox_action_clear_spam_dialog_body_message)
                 ),
                 shouldReduceBottomSheetState = false,
                 shouldReduceStorageLimitState = false
