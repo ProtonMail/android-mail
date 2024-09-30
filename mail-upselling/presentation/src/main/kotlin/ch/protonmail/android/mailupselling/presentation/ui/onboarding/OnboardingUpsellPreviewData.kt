@@ -186,7 +186,7 @@ internal object OnboardingUpsellPreviewData {
 
     val ButtonsUiModel = OnboardingUpsellButtonsUiModel(
         billingMessage = mapOf(
-            "Proton Unlimited" to OnboardingUpsellBillingMessageUiModel(
+            "Unlimited" to OnboardingUpsellBillingMessageUiModel(
                 monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
                 annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
             ),
