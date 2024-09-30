@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Cannot change sender as getting user\'s subscription failed. Try again.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Removed duplicate recipient</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Storing this draft\'s recipients failed</string>
   <string name="composer_error_loading_draft">The content of this draft is not available at this time. Editing will override any pre-existing content.</string>

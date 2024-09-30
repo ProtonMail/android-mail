@@ -95,8 +95,8 @@
   <string name="error_delete_message_failed_wrong_folder">Wiadomość znajduje się miejscu, gdzie nie może zostać usunięta</string>
   <string name="error_delete_conversation_failed">Nie udało się usunąć wątku</string>
   <string name="error_delete_conversation_failed_wrong_folder">Wątek znajduje się miejscu, gdzie nie może zostać usunięty</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_title">Usuń wątek</string>
+  <string name="conversation_delete_dialog_message">Czy na pewno chcesz trwale usunąć ten wątek?</string>
   <string name="conversation_deleted">Wątek został usunięty</string>
   <string name="message_body_load_remote_content_button_text">Załaduj zawartość zdalną</string>
   <string name="message_body_load_embedded_images_button_text">Załaduj osadzone obrazy</string>

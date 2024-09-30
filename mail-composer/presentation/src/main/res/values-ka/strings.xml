@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">გამგზავნის შეცვლა შეუძლებელია, რადგან მომხმარებლის გამოწერის მიღება ჩავარდა. თავიდან სცადეთ.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">წაშლილია გამეორებადი მიმღები</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">ამ მონახაზის მიმღებების შენახვა შეუძლებელია</string>
   <string name="composer_error_loading_draft">ამ მონახაზის შემცველობა ამჟამად ხელმისაწვდომი არაა. მისი ჩასწორება უკვე არსებულ შემცველობას გადაფარავს.</string>

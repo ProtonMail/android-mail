@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Esvaziar Spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta Lixeira</string>
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta Lixo?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta Spam?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Tem a certeza de que pretende eliminar permanentemente todas as conversas da sua pasta de Spam?</string>
   <string name="mailbox_action_clear_operation_scheduled">"A operação de limpeza está agendada"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Aviso</string>

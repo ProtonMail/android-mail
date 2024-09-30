@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Não é possível alterar o remetente porque a subscrição do utilizador não pôde ser obtida. Tente novamente.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Destinatário duplicado eliminado</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Erro ao guardar os destinatários deste rascunho</string>
   <string name="composer_error_loading_draft">O conteúdo deste rascunho não está disponível no momento. A edição anulará qualquer conteúdo pré-existente.</string>

@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Tøm spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Tøm papirkurv</string>
   <string name="mailbox_action_clear_spam_dialog_title">Tøm spammappe</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Er du sikker på, at du vil slette alle beskeder i din papirkurv-folder permanent?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Er du sikker på, at du vil slette alle beskeder i din spam-folder permanent?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Er du sikker på, at du vil slette alle samtaler i din spam-folder permanent?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Rydning er planlagt"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>

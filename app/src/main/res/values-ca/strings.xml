@@ -36,7 +36,7 @@
   <string name="mailbox_message_sending_error">Error enviant el missatge</string>
   <string name="mailbox_message_sending_error_action">Aneu a Esborranys</string>
   <string name="mailbox_attachment_uploading_error">S\'ha produït un error en carregar l\'adjunt.</string>
-  <string name="notification_switched_account">Switched to account %s</string>
+  <string name="notification_switched_account">S\'ha canviat al compte %s</string>
   <string name="label_saved">S\'ha desat l\'etiqueta.</string>
   <string name="label_deleted">S\'ha eliminat l\'etiqueta.</string>
   <string name="label_list_loading_error">S\'ha produït un error en carregar l\'etiqueta. Proveu de nou més tard.</string>

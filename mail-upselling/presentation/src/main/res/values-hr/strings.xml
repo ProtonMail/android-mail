@@ -95,8 +95,9 @@
     <item quantity="few">%d više značajke</item>
     <item quantity="other">%d više značajki</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Naplaćeno %s %d svakog mjeseca.</string>
-  <string name="upselling_onboarding_billing_annual">Naplaćeno %s %d svakih 12 mjeseci.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Nabavite %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Nastavi s Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

@@ -104,9 +104,9 @@
   <string name="mailbox_action_button_clear_spam">Opróżnij Spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Opróżnij Kosz</string>
   <string name="mailbox_action_clear_spam_dialog_title">Opróżnij Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości z Kosza?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Czy na pewno chcesz trwale usunąć wszystkie wiadomości ze Spamu?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Czy na pewno chcesz trwale usunąć wszystkie wątki ze Spamu?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Operacja wyczyszczenia jest zaplanowana"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Ostrzeżenie</string>

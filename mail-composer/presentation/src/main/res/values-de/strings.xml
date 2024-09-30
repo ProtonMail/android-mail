@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Fehler beim Ändern des Absenders, da das Abonnement des Benutzers nicht abgerufen werden konnte. Bitte versuche es erneut.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Doppelten Empfänger entfernt</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Das Speichern der Empfänger dieses Entwurfs ist fehlgeschlagen</string>
   <string name="composer_error_loading_draft">Der Inhalt dieses Entwurfs ist zu diesem Zeitpunkt nicht verfügbar. Durch die Bearbeitung wird der bereits vorhandene Inhalt überschrieben.</string>

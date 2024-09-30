@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Nazwa wyświetlana</string>
   <string name="mail_settings_identity_signature">Podpis</string>
   <string name="mail_settings_identity_signature_hint">Podpis</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Podpis mobilny</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Podpis mobilny jest dodawany pod Twoim podpisem.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Podpis mobilny</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Wysłano z aplikacji Proton Mail</string>
   <string name="mail_settings_identity_error_updating">Wystąpił błąd podczas aktualizowania ustawień</string>
   <string name="mail_settings_identity_error_loading">Wystąpił błąd podczas ładowania ustawień</string>

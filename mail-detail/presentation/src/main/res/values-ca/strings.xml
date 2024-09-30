@@ -91,7 +91,7 @@
   <string name="error_delete_message_failed_wrong_folder">El missatge no es troba en una ubicació on es pugui eliminar</string>
   <string name="error_delete_conversation_failed">No s\'ha pogut eliminar la conversa</string>
   <string name="error_delete_conversation_failed_wrong_folder">La conversa no es troba en una ubicació on es pugui eliminar</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_title">Elimina la conversa</string>
   <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">S\'ha eliminat la conversa.</string>
   <string name="message_body_load_remote_content_button_text">Carrega el contingut remot</string>

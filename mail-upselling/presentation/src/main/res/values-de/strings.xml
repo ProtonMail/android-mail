@@ -93,8 +93,9 @@
     <item quantity="one">%d weitere Funktion</item>
     <item quantity="other">%d weitere Funktionen</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Dir werden %s %d pro Monat in Rechnung gestellt.</string>
-  <string name="upselling_onboarding_billing_annual">Dir werden %s %d alle 12 Monate in Rechnung gestellt.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">%s holen</string>
   <string name="upselling_onboarding_continue_with_proton_free">Mit Proton Free fortfahren</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

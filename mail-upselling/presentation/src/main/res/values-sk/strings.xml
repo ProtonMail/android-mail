@@ -97,8 +97,9 @@
     <item quantity="many">%d ďalšie funkcie</item>
     <item quantity="other">%d ďalšie funkcie</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Účtovaná suma %s %d každý mesiac.</string>
-  <string name="upselling_onboarding_billing_annual">Účtovaná suma %s %d každých 12 mesiacov.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Získajte %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Pokračovať s Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

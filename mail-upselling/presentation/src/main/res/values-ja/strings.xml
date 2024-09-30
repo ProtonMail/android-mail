@@ -91,8 +91,9 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d の追加機能</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">毎月%s%dの支払い.</string>
-  <string name="upselling_onboarding_billing_annual">12 か月ごとに %s %d の請求。</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">%sを入手</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free で続行</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

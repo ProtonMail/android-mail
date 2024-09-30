@@ -78,7 +78,7 @@
   <string name="mail_settings_identity_signature">Handtekening</string>
   <string name="mail_settings_identity_signature_hint">Handtekening</string>
   <string name="mail_settings_identity_mobile_footer">Mobiele handtekening</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Dit wordt toegevoegd na uw handtekening.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobiele handtekening</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Verzonden met Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Fout bij het bijwerken van instellingen</string>

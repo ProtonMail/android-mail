@@ -79,7 +79,7 @@
   <string name="mail_settings_identity_signature_hint">서명</string>
   <string name="mail_settings_identity_mobile_footer">모바일 서명</string>
   <string name="mail_settings_identity_mobile_footer_subtext">서명 아래에 추가됩니다.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer_hint">모바일 서명</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Android용 Proton Mail에서 발송됨</string>
   <string name="mail_settings_identity_error_updating">설정 업데이트 중 오류</string>
   <string name="mail_settings_identity_error_loading">설정 로딩 중 오류 발생</string>

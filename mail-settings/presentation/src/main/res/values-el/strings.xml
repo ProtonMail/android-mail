@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Προβολή του ονόματος</string>
   <string name="mail_settings_identity_signature">Υπογραφή</string>
   <string name="mail_settings_identity_signature_hint">Η Υπογραφή μου</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Υπογραφή κινητού</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Αυτό προστέθηκε μετά την υπογραφή σας.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Υπογραφή κινητού</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Στάλθηκε από το Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
   <string name="mail_settings_identity_error_loading">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>

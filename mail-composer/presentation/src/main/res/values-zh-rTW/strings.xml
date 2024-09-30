@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">因無法取得訂購授權資料無法變更寄件者。請再試一次。</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">已移除重複的收件者</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">無法儲存此草稿的收件者</string>
   <string name="composer_error_loading_draft">目前無法擷取該草稿的內容。編輯將覆寫任何預先存在的內容。</string>

@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Отображаемое имя</string>
   <string name="mail_settings_identity_signature">Подпись</string>
   <string name="mail_settings_identity_signature_hint">Подпись</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Подпись для мобильного клиента</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Это будет добавлено после вашей подписи.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Подпись для мобильного клиента</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Отправлено из мобильного приложения Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Ошибка сохранения настроек</string>
   <string name="mail_settings_identity_error_loading">Ошибка загрузки настроек</string>

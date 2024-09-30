@@ -61,9 +61,9 @@
   <string name="contact_actions_new_message">Novo sporočilo</string>
   <string name="contact_actions_new_message_description">Začnite sestavljati novo sporočilo za ta stik</string>
   <string name="contact_actions_add_contact">Dodaj kontakt</string>
-  <string name="contact_actions_add_contact_description">Shrani tega prejemnika kot kontakt</string>
+  <string name="contact_actions_add_contact_description">Shrani tega prejemnika kot stik</string>
   <string name="contact_actions_view_contact_details">Ogled podrobnosti stika</string>
-  <string name="contact_actions_view_contact_details_description">Oglejte si podrobnosti kontakta</string>
+  <string name="contact_actions_view_contact_details_description">Oglejte si podrobnosti stika</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Potrebno je dovoljenje</string>
   <string name="device_contacts_permission_dialog_message">Proton Mail potrebuje dovoljenje za dostop do stikov, da lahko predlaga prejemnike.</string>

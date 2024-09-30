@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">A feladó nem változtatható meg, mert az előfizetés betöltése nem sikerült. Próbálja újra.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Kettőzött címzett eltávolítva</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">A vázlat címzetteinek tárolása nem sikerült</string>
   <string name="composer_error_loading_draft">Ennek a piszkozatnak a tartalma jelenleg nem elérhető. Szerkesztése felülírja az esetlegesen már korábban hozzáadott tartalmat.</string>
@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Jelszó eltávolítása</string>
   <string name="respondInline">Válaszolás az eredeti levélben</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d névjegy</item>
+    <item quantity="other">%d névjegyek</item>
   </plurals>
 </resources>

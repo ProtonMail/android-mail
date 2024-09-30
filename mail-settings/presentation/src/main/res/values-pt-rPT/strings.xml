@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">Nome exibido</string>
   <string name="mail_settings_identity_signature">Assinatura</string>
   <string name="mail_settings_identity_signature_hint">Assinatura</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Assinatura móvel</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">É adicionado depois da sua assinatura.</string>
+  <string name="mail_settings_identity_mobile_footer_hint">Assinatura móvel</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Enviado do Proton Mail para Android</string>
   <string name="mail_settings_identity_error_updating">Erro ao atualizar as definições</string>
   <string name="mail_settings_identity_error_loading">Erro ao carregar as definições</string>

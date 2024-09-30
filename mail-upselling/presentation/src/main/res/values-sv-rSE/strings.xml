@@ -93,8 +93,9 @@
     <item quantity="one">%d till funktion</item>
     <item quantity="other">%d fler funktioner</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Faktureras med %s %d varje månad.</string>
-  <string name="upselling_onboarding_billing_annual">Faktureras med %s %d var 12:e månad.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Skaffa %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Fortsätt med Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

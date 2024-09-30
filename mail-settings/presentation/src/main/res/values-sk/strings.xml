@@ -78,7 +78,7 @@
   <string name="mail_settings_identity_signature">Podpis</string>
   <string name="mail_settings_identity_signature_hint">Podpis</string>
   <string name="mail_settings_identity_mobile_footer">Mobilný podpis</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Toto bude pridané za váš podpis.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobilný podpis</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Odoslané z Proton Mail pre Android</string>
   <string name="mail_settings_identity_error_updating">Chyba pri aktualizácii nastavení</string>

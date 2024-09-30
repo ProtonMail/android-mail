@@ -97,8 +97,9 @@
     <item quantity="many">%d більше функцій</item>
     <item quantity="other">%d більше функцій</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Сплачується %s %d щомісяця.</string>
-  <string name="upselling_onboarding_billing_annual">Сплачується %s %d кожні 12 місяців.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Отримати %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Продовжити з Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

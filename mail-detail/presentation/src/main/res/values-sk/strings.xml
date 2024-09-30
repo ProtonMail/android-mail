@@ -95,8 +95,8 @@
   <string name="error_delete_message_failed_wrong_folder">Správa sa nenachádza na mieste, kde ju možno vymazať</string>
   <string name="error_delete_conversation_failed">Nepodarilo sa odstrániť konverzáciu</string>
   <string name="error_delete_conversation_failed_wrong_folder">Konverzácia sa nenachádza na mieste, kde ju možno vymazať</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_title">Vymazať konverzáciu</string>
+  <string name="conversation_delete_dialog_message">Naozaj chcete natrvalo vymazať túto konverzáciu?</string>
   <string name="conversation_deleted">Konverzácia bola zmazaná</string>
   <string name="message_body_load_remote_content_button_text">Načítať vzdialený obsah</string>
   <string name="message_body_load_embedded_images_button_text">Načítať vložené obrázky</string>

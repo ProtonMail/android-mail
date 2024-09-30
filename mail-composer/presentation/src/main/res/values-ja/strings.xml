@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">ユーザーのサブスクリプションの取得に失敗したため、送信者を変更できませんでした。もう一度お試しください。</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">重複していた宛先を削除しました</string>
+  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">下書きの宛先の保存に失敗しました</string>
   <string name="composer_error_loading_draft">この草稿の内容は現時点では利用できません。編集すると既存の内容が上書きされます。</string>

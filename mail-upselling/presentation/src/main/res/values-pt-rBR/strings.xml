@@ -57,11 +57,11 @@
   <string name="upselling_onboarding_plus_feature_email_addresses">10 endereços de e-mail extras para você</string>
   <string name="upselling_onboarding_plus_feature_email_domains">Suporte para 1 domínio de e-mail personalizado</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 aliases do hide-my-email</string>
-  <string name="upselling_onboarding_plus_feature_customer_support">Suporte ao cliente prioritário</string>
+  <string name="upselling_onboarding_plus_feature_customer_support">Suporte prioritário ao cliente</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB de armazenamento</string>
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 endereços de e-mail extras para você</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Suporte para 3 domínios de e-mail personalizados</string>
-  <string name="upselling_onboarding_unlimited_feature_aliases">Aliases ilimitados do hide-my-email</string>
+  <string name="upselling_onboarding_unlimited_feature_aliases">Alíases ilimitados do hide-my-email</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Suporte dedicado ao cliente</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">VPN privada ultrarrápida</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gerenciador de senhas criptografado</string>
@@ -93,8 +93,9 @@
     <item quantity="one">%d mais recurso</item>
     <item quantity="other">%d mais recursos</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Cobrança de %s %d todos os meses.</string>
-  <string name="upselling_onboarding_billing_annual">Com o preço de %s %d a cada 12 meses.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Obter %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continuar com o Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

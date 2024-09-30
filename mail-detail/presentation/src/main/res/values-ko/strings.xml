@@ -89,8 +89,8 @@
   <string name="error_delete_message_failed_wrong_folder">메시지가 삭제 가능한 위치에 있지 않습니다.</string>
   <string name="error_delete_conversation_failed">대화 삭제를 실패했습니다.</string>
   <string name="error_delete_conversation_failed_wrong_folder">대화가 삭제 가능한 위치에 있지 않습니다.</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_title">대화 삭제</string>
+  <string name="conversation_delete_dialog_message">이 대화를 영구적으로 삭제하시겠습니까?</string>
   <string name="conversation_deleted">대화 지움</string>
   <string name="message_body_load_remote_content_button_text">외부 콘텐츠 로드</string>
   <string name="message_body_load_embedded_images_button_text">삽입된 이미지 불러오기</string>

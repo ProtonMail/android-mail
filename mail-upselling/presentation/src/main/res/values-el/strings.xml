@@ -93,8 +93,9 @@
     <item quantity="one">%d περισσότερα χαρακτηριστικά</item>
     <item quantity="other">%d περισσότερα χαρακτηριστικά</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Χρεωμένο στα %s %d κάθε μήνα.</string>
-  <string name="upselling_onboarding_billing_annual">Χρεωμένο στα %s %d κάθε 12 μήνες.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
   <string name="upselling_onboarding_get_plan">Αποκτήστε %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Συνέχεια με Proton Free</string>
+  <string name="upselling_onboarding_save_label">Save %s%%</string>
 </resources>

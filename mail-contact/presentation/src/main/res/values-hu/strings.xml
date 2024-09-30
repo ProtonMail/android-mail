@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Mégsem</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Hiba a névjegy mentésekor, próbálja újra később</string>
-  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
+  <string name="contact_form_save_error_limit_reached">Elérte a névjegyek maximális számát</string>
   <string name="all_contacts_tab">Névjegyek</string>
   <string name="contact_groups_tab">Csoportok</string>
   <plurals name="contact_group_details_member_count">
@@ -111,12 +111,12 @@
   <string name="contact_form_invalid_email_error">Hiba a névjegy mentésekor, mert az e-mail cím érvénytelen</string>
   <string name="contact_group_details_loading_error">Hiba a névjegycsoport betöltésekor, próbálja újra később</string>
   <string name="contact_group_details_deletion_success">Névjegy csoport törölve</string>
-  <string name="contact_group_details_deletion_error">Error deleting contact group</string>
-  <string name="contact_group_delete_dialog_title">Remove %s group from Contacts?</string>
-  <string name="contact_group_delete_dialog_message">The group will be disbanded, but the assigned contacts will remain unaffected.</string>
+  <string name="contact_group_details_deletion_error">Hiba történt a névjegy csoport törlése során</string>
+  <string name="contact_group_delete_dialog_title">%s csoport eltávolítása a névjegyek közül?</string>
+  <string name="contact_group_delete_dialog_message">A csoport meg lesz szüntetve, de a megadott névjegyek változatlanok maradnak.</string>
   <string name="contact_group_delete_dialog_confirm">Eltávolítás</string>
-  <string name="contact_group_delete_dialog_dismiss">Keep it</string>
-  <string name="contact_group_delete_button_text">Delete group</string>
+  <string name="contact_group_delete_dialog_dismiss">Tartsa meg</string>
+  <string name="contact_group_delete_button_text">Csoport törlése</string>
   <string name="contact_group_form_loading_error">Hiba a névjegycsoport betöltésekor, próbálja újra később</string>
   <string name="edit_contact_group_content_description">Névjegy csoport szerkesztése</string>
   <string name="delete_contact_group_content_description">Névjegy csoport törlése</string>
@@ -130,7 +130,7 @@
   <string name="contact_group_form_update_success">Névjegy csoport frissítve</string>
   <string name="contact_group_form_save_error">Hiba a névjegycsoport mentésekor, próbálja újra később</string>
   <string name="contact_group_form_save_error_already_exists">Már létezik csoport ezzel a névvel</string>
-  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Váltson előfizetéses csomagra a névjegy csoportok készítéséhez</string>
   <string name="members_loading_error">Hiba a tagok betöltésekor, próbálja újra később</string>
   <string name="members_done">Kész</string>
   <string name="add_members_error">Hiba a tagok hozzáadásakor, próbálja újra később</string>

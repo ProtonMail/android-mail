@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Impossible de changer l\'expéditeur : l\'abonnement de l\'utilisateur n\'a pu être obtenu. Veuillez réessayer.</string>
   <string name="composer_error_store_draft_sender_address">L\'enregistrement de l\'adresse de l\'expéditeur n\'a pas abouti.</string>
   <string name="composer_error_store_draft_body">L\'enregistrement du corps du brouillon n\'a pas abouti.</string>
-  <string name="composer_error_duplicate_recipient">Destinataire dupliqué retiré</string>
+  <string name="composer_error_duplicate_recipient">Un ou plusieurs destinataires dupliqués ont été retirés.</string>
   <string name="composer_error_store_draft_subject">L\'enregistrement de l\'objet n\'a pas abouti.</string>
   <string name="composer_error_store_draft_recipients">L\'enregistrement des destinataires du brouillon n\'a pas abouti.</string>
   <string name="composer_error_loading_draft">Le contenu de ce brouillon n\'est pas disponible pour l\'instant. Sa modification remplacera tout contenu déjà existant.</string>

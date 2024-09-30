@@ -91,7 +91,7 @@
   <string name="error_delete_message_failed_wrong_folder">Bericht staat niet op een locatie waar het kan worden gewist</string>
   <string name="error_delete_conversation_failed">Wissen gesprek mislukt</string>
   <string name="error_delete_conversation_failed_wrong_folder">Gesprek staat niet op een locatie waar het kan worden gewist</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_title">Gesprek verwijderen</string>
   <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Gesprek verwijderd</string>
   <string name="message_body_load_remote_content_button_text">Externe inhoud laden</string>

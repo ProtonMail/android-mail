@@ -64,7 +64,7 @@
   <string name="contact_actions_view_contact_details_description">Névjegy részleteinek megtekintése</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Engedély szükséges</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_message">A Proton Mailnek engedélyre van szüksége a névjegyek elolvasásához, hogy javasoljon új címzetteket.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Engedély kérése</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Megtagadás</string>
