@@ -2,7 +2,6 @@ package ch.protonmail.android.mailupselling.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
@@ -28,9 +27,7 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanUiModels
     }
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
-        every {
-            toUiModel(UpsellingTestData.DynamicPlans, DynamicPlansOneClickIds.UnlimitedPlanId)
-        } returns OnboardingUpsellPreviewData.ButtonsUiModel
+        every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.ButtonsUiModel
     }
 
     private val onboardingUpsellReducer = OnboardingUpsellReducer(

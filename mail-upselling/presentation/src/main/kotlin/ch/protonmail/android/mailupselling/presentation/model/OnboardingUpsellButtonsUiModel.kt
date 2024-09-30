@@ -21,6 +21,11 @@ package ch.protonmail.android.mailupselling.presentation.model
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
 data class OnboardingUpsellButtonsUiModel(
+    val billingMessage: Map<String, OnboardingUpsellBillingMessageUiModel>,
+    val getButtonLabel: Map<String, TextUiModel>
+)
+
+data class OnboardingUpsellBillingMessageUiModel(
     val monthlyBillingMessage: TextUiModel,
     val annualBillingMessage: TextUiModel
 )

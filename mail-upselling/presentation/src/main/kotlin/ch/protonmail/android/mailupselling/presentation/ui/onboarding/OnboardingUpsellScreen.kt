@@ -41,7 +41,6 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -84,6 +83,7 @@ import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
+import me.proton.core.util.kotlin.EMPTY_STRING
 
 @Composable
 fun OnboardingUpsellScreen(
@@ -104,7 +104,7 @@ fun OnboardingUpsellScreen(
 @Composable
 private fun OnboardingUpsellScreenContent(modifier: Modifier = Modifier, state: OnboardingUpsellState.Data) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
-    val selectedPlan = remember { mutableIntStateOf(0) }
+    val selectedPlan = remember { mutableStateOf(state.planUiModels.annualPlans[0].title) }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -144,16 +144,20 @@ private fun OnboardingUpsellScreenContent(modifier: Modifier = Modifier, state: 
             itemsIndexed(plans) { index, item ->
                 PlanCard(
                     plan = item,
-                    isSelected = index == selectedPlan.intValue,
+                    isSelected = item.title == selectedPlan.value,
                     isBestValue = index == 0,
                     numberOfEntitlementsToShow = MAX_ENTITLEMENTS_TO_SHOW - index,
-                    onClick = { selectedPlan.intValue = index }
+                    onClick = { selectedPlan.value = item.title }
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
             }
         }
 
-        UpsellButtons(selectedPlansType = selectedPlansType.value, buttonsUiModel = state.buttonsUiModel)
+        UpsellButtons(
+            selectedPlansType = selectedPlansType.value,
+            selectedPlan = selectedPlan.value,
+            buttonsUiModel = state.buttonsUiModel
+        )
     }
 }
 
@@ -417,12 +421,18 @@ private fun MorePlanEntitlements(
 private fun UpsellButtons(
     modifier: Modifier = Modifier,
     selectedPlansType: PlansType,
+    selectedPlan: String,
     buttonsUiModel: OnboardingUpsellButtonsUiModel
 ) {
-    val billingMessage = when (selectedPlansType) {
-        PlansType.Monthly -> buttonsUiModel.monthlyBillingMessage
-        PlansType.Annual -> buttonsUiModel.annualBillingMessage
-    }
+    val billingMessage = buttonsUiModel.billingMessage[selectedPlan]?.let {
+        when (selectedPlansType) {
+            PlansType.Monthly -> it.monthlyBillingMessage
+            PlansType.Annual -> it.annualBillingMessage
+        }
+    } ?: TextUiModel.Text(EMPTY_STRING)
+
+    val getButtonLabel = buttonsUiModel.getButtonLabel[selectedPlan]
+        ?: TextUiModel.TextResWithArgs(R.string.upselling_onboarding_get_plan, listOf(PROTON_FREE))
 
     MailDivider()
     Column(
@@ -441,7 +451,7 @@ private fun UpsellButtons(
             onClick = {}
         ) {
             Text(
-                text = stringResource(id = R.string.upselling_onboarding_get_plan, "Proton Unlimited"),
+                text = getButtonLabel.string(),
                 style = ProtonTheme.typography.defaultSmallStrongInverted
             )
         }
@@ -481,5 +491,6 @@ private fun OnboardingUpsellScreenContentPreview() {
 }
 
 private const val MAX_ENTITLEMENTS_TO_SHOW = 4
+const val PROTON_FREE = "Proton Free"
 
 enum class PlansType { Monthly, Annual }

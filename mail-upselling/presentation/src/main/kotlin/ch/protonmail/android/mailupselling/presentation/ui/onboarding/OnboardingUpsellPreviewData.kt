@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
@@ -184,7 +185,19 @@ internal object OnboardingUpsellPreviewData {
     )
 
     val ButtonsUiModel = OnboardingUpsellButtonsUiModel(
-        monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
-        annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
+        billingMessage = mapOf(
+            "Proton Unlimited" to OnboardingUpsellBillingMessageUiModel(
+                monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
+                annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
+            ),
+            "Mail Plus" to OnboardingUpsellBillingMessageUiModel(
+                monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
+                annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
+            )
+        ),
+        getButtonLabel = mapOf(
+            "Proton Unlimited" to TextUiModel.Text("Get Proton Unlimited"),
+            "Mail Plus" to TextUiModel.Text("Get Mail Plus")
+        )
     )
 }

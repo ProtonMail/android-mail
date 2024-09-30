@@ -21,15 +21,26 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
+import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 
 class OnboardingUpsellButtonsUiModelMapper @Inject constructor() {
 
-    fun toUiModel(dynamicPlans: DynamicPlans, selectedPlan: String): OnboardingUpsellButtonsUiModel {
-        val plan = requireNotNull(dynamicPlans.plans.find { it.name == selectedPlan })
+    fun toUiModel(dynamicPlans: DynamicPlans): OnboardingUpsellButtonsUiModel {
+        return OnboardingUpsellButtonsUiModel(
+            billingMessage = dynamicPlans.plans.associate { plan ->
+                plan.title to getBillingMessagesForPlan(plan)
+            },
+            getButtonLabel = dynamicPlans.plans.associate { plan ->
+                plan.title to getButtonLabelForPlan(plan)
+            }
+        )
+    }
 
+    private fun getBillingMessagesForPlan(plan: DynamicPlan): OnboardingUpsellBillingMessageUiModel {
         val monthlyPlanInstance = requireNotNull(plan.instances[1])
         val monthlyPlanPrice = monthlyPlanInstance.price.values.first()
         val monthlyBillingMessage = TextUiModel.TextResWithArgs(
@@ -44,9 +55,12 @@ class OnboardingUpsellButtonsUiModelMapper @Inject constructor() {
             listOf(annualPlanPrice.currency, annualPlanPrice.totalPrice())
         )
 
-        return OnboardingUpsellButtonsUiModel(
+        return OnboardingUpsellBillingMessageUiModel(
             monthlyBillingMessage = monthlyBillingMessage,
             annualBillingMessage = annualBillingMessage
         )
     }
+
+    private fun getButtonLabelForPlan(plan: DynamicPlan): TextUiModel =
+        TextUiModel.TextResWithArgs(R.string.upselling_onboarding_get_plan, listOf(plan.title))
 }

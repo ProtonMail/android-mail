@@ -23,6 +23,7 @@ import ch.protonmail.android.mailupselling.presentation.extension.normalizedPric
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PROTON_FREE
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
 
     fun toUiModel(dynamicPlans: DynamicPlans): OnboardingUpsellPlanUiModels {
         val freePlan = OnboardingUpsellPlanUiModel(
-            title = "Proton Free",
+            title = PROTON_FREE,
             currency = null,
             monthlyPrice = null,
             monthlyPriceWithDiscount = null,

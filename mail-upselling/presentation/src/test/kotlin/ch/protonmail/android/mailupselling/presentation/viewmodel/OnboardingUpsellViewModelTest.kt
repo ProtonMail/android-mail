@@ -4,7 +4,6 @@ import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
@@ -46,9 +45,7 @@ class OnboardingUpsellViewModelTest {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanUiModels
     }
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
-        every {
-            toUiModel(UpsellingTestData.DynamicPlans, DynamicPlansOneClickIds.UnlimitedPlanId)
-        } returns OnboardingUpsellPreviewData.ButtonsUiModel
+        every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.ButtonsUiModel
     }
 
     private val onboardingUpsellReducer = OnboardingUpsellReducer(

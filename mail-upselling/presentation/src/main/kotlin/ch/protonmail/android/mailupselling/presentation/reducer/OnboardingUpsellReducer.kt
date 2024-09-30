@@ -20,7 +20,6 @@ package ch.protonmail.android.mailupselling.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
@@ -46,7 +45,7 @@ class OnboardingUpsellReducer @Inject constructor(
         OnboardingUpsellState.Data(
             planSwitcherUiModelMapper.toUiModel(operation.dynamicPlans),
             planUiModelsMapper.toUiModel(operation.dynamicPlans),
-            buttonsUiModelMapper.toUiModel(operation.dynamicPlans, DynamicPlansOneClickIds.UnlimitedPlanId)
+            buttonsUiModelMapper.toUiModel(operation.dynamicPlans)
         )
 
     private fun reduceErrorEvent(event: OnboardingUpsellEvent.LoadingError) = when (event) {
