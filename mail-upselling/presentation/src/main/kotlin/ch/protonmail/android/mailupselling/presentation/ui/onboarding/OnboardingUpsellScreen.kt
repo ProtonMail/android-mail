@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -110,6 +111,10 @@ private fun OnboardingUpsellScreenContent(
 ) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
     val selectedPlan = remember { mutableStateOf(state.planUiModels.annualPlans[0].title) }
+
+    BackHandler {
+        // This screen should not be closed when pressing back
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
