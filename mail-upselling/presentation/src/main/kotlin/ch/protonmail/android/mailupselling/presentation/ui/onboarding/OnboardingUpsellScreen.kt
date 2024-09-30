@@ -95,14 +95,19 @@ fun OnboardingUpsellScreen(
         is OnboardingUpsellState.Loading -> ProtonCenteredProgress()
         is OnboardingUpsellState.Data -> OnboardingUpsellScreenContent(
             modifier = modifier,
-            state = state
+            state = state,
+            exitScreen = exitScreen
         )
         is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
     }
 }
 
 @Composable
-private fun OnboardingUpsellScreenContent(modifier: Modifier = Modifier, state: OnboardingUpsellState.Data) {
+private fun OnboardingUpsellScreenContent(
+    modifier: Modifier = Modifier,
+    state: OnboardingUpsellState.Data,
+    exitScreen: () -> Unit
+) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
     val selectedPlan = remember { mutableStateOf(state.planUiModels.annualPlans[0].title) }
 
@@ -156,7 +161,8 @@ private fun OnboardingUpsellScreenContent(modifier: Modifier = Modifier, state: 
         UpsellButtons(
             selectedPlansType = selectedPlansType.value,
             selectedPlan = selectedPlan.value,
-            buttonsUiModel = state.buttonsUiModel
+            buttonsUiModel = state.buttonsUiModel,
+            onContinueWithProtonFree = exitScreen
         )
     }
 }
@@ -422,7 +428,8 @@ private fun UpsellButtons(
     modifier: Modifier = Modifier,
     selectedPlansType: PlansType,
     selectedPlan: String,
-    buttonsUiModel: OnboardingUpsellButtonsUiModel
+    buttonsUiModel: OnboardingUpsellButtonsUiModel,
+    onContinueWithProtonFree: () -> Unit
 ) {
     val billingMessage = buttonsUiModel.billingMessage[selectedPlan]?.let {
         when (selectedPlansType) {
@@ -455,13 +462,15 @@ private fun UpsellButtons(
                 style = ProtonTheme.typography.defaultSmallStrongInverted
             )
         }
-        ProtonTextButton(onClick = {}) {
-            Text(
-                text = stringResource(id = R.string.upselling_onboarding_continue_with_proton_free),
-                style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(
-                    color = ProtonTheme.colors.brandDarken40
+        if (selectedPlan != PROTON_FREE) {
+            ProtonTextButton(onClick = onContinueWithProtonFree) {
+                Text(
+                    text = stringResource(id = R.string.upselling_onboarding_continue_with_proton_free),
+                    style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(
+                        color = ProtonTheme.colors.brandDarken40
+                    )
                 )
-            )
+            }
         }
     }
 }
@@ -485,7 +494,8 @@ private fun OnboardingUpsellScreenContentPreview() {
                 planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                 planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                 buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel
-            )
+            ),
+            exitScreen = {}
         )
     }
 }
