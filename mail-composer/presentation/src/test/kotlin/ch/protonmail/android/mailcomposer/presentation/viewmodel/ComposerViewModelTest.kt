@@ -903,7 +903,7 @@ class ComposerViewModelTest {
                 contactEmails = listOf(
                     ContactTestData.buildContactEmailWith(
                         name = "contact $it",
-                        address = "address@proton.ch"
+                        address = "address$it@proton.ch"
                     )
                 )
             )

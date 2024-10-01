@@ -33,50 +33,48 @@ class SortContactsForSuggestions @Inject constructor() {
         contactGroups: List<ContactGroup>,
         maxContactAutocompletionCount: Int
     ): List<ContactSuggestionUiModel> {
+        // Use a temporary map to store unique contacts based on their email address.
+        val temporaryEmailContactMap = mutableMapOf<String, ContactSuggestionUiModel.Contact>()
 
         val fromContacts = contacts.asSequence().flatMap { contact ->
-            contact.contactEmails.map {
-                contact.copy(
-                    contactEmails = listOf(it)
-                ) // flatMap into Contacts containing only one ContactEmail because we need to sort by them
+            contact.contactEmails.map { contactEmail ->
+                Triple(contact, contactEmail, Long.MAX_VALUE - contactEmail.lastUsedTime)
             }
-        }.sortedBy {
-            val lastUsedTimeDescending = Long.MAX_VALUE - it.contactEmails.first().lastUsedTime
+        }.sortedBy { (contact, contactEmail, lastUsedTimeDescending) ->
+            "$lastUsedTimeDescending ${contact.name} ${contactEmail.email}"
+        }.mapNotNull { (contact, contactEmail, _) ->
+            val email = contactEmail.email
+            if (email in temporaryEmailContactMap) return@mapNotNull null
 
-            // LastUsedTime, name, email
-            "$lastUsedTimeDescending ${it.name} ${it.contactEmails.first().email ?: ""}"
-        }.map { contact ->
-            val contactEmail = contact.contactEmails.first()
             ContactSuggestionUiModel.Contact(
                 name = contactEmail.name.takeIfNotBlank()
                     ?: contact.name.takeIfNotBlank()
-                    ?: contactEmail.email,
-                email = contactEmail.email
-            )
+                    ?: email,
+                email = email
+            ).also { temporaryEmailContactMap[email] = it }
         }
 
-        val fromDeviceContacts = deviceContacts.asSequence().map {
+        val fromDeviceContacts = deviceContacts.asSequence().mapNotNull { deviceContact ->
+            val email = deviceContact.email
+            if (email in temporaryEmailContactMap) return@mapNotNull null
+
             ContactSuggestionUiModel.Contact(
-                name = it.name,
-                email = it.email
-            )
+                name = deviceContact.name,
+                email = email
+            ).also { temporaryEmailContactMap[email] = it }
         }
 
         val fromContactGroups = contactGroups.asSequence().map { contactGroup ->
             ContactSuggestionUiModel.ContactGroup(
                 name = contactGroup.name,
-                emails = contactGroup.members.map { it.email }
+                emails = contactGroup.members.map { it.email }.distinct()
             )
         }
 
-        val fromDeviceAndContactGroups = (fromDeviceContacts + fromContactGroups).sortedBy {
-            it.name
-        }
+        val fromDeviceAndContactGroups = (fromDeviceContacts + fromContactGroups).sortedBy { it.name }
 
         return (fromContacts + fromDeviceAndContactGroups)
             .take(maxContactAutocompletionCount)
             .toList()
-
     }
-
 }

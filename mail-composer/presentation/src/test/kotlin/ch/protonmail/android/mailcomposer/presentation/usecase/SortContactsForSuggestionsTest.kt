@@ -27,7 +27,6 @@ import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.contact.ContactEmailSample.contactEmailLastUsedLongTimeAgo
 import ch.protonmail.android.testdata.contact.ContactEmailSample.contactEmailLastUsedRecently
 import ch.protonmail.android.testdata.contact.ContactSample
-import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -36,7 +35,7 @@ class SortContactsForSuggestionsTest {
     private val sut = SortContactsForSuggestions()
 
     @Test
-    fun `returns correctly sorted UiModels`() = runTest {
+    fun `should return correctly sorted UI models`() {
         // Given
         val contacts = listOf(
             ContactSample.Stefano,
@@ -124,4 +123,131 @@ class SortContactsForSuggestionsTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `should remove duplicates when email exists both in Proton and device contacts`() {
+        // Given
+        val firstEmail = ContactEmailSample.contactEmail1.copy(email = "email1@proton.me")
+        val secondEmail = ContactEmailSample.contactEmail1.copy(email = "email2@proton.me")
+        val thirdEmail = ContactEmailSample.contactEmail1.copy(email = "email3@proton.me")
+        val fourthEmail = ContactEmailSample.contactEmail1.copy(email = "email4@proton.me")
+        val fifthEmail = "email5@proton.me"
+
+        val contacts = listOf(
+            ContactSample.Doe.copy(contactEmails = listOf(firstEmail, secondEmail)),
+            ContactSample.Doe.copy(contactEmails = listOf(thirdEmail))
+        )
+        val deviceContacts = listOf(
+            DeviceContact("First Email equivalent", firstEmail.email),
+            DeviceContact("Second Email equivalent", secondEmail.email),
+            DeviceContact("New contact", fourthEmail.email)
+        )
+
+        val groupsSuggestions = listOf(
+            ContactGroup(
+                UserIdSample.Primary,
+                LabelIdSample.LabelCoworkers,
+                "A group",
+                "#AABBCC",
+                listOf(ContactEmailSample.contactEmail1.copy(email = fifthEmail))
+            )
+        )
+
+        val expectedSuggestionsResult = listOf(
+            ContactSuggestionUiModel.Contact(
+                contacts[0].contactEmails[0].name,
+                contacts[0].contactEmails[0].email
+            ),
+            ContactSuggestionUiModel.Contact(
+                contacts[0].contactEmails[1].name,
+                contacts[0].contactEmails[1].email
+            ),
+            ContactSuggestionUiModel.Contact(
+                contacts[1].contactEmails[0].name,
+                contacts[1].contactEmails[0].email
+            ),
+            ContactSuggestionUiModel.ContactGroup(
+                groupsSuggestions[0].name,
+                groupsSuggestions[0].members.map { it.email }
+            ),
+            ContactSuggestionUiModel.Contact(
+                deviceContacts[2].name,
+                deviceContacts[2].email
+            )
+        )
+
+        // When
+        val actual = sut(
+            contacts,
+            deviceContacts,
+            groupsSuggestions,
+            50
+        )
+
+        // Then
+        assertEquals(actual, expectedSuggestionsResult)
+    }
+
+
+    @Test
+    fun `should not remove duplicates from contact groups when email exists both in group and device contacts`() {
+        // Given
+        val firstEmail = ContactEmailSample.contactEmail1.copy(email = "email1@proton.me")
+        val secondEmail = ContactEmailSample.contactEmail1.copy(email = "email2@proton.me")
+        val thirdEmail = ContactEmailSample.contactEmail1.copy(email = "email3@proton.me")
+        val fourthEmail = ContactEmailSample.contactEmail1.copy(email = "email4@proton.me")
+
+        val contacts = listOf(
+            ContactSample.Doe.copy(contactEmails = listOf(firstEmail, secondEmail)),
+            ContactSample.Doe.copy(contactEmails = listOf(thirdEmail))
+        )
+        val deviceContacts = listOf(
+            DeviceContact("First Email equivalent", firstEmail.email),
+            DeviceContact("Second Email equivalent", secondEmail.email),
+            DeviceContact("New contact", fourthEmail.email)
+        )
+
+        val groupsSuggestions = listOf(
+            ContactGroup(
+                UserIdSample.Primary,
+                LabelIdSample.LabelCoworkers,
+                "A group",
+                "#AABBCC",
+                listOf(ContactEmailSample.contactEmail1.copy(email = firstEmail.email))
+            )
+        )
+
+        val expectedSuggestionsResult = listOf(
+            ContactSuggestionUiModel.Contact(
+                contacts[0].contactEmails[0].name,
+                contacts[0].contactEmails[0].email
+            ),
+            ContactSuggestionUiModel.Contact(
+                contacts[0].contactEmails[1].name,
+                contacts[0].contactEmails[1].email
+            ),
+            ContactSuggestionUiModel.Contact(
+                contacts[1].contactEmails[0].name,
+                contacts[1].contactEmails[0].email
+            ),
+            ContactSuggestionUiModel.ContactGroup(
+                groupsSuggestions[0].name,
+                groupsSuggestions[0].members.map { it.email }
+            ),
+            ContactSuggestionUiModel.Contact(
+                deviceContacts[2].name,
+                deviceContacts[2].email
+            )
+        )
+
+        // When
+        val actual = sut(
+            contacts,
+            deviceContacts,
+            groupsSuggestions,
+            50
+        )
+
+        // Then
+        assertEquals(actual, expectedSuggestionsResult)
+    }
 }
