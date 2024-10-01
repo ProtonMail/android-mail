@@ -25,5 +25,6 @@ data class MobileFooterUiModel(
     val textValue: String,
     val enabled: Boolean,
     val isFieldEnabled: Boolean,
-    val isToggleEnabled: Boolean
+    val isToggleEnabled: Boolean,
+    val isUpsellingVisible: Boolean
 )

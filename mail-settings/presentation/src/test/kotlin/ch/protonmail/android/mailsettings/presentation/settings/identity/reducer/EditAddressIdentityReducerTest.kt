@@ -74,7 +74,13 @@ internal class EditAddressIdentityReducerTest(
             AddressSignatureUiModel("signature", enabled = true)
         )
         private val baseMobileFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("mobile-footer", enabled = true, isFieldEnabled = false, isToggleEnabled = false)
+            MobileFooterUiModel(
+                "mobile-footer",
+                enabled = true,
+                isFieldEnabled = false,
+                isToggleEnabled = false,
+                isUpsellingVisible = false
+            )
         )
         private val baseError = Effect.empty<Unit>()
         private val baseClose = Effect.empty<Unit>()
@@ -141,7 +147,8 @@ internal class EditAddressIdentityReducerTest(
                             "mobile-footer-2",
                             enabled = true,
                             isFieldEnabled = false,
-                            isToggleEnabled = false
+                            isToggleEnabled = false,
+                            isUpsellingVisible = false
                         )
                     )
                 )
@@ -155,7 +162,8 @@ internal class EditAddressIdentityReducerTest(
                             "mobile-footer",
                             enabled = false,
                             isFieldEnabled = false,
-                            isToggleEnabled = false
+                            isToggleEnabled = false,
+                            isUpsellingVisible = false
                         )
                     )
                 )

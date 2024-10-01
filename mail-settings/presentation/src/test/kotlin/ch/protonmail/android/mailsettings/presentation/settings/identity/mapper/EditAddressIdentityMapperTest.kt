@@ -73,9 +73,29 @@ internal class EditAddressIdentityMapperTest {
             textValue = "123",
             enabled = true,
             isFieldEnabled = false,
-            isToggleEnabled = false
+            isToggleEnabled = false,
+            isUpsellingVisible = false
         )
         val mobileFooter = MobileFooter.FreeUserMobileFooter("123")
+
+        // When
+        val result = editAddressIdentityMapper.toMobileFooterUiModel(mobileFooter)
+
+        // Then
+        assertEquals(expectedUiModel, result)
+    }
+
+    @Test
+    fun `should correctly map the free upselling mobile footer to the corresponding ui model`() {
+        // Given
+        val expectedUiModel = MobileFooterUiModel(
+            textValue = "123",
+            enabled = true,
+            isFieldEnabled = false,
+            isToggleEnabled = true,
+            isUpsellingVisible = true
+        )
+        val mobileFooter = MobileFooter.FreeUserUpsellingMobileFooter("123")
 
         // When
         val result = editAddressIdentityMapper.toMobileFooterUiModel(mobileFooter)
@@ -91,7 +111,8 @@ internal class EditAddressIdentityMapperTest {
             textValue = "123",
             enabled = false,
             isFieldEnabled = true,
-            isToggleEnabled = true
+            isToggleEnabled = true,
+            isUpsellingVisible = false
         )
         val mobileFooter = MobileFooter.PaidUserMobileFooter("123", enabled = false)
 

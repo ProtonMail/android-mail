@@ -380,7 +380,8 @@ internal class EditAddressIdentityViewModelTest {
                             newValue,
                             enabled = true,
                             isFieldEnabled = true,
-                            isToggleEnabled = true
+                            isToggleEnabled = true,
+                            isUpsellingVisible = false
                         )
                     )
                 ),
@@ -423,7 +424,7 @@ internal class EditAddressIdentityViewModelTest {
             assertEquals(
                 BaseLoadedState.copy(
                     mobileFooterState = BaseMobileFooterState.copy(
-                        MobileFooterUiModel("footer", newValue, true, true)
+                        MobileFooterUiModel("footer", newValue, true, true, false)
                     )
                 ),
                 awaitItem()
@@ -726,7 +727,6 @@ internal class EditAddressIdentityViewModelTest {
         private val BaseDisplayName = DisplayName("display-name")
         private val BaseSignature = Signature(enabled = true, SignatureValue("signature"))
         private val BaseMobileFooter = MobileFooter.PaidUserMobileFooter("footer", enabled = true)
-        private val BaseMobileFreeFooter = MobileFooter.FreeUserMobileFooter("footer")
         private val BaseMobileFreeUpsellingFooter = MobileFooter.FreeUserUpsellingMobileFooter("footer")
         private val BaseDisplayNameState = EditAddressIdentityState.DisplayNameState(
             DisplayNameUiModel("display-name")
@@ -735,10 +735,22 @@ internal class EditAddressIdentityViewModelTest {
             AddressSignatureUiModel("signature", enabled = true)
         )
         private val BaseMobileFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("footer", enabled = true, isFieldEnabled = true, isToggleEnabled = true)
+            MobileFooterUiModel(
+                "footer",
+                enabled = true,
+                isFieldEnabled = true,
+                isToggleEnabled = true,
+                isUpsellingVisible = false
+            )
         )
         private val BaseMobileUpsellingFooterState = EditAddressIdentityState.MobileFooterState(
-            MobileFooterUiModel("footer", enabled = true, isFieldEnabled = false, isToggleEnabled = true)
+            MobileFooterUiModel(
+                "footer",
+                enabled = true,
+                isFieldEnabled = false,
+                isToggleEnabled = true,
+                isUpsellingVisible = true
+            )
         )
         private val BaseError = Effect.empty<Unit>()
         private val BaseClose = Effect.empty<Unit>()
@@ -756,12 +768,6 @@ internal class EditAddressIdentityViewModelTest {
             BaseClose,
             BaseUpsellingVisibility,
             BaseUpsellingInProgress
-        )
-
-        private val BaseFreeUserLoadedState = BaseLoadedState.copy(
-            mobileFooterState = BaseMobileFooterState.copy(
-                MobileFooterUiModel("footer", enabled = true, isFieldEnabled = false, isToggleEnabled = false)
-            )
         )
 
         private val BaseFreeUserUpsellingLoadedState = BaseLoadedState.copy(

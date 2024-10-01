@@ -20,12 +20,15 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.identity
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
 import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
+import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
 fun MobileFooterDisplaySetting(
@@ -43,7 +46,12 @@ fun MobileFooterDisplaySetting(
                 onToggle = {
                     onToggleSwitched(it)
                 },
-                hint = stringResource(id = R.string.mail_settings_identity_mobile_footer_subtext)
+                hint = stringResource(id = R.string.mail_settings_identity_mobile_footer_subtext),
+                upsellingIcon = {
+                    if (uiModel.isUpsellingVisible) {
+                        UpsellingIcon(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing))
+                    }
+                }
             )
         }
 

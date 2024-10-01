@@ -20,6 +20,7 @@ package ch.protonmail.android.uicomponents.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
@@ -45,6 +46,7 @@ fun SettingsToggleItem(
     value: Boolean,
     hint: String? = null,
     isFieldEnabled: Boolean = true,
+    upsellingIcon: @Composable () -> Unit = {},
     onToggle: (Boolean) -> Unit = {}
 ) {
     Column(
@@ -66,11 +68,12 @@ fun SettingsToggleItem(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = Modifier.weight(1f),
                 text = name,
                 color = ProtonTheme.colors.textNorm(),
                 style = ProtonTheme.typography.defaultNorm
             )
+            upsellingIcon()
+            Spacer(Modifier.weight(1f))
             Switch(
                 checked = value,
                 onCheckedChange = null,

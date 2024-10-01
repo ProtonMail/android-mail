@@ -37,7 +37,8 @@ internal object EditAddressIdentityScreenPreviewData {
                 "Sent with Proton Mail for Android",
                 enabled = true,
                 isFieldEnabled = true,
-                isToggleEnabled = true
+                isToggleEnabled = true,
+                isUpsellingVisible = true
             )
         ),
         updateError = Effect.empty(),

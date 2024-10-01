@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailcommon.presentation.ui
+package ch.protonmail.android.mailupselling.presentation.ui
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
@@ -26,8 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
-import ch.protonmail.android.mailcommon.presentation.R
+import ch.protonmail.android.uicomponents.R
 import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
@@ -44,12 +43,12 @@ fun UpsellingIcon(modifier: Modifier = Modifier) {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_logo_mail_mono),
-                contentDescription = NO_CONTENT_DESCRIPTION,
+                contentDescription = null,
                 tint = ProtonTheme.colors.iconNorm
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_plus),
-                contentDescription = NO_CONTENT_DESCRIPTION,
+                contentDescription = null,
                 tint = ProtonTheme.colors.iconNorm
             )
         }
