@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.annotations.NewContactSuggestionsEnabled
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -160,6 +161,7 @@ class ComposerViewModel @Inject constructor(
     private val observeMessageExpirationTime: ObserveMessageExpirationTime,
     private val getExternalRecipients: GetExternalRecipients,
     private val convertHtmlToPlainText: ConvertHtmlToPlainText,
+    @NewContactSuggestionsEnabled private val isNewContactsSuggestionsEnabled: Boolean,
     isDeviceContactsSuggestionsEnabled: IsDeviceContactsSuggestionsEnabled,
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
@@ -179,6 +181,9 @@ class ComposerViewModel @Inject constructor(
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
+
+    // This is a short lived FF, kept outside of the state on purpose.
+    val newContactSuggestionsEnabled = isNewContactsSuggestionsEnabled
 
     init {
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
