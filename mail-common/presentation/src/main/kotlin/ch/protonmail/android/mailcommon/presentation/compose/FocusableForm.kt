@@ -90,7 +90,7 @@ class FocusableFormScope<FocusedField> @OptIn(ExperimentalFoundationApi::class) 
         } else {
             this
         }.onFocusChanged {
-            if (it.isFocused) onFieldFocused(fieldType)
+            if (it.hasFocus || it.isFocused) onFieldFocused(fieldType)
         }
     }
 }
