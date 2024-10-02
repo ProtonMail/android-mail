@@ -32,6 +32,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -214,9 +215,13 @@ class ComposerViewModelTest {
     private val getExternalRecipients = mockk<GetExternalRecipients>()
     private val convertHtmlToPlainText = mockk<ConvertHtmlToPlainText>()
 
+    private val getInitials = mockk<GetInitials> {
+        every { this@mockk(any()) } returns BaseInitials
+    }
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
-    private val sortContactsForSuggestions = SortContactsForSuggestions()
+    private val sortContactsForSuggestions = SortContactsForSuggestions(getInitials)
     private val reducer = ComposerReducer(attachmentUiModelMapper)
+    private val isNewContactsSuggestionsEnabled = false
 
     private val viewModel by lazy {
         ComposerViewModel(
@@ -260,6 +265,7 @@ class ComposerViewModelTest {
             observeMessageExpirationTime,
             getExternalRecipients,
             convertHtmlToPlainText,
+            isNewContactsSuggestionsEnabled,
             isDeviceContactsSuggestionsEnabledMock,
             getDecryptedDraftFields,
             savedStateHandle,
@@ -810,12 +816,14 @@ class ComposerViewModelTest {
             mapOf(
                 ContactSuggestionsField.BCC to listOf(
                     ContactSuggestionUiModel.Contact(
-                        expectedContacts[0].contactEmails.first().name,
-                        expectedContacts[0].contactEmails.first().email
+                        name = expectedContacts[0].contactEmails.first().name,
+                        initial = BaseInitials,
+                        email = expectedContacts[0].contactEmails.first().email
                     ),
                     ContactSuggestionUiModel.Contact(
-                        expectedContacts[1].contactEmails.first().name,
-                        expectedContacts[1].contactEmails.first().email
+                        name = expectedContacts[1].contactEmails.first().name,
+                        initial = BaseInitials,
+                        email = expectedContacts[1].contactEmails.first().email
                     ),
                     ContactSuggestionUiModel.ContactGroup(
                         expectedContactGroups[0].name,
@@ -875,12 +883,14 @@ class ComposerViewModelTest {
             mapOf(
                 ContactSuggestionsField.BCC to listOf(
                     ContactSuggestionUiModel.Contact(
-                        expectedDeviceContacts[0].name,
-                        expectedDeviceContacts[0].email
+                        name = expectedDeviceContacts[0].name,
+                        initial = BaseInitials,
+                        email = expectedDeviceContacts[0].email
                     ),
                     ContactSuggestionUiModel.Contact(
-                        expectedDeviceContacts[1].name,
-                        expectedDeviceContacts[1].email
+                        name = expectedDeviceContacts[1].name,
+                        initial = BaseInitials,
+                        email = expectedDeviceContacts[1].email
                     )
                 )
             ),
@@ -3093,5 +3103,6 @@ class ComposerViewModelTest {
             OriginalHtmlQuote("<blockquote> Quoted html of the parent message </blockquote>")
         )
 
+        const val BaseInitials = "AB"
     }
 }

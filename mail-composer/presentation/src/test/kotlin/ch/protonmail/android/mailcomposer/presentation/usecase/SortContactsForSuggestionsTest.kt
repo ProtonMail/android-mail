@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
@@ -27,12 +28,21 @@ import ch.protonmail.android.testdata.contact.ContactEmailSample
 import ch.protonmail.android.testdata.contact.ContactEmailSample.contactEmailLastUsedLongTimeAgo
 import ch.protonmail.android.testdata.contact.ContactEmailSample.contactEmailLastUsedRecently
 import ch.protonmail.android.testdata.contact.ContactSample
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class SortContactsForSuggestionsTest {
 
-    private val sut = SortContactsForSuggestions()
+    private val getInitials = mockk<GetInitials>()
+    private val sut = SortContactsForSuggestions(getInitials)
+
+    @Before
+    fun mockInitials() {
+        every { getInitials(any()) } returns BaseInitials
+    }
 
     @Test
     fun `should return correctly sorted UI models`() {
@@ -91,28 +101,33 @@ class SortContactsForSuggestionsTest {
         // Then
         val expected = listOf(
             ContactSuggestionUiModel.Contact(
-                contacts[1].contactEmails[1].name,
-                contacts[1].contactEmails[1].email
+                name = contacts[1].contactEmails[1].name,
+                initial = BaseInitials,
+                email = contacts[1].contactEmails[1].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[1].contactEmails[0].name,
-                contacts[1].contactEmails[0].email
+                name = contacts[1].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[1].contactEmails[0].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[0].contactEmails[0].name,
-                contacts[0].contactEmails[0].email
+                name = contacts[0].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[0].contactEmails[0].email
             ),
             ContactSuggestionUiModel.ContactGroup(
-                contactGroups[2].name,
-                contactGroups[2].members.map { it.email }
+                name = contactGroups[2].name,
+                emails = contactGroups[2].members.map { it.email }
             ),
             ContactSuggestionUiModel.Contact(
-                deviceContacts[1].name,
-                deviceContacts[1].email
+                name = deviceContacts[1].name,
+                initial = BaseInitials,
+                email = deviceContacts[1].email
             ),
             ContactSuggestionUiModel.Contact(
-                deviceContacts[0].name,
-                deviceContacts[0].email
+                name = deviceContacts[0].name,
+                initial = BaseInitials,
+                email = deviceContacts[0].email
             ),
             ContactSuggestionUiModel.ContactGroup(
                 contactGroups[1].name,
@@ -154,24 +169,28 @@ class SortContactsForSuggestionsTest {
 
         val expectedSuggestionsResult = listOf(
             ContactSuggestionUiModel.Contact(
-                contacts[0].contactEmails[0].name,
-                contacts[0].contactEmails[0].email
+                name = contacts[0].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[0].contactEmails[0].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[0].contactEmails[1].name,
-                contacts[0].contactEmails[1].email
+                name = contacts[0].contactEmails[1].name,
+                initial = BaseInitials,
+                email = contacts[0].contactEmails[1].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[1].contactEmails[0].name,
-                contacts[1].contactEmails[0].email
+                name = contacts[1].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[1].contactEmails[0].email
             ),
             ContactSuggestionUiModel.ContactGroup(
-                groupsSuggestions[0].name,
-                groupsSuggestions[0].members.map { it.email }
+                name = groupsSuggestions[0].name,
+                emails = groupsSuggestions[0].members.map { it.email }
             ),
             ContactSuggestionUiModel.Contact(
-                deviceContacts[2].name,
-                deviceContacts[2].email
+                name = deviceContacts[2].name,
+                initial = BaseInitials,
+                email = deviceContacts[2].email
             )
         )
 
@@ -186,7 +205,6 @@ class SortContactsForSuggestionsTest {
         // Then
         assertEquals(actual, expectedSuggestionsResult)
     }
-
 
     @Test
     fun `should not remove duplicates from contact groups when email exists both in group and device contacts`() {
@@ -218,24 +236,28 @@ class SortContactsForSuggestionsTest {
 
         val expectedSuggestionsResult = listOf(
             ContactSuggestionUiModel.Contact(
-                contacts[0].contactEmails[0].name,
-                contacts[0].contactEmails[0].email
+                name = contacts[0].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[0].contactEmails[0].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[0].contactEmails[1].name,
-                contacts[0].contactEmails[1].email
+                name = contacts[0].contactEmails[1].name,
+                initial = BaseInitials,
+                email = contacts[0].contactEmails[1].email
             ),
             ContactSuggestionUiModel.Contact(
-                contacts[1].contactEmails[0].name,
-                contacts[1].contactEmails[0].email
+                name = contacts[1].contactEmails[0].name,
+                initial = BaseInitials,
+                email = contacts[1].contactEmails[0].email
             ),
             ContactSuggestionUiModel.ContactGroup(
                 groupsSuggestions[0].name,
                 groupsSuggestions[0].members.map { it.email }
             ),
             ContactSuggestionUiModel.Contact(
-                deviceContacts[2].name,
-                deviceContacts[2].email
+                name = deviceContacts[2].name,
+                initial = BaseInitials,
+                email = deviceContacts[2].email
             )
         )
 
@@ -249,5 +271,10 @@ class SortContactsForSuggestionsTest {
 
         // Then
         assertEquals(actual, expectedSuggestionsResult)
+    }
+
+    private companion object {
+
+        const val BaseInitials = "AB"
     }
 }

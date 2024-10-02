@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.usecase
 
+import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUiModel
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
 import ch.protonmail.android.mailcontact.domain.model.DeviceContact
@@ -25,7 +26,9 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
-class SortContactsForSuggestions @Inject constructor() {
+class SortContactsForSuggestions @Inject constructor(
+    private val getInitials: GetInitials
+) {
 
     operator fun invoke(
         contacts: List<Contact>,
@@ -50,6 +53,7 @@ class SortContactsForSuggestions @Inject constructor() {
                 name = contactEmail.name.takeIfNotBlank()
                     ?: contact.name.takeIfNotBlank()
                     ?: email,
+                initial = getInitials(contact.name).takeIfNotBlank() ?: "?",
                 email = email
             ).also { temporaryEmailContactMap[email] = it }
         }
@@ -60,6 +64,7 @@ class SortContactsForSuggestions @Inject constructor() {
 
             ContactSuggestionUiModel.Contact(
                 name = deviceContact.name,
+                initial = getInitials(deviceContact.name).takeIfNotBlank() ?: "?",
                 email = email
             ).also { temporaryEmailContactMap[email] = it }
         }

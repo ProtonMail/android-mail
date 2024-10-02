@@ -24,6 +24,7 @@ sealed class ContactSuggestionUiModel(
 
     data class Contact(
         override val name: String,
+        val initial: String,
         val email: String
     ) : ContactSuggestionUiModel(name)
 

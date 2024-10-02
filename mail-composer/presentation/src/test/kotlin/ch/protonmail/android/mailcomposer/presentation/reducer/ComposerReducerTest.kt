@@ -718,7 +718,7 @@ class ComposerReducerTest(
             currentState = ComposerDraftState.initial(messageId),
             operation = ComposerEvent.UpdateContactSuggestions(
                 contactSuggestions = listOf(
-                    ContactSuggestionUiModel.Contact("contact name", "contact email"),
+                    ContactSuggestionUiModel.Contact("contact name", "IN", "contact email"),
                     ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
                 ),
                 suggestionsField = ContactSuggestionsField.BCC
@@ -726,7 +726,7 @@ class ComposerReducerTest(
             expectedState = ComposerDraftState.initial(messageId).copy(
                 contactSuggestions = mapOf(
                     ContactSuggestionsField.BCC to listOf(
-                        ContactSuggestionUiModel.Contact("contact name", "contact email"),
+                        ContactSuggestionUiModel.Contact("contact name", "IN", "contact email"),
                         ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
                     )
                 ),
