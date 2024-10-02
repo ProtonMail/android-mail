@@ -27,7 +27,7 @@ sealed class LanguageSettingsState {
         val languages: List<LanguageUiModel>
     ) : LanguageSettingsState()
 
-    object Loading : LanguageSettingsState()
+    data object Loading : LanguageSettingsState()
 }
 
 data class LanguageUiModel(
