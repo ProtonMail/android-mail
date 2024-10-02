@@ -72,7 +72,8 @@ internal fun FocusedChipsList(
                 Text(
                     modifier = Modifier
                         .testTag(ChipsTestTags.InputChipText)
-                        .widthIn(max = textMaxWidth - 64.dp),
+                        .widthIn(max = textMaxWidth - 64.dp)
+                        .padding(vertical = 8.dp),
                     text = chipItem.value,
                     style = chipItem.textStyle()
                 )

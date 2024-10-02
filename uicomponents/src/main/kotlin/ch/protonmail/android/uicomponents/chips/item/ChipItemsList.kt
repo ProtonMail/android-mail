@@ -23,7 +23,7 @@ import androidx.compose.runtime.Stable
 @Stable
 internal sealed class ChipItemsList {
 
-    object Empty : ChipItemsList()
+    data object Empty : ChipItemsList()
 
     data class Focused(val items: List<ChipItem>) : ChipItemsList()
 
