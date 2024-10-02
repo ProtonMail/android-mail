@@ -21,7 +21,11 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
@@ -40,6 +44,7 @@ import timber.log.Timber
 
 @Composable
 internal fun ComposerForm(
+    newContactSuggestionsEnabled: Boolean,
     emailValidator: (String) -> Boolean,
     recipientsOpen: Boolean,
     initialFocus: FocusedFieldType,
@@ -54,8 +59,18 @@ internal fun ComposerForm(
 ) {
     val isKeyboardVisible by keyboardVisibilityAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
-
     val maxWidthModifier = Modifier.fillMaxWidth()
+
+    var showSubjectAndBody by remember { mutableStateOf(true) }
+
+    // Handle visibility of body and subject here, to avoid issues with focus requesters.
+    LaunchedEffect(areContactSuggestionsExpanded, newContactSuggestionsEnabled) {
+        showSubjectAndBody = if (newContactSuggestionsEnabled) {
+            !areContactSuggestionsExpanded.any { it.value }
+        } else {
+            true
+        }
+    }
 
     FocusableForm(
         fieldList = listOf(
@@ -90,40 +105,54 @@ internal fun ComposerForm(
             )
             MailDivider()
 
-            RecipientFields(
-                fields = fields,
-                fieldFocusRequesters = fieldFocusRequesters,
-                recipientsOpen = recipientsOpen,
-                emailValidator = emailValidator,
-                contactSuggestions = contactSuggestions,
-                areContactSuggestionsExpanded = areContactSuggestionsExpanded,
-                actions = actions
-            )
-
-            MailDivider()
-            SubjectTextField(
-                initialValue = fields.subject,
-                onSubjectChange = actions.onSubjectChanged,
-                modifier = maxWidthModifier
-                    .testTag(ComposerTestTags.Subject)
-                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.SUBJECT)
-            )
-            MailDivider()
-            BodyTextField(
-                initialValue = fields.body,
-                shouldRequestFocus = shouldForceBodyTextFocus,
-                replaceDraftBody = replaceDraftBody,
-                onBodyChange = actions.onBodyChanged,
-                modifier = maxWidthModifier
-                    .testTag(ComposerTestTags.MessageBody)
-                    .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
-            )
-            if (fields.quotedBody != null) {
-                RespondInlineButton(actions.onRespondInline)
-                BodyHtmlQuote(
-                    value = fields.quotedBody.styled.value,
-                    modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
+            if (newContactSuggestionsEnabled) {
+                RecipientFields2(
+                    fields = fields,
+                    fieldFocusRequesters = fieldFocusRequesters,
+                    recipientsOpen = recipientsOpen,
+                    emailValidator = emailValidator,
+                    contactSuggestions = contactSuggestions,
+                    areContactSuggestionsExpanded = areContactSuggestionsExpanded,
+                    actions = actions
                 )
+            } else {
+                RecipientFields(
+                    fields = fields,
+                    fieldFocusRequesters = fieldFocusRequesters,
+                    recipientsOpen = recipientsOpen,
+                    emailValidator = emailValidator,
+                    contactSuggestions = contactSuggestions,
+                    areContactSuggestionsExpanded = areContactSuggestionsExpanded,
+                    actions = actions
+                )
+            }
+
+            if (showSubjectAndBody) {
+                MailDivider()
+                SubjectTextField(
+                    initialValue = fields.subject,
+                    onSubjectChange = actions.onSubjectChanged,
+                    modifier = maxWidthModifier
+                        .testTag(ComposerTestTags.Subject)
+                        .retainFieldFocusOnConfigurationChange(FocusedFieldType.SUBJECT)
+                )
+                MailDivider()
+                BodyTextField(
+                    initialValue = fields.body,
+                    shouldRequestFocus = shouldForceBodyTextFocus,
+                    replaceDraftBody = replaceDraftBody,
+                    onBodyChange = actions.onBodyChanged,
+                    modifier = maxWidthModifier
+                        .testTag(ComposerTestTags.MessageBody)
+                        .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
+                )
+                if (fields.quotedBody != null) {
+                    RespondInlineButton(actions.onRespondInline)
+                    BodyHtmlQuote(
+                        value = fields.quotedBody.styled.value,
+                        modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
+                    )
+                }
             }
         }
     }
