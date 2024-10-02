@@ -18,18 +18,20 @@
 
 package ch.protonmail.android.mailcommon.presentation.extension
 
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
+import timber.log.Timber
 
 /**
- * Navigates back by popping the backstack only if the current backstack entry is
- * in the `RESUMED` lifecycle state.
- *
- * This avoids the scenario where tapping the back button twice on the top app bar would trigger
- * twice the navigation event, causing the app to eventually display a blank screen.
+ * Navigates back by popping the backstack only if the current backstack entry is not the starting destination.
+ * This avoids navigating back to a blank screen if the user taps back/exit too quickly.
  */
 fun NavController.navigateBack() {
-    if (currentBackStackEntry?.lifecycle?.currentState == Lifecycle.State.RESUMED) {
+    val startDestination = graph.startDestinationId
+
+    if (currentDestination?.id != startDestination) {
+        Timber.tag("NavController").d("Navigating back from: ${currentDestination?.route}")
         popBackStack()
+    } else {
+        Timber.tag("NavController").d("Back navigation ignored, current location: ${currentDestination?.route}")
     }
 }
