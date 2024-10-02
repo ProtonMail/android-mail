@@ -30,6 +30,7 @@ import ch.protonmail.android.testdata.contact.ContactEmailSample.contactEmailLas
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -45,7 +46,7 @@ class SortContactsForSuggestionsTest {
     }
 
     @Test
-    fun `should return correctly sorted UI models`() {
+    fun `should return correctly sorted UI models`() = runTest {
         // Given
         val contacts = listOf(
             ContactSample.Stefano,
@@ -139,7 +140,7 @@ class SortContactsForSuggestionsTest {
     }
 
     @Test
-    fun `should remove duplicates when email exists both in Proton and device contacts`() {
+    fun `should remove duplicates when email exists both in Proton and device contacts`() = runTest {
         // Given
         val firstEmail = ContactEmailSample.contactEmail1.copy(email = "email1@proton.me")
         val secondEmail = ContactEmailSample.contactEmail1.copy(email = "email2@proton.me")
@@ -207,71 +208,72 @@ class SortContactsForSuggestionsTest {
     }
 
     @Test
-    fun `should not remove duplicates from contact groups when email exists both in group and device contacts`() {
-        // Given
-        val firstEmail = ContactEmailSample.contactEmail1.copy(email = "email1@proton.me")
-        val secondEmail = ContactEmailSample.contactEmail1.copy(email = "email2@proton.me")
-        val thirdEmail = ContactEmailSample.contactEmail1.copy(email = "email3@proton.me")
-        val fourthEmail = ContactEmailSample.contactEmail1.copy(email = "email4@proton.me")
+    fun `should not remove duplicates from contact groups when email exists both in group and device contacts`() =
+        runTest {
+            // Given
+            val firstEmail = ContactEmailSample.contactEmail1.copy(email = "email1@proton.me")
+            val secondEmail = ContactEmailSample.contactEmail1.copy(email = "email2@proton.me")
+            val thirdEmail = ContactEmailSample.contactEmail1.copy(email = "email3@proton.me")
+            val fourthEmail = ContactEmailSample.contactEmail1.copy(email = "email4@proton.me")
 
-        val contacts = listOf(
-            ContactSample.Doe.copy(contactEmails = listOf(firstEmail, secondEmail)),
-            ContactSample.Doe.copy(contactEmails = listOf(thirdEmail))
-        )
-        val deviceContacts = listOf(
-            DeviceContact("First Email equivalent", firstEmail.email),
-            DeviceContact("Second Email equivalent", secondEmail.email),
-            DeviceContact("New contact", fourthEmail.email)
-        )
-
-        val groupsSuggestions = listOf(
-            ContactGroup(
-                UserIdSample.Primary,
-                LabelIdSample.LabelCoworkers,
-                "A group",
-                "#AABBCC",
-                listOf(ContactEmailSample.contactEmail1.copy(email = firstEmail.email))
+            val contacts = listOf(
+                ContactSample.Doe.copy(contactEmails = listOf(firstEmail, secondEmail)),
+                ContactSample.Doe.copy(contactEmails = listOf(thirdEmail))
             )
-        )
-
-        val expectedSuggestionsResult = listOf(
-            ContactSuggestionUiModel.Contact(
-                name = contacts[0].contactEmails[0].name,
-                initial = BaseInitials,
-                email = contacts[0].contactEmails[0].email
-            ),
-            ContactSuggestionUiModel.Contact(
-                name = contacts[0].contactEmails[1].name,
-                initial = BaseInitials,
-                email = contacts[0].contactEmails[1].email
-            ),
-            ContactSuggestionUiModel.Contact(
-                name = contacts[1].contactEmails[0].name,
-                initial = BaseInitials,
-                email = contacts[1].contactEmails[0].email
-            ),
-            ContactSuggestionUiModel.ContactGroup(
-                groupsSuggestions[0].name,
-                groupsSuggestions[0].members.map { it.email }
-            ),
-            ContactSuggestionUiModel.Contact(
-                name = deviceContacts[2].name,
-                initial = BaseInitials,
-                email = deviceContacts[2].email
+            val deviceContacts = listOf(
+                DeviceContact("First Email equivalent", firstEmail.email),
+                DeviceContact("Second Email equivalent", secondEmail.email),
+                DeviceContact("New contact", fourthEmail.email)
             )
-        )
 
-        // When
-        val actual = sut(
-            contacts,
-            deviceContacts,
-            groupsSuggestions,
-            50
-        )
+            val groupsSuggestions = listOf(
+                ContactGroup(
+                    UserIdSample.Primary,
+                    LabelIdSample.LabelCoworkers,
+                    "A group",
+                    "#AABBCC",
+                    listOf(ContactEmailSample.contactEmail1.copy(email = firstEmail.email))
+                )
+            )
 
-        // Then
-        assertEquals(actual, expectedSuggestionsResult)
-    }
+            val expectedSuggestionsResult = listOf(
+                ContactSuggestionUiModel.Contact(
+                    name = contacts[0].contactEmails[0].name,
+                    initial = BaseInitials,
+                    email = contacts[0].contactEmails[0].email
+                ),
+                ContactSuggestionUiModel.Contact(
+                    name = contacts[0].contactEmails[1].name,
+                    initial = BaseInitials,
+                    email = contacts[0].contactEmails[1].email
+                ),
+                ContactSuggestionUiModel.Contact(
+                    name = contacts[1].contactEmails[0].name,
+                    initial = BaseInitials,
+                    email = contacts[1].contactEmails[0].email
+                ),
+                ContactSuggestionUiModel.ContactGroup(
+                    groupsSuggestions[0].name,
+                    groupsSuggestions[0].members.map { it.email }
+                ),
+                ContactSuggestionUiModel.Contact(
+                    name = deviceContacts[2].name,
+                    initial = BaseInitials,
+                    email = deviceContacts[2].email
+                )
+            )
+
+            // When
+            val actual = sut(
+                contacts,
+                deviceContacts,
+                groupsSuggestions,
+                50
+            )
+
+            // Then
+            assertEquals(actual, expectedSuggestionsResult)
+        }
 
     private companion object {
 

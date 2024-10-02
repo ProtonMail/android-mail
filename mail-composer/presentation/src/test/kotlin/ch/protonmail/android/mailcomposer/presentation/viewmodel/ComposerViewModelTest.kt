@@ -136,6 +136,8 @@ import io.mockk.verify
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.domain.entity.UserId
@@ -153,8 +155,10 @@ import kotlin.time.Duration.Companion.days
 
 class ComposerViewModelTest {
 
+    private val testDispatcher = UnconfinedTestDispatcher()
+
     @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
+    val mainDispatcherRule = MainDispatcherRule(testDispatcher)
 
     @get:Rule
     val loggingTestRule = LoggingTestRule()
@@ -219,7 +223,7 @@ class ComposerViewModelTest {
         every { this@mockk(any()) } returns BaseInitials
     }
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
-    private val sortContactsForSuggestions = SortContactsForSuggestions(getInitials)
+    private val sortContactsForSuggestions = SortContactsForSuggestions(getInitials, testDispatcher)
     private val reducer = ComposerReducer(attachmentUiModelMapper)
     private val isNewContactsSuggestionsEnabled = false
 
@@ -938,6 +942,7 @@ class ComposerViewModelTest {
 
         // When
         viewModel.submit(action)
+        advanceUntilIdle()
         val actual = viewModel.state.value
 
         // Then
