@@ -340,7 +340,7 @@ private fun LazyListScope.addressSection(state: ContactFormState.Data, actions: 
                 hint = stringResource(R.string.address_region),
                 keyboardOptions = keyboardOptions
             ) {
-                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(city = it))
+                actions.onUpdateItem(Section.Addresses, address.fieldId, address.copy(region = it))
             }
             InputField(
                 value = address.country,
