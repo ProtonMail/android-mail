@@ -23,9 +23,7 @@ sealed interface OnboardingState {
     data object Hidden : OnboardingState
 
     sealed interface Shown : OnboardingState {
-
         data object UpsellingOn : Shown
         data object UpsellingOff : Shown
-
     }
 }

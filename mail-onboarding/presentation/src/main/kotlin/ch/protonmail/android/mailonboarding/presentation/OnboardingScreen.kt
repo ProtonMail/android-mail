@@ -19,27 +19,17 @@
 package ch.protonmail.android.mailonboarding.presentation
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Text
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -48,28 +38,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
+import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingButton
+import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingContent
+import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingIndexDots
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import me.proton.core.compose.component.ProtonSolidButton
-import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultWeak
-import me.proton.core.compose.theme.headlineNorm
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -169,109 +151,6 @@ fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: () -> Unit
 
         OnboardingButton(onCloseOnboarding, pagerState, viewCount)
         OnboardingIndexDots(pagerState, viewCount)
-    }
-}
-
-@Composable
-fun OnboardingContent(content: OnboardingUiModel) {
-    Column(Modifier.fillMaxHeight()) {
-        Image(
-            modifier = Modifier
-                .testTag(OnboardingScreenTestTags.OnboardingImage)
-                .fillMaxHeight(MailDimens.OnboardingIllustrationWeight)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Fit,
-            painter = painterResource(id = content.illustrationId),
-            contentDescription = stringResource(id = R.string.onboarding_illustration_content_description)
-        )
-
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = ProtonDimens.DefaultSpacing)
-                .padding(horizontal = ProtonDimens.DefaultSpacing),
-            text = stringResource(id = content.headlineId),
-            style = ProtonTheme.typography.headlineNorm.copy(textAlign = TextAlign.Center)
-        )
-
-        Column(
-            Modifier
-                .align(Alignment.CenterHorizontally)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(ProtonDimens.DefaultSpacing),
-                text = stringResource(id = content.descriptionId),
-                style = ProtonTheme.typography.defaultWeak.copy(textAlign = TextAlign.Center)
-            )
-        }
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun OnboardingButton(
-    onCloseOnboarding: () -> Unit,
-    pagerState: PagerState,
-    viewCount: Int
-) {
-    val scope = rememberCoroutineScope()
-
-    ProtonSolidButton(
-        modifier = Modifier
-            .testTag(OnboardingScreenTestTags.BottomButton)
-            .padding(ProtonDimens.DefaultSpacing)
-            .height(MailDimens.onboardingBottomButtonHeight)
-            .fillMaxWidth()
-            .horizontalScroll(state = ScrollState(0), enabled = true),
-        onClick = {
-            val nextPageIndex = pagerState.currentPage.plus(1)
-            if (nextPageIndex == viewCount) {
-                onCloseOnboarding()
-            } else {
-                scope.launch {
-                    pagerState.animateScrollToPage(nextPageIndex)
-                }
-            }
-        }
-    ) {
-        val positiveButtonTextId =
-            if (pagerState.currentPage == viewCount.minus(1)) R.string.onboarding_get_started
-            else R.string.onboarding_next
-        Text(text = stringResource(id = positiveButtonTextId))
-    }
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun OnboardingIndexDots(pagerState: PagerState, viewCount: Int) {
-    val highlightedDotColor = ProtonTheme.colors.brandNorm
-    val defaultDotColor = ProtonTheme.colors.shade20
-
-    Row {
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ProtonDimens.SmallSpacing)
-                .size(MailDimens.pagerDotsCircleSize),
-            onDraw = {
-                var centerOffset = Offset(
-                    size.width.div(2).minus(MailDimens.pagerDotsCircleSize.toPx().times(viewCount.minus(1))),
-                    this.center.y
-                )
-                for (i in 0 until viewCount) {
-                    drawCircle(
-                        color = if (i == pagerState.currentPage) highlightedDotColor else defaultDotColor,
-                        center = centerOffset
-                    )
-                    centerOffset = Offset(
-                        centerOffset.x.plus(MailDimens.pagerDotsCircleSize.toPx().times(2)),
-                        centerOffset.y
-                    )
-                }
-            }
-        )
     }
 }
 
