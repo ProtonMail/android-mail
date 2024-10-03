@@ -16,21 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data
+package ch.protonmail.android.mailonboarding.data.repository
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailmailbox.data.repository.OnboardingRepositoryImpl
-import ch.protonmail.android.mailmailbox.data.local.OnboardingLocalDataSource
-import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailonboarding.data.local.OnboardingLocalDataSource
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class OnboardingRepositoryImplTest {
 
@@ -49,7 +48,7 @@ class OnboardingRepositoryImplTest {
         // When
         onboardingRepository.observe().test {
             // Then
-            Assert.assertEquals(OnboardingPreference(display = true).right(), awaitItem())
+            assertEquals(OnboardingPreference(display = true).right(), awaitItem())
             awaitComplete()
         }
     }

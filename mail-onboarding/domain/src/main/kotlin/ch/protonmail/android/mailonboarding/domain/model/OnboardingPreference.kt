@@ -16,14 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailonboarding.domain.model
 
-import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
-import javax.inject.Inject
-
-class ObserveOnboarding @Inject constructor(
-    private val onboardingRepository: OnboardingRepository
-) {
-
-    operator fun invoke() = onboardingRepository.observe()
-}
+data class OnboardingPreference(
+    val display: Boolean
+)

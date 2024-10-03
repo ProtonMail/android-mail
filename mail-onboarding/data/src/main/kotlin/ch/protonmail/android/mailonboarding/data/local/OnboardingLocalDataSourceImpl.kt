@@ -16,23 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.local
+package ch.protonmail.android.mailonboarding.data.local
 
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.data.mapper.safeData
 import ch.protonmail.android.mailcommon.data.mapper.safeEdit
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailonboarding.data.OnboardingDataStoreProvider
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val DEFAULT_VALUE = true
-
 class OnboardingLocalDataSourceImpl @Inject constructor(
-    private val dataStoreProvider: MailMailboxDataStoreProvider
+    private val dataStoreProvider: OnboardingDataStoreProvider
 ) : OnboardingLocalDataSource {
 
     private val shouldDisplayOnboardingPrefKey = booleanPreferencesKey("shouldDisplayOnboardingPrefKey")
@@ -50,3 +48,5 @@ class OnboardingLocalDataSourceImpl @Inject constructor(
             mutablePreferences[shouldDisplayOnboardingPrefKey] = onboardingPreference.display
         }.void()
 }
+
+private const val DEFAULT_VALUE = true

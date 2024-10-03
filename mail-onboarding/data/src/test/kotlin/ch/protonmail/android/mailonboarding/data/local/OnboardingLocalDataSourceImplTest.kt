@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.data.local
+package ch.protonmail.android.mailonboarding.data.local
 
 import java.io.IOException
 import androidx.datastore.core.DataStore
@@ -26,8 +26,8 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.data.MailMailboxDataStoreProvider
-import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
+import ch.protonmail.android.mailonboarding.data.OnboardingDataStoreProvider
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -35,14 +35,14 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class OnboardingLocalDataSourceImplTest {
 
     private val preferences = mockk<Preferences>()
     private val onboardingDataStoreMock = mockk<DataStore<Preferences>>()
-    private val dataStoreProvider = mockk<MailMailboxDataStoreProvider> {
+    private val dataStoreProvider = mockk<OnboardingDataStoreProvider> {
         every { this@mockk.onboardingDataStore } returns onboardingDataStoreMock
     }
 
@@ -57,7 +57,7 @@ class OnboardingLocalDataSourceImplTest {
         // When
         onboardingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(OnboardingPreference(true).right(), awaitItem())
+            assertEquals(OnboardingPreference(true).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -71,7 +71,7 @@ class OnboardingLocalDataSourceImplTest {
         // When
         onboardingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(OnboardingPreference(false).right(), awaitItem())
+            assertEquals(OnboardingPreference(false).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -84,7 +84,7 @@ class OnboardingLocalDataSourceImplTest {
         // When
         onboardingLocalDataSource.observe().test {
             // Then
-            Assert.assertEquals(PreferencesError.left(), awaitItem())
+            assertEquals(PreferencesError.left(), awaitItem())
             awaitComplete()
         }
     }
@@ -100,7 +100,7 @@ class OnboardingLocalDataSourceImplTest {
 
         // Then
         coVerify { onboardingDataStoreMock.updateData(any()) }
-        Assert.assertEquals(Unit.right(), result)
+        assertEquals(Unit.right(), result)
     }
 
     @Test
@@ -113,6 +113,6 @@ class OnboardingLocalDataSourceImplTest {
         val result = onboardingLocalDataSource.save(onboardingPreference)
 
         // Then
-        Assert.assertEquals(PreferencesError.left(), result)
+        assertEquals(PreferencesError.left(), result)
     }
 }

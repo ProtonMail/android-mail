@@ -45,6 +45,13 @@ android {
 }
 
 dependencies {
+    implementation(project(":mail-common:domain"))
+
+    implementation(Arrow.core)
     kapt(Dependencies.appAnnotationProcessors)
 
+    testImplementation(Cash.turbine)
+    testImplementation(Mockk.mockk)
+    testImplementation(Kotlin.test)
+    testImplementation(KotlinX.coroutinesTest)
 }

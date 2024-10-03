@@ -16,18 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.uitest.rule
+package ch.protonmail.android.mailonboarding.domain.usecase
 
-import ch.protonmail.android.mailonboarding.data.local.OnboardingLocalDataSource
 import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
-import kotlinx.coroutines.runBlocking
+import ch.protonmail.android.mailonboarding.domain.repository.OnboardingRepository
 import javax.inject.Inject
 
-internal class MockOnboardingRuntimeRule @Inject constructor(
-    private val onboardingLocalDataSource: OnboardingLocalDataSource
+class SaveOnboarding @Inject constructor(
+    private val onboardingRepository: OnboardingRepository
 ) {
 
-    operator fun invoke(shouldForceShow: Boolean) = runBlocking {
-        onboardingLocalDataSource.save(OnboardingPreference(shouldForceShow))
-    }
+    suspend operator fun invoke(display: Boolean) = onboardingRepository.save(OnboardingPreference(display = display))
 }

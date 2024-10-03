@@ -16,16 +16,15 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
+package ch.protonmail.android.mailonboarding.presentation.reducer
 
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation.Action
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation.Event
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
-import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @RunWith(Parameterized::class)

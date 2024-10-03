@@ -60,8 +60,13 @@ android {
 dependencies {
     debugImplementation(Dependencies.composeDebugLibs)
 
+    implementation(project(":mail-common:presentation"))
+    implementation(project(":mail-onboarding:domain"))
     implementation(Dependencies.modulePresentationLibs)
+
     kapt(Dependencies.hiltAnnotationProcessors)
 
-    implementation(project(":mail-common:presentation"))
+    testImplementation(Mockk.mockk)
+    testImplementation(Kotlin.test)
+    testImplementation(KotlinX.coroutinesTest)
 }

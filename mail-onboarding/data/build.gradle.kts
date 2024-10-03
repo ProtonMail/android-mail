@@ -43,10 +43,14 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
+    implementation(project(":mail-common:data"))
+    implementation(project(":mail-common:domain"))
+    implementation(project(":mail-onboarding:domain"))
 
     implementation(Dependencies.moduleDataLibs)
     implementation(AndroidX.AppCompat.appCompat)
+
+    kapt(Dependencies.appAnnotationProcessors)
 
     testImplementation(Dependencies.testLibs)
     testImplementation(project(":test:utils"))

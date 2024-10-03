@@ -16,18 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.usecase
+package ch.protonmail.android.mailonboarding.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.right
-import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
-import ch.protonmail.android.mailmailbox.domain.repository.OnboardingRepository
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
+import ch.protonmail.android.mailonboarding.domain.repository.OnboardingRepository
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ObserveOnboardingTest {

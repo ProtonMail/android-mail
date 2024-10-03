@@ -16,16 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.repository
+package ch.protonmail.android.mailonboarding.data
 
-import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.model.PreferencesError
-import ch.protonmail.android.mailmailbox.domain.model.OnboardingPreference
-import kotlinx.coroutines.flow.Flow
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import javax.inject.Inject
 
-interface OnboardingRepository {
+class OnboardingDataStoreProvider @Inject constructor(
+    context: Context
+) {
 
-    fun observe(): Flow<Either<PreferencesError, OnboardingPreference>>
-
-    suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit>
+    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
+        name = "onboardingPrefDataStore"
+    )
+    val onboardingDataStore = context.onboardingDataStore
 }

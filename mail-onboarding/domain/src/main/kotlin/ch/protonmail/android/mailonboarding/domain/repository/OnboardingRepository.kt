@@ -16,8 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmailbox.domain.model
+package ch.protonmail.android.mailonboarding.domain.repository
 
-data class OnboardingPreference(
-    val display: Boolean
-)
+import arrow.core.Either
+import ch.protonmail.android.mailcommon.domain.model.PreferencesError
+import ch.protonmail.android.mailonboarding.domain.model.OnboardingPreference
+import kotlinx.coroutines.flow.Flow
+
+interface OnboardingRepository {
+
+    fun observe(): Flow<Either<PreferencesError, OnboardingPreference>>
+
+    suspend fun save(onboardingPreference: OnboardingPreference): Either<PreferencesError, Unit>
+}

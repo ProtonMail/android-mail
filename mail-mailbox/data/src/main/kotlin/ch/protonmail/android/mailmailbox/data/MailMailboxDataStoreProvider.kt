@@ -28,12 +28,8 @@ class MailMailboxDataStoreProvider @Inject constructor(
     context: Context
 ) {
 
-    private val Context.onboardingDataStore: DataStore<Preferences> by preferencesDataStore(
-        name = "onboardingPrefDataStore"
-    )
     private val Context.storageLimitPrefDataStore: DataStore<Preferences> by preferencesDataStore(
         name = "storageLimitPrefDataStore"
     )
-    val onboardingDataStore = context.onboardingDataStore
     val storageLimitPrefDataStore = context.storageLimitPrefDataStore
 }
