@@ -55,7 +55,7 @@ import me.proton.core.compose.theme.ProtonTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: () -> Unit) {
+internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: () -> Unit) {
     val contentMap = listOfNotNull(
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_onboarding_ga,

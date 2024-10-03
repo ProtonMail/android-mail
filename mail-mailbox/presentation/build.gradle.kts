@@ -91,8 +91,6 @@ dependencies {
     implementation(project(":mail-settings:presentation"))
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":mail-upselling:domain"))
-    implementation(project(":mail-onboarding:domain"))
-    implementation(project(":mail-onboarding:presentation"))
     implementation(project(":mail-sidebar:presentation"))
     implementation(project(":uicomponents"))
 

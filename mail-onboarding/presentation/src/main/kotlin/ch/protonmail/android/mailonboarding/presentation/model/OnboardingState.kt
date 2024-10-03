@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailonboarding.presentation.model
 
-sealed interface OnboardingState {
+internal sealed interface OnboardingState {
 
     data object Hidden : OnboardingState
 

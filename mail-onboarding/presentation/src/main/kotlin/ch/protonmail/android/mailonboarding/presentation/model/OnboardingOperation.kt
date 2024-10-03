@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailonboarding.presentation.model
 
-sealed interface OnboardingOperation {
+internal sealed interface OnboardingOperation {
     sealed interface Action : OnboardingOperation {
         data object CloseOnboarding : Action
     }

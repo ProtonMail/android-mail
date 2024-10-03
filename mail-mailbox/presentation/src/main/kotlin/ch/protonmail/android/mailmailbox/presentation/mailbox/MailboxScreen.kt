@@ -59,6 +59,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -83,6 +84,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -119,8 +121,6 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMore
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpsellingBottomSheet
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
-import ch.protonmail.android.mailonboarding.presentation.OnboardingScreen
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -131,7 +131,6 @@ import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSnackbarHostState
 import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.protonOutlinedButtonColors
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallWeak
@@ -149,7 +148,7 @@ fun MailboxScreen(
     actions: MailboxScreen.Actions,
     viewModel: MailboxViewModel = hiltViewModel()
 ) {
-    val mailboxState = rememberAsState(viewModel.state, MailboxViewModel.initialState).value
+    val mailboxState by viewModel.state.collectAsStateWithLifecycle()
     val mailboxListItems = viewModel.items.collectAsLazyPagingItems()
     val bottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true)
@@ -175,140 +174,132 @@ fun MailboxScreen(
 
     Timber.d("BottomState: ${mailboxState.bottomAppBarState}")
 
-    if (mailboxState.onboardingState is OnboardingState.Shown) {
-        OnboardingScreen(
-            shouldShowUpselling = mailboxState.onboardingState is OnboardingState.Shown.UpsellingOn,
-            onCloseOnboarding = { viewModel.submit(MailboxViewAction.CloseOnboarding) }
-        )
-    } else {
-        val completeActions = actions.copy(
-            onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
-            onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
-            onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
-            onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
-            onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
-            onAvatarClicked = { viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it)) },
-            onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
-            onItemLongClicked = { viewModel.submit(MailboxViewAction.OnItemLongClicked(it)) },
-            onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
-            onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
-            markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
-            markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
-            trash = { viewModel.submit(MailboxViewAction.Trash) },
-            delete = { viewModel.submit(MailboxViewAction.Delete) },
-            deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
-            deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
-            deleteAll = { viewModel.submit(MailboxViewAction.DeleteAll) },
-            deleteAllConfirmed = { viewModel.submit(MailboxViewAction.DeleteAllConfirmed) },
-            deleteAllDismissed = { viewModel.submit(MailboxViewAction.DeleteAllDialogDismissed) },
-            onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
-            onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
-            onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
-            onSwipeRead = { userId, itemId, isRead ->
-                viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
-            },
-            onSwipeArchive = { userId, itemId ->
-                viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
-            },
-            onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
-            onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
-            onSwipeStar = { userId, itemId, isStarred ->
-                viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
-            },
-            onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
-            onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
-            onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
-            onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
-            onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
-            onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
-            onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) },
-            onShowOnboardingUpselling = { viewModel.submit(MailboxViewAction.ShowOnboardingUpselling) }
-        )
+    val completeActions = actions.copy(
+        onDisableUnreadFilter = { viewModel.submit(MailboxViewAction.DisableUnreadFilter) },
+        onEnableUnreadFilter = { viewModel.submit(MailboxViewAction.EnableUnreadFilter) },
+        onExitSelectionMode = { viewModel.submit(MailboxViewAction.ExitSelectionMode) },
+        onOfflineWithData = { viewModel.submit(MailboxViewAction.OnOfflineWithData) },
+        onErrorWithData = { viewModel.submit(MailboxViewAction.OnErrorWithData) },
+        onAvatarClicked = { viewModel.submit(MailboxViewAction.OnItemAvatarClicked(it)) },
+        onItemClicked = { item -> viewModel.submit(MailboxViewAction.ItemClicked(item)) },
+        onItemLongClicked = { viewModel.submit(MailboxViewAction.OnItemLongClicked(it)) },
+        onRefreshList = { viewModel.submit(MailboxViewAction.Refresh) },
+        onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
+        markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
+        markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+        trash = { viewModel.submit(MailboxViewAction.Trash) },
+        delete = { viewModel.submit(MailboxViewAction.Delete) },
+        deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
+        deleteDialogDismissed = { viewModel.submit(MailboxViewAction.DeleteDialogDismissed) },
+        deleteAll = { viewModel.submit(MailboxViewAction.DeleteAll) },
+        deleteAllConfirmed = { viewModel.submit(MailboxViewAction.DeleteAllConfirmed) },
+        deleteAllDismissed = { viewModel.submit(MailboxViewAction.DeleteAllDialogDismissed) },
+        onLabelAsClicked = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
+        onMoveToClicked = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
+        onMoreClicked = { viewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet) },
+        onSwipeRead = { userId, itemId, isRead ->
+            viewModel.submit(MailboxViewAction.SwipeReadAction(userId, itemId, isRead))
+        },
+        onSwipeArchive = { userId, itemId ->
+            viewModel.submit(MailboxViewAction.SwipeArchiveAction(userId, itemId))
+        },
+        onSwipeSpam = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeSpamAction(userId, itemId)) },
+        onSwipeTrash = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeTrashAction(userId, itemId)) },
+        onSwipeStar = { userId, itemId, isStarred ->
+            viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
+        },
+        onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
+        onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
+        onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
+        onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
+        onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
+        onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+        onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) }
+    )
 
-        mailboxState.bottomSheetState?.let {
-            // Avoids a "jumping" of the bottom sheet
-            if (it.isShowEffectWithoutContent()) return@let
+    mailboxState.bottomSheetState?.let {
+        // Avoids a "jumping" of the bottom sheet
+        if (it.isShowEffectWithoutContent()) return@let
 
-            ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
-                when (bottomSheetEffect) {
-                    BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
-                    BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
-                }
+        ConsumableLaunchedEffect(effect = it.bottomSheetVisibilityEffect) { bottomSheetEffect ->
+            when (bottomSheetEffect) {
+                BottomSheetVisibilityEffect.Hide -> scope.launch { bottomSheetState.hide() }
+                BottomSheetVisibilityEffect.Show -> scope.launch { bottomSheetState.show() }
             }
         }
+    }
 
-        if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-            DisposableEffect(Unit) { onDispose { viewModel.submit(MailboxViewAction.DismissBottomSheet) } }
-        }
+    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        DisposableEffect(Unit) { onDispose { viewModel.submit(MailboxViewAction.DismissBottomSheet) } }
+    }
 
-        StorageLimitDialogs(
-            storageLimitState = mailboxState.storageLimitState,
-            actions = StorageLimitDialogs.Actions(
-                dialogConfirmed = { viewModel.submit(MailboxViewAction.StorageLimitConfirmed) },
-                doNotRemindClicked = { viewModel.submit(MailboxViewAction.StorageLimitDoNotRemind) }
-            )
+    StorageLimitDialogs(
+        storageLimitState = mailboxState.storageLimitState,
+        actions = StorageLimitDialogs.Actions(
+            dialogConfirmed = { viewModel.submit(MailboxViewAction.StorageLimitConfirmed) },
+            doNotRemindClicked = { viewModel.submit(MailboxViewAction.StorageLimitDoNotRemind) }
         )
+    )
 
-        ProtonModalBottomSheetLayout(
-            sheetState = bottomSheetState,
-            sheetContent = bottomSheetHeightConstrainedContent {
-                when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
-                    is MoveToBottomSheetState -> MoveToBottomSheetContent(
-                        state = bottomSheetContentState,
-                        actions = MoveToBottomSheetContent.Actions(
-                            onAddFolderClick = actions.onAddFolder,
-                            onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
-                            onDoneClick = { _, _ -> viewModel.submit(MailboxViewAction.MoveToConfirmed) },
-                            onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) }
-                        )
+    ProtonModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = bottomSheetHeightConstrainedContent {
+            when (val bottomSheetContentState = mailboxState.bottomSheetState?.contentState) {
+                is MoveToBottomSheetState -> MoveToBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = MoveToBottomSheetContent.Actions(
+                        onAddFolderClick = actions.onAddFolder,
+                        onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
+                        onDoneClick = { _, _ -> viewModel.submit(MailboxViewAction.MoveToConfirmed) },
+                        onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) }
                     )
+                )
 
-                    is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
-                        state = bottomSheetContentState,
-                        actions = LabelAsBottomSheetContent.Actions(
-                            onAddLabelClick = actions.onAddLabel,
-                            onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
-                            onDoneClick = { archiveSelected, _ ->
-                                viewModel.submit(MailboxViewAction.LabelAsConfirmed(archiveSelected))
-                            }
-                        )
-                    )
-
-                    is MailboxMoreActionsBottomSheetState -> MailboxMoreActionBottomSheetContent(
-                        state = bottomSheetContentState,
-                        actionCallbacks = MoreActionBottomSheetContent.Actions(
-                            onStar = { viewModel.submit(MailboxViewAction.Star) },
-                            onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
-                            onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
-                            onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
-                        )
-                    )
-
-                    is UpsellingBottomSheetState -> {
-                        MailboxUpsellingBottomSheet(
-                            actions = UpsellingBottomSheet.Actions.Empty.copy(
-                                onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
-                                onUpgrade = { message -> actions.showNormalSnackbar(message) },
-                                onError = { message -> actions.showErrorSnackbar(message) }
-                            )
-                        )
-                    }
-
-                    else -> {
-                        if (bottomSheetState.isVisible) {
-                            ProtonCenteredProgress()
+                is LabelAsBottomSheetState -> LabelAsBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actions = LabelAsBottomSheetContent.Actions(
+                        onAddLabelClick = actions.onAddLabel,
+                        onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
+                        onDoneClick = { archiveSelected, _ ->
+                            viewModel.submit(MailboxViewAction.LabelAsConfirmed(archiveSelected))
                         }
+                    )
+                )
+
+                is MailboxMoreActionsBottomSheetState -> MailboxMoreActionBottomSheetContent(
+                    state = bottomSheetContentState,
+                    actionCallbacks = MoreActionBottomSheetContent.Actions(
+                        onStar = { viewModel.submit(MailboxViewAction.Star) },
+                        onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
+                        onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
+                        onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
+                    )
+                )
+
+                is UpsellingBottomSheetState -> {
+                    MailboxUpsellingBottomSheet(
+                        actions = UpsellingBottomSheet.Actions.Empty.copy(
+                            onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+                            onUpgrade = { message -> actions.showNormalSnackbar(message) },
+                            onError = { message -> actions.showErrorSnackbar(message) }
+                        )
+                    )
+                }
+
+                else -> {
+                    if (bottomSheetState.isVisible) {
+                        ProtonCenteredProgress()
                     }
                 }
             }
-        ) {
-            MailboxScreen(
-                mailboxState = mailboxState,
-                mailboxListItems = mailboxListItems,
-                actions = completeActions,
-                modifier = modifier.semantics { testTagsAsResourceId = true }
-            )
         }
+    ) {
+        MailboxScreen(
+            mailboxState = mailboxState,
+            mailboxListItems = mailboxListItems,
+            actions = completeActions,
+            modifier = modifier.semantics { testTagsAsResourceId = true }
+        )
     }
 }
 
@@ -335,10 +326,6 @@ fun MailboxScreen(
 
     ConsumableLaunchedEffect(mailboxState.showRatingBooster) {
         actions.onShowRatingBooster()
-    }
-
-    ConsumableLaunchedEffect(mailboxState.showOnboardingUpselling) {
-        actions.navigateToOnboardingUpselling()
     }
 
     DeleteDialog(state = mailboxState.deleteDialogState, actions.deleteConfirmed, actions.deleteDialogDismissed)
@@ -495,7 +482,7 @@ private fun MailboxSwipeRefresh(
 ) {
     // We need to show the Pull To Refresh indicator at top at correct times, which are first time we fetch data from
     // remote and when the user pulls to refresh. We will use following flags to know when to show the indicator.
-    var loadingWithDataCount by remember { mutableStateOf(0) }
+    var loadingWithDataCount by remember { mutableIntStateOf(0) }
     val refreshRequested = (state as? MailboxListState.Data.ViewMode)?.refreshRequested ?: false
     val searchMode = (state as? MailboxListState.Data)?.searchState?.searchMode ?: MailboxSearchMode.None
 
@@ -1031,9 +1018,7 @@ object MailboxScreen {
         val onExitSearchMode: () -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit,
-        val onShowRatingBooster: () -> Unit,
-        val onShowOnboardingUpselling: () -> Unit,
-        val navigateToOnboardingUpselling: () -> Unit
+        val onShowRatingBooster: () -> Unit
     ) {
 
         companion object {
@@ -1080,9 +1065,7 @@ object MailboxScreen {
                 onSearchResult = {},
                 onOpenUpsellingPage = {},
                 onCloseUpsellingPage = {},
-                onShowRatingBooster = {},
-                onShowOnboardingUpselling = {},
-                navigateToOnboardingUpselling = {}
+                onShowRatingBooster = {}
             )
         }
     }

@@ -35,7 +35,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingStorageLimit
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingOnboardingUpselling
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -46,7 +45,6 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingUnreadFilter
     sealed interface AffectingMailboxList
     sealed interface AffectingBottomAppBar
-    sealed interface AffectingOnboarding
     sealed interface AffectingStorageLimit
     sealed interface AffectingActionMessage
     sealed interface AffectingDeleteDialog
@@ -55,7 +53,6 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingUpgradeStorage
     sealed interface AffectingRatingBooster
-    sealed interface AffectingOnboardingUpselling
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -142,14 +139,12 @@ internal sealed interface MailboxViewAction : MailboxOperation {
      */
     object OnOfflineWithData : MailboxViewAction, AffectingMailboxList
     object OnErrorWithData : MailboxViewAction, AffectingMailboxList
-    object CloseOnboarding : MailboxViewAction, MailboxOperation.AffectingOnboarding
     object DeleteAll : MailboxViewAction
     object DeleteAllConfirmed : MailboxViewAction
     object DeleteAllDialogDismissed : MailboxViewAction, AffectingClearDialog
     object NavigateToInboxLabel : MailboxViewAction
     object RequestUpsellingBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class ShowRatingBooster(val context: Context) : MailboxViewAction
-    object ShowOnboardingUpselling : MailboxViewAction, AffectingOnboardingUpselling
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -183,8 +178,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
     data class SwipeActionsChanged(
         val swipeActionsPreference: SwipeActionsUiModel
     ) : MailboxEvent, AffectingMailboxList
-
-    data class ShowOnboarding(val upsellingVisible: Boolean) : MailboxEvent, MailboxOperation.AffectingOnboarding
 
     data class Trash(val numAffectedMessages: Int) :
         MailboxEvent,
@@ -246,7 +239,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorMoving : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     data object ShowRatingBooster : MailboxEvent, AffectingRatingBooster
-    object ShowOnboardingUpselling : MailboxEvent, AffectingOnboardingUpselling
 }
 
 

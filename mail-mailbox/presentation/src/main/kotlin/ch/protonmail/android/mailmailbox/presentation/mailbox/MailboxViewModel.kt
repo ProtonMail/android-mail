@@ -107,15 +107,10 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
-import ch.protonmail.android.mailonboarding.domain.usecase.ObserveOnboarding
-import ch.protonmail.android.mailonboarding.domain.usecase.SaveOnboarding
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -184,8 +179,6 @@ class MailboxViewModel @Inject constructor(
     private val unStarConversations: UnStarConversations,
     private val mailboxReducer: MailboxReducer,
     private val dispatchersProvider: DispatcherProvider,
-    private val observeOnboarding: ObserveOnboarding,
-    private val saveOnboarding: SaveOnboarding,
     private val deleteSearchResults: DeleteSearchResults,
     private val observePrimaryUserAccountStorageStatus: ObservePrimaryUserAccountStorageStatus,
     private val observeStorageLimitPreference: ObserveStorageLimitPreference,
@@ -194,7 +187,6 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
 ) : ViewModel() {
 
@@ -206,13 +198,6 @@ class MailboxViewModel @Inject constructor(
     val items: Flow<PagingData<MailboxItemUiModel>> = observePagingData().cachedIn(viewModelScope)
 
     init {
-        viewModelScope.launch {
-            if (shouldDisplayOnboarding()) {
-                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.PostOnboarding).first()
-                emitNewStateFrom(MailboxEvent.ShowOnboarding(shouldShowUpselling))
-            }
-        }
-
         observeCurrentMailLabel()
             .onEach { currentMailLabel ->
                 currentMailLabel?.let {
@@ -356,7 +341,6 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.SwipeSpamAction -> handleSwipeSpamAction(viewAction)
                 is MailboxViewAction.SwipeTrashAction -> handleSwipeTrashAction(viewAction)
                 is MailboxViewAction.SwipeStarAction -> handleSwipeStarAction(viewAction)
-                is MailboxViewAction.CloseOnboarding -> handleCloseOnboarding()
                 is MailboxViewAction.Trash -> handleTrashAction()
                 is MailboxViewAction.Delete -> handleDeleteAction()
                 is MailboxViewAction.DeleteConfirmed -> handleDeleteConfirmedAction()
@@ -384,7 +368,6 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.RequestUpsellingBottomSheet -> showUpsellingBottomSheet(viewAction)
                 is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
                 is MailboxViewAction.ShowRatingBooster -> showRatingBooster(viewAction)
-                is MailboxViewAction.ShowOnboardingUpselling -> { emitNewStateFrom(viewAction) }
             }.exhaustive
         }
     }
@@ -972,23 +955,6 @@ class MailboxViewModel @Inject constructor(
         )
     }
 
-    private suspend fun handleCloseOnboarding() {
-        viewModelScope.launch {
-            saveOnboarding(display = false)
-            if (state.value.onboardingState is OnboardingState.Shown.UpsellingOn) {
-                emitNewStateFrom(MailboxViewAction.ShowOnboardingUpselling)
-            }
-            emitNewStateFrom(MailboxViewAction.CloseOnboarding)
-        }
-    }
-
-    private suspend fun shouldDisplayOnboarding(): Boolean {
-        return observeOnboarding().first().fold(
-            ifLeft = { false },
-            ifRight = { onboardingPreference -> onboardingPreference.display }
-        )
-    }
-
     private suspend fun handleTrashAction() {
         val selectionModeDataState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
         if (selectionModeDataState == null) {
@@ -1313,15 +1279,13 @@ class MailboxViewModel @Inject constructor(
             upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
             unreadFilterState = UnreadFilterState.Loading,
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
-            onboardingState = OnboardingState.Hidden,
             deleteDialogState = DeleteDialogState.Hidden,
             deleteAllDialogState = DeleteDialogState.Hidden,
             storageLimitState = StorageLimitState.None,
             bottomSheetState = null,
             actionResult = Effect.empty(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty(),
-            showOnboardingUpselling = Effect.empty()
+            showRatingBooster = Effect.empty()
         )
     }
 }

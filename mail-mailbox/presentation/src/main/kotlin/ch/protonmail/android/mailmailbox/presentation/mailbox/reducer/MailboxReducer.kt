@@ -41,9 +41,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperation
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
-import ch.protonmail.android.mailonboarding.presentation.reducer.OnboardingReducer
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -51,7 +48,6 @@ class MailboxReducer @Inject constructor(
     private val topAppBarReducer: MailboxTopAppBarReducer,
     private val unreadFilterReducer: MailboxUnreadFilterReducer,
     private val bottomAppBarReducer: BottomBarReducer,
-    private val onboardingReducer: OnboardingReducer,
     private val storageLimitReducer: StorageLimitReducer,
     private val upgradeStorageReducer: UpgradeStorageReducer,
     private val actionMessageReducer: MailboxActionMessageReducer,
@@ -66,15 +62,13 @@ class MailboxReducer @Inject constructor(
             upgradeStorageState = currentState.toNewStorageSplitStateFrom(operation),
             unreadFilterState = currentState.toNewUnreadFilterStateFrom(operation),
             bottomAppBarState = currentState.toNewBottomAppBarStateFrom(operation),
-            onboardingState = currentState.toNewOnboardingStateFrom(operation),
             storageLimitState = currentState.toNewStorageLimitStateFrom(operation),
             deleteDialogState = currentState.toNewDeleteActionStateFrom(operation),
             deleteAllDialogState = currentState.toNewDeleteAllActionStateFrom(operation),
             bottomSheetState = currentState.toNewBottomSheetState(operation),
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation),
-            showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
-            showOnboardingUpselling = currentState.toNewShowOnboardingUpsellingState(operation)
+            showRatingBooster = currentState.toNewShowRatingBoosterState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -133,20 +127,6 @@ class MailboxReducer @Inject constructor(
             upgradeStorageReducer.newStateFrom(operation)
         } else {
             upgradeStorageState
-        }
-    }
-
-    private fun MailboxState.toNewOnboardingStateFrom(operation: MailboxOperation): OnboardingState {
-        return if (operation is MailboxOperation.AffectingOnboarding) {
-            val onboardingOperation = when (operation) {
-                MailboxViewAction.CloseOnboarding -> OnboardingOperation.Action.CloseOnboarding
-                is MailboxEvent.ShowOnboarding -> if (operation.upsellingVisible) {
-                    OnboardingOperation.Event.ShowOnboarding.UpsellingOn
-                } else OnboardingOperation.Event.ShowOnboarding.UpsellingOff
-            }
-            onboardingReducer.newStateFrom(onboardingOperation)
-        } else {
-            onboardingState
         }
     }
 
@@ -244,14 +224,6 @@ class MailboxReducer @Inject constructor(
             Effect.of(Unit)
         } else {
             showRatingBooster
-        }
-    }
-
-    private fun MailboxState.toNewShowOnboardingUpsellingState(operation: MailboxOperation): Effect<Unit> {
-        return if (operation is MailboxOperation.AffectingOnboardingUpselling) {
-            Effect.of(Unit)
-        } else {
-            showOnboardingUpselling
         }
     }
 }

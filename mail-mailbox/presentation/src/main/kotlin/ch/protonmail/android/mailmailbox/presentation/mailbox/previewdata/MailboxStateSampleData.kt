@@ -38,7 +38,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActions
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import kotlinx.collections.immutable.toImmutableList
 
 object MailboxStateSampleData {
@@ -49,15 +48,13 @@ object MailboxStateSampleData {
         upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
         unreadFilterState = UnreadFilterState.Loading,
         bottomAppBarState = BottomBarState.Loading,
-        onboardingState = OnboardingState.Hidden,
         actionResult = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
         deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
-        showRatingBooster = Effect.empty(),
-        showOnboardingUpselling = Effect.empty()
+        showRatingBooster = Effect.empty()
     )
 
     val Inbox = MailboxState(
@@ -73,8 +70,7 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchStateSampleData.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
+            clearState = MailboxListState.Data.ClearState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
@@ -87,15 +83,13 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive).toImmutableList()
         ),
-        onboardingState = OnboardingState.Hidden,
         actionResult = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
         deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
-        showRatingBooster = Effect.empty(),
-        showOnboardingUpselling = Effect.empty()
+        showRatingBooster = Effect.empty()
     )
 
     val AllMail = MailboxState(
@@ -111,8 +105,7 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchStateSampleData.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
+            clearState = MailboxListState.Data.ClearState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
@@ -125,32 +118,13 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = listOf(ActionUiModelSample.Archive).toImmutableList()
         ),
-        onboardingState = OnboardingState.Hidden,
         actionResult = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
         deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = null,
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
-        showRatingBooster = Effect.empty(),
-        showOnboardingUpselling = Effect.empty()
-    )
-
-    val OnboardingShown = MailboxState(
-        mailboxListState = MailboxListState.Loading,
-        topAppBarState = MailboxTopAppBarState.Loading,
-        upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
-        unreadFilterState = UnreadFilterState.Loading,
-        bottomAppBarState = BottomBarState.Loading,
-        onboardingState = OnboardingState.Shown.UpsellingOff,
-        actionResult = Effect.empty(),
-        deleteDialogState = DeleteDialogState.Hidden,
-        deleteAllDialogState = DeleteDialogState.Hidden,
-        bottomSheetState = null,
-        storageLimitState = StorageLimitState.HasEnoughSpace,
-        error = Effect.empty(),
-        showRatingBooster = Effect.empty(),
-        showOnboardingUpselling = Effect.empty()
+        showRatingBooster = Effect.empty()
     )
 
     fun createSelectionMode(
@@ -170,8 +144,7 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchState.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
+            clearState = MailboxListState.Data.ClearState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),
@@ -185,14 +158,12 @@ object MailboxStateSampleData {
         bottomAppBarState = BottomBarState.Data.Hidden(
             actions = bottomBarAction.toImmutableList()
         ),
-        onboardingState = OnboardingState.Hidden,
         actionResult = Effect.empty(),
         deleteDialogState = DeleteDialogState.Hidden,
         deleteAllDialogState = DeleteDialogState.Hidden,
         bottomSheetState = bottomSheetState,
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = error,
-        showRatingBooster = Effect.empty(),
-        showOnboardingUpselling = Effect.empty()
+        showRatingBooster = Effect.empty()
     )
 }

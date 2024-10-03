@@ -163,8 +163,7 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden,
-                showOnboardingUpselling = Effect.empty()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -194,8 +193,7 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden,
-                showOnboardingUpselling = Effect.empty()
+                clearState = MailboxListState.Data.ClearState.Hidden
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
@@ -319,8 +317,7 @@ class MailboxListReducer @Inject constructor() {
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 swipeActions = currentState.swipeActions,
                 clearState = currentState.clearState,
-                searchState = currentState.searchState,
-                showOnboardingUpselling = currentState.showOnboardingUpselling
+                searchState = currentState.searchState
             )
 
             else -> currentState
@@ -336,8 +333,7 @@ class MailboxListReducer @Inject constructor() {
             refreshRequested = false,
             swipeActions = currentState.swipeActions,
             searchState = currentState.searchState,
-            clearState = currentState.clearState,
-            showOnboardingUpselling = currentState.showOnboardingUpselling
+            clearState = currentState.clearState
         )
 
         else -> currentState

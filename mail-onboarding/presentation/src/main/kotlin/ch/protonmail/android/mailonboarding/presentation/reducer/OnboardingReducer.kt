@@ -22,7 +22,7 @@ import ch.protonmail.android.mailonboarding.presentation.model.OnboardingOperati
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import javax.inject.Inject
 
-class OnboardingReducer @Inject constructor() {
+internal class OnboardingReducer @Inject constructor() {
 
     fun newStateFrom(operation: OnboardingOperation): OnboardingState {
         return when (operation) {

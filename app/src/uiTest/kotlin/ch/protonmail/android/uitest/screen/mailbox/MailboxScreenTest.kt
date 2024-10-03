@@ -41,7 +41,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
-import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
@@ -96,7 +95,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -121,7 +119,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -156,7 +153,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -177,7 +173,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
-            showOnboardingUpselling = Effect.empty()
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -212,7 +207,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
-                    showOnboardingUpselling = Effect.empty()
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()
@@ -220,7 +214,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 upgradeStorageState = UpgradeStorageState(notificationDotVisible = false),
                 unreadFilterState = UnreadFilterState.Loading,
                 bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
-                onboardingState = OnboardingState.Hidden,
                 actionResult = Effect.empty(),
                 deleteDialogState = DeleteDialogState.Hidden,
                 deleteAllDialogState = DeleteDialogState.Hidden,
@@ -228,7 +221,6 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 bottomSheetState = null,
                 error = Effect.empty(),
                 showRatingBooster = Effect.empty(),
-                showOnboardingUpselling = Effect.empty()
             )
         }
 

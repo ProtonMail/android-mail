@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailonboarding.presentation.model
 
-data class OnboardingUiModel(
+internal data class OnboardingUiModel(
     val illustrationId: Int,
     val headlineId: Int,
     val descriptionId: Int
