@@ -38,7 +38,6 @@ import ch.protonmail.android.uitest.robot.common.section.verify
 import ch.protonmail.android.uitest.robot.composer.ComposerRobot
 import ch.protonmail.android.uitest.robot.composer.composerRobot
 import ch.protonmail.android.uitest.robot.composer.model.snackbar.ComposerSnackbar
-import ch.protonmail.android.uitest.robot.composer.section.attachmentsBottomSheet
 import ch.protonmail.android.uitest.robot.composer.section.messageBodySection
 import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.subjectSection
@@ -167,6 +166,5 @@ internal class ComposerSendMessageWithAttachmentsTests :
         messageBodySection { typeMessageBody(body) }
 
         topAppBarSection { tapAttachmentsButton() }
-        attachmentsBottomSheet { tapImportItem() }
     }
 }

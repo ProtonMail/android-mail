@@ -55,7 +55,8 @@ data class ComposerDraftState(
     val areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean> = emptyMap(),
     val senderChangedNotice: Effect<TextUiModel> = Effect.empty(),
     val messageExpiresIn: Duration,
-    val confirmSendExpiringMessage: Effect<List<Participant>>
+    val confirmSendExpiringMessage: Effect<List<Participant>>,
+    val openImagePicker: Effect<Unit>
 ) {
 
     companion object {
@@ -102,7 +103,8 @@ data class ComposerDraftState(
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
-            isDeviceContactsSuggestionsPromptEnabled = false
+            isDeviceContactsSuggestionsPromptEnabled = false,
+            openImagePicker = Effect.empty()
         )
     }
 }

@@ -657,20 +657,11 @@ class ComposerReducerTest(
         )
 
         private val EmptyToBottomSheetOpened = TestTransition(
-            name = "Should open the bottom sheet when add attachments action is chosen",
+            name = "Should open the file picker when add attachments action is chosen",
             currentState = ComposerDraftState.initial(messageId),
             operation = ComposerAction.OnAddAttachments,
             expectedState = ComposerDraftState.initial(messageId).copy(
-                changeBottomSheetVisibility = Effect.of(true)
-            )
-        )
-
-        private val EmptyToBottomSheetClosed = TestTransition(
-            name = "Should close the bottom sheet when a bottom sheet option has been chosen",
-            currentState = ComposerDraftState.initial(messageId),
-            operation = ComposerAction.OnBottomSheetOptionSelected,
-            expectedState = ComposerDraftState.initial(messageId).copy(
-                changeBottomSheetVisibility = Effect.of(false)
+                openImagePicker = Effect.of(Unit)
             )
         )
 
@@ -942,7 +933,6 @@ class ComposerReducerTest(
             LoadingToErrorWhenErrorLoadingDraftData,
             LoadingToSendingNoticeWhenReceivedDraftDataWithInvalidSender,
             EmptyToBottomSheetOpened,
-            EmptyToBottomSheetClosed,
             EmptyToAttachmentsUpdated,
             EmptyToAttachmentFileExceeded,
             EmptyToAttachmentReEncryptionFailed,
@@ -1014,7 +1004,8 @@ class ComposerReducerTest(
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
-            isDeviceContactsSuggestionsPromptEnabled = false
+            isDeviceContactsSuggestionsPromptEnabled = false,
+            openImagePicker = Effect.empty()
         )
 
         private fun aNotSubmittableState(
@@ -1074,7 +1065,8 @@ class ComposerReducerTest(
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
-            isDeviceContactsSuggestionsPromptEnabled = false
+            isDeviceContactsSuggestionsPromptEnabled = false,
+            openImagePicker = Effect.empty()
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

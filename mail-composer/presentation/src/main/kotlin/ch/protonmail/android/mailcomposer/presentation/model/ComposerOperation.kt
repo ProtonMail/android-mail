@@ -52,7 +52,6 @@ internal sealed interface ComposerAction : ComposerOperation {
     data class RemoveAttachment(val attachmentId: AttachmentId) : ComposerAction
 
     data object ChangeSenderRequested : ComposerAction
-    data object OnBottomSheetOptionSelected : ComposerAction
     data object OnAddAttachments : ComposerAction
     data object OnCloseComposer : ComposerAction
     data object OnSendMessage : ComposerAction

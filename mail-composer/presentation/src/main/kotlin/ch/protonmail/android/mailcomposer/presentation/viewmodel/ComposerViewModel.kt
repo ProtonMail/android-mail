@@ -406,7 +406,6 @@ class ComposerViewModel @Inject constructor(
 
                     is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
                     is ComposerAction.DeviceContactsPromptDenied -> onDeviceContactsPromptDenied()
-                    is ComposerAction.OnBottomSheetOptionSelected -> emitNewStateFor(action)
                     is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
                     is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
                     is ComposerAction.OnSendMessage -> emitNewStateFor(handleOnSendMessage(action))

@@ -66,8 +66,7 @@ class ComposerReducer @Inject constructor(
         is ComposerAction.ContactSuggestionTermChanged -> currentState
         is ComposerAction.DraftBodyChanged -> updateDraftBodyTo(currentState, this.draftBody)
         is ComposerAction.SubjectChanged -> updateSubjectTo(currentState, this.subject)
-        is ComposerAction.OnBottomSheetOptionSelected -> updateBottomSheetVisibility(currentState, false)
-        is ComposerAction.OnAddAttachments -> updateBottomSheetVisibility(currentState, true)
+        is ComposerAction.OnAddAttachments -> updateForOnAddAttachments(currentState)
         is ComposerAction.OnCloseComposer -> updateCloseComposerState(currentState, false)
         is ComposerAction.ChangeSenderRequested -> currentState
         is ComposerAction.OnSendMessage -> updateStateForSendMessage(currentState)
@@ -193,9 +192,6 @@ class ComposerReducer @Inject constructor(
             replaceDraftBody = Effect.of(TextUiModel(bodyWithInlineQuote))
         )
     }
-
-    private fun updateBottomSheetVisibility(currentState: ComposerDraftState, bottomSheetVisibility: Boolean) =
-        currentState.copy(changeBottomSheetVisibility = Effect.of(bottomSheetVisibility))
 
     private fun updateComposerFieldsState(
         currentState: ComposerDraftState,
@@ -335,6 +331,10 @@ class ComposerReducer @Inject constructor(
         currentState: ComposerDraftState,
         messageExpirationTime: MessageExpirationTime?
     ) = currentState.copy(messageExpiresIn = messageExpirationTime?.expiresIn ?: Duration.ZERO)
+
+    private fun updateForOnAddAttachments(currentState: ComposerDraftState) = currentState.copy(
+        openImagePicker = Effect.of(Unit)
+    )
 
     private fun updateRecipientsTo(
         currentState: ComposerDraftState,

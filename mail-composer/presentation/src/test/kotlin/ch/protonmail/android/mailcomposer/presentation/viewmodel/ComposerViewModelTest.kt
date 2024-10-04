@@ -1968,7 +1968,7 @@ class ComposerViewModelTest {
     }
 
     @Test
-    fun `emits state with an effect to open the bottom sheet when add attachments action is submitted`() = runTest {
+    fun `emits state with an effect to open the file picker when add attachments action is submitted`() = runTest {
         // Given
         val expectedUserId = expectedUserId { UserIdSample.Primary }
         expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
@@ -1989,32 +1989,7 @@ class ComposerViewModelTest {
 
         // Then
         val actual = viewModel.state.value
-        assertEquals(true, actual.changeBottomSheetVisibility.consume())
-    }
-
-    @Test
-    fun `emits state with an effect to close the bottom sheet when bottom sheet option is selected`() = runTest {
-        // Given
-        val expectedUserId = expectedUserId { UserIdSample.Primary }
-        expectedPrimaryAddress(expectedUserId) { UserAddressSample.PrimaryAddress }
-        val expectedDraftId = expectInputDraftMessageId { MessageIdSample.RemoteDraft }
-        val decryptedDraftFields = DecryptedDraftFields.Remote(existingDraftFields)
-        expectDecryptedDraftDataSuccess(expectedUserId, expectedDraftId) { decryptedDraftFields }
-        expectStartDraftSync(expectedUserId, expectedDraftId)
-        expectNoInputDraftAction()
-        expectObservedMessageAttachments(expectedUserId, expectedDraftId)
-        expectStoreParentAttachmentSucceeds(expectedUserId, expectedDraftId)
-        expectObserveMessageSendingError(expectedUserId, expectedDraftId)
-        expectMessagePassword(expectedUserId, expectedDraftId)
-        expectNoFileShareVia()
-        expectObserveMessageExpirationTime(expectedUserId, expectedDraftId)
-
-        // When
-        viewModel.submit(ComposerAction.OnBottomSheetOptionSelected)
-
-        // Then
-        val actual = viewModel.state.value
-        assertEquals(false, actual.changeBottomSheetVisibility.consume())
+        assertEquals(Unit, actual.openImagePicker.consume())
     }
 
     @Test
@@ -2734,7 +2709,8 @@ class ComposerViewModelTest {
             messageExpiresIn = Duration.ZERO,
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
-            isDeviceContactsSuggestionsPromptEnabled = false
+            isDeviceContactsSuggestionsPromptEnabled = false,
+            openImagePicker = Effect.empty()
         )
 
         mockkObject(ComposerDraftState.Companion)

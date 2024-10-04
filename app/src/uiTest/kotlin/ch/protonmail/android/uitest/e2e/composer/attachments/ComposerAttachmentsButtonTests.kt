@@ -29,10 +29,7 @@ import ch.protonmail.android.uitest.helpers.core.navigation.Destination
 import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.helpers.network.mockNetworkDispatcher
 import ch.protonmail.android.uitest.robot.composer.composerRobot
-import ch.protonmail.android.uitest.robot.composer.section.attachmentsBottomSheet
-import ch.protonmail.android.uitest.robot.composer.section.recipients.toRecipientSection
 import ch.protonmail.android.uitest.robot.composer.section.topAppBarSection
-import ch.protonmail.android.uitest.robot.composer.section.verify
 import ch.protonmail.android.uitest.robot.detail.model.attachments.AttachmentDetailItemEntry
 import ch.protonmail.android.uitest.robot.detail.section.attachmentsSection
 import ch.protonmail.android.uitest.robot.detail.section.verify
@@ -45,14 +42,13 @@ import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import me.proton.core.auth.domain.usecase.ValidateServerProof
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 @RegressionTest
 @SdkSuppress(minSdkVersion = 30, maxSdkVersion = 32)
 @HiltAndroidTest
 @UninstallModules(ServerProofModule::class)
-internal class ComposerAttachmentsBottomSheetTests : MockedNetworkTest(), ComposerAttachmentsTests {
+internal class ComposerAttachmentsButtonTests : MockedNetworkTest(), ComposerAttachmentsTests {
 
     @JvmField
     @BindValue
@@ -79,59 +75,13 @@ internal class ComposerAttachmentsBottomSheetTests : MockedNetworkTest(), Compos
 
     @Test
     @TestId("226087", "226088")
-    fun testMainAttachmentsBottomSheetInteractions() {
+    fun testMainAttachmentsButtonInteractions() {
         composerRobot {
             topAppBarSection { tapAttachmentsButton() }
-
-            attachmentsBottomSheet {
-                verify { hasImportOption() }
-                tapImportItem()
-            }
         }
 
         deviceRobot {
             intents { verify { filePickerIntentWasLaunched() } }
-        }
-    }
-
-    @Test
-    @Ignore("To be enabled again when MAILANDR-1101 is addressed.")
-    @TestId("226089")
-    fun testAttachmentsBottomSheetDismissalWithBackButton() {
-        composerRobot {
-            topAppBarSection { tapAttachmentsButton() }
-
-            attachmentsBottomSheet {
-                verify { isShown() }
-            }
-        }
-
-        deviceRobot { pressBack() }
-
-        composerRobot {
-            attachmentsBottomSheet {
-                verify { isDismissed() }
-            }
-        }
-    }
-
-    @Test
-    @TestId("226090")
-    fun testAttachmentsBottomSheetDismissalWithExternalTap() {
-        composerRobot {
-            topAppBarSection { tapAttachmentsButton() }
-
-            attachmentsBottomSheet {
-                verify { isShown() }
-            }
-
-            toRecipientSection { expandCcAndBccFields() }
-        }
-
-        composerRobot {
-            attachmentsBottomSheet {
-                verify { isDismissed() }
-            }
         }
     }
 
@@ -141,7 +91,6 @@ internal class ComposerAttachmentsBottomSheetTests : MockedNetworkTest(), Compos
     fun testAttachmentChipEntryUponPicking() {
         composerRobot {
             topAppBarSection { tapAttachmentsButton() }
-            attachmentsBottomSheet { tapImportItem() }
             attachmentsSection { verify { hasAttachments(defaultExpectedEntry) } }
         }
     }
@@ -157,11 +106,9 @@ internal class ComposerAttachmentsBottomSheetTests : MockedNetworkTest(), Compos
 
         composerRobot {
             topAppBarSection { tapAttachmentsButton() }
-            attachmentsBottomSheet { tapImportItem() }
             attachmentsSection { verify { hasAttachments(defaultExpectedEntry) } }
 
             topAppBarSection { tapAttachmentsButton() }
-            attachmentsBottomSheet { tapImportItem() }
             attachmentsSection { verify { hasAttachments(*expectedEntries) } }
         }
     }
