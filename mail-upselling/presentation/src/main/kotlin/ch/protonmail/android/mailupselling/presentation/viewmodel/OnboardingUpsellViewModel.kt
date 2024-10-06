@@ -25,6 +25,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellSt
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
+import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,11 +54,24 @@ class OnboardingUpsellViewModel @Inject constructor(
                 return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.LoadingError.NoSubscriptions)
             }
 
-            emitNewStateFrom(OnboardingUpsellEvent.DataLoaded(dynamicPlans))
+            emitNewStateFrom(OnboardingUpsellEvent.DataLoaded(userId, dynamicPlans))
         }.launchIn(viewModelScope)
     }
 
     private fun emitNewStateFrom(operation: OnboardingUpsellState.OnboardingUpsellOperation) {
-        mutableState.update { onboardingUpsellReducer.newStateFrom(operation) }
+        val currentState = state.value
+        mutableState.update { onboardingUpsellReducer.newStateFrom(currentState, operation) }
+    }
+
+    fun handlePlanSelected(plansType: PlansType, planName: String) {
+        when (state.value) {
+            is OnboardingUpsellState.Data -> {
+                val selectedPlanUiModel = (state.value as OnboardingUpsellState.Data).dynamicPlanInstanceUiModels.find {
+                    it.name == planName && it.cycle == if (plansType == PlansType.Annual) 12 else 1
+                }
+
+                emitNewStateFrom(OnboardingUpsellEvent.PlanSelected(selectedPlanUiModel))
+            }
+        }
     }
 }

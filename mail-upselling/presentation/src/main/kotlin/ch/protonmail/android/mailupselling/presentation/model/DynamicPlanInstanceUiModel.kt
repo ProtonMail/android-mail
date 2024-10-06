@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import me.proton.core.plan.domain.entity.DynamicPlan
 
-internal data class DynamicPlanInstanceUiModel(
+data class DynamicPlanInstanceUiModel(
     val name: String,
     val userId: UserIdUiModel,
     val price: TextUiModel,

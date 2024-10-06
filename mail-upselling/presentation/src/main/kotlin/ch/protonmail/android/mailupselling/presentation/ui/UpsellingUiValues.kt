@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.compose.dpToPx
 import ch.protonmail.android.mailupselling.presentation.R
 import me.proton.core.compose.theme.ProtonColors
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
 internal object UpsellingDimens {
@@ -40,6 +41,10 @@ internal object UpsellingDimens {
     const val UpsellingPaymentItemWeight = 1f
 
     val CurrencyDivider = 2.dp
+
+    val OnboardingPayButtonCornerRadius: Int
+        @Composable
+        get() = ProtonDimens.LargeCornerRadius.dpToPx()
 }
 
 internal object UpsellingColors {

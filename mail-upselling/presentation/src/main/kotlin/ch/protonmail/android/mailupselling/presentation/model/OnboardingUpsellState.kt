@@ -20,6 +20,8 @@ package ch.protonmail.android.mailupselling.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans
 
 interface OnboardingUpsellState {
@@ -29,7 +31,9 @@ interface OnboardingUpsellState {
     data class Data(
         val planSwitcherUiModel: OnboardingUpsellPlanSwitcherUiModel,
         val planUiModels: OnboardingUpsellPlanUiModels,
-        val buttonsUiModel: OnboardingUpsellButtonsUiModel
+        val buttonsUiModel: OnboardingUpsellButtonsUiModel,
+        val dynamicPlanInstanceUiModels: List<DynamicPlanInstanceUiModel>,
+        val selectedPlanInstanceUiModel: DynamicPlanInstanceUiModel?
     ) : OnboardingUpsellState
 
     data class Error(val error: Effect<TextUiModel>) : OnboardingUpsellState
@@ -39,13 +43,17 @@ interface OnboardingUpsellState {
         sealed interface OnboardingUpsellEvent : OnboardingUpsellOperation {
 
             data class DataLoaded(
-                val dynamicPlans: DynamicPlans
+                val userId: UserId,
+                val dynamicPlans: DynamicPlans,
+                val upsellingEntryPoint: UpsellingEntryPoint = UpsellingEntryPoint.PostOnboarding
             ) : OnboardingUpsellEvent
 
             sealed interface LoadingError : OnboardingUpsellEvent {
                 data object NoUserId : LoadingError
                 data object NoSubscriptions : LoadingError
             }
+
+            data class PlanSelected(val planUiModel: DynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
         }
     }
 }

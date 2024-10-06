@@ -28,7 +28,7 @@ import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import javax.inject.Inject
 
-internal class DynamicPlanInstanceUiMapper @Inject constructor() {
+class DynamicPlanInstanceUiMapper @Inject constructor() {
 
     fun toUiModel(
         userId: UserId,

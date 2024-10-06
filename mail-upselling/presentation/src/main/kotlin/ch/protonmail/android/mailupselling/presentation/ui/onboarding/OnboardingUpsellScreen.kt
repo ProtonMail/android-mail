@@ -43,8 +43,10 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -68,18 +70,23 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionStrongUnspecified
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultSmallNorm
 import me.proton.core.compose.theme.defaultSmallStrongNorm
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
@@ -99,8 +106,10 @@ fun OnboardingUpsellScreen(
         is OnboardingUpsellState.Data -> OnboardingUpsellScreenContent(
             modifier = modifier,
             state = state,
-            exitScreen = exitScreen
+            exitScreen = exitScreen,
+            onPlanSelected = { plansType, planName -> viewModel.handlePlanSelected(plansType, planName) }
         )
+
         is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
     }
 }
@@ -109,10 +118,15 @@ fun OnboardingUpsellScreen(
 private fun OnboardingUpsellScreenContent(
     modifier: Modifier = Modifier,
     state: OnboardingUpsellState.Data,
-    exitScreen: () -> Unit
+    exitScreen: () -> Unit,
+    onPlanSelected: (PlansType, String) -> Unit
 ) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
     val selectedPlan = remember { mutableStateOf(state.planUiModels.annualPlans[0].title) }
+
+    LaunchedEffect(Unit) {
+        onPlanSelected(selectedPlansType.value, selectedPlan.value)
+    }
 
     BackHandler {
         // This screen should not be closed when pressing back
@@ -145,7 +159,10 @@ private fun OnboardingUpsellScreenContent(
                 PlanSwitcher(
                     planSwitcherUiModel = state.planSwitcherUiModel,
                     selectedPlansType = selectedPlansType.value,
-                    onSwitch = { selectedPlansType.value = it }
+                    onSwitch = {
+                        selectedPlansType.value = it
+                        onPlanSelected(selectedPlansType.value, selectedPlan.value)
+                    }
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
             }
@@ -161,7 +178,10 @@ private fun OnboardingUpsellScreenContent(
                     isSelected = item.title == selectedPlan.value,
                     isBestValue = index == 0,
                     numberOfEntitlementsToShow = MAX_ENTITLEMENTS_TO_SHOW - index,
-                    onClick = { selectedPlan.value = item.title }
+                    onClick = {
+                        selectedPlan.value = item.title
+                        onPlanSelected(selectedPlansType.value, selectedPlan.value)
+                    }
                 )
                 Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
             }
@@ -171,7 +191,9 @@ private fun OnboardingUpsellScreenContent(
             selectedPlansType = selectedPlansType.value,
             selectedPlan = selectedPlan.value,
             buttonsUiModel = state.buttonsUiModel,
-            onContinueWithProtonFree = exitScreen
+            onContinueWithProtonFree = exitScreen,
+            selectedPlanUiModel = state.selectedPlanInstanceUiModel,
+            exitScreen = exitScreen
         )
     }
 }
@@ -439,8 +461,14 @@ private fun UpsellButtons(
     selectedPlansType: PlansType,
     selectedPlan: String,
     buttonsUiModel: OnboardingUpsellButtonsUiModel,
-    onContinueWithProtonFree: () -> Unit
+    onContinueWithProtonFree: () -> Unit,
+    exitScreen: () -> Unit,
+    selectedPlanUiModel: DynamicPlanInstanceUiModel?
 ) {
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
+
     val billingMessage = buttonsUiModel.billingMessage[selectedPlan]?.let {
         when (selectedPlansType) {
             PlansType.Monthly -> it.monthlyBillingMessage
@@ -461,28 +489,46 @@ private fun UpsellButtons(
             style = ProtonTheme.typography.overlineRegular.copy(color = ProtonTheme.colors.textAccent)
         )
         Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
-        ProtonSolidButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(MailDimens.OnboardingUpsellButtonHeight),
-            onClick = {}
-        ) {
-            Text(
-                text = getButtonLabel.string(),
-                style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(color = Color.White)
+
+        if (selectedPlanUiModel != null) {
+            OnboardingPayButton(
+                planInstanceUiModel = selectedPlanUiModel,
+                actions = OnboardingPayButton.Actions.Empty.copy(
+                    onDismiss = exitScreen,
+                    onUpgrade = { message ->
+                        scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message) }
+                    },
+                    onError = { message ->
+                        scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message) }
+                    }
+                )
             )
-        }
-        if (selectedPlan != PROTON_FREE) {
-            ProtonTextButton(onClick = onContinueWithProtonFree) {
+        } else {
+            ProtonSolidButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(MailDimens.OnboardingUpsellButtonHeight),
+                onClick = onContinueWithProtonFree
+            ) {
                 Text(
-                    text = stringResource(id = R.string.upselling_onboarding_continue_with_proton_free),
-                    style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(
-                        color = ProtonTheme.colors.textAccent
-                    )
+                    text = getButtonLabel.string(),
+                    style = ProtonTheme.typography.defaultNorm.copy(color = Color.White)
                 )
             }
         }
+
     }
+    if (selectedPlan != PROTON_FREE) {
+        ProtonTextButton(onClick = onContinueWithProtonFree) {
+            Text(
+                text = stringResource(id = R.string.upselling_onboarding_continue_with_proton_free),
+                style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(
+                    color = ProtonTheme.colors.textAccent
+                )
+            )
+        }
+    }
+
 }
 
 @Composable
@@ -504,9 +550,12 @@ private fun OnboardingUpsellScreenContentPreview() {
             state = OnboardingUpsellState.Data(
                 planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                 planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
-                buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel
+                buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
+                dynamicPlanInstanceUiModels = listOf(OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel),
+                selectedPlanInstanceUiModel = null
             ),
-            exitScreen = {}
+            exitScreen = {},
+            onPlanSelected = { _, _ -> }
         )
     }
 }

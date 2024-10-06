@@ -21,4 +21,4 @@ package ch.protonmail.android.mailupselling.presentation.model
 import me.proton.core.domain.entity.UserId
 
 @JvmInline
-internal value class UserIdUiModel(val value: UserId)
+value class UserIdUiModel(val value: UserId)

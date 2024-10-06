@@ -21,11 +21,19 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import me.proton.core.domain.entity.UserId
+import me.proton.core.domain.type.IntEnum
+import me.proton.core.plan.domain.entity.DynamicEntitlement
+import me.proton.core.plan.domain.entity.DynamicPlan
+import me.proton.core.plan.domain.entity.DynamicPlanState
+import me.proton.core.plan.domain.entity.DynamicPlanType
 
 internal object OnboardingUpsellPreviewData {
 
@@ -200,4 +208,30 @@ internal object OnboardingUpsellPreviewData {
             "Mail Plus" to TextUiModel.Text("Get Mail Plus")
         )
     )
+
+    private val dynPlan = DynamicPlan(
+        name = "Proton Unlimited",
+        order = 1,
+        state = DynamicPlanState.Available,
+        title = "Proton Unlimited",
+        description = "For more storage and all premium features across all Proton services.",
+        entitlements = listOf(
+            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl"),
+            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl")
+        ),
+        type = IntEnum(1, DynamicPlanType.Primary)
+    )
+
+    val DynamicPlanInstanceUiModel = DynamicPlanInstanceUiModel(
+        name = "Upgrade to Mail Plus",
+        userId = UserIdUiModel(UserId("12")),
+        currency = "EUR",
+        discount = null,
+        price = TextUiModel.Text("9.99"),
+        cycle = 1,
+        highlighted = false,
+        viewId = 123,
+        dynamicPlan = dynPlan
+    )
+
 }
