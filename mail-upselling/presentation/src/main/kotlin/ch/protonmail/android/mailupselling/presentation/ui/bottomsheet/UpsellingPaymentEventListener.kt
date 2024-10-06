@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.R
 import me.proton.core.domain.entity.UserId
@@ -35,7 +36,7 @@ internal class UpsellingPaymentEventListener(
     private val context: Context,
     private val userId: UserId,
     private val telemetryPayload: UpsellingTelemetryTargetPlanPayload,
-    private val actions: UpsellingBottomSheet.Actions
+    private val actions: UpsellingActions
 ) : ProtonPaymentEventListener {
 
     override fun invoke(event: ProtonPaymentEvent) {

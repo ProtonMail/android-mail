@@ -22,9 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 
 @Composable
@@ -54,16 +55,17 @@ fun UpsellingBottomSheet(
 }
 
 object UpsellingBottomSheet {
+
     data class Actions(
-        val onDisplayed: suspend () -> Unit,
-        val onError: (String) -> Unit,
-        val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        val onUpgrade: (String) -> Unit,
-        val onDismiss: () -> Unit
-    ) {
+        override val onError: (String) -> Unit,
+        override val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onUpgrade: (String) -> Unit,
+        override val onDismiss: () -> Unit,
+        val onDisplayed: suspend () -> Unit
+    ) : UpsellingActions {
 
         companion object {
 
