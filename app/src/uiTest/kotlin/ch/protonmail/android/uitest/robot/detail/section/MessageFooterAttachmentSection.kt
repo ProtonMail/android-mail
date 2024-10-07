@@ -23,6 +23,7 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performScrollTo
+import androidx.test.espresso.Espresso
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooterTestTags
 import ch.protonmail.android.test.ksp.annotations.AttachTo
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
@@ -74,6 +75,7 @@ internal class MessageFooterAttachmentSection : ComposeSectionRobot() {
     }
 
     private fun scrollTo() {
+        Espresso.closeSoftKeyboard()
         rootItem.awaitDisplayed().performScrollTo()
     }
 
