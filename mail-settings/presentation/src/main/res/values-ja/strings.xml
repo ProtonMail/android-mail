@@ -77,9 +77,9 @@
   <string name="mail_settings_identity_display_name_hint">表示名</string>
   <string name="mail_settings_identity_signature">署名</string>
   <string name="mail_settings_identity_signature_hint">署名</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
-  <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">モバイル署名</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">これはあなたの署名の後に追加されます。</string>
+  <string name="mail_settings_identity_mobile_footer_hint">モバイル署名</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Proton Mail Android から送信</string>
   <string name="mail_settings_identity_error_updating">設定更新エラー</string>
   <string name="mail_settings_identity_error_loading">設定の読み込みエラー</string>
@@ -112,13 +112,13 @@
   <string name="mail_settings_notifications_extended_notifications_title">拡張通知</string>
   <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にするとメールの送信者をプッシュ通知します。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
-  <string name="mail_settings_notifications_notifications_settings_hint">Navigate to system notification settings</string>
+  <string name="mail_settings_notifications_notifications_settings_hint">システムの通知設定に移動します</string>
   <string name="mail_settings_notifications_update_error">設定更新エラー</string>
   <string name="mail_settings_notifications_loading_error">設定の読み込みエラー</string>
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">自動ロック</string>
   <string name="mail_settings_auto_lock_item_title">自動アプリロック</string>
-  <string name="mail_settings_auto_lock_item_description">Turn this feature on to auto lock your app and use a PIN code to unlock it.</string>
+  <string name="mail_settings_auto_lock_item_description">この機能を有効にするとアプリは自動でロックされます。PINコードを使用してロックを解除できます。</string>
   <string name="mail_settings_auto_lock_change_pin_description">PINコードを変更する</string>
   <string name="mail_settings_auto_lock_item_timer_title">自動ロックタイマー</string>
   <string name="mail_settings_auto_lock_immediately">即時</string>
@@ -141,7 +141,7 @@
     <item quantity="other">残りの試行回数は %s 回です.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="other">%s remaining attempts until secure data wipe.</item>
+    <item quantity="other">完全なデータ抹消まで残り%s回です。</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">PIN コードの確認中にエラーが発生しました。</string>
   <string name="mail_settings_pin_insertion_signout_text">サインアウト</string>

@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Καθαρισμός Ανεπιθύμητων</string>
   <string name="mailbox_action_clear_trash_dialog_title">Εκκαθάριση φακέλου Διαγραμμένων</string>
   <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Διαγραμμένα\";</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Ανεπιθύμητα\";</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στο φάκελο \"Ανεπιθύμητα\";</string>
   <string name="mailbox_action_clear_operation_scheduled">"Έχει προγραμματιστεί η λειτουργία εκκαθάρισης"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Προειδοποίηση</string>

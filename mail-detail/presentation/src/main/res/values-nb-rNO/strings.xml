@@ -43,7 +43,7 @@
   <string name="error_mark_as_unread_failed">Kunne ikke markere som ulest. Vennligst prøv på nytt.</string>
   <string name="error_star_operation_failed">Kunne ikke legge til stjernemerke. Vennligst prøv på nytt.</string>
   <string name="error_unstar_operation_failed">Kunne ikke fjerne stjernemerking. Vennligst prøv på nytt.</string>
-  <string name="error_move_to_trash_failed">Kunne ikke flytte til papirkurv. Vennligst prøv på nytt.</string>
+  <string name="error_move_to_trash_failed">Kunne ikke flytte til papirkurven. Prøv på nytt.</string>
   <string name="message_moved_to_trash">Melding flyttet til papirkurven</string>
   <string name="message_moved_to_archive">Melding flyttet til arkiv</string>
   <string name="error_move_to_archive_failed">Flytting til arkiv mislyktes. Vennligst prøv på nytt.</string>

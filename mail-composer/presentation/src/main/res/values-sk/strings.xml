@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Nepodarilo sa zmeniť adresu odosielateľa, pretože získanie predplatného zlyhalo. Skúste znova.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">Duplicitní príjemcovia odobraní</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Uloženie príjemcov tohto konceptu zlyhalo</string>
   <string name="composer_error_loading_draft">Obsah tohto konceptu nie je momentálne dostupný. Úpravou sa prepíše akýkoľvek už existujúci obsah.</string>
@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Odstrániť heslo</string>
   <string name="respondInline">Odpovedať v riadku</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d kontakt</item>
-    <item quantity="few">%d kontakty</item>
-    <item quantity="many">%d kontaktov</item>
-    <item quantity="other">%d kontaktov</item>
+    <item quantity="one">%d člen</item>
+    <item quantity="few">%d členovia</item>
+    <item quantity="many">%d členov</item>
+    <item quantity="other">%d členov</item>
   </plurals>
 </resources>

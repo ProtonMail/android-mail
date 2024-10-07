@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Αφαίρεση κωδικού πρόσβασης</string>
   <string name="respondInline">Απάντηση μέσα στην γραμμή</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d επαφή</item>
-    <item quantity="other">%d επαφές</item>
+    <item quantity="one">%d member</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

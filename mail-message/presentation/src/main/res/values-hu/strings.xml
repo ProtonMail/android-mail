@@ -45,9 +45,9 @@
   <string name="bottom_sheet_label_as_title">Címkézés...</string>
   <string name="bottom_sheet_more_header_message_from">Üzenetek tőle: %s</string>
   <!-- Message body link actions -->
-  <string name="message_link_long_click_copy">Link másolása</string>
+  <string name="message_link_long_click_copy">Hivatkozás másolása</string>
   <string name="message_link_long_click_copy_description">Szöveg Proton Mail-ről másolva</string>
-  <string name="message_link_long_click_share">Link megosztása</string>
+  <string name="message_link_long_click_share">Hivatkozás megosztása</string>
   <string name="message_link_long_click_share_via">Link megosztása</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Cím másolása</string>

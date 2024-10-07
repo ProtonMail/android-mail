@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Удалить пароль</string>
   <string name="respondInline">Ответить с цитированием</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d контакт</item>
-    <item quantity="few">%d контакта</item>
-    <item quantity="many">%d контактов</item>
-    <item quantity="other">%d контактов</item>
+    <item quantity="one">%d member</item>
+    <item quantity="few">%d members</item>
+    <item quantity="many">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

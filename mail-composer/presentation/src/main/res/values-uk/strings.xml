@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Вилучити пароль</string>
   <string name="respondInline">Відповісти всередині тексту</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d контакт</item>
-    <item quantity="few">%d контакти</item>
-    <item quantity="many">%d контактів</item>
-    <item quantity="other">%d контактів</item>
+    <item quantity="one">%d member</item>
+    <item quantity="few">%d members</item>
+    <item quantity="many">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

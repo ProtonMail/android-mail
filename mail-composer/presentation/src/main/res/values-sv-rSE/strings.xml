@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Ta bort lösenord</string>
   <string name="respondInline">Svara i tråd</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d kontakt</item>
-    <item quantity="other">%d kontakter</item>
+    <item quantity="one">%d medlem</item>
+    <item quantity="other">%d medlemmar</item>
   </plurals>
 </resources>

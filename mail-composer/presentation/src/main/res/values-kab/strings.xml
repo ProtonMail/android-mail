@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Kkes wawal uffir</string>
   <string name="respondInline">Err degi imayl</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d member</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

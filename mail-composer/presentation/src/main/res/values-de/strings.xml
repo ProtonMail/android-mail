@@ -31,8 +31,8 @@
   <string name="change_sender_button_content_description">Absender ändern</string>
   <string name="composer_change_sender_paid_feature">Upgrade auf ein kostenpflichtiges Abonnement, um die Absenderadresse zu ändern.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Fehler beim Ändern des Absenders, da das Abonnement des Benutzers nicht abgerufen werden konnte. Bitte versuche es erneut.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Das Speichern der Absenderadresse dieses Entwurfs ist fehlgeschlagen.</string>
+  <string name="composer_error_store_draft_body">Das Speichern des Inhalts dieses Entwurfs ist fehlgeschlagen.</string>
   <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Das Speichern der Empfänger dieses Entwurfs ist fehlgeschlagen</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4-21 Zeichen lang</string>
   <string name="set_message_password_supporting_error_text">Das Passwort muss zwischen 4 und 21 Zeichen lang sein.</string>
   <string name="set_message_password_supporting_text_repeat">Die Passwörter müssen übereinstimmen</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Die Passwörter stimmen nicht überein</string>
   <string name="set_message_password_button_show">Passwort anzeigen</string>
   <string name="set_message_password_button_hide">Passwort ausblenden</string>
   <string name="set_message_password_button_apply">Passwort übernehmen</string>
@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Passwort entfernen</string>
   <string name="respondInline">Eingebettet antworten</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d Kontakt</item>
-    <item quantity="other">%d Kontakte</item>
+    <item quantity="one">%d Mitglied</item>
+    <item quantity="other">%d Mitglieder</item>
   </plurals>
 </resources>

@@ -33,7 +33,7 @@
   <string name="upselling_folders_plus_description_override">Атрымайце не толькі іх, але і іншыя прэміяльныя функцыі пасля пераходу на Mail Plus.</string>
   <string name="upselling_folders_plus_title">Неабходна больш метак або папак?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Выкарыстоўвайце свой уласны подпіс на мабільных прыладах і атрымайце іншыя прэміяльныя функцыі з тарыфным планам Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_description_override">Выкарыстоўвайце свой уласны мабільны подпіс і атрымайце іншыя прэміяльныя функцыі з тарыфным планам Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Наладзьце свой подпіс</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
@@ -62,11 +62,11 @@
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 дадатковых адрасоў электроннай пошты для вас</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Падтрымка для 3 карыстальніцкіх даменаў электроннай пошты</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Неабмежаваная колькасць псеўданімаў hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Прыхавана падтрымка кліентаў</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Ультра хуткі і прыватны VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Адданая падтрымка кліентаў</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Вельмі хуткі і прыватны VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Зашыфраванае воблачнае сховішча для фатаграфій і дакументаў</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Дадатковае абарона ўліковага запісу</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Пашыраная абарона ўліковага запісу</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ЭКАНОМІЯ %s%%</string>
   <string name="upselling_month">/месяц</string>
@@ -86,10 +86,10 @@
   <string name="upselling_snackbar_upgrade_error_generic">Падчас паляпшэння вашай падпіскі адбылася памылка.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Адбылася памылка. Паспрабуйце яшчэ раз.</string>
   <!-- Upselling: Onboarding -->
-  <string name="upselling_onboarding_title">Выбар тарыфнага плана</string>
+  <string name="upselling_onboarding_title">Выбраць тарыфны план</string>
   <string name="upselling_onboarding_switcher_monthly">Штомесяц</string>
   <string name="upselling_onboarding_switcher_annual">Штогод</string>
-  <string name="upselling_onboarding_best_value">Лепшыя суадносіны кошту і якасці</string>
+  <string name="upselling_onboarding_best_value">Найлепшая цана</string>
   <string name="upselling_onboarding_month">/месяц</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">Яшчэ %d функцыя</item>
@@ -97,9 +97,9 @@
     <item quantity="many">Яшчэ %d функцый</item>
     <item quantity="other">Яшчэ %d функцый</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
+  <string name="upselling_onboarding_billing_monthly">Аплачваецца %s %s кожны месяц.</string>
+  <string name="upselling_onboarding_billing_annual">Аплачваецца %s %s кожныя 12 месяцаў.</string>
   <string name="upselling_onboarding_get_plan">Атрымаць %s</string>
-  <string name="upselling_onboarding_continue_with_proton_free">Працягнуць бясплатнае выкарыстанне Proton</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_continue_with_proton_free">Працягнуць з Proton Free</string>
+  <string name="upselling_onboarding_save_label">Эканомія %s%%</string>
 </resources>

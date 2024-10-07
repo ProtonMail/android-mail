@@ -86,9 +86,9 @@
   <string name="mailbox_action_button_clear_spam">Svuota la cartella spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Svuota il cestino</string>
   <string name="mailbox_action_clear_spam_dialog_title">Svuota la cartella spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nel Cestino?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nella cartella Spam?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nella cartella Spam?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nel cestino?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Sei sicuro di voler eliminare definitivamente tutti i messaggi presenti nella cartella spam?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nella cartella spam?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Lo svuotamento è programmato"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Avviso</string>

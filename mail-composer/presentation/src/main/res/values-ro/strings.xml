@@ -96,8 +96,8 @@
   <string name="set_message_password_button_remove_password">Eliminare parolă</string>
   <string name="respondInline">Răspuns în mesaj</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">Contacte: %d</item>
-    <item quantity="few">Contacte: %d</item>
-    <item quantity="other">Contacte: %d</item>
+    <item quantity="one">%d member</item>
+    <item quantity="few">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

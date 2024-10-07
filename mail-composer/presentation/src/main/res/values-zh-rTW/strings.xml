@@ -96,6 +96,6 @@
   <string name="set_message_password_button_remove_password">移除密碼</string>
   <string name="respondInline">在內文回覆</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="other">%d 個聯絡人</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

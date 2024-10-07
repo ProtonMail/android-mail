@@ -104,7 +104,7 @@
   <string name="mailbox_action_button_clear_spam">Очистити спам</string>
   <string name="mailbox_action_clear_trash_dialog_title">Очистити теку смітника</string>
   <string name="mailbox_action_clear_spam_dialog_title">Очистити теку спаму</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Ви дійсно хочете остаточно видалити всі повідомлення в теці «Смітник»?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Are you sure you want to permanently delete all messages in your Spam folder?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Are you sure you want to permanently delete all conversations in your Spam folder?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Заплановано операцію з очищення"</string>

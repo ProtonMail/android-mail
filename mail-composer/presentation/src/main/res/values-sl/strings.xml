@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Odstrani geslo</string>
   <string name="respondInline">Odgovori v vrstici</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d stik</item>
-    <item quantity="two">%d stika</item>
-    <item quantity="few">%d stiki</item>
-    <item quantity="other">%d stikov</item>
+    <item quantity="one">%d member</item>
+    <item quantity="two">%d members</item>
+    <item quantity="few">%d members</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

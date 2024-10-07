@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Retirer le mot de passe</string>
   <string name="respondInline">Répondre dans le message</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d contact</item>
-    <item quantity="other">%d contacts</item>
+    <item quantity="one">%d membre</item>
+    <item quantity="other">%d membres</item>
   </plurals>
 </resources>

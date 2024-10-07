@@ -91,7 +91,7 @@
   <string name="error_delete_message_failed_wrong_folder">Posizione non valida. Eliminazione del messaggio non riuscita.</string>
   <string name="error_delete_conversation_failed">Eliminazione della conversazione non riuscita</string>
   <string name="error_delete_conversation_failed_wrong_folder">Posizione non valida. Eliminazione della conversazione non riuscita.</string>
-  <string name="conversation_delete_dialog_title">Elimina conversazione</string>
+  <string name="conversation_delete_dialog_title">Elimina la conversazione</string>
   <string name="conversation_delete_dialog_message">Sei sicuro di voler eliminare definitivamente questa conversazione?</string>
   <string name="conversation_deleted">Conversazione eliminata</string>
   <string name="message_body_load_remote_content_button_text">Carica i contenuti remoti</string>

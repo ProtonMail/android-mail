@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">პაროლის მოშლა</string>
   <string name="respondInline">პასუხის იქვე მიწერა</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d კონტაქტი</item>
-    <item quantity="other">%d კონტაქტი</item>
+    <item quantity="one">%d member</item>
+    <item quantity="other">%d members</item>
   </plurals>
 </resources>

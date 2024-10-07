@@ -22,8 +22,8 @@
   <string name="label_title_sent">Elküldött</string>
   <string name="label_title_starred">Csillagozott</string>
   <string name="label_title_archive">Archívum</string>
-  <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Kuka</string>
+  <string name="label_title_spam">Levélszemét</string>
+  <string name="label_title_trash">Lomtár</string>
   <string name="label_title_outbox">Kimenő</string>
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_drafts">Minden piszkozat</string>

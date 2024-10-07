@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Немагчыма змяніць адпраўніка, бо не ўдаецца атрымаць падпіску карыстальніка. Паспрабуйце яшчэ раз.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">Дубліраваныя атрымальнік(і) выдалены</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Збой захавання атрымальнікаў гэтага чарнавіка</string>
   <string name="composer_error_loading_draft">Змесціва гэтага чарнавіка недаступна ў цяперашні час. Рэдагаванне перавызначыць любое змесціва, якое было створана да гэтага.</string>
@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Выдаліць пароль</string>
   <string name="respondInline">Адказаць з цытаваннем</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d кантакт</item>
-    <item quantity="few">%d кантакты</item>
-    <item quantity="many">%d кантактаў</item>
-    <item quantity="other">%d кантактаў</item>
+    <item quantity="one">%d удзельнік</item>
+    <item quantity="few">%d удзельнікі</item>
+    <item quantity="many">%d удзельнікаў</item>
+    <item quantity="other">%d удзельнікаў</item>
   </plurals>
 </resources>
