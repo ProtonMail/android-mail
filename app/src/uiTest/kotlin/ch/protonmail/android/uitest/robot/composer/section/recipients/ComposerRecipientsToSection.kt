@@ -41,6 +41,10 @@ internal class ComposerRecipientsToSection : ComposerRecipientsSection(
         useUnmergedTree = true
     )
 
+    fun chevronNotVisible() = apply {
+        expandRecipientsButton.assertDoesNotExist()
+    }
+
     fun expandCcAndBccFields() = apply {
         expandRecipientsButton.performScrollTo().performClick()
     }

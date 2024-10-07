@@ -39,10 +39,18 @@ internal interface OpenExistingDraftsTest {
     ) {
         toRecipientSection {
             verify { hasRecipientChips(toRecipientChip) }
-            expandCcAndBccFields()
         }
-        ccRecipientSection { verify { ccRecipientChip?.let { hasRecipientChips(it) } ?: isEmptyField() } }
-        bccRecipientSection { verify { bccRecipientChip?.let { hasRecipientChips(it) } ?: isEmptyField() } }
+
+        if (ccRecipientChip != null && bccRecipientChip != null) {
+            toRecipientSection { verify { chevronNotVisible() } }
+            ccRecipientSection { verify { hasRecipientChips(ccRecipientChip) } }
+            bccRecipientSection { verify { hasRecipientChips(bccRecipientChip) } }
+        } else {
+            toRecipientSection { expandCcAndBccFields() }
+            ccRecipientSection { verify { isEmptyField() } }
+            bccRecipientSection { verify { isEmptyField() } }
+        }
+
         subjectSection { verify { hasSubject(subject) } }
         messageBodySection { verify { messageBody?.let { hasText(it) } ?: hasPlaceholderText() } }
     }

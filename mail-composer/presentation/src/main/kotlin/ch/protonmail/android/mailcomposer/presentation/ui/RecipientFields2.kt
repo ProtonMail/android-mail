@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -69,8 +67,10 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
     areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>
 ) {
     val recipientsButtonRotation = remember { Animatable(0F) }
-    val shouldHideCcBcc = areContactSuggestionsExpanded[ContactSuggestionsField.TO] == true
-    val shouldHideBcc = areContactSuggestionsExpanded[ContactSuggestionsField.CC] == true
+    val isShowingToSuggestions = areContactSuggestionsExpanded[ContactSuggestionsField.TO] == true
+    val isShowingCcSuggestions = areContactSuggestionsExpanded[ContactSuggestionsField.CC] == true
+    val hasCcBccContent = fields.cc.isNotEmpty() || fields.bcc.isNotEmpty()
+    val shouldShowCcBcc = recipientsOpen || hasCcBccContent
 
     Row(
         modifier = modifier.fillMaxWidth()
@@ -80,7 +80,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
             value = fields.to.map { it.toChipItem() },
             chipValidator = emailValidator,
             modifier = Modifier
-                .fillMaxWidth()
+                .weight(1f)
                 .testTag(ComposerTestTags.ToRecipient)
                 .retainFieldFocusOnConfigurationChange(FocusedFieldType.TO),
             focusRequester = fieldFocusRequesters[FocusedFieldType.TO],
@@ -100,39 +100,36 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
                 } ?: emptyList()
             ),
             chevronIconContent = {
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.Top)
-                        .focusProperties { canFocus = false },
-                    onClick = {
-                        // Make it no-op if suggestions for To: field are displayed.
-                        if (!shouldHideCcBcc) { actions.onToggleRecipients(!recipientsOpen) }
-                    }
-                ) {
-                    Icon(
+                if (!hasCcBccContent) {
+                    IconButton(
                         modifier = Modifier
-                            .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues2.Closed) {
-                                testTag(ComposerTestTags.ExpandCollapseArrow)
-                            }
-                            .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues2.Open) {
-                                testTag(ComposerTestTags.CollapseExpandArrow)
-                            }
-                            .rotate(recipientsButtonRotation.value)
-                            .size(ProtonDimens.SmallIconSize),
-                        imageVector = ImageVector.vectorResource(
-                            id = me.proton.core.presentation.R.drawable.ic_proton_chevron_down_filled
-                        ),
-                        tint = ProtonTheme.colors.textWeak,
-                        contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
-                    )
+                            .align(Alignment.Top)
+                            .focusProperties { canFocus = false },
+                        onClick = { actions.onToggleRecipients(!recipientsOpen) }
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues2.Closed) {
+                                    testTag(ComposerTestTags.ExpandCollapseArrow)
+                                }
+                                .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues2.Open) {
+                                    testTag(ComposerTestTags.CollapseExpandArrow)
+                                }
+                                .rotate(recipientsButtonRotation.value)
+                                .size(ProtonDimens.SmallIconSize),
+                            imageVector = ImageVector.vectorResource(
+                                id = me.proton.core.presentation.R.drawable.ic_proton_chevron_down_filled
+                            ),
+                            tint = ProtonTheme.colors.textWeak,
+                            contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
+                        )
+                    }
                 }
             }
         )
     }
-    AnimatedVisibility(
-        visible = recipientsOpen && !shouldHideCcBcc,
-        modifier = Modifier.animateContentSize()
-    ) {
+
+    if (shouldShowCcBcc && !isShowingToSuggestions) {
         Column {
             MailDivider()
             ChipsListField2(
@@ -162,7 +159,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
                 )
             )
 
-            if (!shouldHideBcc) {
+            if (!isShowingCcSuggestions) {
                 MailDivider()
                 ChipsListField2(
                     label = stringResource(id = R.string.bcc_prefix),
@@ -184,8 +181,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
                         }
                     ),
                     contactSuggestionState = ContactSuggestionState2(
-                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC]
-                            ?: false,
+                        areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC] ?: false,
                         contactSuggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
                             it.toSuggestionContactItem()
                         } ?: emptyList()
@@ -193,12 +189,12 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
                 )
             }
         }
+    }
 
-        LaunchedEffect(key1 = recipientsOpen) {
-            recipientsButtonRotation.animateTo(
-                if (recipientsOpen) RecipientsButtonRotationValues2.Open else RecipientsButtonRotationValues2.Closed
-            )
-        }
+    LaunchedEffect(key1 = recipientsOpen) {
+        recipientsButtonRotation.animateTo(
+            if (recipientsOpen) RecipientsButtonRotationValues2.Open else RecipientsButtonRotationValues2.Closed
+        )
     }
 }
 

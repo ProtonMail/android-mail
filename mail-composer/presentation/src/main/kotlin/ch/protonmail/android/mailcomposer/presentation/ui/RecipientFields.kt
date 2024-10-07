@@ -18,8 +18,6 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -78,6 +76,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
         keyboardType = KeyboardType.Email
     )
     val recipientsButtonRotation = remember { Animatable(0F) }
+    val hasCcBccContent = fields.cc.isNotEmpty() || fields.bcc.isNotEmpty()
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -111,32 +110,32 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
             )
         )
         Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-        IconButton(
-            modifier = Modifier.focusProperties { canFocus = false },
-            onClick = { actions.onToggleRecipients(!recipientsOpen) }
-        ) {
-            Icon(
-                modifier = Modifier
-                    .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Closed) {
-                        testTag(ComposerTestTags.ExpandCollapseArrow)
-                    }
-                    .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Open) {
-                        testTag(ComposerTestTags.CollapseExpandArrow)
-                    }
-                    .rotate(recipientsButtonRotation.value)
-                    .size(ProtonDimens.SmallIconSize),
-                imageVector = ImageVector.vectorResource(
-                    id = me.proton.core.presentation.R.drawable.ic_proton_chevron_down_filled
-                ),
-                tint = ProtonTheme.colors.textWeak,
-                contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
-            )
+        if (!hasCcBccContent) {
+            IconButton(
+                modifier = Modifier.focusProperties { canFocus = false },
+                onClick = { actions.onToggleRecipients(!recipientsOpen) }
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Closed) {
+                            testTag(ComposerTestTags.ExpandCollapseArrow)
+                        }
+                        .thenIf(recipientsButtonRotation.value == RecipientsButtonRotationValues.Open) {
+                            testTag(ComposerTestTags.CollapseExpandArrow)
+                        }
+                        .rotate(recipientsButtonRotation.value)
+                        .size(ProtonDimens.SmallIconSize),
+                    imageVector = ImageVector.vectorResource(
+                        id = me.proton.core.presentation.R.drawable.ic_proton_chevron_down_filled
+                    ),
+                    tint = ProtonTheme.colors.textWeak,
+                    contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
+                )
+            }
         }
     }
-    AnimatedVisibility(
-        visible = recipientsOpen,
-        modifier = Modifier.animateContentSize()
-    ) {
+
+    if (recipientsOpen || hasCcBccContent) {
         Column {
             MailDivider()
             ChipsListField(
@@ -190,20 +189,19 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
                     }
                 ),
                 contactSuggestionState = ContactSuggestionState(
-                    areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC]
-                        ?: false,
+                    areSuggestionsExpanded = areContactSuggestionsExpanded[ContactSuggestionsField.BCC] ?: false,
                     contactSuggestionItems = contactSuggestions[ContactSuggestionsField.BCC]?.map {
                         it.toSuggestionContactItem()
                     } ?: emptyList()
                 )
             )
         }
+    }
 
-        LaunchedEffect(key1 = recipientsOpen) {
-            recipientsButtonRotation.animateTo(
-                if (recipientsOpen) RecipientsButtonRotationValues.Open else RecipientsButtonRotationValues.Closed
-            )
-        }
+    LaunchedEffect(key1 = recipientsOpen) {
+        recipientsButtonRotation.animateTo(
+            if (recipientsOpen) RecipientsButtonRotationValues.Open else RecipientsButtonRotationValues.Closed
+        )
     }
 }
 
