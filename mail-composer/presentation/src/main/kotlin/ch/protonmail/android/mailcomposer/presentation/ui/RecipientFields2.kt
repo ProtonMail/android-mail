@@ -120,7 +120,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields2(
                             .rotate(recipientsButtonRotation.value)
                             .size(ProtonDimens.SmallIconSize),
                         imageVector = ImageVector.vectorResource(
-                            id = me.proton.core.presentation.R.drawable.ic_proton_chevron_up_filled
+                            id = me.proton.core.presentation.R.drawable.ic_proton_chevron_down_filled
                         ),
                         tint = ProtonTheme.colors.textWeak,
                         contentDescription = stringResource(id = R.string.composer_expand_recipients_button)
