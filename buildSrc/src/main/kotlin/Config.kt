@@ -23,5 +23,5 @@ object Config {
     const val targetSdk = 34
     const val testInstrumentationRunner = "ch.protonmail.android.uitest.HiltTestRunner"
     const val versionCode = 1
-    const val versionName = "4.0.23"
+    const val versionName = "4.0.24"
 }
