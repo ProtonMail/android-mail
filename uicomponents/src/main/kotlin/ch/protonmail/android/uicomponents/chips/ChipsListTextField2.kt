@@ -159,7 +159,7 @@ internal fun ChipsListTextField2(
             onValueChange = {
                 // Triggering the chip creation manually causes the same value to be dispatched again.
                 // This is needed for some custom keyboards such as SwiftKey.
-                if (it.text == textFieldValue.text) return@BasicTextField
+                if (it.text == textFieldValue.text && it.selection == textFieldValue.selection) return@BasicTextField
 
                 actions.onTextChanged(it)
             },
