@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
@@ -58,12 +59,16 @@ class OnboardingUpsellViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun submit(action: OnboardingUpsellOperation.Action) = when (action) {
+        is OnboardingUpsellOperation.Action.PlanSelected -> handlePlanSelected(action.plansType, action.planName)
+    }
+
     private fun emitNewStateFrom(operation: OnboardingUpsellState.OnboardingUpsellOperation) {
         val currentState = state.value
         mutableState.update { onboardingUpsellReducer.newStateFrom(currentState, operation) }
     }
 
-    fun handlePlanSelected(plansType: PlansType, planName: String) {
+    private fun handlePlanSelected(plansType: PlansType, planName: String) {
         when (state.value) {
             is OnboardingUpsellState.Data -> {
                 val selectedPlanUiModel = (state.value as OnboardingUpsellState.Data).dynamicPlanInstanceUiModels.find {

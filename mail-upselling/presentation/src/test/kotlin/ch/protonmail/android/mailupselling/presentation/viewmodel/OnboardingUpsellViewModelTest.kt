@@ -8,6 +8,7 @@ import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstan
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData
@@ -134,7 +135,7 @@ class OnboardingUpsellViewModelTest {
     }
 
     @Test
-    fun `should emit correct state when plan is selected`() = runTest {
+    fun `should emit correct state when PlanSelected action is submitted`() = runTest {
         // Given
         expectPrimaryUser(user)
         expectDynamicPlans(user.userId, dynamicPlans)
@@ -144,7 +145,7 @@ class OnboardingUpsellViewModelTest {
         viewModel.state.test {
             assertNull((viewModel.state.value as OnboardingUpsellState.Data).selectedPlanInstanceUiModel)
 
-            viewModel.handlePlanSelected(PlansType.Monthly, "Upgrade to Mail Plus")
+            viewModel.submit(OnboardingUpsellOperation.Action.PlanSelected(PlansType.Monthly, "Upgrade to Mail Plus"))
 
             awaitItem()
             val actual = awaitItem()

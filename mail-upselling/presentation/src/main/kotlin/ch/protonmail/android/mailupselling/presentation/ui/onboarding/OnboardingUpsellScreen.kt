@@ -72,6 +72,7 @@ import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
@@ -107,7 +108,9 @@ fun OnboardingUpsellScreen(
             modifier = modifier,
             state = state,
             exitScreen = exitScreen,
-            onPlanSelected = { plansType, planName -> viewModel.handlePlanSelected(plansType, planName) }
+            onPlanSelected = { plansType, planName ->
+                viewModel.submit(OnboardingUpsellOperation.Action.PlanSelected(plansType, planName))
+            }
         )
 
         is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
