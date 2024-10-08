@@ -38,13 +38,20 @@ fun HighlightedText(
     overflow: TextOverflow
 ) {
     val annotatedString = buildAnnotatedString {
-        val startIndex = text.lowercase().indexOf(highlight)
-        if (startIndex >= 0) {
-            append(text.substring(0, startIndex))
-            withStyle(style = SpanStyle(color = highlightColor)) {
-                append(text.substring(startIndex, startIndex + highlight.length))
+        if (highlight.isNotEmpty()) {
+            val startIndex = text.lowercase().indexOf(highlight.lowercase())
+            if (startIndex >= 0) {
+                val endIndex = (startIndex + highlight.length).coerceAtMost(text.length)
+                append(text.substring(0, startIndex))
+
+                withStyle(style = SpanStyle(color = highlightColor)) {
+                    append(text.substring(startIndex, endIndex))
+                }
+
+                append(text.substring(endIndex))
+            } else {
+                append(text)
             }
-            append(text.substring(startIndex + highlight.length))
         } else {
             append(text)
         }
