@@ -24,20 +24,23 @@ import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitl
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PROTON_FREE
+import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 
 class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
-    private val dynamicPlanEntitlementsUiMapper: DynamicPlanEntitlementsUiMapper
+    private val dynamicPlanEntitlementsUiMapper: DynamicPlanEntitlementsUiMapper,
+    private val onboardingDynamicPlanInstanceUiMapper: OnboardingDynamicPlanInstanceUiMapper
 ) {
 
-    fun toUiModel(dynamicPlans: DynamicPlans): OnboardingUpsellPlanUiModels {
+    fun toUiModel(dynamicPlans: DynamicPlans, userId: UserId): OnboardingUpsellPlanUiModels {
         val freePlan = OnboardingUpsellPlanUiModel(
             title = PROTON_FREE,
             currency = null,
             monthlyPrice = null,
             monthlyPriceWithDiscount = null,
-            entitlements = OnboardingFreeOverriddenEntitlements
+            entitlements = OnboardingFreeOverriddenEntitlements,
+            payButtonPlanUiModel = null
         )
 
         val monthlyPlans = dynamicPlans.plans.map { plan ->
@@ -49,7 +52,12 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                 currency = monthlyPlanPrice.currency,
                 monthlyPrice = null,
                 monthlyPriceWithDiscount = monthlyPlanPrice.normalizedPrice(monthlyPlanInstance.cycle),
-                entitlements = dynamicPlanEntitlementsUiMapper.toUiModel(plan, UpsellingEntryPoint.PostOnboarding)
+                entitlements = dynamicPlanEntitlementsUiMapper.toUiModel(plan, UpsellingEntryPoint.PostOnboarding),
+                payButtonPlanUiModel = onboardingDynamicPlanInstanceUiMapper.toUiModel(
+                    userId,
+                    monthlyPlanInstance,
+                    plan = plan
+                )
             )
         }.toMutableList().apply {
             add(freePlan)
@@ -66,7 +74,12 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                 currency = annualPlanPrice.currency,
                 monthlyPrice = monthlyPlanPrice.normalizedPrice(monthlyPlanInstance.cycle),
                 monthlyPriceWithDiscount = annualPlanPrice.normalizedPrice(annualPlanInstance.cycle),
-                entitlements = dynamicPlanEntitlementsUiMapper.toUiModel(plan, UpsellingEntryPoint.PostOnboarding)
+                entitlements = dynamicPlanEntitlementsUiMapper.toUiModel(plan, UpsellingEntryPoint.PostOnboarding),
+                payButtonPlanUiModel = onboardingDynamicPlanInstanceUiMapper.toUiModel(
+                    userId,
+                    annualPlanInstance,
+                    plan = plan
+                )
             )
         }.toMutableList().apply {
             add(freePlan)

@@ -32,8 +32,7 @@ interface OnboardingUpsellState {
         val planSwitcherUiModel: OnboardingUpsellPlanSwitcherUiModel,
         val planUiModels: OnboardingUpsellPlanUiModels,
         val buttonsUiModel: OnboardingUpsellButtonsUiModel,
-        val dynamicPlanInstanceUiModels: List<DynamicPlanInstanceUiModel>,
-        val selectedPlanInstanceUiModel: DynamicPlanInstanceUiModel?
+        val selectedPayButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
     ) : OnboardingUpsellState
 
     data class Error(val error: Effect<TextUiModel>) : OnboardingUpsellState
@@ -53,7 +52,7 @@ interface OnboardingUpsellState {
                 data object NoSubscriptions : LoadingError
             }
 
-            data class PlanSelected(val planUiModel: DynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
+            data class PlanSelected(val planUiModel: OnboardingDynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
         }
     }
 }

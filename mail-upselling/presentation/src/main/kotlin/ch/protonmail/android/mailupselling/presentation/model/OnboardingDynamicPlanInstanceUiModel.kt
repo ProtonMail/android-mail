@@ -18,18 +18,17 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
+import me.proton.core.plan.domain.entity.DynamicPlan
 
-data class OnboardingUpsellPlanUiModels(
-    val monthlyPlans: List<OnboardingUpsellPlanUiModel>,
-    val annualPlans: List<OnboardingUpsellPlanUiModel>
+data class OnboardingDynamicPlanInstanceUiModel(
+    val name: String,
+    val userId: UserIdUiModel,
+    val currency: String,
+    val cycle: Int,
+    val viewId: Int,
+    val dynamicPlan: DynamicPlan
 )
 
-data class OnboardingUpsellPlanUiModel(
-    val title: String,
-    val currency: String?,
-    val monthlyPrice: TextUiModel?,
-    val monthlyPriceWithDiscount: TextUiModel?,
-    val entitlements: List<DynamicEntitlementUiModel>,
-    val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
-)
+internal fun OnboardingDynamicPlanInstanceUiModel.toTelemetryPayload() =
+    UpsellingTelemetryTargetPlanPayload(dynamicPlan.name ?: "", cycle)

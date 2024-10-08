@@ -70,7 +70,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
@@ -195,7 +195,7 @@ private fun OnboardingUpsellScreenContent(
             selectedPlan = selectedPlan.value,
             buttonsUiModel = state.buttonsUiModel,
             onContinueWithProtonFree = exitScreen,
-            selectedPlanUiModel = state.selectedPlanInstanceUiModel,
+            selectedPlanUiModel = state.selectedPayButtonPlanUiModel,
             exitScreen = exitScreen
         )
     }
@@ -466,7 +466,7 @@ private fun UpsellButtons(
     buttonsUiModel: OnboardingUpsellButtonsUiModel,
     onContinueWithProtonFree: () -> Unit,
     exitScreen: () -> Unit,
-    selectedPlanUiModel: DynamicPlanInstanceUiModel?
+    selectedPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
 ) {
 
     val scope = rememberCoroutineScope()
@@ -554,8 +554,7 @@ private fun OnboardingUpsellScreenContentPreview() {
                 planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                 planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                 buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                dynamicPlanInstanceUiModels = listOf(OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel),
-                selectedPlanInstanceUiModel = null
+                selectedPayButtonPlanUiModel = null
             ),
             exitScreen = {},
             onPlanSelected = { _, _ -> }

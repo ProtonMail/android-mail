@@ -4,7 +4,6 @@ import java.time.Instant
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
-import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
@@ -46,28 +45,18 @@ class OnboardingUpsellViewModelTest {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanSwitcherUiModel
     }
     private val onboardingUpsellPlanUiModelsMapper = mockk<OnboardingUpsellPlanUiModelsMapper> {
-        every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanUiModels
+        every {
+            toUiModel(UpsellingTestData.DynamicPlans, user.userId)
+        } returns OnboardingUpsellPreviewData.PlanUiModels
     }
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.ButtonsUiModel
-    }
-    private val dynamicPlanInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper> {
-        every {
-            toUiModel(
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
-            )
-        } returns OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
     }
 
     private val onboardingUpsellReducer = OnboardingUpsellReducer(
         onboardingUpsellPlanSwitchUiModelMapper,
         onboardingUpsellPlanUiModelsMapper,
-        onboardingUpsellButtonsUiModelMapper,
-        dynamicPlanInstanceUiMapper
+        onboardingUpsellButtonsUiModelMapper
     )
 
     private val viewModel: OnboardingUpsellViewModel by lazy {
@@ -139,19 +128,19 @@ class OnboardingUpsellViewModelTest {
         // Given
         expectPrimaryUser(user)
         expectDynamicPlans(user.userId, dynamicPlans)
-        val expectedSelectedPlanInstanceUiModel = OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+        val expectedSelectedPlanInstanceUiModel = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 
         // When + Then
         viewModel.state.test {
-            assertNull((viewModel.state.value as OnboardingUpsellState.Data).selectedPlanInstanceUiModel)
+            assertNull((viewModel.state.value as OnboardingUpsellState.Data).selectedPayButtonPlanUiModel)
 
-            viewModel.submit(OnboardingUpsellOperation.Action.PlanSelected(PlansType.Monthly, "Upgrade to Mail Plus"))
+            viewModel.submit(OnboardingUpsellOperation.Action.PlanSelected(PlansType.Monthly, "Mail Plus"))
 
             awaitItem()
             val actual = awaitItem()
 
             assertIs<OnboardingUpsellState.Data>(actual)
-            assertEquals(expectedSelectedPlanInstanceUiModel, actual.selectedPlanInstanceUiModel)
+            assertEquals(expectedSelectedPlanInstanceUiModel, actual.selectedPayButtonPlanUiModel)
         }
     }
 

@@ -21,7 +21,6 @@ package ch.protonmail.android.mailupselling.presentation.reducer
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
@@ -32,8 +31,7 @@ import javax.inject.Inject
 class OnboardingUpsellReducer @Inject constructor(
     private val planSwitcherUiModelMapper: OnboardingUpsellPlanSwitcherUiModelMapper,
     private val planUiModelsMapper: OnboardingUpsellPlanUiModelsMapper,
-    private val buttonsUiModelMapper: OnboardingUpsellButtonsUiModelMapper,
-    private val dynamicPlanInstanceUiMapper: DynamicPlanInstanceUiMapper
+    private val buttonsUiModelMapper: OnboardingUpsellButtonsUiModelMapper
 ) {
 
     fun newStateFrom(
@@ -50,24 +48,10 @@ class OnboardingUpsellReducer @Inject constructor(
     private fun reducePlansListToNewState(operation: OnboardingUpsellEvent.DataLoaded): OnboardingUpsellState =
         OnboardingUpsellState.Data(
             planSwitcherUiModelMapper.toUiModel(operation.dynamicPlans),
-            planUiModelsMapper.toUiModel(operation.dynamicPlans),
+            planUiModelsMapper.toUiModel(operation.dynamicPlans, operation.userId),
             buttonsUiModelMapper.toUiModel(operation.dynamicPlans),
-            mapDynamicPlans(operation),
-            selectedPlanInstanceUiModel = null
+            selectedPayButtonPlanUiModel = null
         )
-
-    private fun mapDynamicPlans(operation: OnboardingUpsellEvent.DataLoaded) =
-        operation.dynamicPlans.plans.flatMap { dynamicPlan ->
-            dynamicPlan.instances.map { (_, instance) ->
-                dynamicPlanInstanceUiMapper.toUiModel(
-                    operation.userId,
-                    instance,
-                    highlighted = false,
-                    discount = 0,
-                    plan = dynamicPlan
-                )
-            }
-        }
 
     private fun reduceErrorEvent(event: OnboardingUpsellEvent.LoadingError) = when (event) {
         OnboardingUpsellEvent.LoadingError.NoUserId -> OnboardingUpsellState.Error(
@@ -84,7 +68,7 @@ class OnboardingUpsellReducer @Inject constructor(
         operation: OnboardingUpsellEvent.PlanSelected
     ): OnboardingUpsellState = when (currentState) {
         is OnboardingUpsellState.Data -> currentState.copy(
-            selectedPlanInstanceUiModel = operation.planUiModel
+            selectedPayButtonPlanUiModel = operation.planUiModel
         )
 
         else -> currentState

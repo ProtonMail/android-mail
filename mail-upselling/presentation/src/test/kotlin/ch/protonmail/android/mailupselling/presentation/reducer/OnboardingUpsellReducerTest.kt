@@ -1,14 +1,15 @@
 package ch.protonmail.android.mailupselling.presentation.reducer
 
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
+import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingDynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData
@@ -32,31 +33,33 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanSwitcherUiModel
     }
     private val onboardingUpsellPlanUiModelsMapper = mockk<OnboardingUpsellPlanUiModelsMapper> {
-        every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanUiModels
+        every {
+            toUiModel(
+                UpsellingTestData.DynamicPlans,
+                UserSample.Primary.userId
+            )
+        } returns OnboardingUpsellPreviewData.PlanUiModels
     }
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.ButtonsUiModel
     }
-    private val dynamicPlanInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper> { }
+    private val onboardingDynamicPlanInstanceUiMapper = mockk<OnboardingDynamicPlanInstanceUiMapper> { }
 
     private val onboardingUpsellReducer: OnboardingUpsellReducer = OnboardingUpsellReducer(
         onboardingUpsellPlanSwitchUiModelMapper,
         onboardingUpsellPlanUiModelsMapper,
-        onboardingUpsellButtonsUiModelMapper,
-        dynamicPlanInstanceUiMapper
+        onboardingUpsellButtonsUiModelMapper
     )
 
     private fun expectDynamicPlanInstanceUiMapper(
         dynamicPlanInstance: DynamicPlanInstance,
         dynamicPlan: DynamicPlan,
-        uiModelToReturn: DynamicPlanInstanceUiModel
+        uiModelToReturn: OnboardingDynamicPlanInstanceUiModel
     ) {
         every {
-            dynamicPlanInstanceUiMapper.toUiModel(
+            onboardingDynamicPlanInstanceUiMapper.toUiModel(
                 any(),
                 dynamicPlanInstance,
-                any(),
-                any(),
                 dynamicPlan
             )
         } returns uiModelToReturn
@@ -67,22 +70,22 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
         expectDynamicPlanInstanceUiMapper(
             UnlimitedPlan.instances[1]!!,
             UnlimitedPlan,
-            OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+            OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             UnlimitedPlan.instances[12]!!,
             UnlimitedPlan,
-            OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+            OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             PlusPlan.instances[1]!!,
             PlusPlan,
-            OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+            OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             PlusPlan.instances[12]!!,
             PlusPlan,
-            OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+            OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
     }
 
@@ -110,13 +113,7 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
                     planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                     planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                     buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                    dynamicPlanInstanceUiModels = listOf(
-                        OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel,
-                        OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel,
-                        OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel,
-                        OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
-                    ),
-                    selectedPlanInstanceUiModel = null
+                    selectedPayButtonPlanUiModel = null
                 )
             ),
             TestInput(
@@ -138,16 +135,16 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
                     planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                     planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                     buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                    dynamicPlanInstanceUiModels = listOf(OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel),
-                    selectedPlanInstanceUiModel = null
+                    selectedPayButtonPlanUiModel = null
                 ),
-                operation = OnboardingUpsellEvent.PlanSelected(OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel),
+                operation = OnboardingUpsellEvent.PlanSelected(
+                    OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
+                ),
                 expectedState = OnboardingUpsellState.Data(
                     planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                     planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                     buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                    dynamicPlanInstanceUiModels = listOf(OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel),
-                    selectedPlanInstanceUiModel = OnboardingUpsellPreviewData.DynamicPlanInstanceUiModel
+                    selectedPayButtonPlanUiModel = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
                 )
             )
         )

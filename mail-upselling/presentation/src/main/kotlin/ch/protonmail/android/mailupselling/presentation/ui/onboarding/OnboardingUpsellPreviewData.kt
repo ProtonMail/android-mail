@@ -21,7 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
@@ -39,6 +39,28 @@ internal object OnboardingUpsellPreviewData {
 
     val PlanSwitcherUiModel = OnboardingUpsellPlanSwitcherUiModel(
         discount = TextUiModel.Text("Save 20%")
+    )
+
+    private val dynPlan = DynamicPlan(
+        name = "Proton Unlimited",
+        order = 1,
+        state = DynamicPlanState.Available,
+        title = "Proton Unlimited",
+        description = "For more storage and all premium features across all Proton services.",
+        entitlements = listOf(
+            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl"),
+            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl")
+        ),
+        type = IntEnum(1, DynamicPlanType.Primary)
+    )
+
+    val OnboardingDynamicPlanInstanceUiModel = OnboardingDynamicPlanInstanceUiModel(
+        name = "Upgrade to Mail Plus",
+        userId = UserIdUiModel(UserId("12")),
+        currency = "EUR",
+        cycle = 1,
+        viewId = 123,
+        dynamicPlan = dynPlan
     )
 
     val PlanUiModels = OnboardingUpsellPlanUiModels(
@@ -69,7 +91,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 5"),
                         localResource = R.drawable.ic_upselling_storage
                     )
-                )
+                ),
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Mail Plus",
@@ -97,7 +120,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 5"),
                         localResource = R.drawable.ic_upselling_storage
                     )
-                )
+                ),
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
@@ -113,7 +137,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 2"),
                         localResource = R.drawable.ic_upselling_mail
                     )
-                )
+                ),
+                payButtonPlanUiModel = null
             )
         ),
         annualPlans = listOf(
@@ -143,7 +168,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 5"),
                         localResource = R.drawable.ic_upselling_storage
                     )
-                )
+                ),
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Mail Plus",
@@ -171,7 +197,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 5"),
                         localResource = R.drawable.ic_upselling_storage
                     )
-                )
+                ),
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
@@ -187,7 +214,8 @@ internal object OnboardingUpsellPreviewData {
                         text = TextUiModel.Text("Entitlement 2"),
                         localResource = R.drawable.ic_upselling_mail
                     )
-                )
+                ),
+                payButtonPlanUiModel = null
             )
         )
     )
@@ -208,30 +236,4 @@ internal object OnboardingUpsellPreviewData {
             "Mail Plus" to TextUiModel.Text("Get Mail Plus")
         )
     )
-
-    private val dynPlan = DynamicPlan(
-        name = "Proton Unlimited",
-        order = 1,
-        state = DynamicPlanState.Available,
-        title = "Proton Unlimited",
-        description = "For more storage and all premium features across all Proton services.",
-        entitlements = listOf(
-            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl"),
-            DynamicEntitlement.Description(text = "Unlimited hide-my-email aliases", iconUrl = "nourl")
-        ),
-        type = IntEnum(1, DynamicPlanType.Primary)
-    )
-
-    val DynamicPlanInstanceUiModel = DynamicPlanInstanceUiModel(
-        name = "Upgrade to Mail Plus",
-        userId = UserIdUiModel(UserId("12")),
-        currency = "EUR",
-        discount = null,
-        price = TextUiModel.Text("9.99"),
-        cycle = 1,
-        highlighted = false,
-        viewId = 123,
-        dynamicPlan = dynPlan
-    )
-
 }

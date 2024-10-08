@@ -71,11 +71,17 @@ class OnboardingUpsellViewModel @Inject constructor(
     private fun handlePlanSelected(plansType: PlansType, planName: String) {
         when (state.value) {
             is OnboardingUpsellState.Data -> {
-                val selectedPlanUiModel = (state.value as OnboardingUpsellState.Data).dynamicPlanInstanceUiModels.find {
-                    it.name == planName && it.cycle == if (plansType == PlansType.Annual) 12 else 1
+                val selectedPlanUiModel = if (plansType == PlansType.Annual) {
+                    (state.value as OnboardingUpsellState.Data).planUiModels.annualPlans.find {
+                        it.title == planName
+                    }
+                } else {
+                    (state.value as OnboardingUpsellState.Data).planUiModels.monthlyPlans.find {
+                        it.title == planName
+                    }
                 }
 
-                emitNewStateFrom(OnboardingUpsellEvent.PlanSelected(selectedPlanUiModel))
+                emitNewStateFrom(OnboardingUpsellEvent.PlanSelected(selectedPlanUiModel?.payButtonPlanUiModel))
             }
         }
     }
