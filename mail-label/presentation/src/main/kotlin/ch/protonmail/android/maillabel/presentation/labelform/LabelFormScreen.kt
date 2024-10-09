@@ -46,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
@@ -87,6 +88,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     val snackbarHostState = remember { ProtonSnackbarHostState(defaultType = ProtonSnackbarType.ERROR) }
 
     val customActions = actions.copy(
@@ -127,6 +129,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                 }
 
                 BottomSheetVisibilityEffect.Show -> {
+                    focusManager.clearFocus()
                     bottomSheetState.show()
                     showBottomSheet = true
                 }

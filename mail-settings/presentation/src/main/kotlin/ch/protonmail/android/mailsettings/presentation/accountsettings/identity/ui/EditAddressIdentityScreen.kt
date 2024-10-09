@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -103,6 +104,7 @@ fun EditAddressIdentityScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -156,6 +158,7 @@ fun EditAddressIdentityScreen(
                                 }
 
                                 BottomSheetVisibilityEffect.Show -> scope.launch {
+                                    focusManager.clearFocus()
                                     bottomSheetState.show()
                                     showBottomSheet = true
                                 }
