@@ -19,7 +19,6 @@
 package ch.protonmail.android.navigation.route
 
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -52,7 +51,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
-import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
@@ -576,15 +574,6 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
     composable(route = Destination.Screen.ContactSearch.route) {
         ContactSearchScreen(
             actions
-        )
-    }
-}
-
-internal fun NavGraphBuilder.addOnboardingUpselling(navController: NavHostController) {
-    composable(route = Destination.Screen.OnboardingUpselling.route) {
-        OnboardingUpsellScreen(
-            modifier = Modifier,
-            exitScreen = { navController.navigateBack() }
         )
     }
 }
