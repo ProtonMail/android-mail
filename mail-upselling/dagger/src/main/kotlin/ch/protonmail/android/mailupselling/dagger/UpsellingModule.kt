@@ -25,6 +25,7 @@ import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsel
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
+import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
@@ -34,6 +35,7 @@ import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupP
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingOneClickOverrideEnabled
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingPostOnboardingEnabled
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -78,6 +80,10 @@ object UpsellingModule {
     @Provides
     @UpsellingMobileSignatureEnabled
     fun provideUpsellingMobileSignatureEnabled(isEnabled: IsUpsellingMobileSignatureEnabled) = isEnabled(null)
+
+    @Provides
+    @UpsellingOnboardingEnabled
+    fun provideUpsellingOnboardingEnabled(isEnabled: IsUpsellingPostOnboardingEnabled) = isEnabled(null)
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
