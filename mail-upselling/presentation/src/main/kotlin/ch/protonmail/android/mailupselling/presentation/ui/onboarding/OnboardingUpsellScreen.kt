@@ -25,6 +25,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -103,7 +104,7 @@ fun OnboardingUpsellScreen(
     exitScreen: () -> Unit
 ) {
     when (val state = viewModel.state.collectAsStateWithLifecycle().value) {
-        is OnboardingUpsellState.Loading -> ProtonCenteredProgress()
+        is OnboardingUpsellState.Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
         is OnboardingUpsellState.Data -> OnboardingUpsellScreenContent(
             modifier = modifier,
             state = state,
@@ -210,6 +211,7 @@ private fun PlanSwitcher(
     selectedPlansType: PlansType,
     onSwitch: (PlansType) -> Unit
 ) {
+
     Box(modifier = modifier.height(MailDimens.PlanSwitcherHeight)) {
         Row(
             modifier = Modifier
@@ -218,17 +220,26 @@ private fun PlanSwitcher(
                 .height(MailDimens.ExtraLargeSpacing)
                 .background(color = ProtonTheme.colors.backgroundDeep, shape = ProtonTheme.shapes.large)
         ) {
+            val monthlyInteractionSource = remember { MutableInteractionSource() }
+            val yearlyInteractionSource = remember { MutableInteractionSource() }
+
             PlanSwitcherItem(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { onSwitch(PlansType.Monthly) },
+                    .clickable(
+                        interactionSource = monthlyInteractionSource,
+                        indication = null
+                    ) { onSwitch(PlansType.Monthly) },
                 text = R.string.upselling_onboarding_switcher_monthly,
                 isSelected = selectedPlansType == PlansType.Monthly
             )
             PlanSwitcherItem(
                 modifier = Modifier
                     .weight(1f)
-                    .clickable { onSwitch(PlansType.Annual) },
+                    .clickable(
+                        interactionSource = yearlyInteractionSource,
+                        indication = null
+                    ) { onSwitch(PlansType.Annual) },
                 text = R.string.upselling_onboarding_switcher_annual,
                 isSelected = selectedPlansType == PlansType.Annual
             )
@@ -285,12 +296,18 @@ private fun PlanCard(
 ) {
     val borderWidth = if (isSelected) MailDimens.OnboardingUpsellBestValueBorder else MailDimens.DefaultBorder
     val borderColor = if (isSelected) ProtonTheme.colors.interactionNorm else ProtonTheme.colors.separatorNorm
+    val interactionSource = remember { MutableInteractionSource() }
 
     ElevatedCard(
         modifier = modifier
             .fillMaxWidth()
             .border(width = borderWidth, color = borderColor, shape = ProtonTheme.shapes.large)
-            .selectable(selected = isSelected, onClick = onClick),
+            .selectable(
+                interactionSource = interactionSource,
+                indication = null,
+                selected = isSelected,
+                onClick = onClick
+            ),
         shape = ProtonTheme.shapes.large,
         colors = CardDefaults.elevatedCardColors().copy(containerColor = ProtonTheme.colors.backgroundNorm)
     ) {
@@ -395,7 +412,7 @@ private fun PlanEntitlements(
             }
         }
 
-        val numberOfEntitlementsNotShown = plan.entitlements.size - numberOfEntitlementsToShow
+        val numberOfEntitlementsNotShown = (plan.entitlements.size - numberOfEntitlementsToShow).coerceAtLeast(0)
         if (numberOfEntitlementsNotShown != 0 && !showAllEntitlements.value) {
             MorePlanEntitlements(
                 numberOfEntitlementsNotShown = numberOfEntitlementsNotShown,
