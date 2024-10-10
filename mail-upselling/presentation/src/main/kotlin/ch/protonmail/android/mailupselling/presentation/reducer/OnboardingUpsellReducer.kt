@@ -42,6 +42,7 @@ class OnboardingUpsellReducer @Inject constructor(
             is OnboardingUpsellEvent.DataLoaded -> reducePlansListToNewState(operation)
             is OnboardingUpsellEvent.LoadingError -> reduceErrorEvent(operation)
             is OnboardingUpsellEvent.PlanSelected -> reducePlanSelected(currentState, operation)
+            is OnboardingUpsellEvent.UnsupportedFlow -> reduceUnsupportedFlow()
         }
     }
 
@@ -57,10 +58,6 @@ class OnboardingUpsellReducer @Inject constructor(
         OnboardingUpsellEvent.LoadingError.NoUserId -> OnboardingUpsellState.Error(
             error = Effect.of(TextUiModel.TextRes(R.string.upselling_snackbar_error_no_user_id))
         )
-
-        OnboardingUpsellEvent.LoadingError.NoSubscriptions -> OnboardingUpsellState.Error(
-            error = Effect.of(TextUiModel.TextRes(R.string.upselling_snackbar_error_no_subscriptions))
-        )
     }
 
     private fun reducePlanSelected(
@@ -73,4 +70,6 @@ class OnboardingUpsellReducer @Inject constructor(
 
         else -> currentState
     }
+
+    private fun reduceUnsupportedFlow() = OnboardingUpsellState.UnsupportedFlow
 }

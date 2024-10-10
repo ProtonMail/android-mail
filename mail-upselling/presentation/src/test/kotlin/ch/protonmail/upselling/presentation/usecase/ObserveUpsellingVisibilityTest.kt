@@ -22,14 +22,11 @@ import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.data.AccountAge
-import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingPostOnboardingEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import io.mockk.coEvery
@@ -64,9 +61,7 @@ internal class ObserveUpsellingVisibilityTest {
     private val isUpsellingLabelsEnabled = mockk<IsUpsellingLabelsEnabled>()
     private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled>()
     private val isUpsellingContactGroupsEnabled = mockk<IsUpsellingContactGroupsEnabled>()
-    private val isUpsellingPostOnboardingEnabled = mockk<IsUpsellingPostOnboardingEnabled>()
     private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
-    private val getAccountAgeInDays = mockk<GetAccountAgeInDays>()
     private val sut: ObserveUpsellingVisibility
         get() = ObserveUpsellingVisibility(
             observePrimaryUser,
@@ -78,9 +73,7 @@ internal class ObserveUpsellingVisibilityTest {
             isUpsellingLabelsEnabled,
             isUpsellingFoldersEnabled,
             isUpsellingContactGroupsEnabled,
-            observeOneClickUpsellingEnabled,
-            isUpsellingPostOnboardingEnabled,
-            getAccountAgeInDays
+            observeOneClickUpsellingEnabled
         )
 
     @BeforeTest
@@ -243,42 +236,6 @@ internal class ObserveUpsellingVisibilityTest {
         }
     }
 
-    @Test
-    fun `should return false if PostOnboarding FF is disabled`() = runTest {
-        // Given
-        expectedUser(UserSample.Primary)
-        expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
-        expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-        expectUpsellingFeatureFlag(UpsellingEntryPoint.PostOnboarding, false)
-        expectAccountAgeInDays(100)
-
-        // When + Then
-        sut(UpsellingEntryPoint.PostOnboarding).test {
-            assertEquals(false, awaitItem())
-            awaitComplete()
-        }
-    }
-
-    @Test
-    fun `should return false if PostOnboarding FF is enabled but account was created today`() = runTest {
-        // Given
-        expectedUser(UserSample.Primary)
-        expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
-        expectPendingPurchasesValue(UserSample.Primary.userId, false)
-        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
-        expectUpsellingFeatureFlag(UpsellingEntryPoint.PostOnboarding, true)
-        expectAccountAgeInDays(0)
-
-        // When + Then
-        sut(UpsellingEntryPoint.PostOnboarding).test {
-            assertEquals(false, awaitItem())
-            awaitComplete()
-        }
-    }
-
     @Suppress("MaxLineLength")
     @Test
     fun `should return true if user has no pending purchases, can upgrade from mobile, has available plans and FF is enabled`() =
@@ -318,7 +275,7 @@ internal class ObserveUpsellingVisibilityTest {
         coEvery { canUpgradeFromMobile() } returns value
     }
 
-    private fun expectUpsellingFeatureFlag(upsellingEntryPoint: UpsellingEntryPoint, value: Boolean) {
+    private fun expectUpsellingFeatureFlag(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet, value: Boolean) {
         when (upsellingEntryPoint) {
             UpsellingEntryPoint.BottomSheet.ContactGroups -> every {
                 isUpsellingContactGroupsEnabled.invoke()
@@ -340,12 +297,6 @@ internal class ObserveUpsellingVisibilityTest {
             UpsellingEntryPoint.BottomSheet.MobileSignature -> every {
                 provideUpsellingMobileSignatureEnabled.get()
             } returns value
-            UpsellingEntryPoint.PostOnboarding -> every { isUpsellingPostOnboardingEnabled.invoke() } returns value
         }
     }
-
-    private fun expectAccountAgeInDays(ageInDays: Int) {
-        coEvery { getAccountAgeInDays(any()) } returns AccountAge(ageInDays)
-    }
-
 }

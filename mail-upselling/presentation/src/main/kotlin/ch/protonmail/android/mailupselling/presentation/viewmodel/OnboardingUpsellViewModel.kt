@@ -20,6 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
@@ -27,19 +28,24 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellSt
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError.GenericError
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError.MismatchingPlanCycles
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError.MismatchingPlans
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError.NoPlans
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.update
-import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
+import me.proton.core.user.domain.extension.hasSubscription
 import javax.inject.Inject
 
 @HiltViewModel
 class OnboardingUpsellViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
-    private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
+    private val getOnboardingUpsellingPlans: GetOnboardingUpsellingPlans,
     private val onboardingUpsellReducer: OnboardingUpsellReducer
 ) : ViewModel() {
 
@@ -51,8 +57,12 @@ class OnboardingUpsellViewModel @Inject constructor(
             val userId = user?.userId
                 ?: return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.LoadingError.NoUserId)
 
-            val dynamicPlans = runCatching { getDynamicPlansAdjustedPrices(userId) }.getOrElse {
-                return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.LoadingError.NoSubscriptions)
+            if (user.hasSubscription()) {
+                return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.UnsupportedFlow.PaidUser)
+            }
+
+            val dynamicPlans = getOnboardingUpsellingPlans(userId).getOrElse {
+                return@mapLatest emitNewStateFrom(it.toUpsellingEvent())
             }
 
             emitNewStateFrom(OnboardingUpsellEvent.DataLoaded(userId, dynamicPlans))
@@ -84,5 +94,11 @@ class OnboardingUpsellViewModel @Inject constructor(
                 emitNewStateFrom(OnboardingUpsellEvent.PlanSelected(selectedPlanUiModel?.payButtonPlanUiModel))
             }
         }
+    }
+
+    private fun GetOnboardingUpsellingPlans.GetOnboardingPlansError.toUpsellingEvent() = when (this) {
+        // We map to GenericError -> NoSubscriptions for non GMS users
+        GenericError, NoPlans -> OnboardingUpsellEvent.UnsupportedFlow.NoSubscriptions
+        MismatchingPlanCycles, MismatchingPlans -> OnboardingUpsellEvent.UnsupportedFlow.PlansMismatch
     }
 }

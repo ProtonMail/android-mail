@@ -124,13 +124,6 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
                 )
             ),
             TestInput(
-                currentState = OnboardingUpsellState.Loading,
-                operation = OnboardingUpsellEvent.LoadingError.NoSubscriptions,
-                expectedState = OnboardingUpsellState.Error(
-                    Effect.of(TextUiModel.TextRes(R.string.upselling_snackbar_error_no_subscriptions))
-                )
-            ),
-            TestInput(
                 currentState = OnboardingUpsellState.Data(
                     planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                     planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
@@ -146,6 +139,21 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
                     buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
                     selectedPayButtonPlanUiModel = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
                 )
+            ),
+            TestInput(
+                currentState = OnboardingUpsellState.Loading,
+                operation = OnboardingUpsellEvent.UnsupportedFlow.PaidUser,
+                expectedState = OnboardingUpsellState.UnsupportedFlow
+            ),
+            TestInput(
+                currentState = OnboardingUpsellState.Loading,
+                operation = OnboardingUpsellEvent.UnsupportedFlow.NoSubscriptions,
+                expectedState = OnboardingUpsellState.UnsupportedFlow
+            ),
+            TestInput(
+                currentState = OnboardingUpsellState.Loading,
+                operation = OnboardingUpsellEvent.UnsupportedFlow.PlansMismatch,
+                expectedState = OnboardingUpsellState.UnsupportedFlow
             )
         )
     }

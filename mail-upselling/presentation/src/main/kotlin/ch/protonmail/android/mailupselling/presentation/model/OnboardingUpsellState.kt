@@ -36,6 +36,7 @@ interface OnboardingUpsellState {
     ) : OnboardingUpsellState
 
     data class Error(val error: Effect<TextUiModel>) : OnboardingUpsellState
+    data object UnsupportedFlow : OnboardingUpsellState
 
     sealed interface OnboardingUpsellOperation {
 
@@ -49,10 +50,15 @@ interface OnboardingUpsellState {
 
             sealed interface LoadingError : OnboardingUpsellEvent {
                 data object NoUserId : LoadingError
-                data object NoSubscriptions : LoadingError
             }
 
             data class PlanSelected(val planUiModel: OnboardingDynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
+
+            sealed interface UnsupportedFlow : OnboardingUpsellEvent {
+                data object NoSubscriptions : UnsupportedFlow
+                data object PaidUser : UnsupportedFlow
+                data object PlansMismatch : UnsupportedFlow
+            }
         }
     }
 }

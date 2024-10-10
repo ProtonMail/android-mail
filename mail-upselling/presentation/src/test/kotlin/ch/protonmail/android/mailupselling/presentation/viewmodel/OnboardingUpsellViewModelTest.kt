@@ -2,7 +2,8 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel
 
 import java.time.Instant
 import app.cash.turbine.test
-import ch.protonmail.android.mailcommon.domain.sample.UserSample
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
@@ -12,7 +13,10 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellSt
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans
+import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
+import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -25,28 +29,28 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans
-import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
 import me.proton.core.user.domain.entity.User
+import org.junit.Assert.assertNull
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.test.assertNull
 
 class OnboardingUpsellViewModelTest {
 
-    private val user = UserSample.Primary
+    private val freeUser = UserTestData.freeUser
+    private val paidUser = UserTestData.paidUser
     private val dynamicPlans = UpsellingTestData.DynamicPlans
 
     private val observePrimaryUser = mockk<ObservePrimaryUser>()
-    private val getDynamicPlansAdjustedPrices = mockk<GetDynamicPlansAdjustedPrices>()
+    private val getOnboardingUpsellingPlans = mockk<GetOnboardingUpsellingPlans>()
     private val onboardingUpsellPlanSwitchUiModelMapper = mockk<OnboardingUpsellPlanSwitcherUiModelMapper> {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.PlanSwitcherUiModel
     }
     private val onboardingUpsellPlanUiModelsMapper = mockk<OnboardingUpsellPlanUiModelsMapper> {
         every {
-            toUiModel(UpsellingTestData.DynamicPlans, user.userId)
+            toUiModel(UpsellingTestData.DynamicPlans, freeUser.userId)
         } returns OnboardingUpsellPreviewData.PlanUiModels
     }
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
@@ -62,7 +66,7 @@ class OnboardingUpsellViewModelTest {
     private val viewModel: OnboardingUpsellViewModel by lazy {
         OnboardingUpsellViewModel(
             observePrimaryUser,
-            getDynamicPlansAdjustedPrices,
+            getOnboardingUpsellingPlans,
             onboardingUpsellReducer
         )
     }
@@ -100,22 +104,57 @@ class OnboardingUpsellViewModelTest {
     }
 
     @Test
-    fun `should emit error when dynamic plans fail to be fetched`() = runTest {
+    fun `should emit unsupported flow - paid user - when user has a subscription`() = runTest {
         // Given
-        expectPrimaryUser(user)
-        expectDynamicPlansError(user.userId)
+        expectPrimaryUser(paidUser)
 
         // When + Then
         viewModel.state.test {
-            assertIs<OnboardingUpsellState.Error>(awaitItem())
+            assertIs<OnboardingUpsellState.UnsupportedFlow>(awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit unsupported flow - mismatching plans - when dynamic plans are not as expected`() = runTest {
+        // Given
+        expectPrimaryUser(freeUser)
+        expectDynamicPlansError(freeUser.userId, GetOnboardingPlansError.MismatchingPlans)
+
+        // When + Then
+        viewModel.state.test {
+            assertIs<OnboardingUpsellState.UnsupportedFlow>(awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit unsupported flow - mismatching periods - when dynamic plans are not as expected`() = runTest {
+        // Given
+        expectPrimaryUser(freeUser)
+        expectDynamicPlansError(freeUser.userId, GetOnboardingPlansError.MismatchingPlanCycles)
+
+        // When + Then
+        viewModel.state.test {
+            assertIs<OnboardingUpsellState.UnsupportedFlow>(awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit unsupported flow - no plans - when dynamic plans are not as expected`() = runTest {
+        // Given
+        expectPrimaryUser(freeUser)
+        expectDynamicPlansError(freeUser.userId, GetOnboardingPlansError.NoPlans)
+
+        // When + Then
+        viewModel.state.test {
+            assertIs<OnboardingUpsellState.UnsupportedFlow>(awaitItem())
         }
     }
 
     @Test
     fun `should emit data when dynamic plans are fetched`() = runTest {
         // Given
-        expectPrimaryUser(user)
-        expectDynamicPlans(user.userId, dynamicPlans)
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
 
         // When + Then
         viewModel.state.test {
@@ -126,8 +165,8 @@ class OnboardingUpsellViewModelTest {
     @Test
     fun `should emit correct state when PlanSelected action is submitted`() = runTest {
         // Given
-        expectPrimaryUser(user)
-        expectDynamicPlans(user.userId, dynamicPlans)
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
         val expectedSelectedPlanInstanceUiModel = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 
         // When + Then
@@ -149,10 +188,10 @@ class OnboardingUpsellViewModelTest {
     }
 
     private fun expectDynamicPlans(userId: UserId, dynamicPlans: DynamicPlans) {
-        coEvery { getDynamicPlansAdjustedPrices(userId) } returns dynamicPlans
+        coEvery { getOnboardingUpsellingPlans(userId) } returns dynamicPlans.right()
     }
 
-    private fun expectDynamicPlansError(userId: UserId) {
-        coEvery { getDynamicPlansAdjustedPrices(userId) } throws Exception()
+    private fun expectDynamicPlansError(userId: UserId, error: GetOnboardingPlansError) {
+        coEvery { getOnboardingUpsellingPlans(userId) } returns error.left()
     }
 }

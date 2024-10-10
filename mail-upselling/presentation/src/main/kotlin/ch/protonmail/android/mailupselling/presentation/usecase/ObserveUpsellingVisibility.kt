@@ -21,13 +21,11 @@ package ch.protonmail.android.mailupselling.presentation.usecase
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasPendingPurchases
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingContactGroupsEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingFoldersEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingLabelsEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpsellingPostOnboardingEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.ObserveOneClickUpsellingEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -35,7 +33,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.plan.domain.usecase.CanUpgradeFromMobile
-import me.proton.core.user.domain.entity.User
 import javax.inject.Inject
 
 class ObserveUpsellingVisibility @Inject constructor(
@@ -48,18 +45,16 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
     private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
     private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
-    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
-    private val isUpsellingPostOnboardingEnabled: IsUpsellingPostOnboardingEnabled,
-    private val getAccountAgeInDays: GetAccountAgeInDays
+    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled
 ) {
 
-    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint): Flow<Boolean> = combine(
+    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases()
     ) { user, purchases ->
         if (user == null) return@combine false
 
-        if (isFeatureFlagOff(upsellingEntryPoint, user)) return@combine false
+        if (isFeatureFlagOff(upsellingEntryPoint)) return@combine false
 
         if (!canUpgradeFromMobile()) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
@@ -67,7 +62,7 @@ class ObserveUpsellingVisibility @Inject constructor(
         userHasAvailablePlans(user.userId)
     }
 
-    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint, user: User): Boolean {
+    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): Boolean {
         return !when (upsellingEntryPoint) {
             UpsellingEntryPoint.BottomSheet.ContactGroups -> isUpsellingContactGroupsEnabled()
             UpsellingEntryPoint.BottomSheet.Folders -> isUpsellingFoldersEnabled()
@@ -77,13 +72,6 @@ class ObserveUpsellingVisibility @Inject constructor(
             }
 
             UpsellingEntryPoint.BottomSheet.MobileSignature -> isUpsellingMobileSignatureEnabled
-            UpsellingEntryPoint.PostOnboarding -> isPostOnboardingEnabled(user)
         }
-    }
-
-    private fun isPostOnboardingEnabled(user: User): Boolean {
-        val wasAccountCreatedToday = getAccountAgeInDays(user).days == 0
-
-        return !wasAccountCreatedToday && isUpsellingPostOnboardingEnabled()
     }
 }

@@ -114,6 +114,7 @@ fun OnboardingUpsellScreen(
         )
 
         is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
+        is OnboardingUpsellState.UnsupportedFlow -> exitScreen()
     }
 }
 
