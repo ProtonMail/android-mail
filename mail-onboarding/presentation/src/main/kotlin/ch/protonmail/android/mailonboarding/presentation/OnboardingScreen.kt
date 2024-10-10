@@ -35,7 +35,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,14 +69,10 @@ fun OnboardingScreen(
     val isEligibleForUpselling = state is OnboardingState.ToUpsell
     val isUpsellingEligibilityPending = state is OnboardingState.Loading
 
-    val onExitAction by remember {
-        derivedStateOf {
-            if (isEligibleForUpselling || isUpsellingEligibilityPending) {
-                { onUpsellingNavigation() }
-            } else {
-                exitAction
-            }
-        }
+    val onExitAction = if (isEligibleForUpselling || isUpsellingEligibilityPending) {
+        { onUpsellingNavigation() }
+    } else {
+        exitAction
     }
 
     val contentMap = listOfNotNull(
