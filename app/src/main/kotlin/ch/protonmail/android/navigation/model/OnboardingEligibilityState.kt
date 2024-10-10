@@ -16,20 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailonboarding.presentation.model
+package ch.protonmail.android.navigation.model
 
-import ch.protonmail.android.mailonboarding.presentation.R
-
-internal data class OnboardingUiModel(
-    val illustrationId: Int,
-    val headlineId: Int,
-    val descriptionId: Int
-) {
-    companion object {
-        val Empty = OnboardingUiModel(
-            illustrationId = R.drawable.empty,
-            headlineId = R.string.empty,
-            descriptionId = R.string.empty
-        )
-    }
+internal sealed interface OnboardingEligibilityState {
+    data object Required : OnboardingEligibilityState
+    data object NotRequired : OnboardingEligibilityState
+    data object Loading : OnboardingEligibilityState
 }

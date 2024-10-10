@@ -35,6 +35,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,24 +45,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailonboarding.presentation.model.OnboardingState
 import ch.protonmail.android.mailonboarding.presentation.model.OnboardingUiModel
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingButton
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingContent
 import ch.protonmail.android.mailonboarding.presentation.ui.OnboardingIndexDots
+import ch.protonmail.android.mailonboarding.presentation.viewmodel.OnboardingViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import me.proton.core.compose.theme.ProtonTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: () -> Unit) {
+fun OnboardingScreen(
+    exitAction: () -> Unit,
+    onUpsellingNavigation: () -> Unit,
+    viewModel: OnboardingViewModel = hiltViewModel()
+) {
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val isEligibleForUpselling = state is OnboardingState.ToUpsell
+    val isUpsellingEligibilityPending = state is OnboardingState.Loading
+
+    val onExitAction by remember {
+        derivedStateOf {
+            if (isEligibleForUpselling || isUpsellingEligibilityPending) {
+                { onUpsellingNavigation() }
+            } else {
+                exitAction
+            }
+        }
+    }
+
     val contentMap = listOfNotNull(
-        OnboardingUiModel(
-            illustrationId = R.drawable.illustration_onboarding_ga,
-            headlineId = R.string.onboarding_headline_ga,
-            descriptionId = R.string.onboarding_description_ga
-        ),
         OnboardingUiModel(
             illustrationId = R.drawable.illustration_privacy_for_all,
             headlineId = R.string.onboarding_privacy_for_all_headline,
@@ -77,21 +96,18 @@ internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: (
             headlineId = R.string.onboarding_neat_and_tidy_headline,
             descriptionId = R.string.onboarding_neat_and_tidy_description
         ),
-        if (shouldShowUpselling) {
-            OnboardingUiModel(
-                illustrationId = R.drawable.empty,
-                headlineId = R.string.empty,
-                descriptionId = R.string.empty
-            )
-        } else null
+        if (isEligibleForUpselling) OnboardingUiModel.Empty else null
     )
+
     val viewCount = contentMap.size
     val pagerState = rememberPagerState(pageCount = { viewCount })
 
     var isSwipingToUpsellingPage by remember { mutableStateOf(false) }
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { Pair(pagerState.currentPage, pagerState.targetPage) }
+    LaunchedEffect(pagerState, viewCount) {
+        snapshotFlow {
+            Triple(pagerState.currentPage, pagerState.targetPage, viewCount)
+        }
             .distinctUntilChanged()
             .map { (currentPage, targetPage) ->
 
@@ -99,14 +115,14 @@ internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: (
                 val toPage = targetPage + 1
 
                 // return true if we're showing upselling and are about to swipe to last page
-                shouldShowUpselling && fromPage == viewCount - 1 && toPage == viewCount
+                isEligibleForUpselling && fromPage == viewCount - 1 && toPage == viewCount
             }
             .collect { isSwipingToUpsellingPage = it }
     }
 
     LaunchedEffect(isSwipingToUpsellingPage) {
         if (isSwipingToUpsellingPage) {
-            onCloseOnboarding()
+            onUpsellingNavigation()
         }
     }
 
@@ -129,9 +145,7 @@ internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: (
                     modifier = Modifier
                         .testTag(OnboardingScreenTestTags.CloseButton)
                         .horizontalScroll(state = ScrollState(0), enabled = true),
-                    onClick = {
-                        onCloseOnboarding()
-                    }
+                    onClick = onExitAction
                 ) {
                     Icon(
                         tint = ProtonTheme.colors.iconNorm,
@@ -149,8 +163,10 @@ internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: (
             OnboardingContent(content = contentMap[pageIndex])
         }
 
-        OnboardingButton(onCloseOnboarding, pagerState, viewCount)
-        OnboardingIndexDots(pagerState, viewCount)
+        if (!isEligibleForUpselling || pagerState.currentPage != viewCount.minus(1)) {
+            OnboardingButton(onExitAction, pagerState, viewCount)
+            OnboardingIndexDots(pagerState, viewCount)
+        }
     }
 }
 
@@ -159,10 +175,7 @@ internal fun OnboardingScreen(shouldShowUpselling: Boolean, onCloseOnboarding: (
 @Composable
 private fun OnboardingScreenPreview() {
     ProtonTheme {
-        OnboardingScreen(
-            shouldShowUpselling = true,
-            onCloseOnboarding = {}
-        )
+        OnboardingScreen(onUpsellingNavigation = {}, exitAction = {})
     }
 }
 
