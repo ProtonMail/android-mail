@@ -56,6 +56,7 @@ interface OnboardingUpsellState {
 
             sealed interface UnsupportedFlow : OnboardingUpsellEvent {
                 data object NoSubscriptions : UnsupportedFlow
+                data object NotEnabled : UnsupportedFlow
                 data object PaidUser : UnsupportedFlow
                 data object PlansMismatch : UnsupportedFlow
             }

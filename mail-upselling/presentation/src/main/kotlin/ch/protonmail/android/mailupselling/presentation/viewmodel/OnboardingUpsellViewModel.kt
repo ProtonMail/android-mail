@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.Loading
@@ -46,7 +47,8 @@ import javax.inject.Inject
 class OnboardingUpsellViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     private val getOnboardingUpsellingPlans: GetOnboardingUpsellingPlans,
-    private val onboardingUpsellReducer: OnboardingUpsellReducer
+    private val onboardingUpsellReducer: OnboardingUpsellReducer,
+    @UpsellingOnboardingEnabled private val isUpsellingEnabled: Boolean
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<OnboardingUpsellState>(Loading)
@@ -56,6 +58,8 @@ class OnboardingUpsellViewModel @Inject constructor(
         observePrimaryUser().mapLatest { user ->
             val userId = user?.userId
                 ?: return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.LoadingError.NoUserId)
+
+            if (!isUpsellingEnabled) return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.UnsupportedFlow.NotEnabled)
 
             if (user.hasSubscription()) {
                 return@mapLatest emitNewStateFrom(OnboardingUpsellEvent.UnsupportedFlow.PaidUser)

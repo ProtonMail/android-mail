@@ -31,6 +31,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertNull
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -63,11 +64,16 @@ class OnboardingUpsellViewModelTest {
         onboardingUpsellButtonsUiModelMapper
     )
 
+    private val isFeatureEnabled = mockk<Provider<Boolean>> {
+        every { this@mockk.get() } returns true
+    }
+
     private val viewModel: OnboardingUpsellViewModel by lazy {
         OnboardingUpsellViewModel(
             observePrimaryUser,
             getOnboardingUpsellingPlans,
-            onboardingUpsellReducer
+            onboardingUpsellReducer,
+            isFeatureEnabled.get()
         )
     }
 
@@ -143,6 +149,18 @@ class OnboardingUpsellViewModelTest {
         // Given
         expectPrimaryUser(freeUser)
         expectDynamicPlansError(freeUser.userId, GetOnboardingPlansError.NoPlans)
+
+        // When + Then
+        viewModel.state.test {
+            assertIs<OnboardingUpsellState.UnsupportedFlow>(awaitItem())
+        }
+    }
+
+    @Test
+    fun `should emit unsupported flow when FF is disabled`() = runTest {
+        // Given
+        every { isFeatureEnabled.get() } returns false
+        expectPrimaryUser(freeUser)
 
         // When + Then
         viewModel.state.test {
