@@ -45,14 +45,15 @@ class ObserveAppSettings @Inject constructor(
         appLanguageRepository.observe(),
         combinedContactsRepository.observe()
     ) { autoLockPref, alternativeRouting, customLanguage, combinedContacts ->
-        val hasAutoLock = autoLockPref.getOrElse { AutoLockPreference(isEnabled = false) }
+        val hasAutoLock = autoLockPref.getOrElse { AutoLockPreference(isEnabled = false) }.isEnabled
         val hasCombinedContacts = (combinedContacts as Either.Right<CombinedContactsPreference>).value.isEnabled
         val hasAlternativeRouting = (alternativeRouting as Either.Right<AlternativeRoutingPreference>).value.isEnabled
+        val customAppLanguage = customLanguage.getOrElse { null }?.langName
 
         AppSettings(
-            hasAutoLock = hasAutoLock.isEnabled,
+            hasAutoLock = hasAutoLock,
             hasAlternativeRouting = hasAlternativeRouting,
-            customAppLanguage = customLanguage?.langName,
+            customAppLanguage = customAppLanguage,
             hasCombinedContacts = hasCombinedContacts
         )
     }

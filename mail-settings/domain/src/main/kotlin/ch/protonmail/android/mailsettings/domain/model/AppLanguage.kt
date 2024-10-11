@@ -48,7 +48,7 @@ enum class AppLanguage(val langName: String, val langTag: String) {
     UKRAINIAN("Українська", "uk");
 
     companion object {
-        private val map = values().associateBy { it.langTag }
+        private val map = entries.associateBy { it.langTag }
         fun fromTag(tag: String?): AppLanguage? = map[tag]
     }
 }
