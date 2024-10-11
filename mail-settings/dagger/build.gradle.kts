@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
+    implementation(Proton.Core.domain)
+
     implementation(project(":mail-settings:data"))
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-settings:presentation"))
