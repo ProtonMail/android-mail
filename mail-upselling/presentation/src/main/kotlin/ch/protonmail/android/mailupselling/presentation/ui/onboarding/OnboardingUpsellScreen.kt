@@ -514,8 +514,7 @@ private fun UpsellButtons(
     paymentButtonActions: OnboardingPayButton.Actions
 ) {
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { ProtonSnackbarHostState() }
+    val context = LocalContext.current
 
     val billingMessage = buttonsUiModel.billingMessage[selectedPlan]?.let {
         when (selectedPlansType) {
@@ -556,12 +555,8 @@ private fun UpsellButtons(
                 planInstanceUiModel = selectedPlanUiModel,
                 actions = paymentButtonActions.copy(
                     onDismiss = exitScreen,
-                    onUpgrade = { message ->
-                        scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message) }
-                    },
-                    onError = { message ->
-                        scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message) }
-                    }
+                    onUpgrade = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() },
+                    onError = { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
                 )
             )
         } else {
