@@ -41,7 +41,7 @@ fun UpsellingBottomSheet(
 
     val actions = bottomSheetActions.copy(
         onDisplayed = { viewModel.updateLastSeenTimestamp() },
-        onPlanSelected = { viewModel.trackUpgradeAttempt(it) },
+        onUpgradeAttempt = { viewModel.trackUpgradeAttempt(it) },
         onUpgradeCancelled = { viewModel.trackUpgradeCancelled(it) },
         onUpgradeErrored = { viewModel.trackUpgradeErrored(it) },
         onSuccess = { viewModel.trackPurchaseCompleted(it) }
@@ -58,7 +58,7 @@ object UpsellingBottomSheet {
 
     data class Actions(
         override val onError: (String) -> Unit,
-        override val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onUpgradeAttempt: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
@@ -71,7 +71,7 @@ object UpsellingBottomSheet {
 
             val Empty = Actions(
                 onDisplayed = {},
-                onPlanSelected = {},
+                onUpgradeAttempt = {},
                 onError = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},

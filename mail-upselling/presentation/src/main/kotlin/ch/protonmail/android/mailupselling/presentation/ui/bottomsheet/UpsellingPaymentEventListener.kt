@@ -91,7 +91,7 @@ internal class UpsellingPaymentEventListener(
             }
 
             ProtonPaymentEvent.Loading -> {
-                actions.onPlanSelected(telemetryPayload)
+                actions.onUpgradeAttempt(telemetryPayload)
             }
 
             ProtonPaymentEvent.Error.UserCancelled -> {

@@ -93,7 +93,7 @@ object OnboardingPayButton {
 
     data class Actions(
         override val onError: (String) -> Unit,
-        override val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit,
+        override val onUpgradeAttempt: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
         override val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
@@ -104,7 +104,7 @@ object OnboardingPayButton {
         companion object {
 
             val Empty = Actions(
-                onPlanSelected = {},
+                onUpgradeAttempt = {},
                 onError = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},

@@ -18,10 +18,18 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType
 
 sealed interface OnboardingUpsellOperation {
     sealed interface Action : OnboardingUpsellOperation {
         data class PlanSelected(val plansType: PlansType, val planName: String) : Action
+
+        sealed class TrackEvent(val payload: UpsellingTelemetryTargetPlanPayload) : Action {
+            class UpgradeAttempt(payload: UpsellingTelemetryTargetPlanPayload) : TrackEvent(payload)
+            class UpgradeCancelled(payload: UpsellingTelemetryTargetPlanPayload) : TrackEvent(payload)
+            class UpgradeErrored(payload: UpsellingTelemetryTargetPlanPayload) : TrackEvent(payload)
+            class UpgradeSuccess(payload: UpsellingTelemetryTargetPlanPayload) : TrackEvent(payload)
+        }
     }
 }

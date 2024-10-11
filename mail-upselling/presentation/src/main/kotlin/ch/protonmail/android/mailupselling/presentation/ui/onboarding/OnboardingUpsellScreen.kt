@@ -48,7 +48,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,17 +73,14 @@ import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation.Action
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
 import coil.compose.AsyncImage
-import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonSnackbarHostState
-import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.ProtonTextButton
 import me.proton.core.compose.theme.ProtonDimens
@@ -105,6 +101,15 @@ fun OnboardingUpsellScreen(
     viewModel: OnboardingUpsellViewModel = hiltViewModel(),
     exitScreen: () -> Unit
 ) {
+    val paymentButtonActions = remember {
+        OnboardingPayButton.Actions.Empty.copy(
+            onUpgradeAttempt = { viewModel.submit(Action.TrackEvent.UpgradeAttempt(it)) },
+            onUpgradeCancelled = { viewModel.submit(Action.TrackEvent.UpgradeCancelled(it)) },
+            onUpgradeErrored = { viewModel.submit(Action.TrackEvent.UpgradeErrored(it)) },
+            onSuccess = { viewModel.submit(Action.TrackEvent.UpgradeSuccess(it)) }
+        )
+    }
+
     when (val state = viewModel.state.collectAsStateWithLifecycle().value) {
         is OnboardingUpsellState.Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
         is OnboardingUpsellState.Data -> OnboardingUpsellScreenContent(
@@ -112,8 +117,9 @@ fun OnboardingUpsellScreen(
             state = state,
             exitScreen = exitScreen,
             onPlanSelected = { plansType, planName ->
-                viewModel.submit(OnboardingUpsellOperation.Action.PlanSelected(plansType, planName))
-            }
+                viewModel.submit(Action.PlanSelected(plansType, planName))
+            },
+            paymentButtonActions
         )
 
         is OnboardingUpsellState.Error -> OnboardingUpsellError(state, exitScreen)
@@ -126,7 +132,8 @@ private fun OnboardingUpsellScreenContent(
     modifier: Modifier = Modifier,
     state: OnboardingUpsellState.Data,
     exitScreen: () -> Unit,
-    onPlanSelected: (PlansType, String) -> Unit
+    onPlanSelected: (PlansType, String) -> Unit,
+    paymentButtonActions: OnboardingPayButton.Actions
 ) {
     val selectedPlansType = remember { mutableStateOf(PlansType.Annual) }
     val selectedPlan = remember { mutableStateOf(state.planUiModels.annualPlans[0].title) }
@@ -198,9 +205,10 @@ private fun OnboardingUpsellScreenContent(
             selectedPlansType = selectedPlansType.value,
             selectedPlan = selectedPlan.value,
             buttonsUiModel = state.buttonsUiModel,
-            onContinueWithProtonFree = exitScreen,
             selectedPlanUiModel = state.selectedPayButtonPlanUiModel,
-            exitScreen = exitScreen
+            onContinueWithProtonFree = exitScreen,
+            exitScreen = exitScreen,
+            paymentButtonActions = paymentButtonActions
         )
     }
 }
@@ -502,7 +510,8 @@ private fun UpsellButtons(
     buttonsUiModel: OnboardingUpsellButtonsUiModel,
     onContinueWithProtonFree: () -> Unit,
     exitScreen: () -> Unit,
-    selectedPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
+    selectedPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
+    paymentButtonActions: OnboardingPayButton.Actions
 ) {
 
     val scope = rememberCoroutineScope()
@@ -545,7 +554,7 @@ private fun UpsellButtons(
         if (selectedPlanUiModel != null) {
             OnboardingPayButton(
                 planInstanceUiModel = selectedPlanUiModel,
-                actions = OnboardingPayButton.Actions.Empty.copy(
+                actions = paymentButtonActions.copy(
                     onDismiss = exitScreen,
                     onUpgrade = { message ->
                         scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message) }
@@ -621,7 +630,8 @@ private fun OnboardingUpsellScreenContentPreview() {
                 )
             ),
             exitScreen = {},
-            onPlanSelected = { _, _ -> }
+            onPlanSelected = { _, _ -> },
+            paymentButtonActions = OnboardingPayButton.Actions.Empty
         )
     }
 }

@@ -23,7 +23,7 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 interface UpsellingActions {
 
     val onError: (String) -> Unit
-    val onPlanSelected: (UpsellingTelemetryTargetPlanPayload) -> Unit
+    val onUpgradeAttempt: (UpsellingTelemetryTargetPlanPayload) -> Unit
     val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit
     val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit
     val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit

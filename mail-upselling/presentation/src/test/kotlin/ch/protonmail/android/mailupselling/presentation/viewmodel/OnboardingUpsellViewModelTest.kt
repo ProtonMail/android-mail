@@ -5,6 +5,10 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
@@ -18,10 +22,12 @@ import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUps
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
+import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkAll
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -68,12 +74,15 @@ class OnboardingUpsellViewModelTest {
         every { this@mockk.get() } returns true
     }
 
+    private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
+
     private val viewModel: OnboardingUpsellViewModel by lazy {
         OnboardingUpsellViewModel(
             observePrimaryUser,
             getOnboardingUpsellingPlans,
             onboardingUpsellReducer,
-            isFeatureEnabled.get()
+            isFeatureEnabled.get(),
+            upsellingTelemetryRepository
         )
     }
 
@@ -199,6 +208,78 @@ class OnboardingUpsellViewModelTest {
             assertIs<OnboardingUpsellState.Data>(actual)
             assertEquals(expectedSelectedPlanInstanceUiModel, actual.selectedPayButtonPlanUiModel)
         }
+    }
+
+    @Test
+    fun `should call the telemetry repository when tracking an upgrade attempted event`() = runTest {
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
+
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+        val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
+
+        // When
+        viewModel.submit(OnboardingUpsellOperation.Action.TrackEvent.UpgradeAttempt(payload))
+
+        // Then
+        verify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(eventType = eventType, UpsellingEntryPoint.PostOnboarding)
+        }
+        confirmVerified(upsellingTelemetryRepository)
+    }
+
+    @Test
+    fun `should call the telemetry repository when tracking an upgrade cancelled event`() = runTest {
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
+
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+        val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(payload)
+
+        // When
+        viewModel.submit(OnboardingUpsellOperation.Action.TrackEvent.UpgradeCancelled(payload))
+
+        // Then
+        verify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(eventType = eventType, UpsellingEntryPoint.PostOnboarding)
+        }
+        confirmVerified(upsellingTelemetryRepository)
+    }
+
+    @Test
+    fun `should call the telemetry repository when tracking an upgrade errored event`() = runTest {
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
+
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+        val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
+
+        // When
+        viewModel.submit(OnboardingUpsellOperation.Action.TrackEvent.UpgradeErrored(payload))
+
+        // Then
+        verify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(eventType = eventType, UpsellingEntryPoint.PostOnboarding)
+        }
+        confirmVerified(upsellingTelemetryRepository)
+    }
+
+    @Test
+    fun `should call the telemetry repository when tracking an upgrade success event`() = runTest {
+        expectPrimaryUser(freeUser)
+        expectDynamicPlans(freeUser.userId, dynamicPlans)
+
+        val payload = UpsellingTelemetryTargetPlanPayload("plan", 1)
+        val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
+
+        // When
+        viewModel.submit(OnboardingUpsellOperation.Action.TrackEvent.UpgradeSuccess(payload))
+
+        // Then
+        verify(exactly = 1) {
+            upsellingTelemetryRepository.trackEvent(eventType = eventType, UpsellingEntryPoint.PostOnboarding)
+        }
+        confirmVerified(upsellingTelemetryRepository)
     }
 
     private fun expectPrimaryUser(user: User?) {

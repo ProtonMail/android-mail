@@ -164,7 +164,7 @@ private fun BottomSheetPreview() {
                 onDisplayed = {},
                 onDismiss = {},
                 onError = {},
-                onPlanSelected = {},
+                onUpgradeAttempt = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},
                 onUpgradeErrored = {},

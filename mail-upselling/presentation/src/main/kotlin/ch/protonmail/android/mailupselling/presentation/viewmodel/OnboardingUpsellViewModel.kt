@@ -23,7 +23,10 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation.Action
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.Loading
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
@@ -48,7 +51,8 @@ class OnboardingUpsellViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     private val getOnboardingUpsellingPlans: GetOnboardingUpsellingPlans,
     private val onboardingUpsellReducer: OnboardingUpsellReducer,
-    @UpsellingOnboardingEnabled private val isUpsellingEnabled: Boolean
+    @UpsellingOnboardingEnabled private val isUpsellingEnabled: Boolean,
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<OnboardingUpsellState>(Loading)
@@ -73,8 +77,9 @@ class OnboardingUpsellViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun submit(action: OnboardingUpsellOperation.Action) = when (action) {
-        is OnboardingUpsellOperation.Action.PlanSelected -> handlePlanSelected(action.plansType, action.planName)
+    fun submit(action: Action) = when (action) {
+        is Action.PlanSelected -> handlePlanSelected(action.plansType, action.planName)
+        is Action.TrackEvent -> handleTrackEvent(action)
     }
 
     private fun emitNewStateFrom(operation: OnboardingUpsellState.OnboardingUpsellOperation) {
@@ -98,6 +103,17 @@ class OnboardingUpsellViewModel @Inject constructor(
                 emitNewStateFrom(OnboardingUpsellEvent.PlanSelected(selectedPlanUiModel?.payButtonPlanUiModel))
             }
         }
+    }
+
+    private fun handleTrackEvent(event: Action.TrackEvent) {
+        val eventType = when (event) {
+            is Action.TrackEvent.UpgradeAttempt -> UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(event.payload)
+            is Action.TrackEvent.UpgradeCancelled -> UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(event.payload)
+            is Action.TrackEvent.UpgradeErrored -> UpsellingTelemetryEventType.Upgrade.UpgradeErrored(event.payload)
+            is Action.TrackEvent.UpgradeSuccess -> UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(event.payload)
+        }
+
+        upsellingTelemetryRepository.trackEvent(eventType, UpsellingEntryPoint.PostOnboarding)
     }
 
     private fun GetOnboardingUpsellingPlans.GetOnboardingPlansError.toUpsellingEvent() = when (this) {
