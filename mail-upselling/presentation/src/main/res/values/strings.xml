@@ -106,8 +106,8 @@
         <item quantity="one">%d more feature</item>
         <item quantity="other">%d more features</item>
     </plurals>
-    <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
-    <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
+    <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+    <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
     <string name="upselling_onboarding_get_plan">Get %s</string>
     <string name="upselling_onboarding_continue_with_proton_free">Continue with Proton Free</string>
     <string name="upselling_onboarding_save_label">Save %s%%</string>

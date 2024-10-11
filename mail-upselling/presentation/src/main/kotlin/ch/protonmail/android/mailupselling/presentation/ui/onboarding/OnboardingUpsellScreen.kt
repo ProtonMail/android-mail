@@ -35,6 +35,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.selection.selectable
@@ -77,6 +78,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOp
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
 import coil.compose.AsyncImage
 import kotlinx.coroutines.launch
@@ -95,7 +97,7 @@ import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
-import me.proton.core.util.kotlin.EMPTY_STRING
+import me.proton.core.domain.entity.UserId
 
 @Composable
 fun OnboardingUpsellScreen(
@@ -252,13 +254,16 @@ private fun PlanSwitcher(
 
 @Composable
 private fun PlanSwitcherLabel(modifier: Modifier, text: TextUiModel) {
-    Text(
-        modifier = modifier
-            .background(color = ProtonTheme.colors.interactionNorm, shape = ProtonTheme.shapes.large)
-            .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing),
-        text = text.string(),
-        style = ProtonTheme.typography.captionStrongUnspecified.copy(color = Color.White)
-    )
+    Row(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .background(color = ProtonTheme.colors.interactionNorm, shape = ProtonTheme.shapes.large)
+                .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing),
+            text = text.string(),
+            style = ProtonTheme.typography.captionStrongUnspecified.copy(color = Color.White)
+        )
+        Spacer(Modifier.width(ProtonDimens.SmallSpacing))
+    }
 }
 
 @Composable
@@ -329,7 +334,11 @@ private fun PlanCard(
         ) {
             PlanCheckmark(isSelected = isSelected)
             PlanNameAndPrice(plan = plan)
-            Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(ProtonDimens.DefaultSpacing)
+            )
             PlanEntitlements(plan = plan, numberOfEntitlementsToShow = numberOfEntitlementsToShow)
         }
     }
@@ -362,16 +371,21 @@ private fun PlanCheckmark(modifier: Modifier = Modifier, isSelected: Boolean) {
 
 @Composable
 private fun PlanNameAndPrice(modifier: Modifier = Modifier, plan: OnboardingUpsellPlanUiModel) {
-    Row(modifier = modifier, verticalAlignment = Alignment.Bottom) {
-        Column(modifier = Modifier.weight(1f)) {
-            Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
+    Row(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = ProtonDimens.DefaultSpacing)
+        ) {
             Text(
+                modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing),
                 text = plan.title,
-                style = ProtonTheme.typography.headlineNorm
+                style = ProtonTheme.typography.subheadline,
+                color = ProtonTheme.colors.textNorm
             )
         }
         if (plan.monthlyPriceWithDiscount != null) {
-            Column {
+            Column(modifier = Modifier.align(Alignment.Bottom)) {
                 if (plan.monthlyPrice != null) {
                     Text(
                         modifier = Modifier.align(Alignment.End),
@@ -408,7 +422,11 @@ private fun PlanEntitlements(
         plan.entitlements.forEachIndexed { index, item ->
             if (index < numberOfEntitlementsToShow || showAllEntitlements.value) {
                 PlanEntitlement(entitlementUiModel = item)
-                Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(ProtonDimens.DefaultSpacing)
+                )
             }
         }
 
@@ -423,13 +441,13 @@ private fun PlanEntitlements(
 }
 
 @Composable
-private fun PlanEntitlement(modifier: Modifier = Modifier, entitlementUiModel: DynamicEntitlementUiModel) {
+private fun PlanEntitlement(entitlementUiModel: DynamicEntitlementUiModel) {
     val imageModel = when (entitlementUiModel) {
         is DynamicEntitlementUiModel.Default -> entitlementUiModel.remoteResource
         is DynamicEntitlementUiModel.Overridden -> entitlementUiModel.localResource
     }
 
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(
             modifier = Modifier
                 .size(ProtonDimens.LargeSpacing)
@@ -495,21 +513,34 @@ private fun UpsellButtons(
             PlansType.Monthly -> it.monthlyBillingMessage
             PlansType.Annual -> it.annualBillingMessage
         }
-    } ?: TextUiModel.Text(EMPTY_STRING)
+    }
 
     val getButtonLabel = buttonsUiModel.getButtonLabel[selectedPlan]
         ?: TextUiModel.TextResWithArgs(R.string.upselling_onboarding_get_plan, listOf(PROTON_FREE))
 
     MailDivider()
     Column(
-        modifier = modifier.padding(horizontal = ProtonDimens.LargeSpacing, vertical = ProtonDimens.SmallSpacing),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = ProtonDimens.DefaultSpacing),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = billingMessage.string(),
-            style = ProtonTheme.typography.overlineRegular.copy(color = ProtonTheme.colors.textAccent)
-        )
-        Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+
+        Box(
+            modifier = Modifier
+                .padding(top = ProtonDimens.SmallSpacing)
+                .padding(bottom = ProtonDimens.SmallSpacing)
+        ) {
+            if (billingMessage != null) {
+                Text(
+                    modifier = Modifier
+                        .padding(top = ProtonDimens.SmallSpacing)
+                        .padding(bottom = ProtonDimens.ExtraSmallSpacing),
+                    text = billingMessage.string(),
+                    style = ProtonTheme.typography.captionRegular.copy(color = ProtonTheme.colors.textAccent)
+                )
+            }
+        }
 
         if (selectedPlanUiModel != null) {
             OnboardingPayButton(
@@ -528,6 +559,7 @@ private fun UpsellButtons(
             ProtonSolidButton(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(bottom = ProtonDimens.DefaultSpacing)
                     .height(MailDimens.OnboardingUpsellButtonHeight),
                 onClick = onContinueWithProtonFree
             ) {
@@ -537,19 +569,25 @@ private fun UpsellButtons(
                 )
             }
         }
-
     }
+
     if (selectedPlan != PROTON_FREE) {
-        ProtonTextButton(onClick = onContinueWithProtonFree) {
+        ProtonTextButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = onContinueWithProtonFree
+        ) {
             Text(
+                modifier = Modifier
+                    .padding(horizontal = ProtonDimens.DefaultSpacing)
+                    .padding(top = ProtonDimens.SmallSpacing)
+                    .padding(bottom = ProtonDimens.DefaultSpacing),
                 text = stringResource(id = R.string.upselling_onboarding_continue_with_proton_free),
-                style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(
+                style = ProtonTheme.typography.body1Medium.copy(
                     color = ProtonTheme.colors.textAccent
                 )
             )
         }
     }
-
 }
 
 @Composable
@@ -564,6 +602,7 @@ private fun OnboardingUpsellError(state: OnboardingUpsellState.Error, exitScreen
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Suppress("MagicNumber")
 @Composable
 private fun OnboardingUpsellScreenContentPreview() {
     ProtonTheme {
@@ -572,7 +611,14 @@ private fun OnboardingUpsellScreenContentPreview() {
                 planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                 planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                 buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                selectedPayButtonPlanUiModel = null
+                selectedPayButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel(
+                    name = "Proton Unlimited",
+                    userId = UserIdUiModel(UserId("")),
+                    currency = "CHF",
+                    cycle = 12,
+                    viewId = 1,
+                    dynamicPlan = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel.dynamicPlan
+                )
             ),
             exitScreen = {},
             onPlanSelected = { _, _ -> }
