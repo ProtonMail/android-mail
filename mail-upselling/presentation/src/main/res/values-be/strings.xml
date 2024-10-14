@@ -62,8 +62,8 @@
   <string name="upselling_onboarding_unlimited_feature_email_addresses">15 дадатковых адрасоў электроннай пошты для вас</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Падтрымка для 3 карыстальніцкіх даменаў электроннай пошты</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Неабмежаваная колькасць псеўданімаў hide-my-email</string>
-  <string name="upselling_onboarding_unlimited_feature_customer_support">Адданая падтрымка кліентаў</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">Вельмі хуткі і прыватны VPN</string>
+  <string name="upselling_onboarding_unlimited_feature_customer_support">Профільная падтрымка кліентаў</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">Звышхуткі і прыватны VPN</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Зашыфраванае воблачнае сховішча для фатаграфій і дакументаў</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Пашыраная абарона ўліковага запісу</string>
@@ -97,8 +97,8 @@
     <item quantity="many">Яшчэ %d функцый</item>
     <item quantity="other">Яшчэ %d функцый</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Аплачваецца %s %s кожны месяц.</string>
-  <string name="upselling_onboarding_billing_annual">Аплачваецца %s %s кожныя 12 месяцаў.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">Атрымаць %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Працягнуць з Proton Free</string>
   <string name="upselling_onboarding_save_label">Эканомія %s%%</string>

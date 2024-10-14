@@ -95,7 +95,7 @@
   <string name="error_delete_message_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed">Pogovora ni bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_title">Izbriši pogovor</string>
   <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Pogovor izbrisan</string>
   <string name="message_body_load_remote_content_button_text">Naloži oddaljeno vsebino</string>

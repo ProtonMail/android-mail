@@ -92,13 +92,13 @@
   <string name="error_delete_conversation_failed">Wissen gesprek mislukt</string>
   <string name="error_delete_conversation_failed_wrong_folder">Gesprek staat niet op een locatie waar het kan worden gewist</string>
   <string name="conversation_delete_dialog_title">Gesprek verwijderen</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_message">Weet u zeker dat u dit gesprek permanent wilt verwijderen?</string>
   <string name="conversation_deleted">Gesprek verwijderd</string>
   <string name="message_body_load_remote_content_button_text">Externe inhoud laden</string>
   <string name="message_body_load_embedded_images_button_text">Ingesloten afbeeldingen laden</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Externe en ingesloten inhoud laden</string>
   <string name="message_report_phishing_dialog_title_offline">Attentie</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Deze functionaliteit is alleen online beschikbaar.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Phishing-rapport bevestigen</string>
   <string name="message_report_phishing_dialog_message">Door een bericht als phishing aan te merken, wordt het naar ProtonMail verzonden, zodat het mogelijk is de inhoud te analyseren en de spamfilters te verbeteren. Dit betekent dat we alle inhoud van dit betreffende bericht kunnen zien.</string>
@@ -107,8 +107,8 @@
   <string name="open_on_protoncalendar_banner_title">Openen in Proton Calendar</string>
   <string name="open_on_protoncalendar_banner_description">Veilig versleutelde agenda</string>
   <string name="error_print_failed">Bericht afdrukken mislukt</string>
-  <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
-  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="trashed_messages_banner">Dit gesprek bevat berichten die zich in de prullenbak bevinden.</string>
+  <string name="non_trashed_messages_banner">Dit gesprek bevat berichten die zich niet in de prullenbak bevinden.</string>
   <string name="show">Tonen</string>
   <string name="hide">Verbergen</string>
 </resources>

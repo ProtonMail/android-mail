@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Pengirim tidak dapat diubah karena status langganan pengguna gagal dimuat. Silakan coba lagi.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">Penerima duplikat dihapus</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Penerima draf gagal disimpan</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
@@ -96,6 +96,6 @@
   <string name="set_message_password_button_remove_password">Hapus kata sandi</string>
   <string name="respondInline">Tanggapi secara in-line</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="other">%d members</item>
+    <item quantity="other">%d anggota</item>
   </plurals>
 </resources>

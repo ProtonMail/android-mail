@@ -33,7 +33,7 @@
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke ændre afsender, da hentning af brugerens abonnement mislykkedes. Prøv igen.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">Dublet-modtager(e) fjernet</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Lagring af denne kladdes modtagere mislykkedes</string>
   <string name="composer_error_loading_draft">Indholdet af denne kladde er ikke tilgængeligt på nuværende tidspunkt. Redigering vil overskrive alt allerede eksisterende indhold.</string>
@@ -96,7 +96,7 @@
   <string name="set_message_password_button_remove_password">Fjern adgangskode</string>
   <string name="respondInline">Besvar in-line</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d member</item>
-    <item quantity="other">%d members</item>
+    <item quantity="one">%d medlem</item>
+    <item quantity="other">%d medlemmer</item>
   </plurals>
 </resources>

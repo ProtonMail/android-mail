@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">Bem-vindo à nova aplicação</string>
-  <string name="onboarding_description_ga">Completamente reconstruída de raiz, a nova aplicação Proton Mail foi feita para estabilidade e desempenho.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">Privacidade para todos</string>
   <string name="onboarding_privacy_for_all_description">Convide outros para o Proton Mail e assim todos podem beneficiar da encriptação de ponta-a-ponta.</string>

@@ -28,7 +28,7 @@
     <item quantity="other">%d個選択済み</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">%s 未読</item>
+    <item quantity="other">未読%s</item>
   </plurals>
   <string name="mailbox_default_recipient">(宛先なし)</string>
   <string name="mailbox_default_sender">(差出人なし)</string>

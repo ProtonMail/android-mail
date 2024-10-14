@@ -91,8 +91,8 @@
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d개 추가 기능</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">매달 %s %s로 청구됨.</string>
-  <string name="upselling_onboarding_billing_annual">12개월간 %s %s로 청구됨.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">%s 받기</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free로 계속하기</string>
   <string name="upselling_onboarding_save_label">%s%% 절약</string>

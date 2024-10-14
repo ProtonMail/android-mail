@@ -92,8 +92,8 @@ igen.</string>
   <string name="error_delete_message_failed_wrong_folder">Beskeden er ikke på en placering, hvor den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>
   <string name="error_delete_conversation_failed_wrong_folder">Samtale er ikke på en placering, hvor den kan slettes</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_title">Slet samtale</string>
+  <string name="conversation_delete_dialog_message">Er du sikker på, at du vil slette denne samtale permanent?</string>
   <string name="conversation_deleted">Samtale slettet</string>
   <string name="message_body_load_remote_content_button_text">Indlæs eksternt indhold</string>
   <string name="message_body_load_embedded_images_button_text">Indlæs indlejrede billeder</string>

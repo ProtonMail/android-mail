@@ -38,7 +38,7 @@
   <string name="mailbox_error_message_generic">Indlæsning af postkasse mislykkedes</string>
   <string name="mailbox_error_message_unexpected">Et eller andet gik uventet galt</string>
   <string name="mailbox_is_empty_title">Ingen beskeder</string>
-  <string name="mailbox_is_empty_description">Du er ajourført</string>
+  <string name="mailbox_is_empty_description">Du er ajour</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Ingen ulæste beskeder</string>
   <string name="mailbox_is_empty_folder_description">Denne mappe er tom</string>
   <string name="mailbox_is_empty_spam_description">Din spam-mappe er tom</string>

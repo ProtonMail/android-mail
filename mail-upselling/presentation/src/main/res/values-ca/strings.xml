@@ -54,19 +54,19 @@
   <string name="upselling_onboarding_feature_folders_labels">Carpetes i etiquetes il·limitades</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB d\'emmagatzematge i 1 adreça de correu electrònic</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB d\'emmagatzematge</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">10 adreces de correu electrònic addicionals per a vosaltres</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 adreces de correu electrònic addicionals</string>
   <string name="upselling_onboarding_plus_feature_email_domains">Suport per a 1 domini de correu electrònic personalitzat</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 àlies de hide-my-email</string>
   <string name="upselling_onboarding_plus_feature_customer_support">Atenció al client prioritària</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB d\'emmagatzematge</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 adreces de correu electrònic addicionals per a vosaltres</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 adreces de correu electrònic addicionals</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">Suport per a 3 dominis de correu electrònic personalitzats</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Nombre il·limitat d\'àlies hide-my-email</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Suport al client dedicat</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultra ràpid i privat</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contrasenyes xifrat</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge en el núvol xifrat per a fotos i documents</string>
-  <string name="upselling_onboarding_unlimited_feature_sentinel">Programa avançat de protecció de comptes</string>
+  <string name="upselling_onboarding_unlimited_feature_sentinel">Protecció avançada del compte</string>
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">ESTALVIEU EL %s%%</string>
   <string name="upselling_month">/mes</string>
@@ -93,8 +93,8 @@
     <item quantity="one">%d més característica</item>
     <item quantity="other">%d més característiques</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">Obtingueu %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continua amb Proton Free</string>
   <string name="upselling_onboarding_save_label">Estalvieu el %s%%</string>

@@ -40,7 +40,7 @@
   <string name="mail_settings_theme_dark">Fosc</string>
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">No hi ha informació disponible</string>
-  <string name="mail_settings_enabled">Habilitat</string>
+  <string name="mail_settings_enabled">Activat</string>
   <string name="mail_settings_disabled">Desactivat</string>
   <string name="mail_settings_allowed">Permès</string>
   <string name="mail_settings_denied">Denegat</string>
@@ -89,7 +89,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Evita les captures de pantalla</string>
   <string name="mail_settings_privacy_request_link_confirmation">Demana confirmació dels enllaços</string>
   <string name="mail_settings_privacy_background_sync">Sincronització en segon pla</string>
-  <string name="mail_settings_privacy_background_sync_description">Si aquesta opció està habilitada, l\'aplicació se sincronitzarà amb el servidor en segon pla. Desactivar aquesta característica també desactivarà les notificacions automàtiques.</string>
+  <string name="mail_settings_privacy_background_sync_description">Si aquesta opció està activada, l\'aplicació se sincronitzarà amb el servidor en segon pla. Desactivar aquesta característica també desactivarà les notificacions automàtiques.</string>
   <string name="mail_settings_privacy_error_updating">S\'ha produït un error en actualitzar les preferències</string>
   <string name="mail_settings_privacy_error_loading">S\'ha produït un error en carregar les preferències</string>
   <!-- Swipe Actions -->

@@ -93,8 +93,8 @@
     <item quantity="one">%d ek özellik</item>
     <item quantity="other">%d ek özellik</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Her ay %s %s olarak faturalanır.</string>
-  <string name="upselling_onboarding_billing_annual">12 ayda bir %s %s olarak faturalanır.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">%s alın</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free tarifesini kullanmayı sürdür</string>
   <string name="upselling_onboarding_save_label">%s%% indirim</string>

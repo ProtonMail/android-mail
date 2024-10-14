@@ -97,9 +97,9 @@
     <item quantity="many">%d więcej funkcji</item>
     <item quantity="other">%d więcej funkcji</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month.</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months.</string>
+  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
+  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
   <string name="upselling_onboarding_get_plan">Wybierz plan %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Kontynuuj z planem Proton Free</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_save_label">Zaoszczędź %s%%</string>
 </resources>

@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Spremeni pošiljatelja</string>
   <string name="composer_change_sender_paid_feature">Za spremembo pošiljateljevega naslova nadgradite na plačljiv paket</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Pošiljatelja ni mogoče spremeniti, ker pridobivanje uporabnikove naročnine ni uspelo. Poskusite znova.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Shranjevanje pošiljateljevega naslova za ta osnutek ni uspelo</string>
+  <string name="composer_error_store_draft_body">Shranjevanje telesa tega osnutka ni uspelo</string>
   <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">Shranjevanje zadeve tega osnutka ni uspelo</string>
   <string name="composer_error_store_draft_recipients">Shranjevanje prejemnikov tega osnutka ni uspelo</string>
   <string name="composer_error_loading_draft">Vsebina tega osnutka trenutno ni na voljo. Z urejanjem boste prepisali vso morebitno dosedanjo vsebino.</string>
   <string name="composer_add_attachments_content_description">Dodaj priponke</string>

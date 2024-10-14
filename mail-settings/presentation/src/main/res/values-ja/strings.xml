@@ -131,7 +131,7 @@
   <string name="mail_settings_pin_insertion_set_title">PIN コードを設定</string>
   <string name="mail_settings_pin_insertion_confirm_title">PINコードの確認</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">ロックアイコン</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">PIN ドット</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pinドット</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">生体認証</string>
   <string name="mail_settings_pin_insertion_button_create">作成</string>

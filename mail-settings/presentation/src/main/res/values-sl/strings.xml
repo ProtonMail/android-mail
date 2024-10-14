@@ -77,7 +77,7 @@
   <string name="mail_settings_identity_display_name_hint">Prikazano ime</string>
   <string name="mail_settings_identity_signature">Podpis</string>
   <string name="mail_settings_identity_signature_hint">Podpis</string>
-  <string name="mail_settings_identity_mobile_footer">Mobile signature</string>
+  <string name="mail_settings_identity_mobile_footer">Mobilni podpis</string>
   <string name="mail_settings_identity_mobile_footer_subtext">This is added after your signature.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Mobile signature</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Poslano iz Proton Mail Android</string>

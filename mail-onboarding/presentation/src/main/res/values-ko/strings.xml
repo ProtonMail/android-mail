@@ -17,9 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <!--  Spotlight V6 GA  -->
-  <string name="onboarding_headline_ga">새 앱에 오신 것을 환영합니다</string>
-  <string name="onboarding_description_ga">완전히 새롭게 다시 만든, 새 Proton Mail 앱은 안정성과 성능을 위해 만들어졌습니다.</string>
   <!--  Onboarding 1  -->
   <string name="onboarding_privacy_for_all_headline">모두를 위한 개인정보 보호</string>
   <string name="onboarding_privacy_for_all_description">Proton Mail에 다른 이들을 초대해 모두가 종단간 암호화를 누릴 수 있게 하세요.</string>
