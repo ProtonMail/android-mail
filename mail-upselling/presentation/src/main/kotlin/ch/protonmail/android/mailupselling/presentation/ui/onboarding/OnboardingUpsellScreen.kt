@@ -22,6 +22,7 @@ import android.content.res.Configuration
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -438,6 +439,8 @@ private fun PlanEntitlements(
             }
         }
 
+        PremiumValueSection(modifier, plan.title)
+
         val numberOfEntitlementsNotShown = (plan.entitlements.size - numberOfEntitlementsToShow).coerceAtLeast(0)
         if (numberOfEntitlementsNotShown != 0 && !showAllEntitlements.value) {
             MorePlanEntitlements(
@@ -499,6 +502,50 @@ private fun MorePlanEntitlements(
             contentDescription = NO_CONTENT_DESCRIPTION,
             tint = ProtonTheme.colors.iconAccent
         )
+    }
+}
+
+@Composable
+private fun PremiumValueSection(modifier: Modifier = Modifier, planName: String) {
+
+    val plusDrawables = listOf(
+        R.drawable.ic_upselling_logo_mail,
+        R.drawable.ic_upselling_logo_calendar
+    )
+
+    val unlimitedDrawables = listOf(
+        R.drawable.ic_upselling_logo_mail,
+        R.drawable.ic_upselling_logo_calendar,
+        R.drawable.ic_upselling_logo_vpn,
+        R.drawable.ic_upselling_logo_drive,
+        R.drawable.ic_upselling_logo_pass
+    )
+
+    val drawables = when {
+        planName.contains("plus", ignoreCase = true) -> plusDrawables
+        planName.contains("unlimited", ignoreCase = true) -> unlimitedDrawables
+        else -> null
+    }
+
+    drawables?.let {
+        Column(modifier = modifier.padding(bottom = ProtonDimens.DefaultSpacing)) {
+            Text(
+                modifier = modifier.padding(vertical = ProtonDimens.SmallSpacing),
+                text = stringResource(R.string.upselling_onboarding_premium_value_included),
+                style = ProtonTheme.typography.defaultSmallStrongUnspecified.copy(color = ProtonTheme.colors.textAccent)
+            )
+            Row(
+                modifier = modifier
+            ) {
+                drawables.forEach {
+                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+                    Image(
+                        painter = painterResource(id = it),
+                        contentDescription = NO_CONTENT_DESCRIPTION
+                    )
+                }
+            }
+        }
     }
 }
 
