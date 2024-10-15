@@ -26,6 +26,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityOperation
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
 
@@ -69,6 +70,15 @@ class EditAddressIdentityReducer @Inject constructor(
 
                 EditAddressIdentityEvent.UpsellingInProgress -> this.copy(
                     upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
+                )
+
+                is EditAddressIdentityEvent.UpgradeStateChanged -> this.copy(
+                    mobileFooterState = this.mobileFooterState.copy(
+                        mobileFooterUiModel = this.mobileFooterState.mobileFooterUiModel.copy(
+                            isFieldEnabled = !event.shouldShowUpselling &&
+                                event.userUpgradeCheckState !is UserUpgradeState.UserUpgradeCheckState.Pending
+                        )
+                    )
                 )
 
                 else -> this

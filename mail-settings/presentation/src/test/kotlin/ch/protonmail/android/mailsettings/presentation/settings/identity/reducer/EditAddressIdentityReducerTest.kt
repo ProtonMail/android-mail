@@ -33,6 +33,7 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.EditAddressIdentityViewAction
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.MobileFooterUiModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.reducer.EditAddressIdentityReducer
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import io.mockk.unmockkAll
 import org.junit.After
@@ -164,6 +165,48 @@ internal class EditAddressIdentityReducerTest(
                             isFieldEnabled = false,
                             isToggleEnabled = false,
                             isUpsellingVisible = false
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    shouldShowUpselling = true,
+                    userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Initial
+                ),
+                expectedState = baseLoadedState.copy(
+                    mobileFooterState = baseMobileFooterState.copy(
+                        mobileFooterUiModel = baseMobileFooterState.mobileFooterUiModel.copy(
+                            isFieldEnabled = false
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    shouldShowUpselling = false,
+                    userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Completed
+                ),
+                expectedState = baseLoadedState.copy(
+                    mobileFooterState = baseMobileFooterState.copy(
+                        mobileFooterUiModel = baseMobileFooterState.mobileFooterUiModel.copy(
+                            isFieldEnabled = true
+                        )
+                    )
+                )
+            ),
+            TestInput(
+                currentState = baseLoadedState,
+                event = EditAddressIdentityEvent.UpgradeStateChanged(
+                    shouldShowUpselling = false,
+                    userUpgradeCheckState = UserUpgradeState.UserUpgradeCheckState.Pending
+                ),
+                expectedState = baseLoadedState.copy(
+                    mobileFooterState = baseMobileFooterState.copy(
+                        mobileFooterUiModel = baseMobileFooterState.mobileFooterUiModel.copy(
+                            isFieldEnabled = false
                         )
                     )
                 )

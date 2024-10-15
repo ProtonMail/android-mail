@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings.identity
 import ch.protonmail.android.mailsettings.domain.model.DisplayName
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.model.Signature
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
 
 sealed interface EditAddressIdentityOperation
 
@@ -63,6 +64,11 @@ sealed interface EditAddressIdentityEvent : EditAddressIdentityOperation {
             val mobileFooter: MobileFooter
         ) : Data()
     }
+
+    data class UpgradeStateChanged(
+        val userUpgradeCheckState: UserUpgradeState.UserUpgradeCheckState,
+        val shouldShowUpselling: Boolean
+    ) : EditAddressIdentityEvent
 
     data object HideUpselling : EditAddressIdentityEvent
     data object ShowUpselling : EditAddressIdentityEvent
