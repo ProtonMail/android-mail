@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailnotifications.R
-import ch.protonmail.android.mailnotifications.annotations.NotificationsMessagePrefetchDisabled
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
@@ -46,7 +45,6 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
     private val createNewMessageNavigationIntent: CreateNewMessageNavigationIntent,
     private val createNotificationAction: CreateNotificationAction,
-    @NotificationsMessagePrefetchDisabled private val isNotificationMessagePrefetchDisabled: Boolean,
     @AppScope private val coroutineScope: CoroutineScope
 ) {
 
@@ -56,12 +54,10 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
         val userData = notificationData.userData
         val pushData = notificationData.pushData
 
-        if (!isNotificationMessagePrefetchDisabled) {
-            // Prefetch the message, but do nothing in case of failure.
-            coroutineScope.launch {
-                messageRepository.getRefreshedMessageWithBody(UserId(userData.userId), MessageId(pushData.messageId))
-                    ?: Timber.d("Unable to prefetch the message with id ${pushData.messageId}.")
-            }
+        // Prefetch the message, but do nothing in case of failure.
+        coroutineScope.launch {
+            messageRepository.getRefreshedMessageWithBody(UserId(userData.userId), MessageId(pushData.messageId))
+                ?: Timber.d("Unable to prefetch the message with id ${pushData.messageId}.")
         }
 
         val notificationTitle = pushData.sender
