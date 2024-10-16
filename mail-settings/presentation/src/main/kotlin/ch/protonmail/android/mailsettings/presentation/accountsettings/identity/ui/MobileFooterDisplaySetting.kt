@@ -49,7 +49,7 @@ fun MobileFooterDisplaySetting(
                 hint = stringResource(id = R.string.mail_settings_identity_mobile_footer_subtext),
                 upsellingIcon = {
                     if (uiModel.isUpsellingVisible) {
-                        UpsellingIcon(modifier = Modifier.padding(start = ProtonDimens.SmallSpacing))
+                        UpsellingIcon(modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing))
                     }
                 }
             )
