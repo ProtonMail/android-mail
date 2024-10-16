@@ -39,7 +39,8 @@ internal class DynamicPlanTitleUiMapperTest {
             UpsellingEntryPoint.BottomSheet.Folders to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title)),
             UpsellingEntryPoint.BottomSheet.Labels to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title)),
             UpsellingEntryPoint.BottomSheet.MobileSignature to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title)),
-            UpsellingEntryPoint.BottomSheet.Mailbox to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
+            UpsellingEntryPoint.BottomSheet.Mailbox to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title)),
+            UpsellingEntryPoint.BottomSheet.AutoDelete to DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_auto_delete_plus_title))
         )
 
         // When
@@ -48,7 +49,8 @@ internal class DynamicPlanTitleUiMapperTest {
             UpsellingEntryPoint.BottomSheet.Folders to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Folders),
             UpsellingEntryPoint.BottomSheet.Labels to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Labels),
             UpsellingEntryPoint.BottomSheet.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.MobileSignature),
-            UpsellingEntryPoint.BottomSheet.Mailbox to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Mailbox)
+            UpsellingEntryPoint.BottomSheet.Mailbox to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Mailbox),
+            UpsellingEntryPoint.BottomSheet.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.AutoDelete)
         )
 
         // Then

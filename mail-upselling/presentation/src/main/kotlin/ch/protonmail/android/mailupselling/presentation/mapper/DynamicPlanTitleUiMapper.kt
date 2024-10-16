@@ -34,5 +34,6 @@ internal class DynamicPlanTitleUiMapper @Inject constructor() {
             UpsellingEntryPoint.BottomSheet.Labels -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title))
             UpsellingEntryPoint.BottomSheet.MobileSignature -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title))
             UpsellingEntryPoint.BottomSheet.Mailbox -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
+            UpsellingEntryPoint.BottomSheet.AutoDelete -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_auto_delete_plus_title))
         }
 }

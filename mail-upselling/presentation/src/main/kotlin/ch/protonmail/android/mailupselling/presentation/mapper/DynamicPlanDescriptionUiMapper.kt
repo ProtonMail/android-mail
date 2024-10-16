@@ -64,5 +64,8 @@ internal class DynamicPlanDescriptionUiMapper @Inject constructor(
         UpsellingEntryPoint.BottomSheet.MobileSignature -> TextUiModel.TextRes(
             R.string.upselling_mobile_signature_plus_description_override
         )
+        UpsellingEntryPoint.BottomSheet.AutoDelete -> TextUiModel.TextRes(
+            R.string.upselling_auto_delete_plus_description_override
+        )
     }
 }

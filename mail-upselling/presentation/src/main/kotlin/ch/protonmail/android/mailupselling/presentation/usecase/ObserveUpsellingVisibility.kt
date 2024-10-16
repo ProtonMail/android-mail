@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.usecase.UserHasAvailablePlans
@@ -45,7 +46,8 @@ class ObserveUpsellingVisibility @Inject constructor(
     private val isUpsellingLabelsEnabled: IsUpsellingLabelsEnabled,
     private val isUpsellingFoldersEnabled: IsUpsellingFoldersEnabled,
     private val isUpsellingContactGroupsEnabled: IsUpsellingContactGroupsEnabled,
-    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled
+    private val observeOneClickUpsellingEnabled: ObserveOneClickUpsellingEnabled,
+    @UpsellingAutodeleteEnabled private val isUpsellingAutoDeleteEnabled: Boolean
 ) {
 
     operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): Flow<Boolean> = combine(
@@ -72,6 +74,7 @@ class ObserveUpsellingVisibility @Inject constructor(
             }
 
             UpsellingEntryPoint.BottomSheet.MobileSignature -> isUpsellingMobileSignatureEnabled
+            UpsellingEntryPoint.BottomSheet.AutoDelete -> isUpsellingAutoDeleteEnabled
         }
     }
 }

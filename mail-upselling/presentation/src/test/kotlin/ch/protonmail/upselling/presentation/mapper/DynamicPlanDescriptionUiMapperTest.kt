@@ -132,4 +132,19 @@ internal class DynamicPlanDescriptionUiMapperTest {
         // Then
         assertEquals(expected, actual)
     }
+
+    @Test
+    fun `should return the local description when override is set, for AutoDelete entry point`() {
+        // Given
+        every { forceOverride.get() } returns true
+        val expected = DynamicPlanDescriptionUiModel(
+            text = TextUiModel.TextRes(R.string.upselling_auto_delete_plus_description_override)
+        )
+
+        // When
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.AutoDelete)
+
+        // Then
+        assertEquals(expected, actual)
+    }
 }

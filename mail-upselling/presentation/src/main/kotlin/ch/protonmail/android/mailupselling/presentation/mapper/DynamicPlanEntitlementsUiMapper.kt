@@ -55,6 +55,7 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
         UpsellingEntryPoint.BottomSheet.Labels -> LabelsPlusOverriddenEntitlements
         UpsellingEntryPoint.BottomSheet.Mailbox -> MailboxPlusOverriddenEntitlements
         UpsellingEntryPoint.BottomSheet.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
+        UpsellingEntryPoint.BottomSheet.AutoDelete -> AutoDeletePlusOverriddenEntitlements
         UpsellingEntryPoint.PostOnboarding -> OnboardingPlusOverriddenEntitlements
     }
 
@@ -115,6 +116,8 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
 
         @Suppress("VariableMaxLength")
         private val MobileSignaturePlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
+
+        private val AutoDeletePlusOverriddenEntitlements = SharedPlusOverriddenEntitlements
 
         private val UnlimitedOverriddenEntitlements = listOf(
             DynamicEntitlementUiModel.Overridden(

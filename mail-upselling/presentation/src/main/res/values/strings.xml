@@ -41,6 +41,10 @@
     <string name="upselling_mobile_signature_plus_description_override">Use your own mobile signature and enjoy other premium features with Mail Plus.</string>
     <string name="upselling_mobile_signature_plus_title">Customize your signature</string>
 
+    <!-- Upselling: Mobile Signature -->
+    <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+    <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+
     <!-- Mail Plus -->
     <string name="upselling_plus_feature_storage">15 GB storage</string>
     <string name="upselling_plus_feature_email_addresses">10 email addresses</string>

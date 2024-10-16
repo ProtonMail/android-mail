@@ -144,6 +144,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
             expectedAllTheOtherEntitlements,
             expectedAllTheOtherEntitlements,
             expectedAllTheOtherEntitlements,
+            expectedAllTheOtherEntitlements,
             expectedAllTheOtherEntitlements
         )
 
@@ -153,7 +154,8 @@ internal class DynamicPlanEntitlementsUiMapperTest {
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.ContactGroups),
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Labels),
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Folders),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.MobileSignature)
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.MobileSignature),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.AutoDelete)
         )
 
         // Then

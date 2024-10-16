@@ -62,6 +62,7 @@ internal class ObserveUpsellingVisibilityTest {
     private val isUpsellingFoldersEnabled = mockk<IsUpsellingFoldersEnabled>()
     private val isUpsellingContactGroupsEnabled = mockk<IsUpsellingContactGroupsEnabled>()
     private val observeOneClickUpsellingEnabled = mockk<ObserveOneClickUpsellingEnabled>()
+    private val provideUpsellingAutoDeleteEnabled = mockk<Provider<Boolean>>()
     private val sut: ObserveUpsellingVisibility
         get() = ObserveUpsellingVisibility(
             observePrimaryUser,
@@ -73,7 +74,8 @@ internal class ObserveUpsellingVisibilityTest {
             isUpsellingLabelsEnabled,
             isUpsellingFoldersEnabled,
             isUpsellingContactGroupsEnabled,
-            observeOneClickUpsellingEnabled
+            observeOneClickUpsellingEnabled,
+            provideUpsellingAutoDeleteEnabled.get()
         )
 
     @BeforeTest
@@ -81,6 +83,7 @@ internal class ObserveUpsellingVisibilityTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
         expectUpsellingFeatureFlag(UpsellingEntryPoint.BottomSheet.MobileSignature, false)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.BottomSheet.AutoDelete, false)
     }
 
     @AfterTest
@@ -236,6 +239,23 @@ internal class ObserveUpsellingVisibilityTest {
         }
     }
 
+    @Test
+    fun `should return false if AutoDelete FF is disabled`() = runTest {
+        // Given
+        expectedUser(UserSample.Primary)
+        expectPurchases(listOf(mockk<Purchase>()))
+        expectCanUpgradeFromMobile(true)
+        expectPendingPurchasesValue(UserSample.Primary.userId, false)
+        expectUserHasAvailablePlans(UserSample.Primary.userId, true)
+        expectUpsellingFeatureFlag(UpsellingEntryPoint.BottomSheet.AutoDelete, false)
+
+        // When + Then
+        sut(UpsellingEntryPoint.BottomSheet.AutoDelete).test {
+            assertEquals(false, awaitItem())
+            awaitComplete()
+        }
+    }
+
     @Suppress("MaxLineLength")
     @Test
     fun `should return true if user has no pending purchases, can upgrade from mobile, has available plans and FF is enabled`() =
@@ -296,6 +316,10 @@ internal class ObserveUpsellingVisibilityTest {
             }
             UpsellingEntryPoint.BottomSheet.MobileSignature -> every {
                 provideUpsellingMobileSignatureEnabled.get()
+            } returns value
+
+            UpsellingEntryPoint.BottomSheet.AutoDelete -> every {
+                provideUpsellingAutoDeleteEnabled.get()
             } returns value
         }
     }

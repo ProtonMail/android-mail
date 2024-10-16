@@ -27,6 +27,7 @@ sealed interface UpsellingEntryPoint {
         data object Labels : BottomSheet
         data object Folders : BottomSheet
         data object MobileSignature : BottomSheet
+        data object AutoDelete : BottomSheet
 
     }
 
@@ -38,6 +39,7 @@ sealed interface UpsellingEntryPoint {
         BottomSheet.Labels -> "labels_creation"
         BottomSheet.Mailbox -> "mailbox_top_bar"
         BottomSheet.MobileSignature -> "mobile_signature_edit"
+        BottomSheet.AutoDelete -> "auto_delete_messages"
         PostOnboarding -> "post_onboarding"
     }
 }
