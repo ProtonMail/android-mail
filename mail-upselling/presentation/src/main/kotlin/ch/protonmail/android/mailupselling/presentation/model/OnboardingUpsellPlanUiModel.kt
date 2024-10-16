@@ -31,5 +31,6 @@ data class OnboardingUpsellPlanUiModel(
     val monthlyPrice: TextUiModel?,
     val monthlyPriceWithDiscount: TextUiModel?,
     val entitlements: List<DynamicEntitlementUiModel>,
-    val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
+    val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
+    val premiumValueDrawables: List<Int>
 )

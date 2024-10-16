@@ -63,6 +63,19 @@ internal object OnboardingUpsellPreviewData {
         dynamicPlan = dynPlan
     )
 
+    val PremiumValuePlusDrawables = listOf(
+        R.drawable.ic_upselling_logo_mail,
+        R.drawable.ic_upselling_logo_calendar
+    )
+
+    val PremiumValueUnlimitedDrawables = listOf(
+        R.drawable.ic_upselling_logo_mail,
+        R.drawable.ic_upselling_logo_calendar,
+        R.drawable.ic_upselling_logo_vpn,
+        R.drawable.ic_upselling_logo_drive,
+        R.drawable.ic_upselling_logo_pass
+    )
+
     val PlanUiModels = OnboardingUpsellPlanUiModels(
         monthlyPlans = listOf(
             OnboardingUpsellPlanUiModel(
@@ -92,7 +105,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_storage
                     )
                 ),
-                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                premiumValueDrawables = PremiumValueUnlimitedDrawables
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Mail Plus",
@@ -121,7 +135,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_storage
                     )
                 ),
-                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                premiumValueDrawables = PremiumValuePlusDrawables
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
@@ -138,7 +153,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_mail
                     )
                 ),
-                payButtonPlanUiModel = null
+                payButtonPlanUiModel = null,
+                premiumValueDrawables = emptyList()
             )
         ),
         annualPlans = listOf(
@@ -169,7 +185,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_storage
                     )
                 ),
-                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                premiumValueDrawables = PremiumValueUnlimitedDrawables
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Mail Plus",
@@ -198,7 +215,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_storage
                     )
                 ),
-                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                premiumValueDrawables = PremiumValuePlusDrawables
             ),
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
@@ -215,7 +233,8 @@ internal object OnboardingUpsellPreviewData {
                         localResource = R.drawable.ic_upselling_mail
                     )
                 ),
-                payButtonPlanUiModel = null
+                payButtonPlanUiModel = null,
+                premiumValueDrawables = emptyList()
             )
         )
     )

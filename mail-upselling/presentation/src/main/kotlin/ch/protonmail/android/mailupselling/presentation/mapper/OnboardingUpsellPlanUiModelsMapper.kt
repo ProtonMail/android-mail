@@ -18,7 +18,9 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
+import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.normalizedPrice
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
@@ -40,7 +42,8 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
             monthlyPrice = null,
             monthlyPriceWithDiscount = null,
             entitlements = OnboardingFreeOverriddenEntitlements,
-            payButtonPlanUiModel = null
+            payButtonPlanUiModel = null,
+            premiumValueDrawables = emptyList()
         )
 
         val monthlyPlans = dynamicPlans.plans.map { plan ->
@@ -57,7 +60,8 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                     userId,
                     monthlyPlanInstance,
                     plan = plan
-                )
+                ),
+                premiumValueDrawables = planNameToPremiumValueDrawables(plan.name)
             )
         }.toMutableList().apply {
             add(freePlan)
@@ -79,7 +83,8 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                     userId,
                     annualPlanInstance,
                     plan = plan
-                )
+                ),
+                premiumValueDrawables = planNameToPremiumValueDrawables(plan.name)
             )
         }.toMutableList().apply {
             add(freePlan)
@@ -89,5 +94,27 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
             monthlyPlans = monthlyPlans,
             annualPlans = annualPlans
         )
+    }
+
+    private fun planNameToPremiumValueDrawables(planName: String?): List<Int> {
+
+        val plusDrawables = listOf(
+            R.drawable.ic_upselling_logo_mail,
+            R.drawable.ic_upselling_logo_calendar
+        )
+
+        val unlimitedDrawables = listOf(
+            R.drawable.ic_upselling_logo_mail,
+            R.drawable.ic_upselling_logo_calendar,
+            R.drawable.ic_upselling_logo_vpn,
+            R.drawable.ic_upselling_logo_drive,
+            R.drawable.ic_upselling_logo_pass
+        )
+
+        return when (planName) {
+            DynamicPlansOneClickIds.PlusPlanId -> plusDrawables
+            DynamicPlansOneClickIds.UnlimitedPlanId -> unlimitedDrawables
+            else -> emptyList()
+        }
     }
 }

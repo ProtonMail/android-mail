@@ -95,6 +95,7 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 import me.proton.core.compose.theme.headlineNorm
 import me.proton.core.domain.entity.UserId
+import me.proton.core.util.kotlin.takeIfNotEmpty
 
 @Composable
 fun OnboardingUpsellScreen(
@@ -439,7 +440,7 @@ private fun PlanEntitlements(
             }
         }
 
-        PremiumValueSection(modifier, plan.title)
+        PremiumValueSection(modifier, plan.premiumValueDrawables)
 
         val numberOfEntitlementsNotShown = (plan.entitlements.size - numberOfEntitlementsToShow).coerceAtLeast(0)
         if (numberOfEntitlementsNotShown != 0 && !showAllEntitlements.value) {
@@ -506,28 +507,8 @@ private fun MorePlanEntitlements(
 }
 
 @Composable
-private fun PremiumValueSection(modifier: Modifier = Modifier, planName: String) {
-
-    val plusDrawables = listOf(
-        R.drawable.ic_upselling_logo_mail,
-        R.drawable.ic_upselling_logo_calendar
-    )
-
-    val unlimitedDrawables = listOf(
-        R.drawable.ic_upselling_logo_mail,
-        R.drawable.ic_upselling_logo_calendar,
-        R.drawable.ic_upselling_logo_vpn,
-        R.drawable.ic_upselling_logo_drive,
-        R.drawable.ic_upselling_logo_pass
-    )
-
-    val drawables = when {
-        planName.contains("plus", ignoreCase = true) -> plusDrawables
-        planName.contains("unlimited", ignoreCase = true) -> unlimitedDrawables
-        else -> null
-    }
-
-    drawables?.let {
+private fun PremiumValueSection(modifier: Modifier = Modifier, logoDrawables: List<Int>) {
+    logoDrawables.takeIfNotEmpty()?.let {
         Column(modifier = modifier.padding(bottom = ProtonDimens.DefaultSpacing)) {
             Text(
                 modifier = modifier.padding(vertical = ProtonDimens.SmallSpacing),
@@ -537,12 +518,12 @@ private fun PremiumValueSection(modifier: Modifier = Modifier, planName: String)
             Row(
                 modifier = modifier
             ) {
-                drawables.forEach {
-                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+                logoDrawables.forEach {
                     Image(
                         painter = painterResource(id = it),
                         contentDescription = NO_CONTENT_DESCRIPTION
                     )
+                    Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
                 }
             }
         }

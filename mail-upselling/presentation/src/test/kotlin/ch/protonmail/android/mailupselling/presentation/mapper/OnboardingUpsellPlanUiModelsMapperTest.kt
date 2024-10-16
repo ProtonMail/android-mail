@@ -8,6 +8,8 @@ import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlement
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValuePlusDrawables
+import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValueUnlimitedDrawables
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -43,7 +45,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = null,
                     monthlyPriceWithDiscount = TextUiModel.Text("0.1"),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
-                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                    premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Mail Plus",
@@ -51,7 +54,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = null,
                     monthlyPriceWithDiscount = TextUiModel.Text("0.1"),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
-                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                    premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
@@ -59,7 +63,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = null,
                     monthlyPriceWithDiscount = null,
                     entitlements = OnboardingFreeOverriddenEntitlements,
-                    payButtonPlanUiModel = null
+                    payButtonPlanUiModel = null,
+                    premiumValueDrawables = emptyList()
                 )
             ),
             annualPlans = listOf(
@@ -69,7 +74,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = TextUiModel.Text("0.1"),
                     monthlyPriceWithDiscount = TextUiModel.Text("0.09"),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
-                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                    premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Mail Plus",
@@ -77,7 +83,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = TextUiModel.Text("0.1"),
                     monthlyPriceWithDiscount = TextUiModel.Text("0.09"),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
-                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel
+                    payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
+                    premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
@@ -85,7 +92,8 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                     monthlyPrice = null,
                     monthlyPriceWithDiscount = null,
                     entitlements = OnboardingFreeOverriddenEntitlements,
-                    payButtonPlanUiModel = null
+                    payButtonPlanUiModel = null,
+                    premiumValueDrawables = emptyList()
                 )
             )
         )
