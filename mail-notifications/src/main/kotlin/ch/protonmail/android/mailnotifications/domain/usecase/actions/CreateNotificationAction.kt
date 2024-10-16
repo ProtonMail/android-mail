@@ -40,6 +40,7 @@ internal class CreateNotificationAction @Inject constructor(
         val pendingIntent = when (payload.action) {
             is LocalNotificationAction.MoveTo -> createMoveToPendingIntent(payload)
             is LocalNotificationAction.Reply -> createReplyPendingIntent(payload)
+            is LocalNotificationAction.MarkAsRead -> createMarkAsReadPendingIntent(payload)
         }
 
         // Icon is always going to be 0, as it is unused.
@@ -47,6 +48,19 @@ internal class CreateNotificationAction @Inject constructor(
     }
 
     private fun createMoveToPendingIntent(payload: PushNotificationPendingIntentPayloadData): PendingIntent {
+        val intent = Intent(context, PushNotificationActionsBroadcastReceiver::class.java).apply {
+            putExtra(NotificationActionIntentExtraKey, payload.serialize())
+        }
+
+        return PendingIntent.getBroadcast(
+            context,
+            payload.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
+
+    private fun createMarkAsReadPendingIntent(payload: PushNotificationPendingIntentPayloadData): PendingIntent {
         val intent = Intent(context, PushNotificationActionsBroadcastReceiver::class.java).apply {
             putExtra(NotificationActionIntentExtraKey, payload.serialize())
         }
@@ -86,6 +100,9 @@ internal class CreateNotificationAction @Inject constructor(
 
                 LocalNotificationAction.Reply ->
                     context.getString(R.string.notification_actions_reply_description)
+
+                LocalNotificationAction.MarkAsRead ->
+                    context.getString(R.string.notification_actions_mark_as_read_description)
             }
         }
 

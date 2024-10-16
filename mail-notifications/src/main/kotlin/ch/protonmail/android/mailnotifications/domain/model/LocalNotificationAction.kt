@@ -29,11 +29,14 @@ internal sealed class LocalNotificationAction {
     sealed class MoveTo(val destinationLabel: LabelId) : LocalNotificationAction() {
 
         @Serializable
-        object Archive : MoveTo(destinationLabel = SystemLabelId.Archive.labelId)
+        data object Archive : MoveTo(destinationLabel = SystemLabelId.Archive.labelId)
 
         @Serializable
-        object Trash : MoveTo(destinationLabel = SystemLabelId.Trash.labelId)
+        data object Trash : MoveTo(destinationLabel = SystemLabelId.Trash.labelId)
     }
 
-    object Reply : LocalNotificationAction()
+    @Serializable
+    data object MarkAsRead : LocalNotificationAction()
+
+    data object Reply : LocalNotificationAction()
 }

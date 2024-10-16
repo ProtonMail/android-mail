@@ -81,6 +81,19 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
                     }
                 }
 
+                is LocalNotificationAction.MarkAsRead -> {
+                    val result = messageRepository.markRead(
+                        userId = UserId(actionData.userId),
+                        messageId = MessageId(actionData.messageId)
+                    )
+
+                    result.onLeft {
+                        Timber.e("Error marking as read message from notification action: $it")
+                    }.onRight {
+                        Timber.d("Message marked as read successfully from notification action: $it")
+                    }
+                }
+
                 else -> Timber.w("Unsupported action via BroadcastReceiver: $action")
             }
         }

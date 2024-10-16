@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.annotations.MarkAsReadNotificationActionEnabled
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
@@ -45,6 +46,7 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
     private val createNewMessageNavigationIntent: CreateNewMessageNavigationIntent,
     private val createNotificationAction: CreateNotificationAction,
+    @MarkAsReadNotificationActionEnabled private val showMarkAsRead: Boolean,
     @AppScope private val coroutineScope: CoroutineScope
 ) {
 
@@ -89,10 +91,16 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
 
             val trashAction = archiveAction.copy(action = LocalNotificationAction.MoveTo.Trash)
             val replyAction = archiveAction.copy(action = LocalNotificationAction.Reply)
+            val markAsReadAction = archiveAction.copy(action = LocalNotificationAction.MarkAsRead)
 
             addAction(createNotificationAction(archiveAction))
             addAction(createNotificationAction(trashAction))
-            addAction(createNotificationAction(replyAction))
+
+            if (showMarkAsRead) {
+                addAction(createNotificationAction(markAsReadAction))
+            } else {
+                addAction(createNotificationAction(replyAction))
+            }
         }.build()
 
         val groupNotification = notificationProvider.provideEmailNotificationBuilder(

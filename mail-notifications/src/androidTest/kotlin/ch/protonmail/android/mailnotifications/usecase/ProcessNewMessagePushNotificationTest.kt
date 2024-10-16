@@ -53,7 +53,6 @@ import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.entity.UserId
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -80,6 +79,10 @@ internal class ProcessNewMessagePushNotificationTest {
     private val testDispatcher = UnconfinedTestDispatcher()
     private val scope = CoroutineScope(testDispatcher)
 
+    private val isMarkAsReadEnabled = mockk<Provider<Boolean>> {
+        every { get() } returns false
+    }
+
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification
         get() = ProcessNewMessagePushNotification(
             context,
@@ -88,6 +91,7 @@ internal class ProcessNewMessagePushNotificationTest {
             notificationManagerCompatProxy,
             createNewMessageNavigationIntent,
             createNotificationAction,
+            isMarkAsReadEnabled.get(),
             scope
         )
 
@@ -141,6 +145,35 @@ internal class ProcessNewMessagePushNotificationTest {
             createNotificationAction(expectedArchivePayload)
             createNotificationAction(expectedTrashPayload)
             createNotificationAction(expectedReplyPayload)
+        }
+
+        confirmVerified(createNotificationAction)
+    }
+
+    @Test
+    fun processNewMessageNotificationCreatesIntentsWithMarkAsReadActionWhenFeatureEnabled() = runTest {
+        // Given
+        coEvery { messageRepository.getRefreshedMessageWithBody(any(), any()) } returns null
+        every { isMarkAsReadEnabled.get() } returns true
+        val expectedArchivePayload = PushNotificationPendingIntentPayloadData(
+            pushData.messageId.hashCode(),
+            userData.userId,
+            userData.userId,
+            pushData.messageId,
+            LocalNotificationAction.MoveTo.Archive
+        )
+        val expectedTrashPayload = expectedArchivePayload.copy(action = LocalNotificationAction.MoveTo.Trash)
+        val expectedMarkAsReadPayload = expectedArchivePayload.copy(action = LocalNotificationAction.MarkAsRead)
+
+        // When
+        val result = processNewMessagePushNotification(newMessageData)
+
+        // Then
+        assertEquals(ListenableWorker.Result.success(), result)
+        verify(exactly = 1) {
+            createNotificationAction(expectedArchivePayload)
+            createNotificationAction(expectedTrashPayload)
+            createNotificationAction(expectedMarkAsReadPayload)
         }
 
         confirmVerified(createNotificationAction)
