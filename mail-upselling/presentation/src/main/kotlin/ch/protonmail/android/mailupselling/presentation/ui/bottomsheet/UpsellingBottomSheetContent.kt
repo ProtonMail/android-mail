@@ -20,7 +20,7 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -68,11 +68,23 @@ internal fun UpsellingBottomSheetContent(
 
     val isNarrowScreen = LocalConfiguration.current.screenWidthDp <= MailDimens.NarrowScreenWidth.value
 
-    Box {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = backgroundColor)
+    ) {
+
+        IconButton(
+            onClick = actions.onDismiss
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                tint = ProtonTheme.colors.iconWeak,
+                contentDescription = stringResource(R.string.upselling_close_button_content_description)
+            )
+        }
+
         LazyColumn(
-            modifier = modifier
-                .fillMaxWidth()
-                .background(color = backgroundColor),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             item {
@@ -80,8 +92,7 @@ internal fun UpsellingBottomSheetContent(
                     Image(
                         modifier = Modifier.padding(
                             start = ProtonDimens.DefaultSpacing,
-                            end = ProtonDimens.DefaultSpacing,
-                            top = ProtonDimens.DefaultSpacing
+                            end = ProtonDimens.DefaultSpacing
                         ),
                         painter = painterResource(id = dynamicPlansModel.icon.iconResId),
                         contentDescription = NO_CONTENT_DESCRIPTION
@@ -136,16 +147,6 @@ internal fun UpsellingBottomSheetContent(
             }
 
             item { UpsellingPlansList(modifier = Modifier.padding(ProtonDimens.DefaultSpacing), state.plans, actions) }
-        }
-
-        IconButton(
-            onClick = actions.onDismiss
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                tint = ProtonTheme.colors.iconWeak,
-                contentDescription = stringResource(R.string.upselling_close_button_content_description)
-            )
         }
     }
 
