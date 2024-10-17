@@ -21,7 +21,9 @@ package ch.protonmail.android.mailnotifications.data.local
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
+import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAndConversationReadIfAllMessagesRead
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
@@ -42,6 +44,9 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
 
     @Inject
     lateinit var messageRepository: MessageRepository
+
+    @Inject
+    lateinit var markAsRead: MarkMessageAndConversationReadIfAllMessagesRead
 
     @Inject
     lateinit var notificationManagerCompatProxy: NotificationManagerCompatProxy
@@ -65,6 +70,9 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
         val actionData = rawAction.deserialize<PushNotificationPendingIntentPayloadData>()
 
         coroutineScope.launch {
+            val userId = UserId(actionData.userId)
+            val messageId = MessageId(actionData.messageId)
+
             when (val action = actionData.action) {
                 is LocalNotificationAction.MoveTo -> {
                     val result = messageRepository.moveTo(
@@ -82,15 +90,17 @@ internal class PushNotificationActionsBroadcastReceiver @Inject constructor() : 
                 }
 
                 is LocalNotificationAction.MarkAsRead -> {
-                    val result = messageRepository.markRead(
-                        userId = UserId(actionData.userId),
-                        messageId = MessageId(actionData.messageId)
-                    )
+                    messageRepository.getLocalMessages(userId, listOf(messageId)).firstOrNull()?.let {
+                        val conversationId = it.conversationId
 
-                    result.onLeft {
-                        Timber.e("Error marking as read message from notification action: $it")
-                    }.onRight {
-                        Timber.d("Message marked as read successfully from notification action: $it")
+                        markAsRead(userId, messageId, conversationId).getOrElse {
+                            return@launch Timber.e("Unable to find message with id $messageId.")
+                        }
+
+                        Timber.d("Conversation marked as read.")
+                    } ?: run {
+                        Timber.e("Unable to find message with id $messageId.")
+                        return@launch
                     }
                 }
 

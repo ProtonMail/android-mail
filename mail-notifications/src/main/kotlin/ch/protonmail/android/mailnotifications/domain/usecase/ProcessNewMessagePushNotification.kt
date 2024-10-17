@@ -36,6 +36,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import me.proton.core.domain.entity.UserId
+import me.proton.core.eventmanager.domain.EventManagerConfig
+import me.proton.core.eventmanager.domain.EventManagerProvider
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -46,6 +48,7 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
     private val notificationManagerCompatProxy: NotificationManagerCompatProxy,
     private val createNewMessageNavigationIntent: CreateNewMessageNavigationIntent,
     private val createNotificationAction: CreateNotificationAction,
+    private val eventManager: EventManagerProvider,
     @MarkAsReadNotificationActionEnabled private val showMarkAsRead: Boolean,
     @AppScope private val coroutineScope: CoroutineScope
 ) {
@@ -56,10 +59,19 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
         val userData = notificationData.userData
         val pushData = notificationData.pushData
 
-        // Prefetch the message, but do nothing in case of failure.
         coroutineScope.launch {
-            messageRepository.getRefreshedMessageWithBody(UserId(userData.userId), MessageId(pushData.messageId))
-                ?: Timber.d("Unable to prefetch the message with id ${pushData.messageId}.")
+            if (showMarkAsRead) {
+                // This branch will become the default once the FF is removed and promoted.
+                val currentTime = System.currentTimeMillis()
+                if (currentTime - lastExecutionTime >= DEBOUNCE_INTERVAL_MS) {
+                    lastExecutionTime = currentTime
+                    val config = EventManagerConfig.Core(UserId(userData.userId))
+                    eventManager.get(config).resume()
+                }
+            } else {
+                messageRepository.getRefreshedMessageWithBody(UserId(userData.userId), MessageId(pushData.messageId))
+                    ?: Timber.d("Unable to prefetch the message with id ${pushData.messageId}.")
+            }
         }
 
         val notificationTitle = pushData.sender
@@ -121,5 +133,11 @@ internal class ProcessNewMessagePushNotification @Inject constructor(
         }
 
         return ListenableWorker.Result.success()
+    }
+
+    companion object {
+
+        private var lastExecutionTime: Long = 0
+        private const val DEBOUNCE_INTERVAL_MS = 10_000
     }
 }

@@ -43,6 +43,7 @@ import ch.protonmail.android.mailnotifications.title
 import ch.protonmail.android.test.annotations.suite.SmokeTest
 import io.mockk.CapturingSlot
 import io.mockk.coEvery
+import io.mockk.coVerifySequence
 import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.mockk
@@ -51,8 +52,16 @@ import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import me.proton.core.domain.entity.UserId
+import me.proton.core.eventmanager.domain.EventManager
+import me.proton.core.eventmanager.domain.EventManagerConfig
+import me.proton.core.eventmanager.domain.EventManagerProvider
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -74,13 +83,14 @@ internal class ProcessNewMessagePushNotificationTest {
     private val createNewMessageNavigationIntent = spyk(
         CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper)
     )
-    private val provideMessagePrefetchDisabled = mockk<Provider<Boolean>>()
 
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
     private val scope = CoroutineScope(testDispatcher)
 
-    private val isMarkAsReadEnabled = mockk<Provider<Boolean>> {
-        every { get() } returns false
+    private val isMarkAsReadEnabled = mockk<Provider<Boolean>>()
+    private val eventManager = mockk<EventManager>(relaxUnitFun = true)
+    private val eventManagerProvider = mockk<EventManagerProvider> {
+        coEvery { this@mockk.get(any()) } returns eventManager
     }
 
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification
@@ -91,6 +101,7 @@ internal class ProcessNewMessagePushNotificationTest {
             notificationManagerCompatProxy,
             createNewMessageNavigationIntent,
             createNotificationAction,
+            eventManagerProvider,
             isMarkAsReadEnabled.get(),
             scope
         )
@@ -101,12 +112,14 @@ internal class ProcessNewMessagePushNotificationTest {
 
     @Before
     fun setup() {
+        Dispatchers.setMain(testDispatcher)
         initializeCommonMocks()
         notificationProvider.initNotificationChannels()
     }
 
     @After
     fun teardown() {
+        Dispatchers.resetMain()
         unmockkAll()
     }
 
@@ -167,6 +180,7 @@ internal class ProcessNewMessagePushNotificationTest {
 
         // When
         val result = processNewMessagePushNotification(newMessageData)
+        advanceUntilIdle()
 
         // Then
         assertEquals(ListenableWorker.Result.success(), result)
@@ -176,8 +190,16 @@ internal class ProcessNewMessagePushNotificationTest {
             createNotificationAction(expectedMarkAsReadPayload)
         }
 
+        coVerifySequence {
+            eventManagerProvider.get(EventManagerConfig.Core(UserId(userData.userId)))
+            eventManager.resume()
+        }
+
         confirmVerified(createNotificationAction)
+        confirmVerified(eventManager)
+        confirmVerified(eventManagerProvider)
     }
+
 
     @Test
     fun processNewMessageNotificationShowsNotificationWithActions() = runTest {
@@ -235,7 +257,7 @@ internal class ProcessNewMessagePushNotificationTest {
         every { notificationsDeepLinkHelper.buildMessageDeepLinkIntent(any(), any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
-        every { provideMessagePrefetchDisabled.get() } returns false
+        every { isMarkAsReadEnabled.get() } returns false
     }
 
     private companion object {
