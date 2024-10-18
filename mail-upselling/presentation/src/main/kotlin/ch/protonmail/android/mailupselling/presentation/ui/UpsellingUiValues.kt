@@ -56,7 +56,7 @@ internal object UpsellingColors {
     val BottomSheetBackgroundColor = R.color.haiti
     val DiscountTagColorStops = arrayOf(0.0f to Color(0xFFA792FF), 0.5f to Color(0xFF27DDB1))
     val EntitlementsRowDivider = Color.White.copy(alpha = 0.08f)
-    val SecondaryButtonBackground = android.graphics.Color.parseColor("#33FFFFFF")
+    val SecondaryButtonBackground = android.graphics.Color.parseColor("#474065")
     val PaymentDiscountedItemBackground = Color(0xFF221B42)
     val PaymentDiscountedItemBorder = Color(0xFFA196FC)
     val PaymentStandardItemBackground = Color.White.copy(alpha = 0.04f)
