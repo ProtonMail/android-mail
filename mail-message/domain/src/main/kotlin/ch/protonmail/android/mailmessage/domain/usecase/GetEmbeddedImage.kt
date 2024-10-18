@@ -21,8 +21,9 @@ package ch.protonmail.android.mailmessage.domain.usecase
 import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.extension.hasAllowedEmbeddedImageMimeType
+import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeaderValue
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import me.proton.core.domain.entity.UserId
@@ -39,11 +40,16 @@ class GetEmbeddedImage @Inject constructor(
         contentId: String
     ): Either<DataError, GetEmbeddedImageResult> = either {
         val messageWithBody =
-            messageRepository.getLocalMessageWithBody(userId, messageId) ?: shift(DataError.Local.NoDataCached)
+            messageRepository.getLocalMessageWithBody(userId, messageId) ?: raise(DataError.Local.NoDataCached)
         val attachment = messageWithBody.messageBody.attachments
             .filter { it.hasAllowedEmbeddedImageMimeType() }
-            .firstOrNull { it.headers["content-id"] == contentId }
-            ?: shift(DataError.Local.NoDataCached)
+            .firstOrNull {
+                when (val headerValue = it.headers["content-id"]) {
+                    is HeaderValue.StringValue -> headerValue.value == contentId
+                    else -> false
+                }
+            }
+            ?: raise(DataError.Local.NoDataCached)
 
         val decryptedEmbeddedImage =
             attachmentRepository.getEmbeddedImage(userId, messageId, attachment.attachmentId).bind()

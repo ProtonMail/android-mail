@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.UnsubscribeMethods
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeaderValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -159,7 +160,7 @@ data class AttachmentResource(
     @SerialName("EncSignature")
     val encSignature: String? = null,
     @SerialName("Headers")
-    val headers: Map<String, String>
+    val headers: Map<String, HeaderValue>
 ) {
     fun toMessageAttachment() = MessageAttachment(
         attachmentId = AttachmentId(id),

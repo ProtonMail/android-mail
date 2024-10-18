@@ -21,8 +21,11 @@ package ch.protonmail.android.mailmessage.data.local.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import androidx.room.TypeConverters
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeaderValue
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeadersTypeConverter
 import me.proton.core.domain.entity.UserId
 import me.proton.core.user.data.entity.UserEntity
 
@@ -50,6 +53,7 @@ import me.proton.core.user.data.entity.UserEntity
         )
     ]
 )
+@TypeConverters(HeadersTypeConverter::class)
 data class MessageAttachmentEntity(
     val userId: UserId,
     val messageId: MessageId,
@@ -61,5 +65,5 @@ data class MessageAttachmentEntity(
     val keyPackets: String?,
     val signature: String?,
     val encSignature: String?,
-    val headers: Map<String, String>
+    val headers: Map<String, HeaderValue>
 )

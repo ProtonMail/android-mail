@@ -189,4 +189,18 @@ class GetEmbeddedImageTest {
         assertEquals(expected, actual)
     }
 
+    @Test
+    fun `returns no data cached when getting embedded images from a header list element`() = runTest {
+        // Given
+        coEvery { messageRepository.getLocalMessageWithBody(userId, messageId) } returns MessageWithBody(
+            message = MessageTestData.message.copy(),
+            messageBody = MessageBodyTestData.messageBodyWithContentIdList
+        )
+
+        // When
+        val actual = getEmbeddedImage(userId, messageId, contentId)
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
 }

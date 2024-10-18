@@ -60,6 +60,12 @@ object MessageBodyTestData {
         )
     )
 
+    val messageBodyWithContentIdList = buildMessageBody(
+        attachments = listOf(
+            MessageAttachmentSample.embeddedImageAttachmentAsList
+        )
+    )
+
     val htmlMessageBody = buildMessageBody(
         mimeType = MimeType.Html
     )

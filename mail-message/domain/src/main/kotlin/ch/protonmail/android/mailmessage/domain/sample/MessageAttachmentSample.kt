@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.domain.sample
 
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeaderValue
 
 object MessageAttachmentSample {
 
@@ -116,7 +117,19 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
+        headers = createHeaderMap("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
+    )
+
+    val embeddedImageAttachmentAsList = MessageAttachment(
+        attachmentId = AttachmentId("embeddedImageId"),
+        name = "embeddedImage.png",
+        size = 1234,
+        mimeType = "image/png",
+        disposition = "inline",
+        keyPackets = null,
+        signature = null,
+        encSignature = null,
+        headers = createHeaderMap("content-id" to listOf("embeddedImageId"), "content-disposition" to "inline")
     )
 
     val embeddedOctetStreamAttachment = MessageAttachment(
@@ -128,7 +141,7 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
+        headers = createHeaderMap("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val invalidEmbeddedImageAttachment = MessageAttachment(
@@ -140,7 +153,7 @@ object MessageAttachmentSample {
         keyPackets = null,
         signature = null,
         encSignature = null,
-        headers = mapOf("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
+        headers = createHeaderMap("content-id" to "embeddedImageContentId", "content-disposition" to "inline")
     )
 
     val signedDocument = MessageAttachment(
@@ -167,4 +180,12 @@ object MessageAttachmentSample {
         headers = emptyMap()
     )
 
+    private fun createHeaderMap(vararg pairs: Pair<String, Any>): Map<String, HeaderValue> =
+        pairs.toMap().mapValues { (_, value) ->
+            when (value) {
+                is String -> HeaderValue.StringValue(value)
+                is List<*> -> HeaderValue.ListValue(value.filterIsInstance<String>())
+                else -> throw IllegalArgumentException("Unsupported header value type: ${value::class.java}")
+            }
+        }
 }
