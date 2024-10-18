@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.testdata.message.MessageAttachmentEntityTestData.createHeaderMap
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -252,7 +253,7 @@ class DraftUploadTrackerTest {
             keyPackets = "sample_key_packets",
             signature = "sample_signature",
             encSignature = "sample_encryption_signature",
-            headers = mapOf(
+            headers = createHeaderMap(
                 "Content-Type" to "application/pdf",
                 "Content-Disposition" to "inline; filename=sample_attachment.pdf",
                 "X-Custom-Header" to "Custom Value"

@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailmessage.data.local.entity.MessageAttachmentEntity
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.attachments.header.HeaderValue
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import me.proton.core.domain.entity.UserId
 
@@ -69,7 +70,7 @@ object MessageAttachmentEntityTestData {
         keyPackets: String? = null,
         signature: String? = null,
         encSignature: String? = null,
-        headers: Map<String, String> = emptyMap()
+        headers: Map<String, HeaderValue> = emptyMap()
     ) = MessageAttachmentEntity(
         userId = userId,
         messageId = messageId,
@@ -83,4 +84,13 @@ object MessageAttachmentEntityTestData {
         encSignature = encSignature,
         headers = headers
     )
+
+    fun createHeaderMap(vararg pairs: Pair<String, Any>): Map<String, HeaderValue> =
+        pairs.toMap().mapValues { (_, value) ->
+            when (value) {
+                is String -> HeaderValue.StringValue(value)
+                is List<*> -> HeaderValue.ListValue(value.filterIsInstance<String>())
+                else -> throw IllegalArgumentException("Unsupported header value type: ${value::class.java}")
+            }
+        }
 }
