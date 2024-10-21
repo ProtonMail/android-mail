@@ -693,7 +693,6 @@ private fun MailboxItemsList(
             }
         }
         item {
-
             when (viewState) {
                 is MailboxScreenState.AppendLoading -> ProtonCenteredProgress(
                     modifier = Modifier
@@ -711,7 +710,9 @@ private fun MailboxItemsList(
                     onClick = { items.retry() }
                 )
 
-                else -> Unit
+                else -> {
+                    Spacer(modifier = Modifier.padding(1.dp))
+                }
             }
         }
     }
