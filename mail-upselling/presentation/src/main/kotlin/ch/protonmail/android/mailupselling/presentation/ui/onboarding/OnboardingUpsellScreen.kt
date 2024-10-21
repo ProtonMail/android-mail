@@ -552,7 +552,7 @@ private fun UpsellButtons(
     }
 
     val getButtonLabel = buttonsUiModel.getButtonLabel[selectedPlan]
-        ?: TextUiModel.TextResWithArgs(R.string.upselling_onboarding_get_plan, listOf(PROTON_FREE))
+        ?: TextUiModel.TextRes(R.string.upselling_onboarding_continue_with_proton_free)
 
     MailDivider()
     Column(
