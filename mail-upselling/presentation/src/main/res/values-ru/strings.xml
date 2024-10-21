@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Используйте собственную мобильную подпись и наслаждайтесь другими платными услугами с Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Отредактируйте вашу подпись.</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ хранилище</string>
   <string name="upselling_plus_feature_email_addresses">10 адресов электронной почты</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Безопасное облачное хранилище</string>
   <string name="upselling_unlimited_feature_pass">Менеджер паролей с шифрованием</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">Сквозное шифрование</string>
   <string name="upselling_onboarding_feature_folders_labels">Неограниченное количество папок и ярлыков</string>
   <string name="upselling_onboarding_free_feature_storage">1 ГБ хранилища и 1 адрес электронной почты</string>

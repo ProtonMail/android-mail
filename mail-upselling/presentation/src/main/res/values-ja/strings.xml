@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">自分のモバイル署名を使用し、Mail Plus の他のプレミアム機能を楽しんでください。</string>
   <string name="upselling_mobile_signature_plus_title">署名をカスタマイズする</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB のストレージ</string>
   <string name="upselling_plus_feature_email_addresses">10個のメールアドレス</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">安全なクラウドストレージ</string>
   <string name="upselling_unlimited_feature_pass">暗号化されたパスワードマネージャー</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">エンドツーエンド暗号化</string>
   <string name="upselling_onboarding_feature_folders_labels">無制限のフォルダーとラベル</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB のストレージと 1 つのメールアドレス</string>

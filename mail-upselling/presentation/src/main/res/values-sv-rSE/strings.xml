@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Använd din egen mobilsignatur och njut av andra premiumfunktioner med Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Anpassa din signatur</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagringsutrymme</string>
   <string name="upselling_plus_feature_email_addresses">10 e-postadresser</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Säker molnlagring</string>
   <string name="upselling_unlimited_feature_pass">Krypterad lösenordshanterare</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premiumvärde inkluderat</string>
   <string name="upselling_onboarding_feature_e2e">End-to-end-kryptering</string>
   <string name="upselling_onboarding_feature_folders_labels">Obegränsat antal mappar och etiketter</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB lagringsutrymme och 1 e-postadress</string>
@@ -93,8 +97,8 @@
     <item quantity="one">%d till funktion</item>
     <item quantity="other">%d fler funktioner</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">Faktureras med %s %s varje månad</string>
+  <string name="upselling_onboarding_billing_annual">Faktureras med %s %s var 12:e månad</string>
   <string name="upselling_onboarding_get_plan">Skaffa %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Fortsätt med Proton Free</string>
   <string name="upselling_onboarding_save_label">Spara %s %%</string>

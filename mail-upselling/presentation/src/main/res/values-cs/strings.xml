@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Používejte vlastní mobilní podpis a využívejte další prémiové funkce s Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Přizpůsobte si podpis</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostoru</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailových adres</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Bezpečné cloudové úložiště</string>
   <string name="upselling_unlimited_feature_pass">Šifrovaný správce hesel</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Včetně prémiové hodnoty</string>
   <string name="upselling_onboarding_feature_e2e">Koncové šifrování</string>
   <string name="upselling_onboarding_feature_folders_labels">Neomezený počet složek a štítků</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB úložiště a 1 e-mailová adresa</string>
@@ -97,8 +101,8 @@
     <item quantity="many">%d dalších funkcí</item>
     <item quantity="other">%d dalších funkcí</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">Účtováno %s %s každý měsíc</string>
+  <string name="upselling_onboarding_billing_annual">Účtováno %s %s každých 12 měsíců</string>
   <string name="upselling_onboarding_get_plan">Získejte %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Pokračovat s Proton Free</string>
   <string name="upselling_onboarding_save_label">Ušetřete %s%%</string>

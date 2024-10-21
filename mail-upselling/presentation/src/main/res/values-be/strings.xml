@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Выкарыстоўвайце свой уласны мабільны подпіс і атрымайце іншыя прэміяльныя функцыі з тарыфным планам Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Наладзьце свой подпіс</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
   <string name="upselling_plus_feature_email_addresses">10 адрасоў электроннай пошты</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Бяспечнае воблачнае сховішча</string>
   <string name="upselling_unlimited_feature_pass">Зашыфраваны менеджар пароляў</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Уключаны прэміяльны функцыянал</string>
   <string name="upselling_onboarding_feature_e2e">Скразное шыфраванне</string>
   <string name="upselling_onboarding_feature_folders_labels">Неабмежаваная колькасць папак і метак</string>
   <string name="upselling_onboarding_free_feature_storage">1 ГБ сховішча і 1 адрас электроннай пошты</string>
@@ -97,8 +101,8 @@
     <item quantity="many">Яшчэ %d функцый</item>
     <item quantity="other">Яшчэ %d функцый</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">Аплачваецца %s %s кожны месяц</string>
+  <string name="upselling_onboarding_billing_annual">Аплачваецца %s %s кожныя 12 месяцаў</string>
   <string name="upselling_onboarding_get_plan">Атрымаць %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Працягнуць з Proton Free</string>
   <string name="upselling_onboarding_save_label">Эканомія %s%%</string>

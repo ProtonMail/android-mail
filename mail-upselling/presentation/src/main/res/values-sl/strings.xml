@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Uporabite svoj lastni mobilni podpis in uživajte v drugih vrhunskih funkcijah z Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Prilagodite svoj podpis</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB prostora za shranjevanje</string>
   <string name="upselling_plus_feature_email_addresses">10 e-poštnih naslovov</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Varna shramba v oblaku</string>
   <string name="upselling_unlimited_feature_pass">Upravitelj šifriranih gesel</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">End-to-end šifriranje</string>
   <string name="upselling_onboarding_feature_folders_labels">Neomejeno število map in oznak</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB prostora in 1 e-pošta</string>

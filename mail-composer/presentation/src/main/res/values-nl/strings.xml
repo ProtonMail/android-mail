@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 tot 21 tekens lang</string>
   <string name="set_message_password_supporting_error_text">Het wachtwoord moet tussen de 4 en 21 tekens lang zijn</string>
   <string name="set_message_password_supporting_text_repeat">Wachtwoorden moeten overeenkomen</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">De wachtwoorden komen niet overeen.</string>
   <string name="set_message_password_button_show">Toon wachtwoord</string>
   <string name="set_message_password_button_hide">Wachtwoord verbergen</string>
   <string name="set_message_password_button_apply">Wachtwoord toepassen</string>

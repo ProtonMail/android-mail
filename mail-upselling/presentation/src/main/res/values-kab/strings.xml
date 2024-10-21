@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Tuzḳi sigwul-ik d tmahilin d Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Mudd udem i izmul-ik</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GAṬ n uḥraz</string>
   <string name="upselling_plus_feature_email_addresses">10 n tansiwin imayl</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Aḥraz n usigna aɣellsan</string>
   <string name="upselling_unlimited_feature_pass">Amsefrak n wawalen uffiren</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">Awgelhen seg yixef ɣer yixef</string>
   <string name="upselling_onboarding_feature_folders_labels">Ikaramen d tebzimin</string>
   <string name="upselling_onboarding_free_feature_storage">1 GAṬ n uḥraz d 1 tansa n yimayl</string>

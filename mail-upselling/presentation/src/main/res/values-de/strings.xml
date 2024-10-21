@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Verwende deine eigene mobile Signatur und genieße weitere Premium-Funktionen mit Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Passe deine Signatur an</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Sicherer Cloud-Speicher</string>
   <string name="upselling_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium-Funktionen inbegriffen</string>
   <string name="upselling_onboarding_feature_e2e">Ende-zu-Ende-Verschlüsselung</string>
   <string name="upselling_onboarding_feature_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB Speicherplatz und 1 E-Mail-Adresse</string>

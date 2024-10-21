@@ -59,7 +59,7 @@
   <string name="contact_actions_new_message">Scrivi un messaggio</string>
   <string name="contact_actions_new_message_description">Scrivi un nuovo messaggio per questo contatto</string>
   <string name="contact_actions_add_contact">Salva come contatto</string>
-  <string name="contact_actions_add_contact_description">Salva questo destinatario come contatto</string>
+  <string name="contact_actions_add_contact_description">Salva come contatto</string>
   <string name="contact_actions_view_contact_details">Visualizza i dettagli</string>
   <string name="contact_actions_view_contact_details_description">Visualizza i dettagli di questo contatto</string>
   <!-- Device Contacts permission dialog -->

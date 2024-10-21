@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">使用您自己的行動版簽名檔，享受其他頂級功能，使用 Mail Plus。</string>
   <string name="upselling_mobile_signature_plus_title">自訂您的簽名檔</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB 儲存空間</string>
   <string name="upselling_plus_feature_email_addresses">10 個電子信箱</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">安全的雲端儲存空間</string>
   <string name="upselling_unlimited_feature_pass">加密的密碼管理器</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">端對端加密</string>
   <string name="upselling_onboarding_feature_folders_labels">無限制的資料夾和標籤</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB 儲存空間和 1 個電子郵件位址</string>

@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Usa tu propia firma de móvil y disfruta de otras funciones prémium con Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Personaliza tu firma</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Disfruta de un buzón ordenado y del beneficio de otras funciones premium con Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Borrar la papelera y spam antiguos</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>
   <string name="upselling_plus_feature_email_addresses">10 direcciones de correo electrónico</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Almacenamiento seguro en la nube</string>
   <string name="upselling_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Funciones prémium incluidas</string>
   <string name="upselling_onboarding_feature_e2e">Cifrado de extremo a extremo</string>
   <string name="upselling_onboarding_feature_folders_labels">Número ilimitado de carpetas y etiquetas</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB de almacenamiento y 1 dirección de correo electrónico</string>

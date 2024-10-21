@@ -68,7 +68,7 @@
   <string name="folder_settings_title">設定</string>
   <string name="folder_settings_done_button">完了</string>
   <string name="folder_settings_folder_colors">フォルダーの色を使用</string>
-  <string name="folder_settings_parent_color">Inherit parent folder color</string>
+  <string name="folder_settings_parent_color">親フォルダの色を引き継ぐ</string>
   <string name="folder_list_loading_error">フォルダの読み込み中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="folder_loading_error">フォルダの読み込み中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="switch_on">オン</string>

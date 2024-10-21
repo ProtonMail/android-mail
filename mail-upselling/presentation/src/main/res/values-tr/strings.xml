@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Kendi mobil imzanızı kullanın ve Mail Plus tarifesi ile diğer ücretli özelliklerin tadını çıkarın.</string>
   <string name="upselling_mobile_signature_plus_title">İmzanızı özelleştirin</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Güvenli bulut depolama alanı</string>
   <string name="upselling_unlimited_feature_pass">Şifrelenmiş parola yöneticisi</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Ücretli özelliklerle birlikte</string>
   <string name="upselling_onboarding_feature_e2e">Uçtan uca şifreleme</string>
   <string name="upselling_onboarding_feature_folders_labels">Sınırsız sayıda klasör ve etiket</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB depolama alanı ve 1 e-posta adresi</string>
@@ -93,8 +97,8 @@
     <item quantity="one">%d ek özellik</item>
     <item quantity="other">%d ek özellik</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">Her ay %s %s olarak faturalanır</string>
+  <string name="upselling_onboarding_billing_annual">12 ayda bir %s %s olarak faturalanır</string>
   <string name="upselling_onboarding_get_plan">%s alın</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free tarifesini kullanmayı sürdür</string>
   <string name="upselling_onboarding_save_label">%s%% indirim</string>

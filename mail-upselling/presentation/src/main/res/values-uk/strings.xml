@@ -35,6 +35,9 @@
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_mobile_signature_plus_description_override">Використовуйте свій власний мобільний підпис і насолоджуйтеся іншими преміум функціями з Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Налаштуйте свій підпис</string>
+  <!-- Upselling: Mobile Signature -->
+  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховища</string>
   <string name="upselling_plus_feature_email_addresses">10 адрес електронної пошти</string>
@@ -50,6 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Безпечне хмарне сховище</string>
   <string name="upselling_unlimited_feature_pass">Зашифрований менеджер паролів</string>
   <!-- Onboarding Upselling -->
+  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
   <string name="upselling_onboarding_feature_e2e">Наскрізне шифрування</string>
   <string name="upselling_onboarding_feature_folders_labels">Необмежені теки та мітки</string>
   <string name="upselling_onboarding_free_feature_storage">1 ГБ сховища і 1 адреса електронної пошти</string>

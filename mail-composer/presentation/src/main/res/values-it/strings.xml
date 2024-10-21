@@ -60,7 +60,7 @@
   <string name="composer_error_setting_expiration_time">Impostazione della scadenza non riuscita</string>
   <!-- Send expiring message to external recipients dialog -->
   <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Scadenza non supportata</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Consigliamo invece di impostare una password per i seguenti destinatari:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Imposta una password per inviare il messaggio con scadenza a destinatari esterni. Sei sicuro di voler inviare questo messaggio senza una scadenza per i seguenti destinatari?</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Annulla</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Invia comunque</string>
   <!-- Sender changed dialog -->
