@@ -18,15 +18,19 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
+import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
 fun UpsellingBottomSheet(
@@ -48,7 +52,11 @@ fun UpsellingBottomSheet(
     )
 
     when (val state = viewModel.state.collectAsState().value) {
-        UpsellingBottomSheetContentState.Loading -> Unit
+        UpsellingBottomSheetContentState.Loading -> ProtonCenteredProgress(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(MailDimens.ExtraLargeSpacing)
+        )
         is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheetContent(modifier, state, actions)
         is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
     }
