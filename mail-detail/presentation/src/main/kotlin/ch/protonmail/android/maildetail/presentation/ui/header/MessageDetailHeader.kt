@@ -483,6 +483,7 @@ private fun SenderAddress(
             text = participantUiModel.participantAddress,
             textColor = ProtonTheme.colors.textAccent,
             clickable = isExpanded,
+            shouldBreak = isExpanded,
             onClick = { onClick(participantUiModel) }
         )
     }
