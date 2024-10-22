@@ -243,11 +243,7 @@ fun MessageDetailScreen(
                     )
                 )
 
-                else -> {
-                    if (bottomSheetState.isVisible) {
-                        ProtonCenteredProgress()
-                    }
-                }
+                else -> Unit
             }
         }
     ) {

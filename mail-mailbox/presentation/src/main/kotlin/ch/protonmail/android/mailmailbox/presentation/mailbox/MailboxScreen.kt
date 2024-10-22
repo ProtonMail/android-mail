@@ -286,11 +286,7 @@ fun MailboxScreen(
                     )
                 }
 
-                else -> {
-                    if (bottomSheetState.isVisible) {
-                        ProtonCenteredProgress()
-                    }
-                }
+                else -> Unit
             }
         }
     ) {

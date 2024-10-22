@@ -266,11 +266,7 @@ fun ConversationDetailScreen(
                     )
                 )
 
-                else -> {
-                    if (bottomSheetState.isVisible) {
-                        ProtonCenteredProgress()
-                    }
-                }
+                else -> Unit
             }
         }
     ) {
