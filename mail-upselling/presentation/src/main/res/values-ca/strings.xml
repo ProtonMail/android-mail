@@ -24,7 +24,7 @@
   <string name="upselling_mailbox_plus_description_override">Per a desbloquejar més emmagatzematge i característiques prèmium</string>
   <string name="upselling_mailbox_plus_title">Millora al pla Mail Plus</string>
   <!-- Upselling: Contact Groups -->
-  <string name="upselling_contact_groups_plus_description_override">Envieu fàcilment correus electrònics a un grup i gaudiu d\'altres característiques prèmium amb Mail Plus.</string>
+  <string name="upselling_contact_groups_plus_description_override">Envieu fàcilment correus electrònics a un grup i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_contact_groups_plus_title">Agrupeu els contactes</string>
   <!-- Upselling: Labels -->
   <string name="upselling_labels_plus_description_override">Obteniu-les i altres característiques prèmium quan milloreu a Mail Plus.</string>
@@ -33,7 +33,7 @@
   <string name="upselling_folders_plus_description_override">Obteniu-les i altres característiques prèmium quan milloreu a Mail Plus.</string>
   <string name="upselling_folders_plus_title">Necessiteu més etiquetes o carpetes?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Utilitzeu la vostra pròpia signatura mòbil i gaudiu d\'altres característiques prèmium amb Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_description_override">Utilitzeu la vostra pròpia signatura mòbil i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Personalitzeu la signatura</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
@@ -53,7 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Emmagatzematge al núvol segur</string>
   <string name="upselling_unlimited_feature_pass">Gestor de contrasenyes xifrades</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
+  <string name="upselling_onboarding_premium_value_included">Característiques prèmium incloses</string>
   <string name="upselling_onboarding_feature_e2e">Xifratge d\'extrem a extrem</string>
   <string name="upselling_onboarding_feature_folders_labels">Carpetes i etiquetes il·limitades</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB d\'emmagatzematge i 1 adreça de correu electrònic</string>
@@ -67,7 +67,7 @@
   <string name="upselling_onboarding_unlimited_feature_email_domains">Suport per a 3 dominis de correu electrònic personalitzats</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">Nombre il·limitat d\'àlies hide-my-email</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">Suport al client dedicat</string>
-  <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultra ràpid i privat</string>
+  <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultra ràpida i privada</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contrasenyes xifrat</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge en el núvol xifrat per a fotos i documents</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protecció avançada del compte</string>

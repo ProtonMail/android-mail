@@ -52,8 +52,8 @@
   <string name="add_a_folder_name_hint">Legg til et mappenavn</string>
   <string name="input_field_max_characters_count">%1d/%2d tegn</string>
   <string name="color_picker_title">Farge</string>
-  <string name="save_label_error">Feil ved lagring av etikett, vennligst prøv igjen senere.</string>
-  <string name="save_folder_error">Feil ved lagring av mappe, vennligst prøv igjen senere.</string>
+  <string name="save_label_error">Feil ved lagring av etikett. Prøv igjen senere.</string>
+  <string name="save_folder_error">Feil ved lagring av mappe. Prøv igjen senere.</string>
   <string name="label_already_exists">Etikett eller mappe med dette navnet eksisterer allerede.</string>
   <string name="label_limit_reached_error">Grense for antall etiketter nådd</string>
   <string name="folder_limit_reached_error">Grense for antall mapper nådd</string>
@@ -69,8 +69,8 @@
   <string name="folder_settings_done_button">Ferdig</string>
   <string name="folder_settings_folder_colors">Bruk mappefarger</string>
   <string name="folder_settings_parent_color">Arv farge fra overordnet mappe</string>
-  <string name="folder_list_loading_error">Feil ved lasting av mapper. Vennligst prøv igjen senere.</string>
-  <string name="folder_loading_error">Feil ved lasting av mappe. Vennligst prøv igjen senere.</string>
+  <string name="folder_list_loading_error">Feil ved lasting av mapper. Prøv igjen senere.</string>
+  <string name="folder_loading_error">Feil ved lasting av mappe. Prøv igjen senere.</string>
   <string name="switch_on">På</string>
   <string name="switch_off">Av</string>
   <string name="folder_form_parent">Overordnet mappe</string>

@@ -74,7 +74,7 @@
   <!-- Other UI Items -->
   <string name="upselling_discount_tag">Spar %s%%</string>
   <string name="upselling_month">/måned</string>
-  <string name="upselling_get_button">Få %s</string>
+  <string name="upselling_get_button">Skaff deg %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d måned</item>
     <item quantity="other">%d måneder</item>
@@ -99,7 +99,7 @@
   </plurals>
   <string name="upselling_onboarding_billing_monthly">Faktureres til %s %s månedlig</string>
   <string name="upselling_onboarding_billing_annual">Faktureres til %s %s hver 12. måned</string>
-  <string name="upselling_onboarding_get_plan">Få %s</string>
+  <string name="upselling_onboarding_get_plan">Skaff deg %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Fortsett med Proton Free</string>
   <string name="upselling_onboarding_save_label">Spar %s%%</string>
 </resources>
