@@ -71,6 +71,7 @@ object MailSettingsTestData {
         pgpScheme = IntEnum(1, PackageType.ProtonMail),
         promptPin = true,
         stickyLabels = true,
-        confirmLink = confirmLink
+        confirmLink = confirmLink,
+        autoDeleteSpamAndTrashDays = null
     )
 }

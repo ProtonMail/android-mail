@@ -62,6 +62,7 @@ object UserSample {
         displayName = displayName,
         email = email,
         keys = emptyList(),
+        flags = emptyMap(),
         maxSpace = 1_024,
         maxUpload = 1,
         name = name,

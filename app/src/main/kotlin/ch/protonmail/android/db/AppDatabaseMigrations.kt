@@ -30,6 +30,7 @@ import me.proton.core.contact.data.local.db.ContactDatabase
 import me.proton.core.eventmanager.data.db.EventMetadataDatabase
 import me.proton.core.key.data.db.PublicAddressDatabase
 import me.proton.core.keytransparency.data.local.KeyTransparencyDatabase
+import me.proton.core.mailsettings.data.db.MailSettingsDatabase
 import me.proton.core.notification.data.local.db.NotificationDatabase
 import me.proton.core.payment.data.local.db.PaymentDatabase
 import me.proton.core.push.data.local.db.PushDatabase
@@ -280,6 +281,18 @@ object AppDatabaseMigrations {
         override fun migrate(db: SupportSQLiteDatabase) {
             AuthDatabase.MIGRATION_0.migrate(db)
             AuthDatabase.MIGRATION_1.migrate(db)
+        }
+    }
+
+    val MIGRATION_37_38 = object : Migration(37, 38) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            AuthDatabase.MIGRATION_2.migrate(db)
+            AuthDatabase.MIGRATION_3.migrate(db)
+            AuthDatabase.MIGRATION_4.migrate(db)
+            AuthDatabase.MIGRATION_5.migrate(db)
+            UserDatabase.MIGRATION_6.migrate(db)
+            AccountDatabase.MIGRATION_9.migrate(db)
+            MailSettingsDatabase.MIGRATION_1.migrate(db)
         }
     }
 }

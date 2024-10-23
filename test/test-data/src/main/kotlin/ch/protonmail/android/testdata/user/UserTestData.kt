@@ -70,6 +70,7 @@ object UserTestData {
         displayName = displayName,
         email = USER_EMAIL_RAW,
         keys = emptyList(),
+        flags = emptyMap(),
         maxSpace = MAX_SPACE_RAW,
         maxUpload = 1,
         name = name,

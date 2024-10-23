@@ -58,6 +58,7 @@ import me.proton.core.auth.data.db.AuthConverters
 import me.proton.core.auth.data.db.AuthDatabase
 import me.proton.core.auth.data.entity.AuthDeviceEntity
 import me.proton.core.auth.data.entity.DeviceSecretEntity
+import me.proton.core.auth.data.entity.MemberDeviceEntity
 import me.proton.core.challenge.data.db.ChallengeConverters
 import me.proton.core.challenge.data.db.ChallengeDatabase
 import me.proton.core.challenge.data.entity.ChallengeFrameEntity
@@ -132,6 +133,7 @@ import me.proton.core.usersettings.data.entity.UserSettingsEntity
         // auth-data
         AuthDeviceEntity::class,
         DeviceSecretEntity::class,
+        MemberDeviceEntity::class,
         // user-data
         UserEntity::class,
         UserKeyEntity::class,
@@ -262,7 +264,7 @@ abstract class AppDatabase :
     companion object {
 
         const val name = "db-mail"
-        const val version = 37
+        const val version = 38
 
         internal val migrations = listOf(
             AppDatabaseMigrations.MIGRATION_1_2,
@@ -300,7 +302,8 @@ abstract class AppDatabase :
             AppDatabaseMigrations.MIGRATION_33_34,
             AppDatabaseMigrations.MIGRATION_34_35,
             AppDatabaseMigrations.MIGRATION_35_36,
-            AppDatabaseMigrations.MIGRATION_36_37
+            AppDatabaseMigrations.MIGRATION_36_37,
+            AppDatabaseMigrations.MIGRATION_37_38
         )
 
         fun buildDatabase(context: Context): AppDatabase = databaseBuilder<AppDatabase>(context, name)

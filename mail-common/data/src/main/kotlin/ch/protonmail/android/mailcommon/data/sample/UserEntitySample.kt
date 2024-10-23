@@ -48,6 +48,7 @@ object UserEntitySample {
         maxBaseSpace = null,
         maxDriveSpace = null,
         usedBaseSpace = null,
-        usedDriveSpace = null
+        usedDriveSpace = null,
+        flags = null
     )
 }
