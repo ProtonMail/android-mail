@@ -29,6 +29,7 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAddStar
@@ -42,7 +43,6 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorGettingAttachmentNotEnoughSpace
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorLabelingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMarkingAsUnread
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingToTrash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorRemoveStar
@@ -131,6 +131,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> BottomSheetOperation.Requested
 
+                is ErrorMovingConversation,
+                is ErrorLabelingConversation,
                 is ConversationDetailViewAction.LabelAsConfirmed,
                 is ConversationDetailEvent.ReportPhishingRequested,
                 is ConversationDetailViewAction.DismissBottomSheet,

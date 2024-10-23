@@ -20,10 +20,10 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import java.util.UUID
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
-import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -241,10 +241,10 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingConversation affects listOf(Conversation, Messages),
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
             ConversationDetailEvent.ErrorMarkingAsUnread affects ErrorBar,
-            ConversationDetailEvent.ErrorMovingConversation affects ErrorBar,
+            ConversationDetailEvent.ErrorMovingConversation affects listOf(BottomSheet, ErrorBar),
             ConversationDetailEvent.ErrorMovingMessage affects ErrorBar,
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
-            ConversationDetailEvent.ErrorLabelingConversation affects ErrorBar,
+            ConversationDetailEvent.ErrorLabelingConversation affects listOf(BottomSheet, ErrorBar),
             ConversationDetailEvent.MessagesData(
                 emptyList<ConversationDetailMessageUiModel>().toImmutableList(),
                 emptyMap(),

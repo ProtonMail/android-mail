@@ -84,9 +84,9 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorRemoveStar : ConversationDetailEvent, AffectingErrorBar
     object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
-    object ErrorMovingConversation : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMovingConversation : ConversationDetailEvent, AffectingBottomSheet, AffectingErrorBar
     object ErrorMovingMessage : ConversationDetailEvent, AffectingErrorBar
-    object ErrorLabelingConversation : ConversationDetailEvent, AffectingErrorBar
+    object ErrorLabelingConversation : ConversationDetailEvent, AffectingBottomSheet, AffectingErrorBar
     object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachmentNotEnoughSpace : ConversationDetailEvent, AffectingErrorBar
     object ErrorAttachmentDownloadInProgress : ConversationDetailEvent, AffectingErrorBar

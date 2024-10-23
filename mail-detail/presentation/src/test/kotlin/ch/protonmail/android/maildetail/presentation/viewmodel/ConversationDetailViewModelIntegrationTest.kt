@@ -173,6 +173,7 @@ import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import io.mockk.Called
+import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -183,17 +184,15 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.runs
+import io.mockk.spyk
 import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -424,17 +423,14 @@ class ConversationDetailViewModelIntegrationTest {
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
-    private val observeConversationViewState = ObserveConversationViewState(inMemoryConversationStateRepository)
+    private val observeConversationViewState = spyk(ObserveConversationViewState(inMemoryConversationStateRepository))
     private val networkManager = mockk<NetworkManager>()
-    private val testDispatcher: TestDispatcher by lazy {
-        StandardTestDispatcher().apply { Dispatchers.setMain(this) }
-    }
-
-    private val observableFlowScope = CoroutineScope(SupervisorJob() + testDispatcher)
-    private val longRunningScope = CoroutineScope(SupervisorJob() + testDispatcher)
+    private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
 
     @BeforeTest
     fun setUp() {
+        Dispatchers.setMain(testDispatcher)
+
         mockkStatic(Formatter::formatShortFileSize)
         every { Formatter.formatShortFileSize(any(), any()) } returns "0"
 
@@ -546,6 +542,7 @@ class ConversationDetailViewModelIntegrationTest {
             // When
             // Initial scroll completed and UI  notifies view model to expand message
             viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+            advanceUntilIdle()
 
             // then
             val newExpandedState = awaitItem().messagesState as ConversationDetailsMessagesState.Data
@@ -566,7 +563,6 @@ class ConversationDetailViewModelIntegrationTest {
                 observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentSample.invoice.attachmentId)
                 observeAttachmentStatus.invoke(userId, messageId, MessageAttachmentSample.image.attachmentId)
             }
-            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -1300,34 +1296,7 @@ class ConversationDetailViewModelIntegrationTest {
 
         // Then
         coVerify { deleteConversations(userId, listOf(conversationId), LabelIdSample.Trash) }
-        assertTrue("Observable flow scope is still active.") { observableFlowScope.isActive.not() }
         assertEquals(expectedMessage, viewModel.state.value.exitScreenWithMessageEffect.consume())
-    }
-
-    @Test
-    fun `verify flow observer scope is not active upon viewmodel cleared`() = runTest {
-        // Given
-        val viewModel = buildConversationDetailViewModel()
-
-        // When
-        viewModel.onCleared()
-        advanceUntilIdle()
-
-        // Then
-        assertTrue("Observable flow scope is still active.") { observableFlowScope.isActive.not() }
-    }
-
-    @Test
-    fun `verify long active scope is still active upon viewmodel cleared`() = runTest {
-        // Given
-        val viewModel = buildConversationDetailViewModel()
-
-        // When
-        viewModel.onCleared()
-        advanceUntilIdle()
-
-        // Then
-        assertTrue("Long running scope is not active.") { longRunningScope.isActive }
     }
 
     @Test
@@ -1478,9 +1447,11 @@ class ConversationDetailViewModelIntegrationTest {
         val byteArray = "I'm a byte array".toByteArray()
         val expectedResult = GetEmbeddedImageResult(byteArray, "image/png")
         coEvery { getEmbeddedImageAvoidDuplicatedExecution(userId, messageId, contentId, any()) } returns expectedResult
-        val viewModel = buildConversationDetailViewModel()
 
         // When
+        val viewModel = buildConversationDetailViewModel()
+        advanceUntilIdle()
+
         val actual = viewModel.loadEmbeddedImage(messageId, contentId)
 
         // Then
@@ -1493,9 +1464,11 @@ class ConversationDetailViewModelIntegrationTest {
         val messageId = MessageId("rawMessageId")
         val contentId = "contentId"
         coEvery { getEmbeddedImageAvoidDuplicatedExecution(userId, messageId, contentId, any()) } returns null
-        val viewModel = buildConversationDetailViewModel()
 
         // When
+        val viewModel = buildConversationDetailViewModel()
+        advanceUntilIdle()
+
         val actual = viewModel.loadEmbeddedImage(messageId, contentId)
 
         // Then
@@ -2380,6 +2353,132 @@ class ConversationDetailViewModelIntegrationTest {
             }
         }
 
+    @Test
+    fun `when performing move to trash with success - should stop initial jobs and not restart them`() = runTest {
+        // Given
+        val expectedEffect = ActionResult.UndoableActionResult(TextUiModel(R.string.conversation_moved_to_trash))
+        val messages = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
+        )
+        val messageId = MessageId(messages.first().messageId.id)
+
+        coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
+            messageId = messageId,
+            value = EmailBodyTestSamples.BodyWithoutQuotes,
+            mimeType = MimeType.Html,
+            attachments = listOf(
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithReallyLongFileName,
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.image
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
+        ).right()
+
+        coEvery { move.invoke(any(), any(), any()) } returns Unit.right()
+        initGenericObserverMocks()
+        val viewModel = buildConversationDetailViewModel()
+
+        // When + Then
+        viewModel.state.test {
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+            advanceUntilIdle()
+
+            clearMocks(
+                observeConversationUseCase,
+                observeConversationMessagesWithLabels,
+                observeConversationViewState,
+                observeConversationDetailActions,
+                observeContacts,
+                observeAttachmentStatus,
+                observePrivacySettings,
+                answers = false,
+                recordedCalls = true
+            )
+
+            viewModel.submit(ConversationDetailViewAction.Trash)
+            advanceUntilIdle()
+
+            verify {
+                observeConversationUseCase wasNot Called
+                observeConversationMessagesWithLabels wasNot Called
+                observeConversationViewState wasNot Called
+                observeConversationDetailActions wasNot Called
+                observeContacts wasNot Called
+                observeConversationViewState wasNot Called
+                observeAttachmentStatus wasNot Called
+                observePrivacySettings wasNot Called
+            }
+
+            val lastItem = expectMostRecentItem()
+            assertEquals(lastItem.exitScreenWithMessageEffect.consume(), expectedEffect)
+        }
+    }
+
+    @Test
+    fun `when performing move to trash with failure - should restart observation jobs`() = runTest {
+        // Given
+        val expectedEffect = TextUiModel(R.string.error_move_to_trash_failed)
+        val messages = nonEmptyListOf(
+            ConversationDetailMessageUiModelSample.invoiceExpandedWithAttachments(3)
+        )
+        val messageId = MessageId(messages.first().messageId.id)
+
+        coEvery { getDecryptedMessageBody.invoke(userId, any()) } returns DecryptedMessageBody(
+            messageId = messageId,
+            value = EmailBodyTestSamples.BodyWithoutQuotes,
+            mimeType = MimeType.Html,
+            attachments = listOf(
+                MessageAttachmentSample.document,
+                MessageAttachmentSample.documentWithReallyLongFileName,
+                MessageAttachmentSample.invoice,
+                MessageAttachmentSample.image
+            ),
+            userAddress = UserAddressSample.PrimaryAddress
+        ).right()
+
+        initGenericObserverMocks()
+
+        val viewModel = buildConversationDetailViewModel()
+        coEvery { move.invoke(any(), any(), any()) } returns DataError.Local.Unknown.left()
+
+        // When + Then
+        viewModel.state.test {
+            viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+            advanceUntilIdle()
+
+            clearMocks(
+                observeConversationUseCase,
+                observeConversationMessagesWithLabels,
+                observeConversationViewState,
+                observeConversationDetailActions,
+                observeContacts,
+                observeAttachmentStatus,
+                observePrivacySettings,
+                answers = false,
+                recordedCalls = true
+            )
+
+            viewModel.submit(ConversationDetailViewAction.Trash)
+            advanceUntilIdle()
+
+            coVerify {
+                observeConversationUseCase(userId, conversationId, any())
+                observeConversationMessagesWithLabels(userId, conversationId)
+                observeConversationDetailActions(userId, conversationId, any())
+                observeContacts(userId)
+                observeConversationViewState()
+                observeAttachmentStatus(userId, any(), any())
+                observePrivacySettings(userId)
+            }
+
+            val state = expectMostRecentItem()
+            assertEquals(state.exitScreenWithMessageEffect, Effect.empty())
+            assertEquals(state.exitScreenEffect, Effect.empty())
+            assertEquals(state.error.consume(), expectedEffect)
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -2456,9 +2555,7 @@ class ConversationDetailViewModelIntegrationTest {
         loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
         onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
         moveMessage = moveMessage,
-        shouldMessageBeHidden = shouldMessageBeHidden,
-        observableFlowScope = observableFlowScope,
-        appScope = longRunningScope
+        shouldMessageBeHidden = shouldMessageBeHidden
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
@@ -2476,5 +2573,41 @@ class ConversationDetailViewModelIntegrationTest {
     private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
+    }
+
+    private fun initGenericObserverMocks() {
+        every { observeContacts(userId = UserIdSample.Primary) } returns flowOf(emptyList<Contact>().right())
+        every { observeConversationUseCase(UserIdSample.Primary, ConversationIdSample.WeatherForecast, any()) } returns
+            flowOf(ConversationSample.WeatherForecast.right())
+        every {
+            observeConversationMessagesWithLabels(
+                UserIdSample.Primary,
+                ConversationIdSample.WeatherForecast
+            )
+        } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithLabel,
+                MessageWithLabelsSample.InvoiceWithTwoLabels
+            ).right()
+        )
+        every {
+            observeConversationDetailActions(
+                UserIdSample.Primary,
+                ConversationIdSample.WeatherForecast,
+                any()
+            )
+        } returns flowOf(
+            listOf(Action.Archive, Action.MarkUnread).right()
+        )
+        coEvery { observeAttachmentStatus.invoke(userId, any(), any()) } returns flowOf()
+        coEvery { observePrivacySettings.invoke(any()) } returns flowOf(
+            PrivacySettings(
+                autoShowRemoteContent = false,
+                autoShowEmbeddedImages = false,
+                preventTakingScreenshots = false,
+                requestLinkConfirmation = false,
+                allowBackgroundSync = false
+            ).right()
+        )
     }
 }
