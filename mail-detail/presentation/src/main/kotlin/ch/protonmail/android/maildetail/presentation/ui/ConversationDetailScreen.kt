@@ -370,7 +370,7 @@ fun ConversationDetailScreen(
     scrollToMessageId: String?
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(snapAnimationSpec = null)
-    val snackbarHostState = ProtonSnackbarHostState()
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
     val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
