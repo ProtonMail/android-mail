@@ -16,8 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.android.build.api.dsl.VariantDimension
 import java.util.Properties
+import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
 
 plugins {
@@ -275,6 +275,7 @@ dependencies {
     androidTestImplementation(Proton.Core.planTest)
     androidTestImplementation(Proton.Core.reportTest)
     androidTestImplementation(Proton.Core.userRecoveryTest)
+    androidTestImplementation(Proton.Core.testRule)
     androidTestImplementation(project(":test:annotations"))
     androidTestImplementation(project(":test:idlingresources"))
     androidTestImplementation(project(":test:robot:core"))

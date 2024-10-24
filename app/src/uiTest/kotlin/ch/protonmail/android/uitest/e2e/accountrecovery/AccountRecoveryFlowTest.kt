@@ -14,6 +14,8 @@ import me.proton.core.accountrecovery.dagger.CoreAccountRecoveryFeaturesModule
 import me.proton.core.accountrecovery.domain.IsAccountRecoveryEnabled
 import me.proton.core.accountrecovery.domain.IsAccountRecoveryResetEnabled
 import me.proton.core.accountrecovery.test.MinimalAccountRecoveryNotificationTest
+import me.proton.core.auth.test.flow.SignInFlow
+import me.proton.core.auth.test.robot.AddAccountRobot
 import me.proton.core.auth.test.usecase.WaitForPrimaryAccount
 import me.proton.core.domain.entity.UserId
 import me.proton.core.eventmanager.domain.EventManagerProvider
@@ -22,7 +24,7 @@ import me.proton.core.network.data.ApiProvider
 import me.proton.core.notification.dagger.CoreNotificationFeaturesModule
 import me.proton.core.notification.domain.repository.NotificationRepository
 import me.proton.core.notification.domain.usecase.IsNotificationsEnabled
-import me.proton.core.test.quark.Quark
+import me.proton.core.test.android.instrumented.FusionConfig
 import javax.inject.Inject
 
 @CoreLibraryTest
@@ -30,7 +32,7 @@ import javax.inject.Inject
 @UninstallModules(
     LocalhostApiModule::class,
     CoreAccountRecoveryFeaturesModule::class,
-    CoreNotificationFeaturesModule::class,
+    CoreNotificationFeaturesModule::class
 )
 internal class AccountRecoveryFlowTest : BaseTest(), MinimalAccountRecoveryNotificationTest {
     @JvmField
@@ -73,10 +75,16 @@ internal class AccountRecoveryFlowTest : BaseTest(), MinimalAccountRecoveryNotif
     @BindValue
     internal val isNotificationsEnabled = IsNotificationsEnabled { true }
 
-    override val quark: Quark = BaseTest.quark
-
     init {
-        initFusion(composeTestRule)
+        FusionConfig.Compose.testRule = composeTestRule
+    }
+
+    override fun setup() {
+        super.setup()
+        val user = users.getUser { it.name == "pro" }
+
+        AddAccountRobot.clickSignIn()
+        SignInFlow.signInInternal(user.name, user.password)
     }
 
     override fun verifyAfterLogin() {

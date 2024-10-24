@@ -171,7 +171,7 @@ object AndroidX {
         const val uiautomator = "androidx.test.uiautomator:uiautomator:${Versions.AndroidX.testUiautomator}"
     }
 
-    object Profile{
+    object Profile {
         object Tracing {
 
             private const val version = Versions.AndroidX.tracing
@@ -379,6 +379,7 @@ object Proton {
         val utilKotlin = coreArtifact("util-kotlin", Versions.Proton.core)
         val testKotlin = coreArtifact("test-kotlin", Versions.Proton.core)
         val testAndroid = coreArtifact("test-android", Versions.Proton.core)
+        val testRule = coreArtifact("test-rule", Versions.Proton.core)
         val testAndroidInstrumented = coreArtifact(
             "test-android-instrumented",
             Versions.Proton.core

@@ -18,49 +18,73 @@
 
 package ch.protonmail.android.uitest.e2e.menu
 
+import androidx.test.core.app.ApplicationProvider
+import ch.protonmail.android.MainActivity
+import ch.protonmail.android.initializer.MainInitializer
 import ch.protonmail.android.test.annotations.suite.CoreLibraryTest
-import ch.protonmail.android.uitest.BaseTest
+import ch.protonmail.android.test.utils.ComposeTestRuleHolder
 import ch.protonmail.android.uitest.di.LocalhostApi
 import ch.protonmail.android.uitest.di.LocalhostApiModule
+import ch.protonmail.android.uitest.helpers.core.navigation.Destination
+import ch.protonmail.android.uitest.helpers.core.navigation.navigator
 import ch.protonmail.android.uitest.robot.mailbox.mailboxRobot
 import ch.protonmail.android.uitest.robot.mailbox.verify
 import ch.protonmail.android.uitest.robot.menu.menuRobot
-import ch.protonmail.android.uitest.util.extensions.waitUntilSignInScreenIsGone
+import ch.protonmail.android.uitest.rule.GrantNotificationsPermissionRule
+import ch.protonmail.android.uitest.rule.MockOnboardingRuntimeRule
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import me.proton.core.auth.test.robot.AddAccountRobot
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import me.proton.core.plan.test.MinimalSubscriptionTests
-import me.proton.core.test.android.robots.auth.login.LoginRobot
-import me.proton.core.test.quark.Quark
-import me.proton.core.test.quark.data.User
+import me.proton.core.plan.test.robot.SubscriptionRobot
+import me.proton.core.test.rule.extension.protonAndroidComposeRule
+import org.junit.Before
+import org.junit.Rule
+import javax.inject.Inject
 
 @CoreLibraryTest
 @HiltAndroidTest
 @UninstallModules(LocalhostApiModule::class)
-internal class SidebarSubscriptionFlowTest : BaseTest(), MinimalSubscriptionTests {
-
-    private val loginRobot = LoginRobot()
+internal class SidebarSubscriptionFlowTest : MinimalSubscriptionTests() {
 
     @JvmField
     @BindValue
     @LocalhostApi
     val localhostApi = false
 
-    override val quark: Quark = BaseTest.quark
-    override val users: User.Users = BaseTest.users
+    @Inject
+    lateinit var mockOnboardingRuntimeRule: MockOnboardingRuntimeRule
 
-    override fun startSubscription(user: User) {
-        AddAccountRobot
-            .clickSignIn()
-            .login(user)
+    @get:Rule
+    val protonTestRule = protonAndroidComposeRule<MainActivity>(
+        composeTestRule = ComposeTestRuleHolder.createAndGetComposeRule(),
+        logoutBefore = false,
+        fusionEnabled = false,
+        additionalRules = linkedSetOf(GrantNotificationsPermissionRule()),
+        afterHilt = { mainInitializer() }
+    )
 
-        loginRobot.waitUntilSignInScreenIsGone()
+    @Before
+    fun setup() {
+        mockOnboardingRuntimeRule(false)
+    }
+
+    override fun startSubscription(): SubscriptionRobot {
+        navigator { navigateTo(Destination.Inbox, performLoginViaUI = false) }
         mailboxRobot { verify { isShown() } }
 
         menuRobot {
             openSidebarMenu()
             openSubscription()
         }
+
+        return SubscriptionRobot
+    }
+
+    private fun mainInitializer() = runBlocking {
+        withContext(Dispatchers.Main) { MainInitializer.init(ApplicationProvider.getApplicationContext()) }
     }
 }
