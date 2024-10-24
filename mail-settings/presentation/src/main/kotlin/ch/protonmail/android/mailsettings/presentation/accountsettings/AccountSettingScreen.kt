@@ -22,22 +22,45 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
+import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AccountSettingsViewAction
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
+import ch.protonmail.android.uicomponents.settings.SettingsItem
+import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.presentation.compose.SecurityKeysSettingsItem
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
+import me.proton.core.compose.component.ProtonModalBottomSheetLayout
 import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
+import me.proton.core.compose.component.ProtonSnackbarHostState
+import me.proton.core.compose.component.ProtonSnackbarType
 import me.proton.core.compose.flow.rememberAsState
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.presentation.utils.formatByteToHumanReadable
 import me.proton.core.util.kotlin.exhaustive
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -63,110 +86,181 @@ fun AccountSettingScreen(
             state = settingsState,
             actions = actions
         )
+
         AccountSettingsState.Loading -> ProtonCenteredProgress()
         AccountSettingsState.NotLoggedIn ->
             ProtonErrorMessage(errorMessage = stringResource(id = commonString.x_error_not_logged_in))
     }.exhaustive
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AccountSettingScreen(
     modifier: Modifier = Modifier,
     state: AccountSettingsState.Data,
-    actions: AccountSettingScreen.Actions
+    actions: AccountSettingScreen.Actions,
+    accountSettingsViewModel: AccountSettingsViewModel = hiltViewModel()
 ) {
-    Scaffold(
-        modifier = modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN),
-        topBar = {
-            ProtonSettingsTopBar(
-                title = stringResource(id = string.mail_settings_account_settings),
-                onBackClick = actions.onBackClick
-            )
-        },
-        content = { paddingValues ->
-            ProtonSettingsList(
-                modifier
-                    .padding(paddingValues)
-                    .testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
-            ) {
-                item { ProtonSettingsHeader(title = string.mail_settings_account) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_password_management),
-                        onClick = actions.onPasswordManagementClick
+
+    val snackbarHostState = remember { ProtonSnackbarHostState() }
+
+    val bottomSheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    val scope = rememberCoroutineScope()
+
+    ProtonModalBottomSheetLayout(
+        sheetState = bottomSheetState,
+        sheetContent = bottomSheetHeightConstrainedContent {
+            if (showBottomSheet) {
+                AutoDeleteUpsellingBottomSheet(
+                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                        onDismiss = { accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling) },
+                        onUpgrade = { message ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message = message)
+                            }
+                        },
+                        onError = { message ->
+                            scope.launch {
+                                snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = message)
+                            }
+                        }
                     )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_recovery_email),
-                        hint = state.recoveryEmail
-                            ?: stringResource(id = string.mail_settings_not_set),
-                        onClick = actions.onRecoveryEmailClick
-                    )
-                    Divider()
-                }
-                if (state.securityKeysVisible) {
+                )
+            }
+        }
+    ) {
+        Scaffold(
+            modifier = modifier.testTag(TEST_TAG_ACCOUNT_SETTINGS_SCREEN),
+            topBar = {
+                ProtonSettingsTopBar(
+                    title = stringResource(id = string.mail_settings_account_settings),
+                    onBackClick = actions.onBackClick
+                )
+            },
+            snackbarHost = { DismissableSnackbarHost(protonSnackbarHostState = snackbarHostState) },
+            content = { paddingValues ->
+                ProtonSettingsList(
+                    modifier
+                        .padding(paddingValues)
+                        .testTag(TEST_TAG_ACCOUNT_SETTINGS_LIST)
+                ) {
+                    item { ProtonSettingsHeader(title = string.mail_settings_account) }
                     item {
-                        SecurityKeysSettingsItem(
-                            onSecurityKeysClick = actions.onSecurityKeysClick,
-                            registeredSecurityKeys = state.registeredSecurityKeys
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_password_management),
+                            onClick = actions.onPasswordManagementClick
                         )
                         Divider()
                     }
-                }
-                item {
-                    MailboxSizeItem(state)
-                }
-                item {
-                    ConversationModeSettingItem(
-                        state = state,
-                        onConversationModeClick = actions.onConversationModeClick
-                    )
-                }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_recovery_email),
+                            hint = state.recoveryEmail
+                                ?: stringResource(id = string.mail_settings_not_set),
+                            onClick = actions.onRecoveryEmailClick
+                        )
+                        Divider()
+                    }
+                    if (state.securityKeysVisible) {
+                        item {
+                            SecurityKeysSettingsItem(
+                                onSecurityKeysClick = actions.onSecurityKeysClick,
+                                registeredSecurityKeys = state.registeredSecurityKeys
+                            )
+                            Divider()
+                        }
+                    }
+                    item {
+                        MailboxSizeItem(state)
+                    }
+                    item {
+                        ConversationModeSettingItem(
+                            state = state,
+                            onConversationModeClick = actions.onConversationModeClick
+                        )
+                    }
+                    if (state.autoDeleteSettingsState.isSettingVisible) {
+                        item {
+                            AutoDeleteSettingItem(
+                                modifier = modifier,
+                                state = state,
+                                onAutoDeleteClick = {
+                                    if (state.autoDeleteSettingsState.isUpsellingVisible) {
+                                        accountSettingsViewModel.submit(AccountSettingsViewAction.SettingsItemClicked)
+                                    } else {
+                                        actions.onAutoDeleteClick()
+                                    }
+                                }
+                            )
+                        }
+                    }
+                    item { ProtonSettingsHeader(title = string.mail_settings_addresses) }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_default_email_address),
+                            hint = state.defaultEmail
+                                ?: stringResource(id = string.mail_settings_no_information_available),
+                            onClick = actions.onDefaultEmailAddressClick
+                        )
+                        Divider()
+                    }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_display_name_and_signature),
+                            onClick = actions.onDisplayNameClick
+                        )
+                        Divider()
+                    }
 
-                item { ProtonSettingsHeader(title = string.mail_settings_addresses) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_default_email_address),
-                        hint = state.defaultEmail
-                            ?: stringResource(id = string.mail_settings_no_information_available),
-                        onClick = actions.onDefaultEmailAddressClick
-                    )
-                    Divider()
+                    item { ProtonSettingsHeader(title = string.mail_settings_mailbox) }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_privacy),
+                            onClick = actions.onPrivacyClick
+                        )
+                        Divider()
+                    }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_labels),
+                            onClick = actions.onLabelsClick
+                        )
+                        Divider()
+                    }
+                    item {
+                        ProtonSettingsItem(
+                            name = stringResource(id = string.mail_settings_folders),
+                            onClick = actions.onFoldersClick
+                        )
+                    }
                 }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_display_name_and_signature),
-                        onClick = actions.onDisplayNameClick
-                    )
-                    Divider()
-                }
+                ConsumableLaunchedEffect(
+                    effect = state.autoDeleteSettingsState.upsellingVisibility
+                ) { bottomSheetEffect ->
+                    when (bottomSheetEffect) {
+                        BottomSheetVisibilityEffect.Hide -> scope.launch {
+                            bottomSheetState.hide()
+                            showBottomSheet = false
+                        }
 
-                item { ProtonSettingsHeader(title = string.mail_settings_mailbox) }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_privacy),
-                        onClick = actions.onPrivacyClick
-                    )
-                    Divider()
+                        BottomSheetVisibilityEffect.Show -> scope.launch {
+                            bottomSheetState.show()
+                            showBottomSheet = true
+                        }
+                    }
                 }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_labels),
-                        onClick = actions.onLabelsClick
-                    )
-                    Divider()
-                }
-                item {
-                    ProtonSettingsItem(
-                        name = stringResource(id = string.mail_settings_folders),
-                        onClick = actions.onFoldersClick
-                    )
+                ConsumableTextEffect(effect = state.autoDeleteSettingsState.upsellingInProgress) { message ->
+                    snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message)
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Composable
@@ -206,6 +300,32 @@ private fun ConversationModeSettingItem(
     Divider()
 }
 
+@Composable
+fun AutoDeleteSettingItem(
+    modifier: Modifier = Modifier,
+    state: AccountSettingsState.Data,
+    onAutoDeleteClick: () -> Unit
+) {
+
+    val hint = when (state.autoDeleteSettingsState.autoDeleteInDays) {
+        null, 0 -> stringResource(id = string.mail_settings_disabled)
+        else -> stringResource(id = string.mail_settings_enabled)
+    }
+
+    SettingsItem(
+        modifier = modifier,
+        name = stringResource(id = string.mail_settings_auto_delete),
+        hint = hint,
+        onClick = onAutoDeleteClick,
+        upsellingIcon = {
+            if (state.autoDeleteSettingsState.isUpsellingVisible) {
+                UpsellingIcon(modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing))
+            }
+        }
+    )
+    Divider()
+}
+
 object AccountSettingScreen {
 
     data class Actions(
@@ -218,7 +338,8 @@ object AccountSettingScreen {
         val onDisplayNameClick: () -> Unit,
         val onPrivacyClick: () -> Unit,
         val onLabelsClick: () -> Unit,
-        val onFoldersClick: () -> Unit
+        val onFoldersClick: () -> Unit,
+        val onAutoDeleteClick: () -> Unit
     )
 }
 
@@ -242,7 +363,12 @@ fun AccountSettingsScreenPreview() {
             defaultEmail = "hello@protonmail.ch",
             isConversationMode = true,
             registeredSecurityKeys = emptyList(),
-            securityKeysVisible = true
+            securityKeysVisible = true,
+            autoDeleteSettingsState = AutoDeleteSettingsState(
+                isSettingVisible = true,
+                isUpsellingVisible = true,
+                autoDeleteInDays = 0
+            )
         ),
         actions = AccountSettingScreen.Actions(
             onBackClick = {},
@@ -254,7 +380,8 @@ fun AccountSettingsScreenPreview() {
             onDisplayNameClick = {},
             onPrivacyClick = {},
             onLabelsClick = {},
-            onFoldersClick = {}
+            onFoldersClick = {},
+            onAutoDeleteClick = {}
         )
     )
 }

@@ -58,6 +58,7 @@ import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.route.addAccountSettings
 import ch.protonmail.android.navigation.route.addAlternativeRoutingSetting
+import ch.protonmail.android.navigation.route.addAutoDeleteSettings
 import ch.protonmail.android.navigation.route.addAutoLockPinScreen
 import ch.protonmail.android.navigation.route.addAutoLockSettings
 import ch.protonmail.android.navigation.route.addCombinedContactsSetting
@@ -574,6 +575,7 @@ fun Home(
                 addAlternativeRoutingSetting(navController)
                 addCombinedContactsSetting(navController)
                 addConversationModeSettings(navController)
+                addAutoDeleteSettings(navController)
                 addDefaultEmailSettings(navController)
                 addDisplayNameSettings(navController)
                 addEditSwipeActionsSettings(navController)

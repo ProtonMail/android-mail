@@ -62,7 +62,8 @@ fun NavGraphBuilder.addAccountSettings(
                 onDisplayNameClick = { navController.navigate(Screen.DisplayNameSettings.route) },
                 onPrivacyClick = { navController.navigate(Screen.PrivacySettings.route) },
                 onLabelsClick = { navController.navigate(Screen.LabelList.route) },
-                onFoldersClick = { navController.navigate(Screen.FolderList.route) }
+                onFoldersClick = { navController.navigate(Screen.FolderList.route) },
+                onAutoDeleteClick = { navController.navigate(Screen.AutoDeleteSettings.route) }
             )
         )
     }
@@ -92,6 +93,15 @@ internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostC
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
         )
+    }
+}
+
+internal fun NavGraphBuilder.addAutoDeleteSettings(navController: NavHostController) {
+    composable(route = Screen.AutoDeleteSettings.route) {
+//        AutoDeleteSettingScreen(
+//            modifier = Modifier,
+//            onBackClick = { navController.navigateBack() }
+//        )
     }
 }
 

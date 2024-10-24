@@ -21,11 +21,19 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.NotLoggedIn
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.model.AccountSettingsViewAction
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.domain.model.UserUpgradeState
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
+import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserTestData
@@ -47,6 +55,7 @@ import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.user.domain.entity.User
 import me.proton.core.usersettings.domain.entity.UserSettings
 import me.proton.core.usersettings.domain.usecase.ObserveRegisteredSecurityKeys
+import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -83,6 +92,21 @@ class AccountSettingsViewModelTest {
         every { this@mockk.invoke(userId) } returns true
     }
 
+    private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
+        every { this@mockk(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(false)
+    }
+
+    private val userUpgradeCheckStateFlow = MutableStateFlow<UserUpgradeState.UserUpgradeCheckState>(
+        UserUpgradeState.UserUpgradeCheckState.Initial
+    )
+
+    private val userUpgradeState = mockk<UserUpgradeState> {
+        every { userUpgradeCheckState } returns userUpgradeCheckStateFlow
+        every { this@mockk.isUserPendingUpgrade } returns false
+    }
+
+    private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
+
     private val viewModel by lazy {
         AccountSettingsViewModel(
             accountManager = accountManager,
@@ -90,7 +114,10 @@ class AccountSettingsViewModelTest {
             observeUser = observeUser,
             observeUserSettings = observeUserSettings,
             observeMailSettings = observeMailSettings,
-            observeRegisteredSecurityKeys = observeRegisteredSecurityKeys
+            observeRegisteredSecurityKeys = observeRegisteredSecurityKeys,
+            observeUpsellingVisibility = observeUpsellingVisibility,
+            userUpgradeState = userUpgradeState,
+            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get()
         )
     }
 
@@ -98,6 +125,8 @@ class AccountSettingsViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         MockKAnnotations.init(this)
+
+        autoDeleteFeatureEnabled(false)
     }
 
     @Test
@@ -223,12 +252,126 @@ class AccountSettingsViewModelTest {
 
             // When
             mailSettingsFlow.emit(MailSettingsTestData.mailSettings)
+            awaitItem()
 
             // Then
             val actual = awaitItem() as Data
             assertEquals(false, actual.isConversationMode)
         }
     }
+
+    @Test
+    fun `state has auto-delete feature visible when FF is on`() = runTest {
+        // given
+        autoDeleteFeatureEnabled(true)
+
+        viewModel.state.test {
+            // when
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsExist()
+            awaitItem()
+
+            // then
+            val data = awaitItem() as Data
+            assertTrue(data.autoDeleteSettingsState.isSettingVisible)
+        }
+    }
+
+    @Test
+    fun `state has auto-delete upselling visible visible when FF is on`() = runTest {
+        // given
+        autoDeleteUpsellingIsOn()
+
+        viewModel.state.test {
+            // when
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsExist()
+            awaitItem()
+
+            // then
+            val data = awaitItem() as Data
+            assertTrue(data.autoDeleteSettingsState.isUpsellingVisible)
+        }
+    }
+
+    @Test
+    fun `state has auto-delete upselling in days correctly passed from MailSettings`() = runTest {
+        // given
+        viewModel.state.test {
+            // when
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsFlow.emit(
+                MailSettingsTestData.mailSettings.copy(
+                    autoDeleteSpamAndTrashDays = 666
+                )
+            )
+            awaitItem()
+
+            // then
+            val data = awaitItem() as Data
+            assertEquals(666, data.autoDeleteSettingsState.autoDeleteInDays)
+        }
+    }
+
+    @Test
+    fun `state has auto-delete upselling BottomSheet visible when no upselling in progress and setting clicked`() =
+        runTest {
+            // given
+            autoDeleteUpsellingIsOn()
+            every { userUpgradeState.isUserPendingUpgrade } returns false
+
+            viewModel.state.test {
+                // when
+                initialStateEmitted()
+                primaryUserExists()
+                userSettingsExist()
+                mailSettingsExist()
+                awaitItem()
+                awaitItem()
+
+                viewModel.submit(AccountSettingsViewAction.SettingsItemClicked)
+
+                // then
+                val data = awaitItem() as Data
+                assertEquals(
+                    Effect.of(BottomSheetVisibilityEffect.Show),
+                    data.autoDeleteSettingsState.upsellingVisibility as Effect<*>
+                )
+            }
+        }
+
+    @Test
+    fun `state has auto-delete upgrading in progress visible when upselling in progress and setting clicked`() =
+        runTest {
+            // given
+            autoDeleteUpsellingIsOn()
+            every { userUpgradeState.isUserPendingUpgrade } returns true
+
+            viewModel.state.test {
+                // when
+                initialStateEmitted()
+                primaryUserExists()
+                userSettingsExist()
+                mailSettingsExist()
+                awaitItem()
+                awaitItem()
+
+                viewModel.submit(AccountSettingsViewAction.SettingsItemClicked)
+
+                // then
+                val data = awaitItem() as Data
+                assertEquals(
+                    Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
+                    data.autoDeleteSettingsState.upsellingInProgress
+                )
+            }
+        }
 
     @Test
     fun `state has null conversation mode when use case returns invalid mail settings`() = runTest {
@@ -240,6 +383,7 @@ class AccountSettingsViewModelTest {
 
             // When
             mailSettingsFlow.emit(null)
+            awaitItem()
 
             // Then
             val actual = awaitItem() as Data
@@ -271,6 +415,7 @@ class AccountSettingsViewModelTest {
             primaryUserExists()
             userSettingsExist()
             mailSettingsExist()
+            awaitItem()
 
             // then
             val data = awaitItem() as Data
@@ -297,5 +442,15 @@ class AccountSettingsViewModelTest {
 
     private suspend fun mailSettingsExist() {
         mailSettingsFlow.emit(MailSettingsTestData.mailSettings)
+    }
+
+    private fun autoDeleteFeatureEnabled(value: Boolean) {
+        every {
+            provideIsAutodeleteFeatureEnabled.get()
+        } returns value
+    }
+
+    private fun autoDeleteUpsellingIsOn() {
+        every { observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(true)
     }
 }

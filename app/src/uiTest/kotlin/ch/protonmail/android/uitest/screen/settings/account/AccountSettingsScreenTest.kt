@@ -26,6 +26,7 @@ import androidx.compose.ui.test.performScrollToNode
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
+import ch.protonmail.android.mailsettings.presentation.accountsettings.AutoDeleteSettingsState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.TEST_TAG_ACCOUNT_SETTINGS_LIST
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
@@ -49,7 +50,8 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
         defaultEmail = "contact@protonmail.ch",
         isConversationMode = true,
         registeredSecurityKeys = emptyList(),
-        securityKeysVisible = true
+        securityKeysVisible = true,
+        autoDeleteSettingsState = AutoDeleteSettingsState()
     )
 
     @Before
@@ -68,7 +70,8 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
                         onDisplayNameClick = {},
                         onPrivacyClick = {},
                         onLabelsClick = {},
-                        onFoldersClick = {}
+                        onFoldersClick = {},
+                        onAutoDeleteClick = {}
                     )
                 )
             }
@@ -116,6 +119,10 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
         composeTestRule
             .onNodeWithText(string.mail_settings_conversation_mode)
             .assertTextContains(string.mail_settings_enabled)
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithText(string.mail_settings_auto_delete)
             .assertIsDisplayed()
 
         composeTestRule

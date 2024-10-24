@@ -116,6 +116,7 @@ sealed class Destination(val route: String) {
 
         object CombinedContactsSettings : Destination("settings/combinedContacts")
         object ConversationModeSettings : Destination("settings/account/conversationMode")
+        object AutoDeleteSettings : Destination("settings/account/autoDelete")
         object DefaultEmailSettings : Destination("settings/account/defaultEmail")
         object DisplayNameSettings : Destination("settings/account/displayName")
         object PrivacySettings : Destination("settings/account/privacy")

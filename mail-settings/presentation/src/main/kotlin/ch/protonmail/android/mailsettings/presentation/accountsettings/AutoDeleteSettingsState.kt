@@ -18,24 +18,14 @@
 
 package ch.protonmail.android.mailsettings.presentation.accountsettings
 
-import me.proton.core.auth.fido.domain.entity.Fido2RegisteredKey
+import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 
-sealed interface AccountSettingsState {
-    /**
-     * @param mailboxSize max mailbox size in Bytes
-     * @param mailboxUsedSpace Mailbox used space in Bytes
-     */
-    data class Data(
-        val recoveryEmail: String?,
-        val mailboxSize: Long?,
-        val mailboxUsedSpace: Long?,
-        val defaultEmail: String?,
-        val isConversationMode: Boolean?,
-        val autoDeleteSettingsState: AutoDeleteSettingsState,
-        val registeredSecurityKeys: List<Fido2RegisteredKey>,
-        val securityKeysVisible: Boolean
-    ) : AccountSettingsState
-
-    object Loading : AccountSettingsState
-    object NotLoggedIn : AccountSettingsState
-}
+data class AutoDeleteSettingsState(
+    val autoDeleteInDays: Int? = null,
+    val isSettingVisible: Boolean = false,
+    val isUpsellingVisible: Boolean = false,
+    val upsellingVisibility: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
+    val upsellingInProgress: Effect<TextUiModel> = Effect.empty()
+)
