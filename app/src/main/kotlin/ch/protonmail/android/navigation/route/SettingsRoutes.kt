@@ -27,6 +27,7 @@ import ch.protonmail.android.MainActivity
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.conversationmode.ConversationModeSettingScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.defaultaddress.ui.EditDefaultAddressScreen
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.EditAddressIdentityScreen
@@ -98,10 +99,10 @@ internal fun NavGraphBuilder.addConversationModeSettings(navController: NavHostC
 
 internal fun NavGraphBuilder.addAutoDeleteSettings(navController: NavHostController) {
     composable(route = Screen.AutoDeleteSettings.route) {
-//        AutoDeleteSettingScreen(
-//            modifier = Modifier,
-//            onBackClick = { navController.navigateBack() }
-//        )
+        AutoDeleteSettingScreen(
+            modifier = Modifier,
+            onBackClick = { navController.navigateBack() }
+        )
     }
 }
 
