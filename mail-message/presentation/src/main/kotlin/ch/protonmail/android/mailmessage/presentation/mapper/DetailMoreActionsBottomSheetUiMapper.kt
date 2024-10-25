@@ -56,11 +56,11 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
                         )
                     )
                 )
-                add(ActionUiModel(Action.ReplyAll))
             } else {
                 add(ActionUiModel(Action.Reply))
             }
 
+            add(ActionUiModel(Action.ReplyAll))
             add(ActionUiModel(Action.Forward))
             add(ActionUiModel(Action.MarkUnread))
             add(ActionUiModel(Action.Label))

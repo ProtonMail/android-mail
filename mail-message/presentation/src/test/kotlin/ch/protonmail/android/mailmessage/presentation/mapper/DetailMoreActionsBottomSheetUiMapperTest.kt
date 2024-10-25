@@ -55,6 +55,7 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         // Given
         val expectedList = listOf(
             ActionUiModel(Action.Reply),
+            ActionUiModel(Action.ReplyAll),
             ActionUiModel(Action.Forward),
             ActionUiModel(Action.MarkUnread),
             ActionUiModel(Action.Label),
