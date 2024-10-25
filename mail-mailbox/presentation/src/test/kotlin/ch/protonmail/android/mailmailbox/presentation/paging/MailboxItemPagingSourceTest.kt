@@ -24,7 +24,6 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
-import androidx.room.getQueryDispatcher
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
@@ -52,7 +51,6 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import io.mockk.verify
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -88,8 +86,6 @@ class MailboxItemPagingSourceTest {
     }
 
     private val roomDatabase = mockk<RoomDatabase> {
-        mockkStatic(RoomDatabase::getQueryDispatcher)
-        every { this@mockk.getQueryDispatcher() } returns UnconfinedTestDispatcher()
         every { this@mockk.invalidationTracker } returns mockInvalidationTracker
     }
 

@@ -51,7 +51,7 @@ object Versions {
         const val paging = "3.2.1"
         const val pagingCompose = "3.2.1"
         const val perfetto = "1.0.0"
-        const val room = "2.6.1"
+        const val room = "2.7.0-alpha10"
         const val splashscreen = "1.0.1"
         const val testAndroidJUnit = "1.1.5"
         const val testCore = "1.5.0"

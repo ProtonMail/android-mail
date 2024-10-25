@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import androidx.paging.PagingSource
 import androidx.room.InvalidationTracker
 import androidx.room.RoomDatabase
-import androidx.room.getQueryDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
@@ -42,7 +42,7 @@ abstract class InvalidationTrackerPagingSource<Key : Any, Value : Any>(
     }
 
     override suspend fun load(params: LoadParams<Key>): LoadResult<Key, Value> {
-        return withContext(db.getQueryDispatcher()) {
+        return withContext(Dispatchers.IO) {
             registerObserverIfNecessary()
             val loadResult = loadPage(params)
             @Suppress("UNCHECKED_CAST")

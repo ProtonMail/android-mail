@@ -23,6 +23,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailmessage.data.local.entity.MessageEntity
+import ch.protonmail.android.mailmessage.data.local.entity.MessageSizeEntity
 import ch.protonmail.android.mailmessage.data.local.relation.MessageWithLabelIds
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailpagination.domain.model.OrderBy
@@ -30,6 +31,7 @@ import ch.protonmail.android.mailpagination.domain.model.OrderDirection
 import ch.protonmail.android.mailpagination.domain.model.PageKey
 import ch.protonmail.android.mailpagination.domain.model.ReadStatus
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.proton.core.data.room.db.BaseDao
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -72,26 +74,28 @@ abstract class MessageDao : BaseDao<MessageEntity>() {
 
     @Query(
         """
-            /*
-            * Calculates the size of the message bodies for messages that have been opened at least once by the user
-            * by subtracting the attachment sizes from the "whole" message `size` present in the `MessageEntity` table.
-            * Attachments belonging to drafts are excluded since draft entities are not stored in `MessageEntity`
-            * but rather in `DraftStateEntity`, not used at all in this query. 
-            */
-            SELECT IFNULL(SUM(size), 0) - (
-              SELECT IFNULL(SUM(size), 0) 
-              FROM MessageAttachmentEntity WHERE messageId NOT IN (
+        SELECT 
+            (SELECT IFNULL(SUM(size), 0) 
+             FROM MessageEntity me 
+             JOIN MessageBodyEntity mbe
+             ON me.userId = mbe.userId AND me.messageId = mbe.messageId
+            ) as total_size,
+            (SELECT IFNULL(SUM(size), 0) 
+             FROM MessageAttachmentEntity 
+             WHERE messageId NOT IN (
                 SELECT messageId 
                 FROM MessageLabelEntity
-                WHERE labelId IN (1, 8) -- 1 and 8 are labelId for "All drafts" and "Drafts"
-              ) 
-            )
-            FROM MessageEntity me 
-            JOIN MessageBodyEntity mbe
-            ON me.userId = mbe.userId AND me.messageId == mbe.messageId
-        """
+                WHERE labelId IN (1, 8)
+             )
+            ) as attachment_size
+    """
     )
-    abstract fun observeCachedMessagesTotalSize(): Flow<Long>
+    internal abstract fun getMessageSizes(): Flow<MessageSizeEntity>
+
+    fun observeCachedMessagesTotalSize(): Flow<Long> = getMessageSizes()
+        .map { sizeInfo ->
+            sizeInfo.totalSize - sizeInfo.attachmentSize
+        }
 
     fun observeAll(userId: UserId, pageKey: PageKey): Flow<List<MessageWithLabelIds>> {
         val labelId = pageKey.filter.labelId
