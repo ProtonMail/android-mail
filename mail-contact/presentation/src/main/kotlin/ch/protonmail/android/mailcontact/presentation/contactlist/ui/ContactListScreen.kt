@@ -29,8 +29,10 @@ import ch.protonmail.android.mailcontact.presentation.upselling.ContactGroupsUps
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -136,12 +138,14 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                         when (bottomSheetEffect) {
                             BottomSheetVisibilityEffect.Hide -> {
                                 bottomSheetState.hide()
-                                showBottomSheet = false
                             }
 
                             BottomSheetVisibilityEffect.Show -> {
+                                if (!showBottomSheet) {
+                                    showBottomSheet = true
+                                    delay(DELAY_SHOWING)
+                                }
                                 bottomSheetState.show()
-                                showBottomSheet = true
                             }
                         }
                     }

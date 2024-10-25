@@ -45,8 +45,10 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonModalBottomSheetLayout
@@ -154,13 +156,15 @@ fun EditAddressIdentityScreen(
                             when (bottomSheetEffect) {
                                 BottomSheetVisibilityEffect.Hide -> scope.launch {
                                     bottomSheetState.hide()
-                                    showBottomSheet = false
                                 }
 
                                 BottomSheetVisibilityEffect.Show -> scope.launch {
+                                    if (!showBottomSheet) {
+                                        showBottomSheet = true
+                                        delay(DELAY_SHOWING)
+                                    }
                                     focusManager.clearFocus()
                                     bottomSheetState.show()
-                                    showBottomSheet = true
                                 }
                             }
                         }
