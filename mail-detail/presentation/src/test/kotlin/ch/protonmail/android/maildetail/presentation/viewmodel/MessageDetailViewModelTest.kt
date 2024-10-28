@@ -125,8 +125,8 @@ import ch.protonmail.android.mailmessage.presentation.reducer.DetailMoreActionsB
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActionsBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
-import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.reducer.UpsellingBottomSheetReducer
+import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -164,9 +164,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withContext
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
@@ -430,16 +433,19 @@ class MessageDetailViewModelTest {
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
         )
     }
+    private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
 
     @BeforeTest
     fun setUp() {
-        Dispatchers.setMain(StandardTestDispatcher())
+        Dispatchers.setMain(testDispatcher)
+
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockk()
     }
 
     @After
     fun tearDown() {
+        Dispatchers.resetMain()
         unmockkStatic(Uri::class)
     }
 
@@ -565,11 +571,11 @@ class MessageDetailViewModelTest {
         } returns GetDecryptedMessageBodyError.Data(DataError.Local.NoDataCached).left()
 
         // When
-        viewModel.submit(MessageViewAction.Reload)
-
         viewModel.state.test {
             initialStateEmitted()
             messageBodyLoadingErrorEmitted()
+
+            viewModel.submit(MessageViewAction.Reload)
 
             // Then
             assertEquals(MessageBodyState.Loading, awaitItem().messageBodyState)
@@ -1099,6 +1105,7 @@ class MessageDetailViewModelTest {
 
             // Then
             coVerify { markRead.invoke(userId, messageId) }
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -1116,6 +1123,7 @@ class MessageDetailViewModelTest {
 
             // Then
             coVerify(exactly = 0) { markRead.invoke(any(), any()) }
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -1126,14 +1134,15 @@ class MessageDetailViewModelTest {
         val expected = Effect.of(uri)
 
         // When
-        viewModel.submit(MessageViewAction.MessageBodyLinkClicked(uri))
-
         viewModel.state.test {
             initialStateEmitted()
             messageBodyEmitted()
 
+            viewModel.submit(MessageViewAction.MessageBodyLinkClicked(uri))
+            advanceUntilIdle()
+
             // Then
-            assertEquals(expected, awaitItem().openMessageBodyLinkEffect)
+            assertEquals(expected, lastEmittedItem().openMessageBodyLinkEffect)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -1258,6 +1267,7 @@ class MessageDetailViewModelTest {
                 initialStateEmitted()
                 // When
                 messageBodyWithAttachmentEmitted()
+                advanceUntilIdle()
 
                 // Then
                 coVerifyOrder {
@@ -1304,13 +1314,14 @@ class MessageDetailViewModelTest {
 
 
         // When
-        viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
-
         viewModel.state.test {
             initialStateEmitted()
             messageBodyWithAttachmentEmitted()
 
-            val actualState = awaitItem()
+            viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
+            advanceUntilIdle()
+
+            val actualState = lastEmittedItem()
 
             // Then
             coVerify {
@@ -1351,17 +1362,17 @@ class MessageDetailViewModelTest {
         coEvery { getDownloadingAttachmentsForMessages(userId, listOf(messageId)) } returns listOf()
 
         // When
-        viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
-
         viewModel.state.test {
             initialStateEmitted()
             messageBodyWithAttachmentEmitted()
 
-            val actualState = awaitItem()
+            viewModel.submit(MessageViewAction.OnAttachmentClicked(AttachmentId("invoice")))
+            advanceUntilIdle()
+
+            val actualState = lastEmittedItem()
 
             // Then
             assertEquals(Effect.of(TextUiModel(R.string.error_get_attachment_failed)), actualState.error)
-            cancelAndIgnoreRemainingEvents()
         }
     }
 
@@ -1428,7 +1439,7 @@ class MessageDetailViewModelTest {
         } returns expectedResult
 
         // When
-        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
+        val actual = withContext(Dispatchers.IO) { viewModel.loadEmbeddedImage(messageId, contentId) }
 
         // Then
         assertEquals(expectedResult, actual)
@@ -1448,7 +1459,7 @@ class MessageDetailViewModelTest {
         } returns null
 
         // When
-        val actual = viewModel.loadEmbeddedImage(messageId, contentId)
+        val actual = withContext(Dispatchers.IO) { viewModel.loadEmbeddedImage(messageId, contentId) }
 
         // Then
         assertNull(actual)
@@ -1865,12 +1876,14 @@ class MessageDetailViewModelTest {
             )
         } returns DataError.Local.NoDataCached.left()
 
-        // When
-        viewModel.submit(MessageViewAction.Spam)
-        advanceUntilIdle()
+        // When + Then
+        viewModel.state.test {
+            viewModel.submit(MessageViewAction.Spam)
+            advanceUntilIdle()
 
-        // Then
-        assertEquals(TextUiModel(R.string.error_move_to_spam_failed), viewModel.state.value.error.consume())
+            val item = lastEmittedItem()
+            assertEquals(TextUiModel(R.string.error_move_to_spam_failed), item.error.consume())
+        }
     }
 
     private suspend fun ReceiveTurbine<MessageDetailState>.initialStateEmitted() {

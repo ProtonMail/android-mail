@@ -23,6 +23,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
@@ -53,9 +54,9 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
-import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
+import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -84,20 +85,30 @@ import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacyS
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
@@ -142,19 +153,47 @@ class MessageDetailViewModel @Inject constructor(
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed
 ) : ViewModel() {
 
-    private val messageId = requireMessageId()
-    private val primaryUserId = observePrimaryUserId().filterNotNull()
-    private val mutableDetailState = MutableStateFlow(initialState)
+    private val primaryUserId = observePrimaryUserId()
+        .stateIn(
+            viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = null
+        )
+        .filterNotNull()
 
+    private val messageId = requireMessageId()
+    private val mutableDetailState = MutableStateFlow(initialState)
+    private val attachmentsState = MutableStateFlow<List<MessageAttachment>>(emptyList())
 
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
+    private val jobs = mutableListOf<Job>()
+
     init {
         Timber.d("Open detail screen for message ID: $messageId")
-        observeMessageWithLabels(messageId)
+        setupObservers()
         getMessageBody(messageId)
-        observeBottomBarActions(messageId)
-        observePrivacySettings()
+    }
+
+    private fun setupObservers() {
+        jobs.addAll(
+            listOf(
+                observeMessageWithLabels(messageId),
+                observeBottomBarActions(messageId),
+                observePrivacySettings(),
+                observeAttachments()
+            )
+        )
+    }
+
+    private suspend fun stopAllJobs() {
+        jobs.forEach { it.cancelAndJoin() }
+        jobs.clear()
+    }
+
+    private suspend fun restartAllJobs() {
+        stopAllJobs()
+        setupObservers()
     }
 
     @Suppress("ComplexMethod")
@@ -232,14 +271,14 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun markMessageUnread() {
-        primaryUserId.mapLatest { userId ->
-            markUnread(userId, messageId).fold(
-                ifLeft = { MessageDetailEvent.ErrorMarkingUnread },
-                ifRight = { MessageViewAction.MarkUnread }
-            )
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            performSafeExitAction(
+                onLeft = MessageDetailEvent.ErrorMarkingUnread,
+                onRight = MessageViewAction.MarkUnread
+            ) { userId ->
+                markUnread(userId, messageId)
+            }
+        }
     }
 
     private fun markMessageRead() {
@@ -249,14 +288,14 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun trashMessage() {
-        primaryUserId.mapLatest { userId ->
-            moveMessage(userId, messageId, SystemLabelId.Trash.labelId).fold(
-                ifLeft = { MessageDetailEvent.ErrorMovingToTrash },
-                ifRight = { MessageViewAction.Trash }
-            )
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            performSafeExitAction(
+                onLeft = MessageDetailEvent.ErrorMovingToTrash,
+                onRight = MessageViewAction.Trash
+            ) { userId ->
+                moveMessage(userId, messageId, SystemLabelId.Trash.labelId)
+            }
+        }
     }
 
     private fun directlyHandleViewAction(action: MessageViewAction) {
@@ -287,8 +326,11 @@ class MessageDetailViewModel @Inject constructor(
                 Timber.d("Applicable exclusive label not found")
                 emitNewStateFrom(MessageDetailEvent.ErrorDeletingNoApplicableFolder)
             } else {
-                emitNewStateFrom(action)
+                // Cancel all active observations to prevent inconsistencies upon exiting the screen.
+                stopAllJobs()
+
                 deleteMessages(userId, listOf(messageId), currentExclusiveLabel)
+                emitNewStateFrom(action)
             }
         }
     }
@@ -300,45 +342,45 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
-        primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetState?.contentState
-            if (bottomSheetState is MoveToBottomSheetState.Data) {
-                bottomSheetState.moveToDestinations.firstOrNull { it.isSelected }?.let {
-                    moveMessage(userId, messageId, it.id.labelId).fold(
-                        ifLeft = { MessageDetailEvent.ErrorMovingMessage },
-                        ifRight = { MessageViewAction.MoveToDestinationConfirmed(mailLabelText) }
-                    )
-                } ?: throw IllegalStateException("No destination selected")
-            } else {
-                MessageDetailEvent.ErrorMovingMessage
+        viewModelScope.launch {
+            when (val state = state.value.bottomSheetState?.contentState) {
+                is MoveToBottomSheetState.Data -> {
+                    state.moveToDestinations.firstOrNull { it.isSelected }?.let {
+                        performSafeExitAction(
+                            onLeft = MessageDetailEvent.ErrorMovingMessage,
+                            onRight = MessageViewAction.MoveToDestinationConfirmed(mailLabelText)
+                        ) { userId ->
+                            moveMessage(userId, messageId, it.id.labelId)
+                        }
+                    } ?: emitNewStateFrom(MessageDetailEvent.ErrorMovingMessage)
+                }
+
+                // Unsupported flow
+                else -> emitNewStateFrom(MessageDetailEvent.ErrorMovingMessage)
             }
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        }
     }
 
-    private fun observeMessageWithLabels(messageId: MessageId) {
-        primaryUserId.flatMapLatest { userId ->
-            val contacts = getContacts(userId).getOrElse { emptyList() }
-            return@flatMapLatest combine(
-                observeMessageWithLabels(userId, messageId),
-                observeFolderColor(userId)
-            ) { messageWithLabelsEither, folderColor ->
-                messageWithLabelsEither.fold(
-                    ifLeft = { MessageDetailEvent.NoCachedMetadata },
-                    ifRight = { messageWithLabels ->
-                        MessageDetailEvent.MessageWithLabelsEvent(
-                            messageWithLabels,
-                            contacts,
-                            folderColor
-                        )
-                    }
-                )
-            }
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
-    }
+    private fun observeMessageWithLabels(messageId: MessageId) = primaryUserId.flatMapLatest { userId ->
+        val contacts = getContacts(userId).getOrElse { emptyList() }
+        return@flatMapLatest combine(
+            observeMessageWithLabels(userId, messageId),
+            observeFolderColor(userId)
+        ) { messageWithLabelsEither, folderColor ->
+            messageWithLabelsEither.fold(
+                ifLeft = { MessageDetailEvent.NoCachedMetadata },
+                ifRight = { messageWithLabels ->
+                    MessageDetailEvent.MessageWithLabelsEvent(
+                        messageWithLabels,
+                        contacts,
+                        folderColor
+                    )
+                }
+            )
+        }
+    }.onEach { event ->
+        emitNewStateFrom(event)
+    }.launchIn(viewModelScope)
 
     private fun getMessageBody(messageId: MessageId) {
         viewModelScope.launch {
@@ -364,7 +406,10 @@ class MessageDetailViewModel @Inject constructor(
                     }
                 },
                 ifRight = {
-                    observeAttachments(messageId, it.attachments)
+                    if (it.attachments.isNotEmpty()) {
+                        updateObservedAttachments(it.attachments)
+                    }
+
                     val initialUiModel = messageBodyUiModelMapper.toUiModel(userId, it, null)
                     MessageDetailEvent.MessageBodyEvent(
                         initialUiModel,
@@ -390,7 +435,6 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
-
     private fun reloadMessageBody(messageId: MessageId) {
         viewModelScope.launch {
             emitNewStateFrom(MessageViewAction.Reload)
@@ -398,52 +442,36 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
-    private fun observePrivacySettings() {
-        primaryUserId.flatMapLatest { userId ->
-            observePrivacySettings(userId).mapLatest { either ->
-                either.fold(
-                    ifLeft = { Timber.e("Error getting Privacy Settings for user: $userId") },
-                    ifRight = { privacySettings ->
-                        mutableDetailState.emit(
-                            mutableDetailState.value.copy(
-                                requestLinkConfirmation = privacySettings.requestLinkConfirmation
-                            )
+    private fun observePrivacySettings() = primaryUserId.flatMapLatest { userId ->
+        observePrivacySettings(userId).mapLatest { either ->
+            either.fold(
+                ifLeft = { Timber.e("Error getting Privacy Settings for user: $userId") },
+                ifRight = { privacySettings ->
+                    mutableDetailState.emit(
+                        mutableDetailState.value.copy(
+                            requestLinkConfirmation = privacySettings.requestLinkConfirmation
                         )
-                    }
-                )
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private fun observeBottomBarActions(messageId: MessageId) {
-        primaryUserId.flatMapLatest { userId ->
-            observeDetailActions(userId, messageId).mapLatest { either ->
-                either.fold(
-                    ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
-                    ifRight = { actions ->
-                        val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }.toImmutableList()
-                        MessageDetailEvent.MessageBottomBarEvent(
-                            BottomBarEvent.ShowAndUpdateActionsData(actionUiModels)
-                        )
-                    }
-                )
-            }
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
-    }
-
-    private suspend fun observeAttachments(messageId: MessageId, attachments: List<MessageAttachment>) {
-        attachments.map { it.attachmentId }.forEach { attachmentId ->
-            primaryUserId.flatMapLatest { userId ->
-                observeMessageAttachmentStatus(userId, messageId, attachmentId).mapLatest {
-                    MessageDetailEvent.AttachmentStatusChanged(attachmentId, it.status)
+                    )
                 }
-            }.onEach { event ->
-                emitNewStateFrom(event)
-            }.launchIn(viewModelScope)
+            )
         }
-    }
+    }.launchIn(viewModelScope)
+
+    private fun observeBottomBarActions(messageId: MessageId) = primaryUserId.flatMapLatest { userId ->
+        observeDetailActions(userId, messageId).mapLatest { either ->
+            either.fold(
+                ifLeft = { MessageDetailEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
+                ifRight = { actions ->
+                    val actionUiModels = actions.map { actionUiModelMapper.toUiModel(it) }.toImmutableList()
+                    MessageDetailEvent.MessageBottomBarEvent(
+                        BottomBarEvent.ShowAndUpdateActionsData(actionUiModels)
+                    )
+                }
+            )
+        }
+    }.onEach { event ->
+        emitNewStateFrom(event)
+    }.launchIn(viewModelScope)
 
     private fun showMoreActionsBottomSheetAndLoadData(initialEvent: MessageViewAction.RequestMoreActionsBottomSheet) {
         viewModelScope.launch {
@@ -530,24 +558,32 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = primaryUserId.first()
 
-            val labelAsData =
-                mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
-                    ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
+            val labelAsData = mutableDetailState.value.bottomSheetState?.contentState as? LabelAsBottomSheetState.Data
+                ?: throw IllegalStateException("BottomSheetState is not LabelAsBottomSheetState.Data")
 
-            val operation =
+            val action = suspend {
                 onMessageLabelAsConfirmed(
                     userId = userId,
                     messageId = messageId,
                     labelUiModelsWithSelectedState = labelAsData.labelUiModelsWithSelectedState,
                     archiveSelected = archiveSelected
-                ).fold(
-                    ifLeft = {
-                        Timber.e("Relabel message failed: $it")
-                        MessageDetailEvent.ErrorLabelingMessage
-                    },
-                    ifRight = { MessageViewAction.LabelAsConfirmed(archiveSelected) }
                 )
-            emitNewStateFrom(operation)
+            }
+
+            if (archiveSelected) {
+                performSafeExitAction(
+                    onLeft = MessageDetailEvent.ErrorLabelingMessage,
+                    onRight = MessageViewAction.LabelAsConfirmed(true)
+                ) {
+                    action()
+                }
+            } else {
+                val operation = action().fold(
+                    ifLeft = { MessageDetailEvent.ErrorLabelingMessage },
+                    ifRight = { MessageViewAction.LabelAsConfirmed(false) }
+                )
+                emitNewStateFrom(operation)
+            }
         }
     }
 
@@ -581,6 +617,25 @@ class MessageDetailViewModel @Inject constructor(
         viewModelScope.launch { updateLinkConfirmationSetting(false) }
     }
 
+    private fun observeAttachments() = primaryUserId.flatMapLatest { userId ->
+        attachmentsState.flatMapLatest { attachments ->
+            attachments.asFlow()
+                .flatMapMerge { attachment ->
+                    observeMessageAttachmentStatus(userId, messageId, attachment.attachmentId)
+                        .map { status ->
+                            MessageDetailEvent.AttachmentStatusChanged(
+                                attachment.attachmentId,
+                                status.status
+                            )
+                        }
+                        .distinctUntilChanged()
+                }
+        }
+    }.onEach { event ->
+        emitNewStateFrom(event)
+    }.launchIn(viewModelScope)
+
+
     private fun onOpenAttachmentClicked(attachmentId: AttachmentId) {
         viewModelScope.launch {
             // Only one download is allowed at a time
@@ -601,6 +656,10 @@ class MessageDetailViewModel @Inject constructor(
                 emitNewStateFrom(MessageDetailEvent.ErrorAttachmentDownloadInProgress)
             }
         }
+    }
+
+    private fun updateObservedAttachments(attachments: List<MessageAttachment>) {
+        attachmentsState.update { it + attachments }
     }
 
     private fun handleReportPhishing(action: MessageViewAction.ReportPhishing) {
@@ -681,25 +740,25 @@ class MessageDetailViewModel @Inject constructor(
     }
 
     private fun handleArchive() {
-        primaryUserId.mapLatest { userId ->
-            moveMessage(userId, messageId, SystemLabelId.Archive.labelId).fold(
-                ifLeft = { MessageDetailEvent.ErrorMovingToArchive },
-                ifRight = { MessageViewAction.Archive }
-            )
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            performSafeExitAction(
+                onLeft = MessageDetailEvent.ErrorMovingToArchive,
+                onRight = MessageViewAction.Archive
+            ) { userId ->
+                moveMessage(userId, messageId, SystemLabelId.Archive.labelId)
+            }
+        }
     }
 
     private fun handleSpam() {
-        primaryUserId.mapLatest { userId ->
-            moveMessage(userId, messageId, SystemLabelId.Spam.labelId).fold(
-                ifLeft = { MessageDetailEvent.ErrorMovingToSpam },
-                ifRight = { MessageViewAction.Spam }
-            )
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            performSafeExitAction(
+                onLeft = MessageDetailEvent.ErrorMovingToSpam,
+                onRight = MessageViewAction.Spam
+            ) { userId ->
+                moveMessage(userId, messageId, SystemLabelId.Spam.labelId)
+            }
+        }
     }
 
     private suspend fun emitNewStateFrom(operation: MessageDetailOperation) {
@@ -716,6 +775,28 @@ class MessageDetailViewModel @Inject constructor(
 
     private suspend fun isAttachmentDownloadInProgress() =
         getDownloadingAttachmentsForMessages(primaryUserId.first(), listOf(MessageId(messageId.id))).isNotEmpty()
+
+    /**
+     * Equivalent of [ConversationDetailViewModel.performSafeExitAction].
+     */
+    private suspend fun performSafeExitAction(
+        onLeft: MessageDetailOperation,
+        onRight: MessageDetailOperation,
+        action: suspend (userId: UserId) -> Either<*, *>
+    ) {
+        stopAllJobs()
+
+        val userId = primaryUserId.first()
+        val event = action(userId).fold(
+            ifLeft = {
+                restartAllJobs()
+                onLeft
+            },
+            ifRight = { onRight }
+        )
+
+        emitNewStateFrom(event)
+    }
 
     companion object {
 
