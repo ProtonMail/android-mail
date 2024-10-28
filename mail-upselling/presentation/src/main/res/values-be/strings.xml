@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Выкарыстоўвайце свой уласны мабільны подпіс і атрымайце іншыя прэміяльныя функцыі з тарыфным планам Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Наладзьце свой подпіс</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Атрымлівайце асалоду ад больш арганізаванай паштовай скрыні і карыстайцеся іншымі перавагамі прэміяльных функцый з тарыфным планам Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Ачысціць выдаленыя файлы і спам</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 ГБ сховішча</string>
   <string name="upselling_plus_feature_email_addresses">10 адрасоў электроннай пошты</string>

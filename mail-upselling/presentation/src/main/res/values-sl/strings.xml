@@ -21,19 +21,19 @@
   <string name="upselling_button_item_content_description">Gumb za nadgradnjo</string>
   <string name="upselling_close_button_content_description">Gumb za zapiranje</string>
   <!-- Upselling: Mailbox -->
-  <string name="upselling_mailbox_plus_description_override">Nadgradite za več prostora za shranjevanje in premijskih funkcij</string>
+  <string name="upselling_mailbox_plus_description_override">Za več prostora za shranjevanje in premijskih funkcij</string>
   <string name="upselling_mailbox_plus_title">Nadgradite na Mail Plus</string>
   <!-- Upselling: Contact Groups -->
   <string name="upselling_contact_groups_plus_description_override">Enostavno pošiljajte e-pošto skupini in uživajte v drugih premijskih funkcijah z Mail Plus.</string>
-  <string name="upselling_contact_groups_plus_title">Skupinajte svoje stike</string>
+  <string name="upselling_contact_groups_plus_title">Združite svoje stike v skupine</string>
   <!-- Upselling: Labels -->
-  <string name="upselling_labels_plus_description_override">Pridobite jih in druge vrhunske funkcije, ko nadgradite na Mail Plus.</string>
+  <string name="upselling_labels_plus_description_override">Pridobite to in druge premijske funkcije, ko nadgradite na Mail Plus.</string>
   <string name="upselling_labels_plus_title">Potrebujete več oznak ali map?</string>
   <!-- Upselling: Folders -->
-  <string name="upselling_folders_plus_description_override">Pridobite jih in druge vrhunske funkcije, ko nadgradite na Mail Plus.</string>
+  <string name="upselling_folders_plus_description_override">Pridobite jih in druge premijske funkcije, ko nadgradite na Mail Plus.</string>
   <string name="upselling_folders_plus_title">Potrebujete več oznak ali map?</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_mobile_signature_plus_description_override">Uporabite svoj lastni mobilni podpis in uživajte v drugih vrhunskih funkcijah z Mail Plus.</string>
+  <string name="upselling_mobile_signature_plus_description_override">Uporabite svoj lastni mobilni podpis in uživajte v drugih premijskih funkcijah z Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Prilagodite svoj podpis</string>
   <!-- Upselling: Mobile Signature -->
   <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
@@ -44,7 +44,7 @@
   <string name="upselling_plus_feature_custom_domain">Podpora za e-poštno domeno po meri</string>
   <string name="upselling_plus_feature_desktop_app">Nova namizna aplikacija Proton Mail</string>
   <string name="upselling_plus_feature_folders_labels">Neomejeno število map, oznak in filtrov</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 premium funkcij</string>
+  <string name="upselling_plus_feature_plus_7_features">+7 premijskih funkcij</string>
   <!-- Unlimited -->
   <string name="upselling_unlimited_description_override">Vaša premijska naročnina vse v enem</string>
   <string name="upselling_unlimited_feature_storage">500 GB prostora za shranjevanje z varnostno kopijo</string>

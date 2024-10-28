@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">გამოიყენეთ თქვენი მობილური ხელმოწერა და ისიამოვნეთ სხვა ფასიანი ფუნქციებით Mail Plus-სთან ერთად.</string>
   <string name="upselling_mobile_signature_plus_title">მოირგეთ თქვენი ხელმოწერა</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">ისიამოვნეთ დალაგებული საფოსტო ყუთით და სხვა ფასიანი ფუნქციებით Mail Plus-თან ერთად.</string>
+  <string name="upselling_auto_delete_plus_title">გაასუფთავეთ ძველი ნაგავი და სპამი</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 გბ საცავი</string>
   <string name="upselling_plus_feature_email_addresses">10 ელფოსტის მისამართი</string>

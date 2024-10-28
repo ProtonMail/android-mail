@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Kendi mobil imzanızı kullanın ve Mail Plus tarifesi ile diğer ücretli özelliklerin tadını çıkarın.</string>
   <string name="upselling_mobile_signature_plus_title">İmzanızı özelleştirin</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Mail Plus tarifesi ile daha düzenli bir posta kutusunun ve diğer ücretli özelliklerin tadını çıkarın.</string>
+  <string name="upselling_auto_delete_plus_title">Çöp ve istenmeyen kutularındaki eski iletiler temizleyin</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>

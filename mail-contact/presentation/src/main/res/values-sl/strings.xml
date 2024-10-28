@@ -149,8 +149,8 @@
     <item quantity="few">%d člana</item>
     <item quantity="other">%d člana</item>
   </plurals>
-  <string name="contact_search_placeholder">Rechercher un groupe ou contact</string>
-  <string name="contact_search_content_description">Iskanje skupine ali stika</string>
+  <string name="contact_search_placeholder">Iskanje stika ali skupine</string>
+  <string name="contact_search_content_description">Iskanje stika ali skupine</string>
   <string name="contact_search_arrow_back_content_description">Nazaj v stike</string>
   <string name="contact_search_no_results">Ni najdenih rezultatov.</string>
 </resources>

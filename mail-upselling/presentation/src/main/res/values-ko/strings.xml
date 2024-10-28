@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Mail Plus로 나만의 모바일 서명을 사용하고 다른 프리미엄 기능도 즐길 수 있어요.</string>
   <string name="upselling_mobile_signature_plus_title">내 서명 사용자화</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Mail Plus로 더 간결한 우편함과 다른 프리미엄 기능을 즐겨보세요.</string>
+  <string name="upselling_auto_delete_plus_title">오래된 휴지통 및 스팸함 내 항목 완전히 지우기</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">저장공간 15GB</string>
   <string name="upselling_plus_feature_email_addresses">이메일 주소 10개</string>

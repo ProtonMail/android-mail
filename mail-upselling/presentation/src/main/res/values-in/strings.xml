@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Gunakan tanda tangan seluler milik Anda dan nikmati berbagai fitur premium lainnya dengan Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Sesuaikan tanda tangan Anda</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Nikmati kotak surat yang lebih rapi dan manfaat dari berbagai fitur premium lainnya dengan Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Bersihkan sampah dan spam yang telah lama menumpuk</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">Ruang penyimpanan 15 GB</string>
   <string name="upselling_plus_feature_email_addresses">10 alamat email</string>

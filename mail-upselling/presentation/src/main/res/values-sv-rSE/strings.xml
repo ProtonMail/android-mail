@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Använd din egen mobilsignatur och njut av andra premiumfunktioner med Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Anpassa din signatur</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Njut av en snyggare brevlåda och dra nytta av andra premiumfunktioner med Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Rensa bort gammalt i papperskorg och skräppost</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB lagringsutrymme</string>
   <string name="upselling_plus_feature_email_addresses">10 e-postadresser</string>
