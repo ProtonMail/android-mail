@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.flatMap
 import arrow.core.left
 import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -31,6 +32,8 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
@@ -53,34 +56,37 @@ class GetDecryptedMessageBody @Inject constructor(
     private val messageRepository: MessageRepository,
     private val parseMimeAttachmentHeaders: ParseMimeAttachmentHeaders,
     private val provideNewAttachmentId: ProvideNewAttachmentId,
-    private val userAddressManager: UserAddressManager
+    private val userAddressManager: UserAddressManager,
+    @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(
         userId: UserId,
         messageId: MessageId
     ): Either<GetDecryptedMessageBodyError, DecryptedMessageBody> {
-        return messageRepository.getMessageWithBody(userId, messageId)
-            .mapLeft { GetDecryptedMessageBodyError.Data(it) }
-            .flatMap { messageWithBody ->
-                val addressId = messageWithBody.message.addressId
-                val userAddress = userAddressManager.getAddress(userId, addressId)
-                val messageBody = messageWithBody.messageBody
+        return withContext(dispatcher) {
+            messageRepository.getMessageWithBody(userId, messageId)
+                .mapLeft { GetDecryptedMessageBodyError.Data(it) }
+                .flatMap { messageWithBody ->
+                    val addressId = messageWithBody.message.addressId
+                    val userAddress = userAddressManager.getAddress(userId, addressId)
+                    val messageBody = messageWithBody.messageBody
 
-                return@flatMap if (userAddress != null) {
-                    try {
-                        userAddress.useKeys(cryptoContext) {
-                            decryptMessageBody(userAddress, messageBody)
-                        }.right()
-                    } catch (cryptoException: CryptoException) {
-                        Timber.e(cryptoException, "Error decrypting message")
+                    return@flatMap if (userAddress != null) {
+                        try {
+                            userAddress.useKeys(cryptoContext) {
+                                decryptMessageBody(userAddress, messageBody)
+                            }.right()
+                        } catch (cryptoException: CryptoException) {
+                            Timber.e(cryptoException, "Error decrypting message")
+                            GetDecryptedMessageBodyError.Decryption(messageId, messageBody.body).left()
+                        }
+                    } else {
+                        Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
                         GetDecryptedMessageBodyError.Decryption(messageId, messageBody.body).left()
                     }
-                } else {
-                    Timber.e("Decryption error. Could not get UserAddress for user id ${userId.id}")
-                    GetDecryptedMessageBodyError.Decryption(messageId, messageBody.body).left()
                 }
-            }
+        }
     }
 
     private suspend fun KeyHolderContext.decryptMessageBody(

@@ -36,7 +36,12 @@ import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import me.proton.core.crypto.common.context.CryptoContext
@@ -54,6 +59,8 @@ import me.proton.core.user.domain.entity.UserAddress
 import me.proton.core.user.domain.entity.UserAddressKey
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -112,6 +119,7 @@ class GetDecryptedMessageBodyTest(
         } returns Unit.right()
     }
     private val messageRepository = mockk<MessageRepository>()
+    private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
 
     private val getDecryptedMessageBody = GetDecryptedMessageBody(
         attachmentRepository,
@@ -119,8 +127,19 @@ class GetDecryptedMessageBodyTest(
         messageRepository,
         parseMimeAttachmentHeaders,
         provideNewAttachmentId,
-        userAddressManager
+        userAddressManager,
+        testDispatcher
     )
+
+    @BeforeTest
+    fun setup() {
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @AfterTest
+    fun teardown() {
+        Dispatchers.resetMain()
+    }
 
     @Test
     fun `when repository gets message body and decryption is successful then the decrypted message body is returned`() =
