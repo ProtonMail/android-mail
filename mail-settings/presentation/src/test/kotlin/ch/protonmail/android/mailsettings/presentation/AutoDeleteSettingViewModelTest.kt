@@ -26,7 +26,6 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingViewModel
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteViewAction
-import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData
 import ch.protonmail.android.testdata.mailsettings.MailSettingsTestData.mailSettings
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.coEvery
@@ -45,6 +44,7 @@ import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import org.junit.Test
 import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 
 class AutoDeleteSettingViewModelTest {
 
@@ -82,14 +82,14 @@ class AutoDeleteSettingViewModelTest {
 
             // When
             mailSettingsFlow.emit(
-                MailSettingsTestData.mailSettings.copy(
+                mailSettings.copy(
                     autoDeleteSpamAndTrashDays = null
                 )
             )
 
             // Then
             val actual = awaitItem() as AutoDeleteSettingState.Data
-            kotlin.test.assertFalse(actual.isEnabled)
+            assertFalse(actual.isEnabled)
         }
     }
 
@@ -101,14 +101,14 @@ class AutoDeleteSettingViewModelTest {
 
             // When
             mailSettingsFlow.emit(
-                MailSettingsTestData.mailSettings.copy(
+                mailSettings.copy(
                     autoDeleteSpamAndTrashDays = 0
                 )
             )
 
             // Then
             val actual = awaitItem() as AutoDeleteSettingState.Data
-            kotlin.test.assertFalse(actual.isEnabled)
+            assertFalse(actual.isEnabled)
         }
     }
 
@@ -120,7 +120,7 @@ class AutoDeleteSettingViewModelTest {
 
             // When
             mailSettingsFlow.emit(
-                MailSettingsTestData.mailSettings.copy(
+                mailSettings.copy(
                     autoDeleteSpamAndTrashDays = 666
                 )
             )
@@ -128,34 +128,6 @@ class AutoDeleteSettingViewModelTest {
             // Then
             val actual = awaitItem() as AutoDeleteSettingState.Data
             kotlin.test.assertTrue(actual.isEnabled)
-        }
-    }
-
-    @Test
-    fun `state is NotLoggedIn when use case returns invalid mail settings`() = runTest {
-        viewModel.state.test {
-            // Given
-            initialStateEmitted()
-
-            // When
-            mailSettingsFlow.emit(null)
-
-            // Then
-            val actual = awaitItem() as AutoDeleteSettingState.NotLoggedIn
-            kotlin.test.assertIs<AutoDeleteSettingState.NotLoggedIn>(actual)
-        }
-    }
-
-    @Test
-    fun `emits right state when no user is logged in`() = runTest {
-        // given
-        givenNoLoggedInUser()
-
-        // when
-        viewModel.state.test {
-
-            // then
-            kotlin.test.assertEquals(AutoDeleteSettingState.NotLoggedIn, awaitItem())
         }
     }
 
@@ -309,10 +281,6 @@ class AutoDeleteSettingViewModelTest {
             assertEquals(DialogState.Hidden, actual.enablingDialogState)
             assertEquals(DialogState.Hidden, actual.disablingDialogState)
         }
-    }
-
-    private fun givenNoLoggedInUser() {
-        every { accountManager.getPrimaryUserId() } returns flowOf(null)
     }
 
     private fun expectRepositorySettingsUpdate(value: Int) {

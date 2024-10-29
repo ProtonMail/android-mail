@@ -31,13 +31,10 @@ import ch.protonmail.android.mailcommon.presentation.ui.delete.AutoDeleteDialog
 import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.Loading
-import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.NotLoggedIn
 import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import me.proton.core.compose.component.ProtonCenteredProgress
-import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.util.kotlin.exhaustive
-import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 
 const val TEST_TAG_AUTO_DELETE_SETTINGS_SCREEN = "AccountAutoDeleteTestTag"
 
@@ -79,12 +76,11 @@ fun AutoDeleteSettingScreen(
         }
 
         Loading -> ProtonCenteredProgress()
-        NotLoggedIn -> ProtonErrorMessage(errorMessage = stringResource(id = commonString.x_error_not_logged_in))
     }.exhaustive
 }
 
 @Composable
-fun AutoDeleteSettingScreen(
+private fun AutoDeleteSettingScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit,
     onAutoDeleteToggled: (Boolean) -> Unit,
@@ -112,7 +108,7 @@ fun AutoDeleteSettingScreen(
 
 @Preview(name = "Auto-delete settings screen")
 @Composable
-fun AutoDeleteSettingsScreenPreview() {
+private fun AutoDeleteSettingsScreenPreview() {
     AutoDeleteSettingScreen(
         onBackClick = {}
     )

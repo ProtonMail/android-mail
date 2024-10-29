@@ -29,5 +29,4 @@ sealed interface AutoDeleteSettingState {
     ) : AutoDeleteSettingState
 
     data object Loading : AutoDeleteSettingState
-    data object NotLoggedIn : AutoDeleteSettingState
 }

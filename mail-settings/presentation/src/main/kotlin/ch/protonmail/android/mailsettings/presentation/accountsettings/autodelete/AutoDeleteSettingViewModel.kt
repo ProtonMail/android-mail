@@ -26,19 +26,15 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.Loading
-import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.NotLoggedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
@@ -53,30 +49,17 @@ class AutoDeleteSettingViewModel @Inject constructor(
     private val _state = MutableStateFlow<AutoDeleteSettingState>(Loading)
     val state: StateFlow<AutoDeleteSettingState> = _state
 
-    private val actionMutex = Mutex()
-
     init {
-        accountManager.getPrimaryUserId().flatMapLatest { userId ->
-            if (userId == null) flowOf(null)
-            else observeMailSettings(userId)
+        accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
+            observeMailSettings(userId)
         }.onEach { mailSettings ->
+            val currentState = _state.value
+            val isEnabled = mailSettings?.autoDeleteSpamAndTrashDays?.let { it > 0 } ?: false
 
-            actionMutex.withLock {
-                val currentState = _state.value
-
-                _state.value = if (mailSettings == null) {
-                    NotLoggedIn
-                } else {
-                    val isEnabled = mailSettings.autoDeleteSpamAndTrashDays?.let { it > 0 } ?: false
-
-                    if (currentState is Data) {
-                        currentState.copy(
-                            isEnabled = isEnabled
-                        )
-                    } else Data(isEnabled = isEnabled)
-                }
+            _state.value = when (currentState) {
+                is Data -> currentState.copy(isEnabled = isEnabled)
+                else -> Data(isEnabled = isEnabled)
             }
-
         }.launchIn(viewModelScope)
     }
 
@@ -84,67 +67,62 @@ class AutoDeleteSettingViewModel @Inject constructor(
         viewModelScope.launch {
             emitNewStateFor(action)
         }
-
     }
 
-    private suspend fun emitNewStateFor(operation: AutoDeleteToggleOperation) {
-        actionMutex.withLock {
-            val currentState = _state.value
+    private fun emitNewStateFor(operation: AutoDeleteToggleOperation) {
+        val currentState = _state.value
+        if (currentState !is Data) return
 
-            if (currentState is Data) {
-                _state.value = when (operation) {
-                    AutoDeleteViewAction.ActivationConfirmed -> {
-                        updateSetting(true)
+        _state.value = when (operation) {
+            AutoDeleteViewAction.ActivationConfirmed -> {
+                updateSetting(true)
 
-                        currentState.withDialogsHidden()
-                    }
-
-                    AutoDeleteViewAction.ActivationRequested -> currentState.copy(
-                        enablingDialogState = DialogState.Shown(
-                            title = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_title),
-                            message = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_text),
-                            dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
-                            confirmButtonText = TextUiModel(
-                                R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
-                            )
-                        ),
-                        disablingDialogState = DialogState.Hidden
-                    )
-
-                    AutoDeleteViewAction.DeactivationConfirmed -> {
-
-                        updateSetting(false)
-
-                        currentState.withDialogsHidden()
-                    }
-
-                    AutoDeleteViewAction.DeactivationRequested -> currentState.copy(
-                        disablingDialogState = DialogState.Shown(
-                            title = TextUiModel(R.string.mail_settings_auto_delete_dialog_disabling_title),
-                            message = TextUiModel(R.string.mail_settings_auto_delete_dialog_disabling_text),
-                            dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
-                            confirmButtonText = TextUiModel(
-                                R.string.mail_settings_auto_delete_dialog_disabling_button_confirm
-                            )
-                        ),
-                        enablingDialogState = DialogState.Hidden
-                    )
-
-                    AutoDeleteViewAction.DialogDismissed ->
-                        currentState.withDialogsHidden()
-                }
+                currentState.withDialogsHidden()
             }
-        }
 
+            AutoDeleteViewAction.ActivationRequested -> currentState.copy(
+                enablingDialogState = DialogState.Shown(
+                    title = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_title),
+                    message = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_text),
+                    dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
+                    confirmButtonText = TextUiModel(
+                        R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
+                    )
+                ),
+                disablingDialogState = DialogState.Hidden
+            )
+
+            AutoDeleteViewAction.DeactivationConfirmed -> {
+
+                updateSetting(false)
+
+                currentState.withDialogsHidden()
+            }
+
+            AutoDeleteViewAction.DeactivationRequested -> currentState.copy(
+                disablingDialogState = DialogState.Shown(
+                    title = TextUiModel(R.string.mail_settings_auto_delete_dialog_disabling_title),
+                    message = TextUiModel(R.string.mail_settings_auto_delete_dialog_disabling_text),
+                    dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
+                    confirmButtonText = TextUiModel(
+                        R.string.mail_settings_auto_delete_dialog_disabling_button_confirm
+                    )
+                ),
+                enablingDialogState = DialogState.Hidden
+            )
+
+            AutoDeleteViewAction.DialogDismissed ->
+                currentState.withDialogsHidden()
+        }
     }
 
-    private fun Data.withDialogsHidden() = this.copy(
+    private fun Data.withDialogsHidden() = copy(
         disablingDialogState = DialogState.Hidden,
         enablingDialogState = DialogState.Hidden
     )
 
     @Suppress("MagicNumber")
-    private suspend fun updateSetting(isEnabled: Boolean) {
+    private fun updateSetting(isEnabled: Boolean) {
         accountManager
             .getPrimaryUserId()
             .filterNotNull()
@@ -160,5 +138,4 @@ class AutoDeleteSettingViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
     }
-
 }
