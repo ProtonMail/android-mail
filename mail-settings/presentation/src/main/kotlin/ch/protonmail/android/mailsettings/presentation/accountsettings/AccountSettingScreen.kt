@@ -45,9 +45,11 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.settings.SettingsItem
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.presentation.compose.SecurityKeysSettingsItem
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -245,12 +247,14 @@ fun AccountSettingScreen(
                     when (bottomSheetEffect) {
                         BottomSheetVisibilityEffect.Hide -> scope.launch {
                             bottomSheetState.hide()
-                            showBottomSheet = false
                         }
 
                         BottomSheetVisibilityEffect.Show -> scope.launch {
+                            if (!showBottomSheet) {
+                                showBottomSheet = true
+                                delay(DELAY_SHOWING)
+                            }
                             bottomSheetState.show()
-                            showBottomSheet = true
                         }
                     }
                 }
