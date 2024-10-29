@@ -20,10 +20,9 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.maildetail.domain"
@@ -45,16 +44,16 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
+    kapt(libs.bundles.app.annotationProcessors)
 
-    implementation(Proton.Core.contactDomain)
-    implementation(Proton.Core.labelDomain)
-    implementation(Proton.Core.mailSettings)
-    implementation(Proton.Core.presentation)
-    implementation(Proton.Core.user)
+    implementation(libs.bundles.module.domain)
+    implementation(libs.proton.core.contact.domain)
+    implementation(libs.proton.core.label.domain)
+    implementation(libs.proton.core.mailSettings)
+    implementation(libs.proton.core.presentation)
+    implementation(libs.proton.core.user)
 
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(AndroidX.Hilt.work)
+    implementation(libs.androidx.hilt.work)
 
     implementation(project(":mail-conversation:domain"))
     implementation(project(":mail-message:domain"))
@@ -63,6 +62,6 @@ dependencies {
     // Needed as PageType is a supertype of Message.
     implementation(project(":mail-pagination:domain"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
 }

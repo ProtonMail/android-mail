@@ -1,0 +1,1 @@
+-dontwarn com.google.auto.service.AutoService

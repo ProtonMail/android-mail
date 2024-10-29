@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -47,7 +47,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -58,12 +58,13 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-    debugImplementation(Dependencies.composeDebugLibs)
+    kapt(libs.bundles.app.annotationProcessors)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(Dependencies.modulePresentationLibs)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.mailSettings)
+    implementation(libs.bundles.module.presentation)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.mailSettings)
 
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-settings:domain"))
@@ -73,10 +74,10 @@ dependencies {
     implementation(project(":mail-upselling:domain"))
     implementation(project(":uicomponents"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
 
-    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(libs.bundles.test.androidTest)
     androidTestImplementation(project(":test:annotations"))
 }

@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailupselling.presentation"
@@ -49,33 +48,30 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 
 dependencies {
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.dagger.hilt.android)
+
     implementation(project(":mail-upselling:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":uicomponents"))
 
-    debugImplementation(AndroidX.Compose.uiTooling)
-    debugImplementation(AndroidX.Compose.uiToolingPreview)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(AndroidX.Hilt.navigationCompose)
-    implementation(Arrow.core)
-    implementation(Coil.coil)
-    implementation(Dependencies.composeLibs)
-    implementation(JakeWharton.timber)
-    implementation(Proton.Core.presentation)
-    implementation(Proton.Core.presentationCompose)
-    implementation(Proton.Core.plan)
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.arrow.core)
+    implementation(libs.coil.compose)
+    implementation(libs.timber)
+    implementation(libs.proton.core.plan)
+    implementation(libs.proton.core.presentation)
+    implementation(libs.proton.core.presentationCompose)
 
     testImplementation(project(":test:test-data"))
-
-    testImplementation(Cash.turbine)
-    testImplementation(Kotlin.test)
-    testImplementation(Kotlin.testJunit)
-    testImplementation(KotlinX.coroutinesTest)
-    testImplementation(Mockk.mockk)
+    testImplementation(libs.bundles.test)
 }

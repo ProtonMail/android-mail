@@ -19,8 +19,6 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
 }
 
 android {
@@ -47,7 +45,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -55,17 +53,4 @@ android {
         resources.excludes.add("META-INF/AL2.0")
         resources.excludes.add("META-INF/LGPL2.1")
     }
-}
-
-dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-
-    implementation(Dependencies.modulePresentationLibs)
-
-    implementation(project(":mail-common:domain"))
-    implementation(project(":mail-conversation:domain"))
-    implementation(project(":mail-detail:domain"))
-    implementation(project(":mail-message:domain"))
-
-    testImplementation(Dependencies.testLibs)
 }

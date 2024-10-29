@@ -41,18 +41,18 @@ android {
 }
 
 dependencies {
-    implementation(KotlinX.immutableCollections)
+    implementation(libs.kotlinx.immutableCollections)
 
-    implementation(Proton.Core.account)
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.domain)
-    implementation(Proton.Core.featureFlag)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.mailSettings)
-    implementation(Proton.Core.network)
-    implementation(Proton.Core.plan)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.userSettings)
+    implementation(libs.proton.core.account)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.domain)
+    implementation(libs.proton.core.featureFlag)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.mailSettings)
+    implementation(libs.proton.core.network)
+    implementation(libs.proton.core.plan)
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.userSettings)
 
     implementation(project(":mail-common"))
     implementation(project(":mail-conversation"))

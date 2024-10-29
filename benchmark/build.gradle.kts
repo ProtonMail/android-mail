@@ -80,10 +80,10 @@ android {
 }
 
 dependencies {
-    implementation(AndroidX.Test.androidJUnit)
-    implementation(AndroidX.Test.espresso)
-    implementation(AndroidX.Test.uiautomator)
-    implementation(AndroidX.Test.macroBenchmark)
+    implementation(libs.androidx.test.androidjunit)
+    implementation(libs.androidx.test.espresso.core)
+    implementation(libs.androidx.test.uiautomator)
+    implementation(libs.androidx.test.macrobenchmark)
 }
 
 androidComponents {

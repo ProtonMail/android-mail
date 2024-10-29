@@ -21,9 +21,8 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("kotlin-parcelize")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailmailbox.presentation"
@@ -49,7 +48,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -62,19 +61,24 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-    debugImplementation(Dependencies.composeDebugLibs)
+    kapt(libs.bundles.app.annotationProcessors)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(Dependencies.modulePresentationLibs)
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.key)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.account)
-    implementation(Proton.Core.accountManagerPresentationCompose)
-    implementation(Proton.Core.featureFlag)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.mailSettings)
-    implementation(Proton.Core.planCompose)
+    implementation(libs.bundles.module.presentation)
+    implementation(libs.bundles.compose)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.proton.core.account)
+    implementation(libs.proton.core.accountManager)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.featureFlag)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.mailSettings)
+    implementation(libs.proton.core.plan.presentationCompose)
+    implementation(libs.google.play.review)
+    implementation(libs.google.play.reviewKtx)
+    implementation(libs.proton.core.user)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
@@ -94,9 +98,10 @@ dependencies {
     implementation(project(":mail-sidebar:presentation"))
     implementation(project(":uicomponents"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.androidx.paging.testing)
     testImplementation(project(":test:test-data"))
 
-    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(libs.bundles.test.androidTest)
     androidTestImplementation(project(":test:annotations"))
 }

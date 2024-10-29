@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailmailbox.dagger"
@@ -44,9 +43,12 @@ android {
 }
 
 dependencies {
+    kapt(libs.bundles.app.annotationProcessors)
+
     implementation(project(":mail-mailbox:data"))
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-mailbox:presentation"))
 
-    implementation(KotlinX.coroutinesCore)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.dagger.hilt.android)
 }

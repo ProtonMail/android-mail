@@ -16,18 +16,16 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-
 buildscript {
     repositories {
         google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.Gradle.androidGradlePlugin}")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.Gradle.kotlinGradlePlugin}")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:${Versions.Gradle.hiltAndroidGradlePlugin}")
-        classpath("com.google.gms:google-services:${Versions.Gradle.googleServicesPlugin}")
-        classpath("io.sentry:sentry-android-gradle-plugin:${Versions.Gradle.sentryGradlePlugin}")
+        classpath(libs.android.tools.build)
+        classpath(libs.kotlin.gradle)
+        classpath(libs.hilt.android.gradle)
+        classpath(libs.google.services)
+        classpath(libs.sentry.gradle)
     }
 }
 
@@ -39,12 +37,12 @@ allprojects {
 }
 
 plugins {
-    id("me.proton.core.gradle-plugins.detekt") version Versions.Proton.corePlugin
-    id("com.github.ben-manes.versions") version Versions.Gradle.benManesVersionsPlugin
-    id("com.google.devtools.ksp") version Versions.Ksp.symbolProcessingApi apply false
-    id("me.proton.core.gradle-plugins.coverage-config") version Versions.Proton.corePlugin
-    id("me.proton.core.gradle-plugins.global-coverage") version Versions.Proton.corePlugin apply false
-    id("me.proton.core.gradle-plugins.coverage") version Versions.Proton.corePlugin apply false
+    alias(libs.plugins.google.devtools.ksp) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.proton.core.detekt)
+    alias(libs.plugins.proton.core.coverage.config)
+    alias(libs.plugins.proton.core.coverage) apply false
+    alias(libs.plugins.proton.core.global.coverage) apply false
 }
 
 subprojects {
@@ -77,7 +75,6 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.layout.buildDirectory)
 }
 
-setupDependenciesPlugin()
 setupTests()
 
 kotlinCompilerArgs(
@@ -96,21 +93,6 @@ fun Project.kotlinCompilerArgs(vararg extraCompilerArgs: String) {
     }
 }
 
-fun Project.setupDependenciesPlugin() {
-    // https://github.com/ben-manes/gradle-versions-plugin
-    tasks.withType<DependencyUpdatesTask> {
-        rejectVersionIf {
-            isNonStable(candidate.version) && !isNonStable(currentVersion)
-        }
-    }
-}
-
-fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
-    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
-    val isStable = stableKeyword || regex.matches(version)
-    return isStable.not()
-}
 
 fun Project.setupTests() {
     fun Project.isRootProject() = this@isRootProject.subprojects.size != 0

@@ -22,14 +22,14 @@ plugins {
 }
 
 dependencies {
-    kapt(Dagger.hiltDaggerCompiler)
+    kapt(libs.bundles.app.annotationProcessors)
 
-    api(Squareup.mockWebServer)
-    implementation(Dagger.hiltCore)
-    implementation(KotlinX.coroutinesCore)
-    implementation(Squareup.okhttpTls)
+    api(libs.mockwebserver)
+    implementation(libs.dagger.hilt.core)
+    implementation(libs.kotlin.coroutines.core)
+    implementation(libs.okhttp.tls)
 
-    testImplementation(KotlinX.coroutinesTest)
-    testImplementation(Kotlin.test)
-    testImplementation(Squareup.okhttp)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.okhttp)
 }

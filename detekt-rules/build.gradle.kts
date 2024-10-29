@@ -21,8 +21,8 @@ plugins {
 }
 
 dependencies {
-    compileOnly(Detekt.api)
+    compileOnly(libs.detekt.api)
 
-    testImplementation(Detekt.test)
-    testImplementation(Kotlin.test)
+    testImplementation(libs.detekt.test)
+    testImplementation(libs.kotlin.test)
 }

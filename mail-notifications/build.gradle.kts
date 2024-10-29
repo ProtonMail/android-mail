@@ -20,10 +20,9 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailnotifications"
@@ -63,8 +62,10 @@ kapt {
 }
 
 dependencies {
-    api(platform(Dependencies.firebaseBom))
-    api(Firebase.messaging) {
+    kapt(libs.bundles.app.annotationProcessors)
+
+    api(platform(libs.firebase.bom))
+    api(libs.firebase.messaging) {
         exclude(group = "com.google.firebase", module = "firebase-core")
         exclude(group = "com.google.firebase", module = "firebase-analytics")
         exclude(group = "com.google.firebase", module = "firebase-measurement-connector")
@@ -76,19 +77,19 @@ dependencies {
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-settings:domain"))
-    implementation(AndroidX.Core.core)
-    implementation(AndroidX.DataStore.preferences)
-    implementation(AndroidX.Hilt.android)
-    implementation(AndroidX.Hilt.work)
-    implementation(AndroidX.Work.runtimeKtx)
-    implementation(Arrow.core)
-    implementation(JakeWharton.timber)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.accountManager)
-    kapt(Dependencies.hiltAnnotationProcessors)
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.work.runtimeKtx)
+    implementation(libs.arrow.core)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.timber)
+    implementation(libs.proton.core.accountManager)
+    implementation(libs.proton.core.label)
 
     testImplementation(project(":test:test-data"))
-    testImplementation(Dependencies.testLibs)
-    androidTestImplementation(Dependencies.androidTestLibs)
+    testImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.androidTest)
     androidTestImplementation(project(":test:annotations"))
 }

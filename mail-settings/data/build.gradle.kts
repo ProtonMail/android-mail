@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -43,16 +43,14 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
+    kapt(libs.bundles.app.annotationProcessors)
 
-    implementation(Dependencies.moduleDataLibs)
-    implementation(AndroidX.Hilt.work)
-    implementation(Dagger.hiltAndroid)
-    implementation(Dagger.hiltCore)
-    implementation(AndroidX.AppCompat.appCompat)
-    implementation(Proton.Core.mailSettings)
-    implementation(Proton.Core.user)
-    implementation(AndroidX.Biometrics.biometric)
+    implementation(libs.bundles.module.data)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.hilt.work)
+    implementation(libs.androidx.biometrics)
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.mailSettings)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
@@ -61,5 +59,5 @@ dependencies {
     implementation(project(":mail-pagination:data"))
     implementation(project(":mail-conversation:domain"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
 }

@@ -20,10 +20,9 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailcomposer.domain"
@@ -45,20 +44,23 @@ android {
 }
 
 dependencies {
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.mailSettings)
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.dagger.hilt.android)
 
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.label)
-    implementation(Jsoup.jsoup)
+    implementation(libs.bundles.module.domain)
+    implementation(libs.jsoup)
+
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.mailSettings)
+
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-settings:domain"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     // Used to access sample test data (here instead of test-data as shared with compose previews / android tests)
     testImplementation(project(":mail-common:domain"))
     testImplementation(project(":test:test-data"))

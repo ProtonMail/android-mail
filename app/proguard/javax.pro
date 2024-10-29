@@ -26,3 +26,10 @@
 -dontwarn javax.naming.directory.Attributes
 -dontwarn javax.naming.directory.DirContext
 -dontwarn javax.naming.directory.InitialDirContext
+-dontwarn javax.lang.model.element.AnnotationMirror
+-dontwarn javax.lang.model.element.AnnotationValue
+-dontwarn javax.lang.model.util.AbstractAnnotationValueVisitor8
+-dontwarn javax.lang.model.util.AbstractTypeVisitor8
+-dontwarn javax.lang.model.util.Elements
+-dontwarn javax.lang.model.util.SimpleTypeVisitor7
+-dontwarn javax.tools.Diagnostic$Kind

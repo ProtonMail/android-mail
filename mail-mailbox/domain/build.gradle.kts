@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
     id("kotlin-parcelize")
 }
 
@@ -44,11 +44,11 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.mailSettings)
+    implementation(libs.bundles.module.domain)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.mailSettings)
+    implementation(libs.proton.core.user)
 
     implementation(project(":mail-label:domain"))
     implementation(project(":mail-pagination:domain"))
@@ -57,6 +57,6 @@ dependencies {
     implementation(project(":mail-message:domain"))
     implementation(project(":mail-settings:domain"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
 }

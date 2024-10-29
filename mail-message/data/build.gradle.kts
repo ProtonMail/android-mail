@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -43,13 +43,12 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.bundles.module.data)
 
-    implementation(Dependencies.moduleDataLibs)
-    implementation(Dagger.hiltAndroid)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.label)
-    implementation(Proton.Core.eventManager)
+    implementation(libs.proton.core.label)
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.eventManager)
 
     api(project(":mail-pagination:domain"))
     implementation(project(":mail-pagination:data"))
@@ -60,6 +59,6 @@ dependencies {
     implementation(project(":mail-message:domain"))
 
     testImplementation(project(":test:test-data"))
-    testImplementation(Dependencies.testLibs)
-    testImplementation(Proton.Core.testAndroid)
+    testImplementation(libs.bundles.test)
+    androidTestImplementation(libs.bundles.test.androidTest)
 }

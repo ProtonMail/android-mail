@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailconversation.dagger"
@@ -44,7 +43,10 @@ android {
 }
 
 dependencies {
-    implementation(Proton.Core.network)
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.dagger.hilt.android)
+
+    implementation(libs.proton.core.network)
 
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))

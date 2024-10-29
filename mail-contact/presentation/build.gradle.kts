@@ -47,7 +47,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -58,12 +58,14 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
-    debugImplementation(Dependencies.composeDebugLibs)
+    kapt(libs.bundles.app.annotationProcessors)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(Dependencies.modulePresentationLibs)
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.label)
+    implementation(libs.bundles.module.presentation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.label)
 
     implementation(project(":mail-contact:domain"))
     implementation(project(":mail-common:domain"))
@@ -74,10 +76,10 @@ dependencies {
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":uicomponents"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
     testImplementation(project(":test:utils"))
 
-    androidTestImplementation(Dependencies.androidTestLibs)
+    androidTestImplementation(libs.bundles.test.androidTest)
     androidTestImplementation(project(":test:annotations"))
 }

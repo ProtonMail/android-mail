@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -43,9 +43,8 @@ android {
 }
 
 dependencies {
-    implementation(Proton.Core.label)
+    implementation(libs.bundles.module.domain)
+    implementation(libs.proton.core.label)
 
-    implementation(Dependencies.moduleDomainLibs)
-
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
 }

@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailsettings.presentation"
@@ -48,7 +47,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.composeCompiler
+        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {
@@ -59,14 +58,19 @@ android {
 }
 
 dependencies {
-    debugImplementation(Dependencies.composeDebugLibs)
+    kapt(libs.bundles.app.annotationProcessors)
+    debugImplementation(libs.bundles.compose.debug)
 
-    implementation(Dependencies.modulePresentationLibs)
-    implementation(Proton.Core.account)
-    implementation(Proton.Core.key)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.userSettings)
-    implementation(Proton.Core.mailSettings)
+    implementation(libs.bundles.module.presentation)
+    implementation(libs.jsoup)
+    implementation(libs.kotlinx.immutableCollections)
+
+    implementation(libs.proton.core.account)
+    implementation(libs.proton.core.accountManager)
+    implementation(libs.proton.core.key)
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.userSettings)
+    implementation(libs.proton.core.mailSettings)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
@@ -77,7 +81,7 @@ dependencies {
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":uicomponents"))
 
-    testImplementation(Dependencies.testLibs)
-    testImplementation(Proton.Core.network)
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.core.network)
     testImplementation(project(":test:test-data"))
 }

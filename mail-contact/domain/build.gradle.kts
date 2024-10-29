@@ -41,17 +41,17 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.moduleDomainLibs)
-    implementation(KotlinX.serializationJson)
+    implementation(libs.bundles.module.domain)
+    implementation(libs.kotlin.serialization.json)
 
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.user)
-    implementation(Proton.Core.label)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.user)
+    implementation(libs.proton.core.label)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
 
-    testImplementation(Dependencies.testLibs)
-    testImplementation(Proton.Core.contact)
+    testImplementation(libs.bundles.test)
+    testImplementation(libs.proton.core.contact)
     testImplementation(project(":test:test-data"))
 }

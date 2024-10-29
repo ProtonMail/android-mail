@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.mailupselling.data"
@@ -43,16 +42,16 @@ android {
     }
 
     dependencies {
-        implementation(AndroidX.DataStore.preferences)
-        implementation(Arrow.core)
+        kapt(libs.bundles.app.annotationProcessors)
+        implementation(libs.dagger.hilt.android)
+
+        implementation(libs.androidx.datastore.preferences)
+        implementation(libs.arrow.core)
 
         implementation(project(":mail-upselling:domain"))
         implementation(project(":mail-common:data"))
         implementation(project(":mail-common:domain"))
 
-        testImplementation(Cash.turbine)
-        testImplementation(Kotlin.test)
-        testImplementation(Mockk.mockk)
-        testImplementation(KotlinX.coroutinesTest)
+        testImplementation(libs.bundles.test)
     }
 }

@@ -20,7 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version Versions.Gradle.kotlinGradlePlugin
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -43,23 +43,20 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.appAnnotationProcessors)
+    kapt(libs.bundles.app.annotationProcessors)
 
-    implementation(Dependencies.moduleDataLibs)
+    implementation(libs.bundles.module.data)
+    implementation(libs.androidx.hilt.work)
 
-    implementation(Dagger.hiltAndroid)
-    implementation(AndroidX.Hilt.work)
+    implementation(libs.proton.core.contact)
+    implementation(libs.proton.core.label)
+
     implementation(project(":mail-common:data"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-label:domain"))
-
-    implementation(Proton.Core.contact)
-    implementation(Proton.Core.label)
-
     implementation(project(":mail-contact:domain"))
 
-    testImplementation(Dependencies.testLibs)
+    testImplementation(libs.bundles.test)
     testImplementation(project(":test:test-data"))
     testImplementation(project(":mail-common:domain"))
-
 }

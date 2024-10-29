@@ -23,9 +23,9 @@ plugins {
 dependencies {
     implementation(project(":test:robot:core"))
     implementation(project(":test:robot:ksp:annotations"))
-    implementation(Ksp.symbolProcessingApi)
-    implementation(Squareup.kotlinPoetKsp)
+    implementation(libs.ksp.symbolProcessingApi)
+    implementation(libs.kotlinpoet.ksp)
 
-    testImplementation(KotlinCompileTesting.kotlinCompileTesting)
-    testImplementation(Junit.junit)
+    testImplementation(libs.kotlinCompileTesting)
+    testImplementation(libs.junit)
 }

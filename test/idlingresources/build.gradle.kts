@@ -20,9 +20,8 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
-
-setAsHiltModule()
 
 android {
     namespace = "ch.protonmail.android.test.idlingresources"
@@ -44,10 +43,15 @@ android {
 }
 
 dependencies {
-    implementation(JakeWharton.timber)
+    kapt(libs.bundles.app.annotationProcessors)
+    implementation(libs.dagger.hilt.android)
+    implementation(libs.javax.inject)
+    implementation(libs.timber)
 
-    api(AndroidX.Compose.uiTest) {
+    api(libs.androidx.compose.ui.test) {
         exclude(group = "androidx.test.espresso", module = "espresso-core")
         exclude(group = "androidx.test", module = "monitor")
     }
+
+    kaptAndroidTest(libs.dagger.hilt.compiler)
 }
