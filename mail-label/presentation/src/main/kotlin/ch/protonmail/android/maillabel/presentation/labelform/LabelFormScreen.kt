@@ -59,6 +59,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.LabelFormPreviewData.createLabelFormState
@@ -106,7 +107,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         },
         onDeleteClick = {
             dismissKeyboard(context, view, keyboardController)
-            viewModel.submit(LabelFormViewAction.OnDeleteClick)
+            viewModel.submit(LabelFormViewAction.OnDeleteRequested)
         }
     )
 
@@ -120,6 +121,14 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(LabelFormViewAction.HideUpselling)
+    }
+
+    if (state is LabelFormState.Data.Update) {
+        DeleteDialog(
+            state = state.confirmDeleteDialogState,
+            confirm = { viewModel.submit(LabelFormViewAction.OnDeleteConfirmed) },
+            dismiss = { viewModel.submit(LabelFormViewAction.OnDeleteCanceled) }
+        )
     }
 
     if (state is LabelFormState.Data.Create) {

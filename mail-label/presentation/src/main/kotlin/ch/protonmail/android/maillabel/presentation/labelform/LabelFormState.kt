@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.labelform
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import me.proton.core.label.domain.entity.LabelId
 
@@ -70,7 +71,8 @@ sealed interface LabelFormState {
             override val showLabelLimitReachedSnackbar: Effect<Unit> = Effect.empty(),
             override val showSaveLabelErrorSnackbar: Effect<Unit> = Effect.empty(),
             val labelId: LabelId,
-            val closeWithDelete: Effect<Unit> = Effect.empty()
+            val closeWithDelete: Effect<Unit> = Effect.empty(),
+            val confirmDeleteDialogState: DeleteDialogState = DeleteDialogState.Hidden
         ) : Data
     }
 }

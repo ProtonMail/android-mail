@@ -120,7 +120,9 @@ class LabelFormViewModel @Inject constructor(
                     )
 
                     LabelFormViewAction.OnCloseLabelFormClick -> emitNewStateFor(LabelFormEvent.CloseLabelForm)
-                    LabelFormViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    LabelFormViewAction.OnDeleteRequested -> emitNewStateFor(LabelFormEvent.ShowDeleteDialog)
+                    LabelFormViewAction.OnDeleteConfirmed -> handleOnDeleteClick()
+                    LabelFormViewAction.OnDeleteCanceled -> emitNewStateFor(LabelFormEvent.HideDeleteDialog)
                     LabelFormViewAction.OnSaveClick -> handleOnSaveClick()
                     LabelFormViewAction.HideUpselling -> handleHideUpselling()
                 }

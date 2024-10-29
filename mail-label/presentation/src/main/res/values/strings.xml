@@ -79,4 +79,6 @@
     <string name="folder_saved">Folder saved</string>
     <string name="folder_deleted">Folder deleted</string>
     <string name="parent_folder_none">None</string>
+    <string name="delete_label">Delete label?</string>
+    <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
 </resources>

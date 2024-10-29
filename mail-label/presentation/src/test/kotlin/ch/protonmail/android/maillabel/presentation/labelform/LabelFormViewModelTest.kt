@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.usecase.CreateLabel
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
@@ -501,7 +502,7 @@ class LabelFormViewModelTest {
     }
 
     @Test
-    fun `given update state, when action delete, then emits close with delete`() = runTest {
+    fun `given update state, when action delete requested, then emits show dialog`() = runTest {
         // Given
         val loadedState = loadedUpdateState
         every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns defaultTestLabel.labelId.id
@@ -515,10 +516,75 @@ class LabelFormViewModelTest {
             assertEquals(loadedState, actual)
 
             // When
-            labelFormViewModel.submit(LabelFormViewAction.OnDeleteClick)
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteRequested)
+
             // Then
             assertEquals(
-                loadedState.copy(closeWithDelete = Effect.of(Unit)),
+                loadedState.copy(
+                    confirmDeleteDialogState = DeleteDialogState.Shown(
+                        title = TextUiModel.TextRes(R.string.delete_label),
+                        message = TextUiModel.TextRes(R.string.delete_label_message)
+                    )
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given update state, when action delete canceled, then emits hide dialog`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns defaultTestLabel.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteRequested)
+            skipItems(1)
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteCanceled)
+
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    confirmDeleteDialogState = DeleteDialogState.Hidden
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given update state, when action delete confirmed, then emits hide dialog and close with delete`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns defaultTestLabel.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestLabel.labelId, LabelType.MessageLabel)
+        } returns defaultTestLabel.right()
+
+        labelFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteRequested)
+            skipItems(1)
+            labelFormViewModel.submit(LabelFormViewAction.OnDeleteConfirmed)
+
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    closeWithDelete = Effect.of(Unit),
+                    confirmDeleteDialogState = DeleteDialogState.Hidden
+                ),
                 awaitItem()
             )
         }

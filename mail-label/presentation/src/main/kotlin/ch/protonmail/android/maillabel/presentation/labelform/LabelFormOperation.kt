@@ -27,7 +27,9 @@ internal sealed interface LabelFormViewAction : LabelFormOperation {
     data class LabelNameChanged(val name: String) : LabelFormViewAction
     data class LabelColorChanged(val color: Color) : LabelFormViewAction
     data object OnSaveClick : LabelFormViewAction
-    data object OnDeleteClick : LabelFormViewAction
+    data object OnDeleteRequested : LabelFormViewAction
+    data object OnDeleteConfirmed : LabelFormViewAction
+    data object OnDeleteCanceled : LabelFormViewAction
     data object OnCloseLabelFormClick : LabelFormViewAction
     data object HideUpselling : LabelFormViewAction
 }
@@ -59,4 +61,6 @@ sealed interface LabelFormEvent : LabelFormOperation {
     ) : LabelFormEvent
 
     data object CloseLabelForm : LabelFormEvent
+    data object ShowDeleteDialog : LabelFormEvent
+    data object HideDeleteDialog : LabelFormEvent
 }

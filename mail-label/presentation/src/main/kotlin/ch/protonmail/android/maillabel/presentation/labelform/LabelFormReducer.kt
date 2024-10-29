@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.presentation.labelform
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import javax.inject.Inject
@@ -42,6 +43,8 @@ class LabelFormReducer @Inject constructor() {
             LabelFormEvent.ShowUpselling -> reduceShowUpselling(currentState)
             LabelFormEvent.HideUpselling -> reduceHideUpselling(currentState)
             LabelFormEvent.UpsellingInProgress -> reduceUpsellingInProgress(currentState)
+            LabelFormEvent.ShowDeleteDialog -> reduceShowDeleteDialog(currentState)
+            LabelFormEvent.HideDeleteDialog -> reduceHideDeleteDialog(currentState)
         }
     }
 
@@ -99,7 +102,10 @@ class LabelFormReducer @Inject constructor() {
     private fun reduceLabelDeleted(currentState: LabelFormState): LabelFormState {
         return when (currentState) {
             is LabelFormState.Data.Create -> currentState
-            is LabelFormState.Data.Update -> currentState.copy(closeWithDelete = Effect.of(Unit))
+            is LabelFormState.Data.Update -> currentState.copy(
+                closeWithDelete = Effect.of(Unit),
+                confirmDeleteDialogState = DeleteDialogState.Hidden
+            )
             is LabelFormState.Loading -> currentState
         }
     }
@@ -188,6 +194,29 @@ class LabelFormReducer @Inject constructor() {
 
             is LabelFormState.Data.Update -> currentState
             is LabelFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceShowDeleteDialog(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Loading -> currentState
+            is LabelFormState.Data.Create -> currentState
+            is LabelFormState.Data.Update -> currentState.copy(
+                confirmDeleteDialogState = DeleteDialogState.Shown(
+                    title = TextUiModel.TextRes(R.string.delete_label),
+                    message = TextUiModel.TextRes(R.string.delete_label_message)
+                )
+            )
+        }
+    }
+
+    private fun reduceHideDeleteDialog(currentState: LabelFormState): LabelFormState {
+        return when (currentState) {
+            is LabelFormState.Loading -> currentState
+            is LabelFormState.Data.Create -> currentState
+            is LabelFormState.Data.Update -> currentState.copy(
+                confirmDeleteDialogState = DeleteDialogState.Hidden
+            )
         }
     }
 }
