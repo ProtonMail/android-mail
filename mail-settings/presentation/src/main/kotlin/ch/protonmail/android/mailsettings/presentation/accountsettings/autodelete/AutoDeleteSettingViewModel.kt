@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState.Data
@@ -36,13 +37,12 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class AutoDeleteSettingViewModel @Inject constructor(
     private val accountManager: AccountManager,
-    private val mailSettingsRepository: MailSettingsRepository,
+    private val updateAutoDeleteSpamAndTrashDays: UpdateAutoDeleteSpamAndTrashDays,
     observeMailSettings: ObserveMailSettings
 ) : ViewModel() {
 
@@ -127,14 +127,7 @@ class AutoDeleteSettingViewModel @Inject constructor(
             .getPrimaryUserId()
             .filterNotNull()
             .mapLatest { userId ->
-                mailSettingsRepository.updateAutoDeleteSpamAndTrashDays(
-                    userId,
-                    if (isEnabled) {
-                        30
-                    } else {
-                        0
-                    }
-                )
+                updateAutoDeleteSpamAndTrashDays(userId, isEnabled)
             }
             .launchIn(viewModelScope)
     }

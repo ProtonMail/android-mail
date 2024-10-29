@@ -22,6 +22,7 @@ import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingViewModel
@@ -61,10 +62,12 @@ class AutoDeleteSettingViewModelTest {
         coEvery { updateViewMode(any(), any()) } returns mailSettings
     }
 
+    private val updateAutoDeleteSpamAndTrashDays = UpdateAutoDeleteSpamAndTrashDays(mailSettingsRepository)
+
     private val viewModel by lazy {
         AutoDeleteSettingViewModel(
             accountManager,
-            mailSettingsRepository,
+            updateAutoDeleteSpamAndTrashDays,
             observeMailSettings
         )
     }

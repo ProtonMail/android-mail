@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-message:data"))
     implementation(project(":mail-settings:domain"))
+    implementation(project(":mail-settings:data"))
     implementation(project(":mail-upselling:domain"))
     implementation(project(":mail-upselling:presentation"))
     implementation(project(":uicomponents"))
