@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -113,6 +114,10 @@ fun AccountSettingScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
+
+    BackHandler(bottomSheetState.isVisible) {
+        accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling)
+    }
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
