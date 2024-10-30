@@ -80,6 +80,14 @@
     <string name="common_error_loading_actions">Failed loading actions</string>
     <string name="yesterday">Yesterday</string>
 
+    <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
+    <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
+    <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
+    <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
+    <string name="auto_delete_banner_button_activate_confirm">Enable</string>
+    <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
+    <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
+
     <!-- notification channels -->
     <string name="attachment_download_notification_channel_name">Attachments</string>
     <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>

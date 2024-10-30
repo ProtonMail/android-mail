@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.maildetail.presentation.R
@@ -83,3 +84,17 @@ fun TrashedMessagesBanner(
         }
     }
 }
+
+@Preview
+@Composable
+private fun TrashedMessagesBannerPreview() {
+    TrashedMessagesBanner(
+        modifier = Modifier,
+        uiModel = TrashedMessagesBannerUiModel(
+            R.string.trashed_messages_banner,
+            R.string.show
+        ),
+        onActionClick = {}
+    )
+}
+
