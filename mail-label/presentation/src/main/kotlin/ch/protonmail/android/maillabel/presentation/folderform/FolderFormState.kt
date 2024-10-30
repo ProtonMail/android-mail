@@ -21,6 +21,7 @@ package ch.protonmail.android.maillabel.presentation.folderform
 import androidx.compose.ui.graphics.Color
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -83,7 +84,8 @@ sealed interface FolderFormState {
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
             override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
-            val labelId: LabelId
+            val labelId: LabelId,
+            val confirmDeleteDialogState: DeleteDialogState = DeleteDialogState.Hidden
         ) : Data
     }
 }

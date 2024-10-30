@@ -62,6 +62,7 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maillabel.presentation.R
 import ch.protonmail.android.maillabel.presentation.getColorFromHexString
 import ch.protonmail.android.maillabel.presentation.previewdata.FolderFormPreviewData.createFolderFormState
@@ -131,7 +132,7 @@ fun FolderFormScreen(
         },
         onDeleteClick = {
             dismissKeyboard(context, view, keyboardController)
-            viewModel.submit(FolderFormViewAction.OnDeleteClick)
+            viewModel.submit(FolderFormViewAction.OnDeleteRequested)
         }
     )
 
@@ -142,6 +143,14 @@ fun FolderFormScreen(
 
     BackHandler(bottomSheetState.isVisible) {
         viewModel.submit(FolderFormViewAction.HideUpselling)
+    }
+
+    if (state is FolderFormState.Data.Update) {
+        DeleteDialog(
+            state = state.confirmDeleteDialogState,
+            confirm = { viewModel.submit(FolderFormViewAction.OnDeleteConfirmed) },
+            dismiss = { viewModel.submit(FolderFormViewAction.OnDeleteCanceled) }
+        )
     }
 
     if (state is FolderFormState.Data.Create) {

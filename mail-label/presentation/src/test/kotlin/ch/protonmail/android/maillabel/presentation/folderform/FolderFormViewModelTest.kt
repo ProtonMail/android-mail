@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.usecase.CreateFolder
 import ch.protonmail.android.maillabel.domain.usecase.DeleteLabel
 import ch.protonmail.android.maillabel.domain.usecase.GetLabel
@@ -618,7 +619,7 @@ class FolderFormViewModelTest {
     }
 
     @Test
-    fun `given update state, when action delete, then emits close with success`() = runTest {
+    fun `given update state, when action delete requested, then emits show dialog`() = runTest {
         // Given
         val loadedState = loadedUpdateState
         every {
@@ -634,10 +635,79 @@ class FolderFormViewModelTest {
             assertEquals(loadedState, actual)
 
             // When
-            folderFormViewModel.submit(FolderFormViewAction.OnDeleteClick)
+            folderFormViewModel.submit(FolderFormViewAction.OnDeleteRequested)
+
             // Then
             assertEquals(
-                loadedState.copy(closeWithSuccess = Effect.of(TextUiModel(R.string.folder_deleted))),
+                loadedState.copy(
+                    confirmDeleteDialogState = DeleteDialogState.Shown(
+                        title = TextUiModel.TextRes(R.string.delete_folder),
+                        message = TextUiModel.TextRes(R.string.delete_folder_message)
+                    )
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given update state, when action delete canceled, then emits hide dialog`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every {
+            savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
+        } returns defaultTestFolder.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
+        } returns defaultTestFolder.right()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnDeleteRequested)
+            skipItems(1)
+            folderFormViewModel.submit(FolderFormViewAction.OnDeleteCanceled)
+
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    confirmDeleteDialogState = DeleteDialogState.Hidden
+                ),
+                awaitItem()
+            )
+        }
+    }
+
+    @Test
+    fun `given update state, when action delete confirmed, then emits hide dialog and close with success`() = runTest {
+        // Given
+        val loadedState = loadedUpdateState
+        every {
+            savedStateHandle.get<String>(FolderFormScreen.FolderFormLabelIdKey)
+        } returns defaultTestFolder.labelId.id
+        coEvery {
+            getLabel.invoke(userId, defaultTestFolder.labelId, LabelType.MessageFolder)
+        } returns defaultTestFolder.right()
+
+        folderFormViewModel.state.test {
+            // Initial loaded state
+            val actual = awaitItem()
+            assertEquals(loadedState, actual)
+
+            // When
+            folderFormViewModel.submit(FolderFormViewAction.OnDeleteRequested)
+            skipItems(1)
+            folderFormViewModel.submit(FolderFormViewAction.OnDeleteConfirmed)
+
+            // Then
+            assertEquals(
+                loadedState.copy(
+                    closeWithSuccess = Effect.of(TextUiModel(R.string.folder_deleted)),
+                    confirmDeleteDialogState = DeleteDialogState.Hidden
+                ),
                 awaitItem()
             )
         }

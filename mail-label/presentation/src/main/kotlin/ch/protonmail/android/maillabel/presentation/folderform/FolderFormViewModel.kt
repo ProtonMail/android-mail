@@ -142,7 +142,9 @@ class FolderFormViewModel @Inject constructor(
 
                     is FolderFormViewAction.FolderParentChanged -> handleFolderParentChanged(action.parentId)
                     FolderFormViewAction.OnCloseFolderFormClick -> emitNewStateFor(FolderFormEvent.CloseFolderForm)
-                    FolderFormViewAction.OnDeleteClick -> handleOnDeleteClick()
+                    FolderFormViewAction.OnDeleteRequested -> emitNewStateFor(FolderFormEvent.ShowDeleteDialog)
+                    FolderFormViewAction.OnDeleteConfirmed -> handleOnDeleteClick()
+                    FolderFormViewAction.OnDeleteCanceled -> emitNewStateFor(FolderFormEvent.HideDeleteDialog)
                     FolderFormViewAction.OnSaveClick -> handleOnSaveClick()
                     FolderFormViewAction.HideUpselling -> handleHideUpselling()
                 }

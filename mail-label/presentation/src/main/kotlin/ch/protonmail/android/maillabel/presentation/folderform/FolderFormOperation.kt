@@ -30,7 +30,9 @@ internal sealed interface FolderFormViewAction : FolderFormOperation {
     data class FolderParentChanged(val parentId: LabelId?) : FolderFormViewAction
     data class FolderNotificationsChanged(val enabled: Boolean) : FolderFormViewAction
     data object OnSaveClick : FolderFormViewAction
-    data object OnDeleteClick : FolderFormViewAction
+    data object OnDeleteRequested : FolderFormViewAction
+    data object OnDeleteConfirmed : FolderFormViewAction
+    data object OnDeleteCanceled : FolderFormViewAction
     data object OnCloseFolderFormClick : FolderFormViewAction
     data object HideUpselling : FolderFormViewAction
 }
@@ -75,4 +77,6 @@ sealed interface FolderFormEvent : FolderFormOperation {
     data object ShowUpselling : FolderFormEvent
     data object HideUpselling : FolderFormEvent
     data object UpsellingInProgress : FolderFormEvent
+    data object ShowDeleteDialog : FolderFormEvent
+    data object HideDeleteDialog : FolderFormEvent
 }
