@@ -96,6 +96,10 @@ detekt:
     expire_in: 1 month
     reports:
       codequality: config/detekt/reports/mergedReport.json
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
+      when: manual
+    - when: always
 
 danger-review:
   stage: danger-review
@@ -245,6 +249,10 @@ run_unit_test:
       coverage_report:
         coverage_format: cobertura
         path: '**/build/reports/kover/cobertura*.xml'
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
+      when: manual
+    - when: always
 
 run_firebase_proton_core_libs_tests:
   extends: .firebase_test_job
