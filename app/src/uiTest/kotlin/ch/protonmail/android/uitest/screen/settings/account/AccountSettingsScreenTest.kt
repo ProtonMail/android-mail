@@ -51,7 +51,7 @@ internal class AccountSettingsScreenTest : HiltInstrumentedTest() {
         isConversationMode = true,
         registeredSecurityKeys = emptyList(),
         securityKeysVisible = true,
-        autoDeleteSettingsState = AutoDeleteSettingsState()
+        autoDeleteSettingsState = AutoDeleteSettingsState(isSettingVisible = true)
     )
 
     @Before
