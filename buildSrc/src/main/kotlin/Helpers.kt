@@ -16,19 +16,29 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
+import java.io.File
+import java.io.IOException
+import java.util.concurrent.TimeUnit
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
+import kotlin.apply
+import kotlin.io.inputStream
 
-// It's very easy to forget something when adding Hilt and finding the cause can be
-// dreadful. Therefore, this little helper module ensure everything is setup correctly
-fun Project.setAsHiltModule() {
-    apply(plugin = "dagger.hilt.android.plugin")
-
-    dependencies {
-        implementation(listOf(Dagger.hiltAndroid))
-        kapt(listOf(Dagger.hiltDaggerCompiler, AndroidX.Hilt.compiler))
-        androidTestImplementation(listOf(Dagger.hiltAndroidTesting))
-        kaptAndroidTest(listOf(Dagger.hiltDaggerCompiler))
+fun String.runCommand(
+    workingDir: File = File("."),
+    timeoutAmount: Long = 60,
+    timeoutUnit: TimeUnit = TimeUnit.SECONDS
+): String = ProcessBuilder(split("\\s(?=(?:[^'\"`]*(['\"`])[^'\"`]*\\1)*[^'\"`]*$)".toRegex()))
+    .directory(workingDir)
+    .redirectOutput(ProcessBuilder.Redirect.PIPE)
+    .redirectError(ProcessBuilder.Redirect.PIPE)
+    .start()
+    .apply { waitFor(timeoutAmount, timeoutUnit) }
+    .run {
+        val error = errorStream.bufferedReader().readText().trim()
+        if (error.isNotEmpty()) {
+            throw IOException(error)
+        }
+        inputStream.bufferedReader().readText().trim()
     }
-}
