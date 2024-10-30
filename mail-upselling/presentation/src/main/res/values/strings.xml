@@ -107,6 +107,7 @@
     <string name="upselling_onboarding_switcher_annual">Annual</string>
     <string name="upselling_onboarding_best_value">Best value</string>
     <string name="upselling_onboarding_month">/month</string>
+    <string name="upselling_onboarding_year">/year</string>
     <plurals name="upselling_onboarding_more_features">
         <item quantity="one">%d more feature</item>
         <item quantity="other">%d more features</item>

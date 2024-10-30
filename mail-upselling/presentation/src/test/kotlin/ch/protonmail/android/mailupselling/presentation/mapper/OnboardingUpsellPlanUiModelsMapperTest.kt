@@ -3,10 +3,12 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
 import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValuePlusDrawables
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValueUnlimitedDrawables
@@ -41,27 +43,31 @@ class OnboardingUpsellPlanUiModelsMapperTest {
             monthlyPlans = listOf(
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Unlimited",
-                    currency = "EUR",
-                    monthlyPrice = null,
-                    monthlyPriceWithDiscount = TextUiModel.Text("0.1"),
+                    priceUiModel = OnboardingUpsellPriceUiModel.Paid(
+                        currency = "EUR",
+                        originalAmount = null,
+                        amount = TextUiModel.Text("0.1"),
+                        period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
+                    ),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Mail Plus",
-                    currency = "EUR",
-                    monthlyPrice = null,
-                    monthlyPriceWithDiscount = TextUiModel.Text("0.1"),
+                    priceUiModel = OnboardingUpsellPriceUiModel.Paid(
+                        currency = "EUR",
+                        originalAmount = null,
+                        amount = TextUiModel.Text("0.1"),
+                        period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
+                    ),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
-                    currency = null,
-                    monthlyPrice = null,
-                    monthlyPriceWithDiscount = null,
+                    priceUiModel = OnboardingUpsellPriceUiModel.Free,
                     entitlements = OnboardingFreeOverriddenEntitlements,
                     payButtonPlanUiModel = null,
                     premiumValueDrawables = emptyList()
@@ -70,27 +76,31 @@ class OnboardingUpsellPlanUiModelsMapperTest {
             annualPlans = listOf(
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Unlimited",
-                    currency = "EUR",
-                    monthlyPrice = TextUiModel.Text("0.1"),
-                    monthlyPriceWithDiscount = TextUiModel.Text("0.09"),
+                    priceUiModel = OnboardingUpsellPriceUiModel.Paid(
+                        currency = "EUR",
+                        originalAmount = TextUiModel.Text("1.2"),
+                        amount = TextUiModel.Text("1.08"),
+                        period = TextUiModel.TextRes(R.string.upselling_onboarding_year)
+                    ),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Mail Plus",
-                    currency = "EUR",
-                    monthlyPrice = TextUiModel.Text("0.1"),
-                    monthlyPriceWithDiscount = TextUiModel.Text("0.09"),
+                    priceUiModel = OnboardingUpsellPriceUiModel.Paid(
+                        currency = "EUR",
+                        originalAmount = TextUiModel.Text("1.2"),
+                        amount = TextUiModel.Text("1.08"),
+                        period = TextUiModel.TextRes(R.string.upselling_onboarding_year)
+                    ),
                     entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
-                    currency = null,
-                    monthlyPrice = null,
-                    monthlyPriceWithDiscount = null,
+                    priceUiModel = OnboardingUpsellPriceUiModel.Free,
                     entitlements = OnboardingFreeOverriddenEntitlements,
                     payButtonPlanUiModel = null,
                     premiumValueDrawables = emptyList()

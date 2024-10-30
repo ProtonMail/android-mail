@@ -77,6 +77,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBu
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation.Action
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
+import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
@@ -394,27 +395,28 @@ private fun PlanNameAndPrice(modifier: Modifier = Modifier, plan: OnboardingUpse
                 color = ProtonTheme.colors.textNorm
             )
         }
-        if (plan.monthlyPriceWithDiscount != null) {
-            Column(modifier = Modifier.align(Alignment.Bottom)) {
-                if (plan.monthlyPrice != null) {
-                    Text(
-                        modifier = Modifier.align(Alignment.End),
-                        text = "${plan.currency} ${plan.monthlyPrice.string()}",
-                        style = ProtonTheme.typography.defaultSmallWeak.copy(
-                            textDecoration = TextDecoration.LineThrough
-                        )
+
+        val priceUiModel = plan.priceUiModel as? OnboardingUpsellPriceUiModel.Paid ?: return@Row
+
+        Column(modifier = Modifier.align(Alignment.Bottom)) {
+            if (priceUiModel.originalAmount != null) {
+                Text(
+                    modifier = Modifier.align(Alignment.End),
+                    text = "${priceUiModel.currency} ${priceUiModel.originalAmount.string()}",
+                    style = ProtonTheme.typography.defaultSmallWeak.copy(
+                        textDecoration = TextDecoration.LineThrough
                     )
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "${plan.currency} ${plan.monthlyPriceWithDiscount.string()}",
-                        style = ProtonTheme.typography.headlineNorm.copy(fontWeight = FontWeight.W700)
-                    )
-                    Text(
-                        text = stringResource(id = R.string.upselling_onboarding_month),
-                        style = ProtonTheme.typography.defaultSmallWeak
-                    )
-                }
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = "${priceUiModel.currency} ${priceUiModel.amount.string()}",
+                    style = ProtonTheme.typography.headlineNorm.copy(fontWeight = FontWeight.W700)
+                )
+                Text(
+                    text = priceUiModel.period.string(),
+                    style = ProtonTheme.typography.defaultSmallWeak
+                )
             }
         }
     }

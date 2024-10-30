@@ -18,15 +18,15 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
-data class OnboardingUpsellPlanUiModels(
-    val monthlyPlans: List<OnboardingUpsellPlanUiModel>,
-    val annualPlans: List<OnboardingUpsellPlanUiModel>
-)
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-data class OnboardingUpsellPlanUiModel(
-    val title: String,
-    val priceUiModel: OnboardingUpsellPriceUiModel,
-    val entitlements: List<DynamicEntitlementUiModel>,
-    val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
-    val premiumValueDrawables: List<Int>
-)
+interface OnboardingUpsellPriceUiModel {
+    data object Free : OnboardingUpsellPriceUiModel
+
+    data class Paid(
+        val currency: String,
+        val originalAmount: TextUiModel?,
+        val amount: TextUiModel,
+        val period: TextUiModel
+    ) : OnboardingUpsellPriceUiModel
+}
