@@ -99,6 +99,7 @@ detekt:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
       when: manual
+      allow_failure: true
     - when: always
 
 danger-review:
@@ -252,6 +253,7 @@ run_unit_test:
   rules:
     - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"'
       when: manual
+      allow_failure: true
     - when: always
 
 run_firebase_proton_core_libs_tests:
