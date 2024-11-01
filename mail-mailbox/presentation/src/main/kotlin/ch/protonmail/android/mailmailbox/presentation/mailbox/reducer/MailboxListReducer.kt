@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemId
@@ -37,6 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class MailboxListReducer @Inject constructor() {
 
     @Suppress("ComplexMethod")
@@ -79,6 +81,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
+            is MailboxEvent.AutoDeleteBannerStateChanged -> reduceAutoDeleteBannerState(operation, currentState)
         }
     }
 
@@ -152,7 +155,27 @@ class MailboxListReducer @Inject constructor() {
         operation: MailboxEvent.SelectedLabelChanged,
         currentState: MailboxListState
     ): MailboxListState.Data {
+
         val currentMailLabel = operation.selectedLabel
+
+        val autoDeleteBannerState = when (currentMailLabel.id) {
+            MailLabelId.System.Trash -> {
+                MailboxListState.Data.AutoDeleteBannerState.Visible(
+                    uiModel = AutoDeleteBannerUiModel.Activate.Trash
+                )
+            }
+
+            MailLabelId.System.Spam -> {
+                MailboxListState.Data.AutoDeleteBannerState.Visible(
+                    uiModel = AutoDeleteBannerUiModel.Activate.Spam
+                )
+            }
+
+            else -> {
+                MailboxListState.Data.AutoDeleteBannerState.Hidden
+            }
+        }
+
         return when (currentState) {
             is MailboxListState.Loading -> MailboxListState.Data.ViewMode(
                 currentMailLabel,
@@ -163,7 +186,8 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = MailboxListState.Data.ClearState.Hidden,
+                autoDeleteBannerState = autoDeleteBannerState
             )
 
             is MailboxListState.Data.SelectionMode -> currentState.copy(
@@ -193,7 +217,8 @@ class MailboxListReducer @Inject constructor() {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = MailboxListState.Data.ClearState.Hidden,
+                autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
             )
 
             is MailboxListState.Data.ViewMode -> currentState.copy(
@@ -328,7 +353,8 @@ class MailboxListReducer @Inject constructor() {
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
                 swipeActions = currentState.swipeActions,
                 clearState = currentState.clearState,
-                searchState = currentState.searchState
+                searchState = currentState.searchState,
+                autoDeleteBannerState = currentState.autoDeleteBannerState
             )
 
             else -> currentState
@@ -344,7 +370,8 @@ class MailboxListReducer @Inject constructor() {
             refreshRequested = false,
             swipeActions = currentState.swipeActions,
             searchState = currentState.searchState,
-            clearState = currentState.clearState
+            clearState = currentState.clearState,
+            autoDeleteBannerState = currentState.autoDeleteBannerState
         )
 
         else -> currentState
@@ -474,6 +501,38 @@ class MailboxListReducer @Inject constructor() {
 
             else -> currentState
         }
+
+    private fun reduceAutoDeleteBannerState(
+        operation: MailboxEvent.AutoDeleteBannerStateChanged,
+        currentState: MailboxListState
+    ): MailboxListState {
+
+        val autoDeleteBannerState = if (operation.autoDeleteBannerUiModel != null) {
+            MailboxListState.Data.AutoDeleteBannerState.Visible(
+                uiModel = operation.autoDeleteBannerUiModel
+            )
+        } else {
+            MailboxListState.Data.AutoDeleteBannerState.Hidden
+        }
+
+        return when (currentState) {
+
+            is MailboxListState.Data.ViewMode -> {
+                currentState.copy(
+                    autoDeleteBannerState = autoDeleteBannerState
+                )
+            }
+
+            is MailboxListState.Data.SelectionMode -> {
+                currentState.copy(
+                    autoDeleteBannerState = autoDeleteBannerState
+                )
+            }
+
+            else -> currentState
+        }
+    }
+
 
     private fun MailLabel.isClearableLocation() =
         this.id == MailLabelId.System.Trash || this.id == MailLabelId.System.Spam

@@ -95,6 +95,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val items = listOf(MailboxItemUiModelTestData.readMailboxItemUiModel)
@@ -119,6 +120,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val label = LabelUiModelSample.News
@@ -153,6 +155,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -173,6 +176,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         )
         val mailboxState = MailboxStateSampleData.Loading.copy(mailboxListState = mailboxListState)
         val robot = setupScreen(state = mailboxState)
@@ -207,6 +211,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
                 topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                     currentLabelName = MailLabel.System(systemLabel).text()

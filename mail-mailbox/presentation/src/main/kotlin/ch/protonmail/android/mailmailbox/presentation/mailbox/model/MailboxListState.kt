@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
@@ -37,15 +38,24 @@ sealed interface MailboxListState {
             }
         }
 
+        sealed interface AutoDeleteBannerState {
+            data object Hidden : AutoDeleteBannerState
+            data class Visible(
+                val uiModel: AutoDeleteBannerUiModel
+            ) : AutoDeleteBannerState
+        }
+
         val currentMailLabel: MailLabel
         val swipeActions: SwipeActionsUiModel?
         val clearState: ClearState
+        val autoDeleteBannerState: AutoDeleteBannerState
         val searchState: MailboxSearchState
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
+            override val autoDeleteBannerState: AutoDeleteBannerState,
             override val searchState: MailboxSearchState,
             val openItemEffect: Effect<OpenMailboxItemRequest>,
             val scrollToMailboxTop: Effect<MailLabelId>,
@@ -61,6 +71,7 @@ sealed interface MailboxListState {
             override val currentMailLabel: MailLabel,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
+            override val autoDeleteBannerState: AutoDeleteBannerState,
             override val searchState: MailboxSearchState,
             val selectedMailboxItems: Set<SelectedMailboxItem>
         ) : Data {

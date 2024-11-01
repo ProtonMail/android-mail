@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -188,7 +189,8 @@ internal class MailboxReducerTest(
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = MailboxListState.Data.ClearState.Hidden,
+                autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
             ),
             topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
                 currentLabelName = spamLabel.text()
@@ -513,6 +515,19 @@ internal class MailboxReducerTest(
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = true,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
+                MailboxEvent.AutoDeleteBannerStateChanged(
+                    autoDeleteBannerUiModel = AutoDeleteBannerUiModel.Upgrade
+                ),
+                shouldReduceMailboxListState = true,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
                 shouldReduceBottomAppBarState = false,
                 shouldReduceActionMessage = false,
                 shouldReduceDeleteDialog = false,

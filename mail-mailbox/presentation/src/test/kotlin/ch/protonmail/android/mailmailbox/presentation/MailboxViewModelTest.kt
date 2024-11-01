@@ -36,6 +36,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithLabels
@@ -84,7 +85,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItem
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Data
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxListState.Loading
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
@@ -120,8 +122,10 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import ch.protonmail.android.testdata.contact.ContactTestData
@@ -278,6 +282,9 @@ class MailboxViewModelTest {
     private val shouldShowRatingBooster = mockk<ShouldShowRatingBooster> {
         every { this@mockk(userId) } returns flowOf(false)
     }
+    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
+        every { this@mockk(userId) } returns flowOf(AutoDeleteSetting.Disabled)
+    }
     private val showRatingBooster = mockk<ShowRatingBooster>(relaxUnitFun = true)
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
@@ -327,7 +334,8 @@ class MailboxViewModelTest {
             shouldShowRatingBooster = shouldShowRatingBooster,
             showRatingBooster = showRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
-            emptyLabelInProgressSignal = emptyLabelInProgressSignal
+            emptyLabelInProgressSignal = emptyLabelInProgressSignal,
+            observeAutoDeleteSetting = observeAutoDeleteSetting
         )
     }
 
@@ -355,7 +363,7 @@ class MailboxViewModelTest {
             // Then
             val actual = awaitItem()
             val expected = MailboxState(
-                mailboxListState = MailboxListState.Loading,
+                mailboxListState = Loading,
                 topAppBarState = MailboxTopAppBarState.Loading,
                 upgradeStorageState = UpgradeStorageState(false),
                 unreadFilterState = UnreadFilterState.Loading,
@@ -621,6 +629,39 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when new location selected, new AutoDeleteBanner state is created and emitted`() = runTest {
+        // Given
+        val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
+        val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
+        val expectedState = createMailboxDataState(
+            selectedMailLabelId = expectedMailLabel.id,
+            scrollToMailboxTop = Effect.of(expectedMailLabel.id),
+            autoDeleteBannerState = Data.AutoDeleteBannerState.Visible(AutoDeleteBannerUiModel.Info)
+        )
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
+            )
+        } returns expectedState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
+        every { observeAutoDeleteSetting(userId) } returns flowOf(AutoDeleteSetting.Enabled)
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            currentLocationFlow.emit(expectedMailLabel.id)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+
+            awaitItem() // swipe gestures
+        }
+    }
+
+    @Test
     fun `when new location selected, new bottom bar state is created and emitted`() = runTest {
         // Given
         val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
@@ -680,7 +721,7 @@ class MailboxViewModelTest {
         val initialMailLabel = MailLabelTestData.customLabelOne
         val modifiedMailLabel = MailLabelTestData.customLabelTwo
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = modifiedMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
@@ -689,7 +730,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         val expectedSwipeActions = SwipeActionsUiModel(
@@ -697,7 +739,7 @@ class MailboxViewModelTest {
             start = SwipeUiModelSampleData.Archive
         )
         val expectedStateWithSwipeGestures = expectedState.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = modifiedMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
@@ -706,11 +748,12 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         val expectedStateAfterClearAllStatus = expectedStateWithSwipeGestures.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = modifiedMailLabel,
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
@@ -719,7 +762,22 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = expectedSwipeActions,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Visible.Button(TextUiModel("Clear All"))
+                clearState = Data.ClearState.Visible.Button(TextUiModel("Clear All")),
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
+            )
+        )
+        val expectedStateAfterAutoDelete = expectedStateWithSwipeGestures.copy(
+            mailboxListState = Data.ViewMode(
+                currentMailLabel = modifiedMailLabel,
+                openItemEffect = Effect.empty(),
+                scrollToMailboxTop = Effect.of(initialMailLabel.id),
+                offlineEffect = Effect.empty(),
+                refreshErrorEffect = Effect.empty(),
+                refreshRequested = false,
+                swipeActions = expectedSwipeActions,
+                searchState = MailboxSearchStateSampleData.NotSearching,
+                clearState = Data.ClearState.Visible.Button(TextUiModel("Clear All")),
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -745,6 +803,12 @@ class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(expectedStateWithSwipeGestures, MailboxEvent.ClearAllOperationStatus(false))
         } returns expectedStateAfterClearAllStatus
+        every {
+            mailboxReducer.newStateFrom(
+                expectedStateAfterClearAllStatus,
+                MailboxEvent.AutoDeleteBannerStateChanged(null)
+            )
+        } returns expectedStateAfterAutoDelete
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -756,8 +820,6 @@ class MailboxViewModelTest {
             assertEquals(expectedState, awaitItem())
             assertEquals(expectedStateWithSwipeGestures, awaitItem())
             assertEquals(expectedStateAfterClearAllStatus, awaitItem())
-
-
         }
     }
 
@@ -766,7 +828,7 @@ class MailboxViewModelTest {
         // Given
         val initialMailLabel = MailLabelTestData.customLabelOne
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabelId.System.Inbox.toMailLabel(),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.of(initialMailLabel.id),
@@ -775,7 +837,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         val mailLabelsFlow = MutableStateFlow(
@@ -1368,7 +1431,7 @@ class MailboxViewModelTest {
     fun `when on offline with data is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -1377,7 +1440,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -1399,7 +1463,7 @@ class MailboxViewModelTest {
     fun `when on error with data is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -1408,7 +1472,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -1430,7 +1495,7 @@ class MailboxViewModelTest {
     fun `when refresh action is submitted, new state is produced and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -1439,7 +1504,8 @@ class MailboxViewModelTest {
                 refreshRequested = true,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -3743,10 +3809,11 @@ class MailboxViewModelTest {
         openEffect: Effect<OpenMailboxItemRequest> = Effect.empty(),
         scrollToMailboxTop: Effect<MailLabelId> = Effect.empty(),
         unreadFilterState: Boolean = false,
-        selectedMailLabelId: MailLabelId.System = initialLocationMailLabelId
+        selectedMailLabelId: MailLabelId.System = initialLocationMailLabelId,
+        autoDeleteBannerState: Data.AutoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
     ): MailboxState {
         return MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(selectedMailLabelId),
                 openItemEffect = openEffect,
                 scrollToMailboxTop = scrollToMailboxTop,
@@ -3755,7 +3822,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = autoDeleteBannerState
             ),
             unreadFilterState = UnreadFilterState.Data(
                 numUnread = UnreadCountersTestData.labelToCounterMap[initialLocationMailLabelId.labelId]!!,
@@ -3768,7 +3836,7 @@ class MailboxViewModelTest {
     fun `when enter search mode action is submitted, search mode is updated and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Inbox.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(MailLabelId.System.AllMail),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -3777,7 +3845,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NewSearch,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -3800,7 +3869,7 @@ class MailboxViewModelTest {
     fun `when exit search mode action is submitted, search mode is updated and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Inbox.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(MailLabelId.System.Inbox),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -3809,7 +3878,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -3835,7 +3905,7 @@ class MailboxViewModelTest {
         // Given
         val queryText = "query"
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -3844,7 +3914,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.SearchLoading,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -3867,7 +3938,7 @@ class MailboxViewModelTest {
     fun `when search result action is submitted, search mode is updated and emitted`() = runTest {
         // Given
         val expectedState = MailboxStateSampleData.Loading.copy(
-            mailboxListState = MailboxListState.Data.ViewMode(
+            mailboxListState = Data.ViewMode(
                 currentMailLabel = MailLabel.System(initialLocationMailLabelId),
                 openItemEffect = Effect.empty(),
                 scrollToMailboxTop = Effect.empty(),
@@ -3876,7 +3947,8 @@ class MailboxViewModelTest {
                 refreshRequested = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.SearchData,
-                clearState = MailboxListState.Data.ClearState.Hidden
+                clearState = Data.ClearState.Hidden,
+                autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
             )
         )
         every {
@@ -3902,7 +3974,7 @@ class MailboxViewModelTest {
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
         val initialMailboxState = createMailboxDataState()
         val mailboxSearchQueryState = initialMailboxState.copy(
-            mailboxListState = (initialMailboxState.mailboxListState as MailboxListState.Data.ViewMode).copy(
+            mailboxListState = (initialMailboxState.mailboxListState as Data.ViewMode).copy(
                 searchState = MailboxSearchStateSampleData.SearchLoading
             )
         )

@@ -70,7 +70,8 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchStateSampleData.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden
+            clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text()
@@ -105,7 +106,8 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchStateSampleData.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden
+            clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.DefaultMode(
             currentLabelName = MailLabel.System(MailLabelId.System.AllMail).text()
@@ -144,7 +146,8 @@ object MailboxStateSampleData {
                 end = SwipeUiModelSampleData.Archive
             ),
             searchState = MailboxSearchState.NotSearching,
-            clearState = MailboxListState.Data.ClearState.Hidden
+            clearState = MailboxListState.Data.ClearState.Hidden,
+            autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
         ),
         topAppBarState = MailboxTopAppBarState.Data.SelectionMode(
             currentLabelName = MailLabel.System(MailLabelId.System.Inbox).text(),

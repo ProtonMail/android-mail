@@ -95,6 +95,8 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.UndoableOperationSnackbar
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBanner
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerActions
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -654,6 +656,15 @@ private fun MailboxItemsList(
                             ClearButton(it, actions)
                         }
                     }
+                }
+            }
+            state.autoDeleteBannerState.let { it as? MailboxListState.Data.AutoDeleteBannerState.Visible }?.let {
+                item {
+                    AutoDeleteBanner(
+                        modifier = Modifier,
+                        uiModel = it.uiModel,
+                        actions = AutoDeleteBannerActions.Empty
+                    )
                 }
             }
         }

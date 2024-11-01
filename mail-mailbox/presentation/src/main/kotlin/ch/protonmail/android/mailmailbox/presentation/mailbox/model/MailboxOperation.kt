@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import android.content.Context
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
@@ -162,6 +163,10 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val selectedLabel: MailLabel,
         val selectedLabelCount: Int?
     ) : MailboxEvent, AffectingTopAppBar, AffectingUnreadFilter, AffectingMailboxList
+
+    data class AutoDeleteBannerStateChanged(
+        val autoDeleteBannerUiModel: AutoDeleteBannerUiModel?
+    ) : MailboxEvent, AffectingMailboxList
 
     data class SelectedLabelChanged(
         val selectedLabel: MailLabel

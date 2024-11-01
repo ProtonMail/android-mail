@@ -35,6 +35,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
@@ -109,6 +110,8 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -122,6 +125,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -156,6 +160,7 @@ class MailboxViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
+    private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val getMessagesWithLabels: GetMessagesWithLabels,
     private val getConversationsWithLabels: GetConversationsWithLabels,
     private val getMailboxActions: GetMailboxActions,
@@ -228,6 +233,14 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
+        selectedMailLabelId.flow.mapToExistingLabel().combine(
+            primaryUserId.filterNotNull().flatMapConcat { userId ->
+                observeAutoDeleteSetting(userId)
+            }
+        ) { currentMailLabel, autoDeleteSetting ->
+            handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting)
+        }.launchIn(viewModelScope)
+
         selectedMailLabelId.flow.mapToExistingLabel()
             .combine(state.observeSelectedMailboxItems()) { selectedMailLabelId, selectedMailboxItems ->
                 getMailboxActions(selectedMailLabelId, selectedMailboxItems.none { it.isRead }).fold(
@@ -294,6 +307,26 @@ class MailboxViewModel @Inject constructor(
                 emitNewStateFrom(MailboxEvent.ShowRatingBooster)
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun handleLabelSelectedForAutoDelete(currentMailLabel: MailLabel, autoDeleteSetting: AutoDeleteSetting) {
+        if (currentMailLabel.id == MailLabelId.System.Trash || currentMailLabel.id == MailLabelId.System.Spam) {
+            val autoDeleteBannerUiModel = when (autoDeleteSetting) {
+                AutoDeleteSetting.Disabled -> null
+                AutoDeleteSetting.Enabled -> AutoDeleteBannerUiModel.Info
+                AutoDeleteSetting.NotSet.PaidUser -> {
+                    if (currentMailLabel.id == MailLabelId.System.Trash) {
+                        AutoDeleteBannerUiModel.Activate.Trash
+                    } else AutoDeleteBannerUiModel.Activate.Spam
+                }
+
+                AutoDeleteSetting.NotSet.FreeUser.UpsellingOff -> null
+                AutoDeleteSetting.NotSet.FreeUser.UpsellingOn -> AutoDeleteBannerUiModel.Upgrade
+            }
+            emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(autoDeleteBannerUiModel))
+        } else {
+            emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(null))
+        }
     }
 
     private fun handleSwipeActionPreferences(userId: UserId, currentMailLabel: MailLabel): Flow<MailboxEvent> {
