@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Архів</string>
   <string name="notification_actions_trash_description">Смітник</string>
   <string name="notification_actions_reply_description">Відповісти</string>
+  <string name="notification_actions_mark_as_read_description">Mark read</string>
 </resources>

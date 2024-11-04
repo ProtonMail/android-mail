@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Archive</string>
   <string name="notification_actions_trash_description">Corbeille</string>
   <string name="notification_actions_reply_description">Répondre</string>
+  <string name="notification_actions_mark_as_read_description">Marquer comme lu</string>
 </resources>

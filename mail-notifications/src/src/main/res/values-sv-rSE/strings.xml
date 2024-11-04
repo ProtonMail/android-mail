@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Arkivera</string>
   <string name="notification_actions_trash_description">Lägg i papperskorg</string>
   <string name="notification_actions_reply_description">Svara</string>
+  <string name="notification_actions_mark_as_read_description">Markera läst</string>
 </resources>

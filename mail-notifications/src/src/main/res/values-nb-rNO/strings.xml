@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Arkiver</string>
   <string name="notification_actions_trash_description">Papirkurv</string>
   <string name="notification_actions_reply_description">Svar</string>
+  <string name="notification_actions_mark_as_read_description">Merk som lest</string>
 </resources>

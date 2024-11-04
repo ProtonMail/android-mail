@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Archiveren</string>
   <string name="notification_actions_trash_description">Prullenbak</string>
   <string name="notification_actions_reply_description">Beantwoorden</string>
+  <string name="notification_actions_mark_as_read_description">Markeer als gelezen</string>
 </resources>

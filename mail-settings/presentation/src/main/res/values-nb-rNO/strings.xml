@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mapper</string>
   <string name="mail_settings_conversation_mode">Samtalemodus</string>
+  <string name="mail_settings_auto_delete">Automatisk sletting</string>
+  <string name="mail_settings_auto_delete_full_text">Automatisk sletting av uønskede meldinger</string>
+  <string name="mail_settings_auto_delete_hint">Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Slette meldinger?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Dette sletter alle meldinger som er i papirkurven eller søppelposten, i mer enn 30 dager, inkludert meldinger som for øyeblikket er i disse mappene.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktiver</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Deaktivere automatisk sletting?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">E-poster som er planlagt for sletting, forblir i papirkurven og søppelpostmappen.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Deaktiver</string>
   <string name="mail_settings_not_set">Ikke angitt</string>
   <string name="mail_settings_conversation_mode_hint">Grupper e-poster fra den samme samtalen i innboksen eller vis dem enkeltvis.</string>
   <!-- Default email address settings -->

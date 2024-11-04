@@ -79,4 +79,8 @@
   <string name="folder_saved">Folderul a fost salvat.</string>
   <string name="folder_deleted">Folder șters</string>
   <string name="parent_folder_none">Fără</string>
+  <string name="delete_label">Ștergeți eticheta?</string>
+  <string name="delete_folder">Ștergeți folderul?</string>
+  <string name="delete_label_message">Această acțiune nu poate fi anulată. Mesajele marcate cu această etichetă nu vor fi șterse și pot fi găsite în folderul «Toate mesajele».</string>
+  <string name="delete_folder_message">Această acțiune nu poate fi anulată. Mesajele stocate în acest folder nu vor fi șterse și pot fi găsite în folderul «Toate mesajele».</string>
 </resources>

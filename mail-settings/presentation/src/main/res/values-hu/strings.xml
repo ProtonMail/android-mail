@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Címkék</string>
   <string name="mail_settings_folders">Mappák</string>
   <string name="mail_settings_conversation_mode">Beszélgetés-mód</string>
+  <string name="mail_settings_auto_delete">Automatikus törlés</string>
+  <string name="mail_settings_auto_delete_full_text">Nem kívánt üzenetek automatikus törlése</string>
+  <string name="mail_settings_auto_delete_hint">A 30 napnál régebben lomtárba vagy a levélszemét mappába került üzenetek automatikusan törlésre kerülnek.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Mégsem</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Üzenetek törlése?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Ez minden olyan üzenetet töröl, amely több mint 30 napja a lomtárban vagy a levélszemét mappában van, beleértve a jelenleg ezekben a mappákban lévő üzeneteket is.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Engedélyezés</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Automatikus törlés letiltása</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">A törlésre ütemezett emailek a lomtárban és a levélszemét mappában maradnak.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Kikapcsolás</string>
   <string name="mail_settings_not_set">Nincs megadva</string>
   <string name="mail_settings_conversation_mode_hint">A levelező csoportosítsa az e-maileket beszélgetésenként vagy jelenítse meg külön</string>
   <!-- Default email address settings -->

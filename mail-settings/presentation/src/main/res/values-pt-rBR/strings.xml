@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Marcadores</string>
   <string name="mail_settings_folders">Pastas</string>
   <string name="mail_settings_conversation_mode">Modo de conversa</string>
+  <string name="mail_settings_auto_delete">Excluir automaticamente</string>
+  <string name="mail_settings_auto_delete_full_text">Excluir automaticamente as mensagens indesejadas</string>
+  <string name="mail_settings_auto_delete_hint">As mensagens presentes na lixeira ou no spam por mais de 30 dias serão excluídas automaticamente.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Excluir as mensagens?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Isso excluirá todas as mensagens que estão na lixeira ou no spam há mais de 30 dias, incluindo mensagens atualmente nessas pastas.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Ativar</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Desativar exclusão automática?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">E-mails agendados para exclusão permanecerão na lixeira e na pasta de spam.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Desativar</string>
   <string name="mail_settings_not_set">Não definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa junto em sua caixa de Entrada ou os exiba separadamente</string>
   <!-- Default email address settings -->

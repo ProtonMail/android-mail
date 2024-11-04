@@ -92,6 +92,7 @@
   <string name="upselling_onboarding_switcher_annual">Tahunan</string>
   <string name="upselling_onboarding_best_value">Penawaran terbaik</string>
   <string name="upselling_onboarding_month">/bulan</string>
+  <string name="upselling_onboarding_year">/tahun</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d fitur lainnya</item>
   </plurals>

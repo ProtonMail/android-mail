@@ -86,18 +86,18 @@
   <string name="mailbox_action_button_clear_spam">Vaciar la carpeta de spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Vaciar la papelera</string>
   <string name="mailbox_action_clear_spam_dialog_title">Vaciar spam</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes en la papelera?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes en la carpeta Spam?</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">¿Estás seguro de que quieres eliminar permanentemente todas las conversaciones en la carpeta Spam?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes de la papelera?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">¿Estás seguro de que quieres eliminar permanentemente todos los mensajes de la carpeta Spam?</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">¿Estás seguro de que quieres eliminar permanentemente todas las conversaciones de la carpeta Spam?</string>
   <string name="mailbox_action_clear_operation_scheduled">"La operación de borrado está programada."</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advertencia</string>
-  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está lleno en más de un 80%. Libera espacio o mejora para obtener más almacenamiento.</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">El almacenamiento de tu cuenta Proton está lleno en más de un 90%. Libera espacio o mejora para obtener más almacenamiento.</string>
+  <string name="storage_first_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está más del 80% lleno. Libera espacio o mejora tu plan para obtener más almacenamiento.</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">El almacenamiento de la cuenta Proton está más del 90% lleno. Libera espacio o mejora tu plan para obtener más almacenamiento.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">No volver a recordarme</string>
   <string name="storage_limit_warning_dialog_confirm_button">Aceptar</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Advertencia</string>
-  <string name="storage_quota_over_dialog_text">El almacenamiento de la cuenta Proton está al 100%. No podrás enviar ni recibir correos a menos que elimines permanentemente algunos correos o mejores para obtener más almacenamiento.</string>
+  <string name="storage_quota_over_dialog_text">El almacenamiento de la cuenta Proton está al 100%. No podrás enviar ni recibir correos a menos que elimines permanentemente algunos correos o mejores tu plan para obtener más almacenamiento.</string>
   <string name="storage_quota_over_dialog_confirm_button">Aceptar</string>
 </resources>

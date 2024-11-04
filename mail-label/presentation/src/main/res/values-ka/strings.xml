@@ -79,4 +79,8 @@
   <string name="folder_saved">საქაღალდე შენახულია</string>
   <string name="folder_deleted">საქაღალდე წაშლილია</string>
   <string name="parent_folder_none">არცერთი</string>
+  <string name="delete_label">წავშალო ჭდე?</string>
+  <string name="delete_folder">წავშალო საქაღალდე?</string>
+  <string name="delete_label_message">ამ ქმედების დაბრუნება შეუძლებელია. ამ ჭდის მქონე შეტყობინებები არ წაიშლება. მათი ნახვა შესაძლებელია საქაღალდეში „ყველა შეტყობინება“.</string>
+  <string name="delete_folder_message">ამ ქმედების დაბრუნება შეუძლებელია. ამ საქაღალდეში არსებული შეტყობინებები არ წაიშლება. მათი ნახვა შესაძლებელია საქაღალდეში „ყველა შეტყობინება“.</string>
 </resources>

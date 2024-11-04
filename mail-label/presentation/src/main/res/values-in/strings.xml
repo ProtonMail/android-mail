@@ -79,4 +79,8 @@
   <string name="folder_saved">Folder disimpan</string>
   <string name="folder_deleted">Folder dihapus</string>
   <string name="parent_folder_none">Tidak ada</string>
+  <string name="delete_label">Hapus label?</string>
+  <string name="delete_folder">Hapus folder?</string>
+  <string name="delete_label_message">Tindakan ini tidak dapat diurungkan. Seluruh email yang memiliki label ini tidak akan dihapus dan dapat ditemukan pada folder \'Semua Surat\'.</string>
+  <string name="delete_folder_message">Tindakan ini tidak dapat diurungkan. Seluruh email yang tersimpan pada folder ini tidak akan dihapus dan dapat ditemukan pada folder \'Semua Surat\'.</string>
 </resources>

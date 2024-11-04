@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Gebruik uw eigen mobiele handtekening en geniet van andere premium functies met Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Pas uw handtekening aan</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Geniet van een opgeruimde mailbox en profiteer van andere premium functies met Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Verwijder oude berichten in de prullenbak en spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB opslagruimte</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mailadressen</string>
@@ -53,7 +53,7 @@
   <string name="upselling_unlimited_feature_drive">Veilige cloudopslag</string>
   <string name="upselling_unlimited_feature_pass">Versleutelde wachtwoordmanager</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
+  <string name="upselling_onboarding_premium_value_included">Producten inbegrepen</string>
   <string name="upselling_onboarding_feature_e2e">End-to-end versleuteling</string>
   <string name="upselling_onboarding_feature_folders_labels">Onbeperkte mappen en labels</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB opslagruimte en 1 e-mailadres</string>
@@ -93,6 +93,7 @@
   <string name="upselling_onboarding_switcher_annual">Jaarlijks</string>
   <string name="upselling_onboarding_best_value">Beste Koop</string>
   <string name="upselling_onboarding_month">/maand</string>
+  <string name="upselling_onboarding_year">/year</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d meer functie</item>
     <item quantity="other">%d meer functies</item>

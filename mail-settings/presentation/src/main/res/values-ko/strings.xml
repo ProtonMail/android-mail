@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">라벨</string>
   <string name="mail_settings_folders">폴더함</string>
   <string name="mail_settings_conversation_mode">대화 모드</string>
+  <string name="mail_settings_auto_delete">자동 삭제</string>
+  <string name="mail_settings_auto_delete_full_text">원치 않는 메시지 자동 삭제</string>
+  <string name="mail_settings_auto_delete_hint">휴지통 및 스팸함의 메시지가 30일 이후에 자동으로 삭제됩니다.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">취소</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">메시지를 삭제할까요?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">이 작업은 이 폴더의 현재 메시지를 포함한 휴지통 및 스팸함의 메시지를 30일 이후에 모두 삭제합니다.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">활성화</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">자동 삭제를 비활성화할까요?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">삭제가 예정된 이메일이 휴지통과 스팸 폴더에 남게 됩니다.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">비활성화</string>
   <string name="mail_settings_not_set">미설정</string>
   <string name="mail_settings_conversation_mode_hint">받은 편지함에 있는 동일한 메일을 함께 그룹화하거나 별도로 표시</string>
   <!-- Default email address settings -->

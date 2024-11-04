@@ -79,4 +79,8 @@
   <string name="folder_saved">Folder został zapisany</string>
   <string name="folder_deleted">Folder został usunięty</string>
   <string name="parent_folder_none">Brak</string>
+  <string name="delete_label">Usunąć etykietę?</string>
+  <string name="delete_folder">Usunąć folder?</string>
+  <string name="delete_label_message">Nie możesz cofnąć tej akcji. Wiadomości z tę etykietą nie zostaną usunięte i będą nadal dostępne w folderze \'Wszystkie wiadomości\'.</string>
+  <string name="delete_folder_message">Nie możesz cofnąć tej akcji. Wiadomości w tym folderze nie zostaną usunięte i będą nadal dostępne w folderze \'Wszystkie wiadomości\'.</string>
 </resources>

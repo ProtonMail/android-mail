@@ -79,4 +79,8 @@
   <string name="folder_saved">Mapp sparad</string>
   <string name="folder_deleted">Mapp borttagen</string>
   <string name="parent_folder_none">Ingen</string>
+  <string name="delete_label">Ta bort etikett?</string>
+  <string name="delete_folder">Ta bort mapp?</string>
+  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
 </resources>

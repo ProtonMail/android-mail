@@ -92,6 +92,7 @@
   <string name="upselling_onboarding_switcher_annual">按年</string>
   <string name="upselling_onboarding_best_value">超值</string>
   <string name="upselling_onboarding_month">/月</string>
+  <string name="upselling_onboarding_year">/year</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d 个功能</item>
   </plurals>

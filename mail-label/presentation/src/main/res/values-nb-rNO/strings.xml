@@ -79,4 +79,8 @@
   <string name="folder_saved">Mappe lagret</string>
   <string name="folder_deleted">Mappe slettet</string>
   <string name="parent_folder_none">Ingen</string>
+  <string name="delete_label">Slette etikett?</string>
+  <string name="delete_folder">Slette mappe?</string>
+  <string name="delete_label_message">Denne handlingen kan ikke angres. E-poster merket med denne etiketten vil ikke bli slettet og kan bli funnet i \'All e-post\'-mappen.</string>
+  <string name="delete_folder_message">Denne handlingen kan ikke angres. E-poster i denne mappen vil ikke bli slettet og kan bli funnet i \'All e-post\'-mappen.</string>
 </resources>

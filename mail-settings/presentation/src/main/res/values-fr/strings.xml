@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Labels</string>
   <string name="mail_settings_folders">Dossiers</string>
   <string name="mail_settings_conversation_mode">Mode conversation</string>
+  <string name="mail_settings_auto_delete">Suppression automatique</string>
+  <string name="mail_settings_auto_delete_full_text">Supprimer automatiquement les messages indésirables</string>
+  <string name="mail_settings_auto_delete_hint">Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Annuler</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Voulez-vous supprimer les messages ?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Cela supprimera tous les messages qui se trouvent dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours, y compris les messages qui s\'y trouvent actuellement.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Activer</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Voulez-vous désactiver la suppression automatique ?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Les messages dont la suppression est prévue resteront dans les dossiers Corbeille et Indésirable/spam.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Désactiver</string>
   <string name="mail_settings_not_set">Non défini</string>
   <string name="mail_settings_conversation_mode_hint">Regroupez les messages d\'une même conversation dans votre boite de réception ou affichez-les séparément.</string>
   <!-- Default email address settings -->

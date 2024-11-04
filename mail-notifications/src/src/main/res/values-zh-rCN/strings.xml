@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">归档</string>
   <string name="notification_actions_trash_description">回收站</string>
   <string name="notification_actions_reply_description">回复</string>
+  <string name="notification_actions_mark_as_read_description">Mark read</string>
 </resources>

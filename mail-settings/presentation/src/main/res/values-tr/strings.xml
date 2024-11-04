@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etiketler</string>
   <string name="mail_settings_folders">Klasörler</string>
   <string name="mail_settings_conversation_mode">Yazışma kipi</string>
+  <string name="mail_settings_auto_delete">Otomatik silme</string>
+  <string name="mail_settings_auto_delete_full_text">İstenmeyen iletileri otomatik olarak silin</string>
+  <string name="mail_settings_auto_delete_hint">Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">İptal</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">İletiler silinsin mi?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Bu işlem, şu anda bu klasörlerde bulunanlarla birlikte çöp veya istenmeyen kutularında 30 günden uzun süre kalan tüm iletileri siler.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aç</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Otomatik silme kapatılsın mı?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Silinmek üzere zamanlanmış e-postalar çöp kutusu ve istenmeyen klasöründe kalacak.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Kapat</string>
   <string name="mail_settings_not_set">Ayarlanmamış</string>
   <string name="mail_settings_conversation_mode_hint">Aynı yazışmadaki e-postaları Gelen kutunuzda gruplayın ya da ayrı ayrı görüntüleyin</string>
   <!-- Default email address settings -->

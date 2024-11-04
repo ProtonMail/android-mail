@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Меткі</string>
   <string name="mail_settings_folders">Папкі</string>
   <string name="mail_settings_conversation_mode">Рэжым размовы</string>
+  <string name="mail_settings_auto_delete">Аўтавыдаленне</string>
+  <string name="mail_settings_auto_delete_full_text">Аўтавыдаленне непажаданых паведамленняў</string>
+  <string name="mail_settings_auto_delete_hint">Паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён будуць выдаляцца аўтаматычна.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Скасаваць</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Выдаліць паведамленні?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Гэта прывядзе да выдалення ўсіх паведамленняў, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён. Уключаючы паведамленні, якія зараз знаходзяцца ў гэтых папках.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Уключыць</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Адключыць аўтавыдаленне?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Лісты, запланаваныя для выдалення, застануцца ў сметніцы і папках са спамам.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Адключыць</string>
   <string name="mail_settings_not_set">Не зададзена</string>
   <string name="mail_settings_conversation_mode_hint">Групуйце лісты ў адну размову ва ўваходных або адлюстроўвайце іх паасобку</string>
   <!-- Default email address settings -->

@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">დაარქივება</string>
   <string name="notification_actions_trash_description">ნაგვის ყუთი</string>
   <string name="notification_actions_reply_description">პასუხი</string>
+  <string name="notification_actions_mark_as_read_description">წაკითხულად მონიშვნა</string>
 </resources>

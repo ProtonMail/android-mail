@@ -23,7 +23,7 @@
   <string name="label_title_starred">Com estrela</string>
   <string name="label_title_archive">Arquivo</string>
   <string name="label_title_spam">Spam</string>
-  <string name="label_title_trash">Lixeira</string>
+  <string name="label_title_trash">Lixo</string>
   <string name="label_title_outbox">Caixa de saída</string>
   <string name="label_title_all_mail">Todo o correio</string>
   <string name="label_title_all_drafts">Todos o rascunho</string>
@@ -79,4 +79,8 @@
   <string name="folder_saved">Pasta guardada</string>
   <string name="folder_deleted">Pasta eliminada</string>
   <string name="parent_folder_none">Nenhuma</string>
+  <string name="delete_label">Eliminar a etiqueta?</string>
+  <string name="delete_folder">Eliminar a pasta?</string>
+  <string name="delete_label_message">Esta ação não pode ser anulada. Os e-mails marcados com esta etiqueta não serão eliminados e podem ser encontrados na pasta “Todo o correio”.</string>
+  <string name="delete_folder_message">Esta ação não pode ser anulada. Os e-mails contidos nesta pasta não serão eliminados e podem ser encontrados na pasta “Todo o correio”.</string>
 </resources>

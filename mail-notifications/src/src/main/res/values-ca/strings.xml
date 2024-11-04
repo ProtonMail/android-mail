@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Arxiva</string>
   <string name="notification_actions_trash_description">Paperera</string>
   <string name="notification_actions_reply_description">Respon</string>
+  <string name="notification_actions_mark_as_read_description">Marca com a llegit</string>
 </resources>

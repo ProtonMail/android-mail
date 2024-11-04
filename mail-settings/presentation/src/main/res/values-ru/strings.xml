@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Ярлыки</string>
   <string name="mail_settings_folders">Папки</string>
   <string name="mail_settings_conversation_mode">Режим цепочки писем</string>
+  <string name="mail_settings_auto_delete">Автоудаление</string>
+  <string name="mail_settings_auto_delete_full_text">Автоматическое удаление нежелательных сообщений</string>
+  <string name="mail_settings_auto_delete_hint">Сообщения, находящиеся в корзине и спаме более 30 дней, будут автоматически удалены.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Отмена</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Удалить сообщения?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Это удалит все сообщения, находящиеся в корзине или спаме более 30 дней, включая сообщения, находящиеся в этих папках сейчас.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Включить</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Отключить автоматическое удаление?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Электронные письма, запланированные к удалению, останутся в папках Корзина и Спам.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Отключить</string>
   <string name="mail_settings_not_set">Не задано</string>
   <string name="mail_settings_conversation_mode_hint">Группировать сообщения, относящиеся к одной теме в папке Входящие или отображать их отдельно</string>
   <!-- Default email address settings -->

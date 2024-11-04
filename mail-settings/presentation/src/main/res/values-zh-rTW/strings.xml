@@ -61,12 +61,22 @@
   <string name="mail_settings_labels">標籤</string>
   <string name="mail_settings_folders">資料夾</string>
   <string name="mail_settings_conversation_mode">往來對話群组模式</string>
+  <string name="mail_settings_auto_delete">Auto-delete</string>
+  <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
+  <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Enable</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disable</string>
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">收件匣可將同一往來對話的電郵，以群組或單獨方式陳列顯示</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">預設電子信箱位址</string>
   <string name="mail_settings_default_email_address_inactive_addresses">未啟用的位址</string>
-  <string name="mail_settings_default_email_address_no_inactive_addresses">無未啟用的位址</string>
+  <string name="mail_settings_default_email_address_no_inactive_addresses">無未啟用的地址</string>
   <string name="mail_settings_default_email_address_error_loading">載入設定時發生錯誤</string>
   <string name="mail_settings_default_email_address_error_update">更新設定值發生錯誤</string>
   <string name="mail_settings_default_email_address_error_update_subscription">升級至付費方案以將此位址設為您的預設值</string>
@@ -131,7 +141,7 @@
   <string name="mail_settings_pin_insertion_set_title">設定 PIN 碼</string>
   <string name="mail_settings_pin_insertion_confirm_title">確認個人識別數字代碼</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">鎖定圖示</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">PIN 點點</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Pin 點點</string>
   <string name="mail_settings_pin_insertion_backspace_description">倒退鍵</string>
   <string name="mail_settings_pin_insertion_biometric_description">生物辨識驗證</string>
   <string name="mail_settings_pin_insertion_button_create">建立</string>

@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etichete</string>
   <string name="mail_settings_folders">Foldere</string>
   <string name="mail_settings_conversation_mode">Mod conversație</string>
+  <string name="mail_settings_auto_delete">Ștergere automată</string>
+  <string name="mail_settings_auto_delete_full_text">Ștergere automată mesaje nedorite</string>
+  <string name="mail_settings_auto_delete_hint">Mesajele din folderul «Gunoi» și «Nedorite» vor fi șterse automat după de 30 de zile.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Anulare</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Ștergeți mesajele?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Aceasta va șterge toate mesajele mai vechi de 30 de zile din folderele «Gunoi» și «Nedorite», inclusiv cele aflate acum în aceste foldere.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Activare</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Dezactivare autoștergere?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Mesajele programate pentru ștergere vor rămâne în folderele «Gunoi» și «Nedorite».</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Dezactivare</string>
   <string name="mail_settings_not_set">Nesetat</string>
   <string name="mail_settings_conversation_mode_hint">Grupare mesaje din aceeași conversație sau afișare separată</string>
   <!-- Default email address settings -->

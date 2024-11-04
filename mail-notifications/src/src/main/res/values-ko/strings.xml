@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">보관함</string>
   <string name="notification_actions_trash_description">휴지통</string>
   <string name="notification_actions_reply_description">회신</string>
+  <string name="notification_actions_mark_as_read_description">읽음으로 표시</string>
 </resources>

@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">标签</string>
   <string name="mail_settings_folders">文件夹</string>
   <string name="mail_settings_conversation_mode">会话模式</string>
+  <string name="mail_settings_auto_delete">Auto-delete</string>
+  <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
+  <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Enable</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disable</string>
   <string name="mail_settings_not_set">未设置</string>
   <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
   <!-- Default email address settings -->

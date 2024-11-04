@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etichette</string>
   <string name="mail_settings_folders">Cartelle</string>
   <string name="mail_settings_conversation_mode">Modalità conversazione</string>
+  <string name="mail_settings_auto_delete">Eliminazione automatica</string>
+  <string name="mail_settings_auto_delete_full_text">Eliminazione automatica dei messaggi indesiderati</string>
+  <string name="mail_settings_auto_delete_hint">Abilita questa opzione per eliminare automaticamente i messaggi presenti nel cestino e nella cartella spam per oltre 30 giorni.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Annulla</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Abilita l\'eliminazione automatica</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Sei sicuro di voler eliminare tutti gli attuali e futuri messaggi presenti nel cestino e nella cartella spam per oltre 30 giorni?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Abilita</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Disabilita l\'eliminazione automatica</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Sei sicuro di non voler eliminare automaticamente tutti gli attuali e futuri messaggi presenti nel cestino e nella cartella spam per oltre 30 giorni?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disabilita</string>
   <string name="mail_settings_not_set">Non impostato</string>
   <string name="mail_settings_conversation_mode_hint">Abilita questa opzione per visualizzare raggruppati i messaggi appartenenti alla stessa conversazione.</string>
   <!-- Default email address settings -->

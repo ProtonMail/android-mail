@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etykiety</string>
   <string name="mail_settings_folders">Foldery</string>
   <string name="mail_settings_conversation_mode">Tryb wątku</string>
+  <string name="mail_settings_auto_delete">Automatyczne usuwanie</string>
+  <string name="mail_settings_auto_delete_full_text">Automatyczne usuwanie niechcianych wiadomości</string>
+  <string name="mail_settings_auto_delete_hint">Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Anuluj</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Usunąć wiadomości?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Wszystkie wiadomości, które znajdują się w Koszu lub w Spamie dłużej niż 30 dni zostaną usunięte.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Włącz</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Wyłączyć automatyczne usuwanie?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Wiadomości zaplanowane do usunięcia pozostaną w Koszu i Spamie.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Wyłącz</string>
   <string name="mail_settings_not_set">Nie ustawiono</string>
   <string name="mail_settings_conversation_mode_hint">Grupuj wiadomości w skrzynce pocztowej do wątku lub wyświetlaj je oddzielnie</string>
   <!-- Default email address settings -->

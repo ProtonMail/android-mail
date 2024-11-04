@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Arşiv</string>
   <string name="notification_actions_trash_description">Çöp</string>
   <string name="notification_actions_reply_description">Yanıtla</string>
+  <string name="notification_actions_mark_as_read_description">Okunmuş olarak işaretle</string>
 </resources>

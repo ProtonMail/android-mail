@@ -24,4 +24,5 @@
   <string name="notification_actions_archive_description">Archivieren</string>
   <string name="notification_actions_trash_description">Papierkorb</string>
   <string name="notification_actions_reply_description">Antworten</string>
+  <string name="notification_actions_mark_as_read_description">Mark read</string>
 </resources>

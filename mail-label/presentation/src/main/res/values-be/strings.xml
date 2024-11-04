@@ -79,4 +79,8 @@
   <string name="folder_saved">Папка захавана</string>
   <string name="folder_deleted">Папка выдалена</string>
   <string name="parent_folder_none">Няма</string>
+  <string name="delete_label">Выдаліць метку?</string>
+  <string name="delete_folder">Выдаліць папку?</string>
+  <string name="delete_label_message">Гэта дзеянне немагчыма адрабіць. Лісты, якія пазначаныя гэтай меткай не будуць выдалены, і іх можна будзе знайсці ў папцы \"Уся пошта\".</string>
+  <string name="delete_folder_message">Гэта дзеянне немагчыма адрабіць. Лісты, якія змяшчаюцца ў гэтай папцы не будуць выдалены, і іх можна будзе знайсці ў папцы \"Уся пошта\".</string>
 </resources>

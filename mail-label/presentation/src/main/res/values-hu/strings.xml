@@ -79,4 +79,8 @@
   <string name="folder_saved">Mappa mentve</string>
   <string name="folder_deleted">Mappa törölve</string>
   <string name="parent_folder_none">Nincs</string>
+  <string name="delete_label">Címke törlése?</string>
+  <string name="delete_folder">Mappa törlése?</string>
+  <string name="delete_label_message">Ez a cselekmény visszavonhatatlan. E-mailek amik ezzel a címkével vannak megjelölve nem lesznek törölve és megtalálhatók az Összes levél mappában.</string>
+  <string name="delete_folder_message">Ez a cselekmény visszavonhatatlan. E-mailek amik ebben a mappában találhatók nem lesznek törölve és megtalálhatók az Összes levél mappában.</string>
 </resources>

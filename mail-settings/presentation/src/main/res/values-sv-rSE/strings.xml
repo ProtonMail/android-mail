@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mappar</string>
   <string name="mail_settings_conversation_mode">Konversationsläge</string>
+  <string name="mail_settings_auto_delete">Ta bort automatiskt</string>
+  <string name="mail_settings_auto_delete_full_text">Ta bort oönskade meddelanden automatiskt</string>
+  <string name="mail_settings_auto_delete_hint">Meddelanden i papperskorg eller skräppost i mer än 30 dagar kommer att tas bort automatiskt.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Ta bort meddelanden?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktivera</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Inaktivera automatisk borttagning?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Inaktivera</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>
   <!-- Default email address settings -->

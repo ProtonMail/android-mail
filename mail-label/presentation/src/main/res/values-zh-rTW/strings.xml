@@ -61,7 +61,7 @@
   <string name="input_field_clear_content_description">清除文字</string>
   <string name="label_list_item_content_description">標籤清單項目</string>
   <string name="folder_list_item_content_description">資料夾清單項目</string>
-  <string name="folder_list_no_folders_found">找不到資料夾.</string>
+  <string name="folder_list_no_folders_found">找不到資料夾。</string>
   <string name="folder_list_create_folder_placeholder_description">創建資料夾來加強您的email體驗。</string>
   <string name="create_folder_content_description">新增資料夾</string>
   <string name="folder_settings_content_description">資料夾設定</string>
@@ -79,4 +79,8 @@
   <string name="folder_saved">資料夾已儲存</string>
   <string name="folder_deleted">已刪除資料夾</string>
   <string name="parent_folder_none">無</string>
+  <string name="delete_label">刪除標籤?</string>
+  <string name="delete_folder">刪除資料夾?</string>
+  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
 </resources>

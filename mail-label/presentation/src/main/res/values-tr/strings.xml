@@ -79,4 +79,8 @@
   <string name="folder_saved">Klasör kaydedildi</string>
   <string name="folder_deleted">Klasör silindi</string>
   <string name="parent_folder_none">Yok</string>
+  <string name="delete_label">Etiket silinsin mi?</string>
+  <string name="delete_folder">Klasör silinsin mi?</string>
+  <string name="delete_label_message">Bu işlem geri alınamaz. Bu etiketle kaydedilmiş e-postalar silinmeyecek ve \'Tüm e-postalar\' kutusundan erişilebilecek.</string>
+  <string name="delete_folder_message">Bu işlem geri alınamaz. Bu klasöre kaydedilmiş e-postalar silinmeyecek ve \'Tüm e-postalar\' kutusundan erişilebilecek.</string>
 </resources>

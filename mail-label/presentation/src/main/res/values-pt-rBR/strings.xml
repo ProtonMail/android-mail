@@ -79,4 +79,8 @@
   <string name="folder_saved">Pasta salva</string>
   <string name="folder_deleted">Pasta excluída</string>
   <string name="parent_folder_none">Nenhuma</string>
+  <string name="delete_label">Excluir marcador?</string>
+  <string name="delete_folder">Excluir pasta?</string>
+  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
 </resources>

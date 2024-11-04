@@ -79,4 +79,8 @@
   <string name="folder_saved">Le dossier a été enregistré.</string>
   <string name="folder_deleted">Le dossier a été supprimé.</string>
   <string name="parent_folder_none">Aucun</string>
+  <string name="delete_label">Supprimer le label ?</string>
+  <string name="delete_folder">Supprimer le dossier ?</string>
+  <string name="delete_label_message">Cette action ne peut pas être annulée. Les messages avec ce label ne seront pas supprimés et peuvent être trouvés dans le dossier « Tous les messages ».</string>
+  <string name="delete_folder_message">Cette action ne peut pas être annulée. Les messages dans ce dossier ne seront pas supprimés et peuvent être trouvés dans le dossier « Tous les messages ».</string>
 </resources>

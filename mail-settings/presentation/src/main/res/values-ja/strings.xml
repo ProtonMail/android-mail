@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">ラベル</string>
   <string name="mail_settings_folders">フォルダー</string>
   <string name="mail_settings_conversation_mode">会話モード</string>
+  <string name="mail_settings_auto_delete">自動削除</string>
+  <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
+  <string name="mail_settings_auto_delete_hint">ごみ箱や迷惑メールに 30 日以上入っているメッセージは自動的に削除されます。</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">キャンセル</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">メッセージを削除しますか？</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">ごみ箱や迷惑メールに 30 日以上入っているメッセージは、現在これらのフォルダーに入っているメッセージも含めてすべて削除されます。</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">有効にする</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">自動削除を無効にしますか？</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">無効にする</string>
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">同じ会話のメールを受信トレイにまとめて表示するか、個別に表示するかを選択できます</string>
   <!-- Default email address settings -->

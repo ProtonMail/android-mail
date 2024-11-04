@@ -98,7 +98,7 @@
   <string name="message_body_load_embedded_images_button_text">Carrega les imatges incrustades</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carrega contingut remot i incorporat</string>
   <string name="message_report_phishing_dialog_title_offline">Atenció</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Aquesta característica només està disponible en línia.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">D\'acord</string>
   <string name="message_report_phishing_dialog_title">Confirma l\'informe de phising</string>
   <string name="message_report_phishing_dialog_message">Informar d\'un missatge com a intent de pesca ens l\'enviarà a nosaltres per a poder analitzar-lo i millorar els nostres filtres. Això significa que podrem veure el contingut complet del missatge.</string>
@@ -108,7 +108,7 @@
   <string name="open_on_protoncalendar_banner_description">Calendari segur xifrat</string>
   <string name="error_print_failed">No s\'ha pogut imprimir el missatge.</string>
   <string name="trashed_messages_banner">Aquesta conversa conté missatges esborrats.</string>
-  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="non_trashed_messages_banner">Aquesta conversa conté missatges que no es troben a la paperera.</string>
   <string name="show">Mostra</string>
   <string name="hide">Amaga</string>
 </resources>

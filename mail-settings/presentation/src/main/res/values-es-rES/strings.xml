@@ -61,6 +61,16 @@
   <string name="mail_settings_labels">Etiquetas</string>
   <string name="mail_settings_folders">Carpetas</string>
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
+  <string name="mail_settings_auto_delete">Eliminación automática</string>
+  <string name="mail_settings_auto_delete_full_text">Eliminar automáticamente los mensajes no deseados</string>
+  <string name="mail_settings_auto_delete_hint">Los mensajes en las carpetas Papelera o Spam de más de 30 días se eliminarán automáticamente.</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">¿Eliminar los mensajes?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Esto eliminará todos los mensajes que están en la papelera o spam de más de 30 días, incluyendo mensajes actualmente en esas carpetas.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Activar</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">¿Desactivar la eliminación automática?</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Los correos programados para eliminarse permanecerán en las carpetas de papelera y spam.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Desactivar</string>
   <string name="mail_settings_not_set">No establecido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupa correos de una misma conversación en tu bandeja de entrada o mostrarlos por separado.</string>
   <!-- Default email address settings -->
@@ -110,7 +120,7 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificaciones push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificaciones extendidas</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Activa esta función para ver el remitente de los mensajes en las notificaciones push.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Activa esta función para ver el remitente de los correos electrónicos en las notificaciones push.</string>
   <string name="mail_settings_notifications_notifications_settings">Ajustes de las notificaciones</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navegar a los ajustes de notificaciones del sistema</string>
   <string name="mail_settings_notifications_update_error">Error al actualizar los ajustes</string>
@@ -148,7 +158,7 @@
   <string name="mail_settings_pin_insertion_error_unknown">Se ha producido un error al verificar tu código PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Cerrar sesión</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Cerrar sesión</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">¿Estás seguro de que quieres cerrar sesión?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">¿Estás seguro de que quieres cerrar la sesión?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
   <string name="mail_settings_pin_insertion_created_success">El código PIN ha sido creado.</string>
