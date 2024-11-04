@@ -20,12 +20,15 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserSettings
+import ch.protonmail.android.mailsettings.presentation.R.string
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Data
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.Loading
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingsState.NotLoggedIn
@@ -39,6 +42,7 @@ import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import ch.protonmail.android.testdata.user.UserTestData
 import ch.protonmail.android.testdata.usersettings.UserSettingsTestData
 import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -59,6 +63,7 @@ import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
@@ -107,6 +112,10 @@ class AccountSettingsViewModelTest {
 
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
 
+    private val isPaidMailUser = mockk<IsPaidMailUser> {
+        coEvery { this@mockk(userId) } returns false.right()
+    }
+
     private val viewModel by lazy {
         AccountSettingsViewModel(
             accountManager = accountManager,
@@ -117,7 +126,8 @@ class AccountSettingsViewModelTest {
             observeRegisteredSecurityKeys = observeRegisteredSecurityKeys,
             observeUpsellingVisibility = observeUpsellingVisibility,
             userUpgradeState = userUpgradeState,
-            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get()
+            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
+            isPaidMailUser = isPaidMailUser
         )
     }
 
@@ -299,6 +309,44 @@ class AccountSettingsViewModelTest {
     }
 
     @Test
+    fun `state has doesSettingNeedSubscription = true when User has no subscription for Mail`() = runTest {
+        // given
+        expectIsPaidMailUser(false)
+
+        viewModel.state.test {
+            // when
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsExist()
+            awaitItem()
+
+            // then
+            val data = awaitItem() as Data
+            assertTrue(data.autoDeleteSettingsState.doesSettingNeedSubscription)
+        }
+    }
+
+    @Test
+    fun `state has doesSettingNeedSubscription = false when User has subscription for Mail`() = runTest {
+        // given
+        expectIsPaidMailUser(true)
+
+        viewModel.state.test {
+            // when
+            initialStateEmitted()
+            primaryUserExists()
+            userSettingsExist()
+            mailSettingsExist()
+            awaitItem()
+
+            // then
+            val data = awaitItem() as Data
+            assertFalse(data.autoDeleteSettingsState.doesSettingNeedSubscription)
+        }
+    }
+
+    @Test
     fun `state has auto-delete upselling in days correctly passed from MailSettings`() = runTest {
         // given
         viewModel.state.test {
@@ -369,6 +417,32 @@ class AccountSettingsViewModelTest {
                 assertEquals(
                     Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
                     data.autoDeleteSettingsState.upsellingInProgress
+                )
+            }
+        }
+
+    @Test
+    fun `state has subscription needed error visible when non-paid-mail user clicks the setting and upselling OFF`() =
+        runTest {
+            // given
+            expectIsPaidMailUser(false)
+
+            viewModel.state.test {
+                // when
+                initialStateEmitted()
+                primaryUserExists()
+                userSettingsExist()
+                mailSettingsExist()
+                awaitItem()
+                awaitItem()
+
+                viewModel.submit(AccountSettingsViewAction.SettingsItemClicked)
+
+                // then
+                val data = awaitItem() as Data
+                assertEquals(
+                    Effect.of(TextUiModel(string.mail_settings_auto_delete_subscription_needed)),
+                    data.autoDeleteSettingsState.subscriptionNeededError
                 )
             }
         }
@@ -452,5 +526,9 @@ class AccountSettingsViewModelTest {
 
     private fun autoDeleteUpsellingIsOn() {
         every { observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(true)
+    }
+
+    private fun expectIsPaidMailUser(value: Boolean) {
+        coEvery { isPaidMailUser(userId) } returns value.right()
     }
 }

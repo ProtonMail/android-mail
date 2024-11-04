@@ -25,7 +25,9 @@ import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibil
 data class AutoDeleteSettingsState(
     val autoDeleteInDays: Int? = null,
     val isSettingVisible: Boolean = false,
+    val doesSettingNeedSubscription: Boolean = false,
     val isUpsellingVisible: Boolean = false,
     val upsellingVisibility: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
-    val upsellingInProgress: Effect<TextUiModel> = Effect.empty()
+    val upsellingInProgress: Effect<TextUiModel> = Effect.empty(),
+    val subscriptionNeededError: Effect<TextUiModel> = Effect.empty()
 )

@@ -205,7 +205,9 @@ fun AccountSettingScreen(
                                 modifier = modifier,
                                 state = state,
                                 onAutoDeleteClick = {
-                                    if (state.autoDeleteSettingsState.isUpsellingVisible) {
+                                    if (state.autoDeleteSettingsState.isUpsellingVisible ||
+                                        state.autoDeleteSettingsState.doesSettingNeedSubscription
+                                    ) {
                                         accountSettingsViewModel.submit(AccountSettingsViewAction.SettingsItemClicked)
                                     } else {
                                         actions.onAutoDeleteClick()
@@ -272,6 +274,10 @@ fun AccountSettingScreen(
                     }
                 }
                 ConsumableTextEffect(effect = state.autoDeleteSettingsState.upsellingInProgress) { message ->
+                    snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message)
+                }
+                ConsumableTextEffect(effect = state.autoDeleteSettingsState.subscriptionNeededError) { message ->
                     snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
                     snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message)
                 }

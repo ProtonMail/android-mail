@@ -20,6 +20,8 @@ package ch.protonmail.android.mailsettings.presentation.accountsettings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -63,12 +65,15 @@ class AccountSettingsViewModel @Inject constructor(
     private val observeRegisteredSecurityKeys: ObserveRegisteredSecurityKeys,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val userUpgradeState: UserUpgradeState,
+    private val isPaidMailUser: IsPaidMailUser,
     @AutodeleteFeatureEnabled private val isAutodeleteFeatureEnabled: Boolean
 ) : ViewModel() {
 
     private val autoDeleteUpsellingVisibility = MutableStateFlow<BottomSheetVisibilityEffect>(
         BottomSheetVisibilityEffect.Hide
     )
+
+    private val subscriptionNeededErrorVisibility = MutableStateFlow<Effect<TextUiModel>>(Effect.empty())
 
     private val autoDeleteUpsellingInProgressVisibility = MutableStateFlow<Effect<TextUiModel>>(Effect.empty())
 
@@ -82,14 +87,17 @@ class AccountSettingsViewModel @Inject constructor(
                 observeMailSettings(userId),
                 observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete),
                 autoDeleteUpsellingVisibility,
-                autoDeleteUpsellingInProgressVisibility
-            ) { mailSettings, upsellingVisibility, bottomSheetVisibility, upsellingInProgress ->
+                autoDeleteUpsellingInProgressVisibility,
+                subscriptionNeededErrorVisibility
+            ) { mailSettings, upsellingVisibility, bottomSheetVisibility, upsellingInProgress, subscriptionNeeded ->
                 AutoDeleteSettingsState(
                     autoDeleteInDays = mailSettings?.autoDeleteSpamAndTrashDays,
                     isSettingVisible = isAutodeleteFeatureEnabled,
                     isUpsellingVisible = upsellingVisibility,
                     upsellingVisibility = Effect.of(bottomSheetVisibility),
-                    upsellingInProgress = upsellingInProgress
+                    upsellingInProgress = upsellingInProgress,
+                    doesSettingNeedSubscription = !isPaidMailUser(userId).getOrElse { false },
+                    subscriptionNeededError = subscriptionNeeded
                 )
             }
 
@@ -154,6 +162,10 @@ class AccountSettingsViewModel @Inject constructor(
             } else {
                 autoDeleteUpsellingVisibility.value = BottomSheetVisibilityEffect.Show
             }
+        } else if (autoDeleteState.value.doesSettingNeedSubscription) {
+            subscriptionNeededErrorVisibility.value = Effect.of(
+                TextUiModel(R.string.mail_settings_auto_delete_subscription_needed)
+            )
         }
     }
 
