@@ -42,11 +42,24 @@ class GetOnboardingUpsellingPlans @Inject constructor(
         return plans.right()
     }
 
-    private fun DynamicPlans.containExpectedPlans() =
-        plans.size == 2 && plans.map { it.name }.containsAll(setOf(Unlimited, MailPlus))
+    private fun DynamicPlans.containExpectedPlans(): Boolean {
+        val containExpectedPlansSize = plans.size == 2
+        val containExpectedEntries = plans.map { it.name }.containsAll(setOf(Unlimited, MailPlus))
 
-    private fun DynamicPlans.containExpectedPlanCycles() =
-        plans.all { it.instances.keys.containsAll(setOf(MonthlyDuration, YearlyDuration)) }
+        return containExpectedPlansSize && containExpectedEntries
+    }
+
+    private fun DynamicPlans.containExpectedPlanCycles(): Boolean {
+        val containsMonthlyAndYearly = plans.all {
+            it.instances.keys.containsAll(setOf(MonthlyDuration, YearlyDuration))
+        }
+
+        val containsInstancesWithPrice = plans.all { plan ->
+            plan.instances.all { it.value.price.isNotEmpty() }
+        }
+
+        return containsMonthlyAndYearly && containsInstancesWithPrice
+    }
 
     sealed interface GetOnboardingPlansError {
         data object GenericError : GetOnboardingPlansError

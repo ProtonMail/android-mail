@@ -24,6 +24,8 @@ import arrow.core.right
 import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans
 import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans.GetOnboardingPlansError
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
+import ch.protonmail.android.testdata.upselling.UpsellingTestData.MonthlyDynamicPlanInstance
+import ch.protonmail.android.testdata.upselling.UpsellingTestData.YearlyDynamicPlanInstance
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -82,6 +84,21 @@ internal class GetOnboardingUpsellingPlansTest(testName: String, private val tes
                 )
             }
 
+        private val plansWithEmptyPrices: List<DynamicPlan>
+            get() {
+                val planWithNoPrice = UpsellingTestData.PlusPlan.copy(
+                    instances = mapOf(
+                        1 to MonthlyDynamicPlanInstance.copy(price = emptyMap()),
+                        12 to YearlyDynamicPlanInstance
+                    )
+                )
+
+                return listOf(
+                    UpsellingTestData.UnlimitedPlan,
+                    planWithNoPrice
+                )
+            }
+
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = arrayOf(
@@ -114,6 +131,11 @@ internal class GetOnboardingUpsellingPlansTest(testName: String, private val tes
             TestInput(
                 testName = "should return mismatching cycles when plan cycles are not as expected",
                 dynamicPlans = DynamicPlans(defaultCycle = null, mismatchingPlansCycleList),
+                expectedResult = GetOnboardingPlansError.MismatchingPlanCycles.left()
+            ),
+            TestInput(
+                testName = "should return mismatching cycles when plan cycles have empty prices",
+                dynamicPlans = DynamicPlans(defaultCycle = null, plansWithEmptyPrices),
                 expectedResult = GetOnboardingPlansError.MismatchingPlanCycles.left()
             ),
             TestInput(
