@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.test.annotations.suite.RegressionTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
@@ -226,6 +227,7 @@ internal class MailboxScreenTest : HiltInstrumentedTest() {
                 bottomSheetState = null,
                 error = Effect.empty(),
                 showRatingBooster = Effect.empty(),
+                autoDeleteSettingState = AutoDeleteSettingState.Loading
             )
         }
 

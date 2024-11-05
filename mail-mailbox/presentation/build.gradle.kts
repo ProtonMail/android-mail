@@ -91,6 +91,7 @@ dependencies {
     implementation(project(":mail-message:presentation"))
     implementation(project(":mail-pagination:domain"))
     implementation(project(":mail-pagination:presentation"))
+    implementation(project(":mail-settings:data"))
     implementation(project(":mail-settings:domain"))
     implementation(project(":mail-settings:presentation"))
     implementation(project(":mail-upselling:presentation"))

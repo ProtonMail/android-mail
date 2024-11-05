@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -41,6 +42,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import javax.inject.Inject
 
 class MailboxReducer @Inject constructor(
@@ -68,7 +70,8 @@ class MailboxReducer @Inject constructor(
             bottomSheetState = currentState.toNewBottomSheetState(operation),
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation),
-            showRatingBooster = currentState.toNewShowRatingBoosterState(operation)
+            showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
+            autoDeleteSettingState = currentState.toNewAutoDeleteSettingState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -224,6 +227,33 @@ class MailboxReducer @Inject constructor(
             Effect.of(Unit)
         } else {
             showRatingBooster
+        }
+    }
+
+    private fun MailboxState.toNewAutoDeleteSettingState(operation: MailboxOperation): AutoDeleteSettingState {
+        return if (operation is MailboxOperation.AffectingAutoDelete) {
+            when (operation) {
+                is MailboxViewAction.AutoDeleteDialogActionSubmitted -> AutoDeleteSettingState.Data(
+                    enablingDialogState = DialogState.Hidden
+                )
+
+                MailboxViewAction.DismissAutoDelete -> AutoDeleteSettingState.Data(
+                    enablingDialogState = DialogState.Hidden
+                )
+
+                MailboxViewAction.ShowAutoDeleteDialog -> AutoDeleteSettingState.Data(
+                    enablingDialogState = DialogState.Shown(
+                        title = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_title),
+                        message = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_text),
+                        dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
+                        confirmButtonText = TextUiModel(
+                            R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
+                        )
+                    )
+                )
+            }
+        } else {
+            autoDeleteSettingState
         }
     }
 }

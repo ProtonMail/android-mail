@@ -34,6 +34,7 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.sample.ActionUiModelSample
 import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
@@ -122,12 +123,14 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
+import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.buildMailboxUiModelItem
@@ -285,6 +288,9 @@ class MailboxViewModelTest {
     private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
         every { this@mockk(userId) } returns flowOf(AutoDeleteSetting.Disabled)
     }
+    private val updateAutoDeleteSpamAndTrashDays = mockk<UpdateAutoDeleteSpamAndTrashDays> {
+        coEvery { this@mockk(userId, any()) } returns Unit.right()
+    }
     private val showRatingBooster = mockk<ShowRatingBooster>(relaxUnitFun = true)
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
@@ -335,7 +341,8 @@ class MailboxViewModelTest {
             showRatingBooster = showRatingBooster,
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
             emptyLabelInProgressSignal = emptyLabelInProgressSignal,
-            observeAutoDeleteSetting = observeAutoDeleteSetting
+            observeAutoDeleteSetting = observeAutoDeleteSetting,
+            updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays
         )
     }
 
@@ -374,7 +381,8 @@ class MailboxViewModelTest {
                 bottomSheetState = null,
                 actionResult = Effect.empty(),
                 error = Effect.empty(),
-                showRatingBooster = Effect.empty()
+                showRatingBooster = Effect.empty(),
+                autoDeleteSettingState = AutoDeleteSettingState.Loading
             )
 
             assertEquals(expected, actual)
@@ -658,6 +666,131 @@ class MailboxViewModelTest {
             assertEquals(expectedState, awaitItem())
 
             awaitItem() // swipe gestures
+        }
+    }
+
+    @Test
+    fun `emits state showing AutoDelete dialog when ShowAutoDeleteDialog is emitted`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading.copy(
+            autoDeleteSettingState = AutoDeleteSettingState.Loading
+        )
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            autoDeleteSettingState = AutoDeleteSettingState.Data(
+                enablingDialogState = DialogState.Shown(
+                    title = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_title),
+                    message = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_text),
+                    dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
+                    confirmButtonText = TextUiModel(
+                        R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
+                    )
+                )
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.ShowAutoDeleteDialog
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ShowAutoDeleteDialog)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `emits state hiding AutoDelete dialog when DismissAutoDelete is emitted`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            autoDeleteSettingState = AutoDeleteSettingState.Data(
+                enablingDialogState = DialogState.Hidden
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.DismissAutoDelete
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.DismissAutoDelete)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `emits state hiding AutoDelete dialog when AutoDeleteDialogActionSubmitted=true is emitted`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            autoDeleteSettingState = AutoDeleteSettingState.Data(
+                enablingDialogState = DialogState.Hidden
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.AutoDeleteDialogActionSubmitted(true)
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(true))
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+        }
+    }
+
+    @Test
+    fun `emits state hiding AutoDelete dialog when AutoDeleteDialogActionSubmitted=false is emitted`() = runTest {
+        // Given
+        val initialState = MailboxStateSampleData.Loading
+        val expectedState = MailboxStateSampleData.Loading.copy(
+            autoDeleteSettingState = AutoDeleteSettingState.Data(
+                enablingDialogState = DialogState.Hidden
+            )
+        )
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.AutoDeleteDialogActionSubmitted(false)
+            )
+        } returns expectedState
+
+        // When
+        mailboxViewModel.state.test {
+            // Then
+            assertEquals(initialState, awaitItem())
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(false))
+
+            // Then
+            assertEquals(expectedState, awaitItem())
         }
     }
 

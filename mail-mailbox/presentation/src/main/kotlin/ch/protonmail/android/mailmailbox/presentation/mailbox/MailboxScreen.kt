@@ -98,6 +98,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBanner
 import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerActions
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
+import ch.protonmail.android.mailcommon.presentation.ui.delete.AutoDeleteDialog
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.OpenMailboxItemRequest
@@ -123,6 +124,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMore
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpsellingBottomSheet
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -216,7 +218,11 @@ fun MailboxScreen(
         onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
         onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
         onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
-        onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) }
+        onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) },
+        onAutoDeletePaidDismiss = { viewModel.submit(MailboxViewAction.DismissAutoDelete) },
+        onAutoDeleteShowUpselling = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
+        onAutoDeleteDialogAction = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(it)) },
+        onAutoDeleteDialogShow = { viewModel.submit(MailboxViewAction.ShowAutoDeleteDialog) }
     )
 
     mailboxState.bottomSheetState?.let {
@@ -242,6 +248,15 @@ fun MailboxScreen(
             doNotRemindClicked = { viewModel.submit(MailboxViewAction.StorageLimitDoNotRemind) }
         )
     )
+
+    val autoDeleteState = mailboxState.autoDeleteSettingState as? AutoDeleteSettingState.Data
+    autoDeleteState?.let {
+        AutoDeleteDialog(
+            state = it.enablingDialogState,
+            confirm = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(true)) },
+            dismiss = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(false)) }
+        )
+    }
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,
@@ -663,7 +678,11 @@ private fun MailboxItemsList(
                     AutoDeleteBanner(
                         modifier = Modifier,
                         uiModel = it.uiModel,
-                        actions = AutoDeleteBannerActions.Empty
+                        actions = AutoDeleteBannerActions.Empty.copy(
+                            onDismissClick = actions.onAutoDeletePaidDismiss,
+                            onActionClick = actions.onAutoDeleteShowUpselling,
+                            onConfirmClick = actions.onAutoDeleteDialogShow
+                        )
                     )
                 }
             }
@@ -1026,7 +1045,11 @@ object MailboxScreen {
         val onExitSearchMode: () -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit,
-        val onShowRatingBooster: () -> Unit
+        val onShowRatingBooster: () -> Unit,
+        val onAutoDeletePaidDismiss: () -> Unit,
+        val onAutoDeleteShowUpselling: () -> Unit,
+        val onAutoDeleteDialogShow: () -> Unit,
+        val onAutoDeleteDialogAction: (Boolean) -> Unit
     ) {
 
         companion object {
@@ -1073,7 +1096,11 @@ object MailboxScreen {
                 onSearchResult = {},
                 onOpenUpsellingPage = {},
                 onCloseUpsellingPage = {},
-                onShowRatingBooster = {}
+                onShowRatingBooster = {},
+                onAutoDeletePaidDismiss = {},
+                onAutoDeleteDialogAction = {},
+                onAutoDeleteShowUpselling = {},
+                onAutoDeleteDialogShow = {}
             )
         }
     }

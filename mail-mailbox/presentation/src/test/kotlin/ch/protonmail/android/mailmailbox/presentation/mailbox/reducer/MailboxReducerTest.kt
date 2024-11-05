@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
+import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
@@ -44,6 +45,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStora
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.mailbox.UnreadCountersTestData
@@ -207,7 +209,8 @@ internal class MailboxReducerTest(
             bottomSheetState = null,
             storageLimitState = StorageLimitState.None,
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            autoDeleteSettingState = AutoDeleteSettingState.Loading
         )
 
         private val actions = listOf(
@@ -781,6 +784,61 @@ internal class MailboxReducerTest(
                 shouldReduceBottomSheetState = false,
                 shouldReduceStorageLimitState = false,
                 showRatingBoosterState = Effect.of(Unit)
+            ),
+            TestInput(
+                MailboxViewAction.DismissAutoDelete,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                autoDeleteSettingState = AutoDeleteSettingState.Data(
+                    isEnabled = false,
+                    enablingDialogState = DialogState.Hidden,
+                    disablingDialogState = DialogState.Hidden
+                )
+            ),
+            TestInput(
+                MailboxViewAction.ShowAutoDeleteDialog,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                autoDeleteSettingState = AutoDeleteSettingState.Data(
+                    isEnabled = false,
+                    enablingDialogState = DialogState.Shown(
+                        title = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_title),
+                        message = TextUiModel(R.string.mail_settings_auto_delete_dialog_enabling_text),
+                        dismissButtonText = TextUiModel(R.string.mail_settings_auto_delete_dialog_button_cancel),
+                        confirmButtonText = TextUiModel(
+                            R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
+                        )
+                    ),
+                    disablingDialogState = DialogState.Hidden
+                )
+            ),
+            TestInput(
+                MailboxViewAction.AutoDeleteDialogActionSubmitted(enable = true),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                autoDeleteSettingState = AutoDeleteSettingState.Data(
+                    isEnabled = false,
+                    enablingDialogState = DialogState.Hidden,
+                    disablingDialogState = DialogState.Hidden
+                )
             )
         )
 
@@ -810,6 +868,7 @@ internal class MailboxReducerTest(
         val shouldReduceBottomSheetState: Boolean,
         val shouldReduceStorageLimitState: Boolean,
         val errorBarState: Effect<TextUiModel> = Effect.empty(),
-        val showRatingBoosterState: Effect<Unit> = Effect.empty()
+        val showRatingBoosterState: Effect<Unit> = Effect.empty(),
+        val autoDeleteSettingState: AutoDeleteSettingState = AutoDeleteSettingState.Loading
     )
 }

@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
+import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingAutoDelete
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingBottomSheet
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingClearDialog
@@ -54,6 +55,7 @@ internal sealed interface MailboxOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingUpgradeStorage
     sealed interface AffectingRatingBooster
+    sealed interface AffectingAutoDelete
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
@@ -146,6 +148,9 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object NavigateToInboxLabel : MailboxViewAction
     object RequestUpsellingBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class ShowRatingBooster(val context: Context) : MailboxViewAction
+    object DismissAutoDelete : MailboxViewAction, AffectingAutoDelete
+    object ShowAutoDeleteDialog : MailboxViewAction, AffectingAutoDelete
+    data class AutoDeleteDialogActionSubmitted(val enable: Boolean) : MailboxViewAction, AffectingAutoDelete
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {

@@ -110,10 +110,12 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBo
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
+import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
+import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.Flow
@@ -161,6 +163,7 @@ class MailboxViewModel @Inject constructor(
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
+    private val updateAutoDeleteSpamAndTrashDays: UpdateAutoDeleteSpamAndTrashDays,
     private val getMessagesWithLabels: GetMessagesWithLabels,
     private val getConversationsWithLabels: GetConversationsWithLabels,
     private val getMailboxActions: GetMailboxActions,
@@ -401,8 +404,33 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.RequestUpsellingBottomSheet -> showUpsellingBottomSheet(viewAction)
                 is MailboxViewAction.NavigateToInboxLabel -> selectedMailLabelId.set(MailLabelId.System.Inbox)
                 is MailboxViewAction.ShowRatingBooster -> showRatingBooster(viewAction)
+                is MailboxViewAction.AutoDeleteDialogActionSubmitted -> {
+                    handleAutoDeleteDialogActionSubmitted(viewAction)
+                }
+                is MailboxViewAction.DismissAutoDelete -> handleDismissAutoDelete(viewAction)
+                is MailboxViewAction.ShowAutoDeleteDialog -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
+    }
+
+    private fun handleAutoDeleteDialogActionSubmitted(viewAction: MailboxViewAction.AutoDeleteDialogActionSubmitted) {
+        viewModelScope.launch {
+            if (viewAction.enable) {
+                primaryUserId.filterNotNull().firstOrNull()?.let {
+                    updateAutoDeleteSpamAndTrashDays(it, true)
+                }
+            }
+        }
+        emitNewStateFrom(viewAction)
+    }
+
+    private fun handleDismissAutoDelete(viewAction: MailboxViewAction.DismissAutoDelete) {
+        viewModelScope.launch {
+            primaryUserId.filterNotNull().firstOrNull()?.let {
+                updateAutoDeleteSpamAndTrashDays(it, false)
+            }
+        }
+        emitNewStateFrom(viewAction)
     }
 
     private fun revokeStorageConfirmationsIfNeeded(
@@ -1314,6 +1342,7 @@ class MailboxViewModel @Inject constructor(
             bottomAppBarState = BottomBarState.Data.Hidden(emptyList<ActionUiModel>().toImmutableList()),
             deleteDialogState = DeleteDialogState.Hidden,
             deleteAllDialogState = DeleteDialogState.Hidden,
+            autoDeleteSettingState = AutoDeleteSettingState.Loading,
             storageLimitState = StorageLimitState.None,
             bottomSheetState = null,
             actionResult = Effect.empty(),
