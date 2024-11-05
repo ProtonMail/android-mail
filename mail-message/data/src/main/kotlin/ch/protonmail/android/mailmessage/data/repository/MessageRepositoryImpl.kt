@@ -315,12 +315,15 @@ class MessageRepositoryImpl @Inject constructor(
             ?: return DataError.Local.NoDataCached.left()
 
         val labelsToBeRemoved = messages.flatMap { it.labelIds }.filterUnmodifiableLabels()
-        return relabel(
-            userId = userId,
-            messageIds = messageIds,
-            labelsToBeRemoved = labelsToBeRemoved,
-            labelsToBeAdded = listOf(labelId)
-        )
+
+        return localDataSource.relabelMessages(
+            userId,
+            messageIds,
+            labelsToBeRemoved.toSet(),
+            setOf(labelId)
+        ).onRight {
+            remoteDataSource.addLabelsToMessages(userId, messageIds, listOf(labelId))
+        }
     }
 
     private suspend fun upsertMessages(
