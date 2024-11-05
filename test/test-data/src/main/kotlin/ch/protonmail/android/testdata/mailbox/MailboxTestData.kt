@@ -34,7 +34,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.Participants
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.model.Sender
 import ch.protonmail.android.testdata.R
-import ch.protonmail.android.mailmailbox.R.string as mailboxStrings
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -43,6 +42,7 @@ import kotlinx.collections.immutable.persistentListOf
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
+import ch.protonmail.android.mailmailbox.R.string as mailboxStrings
 
 object MailboxTestData {
 
@@ -168,6 +168,12 @@ object MailboxItemUiModelTestData {
         locations = persistentListOf(MailboxItemLocationUiModel(R.drawable.ic_proton_folder))
     )
 
+    val sentMessage = buildMailboxUiModelItem(
+        id = "message-id",
+        conversationId = ConversationId("conversation-id"),
+        type = MailboxItemType.Conversation
+    )
+
     val readMailboxItemUiModel = buildMailboxUiModelItem(
         id = "2",
         type = MailboxItemType.Message,
@@ -187,6 +193,7 @@ object MailboxItemUiModelTestData {
         id: String = "0",
         type: MailboxItemType = MailboxItemType.Message,
         subject: String = id,
+        conversationId: ConversationId = ConversationId(id),
         isRead: Boolean = true,
         labels: ImmutableList<LabelUiModel> = persistentListOf(),
         locations: ImmutableList<MailboxItemLocationUiModel> = persistentListOf(),
@@ -196,7 +203,7 @@ object MailboxItemUiModelTestData {
         type = type,
         id = id,
         userId = userId,
-        conversationId = ConversationId(id),
+        conversationId = conversationId,
         time = TextUiModel.Text("10:42"),
         isRead = isRead,
         labels = labels,

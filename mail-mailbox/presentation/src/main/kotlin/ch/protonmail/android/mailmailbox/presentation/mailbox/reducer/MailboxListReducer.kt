@@ -227,18 +227,29 @@ class MailboxListReducer @Inject constructor() {
     ): MailboxListState {
         val request = when (operation.preferredViewMode) {
             ViewMode.ConversationGrouping -> {
-                // in search mode, subItemId is set to scroll to the searched item
-                val searchedItemId =
-                    if (currentState is MailboxListState.Data.ViewMode && currentState.searchState.isInSearch()) {
-                        MailboxItemId(operation.item.id)
-                    } else {
-                        null
-                    }
 
                 val currentLocation = if (currentState is MailboxListState.Data) {
                     currentState.currentMailLabel
                 } else {
                     null
+                }
+
+                val destinationMessageId = when {
+                    // In search mode, subItemId is set to scroll to the searched item
+                    currentState is MailboxListState.Data.ViewMode &&
+                        currentState.searchState.isInSearch() -> MailboxItemId(operation.item.id)
+
+                    // Sent/AllSent folder always show items as messages, never as conversations.
+                    // If the user selects a message from the list, they should be redirected to the correct message
+                    // in the conversation and not to the latest in the location.
+                    currentState is MailboxListState.Data.ViewMode &&
+                        currentState.currentMailLabel.id in listOf(
+                            MailLabelId.System.Sent,
+                            MailLabelId.System.AllSent
+                        )
+                    -> MailboxItemId(operation.item.id)
+
+                    else -> null
                 }
 
                 val isSentMessageWithNoAssignedConvId = operation.item.conversationId.id.isEmpty()
@@ -247,7 +258,7 @@ class MailboxListReducer @Inject constructor() {
                         itemId = MailboxItemId(operation.item.id),
                         itemType = MailboxItemType.Message,
                         shouldOpenInComposer = false,
-                        subItemId = searchedItemId,
+                        subItemId = destinationMessageId,
                         filterByLocation = currentLocation
                     )
                 } else {
@@ -255,7 +266,7 @@ class MailboxListReducer @Inject constructor() {
                         itemId = MailboxItemId(operation.item.conversationId.id),
                         itemType = MailboxItemType.Conversation,
                         shouldOpenInComposer = false,
-                        subItemId = searchedItemId,
+                        subItemId = destinationMessageId,
                         filterByLocation = currentLocation
                     )
                 }

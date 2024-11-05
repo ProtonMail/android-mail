@@ -445,6 +445,78 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabel.System(MailLabelId.System.Sent),
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden
+                ),
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
+                    item = MailboxItemUiModelTestData.sentMessage,
+                    preferredViewMode = ViewMode.ConversationGrouping
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabel.System(MailLabelId.System.Sent),
+                    openItemEffect = Effect.of(
+                        OpenMailboxItemRequest(
+                            itemId = MailboxItemId(MailboxItemUiModelTestData.sentMessage.conversationId.id),
+                            itemType = MailboxItemType.Conversation,
+                            subItemId = MailboxItemId(MailboxItemUiModelTestData.sentMessage.id),
+                            shouldOpenInComposer = false,
+                            filterByLocation = MailLabel.System(MailLabelId.System.Sent)
+                        )
+                    ),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabel.System(MailLabelId.System.AllSent),
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden
+                ),
+                operation = MailboxEvent.ItemClicked.ItemDetailsOpenedInViewMode(
+                    item = MailboxItemUiModelTestData.sentMessage,
+                    preferredViewMode = ViewMode.ConversationGrouping
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabel.System(MailLabelId.System.AllSent),
+                    openItemEffect = Effect.of(
+                        OpenMailboxItemRequest(
+                            itemId = MailboxItemId(MailboxItemUiModelTestData.sentMessage.conversationId.id),
+                            itemType = MailboxItemType.Conversation,
+                            subItemId = MailboxItemId(MailboxItemUiModelTestData.sentMessage.id),
+                            shouldOpenInComposer = false,
+                            filterByLocation = MailLabel.System(MailLabelId.System.AllSent)
+                        )
+                    ),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
