@@ -21,7 +21,9 @@ package ch.protonmail.android.mailmessage.presentation.ui.bottomsheet
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -105,13 +107,13 @@ fun DetailMoreActionsBottomSheetContent(
                         .clickable {
                             callbackForAction(actionItem.action, actionCallbacks).invoke(MessageId(uiModel.messageId))
                         }
-                        .padding(vertical = ProtonDimens.DefaultSpacing)
+                        .padding(ProtonDimens.DefaultSpacing)
                 ) {
                     Icon(
-                        modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
                         painter = painterResource(id = actionItem.icon),
                         contentDescription = NO_CONTENT_DESCRIPTION
                     )
+                    Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
                     Text(
                         modifier = Modifier.weight(1f),
                         text = actionItem.description.string(),
