@@ -58,6 +58,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
+import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
@@ -97,6 +98,7 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -240,7 +242,7 @@ class ConversationDetailViewModelTest {
     private val observePrimaryUserId: ObservePrimaryUserId = mockk {
         every { this@mockk() } returns flowOf(UserIdSample.Primary)
     }
-    private val observeMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
+    private val observeDestinationMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
             MailLabels(
                 systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
@@ -330,6 +332,9 @@ class ConversationDetailViewModelTest {
         every { this@mockk.invoke(any(), any(), any()) } returns false
     }
 
+    private val moveRemoteMessageAndLocalConversation = mockk<MoveRemoteMessageAndLocalConversation>()
+    private val observeMailLabels = mockk<ObserveMailLabels>()
+
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
     }
@@ -349,7 +354,7 @@ class ConversationDetailViewModelTest {
             observeConversation = observeConversation,
             observeConversationMessages = observeConversationMessagesWithLabels,
             observeDetailActions = observeConversationDetailActions,
-            observeDestinationMailLabels = observeMailLabels,
+            observeDestinationMailLabels = observeDestinationMailLabels,
             observeFolderColor = observeFolderColorSettings,
             observeCustomMailLabels = observeCustomMailLabels,
             observeMessage = observeMessage,
@@ -379,7 +384,9 @@ class ConversationDetailViewModelTest {
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
             moveMessage = moveMessage,
-            shouldMessageBeHidden = shouldMessageBeHidden
+            shouldMessageBeHidden = shouldMessageBeHidden,
+            moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
+            observeMailLabels = observeMailLabels
         )
     }
 

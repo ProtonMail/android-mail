@@ -72,6 +72,7 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
+import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
@@ -129,6 +130,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -170,6 +172,7 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.contact.ContactSample
+import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.message.MessageAttachmentMetadataTestData
 import io.mockk.Called
@@ -243,7 +246,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val observePrimaryUserId: ObservePrimaryUserId = mockk {
         every { this@mockk() } returns flowOf(UserIdSample.Primary)
     }
-    private val observeMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
+    private val observeDestinationsMailLabels = mockk<ObserveExclusiveDestinationMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
             MailLabels(
                 systemLabels = listOf(MailLabel.System(MailLabelId.System.Spam)),
@@ -424,6 +427,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
     private val setMessageViewState = SetMessageViewState(inMemoryConversationStateRepository)
     private val observeConversationViewState = spyk(ObserveConversationViewState(inMemoryConversationStateRepository))
+    private val moveRemoteMessageAndLocalConversation = mockk<MoveRemoteMessageAndLocalConversation>()
+    private val observeMailLabels = mockk<ObserveMailLabels>()
+
     private val networkManager = mockk<NetworkManager>()
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
 
@@ -1979,11 +1985,29 @@ class ConversationDetailViewModelIntegrationTest {
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
-        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        coEvery {
-            observeMessage(userId, messageId)
-        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
-        coEvery { moveMessage(userId, messageId, SystemLabelId.Trash.labelId) } returns Unit.right()
+        val labelingOptions = MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions(
+            removeCurrentLabel = false,
+            fromLabel = SystemLabelId.Archive.labelId,
+            toLabel = MailLabelId.System.Trash.labelId
+        )
+
+        coEvery { observeMailLabels(userId) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        coEvery { moveRemoteMessageAndLocalConversation(any(), any(), any(), any()) } returns
+            Unit.right()
 
         // When
         val viewModel = buildConversationDetailViewModel()
@@ -1995,13 +2019,15 @@ class ConversationDetailViewModelIntegrationTest {
 
             viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
             skipItems(2)
-            viewModel.submit(ConversationDetailViewAction.TrashMessage(messageId))
+            viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToTrash(messageId))
 
             // then
             assertEquals(
                 BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
             )
-            coVerify { moveMessage(userId, messageId, SystemLabelId.Trash.labelId) }
+            coVerify {
+                moveRemoteMessageAndLocalConversation(userId, messageId, conversationId, labelingOptions)
+            }
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -2016,11 +2042,29 @@ class ConversationDetailViewModelIntegrationTest {
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
-        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        coEvery {
-            observeMessage(userId, messageId)
-        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
-        coEvery { moveMessage(userId, messageId, SystemLabelId.Archive.labelId) } returns Unit.right()
+        val labelingOptions = MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions(
+            removeCurrentLabel = false,
+            fromLabel = SystemLabelId.Archive.labelId,
+            toLabel = MailLabelId.System.Archive.labelId
+        )
+
+        coEvery { observeMailLabels(userId) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        coEvery { moveRemoteMessageAndLocalConversation(any(), any(), any(), any()) } returns
+            Unit.right()
 
         // When
         val viewModel = buildConversationDetailViewModel()
@@ -2032,13 +2076,15 @@ class ConversationDetailViewModelIntegrationTest {
 
             viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
             skipItems(2)
-            viewModel.submit(ConversationDetailViewAction.ArchiveMessage(messageId))
+            viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToArchive(messageId))
 
             // then
             assertEquals(
                 BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
             )
-            coVerify { moveMessage(userId, messageId, SystemLabelId.Archive.labelId) }
+            coVerify {
+                moveRemoteMessageAndLocalConversation(userId, messageId, conversationId, labelingOptions)
+            }
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -2053,11 +2099,29 @@ class ConversationDetailViewModelIntegrationTest {
             MessageWithLabelsSample.InvoiceWithLabel,
             MessageWithLabelsSample.EmptyDraft
         )
-        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
-        coEvery {
-            observeMessage(userId, messageId)
-        } returns flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
-        coEvery { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) } returns Unit.right()
+        val labelingOptions = MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions(
+            removeCurrentLabel = false,
+            fromLabel = SystemLabelId.Archive.labelId,
+            toLabel = MailLabelId.System.Spam.labelId
+        )
+
+        coEvery { observeMailLabels(userId) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        coEvery { moveRemoteMessageAndLocalConversation(any(), any(), any(), any()) } returns
+            Unit.right()
 
         // When
         val viewModel = buildConversationDetailViewModel()
@@ -2069,13 +2133,71 @@ class ConversationDetailViewModelIntegrationTest {
 
             viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
             skipItems(2)
-            viewModel.submit(ConversationDetailViewAction.MoveMessageToSpam(messageId))
+            viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToSpam(messageId))
 
             // then
             assertEquals(
                 BottomSheetVisibilityEffect.Hide, awaitItem().bottomSheetState?.bottomSheetVisibilityEffect?.consume()
             )
-            coVerify { moveMessage(userId, messageId, SystemLabelId.Spam.labelId) }
+            coVerify {
+                moveRemoteMessageAndLocalConversation(userId, messageId, conversationId, labelingOptions)
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should call use case and exit screen when moving the last message from the location individually`() = runTest {
+        // Given
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messages = nonEmptyListOf(MessageWithLabelsSample.InvoiceWithLabel)
+        val labelingOptions = MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions(
+            removeCurrentLabel = true,
+            fromLabel = SystemLabelId.Archive.labelId,
+            toLabel = MailLabelId.System.Spam.labelId
+        )
+
+        coEvery { observeMailLabels(userId) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        coEvery { moveRemoteMessageAndLocalConversation(any(), any(), any(), any()) } returns
+            Unit.right()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.submit(ExpandMessage(messageIdUiModelMapper.toUiModel(messageId)))
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            skipItems(2)
+            viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToSpam(messageId))
+
+            val state = awaitItem()
+            // then
+            assertEquals(
+                BottomSheetVisibilityEffect.Hide, state.bottomSheetState?.bottomSheetVisibilityEffect?.consume()
+            )
+            assertNotNull(state.exitScreenWithMessageEffect)
+
+            coVerify {
+                moveRemoteMessageAndLocalConversation(userId, messageId, conversationId, labelingOptions)
+            }
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -2494,7 +2616,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeConversation: ObserveConversation = observeConversationUseCase,
         observeConversationMessages: ObserveConversationMessagesWithLabels = observeConversationMessagesWithLabels,
         observeDetailActions: ObserveConversationDetailActions = observeConversationDetailActions,
-        observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels = observeMailLabels,
+        observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels = observeDestinationsMailLabels,
         observeFolderColor: ObserveFolderColorSettings = observeFolderColorSettings,
         observeCustomMailLabels: ObserveCustomMailLabels = observeCustomMailLabelsUseCase,
         observeMessageAttachmentStatus: ObserveMessageAttachmentStatus = observeAttachmentStatus,
@@ -2555,7 +2677,9 @@ class ConversationDetailViewModelIntegrationTest {
         loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
         onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
         moveMessage = moveMessage,
-        shouldMessageBeHidden = shouldMessageBeHidden
+        shouldMessageBeHidden = shouldMessageBeHidden,
+        observeMailLabels = observeMailLabels,
+        moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

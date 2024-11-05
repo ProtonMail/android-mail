@@ -112,6 +112,12 @@ class ConversationDetailReducerTest(
                 assertNull(result.error.consume())
             }
 
+            if (reducesMessageBar) {
+                assertNotNull(result.message.consume())
+            } else {
+                assertNull(result.message.consume())
+            }
+
             if (reducesExit) {
                 assertNotNull(result.exitScreenEffect.consume())
             } else {
@@ -154,6 +160,7 @@ class ConversationDetailReducerTest(
         val reducesMessages: Boolean,
         val reducesBottomBar: Boolean,
         val reducesErrorBar: Boolean,
+        val reducesMessageBar: Boolean,
         val reducesExit: Boolean,
         val expectedExitMessage: ActionResult?,
         val reducesBottomSheet: Boolean,
@@ -224,9 +231,9 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.PrintRequested(MessageId(messageId.id)) affects listOf(BottomSheet, Messages),
             ConversationDetailViewAction.MarkMessageUnread(MessageId(messageId.id)) affects listOf(BottomSheet),
             ConversationDetailViewAction.RequestMessageLabelAsBottomSheet(MessageId(messageId.id)) affects BottomSheet,
-            ConversationDetailViewAction.TrashMessage(MessageId(messageId.id)) affects listOf(BottomSheet),
-            ConversationDetailViewAction.ArchiveMessage(MessageId(messageId.id)) affects listOf(BottomSheet),
-            ConversationDetailViewAction.MoveMessageToSpam(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.MoveMessage.MoveToTrash(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.MoveMessage.MoveToArchive(MessageId(messageId.id)) affects listOf(BottomSheet),
+            ConversationDetailViewAction.MoveMessage.MoveToArchive(MessageId(messageId.id)) affects listOf(BottomSheet),
             ConversationDetailViewAction.RequestMessageMoveToBottomSheet(
                 MessageId(messageId.id)
             ) affects listOf(BottomSheet)
@@ -242,7 +249,7 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorLoadingMessages affects Messages,
             ConversationDetailEvent.ErrorMarkingAsUnread affects ErrorBar,
             ConversationDetailEvent.ErrorMovingConversation affects listOf(BottomSheet, ErrorBar),
-            ConversationDetailEvent.ErrorMovingMessage affects ErrorBar,
+            ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar),
             ConversationDetailEvent.ErrorMovingToTrash affects ErrorBar,
             ConversationDetailEvent.ErrorLabelingConversation affects listOf(BottomSheet, ErrorBar),
             ConversationDetailEvent.MessagesData(
@@ -278,7 +285,13 @@ class ConversationDetailReducerTest(
             ) affects listOf(ErrorBar, Messages),
             ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar,
             ConversationDetailEvent.ErrorDeletingConversation affects listOf(ErrorBar, DeleteDialog),
-            ConversationDetailEvent.ErrorDeletingNoApplicableFolder affects listOf(ErrorBar, DeleteDialog)
+            ConversationDetailEvent.ErrorDeletingNoApplicableFolder affects listOf(ErrorBar, DeleteDialog),
+            ConversationDetailEvent.LastMessageMoved affects listOf(
+                BottomSheet,
+                ExitWithResult(DefinitiveActionResult(TextUiModel(string.message_moved)))
+            ),
+            ConversationDetailEvent.MessageMoved affects listOf(BottomSheet, MessageBar),
+            ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar)
         )
 
         @JvmStatic
@@ -297,6 +310,7 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesMessages = entities.contains(Messages),
     reducesBottomBar = entities.contains(BottomBar),
     reducesErrorBar = entities.contains(ErrorBar),
+    reducesMessageBar = entities.contains(MessageBar),
     reducesExit = entities.contains(Exit),
     expectedExitMessage = entities.firstNotNullOfOrNull { (it as? ExitWithResult)?.result },
     reducesBottomSheet = entities.contains(BottomSheet),
@@ -315,6 +329,7 @@ private object BottomBar : Entity
 private object Exit : Entity
 private data class ExitWithResult(val result: ActionResult) : Entity
 private object ErrorBar : Entity
+private object MessageBar : Entity
 private object BottomSheet : Entity
 private object LinkClick : Entity
 private object MessageScroll : Entity

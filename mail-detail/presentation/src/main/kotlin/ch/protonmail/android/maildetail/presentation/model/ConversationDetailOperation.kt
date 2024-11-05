@@ -28,10 +28,12 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingErrorBar
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessageBar
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingTrashedMessagesBanner
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -45,6 +47,7 @@ sealed interface ConversationDetailOperation {
     sealed interface AffectingConversation : ConversationDetailOperation
     sealed interface AffectingMessages : ConversationDetailOperation
     sealed interface AffectingErrorBar
+    sealed interface AffectingMessageBar
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
     sealed interface AffectingReportPhishingDialog
@@ -85,7 +88,7 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     object ErrorMarkingAsUnread : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingToTrash : ConversationDetailEvent, AffectingErrorBar
     object ErrorMovingConversation : ConversationDetailEvent, AffectingBottomSheet, AffectingErrorBar
-    object ErrorMovingMessage : ConversationDetailEvent, AffectingErrorBar
+    object ErrorMovingMessage : ConversationDetailEvent, AffectingBottomSheet, AffectingErrorBar
     object ErrorLabelingConversation : ConversationDetailEvent, AffectingBottomSheet, AffectingErrorBar
     object ErrorGettingAttachment : ConversationDetailEvent, AffectingErrorBar
     object ErrorGettingAttachmentNotEnoughSpace : ConversationDetailEvent, AffectingErrorBar
@@ -135,6 +138,10 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
 
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
+
+    data object MessageMoved : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
+
+    data object LastMessageMoved : ConversationDetailEvent, AffectingBottomSheet
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -156,12 +163,14 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val mailLabelText: String,
         val messageId: MessageId?
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
     object RequestConversationLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(
         val archiveSelected: Boolean,
         val messageId: MessageId?
     ) : ConversationDetailViewAction, AffectingBottomSheet
+
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :
         ConversationDetailViewAction, AffectingBottomSheet
 
@@ -194,13 +203,16 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val messageId: MessageId,
         val viewModePreference: ViewModePreference
     ) : ConversationDetailViewAction, AffectingBottomSheet, AffectingMessages
+
     data class PrintRequested(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet, AffectingMessages
+
     data class Print(
         val context: Context,
         val messageId: MessageId
     ) : ConversationDetailViewAction
+
     data class MarkMessageUnread(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
@@ -215,21 +227,20 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
-    data class TrashMessage(
-        val messageId: MessageId
-    ) : ConversationDetailViewAction, AffectingBottomSheet
-
-    data class ArchiveMessage(
-        val messageId: MessageId
-    ) : ConversationDetailViewAction, AffectingBottomSheet
-
-    data class MoveMessageToSpam(
-        val messageId: MessageId
-    ) : ConversationDetailViewAction, AffectingBottomSheet
-
     data class RequestMessageMoveToBottomSheet(
         val messageId: MessageId
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data object ChangeVisibilityOfMessages : ConversationDetailViewAction
+
+    sealed class MoveMessage(
+        val messageId: MessageId,
+        val labelId: LabelId
+    ) : ConversationDetailViewAction, AffectingBottomSheet {
+
+        class MoveToSpam(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Spam.labelId)
+        class MoveToTrash(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Trash.labelId)
+        class MoveToArchive(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Archive.labelId)
+        class MoveTo(messageId: MessageId, labelId: LabelId) : MoveMessage(messageId, labelId)
+    }
 }

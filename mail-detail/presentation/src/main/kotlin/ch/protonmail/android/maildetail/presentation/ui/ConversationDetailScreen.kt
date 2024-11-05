@@ -233,9 +233,11 @@ fun ConversationDetailScreen(
                                 ConversationDetailViewAction.SwitchViewMode(it, ViewModePreference.DarkMode)
                             )
                         },
-                        onMoveToTrash = { viewModel.submit(ConversationDetailViewAction.TrashMessage(it)) },
-                        onMoveToArchive = { viewModel.submit(ConversationDetailViewAction.ArchiveMessage(it)) },
-                        onMoveToSpam = { viewModel.submit(ConversationDetailViewAction.MoveMessageToSpam(it)) },
+                        onMoveToTrash = { viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToTrash(it)) },
+                        onMoveToArchive = {
+                            viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToArchive(it))
+                        },
+                        onMoveToSpam = { viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToSpam(it)) },
                         onMove = { viewModel.submit(ConversationDetailViewAction.RequestMessageMoveToBottomSheet(it)) },
                         onPrint = { viewModel.submit(ConversationDetailViewAction.PrintRequested(it)) },
                         onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
@@ -380,6 +382,9 @@ fun ConversationDetailScreen(
     }
     ConsumableTextEffect(state.error) { string ->
         snackbarHostState.showSnackbar(ProtonSnackbarType.ERROR, message = string)
+    }
+    ConsumableTextEffect(state.message) { string ->
+        snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message = string)
     }
     ConsumableLaunchedEffect(effect = state.openMessageBodyLinkEffect) { messageBodyLink ->
         val message = when (state.messagesState) {

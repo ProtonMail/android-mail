@@ -49,6 +49,8 @@ import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
 import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
+import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation
+import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationViewState
@@ -61,6 +63,7 @@ import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.mapper.ConversationDetailMetadataUiModelMapper
 import ch.protonmail.android.maildetail.presentation.mapper.MessageIdUiModelMapper
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.MessageMoved
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation
@@ -95,9 +98,11 @@ import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsCon
 import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maildetail.presentation.usecase.ShouldMessageBeHidden
 import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
@@ -154,6 +159,9 @@ import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import javax.inject.Inject
+import kotlin.collections.associateWith
+import kotlin.collections.contains
+import kotlin.collections.firstOrNull
 
 @HiltViewModel
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
@@ -201,6 +209,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
     private val moveMessage: MoveMessage,
+    private val moveRemoteMessageAndLocalConversation: MoveRemoteMessageAndLocalConversation,
+    private val observeMailLabels: ObserveMailLabels,
     private val shouldMessageBeHidden: ShouldMessageBeHidden
 ) : ViewModel() {
 
@@ -281,10 +291,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.OpenInProtonCalendar -> handleOpenInProtonCalendar(action)
             is ConversationDetailViewAction.Print -> handlePrint(action.context, action.messageId)
             is ConversationDetailViewAction.MarkMessageUnread -> handleMarkMessageUnread(action)
-            is ConversationDetailViewAction.TrashMessage -> handleTrashMessage(action)
-            is ConversationDetailViewAction.ArchiveMessage -> handleArchiveMessage(action)
-            is ConversationDetailViewAction.MoveMessageToSpam -> handleMoveMessageToSpam(action)
-
+            is ConversationDetailViewAction.MoveMessage -> handleMoveMessage(action)
             is ConversationDetailViewAction.ChangeVisibilityOfMessages -> handleChangeVisibilityOfMessages()
 
             is ConversationDetailViewAction.DeleteRequested,
@@ -1168,24 +1175,72 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun handleTrashMessage(action: ConversationDetailViewAction.TrashMessage) {
+    @Suppress("LongMethod")
+    private fun handleMoveMessage(action: ConversationDetailViewAction.MoveMessage) {
         viewModelScope.launch {
-            moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Trash.labelId)
-            emitNewStateFrom(action)
-        }
-    }
+            val userId = primaryUserId.first()
+            val conversationWithMessagesAndLabels = observeConversationMessages(userId, conversationId).first()
+            val mailFolders = observeMailLabels(userId).first().allById.mapKeys { it.key.labelId }
+                .filter {
+                    it.key !in listOf(
+                        SystemLabelId.AllMail.labelId,
+                        SystemLabelId.AllSent.labelId,
+                        SystemLabelId.AllDrafts.labelId,
+                        SystemLabelId.AlmostAllMail.labelId,
+                        SystemLabelId.Starred.labelId
+                    ) &&
+                        it.value.id !is MailLabelId.Custom.Label
+                }
 
-    private fun handleArchiveMessage(action: ConversationDetailViewAction.ArchiveMessage) {
-        viewModelScope.launch {
-            moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Archive.labelId)
-            emitNewStateFrom(action)
-        }
-    }
+            val conversationMessages = conversationWithMessagesAndLabels
+                .getOrElse {
+                    return@launch emitNewStateFrom(ConversationDetailEvent.ErrorMovingMessage)
+                }
+                .map { it.message }
+                .associateWith { it.labelIds.firstOrNull { labelId -> labelId in mailFolders } }
 
-    private fun handleMoveMessageToSpam(action: ConversationDetailViewAction.MoveMessageToSpam) {
-        viewModelScope.launch {
-            moveMessage(primaryUserId.first(), action.messageId, SystemLabelId.Spam.labelId)
-            emitNewStateFrom(action)
+            val currentLabel = conversationMessages
+                .filter { it.key.id == action.messageId.id }
+                .values
+                .firstOrNull()
+
+            val messagesInCurrentLocation = conversationMessages.filter { it.value == currentLabel }
+
+            when {
+                // If it's just one message, we close the screen and return to Mailbox.
+                messagesInCurrentLocation.size == 1 -> {
+                    performSafeExitAction(
+                        onLeft = ConversationDetailEvent.ErrorMovingMessage,
+                        onRight = ConversationDetailEvent.LastMessageMoved
+                    ) {
+                        moveRemoteMessageAndLocalConversation(
+                            userId,
+                            action.messageId,
+                            conversationId,
+                            conversationLabelingOptions = ConversationLabelingOptions(
+                                removeCurrentLabel = true,
+                                fromLabel = currentLabel,
+                                toLabel = action.labelId
+                            )
+                        )
+                    }
+                }
+
+                else -> {
+                    moveRemoteMessageAndLocalConversation(
+                        userId,
+                        action.messageId,
+                        conversationId,
+                        conversationLabelingOptions = ConversationLabelingOptions(
+                            removeCurrentLabel = false,
+                            fromLabel = currentLabel,
+                            toLabel = action.labelId
+                        )
+                    )
+
+                    emitNewStateFrom(MessageMoved)
+                }
+            }
         }
     }
 

@@ -20,8 +20,8 @@ package ch.protonmail.android.maildetail.presentation.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -29,7 +29,6 @@ import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent
-import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomBarEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ConversationBottomSheetEvent
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorAddStar
@@ -43,6 +42,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEve
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorGettingAttachmentNotEnoughSpace
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorLabelingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMarkingAsUnread
+import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorMovingToTrash
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailEvent.ErrorRemoveStar
@@ -82,6 +82,7 @@ class ConversationDetailReducer @Inject constructor(
             bottomBarState = currentState.toNewBottomBarState(operation),
             bottomSheetState = currentState.toNewBottomSheetStateFrom(operation),
             error = currentState.toErrorState(operation),
+            message = currentState.toMessageState(operation),
             exitScreenEffect = currentState.toExitState(operation),
             exitScreenWithMessageEffect = currentState.toExitWithMessageState(operation),
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
@@ -131,6 +132,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet,
                 is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> BottomSheetOperation.Requested
 
+                is ErrorMovingMessage,
                 is ErrorMovingConversation,
                 is ErrorLabelingConversation,
                 is ConversationDetailViewAction.LabelAsConfirmed,
@@ -139,10 +141,10 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.SwitchViewMode,
                 is ConversationDetailViewAction.PrintRequested,
                 is ConversationDetailViewAction.MarkMessageUnread,
-                is ConversationDetailViewAction.TrashMessage,
-                is ConversationDetailViewAction.ArchiveMessage,
-                is ConversationDetailViewAction.MoveMessageToSpam,
-                is ConversationDetailViewAction.MoveToDestinationConfirmed -> BottomSheetOperation.Dismiss
+                is ConversationDetailViewAction.MoveMessage,
+                is ConversationDetailViewAction.MoveToDestinationConfirmed,
+                ConversationDetailEvent.MessageMoved,
+                ConversationDetailEvent.LastMessageMoved -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
@@ -175,6 +177,17 @@ class ConversationDetailReducer @Inject constructor(
         }
     }
 
+    private fun ConversationDetailState.toMessageState(operation: ConversationDetailOperation): Effect<TextUiModel> {
+        return if (operation is ConversationDetailOperation.AffectingMessageBar) {
+            val textResource = when (operation) {
+                is ConversationDetailEvent.MessageMoved -> R.string.message_moved
+            }
+            Effect.of(TextUiModel(textResource))
+        } else {
+            message
+        }
+    }
+
     private fun ConversationDetailState.toExitState(operation: ConversationDetailOperation): Effect<Unit> =
         when (operation) {
             is ConversationDetailViewAction.MarkUnread -> Effect.of(Unit)
@@ -187,12 +200,14 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.Trash -> Effect.of(
             UndoableActionResult(TextUiModel(R.string.conversation_moved_to_trash))
         )
+
         is ConversationDetailViewAction.MoveToDestinationConfirmed -> when (operation.messageId == null) {
             true -> Effect.of(
                 UndoableActionResult(
                     TextUiModel(R.string.conversation_moved_to_selected_destination, operation.mailLabelText)
                 )
             )
+
             false -> exitScreenWithMessageEffect
         }
 
@@ -205,6 +220,9 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.DeleteConfirmed -> Effect.of(
             DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))
         )
+
+        is ConversationDetailEvent.LastMessageMoved ->
+            Effect.of(DefinitiveActionResult(TextUiModel(R.string.message_moved)))
 
         else -> exitScreenWithMessageEffect
     }
@@ -250,7 +268,6 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailEvent.HandleOpenProtonCalendarRequest -> Effect.of(operation.intent)
         else -> openProtonCalendarIntent
     }
-
 
     private fun ConversationDetailState.toNewDeleteDialogState(
         operation: ConversationDetailOperation
