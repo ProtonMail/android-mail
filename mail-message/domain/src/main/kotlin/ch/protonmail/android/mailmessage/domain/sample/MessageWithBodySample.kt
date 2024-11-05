@@ -104,7 +104,7 @@ object MessageWithBodySample {
         attachments = listOf(MessageAttachmentSample.invoiceWithBinaryContentType)
     )
 
-    private fun build(
+    fun build(
         message: Message = MessageSample.EmptyDraft,
         replyTo: Recipient = RecipientSample.John,
         body: String = "",

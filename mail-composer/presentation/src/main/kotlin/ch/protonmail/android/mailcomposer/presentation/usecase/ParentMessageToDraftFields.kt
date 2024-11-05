@@ -83,8 +83,8 @@ class ParentMessageToDraftFields @Inject constructor(
             sender,
             Subject(subjectWithPrefixForAction(action, message.subject)),
             buildQuotedPlainTextBody(message, decryptedBody, senderAddressSignature, mobileFooter),
-            RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody, sender)),
-            RecipientsCc(ccRecipientsForAction(action, message)),
+            RecipientsTo(recipientsForAction(action, messageWithDecryptedBody.messageWithBody)),
+            RecipientsCc(ccRecipientsForAction(action, message, sender)),
             RecipientsBcc(bccRecipientsForAction(action, message)),
             buildQuotedHtmlBody(message, decryptedBody)
         ).right()
@@ -183,11 +183,7 @@ class ParentMessageToDraftFields @Inject constructor(
         return SenderEmail(address)
     }
 
-    private fun recipientsForAction(
-        action: DraftAction,
-        messageWithBody: MessageWithBody,
-        senderEmail: SenderEmail
-    ): List<Recipient> {
+    private fun recipientsForAction(action: DraftAction, messageWithBody: MessageWithBody): List<Recipient> {
         val allRecipients = when (action) {
             is DraftAction.PrefillForShare,
             is DraftAction.Compose,
@@ -199,19 +195,32 @@ class ParentMessageToDraftFields @Inject constructor(
             } else {
                 listOf(messageWithBody.messageBody.replyTo)
             }
-            is DraftAction.ReplyAll -> listOf(messageWithBody.messageBody.replyTo) + messageWithBody.message.toList
+
+            is DraftAction.ReplyAll -> if (messageWithBody.message.isSent()) {
+                messageWithBody.message.toList
+            } else {
+                listOf(messageWithBody.messageBody.replyTo)
+            }
         }
-        return allRecipients.filterNot { it.address == senderEmail.value }
+        return allRecipients
     }
 
-    private fun ccRecipientsForAction(action: DraftAction, message: Message) = when (action) {
+    private fun ccRecipientsForAction(
+        action: DraftAction,
+        message: Message,
+        senderEmail: SenderEmail
+    ) = when (action) {
         is DraftAction.PrefillForShare,
         is DraftAction.Compose,
         is DraftAction.ComposeToAddresses,
         is DraftAction.Forward,
         is DraftAction.Reply -> emptyList()
 
-        is DraftAction.ReplyAll -> message.ccList
+        is DraftAction.ReplyAll -> if (message.isSent()) {
+            message.ccList
+        } else {
+            (message.toList + message.ccList).filter { it.address != senderEmail.value }
+        }
     }
 
     private fun bccRecipientsForAction(action: DraftAction, message: Message) = when (action) {
