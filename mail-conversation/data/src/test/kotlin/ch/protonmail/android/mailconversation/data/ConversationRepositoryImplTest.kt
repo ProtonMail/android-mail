@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailconversation.data.repository.ConversationRepositoryImpl
+import ch.protonmail.android.mailconversation.domain.ConversationLabelPropagationOptions
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithMessages
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
@@ -48,10 +49,12 @@ import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.message.MessageTestData.unmodifiableLabels
 import io.mockk.Called
 import io.mockk.Ordering
+import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
+import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -376,6 +379,91 @@ class ConversationRepositoryImplTest {
                 labelIdsToAdd = setOf(labelId)
             )
         }
+    }
+
+    @Test
+    fun `does not add label to messages of conversations if not propagated`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        val labelId = LabelId("10")
+        val propagationOptions = ConversationLabelPropagationOptions(
+            propagateToMessages = false,
+            propagateRemotely = true
+        )
+
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.conversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.addLabels(userId, conversationIds, listOf(labelId), propagationOptions)
+
+        // Then
+        coVerify(exactly = 1) {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+            messageLocalDataSource wasNot called
+        }
+    }
+
+    @Test
+    fun `apply label to messages but not to remote if not propagated`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        val labelId = LabelId("10")
+        val propagationOptions = ConversationLabelPropagationOptions(
+            propagateToMessages = true,
+            propagateRemotely = false
+        )
+
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.conversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.addLabels(userId, conversationIds, listOf(labelId), propagationOptions)
+
+        // Then
+        coVerify(exactly = 1) {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+            messageLocalDataSource.relabelMessagesInConversations(
+                userId = userId,
+                conversationIds = conversationIds,
+                labelIdsToAdd = setOf(labelId)
+            )
+            conversationRemoteDataSource wasNot called
+        }
+
+        confirmVerified(conversationLocalDataSource)
+    }
+
+    @Test
+    fun `does not apply label changes to remote if not propagated`() = runTest {
+        // Given
+        val conversationIds = listOf(ConversationId(ConversationTestData.RAW_CONVERSATION_ID))
+        val labelId = LabelId("10")
+        val propagationOptions = ConversationLabelPropagationOptions(
+            propagateToMessages = false,
+            propagateRemotely = false
+        )
+
+        coEvery {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+        } returns listOf(ConversationTestData.conversation).right()
+        expectMessageRelabelingSuccess(conversationIds, labelIdsToAdd = setOf(labelId))
+
+        // When
+        conversationRepository.addLabels(userId, conversationIds, listOf(labelId), propagationOptions)
+
+        // Then
+        coVerify(exactly = 1) {
+            conversationLocalDataSource.addLabels(userId, conversationIds, listOf(labelId))
+            messageLocalDataSource wasNot called
+            conversationRemoteDataSource wasNot called
+        }
+
+        confirmVerified(conversationLocalDataSource)
     }
 
     @Test

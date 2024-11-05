@@ -21,6 +21,7 @@ package ch.protonmail.android.mailconversation.domain.repository
 import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailconversation.domain.ConversationLabelPropagationOptions
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailpagination.domain.model.PageKey
@@ -93,7 +94,8 @@ interface ConversationRepository {
     suspend fun addLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
-        labelIds: List<LabelId>
+        labelIds: List<LabelId>,
+        options: ConversationLabelPropagationOptions = ConversationLabelPropagationOptions.Default
     ): Either<DataError, List<Conversation>>
 
     suspend fun removeLabel(
@@ -111,7 +113,8 @@ interface ConversationRepository {
     suspend fun removeLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
-        labelIds: List<LabelId>
+        labelIds: List<LabelId>,
+        options: ConversationLabelPropagationOptions = ConversationLabelPropagationOptions.Default
     ): Either<DataError, List<Conversation>>
 
     suspend fun move(

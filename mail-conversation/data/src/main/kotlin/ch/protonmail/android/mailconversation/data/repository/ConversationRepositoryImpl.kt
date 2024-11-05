@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.data.remote.ConversationApi
+import ch.protonmail.android.mailconversation.domain.ConversationLabelPropagationOptions
 import ch.protonmail.android.mailconversation.domain.entity.Conversation
 import ch.protonmail.android.mailconversation.domain.entity.ConversationWithContext
 import ch.protonmail.android.mailconversation.domain.repository.ConversationLocalDataSource
@@ -144,16 +145,21 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun addLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
-        labelIds: List<LabelId>
+        labelIds: List<LabelId>,
+        option: ConversationLabelPropagationOptions
     ): Either<DataError, List<Conversation>> {
         val filteredLabelIdsToAdd = labelIds.filterUnmodifiableLabels()
         return conversationLocalDataSource.addLabels(userId, conversationIds, filteredLabelIdsToAdd).onRight {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToAdd = filteredLabelIdsToAdd.toSet()
-            )
-            conversationRemoteDataSource.addLabels(userId, conversationIds, filteredLabelIdsToAdd)
+            if (option.propagateToMessages) {
+                messageLocalDataSource.relabelMessagesInConversations(
+                    userId = userId,
+                    conversationIds = conversationIds,
+                    labelIdsToAdd = filteredLabelIdsToAdd.toSet()
+                )
+            }
+            if (option.propagateRemotely) {
+                conversationRemoteDataSource.addLabels(userId, conversationIds, filteredLabelIdsToAdd)
+            }
         }
     }
 
@@ -172,16 +178,23 @@ class ConversationRepositoryImpl @Inject constructor(
     override suspend fun removeLabels(
         userId: UserId,
         conversationIds: List<ConversationId>,
-        labelIds: List<LabelId>
+        labelIds: List<LabelId>,
+        options: ConversationLabelPropagationOptions
     ): Either<DataError, List<Conversation>> {
         val filteredLabelIdsToRemove = labelIds.filterUnmodifiableLabels()
         return conversationLocalDataSource.removeLabels(userId, conversationIds, filteredLabelIdsToRemove).onRight {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = filteredLabelIdsToRemove.toSet()
-            )
-            conversationRemoteDataSource.removeLabels(userId, conversationIds, filteredLabelIdsToRemove)
+
+            if (options.propagateToMessages) {
+                messageLocalDataSource.relabelMessagesInConversations(
+                    userId = userId,
+                    conversationIds = conversationIds,
+                    labelIdsToRemove = filteredLabelIdsToRemove.toSet()
+                )
+            }
+
+            if (options.propagateRemotely) {
+                conversationRemoteDataSource.removeLabels(userId, conversationIds, filteredLabelIdsToRemove)
+            }
         }
     }
 
@@ -192,22 +205,26 @@ class ConversationRepositoryImpl @Inject constructor(
         fromLabelIds: List<LabelId>,
         toLabelId: LabelId
     ): Either<DataError, List<Conversation>> {
-        if (toLabelId.isTrash() || toLabelId.isSpam()) {
-            return moveToTrashOrSpam(userId, conversationIds, allLabelIds, toLabelId)
+
+        val labelsToRemove = if (toLabelId.isTrash() || toLabelId.isSpam()) {
+            allLabelIds.filterUnmodifiableLabels()
+        } else {
+            fromLabelIds
         }
 
         return conversationLocalDataSource.relabel(
             userId = userId,
             conversationIds = conversationIds,
             labelIdsToAdd = listOf(toLabelId),
-            labelIdsToRemove = fromLabelIds
+            labelIdsToRemove = labelsToRemove
         ).onRight {
             messageLocalDataSource.relabelMessagesInConversations(
                 userId = userId,
                 conversationIds = conversationIds,
                 labelIdsToAdd = setOf(toLabelId),
-                labelIdsToRemove = fromLabelIds.toSet()
+                labelIdsToRemove = labelsToRemove.toSet()
             )
+
             conversationRemoteDataSource.addLabel(userId, conversationIds, toLabelId)
         }
     }
@@ -286,32 +303,6 @@ class ConversationRepositoryImpl @Inject constructor(
 
     override fun observeClearLabelOperation(userId: UserId, labelId: LabelId): Flow<Boolean> =
         conversationRemoteDataSource.observeClearWorkerIsEnqueuedOrRunning(userId, labelId)
-
-    private suspend fun moveToTrashOrSpam(
-        userId: UserId,
-        conversationIds: List<ConversationId>,
-        allLabelIds: List<LabelId>,
-        labelId: LabelId
-    ): Either<DataError, List<Conversation>> {
-        require(labelId.isTrash() || labelId.isSpam()) { "Invalid system label id: $labelId" }
-
-        val filteredLabelIdsToRemove = allLabelIds.filterUnmodifiableLabels()
-
-        return conversationLocalDataSource.relabel(
-            userId = userId,
-            conversationIds = conversationIds,
-            labelIdsToAdd = listOf(labelId),
-            labelIdsToRemove = filteredLabelIdsToRemove
-        ).onRight {
-            messageLocalDataSource.relabelMessagesInConversations(
-                userId = userId,
-                conversationIds = conversationIds,
-                labelIdsToRemove = filteredLabelIdsToRemove.toSet(),
-                labelIdsToAdd = setOf(labelId)
-            )
-            conversationRemoteDataSource.addLabel(userId, conversationIds, labelId)
-        }
-    }
 
     private suspend fun upsertConversations(
         userId: UserId,
