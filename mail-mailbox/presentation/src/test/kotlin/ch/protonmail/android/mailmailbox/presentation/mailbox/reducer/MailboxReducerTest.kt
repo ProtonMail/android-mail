@@ -44,6 +44,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -457,7 +458,18 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = true
             ),
             TestInput(
-                MailboxViewAction.RequestUpsellingBottomSheet,
+                MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.Mailbox),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
+                MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.AutoDelete),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,

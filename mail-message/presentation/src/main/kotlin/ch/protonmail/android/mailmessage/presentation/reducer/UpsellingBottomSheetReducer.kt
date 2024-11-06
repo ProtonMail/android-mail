@@ -31,7 +31,7 @@ class UpsellingBottomSheetReducer @Inject constructor() {
     ): BottomSheetState {
         return when (operation) {
             is UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready -> BottomSheetState(
-                contentState = UpsellingBottomSheetState.Requested,
+                contentState = UpsellingBottomSheetState.Requested(operation.entryPoint),
                 bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
             )
         }

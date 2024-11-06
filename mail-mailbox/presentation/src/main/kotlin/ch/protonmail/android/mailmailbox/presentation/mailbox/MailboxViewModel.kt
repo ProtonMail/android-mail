@@ -415,6 +415,7 @@ class MailboxViewModel @Inject constructor(
                 is MailboxViewAction.AutoDeleteDialogActionSubmitted -> {
                     handleAutoDeleteDialogActionSubmitted(viewAction)
                 }
+
                 is MailboxViewAction.DismissAutoDelete -> handleDismissAutoDelete(viewAction)
                 is MailboxViewAction.ShowAutoDeleteDialog -> emitNewStateFrom(viewAction)
             }.exhaustive
@@ -1170,12 +1171,14 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(MailboxViewAction.DeleteDialogDismissed)
     }
 
-    private fun showUpsellingBottomSheet(operation: MailboxViewAction) {
+    private fun showUpsellingBottomSheet(operation: MailboxViewAction.RequestUpsellingBottomSheet) {
         viewModelScope.launch {
             emitNewStateFrom(operation)
 
             emitNewStateFrom(
-                MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+                MailboxEvent.MailboxBottomSheetEvent(
+                    UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(operation.entryPoint)
+                )
             )
         }
     }

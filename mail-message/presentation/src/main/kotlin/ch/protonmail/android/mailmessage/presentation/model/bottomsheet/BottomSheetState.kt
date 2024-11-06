@@ -52,6 +52,10 @@ sealed interface BottomSheetOperation {
     object Dismiss : BottomSheetOperation
 }
 
+sealed interface MailboxUpsellingEntryPoint {
+    object Mailbox : MailboxUpsellingEntryPoint
+    object AutoDelete : MailboxUpsellingEntryPoint
+}
 
 sealed interface MoveToBottomSheetState : BottomSheetContentState {
 
@@ -139,10 +143,10 @@ sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
 }
 
 sealed interface UpsellingBottomSheetState : BottomSheetContentState {
-    data object Requested : UpsellingBottomSheetState
+    data class Requested(val entryPoint: MailboxUpsellingEntryPoint) : UpsellingBottomSheetState
     sealed interface UpsellingBottomSheetOperation : BottomSheetOperation
     sealed interface UpsellingBottomSheetEvent : UpsellingBottomSheetOperation {
-        data object Ready : UpsellingBottomSheetEvent
+        data class Ready(val entryPoint: MailboxUpsellingEntryPoint) : UpsellingBottomSheetEvent
     }
 }
 

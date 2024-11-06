@@ -29,6 +29,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -289,8 +290,27 @@ internal class BottomSheetReducerTest(
         private val upsellingBottomSheetOperation = listOf(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
-                operation = UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready,
-                expectedState = BottomSheetState(UpsellingBottomSheetState.Requested),
+                operation = UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(
+                    MailboxUpsellingEntryPoint.Mailbox
+                ),
+                expectedState = BottomSheetState(
+                    UpsellingBottomSheetState.Requested(MailboxUpsellingEntryPoint.Mailbox)
+                ),
+                reducesBottomSheetVisibilityEffects = false,
+                reducesLabelAs = false,
+                reducesMoveTo = false,
+                reducesMailboxMoreActions = false,
+                reducesDetailMoreActions = false,
+                reducesUpselling = true
+            ),
+            TestInput(
+                currentState = BottomSheetState(null, Effect.empty()),
+                operation = UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(
+                    MailboxUpsellingEntryPoint.AutoDelete
+                ),
+                expectedState = BottomSheetState(
+                    UpsellingBottomSheetState.Requested(MailboxUpsellingEntryPoint.AutoDelete)
+                ),
                 reducesBottomSheetVisibilityEffects = false,
                 reducesLabelAs = false,
                 reducesMoveTo = false,

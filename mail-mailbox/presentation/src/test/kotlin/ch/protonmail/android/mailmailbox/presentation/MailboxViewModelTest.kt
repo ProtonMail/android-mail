@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.UnStarMessages
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
@@ -4224,32 +4225,77 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `should emit upselling data event when showing the upselling bottom sheet was requested`() = runTest {
+    fun `should emit upselling data event when showing the upselling bottom sheet was requested, Mailbox`() = runTest {
         // Given
         val initialState = createMailboxDataState()
         expectViewMode(NoConversationGrouping)
         expectedSelectedLabelCountStateChange(initialState)
-        expectRequestUpsellingBottomSheet(initialState)
-        expectUpsellingBottomSheetDataLoaded(initialState)
+        expectRequestUpsellingBottomSheet(initialState, MailboxUpsellingEntryPoint.Mailbox)
+        expectUpsellingBottomSheetDataLoaded(initialState, MailboxUpsellingEntryPoint.Mailbox)
 
         mailboxViewModel.state.test {
             awaitItem() // First emission for selected user
 
             // When
-            mailboxViewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet)
+            mailboxViewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.Mailbox))
 
             // Then
             verify(exactly = 1) {
-                mailboxReducer.newStateFrom(initialState, MailboxViewAction.RequestUpsellingBottomSheet)
+                mailboxReducer.newStateFrom(
+                    initialState,
+                    MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.Mailbox)
+                )
             }
             verify(exactly = 1) {
                 mailboxReducer.newStateFrom(
                     initialState,
-                    MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+                    MailboxEvent.MailboxBottomSheetEvent(
+                        UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(
+                            MailboxUpsellingEntryPoint.Mailbox
+                        )
+                    )
                 )
             }
         }
     }
+
+    @Test
+    fun `should emit upselling data event when showing the upselling bottom sheet was requested, AutoDelete`() =
+        runTest {
+            // Given
+            val initialState = createMailboxDataState()
+            expectViewMode(NoConversationGrouping)
+            expectedSelectedLabelCountStateChange(initialState)
+            expectRequestUpsellingBottomSheet(initialState, MailboxUpsellingEntryPoint.AutoDelete)
+            expectUpsellingBottomSheetDataLoaded(initialState, MailboxUpsellingEntryPoint.AutoDelete)
+
+            mailboxViewModel.state.test {
+                awaitItem() // First emission for selected user
+
+                // When
+                mailboxViewModel.submit(
+                    MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.AutoDelete)
+                )
+
+                // Then
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(
+                        initialState,
+                        MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.AutoDelete)
+                    )
+                }
+                verify(exactly = 1) {
+                    mailboxReducer.newStateFrom(
+                        initialState,
+                        MailboxEvent.MailboxBottomSheetEvent(
+                            UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(
+                                MailboxUpsellingEntryPoint.AutoDelete
+                            )
+                        )
+                    )
+                }
+            }
+        }
 
     @Test
     fun `navigate to inbox label will trigger selected mail label use case`() = runTest {
@@ -4608,17 +4654,30 @@ class MailboxViewModelTest {
         coJustRun { unStarConversations(userId, items.map { ConversationId(it.id) }) }
     }
 
-    private fun expectRequestUpsellingBottomSheet(initialState: MailboxState) {
-        every {
-            mailboxReducer.newStateFrom(initialState, MailboxViewAction.RequestUpsellingBottomSheet)
-        } returns initialState
-    }
-
-    private fun expectUpsellingBottomSheetDataLoaded(initialState: MailboxState) {
+    private fun expectRequestUpsellingBottomSheet(
+        initialState: MailboxState,
+        mailboxUpsellingEntryPoint: MailboxUpsellingEntryPoint
+    ) {
         every {
             mailboxReducer.newStateFrom(
                 initialState,
-                MailboxEvent.MailboxBottomSheetEvent(UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready)
+                MailboxViewAction.RequestUpsellingBottomSheet(mailboxUpsellingEntryPoint)
+            )
+        } returns initialState
+    }
+
+    private fun expectUpsellingBottomSheetDataLoaded(
+        initialState: MailboxState,
+        mailboxUpsellingEntryPoint: MailboxUpsellingEntryPoint
+    ) {
+        every {
+            mailboxReducer.newStateFrom(
+                initialState,
+                MailboxEvent.MailboxBottomSheetEvent(
+                    UpsellingBottomSheetState.UpsellingBottomSheetEvent.Ready(
+                        mailboxUpsellingEntryPoint
+                    )
+                )
             )
         } returns initialState
     }

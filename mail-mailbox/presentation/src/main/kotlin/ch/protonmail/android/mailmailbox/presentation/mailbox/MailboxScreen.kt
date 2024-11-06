@@ -117,6 +117,7 @@ import ch.protonmail.android.mailmailbox.presentation.paging.search.mapToUiState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.LabelAsBottomSheetContent
@@ -125,6 +126,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpse
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
+import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -216,11 +218,15 @@ fun MailboxScreen(
         onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
         onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
         onExitSearchMode = { viewModel.submit(MailboxViewAction.ExitSearchMode) },
-        onOpenUpsellingPage = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
+        onOpenUpsellingPage = {
+            viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.Mailbox))
+        },
         onCloseUpsellingPage = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
         onShowRatingBooster = { viewModel.submit(MailboxViewAction.ShowRatingBooster(context)) },
         onAutoDeletePaidDismiss = { viewModel.submit(MailboxViewAction.DismissAutoDelete) },
-        onAutoDeleteShowUpselling = { viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet) },
+        onAutoDeleteShowUpselling = {
+            viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.AutoDelete))
+        },
         onAutoDeleteDialogAction = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(it)) },
         onAutoDeleteDialogShow = { viewModel.submit(MailboxViewAction.ShowAutoDeleteDialog) }
     )
@@ -294,13 +300,29 @@ fun MailboxScreen(
                 )
 
                 is UpsellingBottomSheetState -> {
-                    MailboxUpsellingBottomSheet(
-                        actions = UpsellingBottomSheet.Actions.Empty.copy(
-                            onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
-                            onUpgrade = { message -> actions.showNormalSnackbar(message) },
-                            onError = { message -> actions.showErrorSnackbar(message) }
-                        )
-                    )
+                    if (bottomSheetContentState is UpsellingBottomSheetState.Requested) {
+                        when (bottomSheetContentState.entryPoint) {
+                            MailboxUpsellingEntryPoint.Mailbox -> {
+                                MailboxUpsellingBottomSheet(
+                                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                        onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+                                        onUpgrade = { message -> actions.showNormalSnackbar(message) },
+                                        onError = { message -> actions.showErrorSnackbar(message) }
+                                    )
+                                )
+                            }
+
+                            MailboxUpsellingEntryPoint.AutoDelete -> {
+                                AutoDeleteUpsellingBottomSheet(
+                                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                        onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
+                                        onUpgrade = { message -> actions.showNormalSnackbar(message) },
+                                        onError = { message -> actions.showErrorSnackbar(message) }
+                                    )
+                                )
+                            }
+                        }
+                    }
                 }
 
                 else -> Unit

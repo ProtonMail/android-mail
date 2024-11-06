@@ -38,6 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
@@ -146,7 +147,10 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DeleteAllConfirmed : MailboxViewAction
     object DeleteAllDialogDismissed : MailboxViewAction, AffectingClearDialog
     object NavigateToInboxLabel : MailboxViewAction
-    object RequestUpsellingBottomSheet : MailboxViewAction, AffectingBottomSheet
+    data class RequestUpsellingBottomSheet(
+        val entryPoint: MailboxUpsellingEntryPoint
+    ) : MailboxViewAction, AffectingBottomSheet
+
     data class ShowRatingBooster(val context: Context) : MailboxViewAction
     object DismissAutoDelete : MailboxViewAction, AffectingAutoDelete
     object ShowAutoDeleteDialog : MailboxViewAction, AffectingAutoDelete
@@ -250,5 +254,3 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     data object ShowRatingBooster : MailboxEvent, AffectingRatingBooster
 }
-
-
