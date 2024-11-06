@@ -39,7 +39,9 @@ fun UpsellingBottomSheet(
     upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
 ) {
 
-    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory> { factory ->
+    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory>(
+        key = upsellingEntryPoint.toString()
+    ) { factory ->
         factory.create(upsellingEntryPoint)
     }
 
@@ -57,6 +59,7 @@ fun UpsellingBottomSheet(
                 .fillMaxWidth()
                 .height(MailDimens.ExtraLargeSpacing)
         )
+
         is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheetContent(modifier, state, actions)
         is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
     }
