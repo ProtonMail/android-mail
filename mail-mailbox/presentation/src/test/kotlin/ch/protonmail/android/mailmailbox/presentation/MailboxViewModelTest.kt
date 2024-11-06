@@ -181,6 +181,7 @@ import me.proton.core.mailsettings.domain.entity.ViewMode.ConversationGrouping
 import me.proton.core.mailsettings.domain.entity.ViewMode.NoConversationGrouping
 import me.proton.core.plan.presentation.compose.usecase.ShouldUpgradeStorage
 import me.proton.core.test.kotlin.TestDispatcherProvider
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -294,6 +295,7 @@ class MailboxViewModelTest {
     private val showRatingBooster = mockk<ShowRatingBooster>(relaxUnitFun = true)
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
+    private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -342,7 +344,8 @@ class MailboxViewModelTest {
             recordRatingBoosterTriggered = recordRatingBoosterTriggered,
             emptyLabelInProgressSignal = emptyLabelInProgressSignal,
             observeAutoDeleteSetting = observeAutoDeleteSetting,
-            updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays
+            updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
+            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get()
         )
     }
 
@@ -351,6 +354,7 @@ class MailboxViewModelTest {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         mockkStatic(Log::class)
         every { Log.isLoggable(any(), any()) } returns false
+        autoDeleteFeatureEnabled(false)
     }
 
     @AfterTest
@@ -637,7 +641,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `when new location selected, new AutoDeleteBanner state is created and emitted`() = runTest {
+    fun `when new location selected, new AutoDeleteBanner state is created and emitted, FF ON`() = runTest {
         // Given
         val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
         val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
@@ -656,6 +660,41 @@ class MailboxViewModelTest {
         } returns expectedState
         returnExpectedStateForBottomBarEvent(expectedState = expectedState)
         every { observeAutoDeleteSetting(userId) } returns flowOf(AutoDeleteSetting.Enabled)
+        autoDeleteFeatureEnabled(true)
+
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            currentLocationFlow.emit(expectedMailLabel.id)
+
+            // Then
+            assertEquals(expectedState, awaitItem())
+
+            awaitItem() // swipe gestures
+        }
+    }
+
+    @Test
+    fun `when new location selected, new AutoDeleteBanner state is created and emitted, FF OFF`() = runTest {
+        // Given
+        val expectedMailLabel = MailLabel.System(MailLabelId.System.Spam)
+        val expectedCount = UnreadCountersTestData.labelToCounterMap[expectedMailLabel.id.labelId]
+        val expectedState = createMailboxDataState(
+            selectedMailLabelId = expectedMailLabel.id,
+            scrollToMailboxTop = Effect.of(expectedMailLabel.id),
+            autoDeleteBannerState = Data.AutoDeleteBannerState.Hidden
+        )
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(MailLabelId.System.Inbox)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxEvent.NewLabelSelected(expectedMailLabel, expectedCount)
+            )
+        } returns expectedState
+        returnExpectedStateForBottomBarEvent(expectedState = expectedState)
+        every { observeAutoDeleteSetting(userId) } returns flowOf(AutoDeleteSetting.Enabled)
+        autoDeleteFeatureEnabled(false)
 
         mailboxViewModel.state.test {
             awaitItem()
@@ -4636,4 +4675,10 @@ class MailboxViewModelTest {
         currentMailLabel = MailLabel.System(MailLabelId.System.Trash),
         bottomSheetState = BottomSheetState(expectedBottomSheetContent)
     )
+
+    private fun autoDeleteFeatureEnabled(value: Boolean) {
+        every {
+            provideIsAutodeleteFeatureEnabled.get()
+        } returns value
+    }
 }

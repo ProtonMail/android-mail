@@ -111,6 +111,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.Upsellin
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
+import ch.protonmail.android.mailsettings.domain.annotations.AutodeleteFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -164,6 +165,7 @@ class MailboxViewModel @Inject constructor(
     private val observeFolderColorSettings: ObserveFolderColorSettings,
     private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val updateAutoDeleteSpamAndTrashDays: UpdateAutoDeleteSpamAndTrashDays,
+    @AutodeleteFeatureEnabled private val isAutodeleteFeatureEnabled: Boolean,
     private val getMessagesWithLabels: GetMessagesWithLabels,
     private val getConversationsWithLabels: GetConversationsWithLabels,
     private val getMailboxActions: GetMailboxActions,
@@ -241,7 +243,7 @@ class MailboxViewModel @Inject constructor(
                 observeAutoDeleteSetting(userId)
             }
         ) { currentMailLabel, autoDeleteSetting ->
-            handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting)
+            handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting, isAutodeleteFeatureEnabled)
         }.launchIn(viewModelScope)
 
         selectedMailLabelId.flow.mapToExistingLabel()
@@ -312,7 +314,13 @@ class MailboxViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun handleLabelSelectedForAutoDelete(currentMailLabel: MailLabel, autoDeleteSetting: AutoDeleteSetting) {
+    private fun handleLabelSelectedForAutoDelete(
+        currentMailLabel: MailLabel,
+        autoDeleteSetting: AutoDeleteSetting,
+        featureEnabled: Boolean
+    ) {
+        if (!featureEnabled) return emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(null))
+
         if (currentMailLabel.id == MailLabelId.System.Trash || currentMailLabel.id == MailLabelId.System.Spam) {
             val autoDeleteBannerUiModel = when (autoDeleteSetting) {
                 AutoDeleteSetting.Disabled -> null
