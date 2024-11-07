@@ -29,6 +29,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import ch.protonmail.android.feature.postsubscription.ObservePostSubscription
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
@@ -58,6 +59,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var shareIntentObserver: ShareIntentObserver
 
+    @Inject
+    lateinit var observePostSubscription: ObservePostSubscription
+
     private val launcherViewModel: LauncherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +74,8 @@ class MainActivity : AppCompatActivity() {
 
         // Register activities for result.
         launcherViewModel.register(this)
+
+        observePostSubscription.start(this)
 
         shareIntentObserver.onNewIntent(intent)
 

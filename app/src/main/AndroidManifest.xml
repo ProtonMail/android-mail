@@ -289,5 +289,8 @@
             android:name="me.proton.core.report.presentation.ui.BugReportActivity"
             android:theme="@style/ProtonTheme.Mail"
             tools:replace="android:theme" />
+        <activity
+            android:name=".PostSubscriptionActivity"
+            android:theme="@style/ProtonTheme.Mail" />
     </application>
 </manifest>

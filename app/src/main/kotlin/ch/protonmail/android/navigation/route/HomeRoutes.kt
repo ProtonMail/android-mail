@@ -51,6 +51,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreen
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
+import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionScreen
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
@@ -575,5 +576,11 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
         ContactSearchScreen(
             actions
         )
+    }
+}
+
+fun NavGraphBuilder.addPostSubscription() {
+    composable(route = Destination.Screen.PostSubscription.route) {
+        PostSubscriptionScreen()
     }
 }
