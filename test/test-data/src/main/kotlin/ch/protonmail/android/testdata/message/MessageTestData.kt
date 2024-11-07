@@ -207,6 +207,12 @@ object MessageTestData {
 
     val expiringMessage = buildMessage(
         id = "message",
+        expirationTime = Instant.now().plus(1, ChronoUnit.HOURS).epochSecond,
+        flags = 0L or Message.FLAG_EXPIRATION_FROZEN
+    )
+
+    val autoDeleteMessage = buildMessage(
+        id = "message",
         expirationTime = Instant.now().plus(1, ChronoUnit.HOURS).epochSecond
     )
 

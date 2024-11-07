@@ -63,8 +63,7 @@ class MessageBannersUiModelMapperTest {
     @Test
     fun `should map to ui model with expiration banner if expiration is in the future`() {
         // Given
-        every { resourcesMock.getQuantityString(any(), any(), any()) } returns "formatted duration"
-        every { resourcesMock.getString(any(), any()) } returns "message expires in"
+        expectResourceStrings()
 
         // When
         val result = messageBannersUiModelMapper.createMessageBannersUiModel(
@@ -76,6 +75,20 @@ class MessageBannersUiModelMapperTest {
     }
 
     @Test
+    fun `should map to ui model with no expiration banner if message is auto-delete`() {
+        // Given
+        expectResourceStrings()
+
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.autoDeleteMessage
+        )
+
+        // Then
+        assertNull(result.expirationBannerText)
+    }
+
+    @Test
     fun `should map to ui model with no expiration banner if expiration is in the past`() {
         // When
         val result = messageBannersUiModelMapper.createMessageBannersUiModel(
@@ -84,5 +97,50 @@ class MessageBannersUiModelMapperTest {
 
         // Then
         assertNull(result.expirationBannerText)
+    }
+
+    @Test
+    fun `should map to ui model with no auto-delete banner if expiration is in the past`() {
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.message
+        )
+
+        // Then
+        assertNull(result.autoDeleteBannerText)
+    }
+
+    @Test
+    fun `should map to ui model with no expiration banner if frozen flag is false`() {
+        // Given
+        expectResourceStrings()
+
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.autoDeleteMessage
+        )
+
+        // Then
+        assertNull(result.expirationBannerText)
+    }
+
+    @Test
+    fun `should map to ui model with auto-delete banner if frozen flag is false`() {
+        // Given
+        expectResourceStrings()
+
+        // When
+        val result = messageBannersUiModelMapper.createMessageBannersUiModel(
+            MessageTestData.autoDeleteMessage
+        )
+
+        // Then
+        assertNotNull(result.autoDeleteBannerText)
+    }
+
+    private fun expectResourceStrings() {
+        every { resourcesMock.getQuantityString(any(), any(), any()) } returns "formatted duration"
+        every { resourcesMock.getString(any(), any()) } returns "message expires in"
+        every { resourcesMock.getString(any()) } returns "auto delete in"
     }
 }

@@ -76,3 +76,30 @@ fun Duration.toFormattedDurationParts(resources: Resources): List<String> {
         }
     } else emptyList()
 }
+
+/**
+ * Returns formatted duration as a string according to Auto-Delete expiration requirements.
+ *
+ * Examples:
+ * "This message will be deleted in less than an hour".
+ * "This message will be deleted in less than a day".
+ * "This message will be deleted in {days rounded down} days".
+ */
+fun Duration.toFormattedAutoDeleteExpiration(resources: Resources): String? {
+
+    return if (this.isPositive() && this.inWholeMinutes >= 1) {
+
+        if (this.inWholeMinutes < MINUTES_IN_HOUR) {
+            resources.getString(R.string.expiration_auto_delete_hour)
+        } else if (this.inWholeHours < HOURS_IN_DAY) {
+            resources.getString(R.string.expiration_auto_delete_day)
+        } else {
+            val numberOfDays = resources.getQuantityString(
+                R.plurals.expiration_days_full_word,
+                this.inWholeDays.toInt(),
+                this.inWholeDays.toInt()
+            )
+            resources.getString(R.string.expiration_auto_delete_days, numberOfDays)
+        }
+    } else null
+}

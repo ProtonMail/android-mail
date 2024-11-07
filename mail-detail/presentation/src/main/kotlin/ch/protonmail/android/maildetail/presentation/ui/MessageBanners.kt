@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
@@ -28,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallInverted
+import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
 fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
@@ -51,6 +53,13 @@ fun MessageBanners(messageBannersUiModel: MessageBannersUiModel) {
                 textStyle = ProtonTheme.typography.defaultSmallInverted,
                 backgroundColor = ProtonTheme.colors.notificationError,
                 borderColorIsBackgroundColor = true
+            )
+        }
+        if (messageBannersUiModel.autoDeleteBannerText != null) {
+            MessageAutoDeleteBanner(
+                text = messageBannersUiModel.autoDeleteBannerText,
+                textStyle = ProtonTheme.typography.defaultSmallWeak,
+                backgroundColor = ProtonTheme.colors.backgroundSecondary
             )
         }
     }
@@ -102,10 +111,48 @@ fun MessageBanner(
     }
 }
 
+@Composable
+fun MessageAutoDeleteBanner(
+    modifier: Modifier = Modifier,
+    text: TextUiModel,
+    textStyle: TextStyle,
+    backgroundColor: Color
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag(MessageBodyTestTags.MessageBodyBanner)
+            .padding(
+                start = ProtonDimens.DefaultSpacing,
+                end = ProtonDimens.DefaultSpacing,
+                bottom = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing
+            )
+            .border(
+                width = MailDimens.DefaultBorder,
+                color = ProtonTheme.colors.separatorNorm,
+                shape = ProtonTheme.shapes.medium
+            )
+            .background(color = backgroundColor, shape = ProtonTheme.shapes.medium)
+            .padding(ProtonDimens.DefaultSpacing),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            modifier = Modifier.testTag(MessageBodyTestTags.MessageBodyBannerText),
+            text = text.string(),
+            style = textStyle
+        )
+    }
+}
+
 @Preview(
     name = "Main settings screen light mode",
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Main settings screen dark mode",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun PreviewMessageBanners() {
@@ -113,7 +160,8 @@ fun PreviewMessageBanners() {
         MessageBanners(
             MessageBannersUiModel(
                 shouldShowPhishingBanner = true,
-                expirationBannerText = TextUiModel("This message will expire in 1 day, 2 hours, 3 minutes")
+                expirationBannerText = TextUiModel("This message will expire in 1 day, 2 hours, 3 minutes"),
+                autoDeleteBannerText = TextUiModel("This message will be deleted in 1 day")
             )
         )
     }

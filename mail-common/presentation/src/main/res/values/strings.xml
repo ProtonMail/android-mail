@@ -21,6 +21,9 @@
     <string name="expiration_days_arg">%dd</string>
     <string name="expiration_hours_arg">%dh</string>
     <string name="expiration_minutes_arg">%dm</string>
+    <string name="expiration_auto_delete_hour">This message will be deleted in less than an hour</string>
+    <string name="expiration_auto_delete_day">This message will be deleted in less than a day</string>
+    <string name="expiration_auto_delete_days" description="example: This message will be deleted in 5 days">This message will be deleted in %s</string>
     <string name="retry">Retry</string>
     <string name="toolbar_back_content_description">Back to previous screen</string>
     <string name="x_error_not_logged_in">Not signed in</string>

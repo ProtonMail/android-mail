@@ -76,8 +76,11 @@ data class Message(
 
     fun isPhishing() = flags.and(FLAG_PHISHING_AUTO) == FLAG_PHISHING_AUTO
 
+    fun isExpirationFrozen() = flags.and(FLAG_EXPIRATION_FROZEN) == FLAG_EXPIRATION_FROZEN
+
     companion object {
 
-        const val FLAG_PHISHING_AUTO = 1_073_741_824L
+        const val FLAG_PHISHING_AUTO = 1L shl 30
+        const val FLAG_EXPIRATION_FROZEN = 1L shl 32
     }
 }

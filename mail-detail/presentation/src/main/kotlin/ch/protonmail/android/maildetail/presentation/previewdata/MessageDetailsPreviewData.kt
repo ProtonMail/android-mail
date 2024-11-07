@@ -56,7 +56,8 @@ object MessageDetailsPreviewData {
         messageBannersState = MessageBannersState.Data(
             messageBannersUiModel = MessageBannersUiModel(
                 shouldShowPhishingBanner = false,
-                expirationBannerText = null
+                expirationBannerText = null,
+                autoDeleteBannerText = null
             )
         ),
         messageBodyState = MessageBodyState.Data(
