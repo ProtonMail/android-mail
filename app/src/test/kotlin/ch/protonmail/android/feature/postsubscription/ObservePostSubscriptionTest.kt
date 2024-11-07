@@ -37,6 +37,9 @@ class ObservePostSubscriptionTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val coroutineScope = TestScope(testDispatcher)
+    private val isPostSubscriptionFlowEnabled = mockk<IsPostSubscriptionFlowEnabled> {
+        every { this@mockk.invoke(UserIdTestData.userId) } returns true
+    }
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
     }
@@ -50,6 +53,7 @@ class ObservePostSubscriptionTest {
 
     private val observePostSubscription = ObservePostSubscription(
         coroutineScope = coroutineScope,
+        isPostSubscriptionFlowEnabled = isPostSubscriptionFlowEnabled,
         observePrimaryUserId = observePrimaryUserId,
         purchaseManager = purchaseManager,
         sessionManager = sessionManager,

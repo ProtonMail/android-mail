@@ -37,6 +37,7 @@ import javax.inject.Inject
 
 class ObservePostSubscription @Inject constructor(
     @AppScope private val coroutineScope: CoroutineScope,
+    private val isPostSubscriptionFlowEnabled: IsPostSubscriptionFlowEnabled,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val purchaseManager: PurchaseManager,
     private val sessionManager: SessionManager,
@@ -47,6 +48,8 @@ class ObservePostSubscription @Inject constructor(
         observePrimaryUserId().filterNotNull().distinctUntilChanged().collectLatest { userId ->
             // Cancel observation if the user already has a subscription.
             if (userManager.getUser(userId).hasSubscriptionForMail()) return@collectLatest
+
+            if (!isPostSubscriptionFlowEnabled(userId)) return@collectLatest
 
             val sessionId = sessionManager.getSessionId(userId)
 
