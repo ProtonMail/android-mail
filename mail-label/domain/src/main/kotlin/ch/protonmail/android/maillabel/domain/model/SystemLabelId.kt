@@ -96,6 +96,8 @@ enum class SystemLabelId(val labelId: LabelId) {
 
         val exclusiveList = exclusiveDestinationList + Drafts + Sent
 
+        val autoDeleteList = listOf(Spam, Trash)
+
         val unmodifiableByUserList = listOf(AllMail, AlmostAllMail, AllDrafts, AllSent, AllScheduled, Outbox, Snoozed)
 
         private fun stringOf(value: SystemLabelId): String = value.labelId.id

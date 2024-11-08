@@ -26,7 +26,12 @@ import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiMode
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.withContext
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelId
@@ -35,14 +40,30 @@ import javax.inject.Inject
 
 class MessageLocationUiModelMapper @Inject constructor(
     private val colorMapper: ColorMapper,
-    private val getRootLabel: GetRootLabel
+    private val getRootLabel: GetRootLabel,
+    private val observeAutoDeleteSetting: ObserveAutoDeleteSetting
 ) {
 
+    @Suppress("ReturnCount")
     suspend operator fun invoke(
         labelIds: List<LabelId>,
         labels: List<Label>,
         colorSettings: FolderColorSettings
     ): MessageLocationUiModel {
+
+        val autoDeleteIsEnabled = withContext(Dispatchers.IO) {
+            observeAutoDeleteSetting().firstOrNull() == AutoDeleteSetting.Enabled
+        }
+
+        SystemLabelId.autoDeleteList.forEach { systemLabelId ->
+            if (autoDeleteIsEnabled && systemLabelId.labelId in labelIds) {
+                return MessageLocationUiModel(
+                    systemLabelId.name,
+                    ch.protonmail.android.maillabel.presentation.R.drawable.ic_proton_trash_clock
+                )
+            }
+        }
+
         SystemLabelId.exclusiveList.forEach { systemLabelId ->
             if (systemLabelId.labelId in labelIds) {
                 return MessageLocationUiModel(

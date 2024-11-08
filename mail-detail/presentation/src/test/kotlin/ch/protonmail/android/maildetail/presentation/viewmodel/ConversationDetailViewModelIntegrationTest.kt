@@ -166,8 +166,10 @@ import ch.protonmail.android.mailmessage.presentation.reducer.UpsellingBottomShe
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.SanitizeHtmlOfDecryptedMessageBody
 import ch.protonmail.android.mailmessage.presentation.usecase.TransformDecryptedMessageBody
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
@@ -323,6 +325,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val shouldShowRemoteContent = mockk<ShouldShowRemoteContent> {
         coEvery { this@mockk.invoke(userId) } returns true
     }
+    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
+        coEvery { this@mockk() } returns flowOf(AutoDeleteSetting.Disabled)
+    }
     private val isProtonCalendarInstalled = mockk<IsProtonCalendarInstalled>()
     private val printMessage = mockk<PrintMessage>()
     private val markMessageAsUnread = mockk<MarkMessageAsUnread>()
@@ -348,7 +353,11 @@ class ConversationDetailViewModelIntegrationTest {
     private val actionUiModelMapper = ActionUiModelMapper()
     private val colorMapper = ColorMapper()
     private val resolveParticipantName = ResolveParticipantName()
-    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getRootLabel)
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(
+        colorMapper,
+        getRootLabel,
+        observeAutoDeleteSetting
+    )
     private val formatShortTime: FormatShortTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
     private val formatExtendedTime: FormatExtendedTime =

@@ -26,10 +26,14 @@ import ch.protonmail.android.maildetail.presentation.model.MessageLocationUiMode
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.testdata.label.LabelTestData
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -41,8 +45,15 @@ class MessageLocationUiModelMapperTest {
     private val colorMapper: ColorMapper = mockk()
     private val folderColorSettings = FolderColorSettings(useFolderColor = false)
     private val getRootLabel = mockk<GetRootLabel>()
+    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
+        coEvery { this@mockk() } returns flowOf(AutoDeleteSetting.Disabled)
+    }
 
-    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(colorMapper, getRootLabel)
+    private val messageLocationUiModelMapper = MessageLocationUiModelMapper(
+        colorMapper,
+        getRootLabel,
+        observeAutoDeleteSetting
+    )
 
     @Test
     fun `when an exclusive system label is found in the list of label ids, its name and icon are returned`() = runTest {
@@ -57,6 +68,48 @@ class MessageLocationUiModelMapperTest {
         // Then
         assertEquals(expectedResult, result)
     }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when AutoDelete is ON and auto-delete system label is found in the list of label ids, its icon is overriden with clock-trashcan`() =
+        runTest {
+            // Given
+            val labelIds = listOf(
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.Archive.labelId,
+                SystemLabelId.autoDeleteList.first().labelId
+            )
+            val expectedResult = MessageLocationUiModel(
+                SystemLabelId.autoDeleteList.first().name,
+                R.drawable.ic_proton_trash_clock
+            )
+            coEvery { observeAutoDeleteSetting.invoke() } returns flowOf(AutoDeleteSetting.Enabled)
+            // When
+            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            // Then
+            assertEquals(expectedResult, result)
+        }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `when AutoDelete is OFF and auto-delete system label is found in the list of label ids, its icon is not overriden with clock-trashcan`() =
+        runTest {
+            // Given
+            val labelIds = listOf(
+                SystemLabelId.AllMail.labelId,
+                SystemLabelId.Archive.labelId,
+                SystemLabelId.autoDeleteList.first().labelId
+            )
+            val expectedResult = MessageLocationUiModel(
+                SystemLabelId.Archive.name,
+                SystemLabelId.enumOf(SystemLabelId.Archive.labelId.id).iconRes()
+            )
+            coEvery { observeAutoDeleteSetting.invoke() } returns flowOf(AutoDeleteSetting.Disabled)
+            // When
+            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            // Then
+            assertEquals(expectedResult, result)
+        }
 
     @Test
     fun `when a custom folder is found, it's name, icon and icon color are returned when folder color setting is on`() =
