@@ -288,7 +288,7 @@ class MailboxViewModelTest {
         every { this@mockk(userId) } returns flowOf(false)
     }
     private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
-        every { this@mockk(userId) } returns flowOf(AutoDeleteSetting.Disabled)
+        every { this@mockk() } returns flowOf(AutoDeleteSetting.Disabled)
     }
     private val updateAutoDeleteSpamAndTrashDays = mockk<UpdateAutoDeleteSpamAndTrashDays> {
         coEvery { this@mockk(userId, any()) } returns Unit.right()
@@ -660,7 +660,7 @@ class MailboxViewModelTest {
             )
         } returns expectedState
         returnExpectedStateForBottomBarEvent(expectedState = expectedState)
-        every { observeAutoDeleteSetting(userId) } returns flowOf(AutoDeleteSetting.Enabled)
+        every { observeAutoDeleteSetting() } returns flowOf(AutoDeleteSetting.Enabled)
         autoDeleteFeatureEnabled(true)
 
         mailboxViewModel.state.test {
@@ -694,7 +694,7 @@ class MailboxViewModelTest {
             )
         } returns expectedState
         returnExpectedStateForBottomBarEvent(expectedState = expectedState)
-        every { observeAutoDeleteSetting(userId) } returns flowOf(AutoDeleteSetting.Enabled)
+        every { observeAutoDeleteSetting() } returns flowOf(AutoDeleteSetting.Enabled)
         autoDeleteFeatureEnabled(false)
 
         mailboxViewModel.state.test {

@@ -128,7 +128,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
@@ -163,7 +162,7 @@ class MailboxViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
-    private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
+    observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val updateAutoDeleteSpamAndTrashDays: UpdateAutoDeleteSpamAndTrashDays,
     @AutodeleteFeatureEnabled private val isAutodeleteFeatureEnabled: Boolean,
     private val getMessagesWithLabels: GetMessagesWithLabels,
@@ -239,9 +238,7 @@ class MailboxViewModel @Inject constructor(
             .launchIn(viewModelScope)
 
         selectedMailLabelId.flow.mapToExistingLabel().combine(
-            primaryUserId.filterNotNull().flatMapConcat { userId ->
-                observeAutoDeleteSetting(userId)
-            }
+            observeAutoDeleteSetting()
         ) { currentMailLabel, autoDeleteSetting ->
             handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting, isAutodeleteFeatureEnabled)
         }.launchIn(viewModelScope)
