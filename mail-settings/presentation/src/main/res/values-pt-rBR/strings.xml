@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Excluir automaticamente</string>
   <string name="mail_settings_auto_delete_full_text">Excluir automaticamente as mensagens indesejadas</string>
   <string name="mail_settings_auto_delete_hint">As mensagens presentes na lixeira ou no spam por mais de 30 dias serão excluídas automaticamente.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Excluir as mensagens?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Isso excluirá todas as mensagens que estão na lixeira ou no spam há mais de 30 dias, incluindo mensagens atualmente nessas pastas.</string>

@@ -85,6 +85,7 @@
   <string name="message_delete_dialog_title">Hapus pesan</string>
   <string name="message_delete_dialog_message">Apakah Anda yakin ingin menghapus pesan ini secara permanen?</string>
   <string name="message_deleted">Pesan dihapus</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">Pesan gagal dihapus</string>
   <string name="error_delete_message_failed_wrong_folder">Pesan tidak terletak pada lokasi yang memungkinkan pesan untuk dihapus</string>
   <string name="error_delete_conversation_failed">Percakapan gagal dihapus</string>

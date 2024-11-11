@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Automatisch verwijderen</string>
   <string name="mail_settings_auto_delete_full_text">Automatisch ongewenste berichten verwijderen</string>
   <string name="mail_settings_auto_delete_hint">Berichten die meer dan 30 dagen in de spam zitten worden automatisch verwijderd.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Annuleren</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Berichten verwijderen?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Dit zal alle berichten die langer dan 30 dagen in de prullenbak of spam zitten verwijderen, inclusief berichten die nu in deze mappen zitten.</string>

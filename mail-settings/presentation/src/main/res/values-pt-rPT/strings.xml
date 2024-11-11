@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Eliminação automática</string>
   <string name="mail_settings_auto_delete_full_text">Eliminar as mensagens indesejadas automaticamente</string>
   <string name="mail_settings_auto_delete_hint">As mensagens no lixo ou spam com mais de 30 dias serão automaticamente eliminadas.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Eliminar as mensagens?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Esta ação elimina todas as mensagens que se encontram no lixo ou no spam há mais de 30 dias, incluindo as mensagens que se encontram atualmente nestas pastas.</string>
@@ -79,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Sem endereços inativos</string>
   <string name="mail_settings_default_email_address_error_loading">Erro ao carregar as definições</string>
   <string name="mail_settings_default_email_address_error_update">Erro ao atualizar as definições</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Subscreva um plano pago para poder definir o seu endereço como padrão.</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Nome a mostrar e assinatura</string>
   <string name="mail_settings_identity_save_button">Guardar</string>

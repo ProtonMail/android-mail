@@ -91,6 +91,7 @@
   <string name="message_delete_dialog_title">Izbriši sporočilo</string>
   <string name="message_delete_dialog_message">Ali ste prepričani, da želite trajno izbrisati to sporočilo?</string>
   <string name="message_deleted">Sporočilo izbrisano</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">Brisanje sporočila ni uspelo</string>
   <string name="error_delete_message_failed_wrong_folder">Sporočilo ni na mestu, kjer bi ga bilo mogoče izbrisati</string>
   <string name="error_delete_conversation_failed">Pogovora ni bilo mogoče izbrisati</string>

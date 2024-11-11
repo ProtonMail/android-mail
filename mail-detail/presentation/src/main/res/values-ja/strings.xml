@@ -85,6 +85,7 @@
   <string name="message_delete_dialog_title">メッセージを削除する</string>
   <string name="message_delete_dialog_message">このメッセージを完全に削除してよろしいですか？</string>
   <string name="message_deleted">メッセージが削除されました</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">メッセージの削除に失敗しました</string>
   <string name="error_delete_message_failed_wrong_folder">メッセージは削除できる場所にありません</string>
   <string name="error_delete_conversation_failed">会話の削除に失敗しました</string>

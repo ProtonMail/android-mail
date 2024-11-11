@@ -89,6 +89,7 @@
   <string name="message_delete_dialog_title">Izbriši poruku</string>
   <string name="message_delete_dialog_message">Jeste li sigurni da želite trajno izbrisati ovu poruku?</string>
   <string name="message_deleted">Poruka izbrisana</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>

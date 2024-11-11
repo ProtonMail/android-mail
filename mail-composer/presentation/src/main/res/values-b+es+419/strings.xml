@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Dirección de correo inválida</string>
   <string name="composer_error_invalid_sender">La dirección del remitente no es válida</string>
   <string name="change_sender_button_content_description">Cambiar el remitente</string>
-  <string name="composer_change_sender_paid_feature">Mejore a un plan de pago para cambiar la dirección de remitente</string>
+  <string name="composer_change_sender_paid_feature">Mejore a un plan pago para cambiar la dirección de remitente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">No se puede cambiar el remitente porque no pudo obtener la suscripción del usuario. Intente otra vez.</string>
   <string name="composer_error_store_draft_sender_address">Error al guardar la dirección del remitente</string>
   <string name="composer_error_store_draft_body">Error al guardar el cuerpo de este borrador</string>

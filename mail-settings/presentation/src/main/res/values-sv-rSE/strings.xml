@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Ta bort automatiskt</string>
   <string name="mail_settings_auto_delete_full_text">Ta bort oönskade meddelanden automatiskt</string>
   <string name="mail_settings_auto_delete_hint">Meddelanden i papperskorg eller skräppost i mer än 30 dagar kommer att tas bort automatiskt.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Ta bort meddelanden?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.</string>

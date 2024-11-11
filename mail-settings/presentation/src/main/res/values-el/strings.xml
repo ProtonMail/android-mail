@@ -61,16 +61,17 @@
   <string name="mail_settings_labels">Ετικέτες</string>
   <string name="mail_settings_folders">Φάκελοι</string>
   <string name="mail_settings_conversation_mode">Λειτουργία συνομιλίας</string>
-  <string name="mail_settings_auto_delete">Auto-delete</string>
-  <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
-  <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
-  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Enable</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disable</string>
+  <string name="mail_settings_auto_delete">Αυτόματη διαγραφή</string>
+  <string name="mail_settings_auto_delete_full_text">Αυτόματη διαγραφή ανεπιθύμητων μηνυμάτων</string>
+  <string name="mail_settings_auto_delete_hint">Μηνύματα στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Ακύρωση</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">Διαγραφή μηνυμάτων;</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Αυτό θα διαγράφει όλα τα μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, συμπεριλαμβανομένων όσων βρίσκονται ήδη σε αυτούς τους φακέλους.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Ενεργοποίηση</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">Απενεργοποίηση αυτόματης διαγραφής;</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Τα προγραμματισμένα για οριστική εξάλειψη μηνύματα θα παραμείνουν στους φακέλους Διαγραμμένα και Ενοχλητικά.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Απενεργοποίηση</string>
   <string name="mail_settings_not_set">Μη ορισμένο</string>
   <string name="mail_settings_conversation_mode_hint">Ομαδοποιήστε τα μηνύματα της ίδιας συνομιλίας στα εισερχόμενά σας ή εμφανίστε τα ξεχωριστά</string>
   <!-- Default email address settings -->

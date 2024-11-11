@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Automatikus törlés</string>
   <string name="mail_settings_auto_delete_full_text">Nem kívánt üzenetek automatikus törlése</string>
   <string name="mail_settings_auto_delete_hint">A 30 napnál régebben lomtárba vagy a levélszemét mappába került üzenetek automatikusan törlésre kerülnek.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Mégsem</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Üzenetek törlése?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Ez minden olyan üzenetet töröl, amely több mint 30 napja a lomtárban vagy a levélszemét mappában van, beleértve a jelenleg ezekben a mappákban lévő üzeneteket is.</string>
@@ -79,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Nincsenek kikapcsolt címek</string>
   <string name="mail_settings_default_email_address_error_loading">Hiba az beállítások betöltése során</string>
   <string name="mail_settings_default_email_address_error_update">Hiba az beállítások frissítése során</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Váltson fizetős csomagra, hogy ezt a címet is beállíthassa alapértelmezettként</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Megjelenített név és aláírás</string>
   <string name="mail_settings_identity_save_button">Mentés</string>

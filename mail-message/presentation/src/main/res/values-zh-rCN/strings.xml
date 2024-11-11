@@ -45,26 +45,26 @@
   <string name="bottom_sheet_more_header_message_from">来自 %s 的邮件</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">复制链接</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
+  <string name="message_link_long_click_copy_description">从Proton Mail复制的文字</string>
   <string name="message_link_long_click_share">共享链接</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_share_via">通过</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">复制邮箱地址</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
+  <string name="contact_actions_copy_address_description">复制联系人地址</string>
   <string name="contact_actions_copy_address_performed">地址已复制到剪贴板</string>
   <string name="contact_actions_copy_name">复制名称</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
+  <string name="contact_actions_copy_name_description">复制联系人名称</string>
+  <string name="contact_actions_copy_name_performed">名称复制到剪贴板</string>
   <string name="contact_actions_new_message">撰写邮件</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">开始为此联系人撰写新消息</string>
   <string name="contact_actions_add_contact">添加联系人</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
+  <string name="contact_actions_add_contact_description">将此接收者保存为联系人</string>
   <string name="contact_actions_view_contact_details">查看联系人详情</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_view_contact_details_description">查看联系人的详细信息</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">需要权限</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mail需要允许阅读您的联系人以保存接收者。</string>
   <string name="device_contacts_permission_dialog_dismiss_button">好的</string>
-  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
+  <string name="device_contacts_permission_dialog_action_button">请求许可</string>
   <string name="device_contacts_permission_dialog_action_button_deny">拒绝</string>
 </resources>

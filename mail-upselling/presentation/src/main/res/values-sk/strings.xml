@@ -95,7 +95,7 @@
   <string name="upselling_onboarding_switcher_annual">Ročne</string>
   <string name="upselling_onboarding_best_value">Najlepšia ponuka</string>
   <string name="upselling_onboarding_month">/mesiac</string>
-  <string name="upselling_onboarding_year">/year</string>
+  <string name="upselling_onboarding_year">/rok</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d ďalší funkcia</item>
     <item quantity="few">%d ďalšie funkcie</item>

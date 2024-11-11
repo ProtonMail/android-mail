@@ -79,8 +79,8 @@
   <string name="folder_saved">Priečinok bol uložený</string>
   <string name="folder_deleted">Priečinok odstránený</string>
   <string name="parent_folder_none">Žiadny</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label">Vymazať štítok?</string>
+  <string name="delete_folder">Vymazať priečinok?</string>
+  <string name="delete_label_message">Túto akciu nie je možné vrátiť späť. Emaily označené týmto štítkom nebudú vymazané a je možné ich nájsť v priečinku „Všetky správy“.</string>
+  <string name="delete_folder_message">Túto akciu nie je možné vrátiť späť. Emaily nachádzajúce sa v tomto priečinku nebudú vymazané a je možné ich nájsť v priečinku „Všetky správy“.</string>
 </resources>

@@ -79,8 +79,8 @@
   <string name="folder_saved">Map opgeslagen</string>
   <string name="folder_deleted">Map verwijderd</string>
   <string name="parent_folder_none">Geen</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label">Label verwijderen?</string>
+  <string name="delete_folder">Map verwijderen?</string>
+  <string name="delete_label_message">Deze actie kan niet ongedaan worden gemaakt. E-mails met dit label worden niet verwijderd en kunnen worden gevonden in de map \'Alle berichten\'.</string>
+  <string name="delete_folder_message">Deze actie kan niet ongedaan gemaakt worden. E-mails in deze map worden niet verwijderd en kunnen gevonden worden in de map \'Alle berichten\'.</string>
 </resources>

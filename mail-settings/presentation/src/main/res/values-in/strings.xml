@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Hapus otomatis</string>
   <string name="mail_settings_auto_delete_full_text">Hapus pesan yang tidak diinginkan secara otomatis</string>
   <string name="mail_settings_auto_delete_hint">Pesan yang telah berada di sampah dan spam selama lebih dari 30 hari akan dihapus secara otomatis.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Batalkan</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Hapus pesan?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Opsi ini akan menghapus seluruh pesan yang telah berada di sampah atau spam selama lebih dari 30 hari, termasuk pesan yang saat ini berada pada kedua folder tersebut.</string>

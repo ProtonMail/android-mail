@@ -87,6 +87,7 @@
   <string name="message_delete_dialog_title">Eliminar a mensagem</string>
   <string name="message_delete_dialog_message">Tem a certeza de que pretende eliminar permanentemente esta mensagem?</string>
   <string name="message_deleted">Mensagem eliminada</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">Erro ao eliminar a mensagem</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Erro ao eliminar a conversa</string>

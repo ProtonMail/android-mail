@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">电子邮箱地址无效</string>
   <string name="composer_error_invalid_sender">发件人地址无效</string>
   <string name="change_sender_button_content_description">更改发件地址</string>
-  <string name="composer_change_sender_paid_feature">开通付费账户方可更改发件地址</string>
+  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">获取用户等级失败，无法更改发件人地址。请重试。</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>

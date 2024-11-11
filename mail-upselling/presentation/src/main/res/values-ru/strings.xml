@@ -76,10 +76,10 @@
   <string name="upselling_month">/месяц</string>
   <string name="upselling_get_button">Получить %s</string>
   <plurals name="upselling_month">
-    <item quantity="one">первый %d месяц</item>
-    <item quantity="few">%d месяцев</item>
-    <item quantity="many">%d месяца</item>
-    <item quantity="other">%d месяца</item>
+    <item quantity="one">%d месяц</item>
+    <item quantity="few">%d месяца</item>
+    <item quantity="many">%d месяцев</item>
+    <item quantity="other">%d месяцев</item>
   </plurals>
   <!-- Errors -->
   <string name="upselling_unable_retrieve_options">Не удалось получить параметры улучшения.</string>

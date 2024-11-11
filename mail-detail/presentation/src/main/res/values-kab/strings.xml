@@ -87,6 +87,7 @@
   <string name="message_delete_dialog_title">Kkes ien</string>
   <string name="message_delete_dialog_message">Tebɣiḍ s tidet ad tekkseḍ s wudem imezgi izen-a?</string>
   <string name="message_deleted">Izen yettwakkes</string>
+  <string name="message_moved">Message moved</string>
   <string name="error_delete_message_failed">Failed to delete message</string>
   <string name="error_delete_message_failed_wrong_folder">Message is not in a location where it can be deleted</string>
   <string name="error_delete_conversation_failed">Failed to delete conversation</string>

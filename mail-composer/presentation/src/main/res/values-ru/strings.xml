@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Недействительный адрес эл. почты</string>
   <string name="composer_error_invalid_sender">Адрес отправителя недействителен</string>
   <string name="change_sender_button_content_description">Изменить отправителя</string>
-  <string name="composer_change_sender_paid_feature">Перейдите на платный тариф, чтобы изменить адрес отправителя</string>
+  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Невозможно изменить отправителя, так как подписка пользователя не удалась. Попробуйте еще раз.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>

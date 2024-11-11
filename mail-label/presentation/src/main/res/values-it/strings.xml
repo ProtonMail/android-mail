@@ -79,8 +79,8 @@
   <string name="folder_saved">Cartella salvata</string>
   <string name="folder_deleted">Cartella eliminata</string>
   <string name="parent_folder_none">Nessuna</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label">Vuoi eliminare l\'etichetta?</string>
+  <string name="delete_folder">Vuoi eliminare la cartella?</string>
+  <string name="delete_label_message">Questa azione non può essere annullata. Le email contrassegnate con questa etichetta non verranno eliminate e potranno essere trovate nella cartella \"Tutti i messaggi\".</string>
+  <string name="delete_folder_message">Questa azione non può essere annullata. I messaggi di posta elettronica contenuti in questa cartella non verranno eliminati e potranno essere trovati nella cartella \"Tutti i messaggi\".</string>
 </resources>

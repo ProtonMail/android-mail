@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Otomatik silme</string>
   <string name="mail_settings_auto_delete_full_text">İstenmeyen iletileri otomatik olarak silin</string>
   <string name="mail_settings_auto_delete_hint">Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">İptal</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">İletiler silinsin mi?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Bu işlem, şu anda bu klasörlerde bulunanlarla birlikte çöp veya istenmeyen kutularında 30 günden uzun süre kalan tüm iletileri siler.</string>

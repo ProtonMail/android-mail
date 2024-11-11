@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Eliminazione automatica</string>
   <string name="mail_settings_auto_delete_full_text">Eliminazione automatica dei messaggi indesiderati</string>
   <string name="mail_settings_auto_delete_hint">Abilita questa opzione per eliminare automaticamente i messaggi presenti nel cestino e nella cartella spam per oltre 30 giorni.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Annulla</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Abilita l\'eliminazione automatica</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Sei sicuro di voler eliminare tutti gli attuali e futuri messaggi presenti nel cestino e nella cartella spam per oltre 30 giorni?</string>

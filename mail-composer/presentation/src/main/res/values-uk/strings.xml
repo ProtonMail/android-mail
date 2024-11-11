@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Недійсна адреса е-пошти</string>
   <string name="composer_error_invalid_sender">Адреса відправника недійсна</string>
   <string name="change_sender_button_content_description">Змінити відправника</string>
-  <string name="composer_change_sender_paid_feature">Перейдіть на платний тарифний план, щоб змінити адресу відправника</string>
+  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Неможливо змінити відправника, оскільки не вдалося отримати дані про передплату користувача. Спробуйте ще раз.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>

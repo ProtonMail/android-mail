@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Automatisk sletting</string>
   <string name="mail_settings_auto_delete_full_text">Automatisk sletting av uønskede meldinger</string>
   <string name="mail_settings_auto_delete_hint">Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Slette meldinger?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Dette sletter alle meldinger som er i papirkurven eller søppelposten, i mer enn 30 dager, inkludert meldinger som for øyeblikket er i disse mappene.</string>

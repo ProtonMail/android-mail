@@ -134,7 +134,7 @@
   <string name="contact_group_form_update_success">Группа контактов обновлена</string>
   <string name="contact_group_form_save_error">Ошибка при сохранении группы контактов, попробуйте ещё раз позже</string>
   <string name="contact_group_form_save_error_already_exists">Группа с таким именем уже существует</string>
-  <string name="contact_group_form_subscription_error">Перейдите на платный тариф, чтобы создавать группы контактов</string>
+  <string name="contact_group_form_subscription_error">Upgrade to a paid plan to create contact groups</string>
   <string name="members_loading_error">Ошибка при загрузке участников, повторите попытку позже</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Ошибка при добавлении участников, повторите попытку позже</string>

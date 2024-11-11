@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">E-mailadres is ongeldig</string>
   <string name="composer_error_invalid_sender">Adres verzender is ongeldig</string>
   <string name="change_sender_button_content_description">Verander afzender</string>
-  <string name="composer_change_sender_paid_feature">Upgrade naar een betaald abonnement om het afzenderadres te wijzigen</string>
+  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan de afzender niet wijzigen omdat het ophalen van het abonnement van de gebruiker is mislukt. Probeer het nog eens.</string>
   <string name="composer_error_store_draft_sender_address">Het opslaan van het afzenderadres van dit concept is mislukt</string>
   <string name="composer_error_store_draft_body">Het opslaan van deze body versie is mislukt</string>

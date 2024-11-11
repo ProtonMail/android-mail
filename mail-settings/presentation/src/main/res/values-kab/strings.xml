@@ -64,6 +64,7 @@
   <string name="mail_settings_auto_delete">Auto-delete</string>
   <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
   <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
+  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
