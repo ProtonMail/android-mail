@@ -59,7 +59,7 @@ fun UpsellingBottomSheet(
                 .fillMaxWidth()
                 .height(MailDimens.ExtraLargeSpacing)
         )
-        is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheet(modifier, actions, upsellingEntryPoint)
+        is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheetContent(modifier, state, actions)
         is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
     }
 }
