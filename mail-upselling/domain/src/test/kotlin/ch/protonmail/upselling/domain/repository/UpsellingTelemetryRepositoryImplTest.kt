@@ -18,14 +18,12 @@
 
 package ch.protonmail.upselling.domain.repository
 
-import java.time.Instant
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.domain.model.telemetry.data.AccountAge
@@ -35,12 +33,14 @@ import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryR
 import ch.protonmail.android.mailupselling.domain.usecase.GetAccountAgeInDays
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName
 import ch.protonmail.android.mailupselling.domain.usecase.GetSubscriptionName.GetSubscriptionNameError
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.BaseDimensions
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.UpgradeDimensions
+import ch.protonmail.upselling.domain.repository.UpsellingTelemetryRepositoryTestHelper.mockInstant
 import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coVerifySequence
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -62,6 +62,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
     private val getSubscriptionName = mockk<GetSubscriptionName>()
     private val telemetryManager = mockk<TelemetryManager>()
     private val telemetryEnabled = mockk<Provider<Boolean>>()
+    private val horizontalLayoutEnabled = mockk<Provider<Boolean>> { every { this@mockk.get() } returns false }
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
@@ -74,6 +75,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
             getSubscriptionName,
             telemetryManager,
             telemetryEnabled.get(),
+            horizontalLayoutEnabled.get(),
             scopeProvider
         )
 
@@ -108,11 +110,17 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
+        val entryPoint = UpsellingEntryPoint.Feature.Mailbox
+        val expectedDimensions = BaseDimensions.apply {
+            addUpsellModalVersion("B.2")
+            addUpsellEntryPoint(entryPoint.getDimensionValue())
+        }
+
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
-        val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(BaseDimensions).toTelemetryEvent()
+        val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(expectedDimensions).toTelemetryEvent()
 
         // When
-        repository.trackEvent(eventType, expectedUpsellingEntryPoint)
+        repository.trackEvent(eventType, entryPoint)
 
         // Then
         coVerifySequence {
@@ -279,29 +287,5 @@ internal class UpsellingTelemetryRepositoryImplTest {
 
     private fun expectTelemetryDisabled() {
         every { telemetryEnabled.get() } returns false
-    }
-
-    private fun mockInstant() {
-        mockkStatic(Instant::class)
-        every { Instant.now() } returns mockk { every { epochSecond } returns 0 }
-    }
-
-    private companion object {
-
-        val BaseDimensions = UpsellingTelemetryEventDimensions().apply {
-            addPlanBeforeUpgrade("free")
-            addDaysSinceAccountCreation("01-03")
-            addUpsellModalVersion("A.1")
-            addUpsellEntryPoint("contact_groups")
-        }
-
-        val UpgradeDimensions = UpsellingTelemetryEventDimensions().apply {
-            addPlanBeforeUpgrade("free")
-            addDaysSinceAccountCreation("01-03")
-            addUpsellModalVersion("A.1")
-            addSelectedPlan("mail2022")
-            addSelectedPlanCycle(1)
-            addUpsellEntryPoint("contact_groups")
-        }
     }
 }

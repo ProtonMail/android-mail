@@ -50,6 +50,7 @@ import me.proton.core.plan.domain.usecase.GetDynamicPlansAdjustedPrices
 import me.proton.core.user.domain.entity.User
 import org.junit.After
 import org.junit.Before
+import javax.inject.Provider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -64,6 +65,10 @@ internal class UpsellingViewModelTest {
     private val updateLastSeenUpsellingTimestamp = mockk<UpdateUpsellingOneClickLastTimestamp>(relaxUnitFun = true)
     private val upsellingTelemetryRepository = mockk<UpsellingTelemetryRepository>(relaxUnitFun = true)
     private val expectedUpsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups
+    private val isPaymentButtonsHorizontalLayoutEnabled = mockk<Provider<Boolean>> {
+        every { this@mockk.get() } returns true
+    }
+
     private val viewModel: UpsellingViewModel by lazy {
         UpsellingViewModel(
             expectedUpsellingEntryPoint,
@@ -72,7 +77,8 @@ internal class UpsellingViewModelTest {
             filterDynamicPlansByUserSubscription,
             updateLastSeenUpsellingTimestamp,
             upsellingTelemetryRepository,
-            upsellingContentReducer
+            upsellingContentReducer,
+            isPaymentButtonsHorizontalLayoutEnabled.get()
         )
     }
 

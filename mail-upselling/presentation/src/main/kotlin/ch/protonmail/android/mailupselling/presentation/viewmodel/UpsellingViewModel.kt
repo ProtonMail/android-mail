@@ -22,6 +22,7 @@ import java.time.Instant
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailupselling.domain.annotations.PaymentButtonsHorizontalLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType.Upgrade
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
@@ -53,7 +54,8 @@ internal class UpsellingViewModel @AssistedInject constructor(
     private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
     private val updateUpsellingOneClickLastTimestamp: UpdateUpsellingOneClickLastTimestamp,
     private val upsellingTelemetryRepository: UpsellingTelemetryRepository,
-    private val upsellingContentReducer: UpsellingContentReducer
+    private val upsellingContentReducer: UpsellingContentReducer,
+    @PaymentButtonsHorizontalLayoutEnabled private val isPaymentButtonsHorizontalLayoutEnabled: Boolean
 ) : ViewModel() {
 
     @AssistedFactory
@@ -64,6 +66,9 @@ internal class UpsellingViewModel @AssistedInject constructor(
 
     private val mutableState = MutableStateFlow<UpsellingScreenContentState>(Loading)
     val state = mutableState.asStateFlow()
+
+    // To be removed once the scope of MAILANDR-2341 is complete.
+    val shouldDisplayHorizontalButtonsLayout = isPaymentButtonsHorizontalLayoutEnabled
 
     init {
         observePrimaryUser().mapLatest { user ->

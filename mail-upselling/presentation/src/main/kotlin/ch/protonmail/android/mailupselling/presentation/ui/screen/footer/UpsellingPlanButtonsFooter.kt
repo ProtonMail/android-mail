@@ -51,6 +51,7 @@ import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingConte
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
 import ch.protonmail.android.mailupselling.presentation.ui.screen.plans.UpsellingPlansList
 import ch.protonmail.android.mailupselling.presentation.ui.screen.LocalEntryPointIsStandalone
+import ch.protonmail.android.mailupselling.presentation.ui.screen.LocalPaymentButtonsHorizontalEnabled
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.cyclebuttons.CycleOptions
 import me.proton.core.compose.theme.ProtonDimens
@@ -72,9 +73,10 @@ internal fun UpsellingPlanButtonsFooter(
                 .background(UpsellingLayoutValues.UpsellingPlanButtonsFooter.spacerColor)
         )
 
-        val shouldShowHorizontalButtons = LocalEntryPointIsStandalone.current
+        val hasStandaloneHost = LocalEntryPointIsStandalone.current
+        val shouldDisplayHorizontalLayout = LocalPaymentButtonsHorizontalEnabled.current
 
-        if (shouldShowHorizontalButtons) {
+        if (hasStandaloneHost && shouldDisplayHorizontalLayout) {
             PaymentButtonsHorizontalLayout(plans, actions)
         } else {
             PaymentButtonsSideBySideLayout(plans, actions)

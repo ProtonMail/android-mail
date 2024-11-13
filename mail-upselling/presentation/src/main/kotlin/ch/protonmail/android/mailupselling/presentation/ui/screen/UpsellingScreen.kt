@@ -56,10 +56,14 @@ fun UpsellingScreen(
         UpsellingScreenContentState.Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
         is UpsellingScreenContentState.Data -> {
             val isStandalone = entryPoint is UpsellingEntryPoint.Standalone
-            CompositionLocalProvider(LocalEntryPointIsStandalone provides isStandalone) {
+            CompositionLocalProvider(
+                LocalEntryPointIsStandalone provides isStandalone,
+                LocalPaymentButtonsHorizontalEnabled provides viewModel.shouldDisplayHorizontalButtonsLayout
+            ) {
                 UpsellingScreenContent(modifier, state, actions)
             }
         }
+
         is UpsellingScreenContentState.Error -> UpsellingScreenContentError(state = state, actions)
     }
 }

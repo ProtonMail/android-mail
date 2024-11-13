@@ -24,3 +24,8 @@ import androidx.compose.runtime.compositionLocalOf
  * Indicates whether the Upselling screen is within a full screen or not.
  */
 internal val LocalEntryPointIsStandalone = compositionLocalOf { false }
+
+/**
+ * Indicates whether the Upselling screen should display the new payment buttons layout in the footer.
+ */
+internal val LocalPaymentButtonsHorizontalEnabled = compositionLocalOf { false }
