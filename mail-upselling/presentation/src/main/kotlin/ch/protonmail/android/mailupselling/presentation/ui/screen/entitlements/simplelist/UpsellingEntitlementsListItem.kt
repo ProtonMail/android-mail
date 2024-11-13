@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
+package ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -35,17 +34,16 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import coil.compose.AsyncImage
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallNorm
 
 @Composable
-internal fun UpsellingEntitlementListItem(
+internal fun UpsellingEntitlementsListItem(
     modifier: Modifier = Modifier,
-    entitlementUiModel: PlanEntitlementListUiModel,
-    color: Color
+    entitlementUiModel: PlanEntitlementListUiModel
 ) {
     Row(
         modifier = modifier
@@ -61,18 +59,18 @@ internal fun UpsellingEntitlementListItem(
         }
 
         AsyncImage(
-            modifier = Modifier.size(UpsellingDimens.EntitlementImageItemSize),
+            modifier = Modifier.size(UpsellingLayoutValues.EntitlementsList.imageSize),
             placeholder = painterResource(R.drawable.ic_logo_mail_mono),
             model = imageModel,
             contentDescription = NO_CONTENT_DESCRIPTION,
-            colorFilter = ColorFilter.tint(color),
+            colorFilter = ColorFilter.tint(UpsellingLayoutValues.EntitlementsList.iconColor),
             contentScale = ContentScale.Fit
         )
         Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
         Text(
             text = entitlementUiModel.text.string(),
             style = ProtonTheme.typography.defaultSmallNorm,
-            color = color
+            color = UpsellingLayoutValues.EntitlementsList.textColor
         )
     }
 }
