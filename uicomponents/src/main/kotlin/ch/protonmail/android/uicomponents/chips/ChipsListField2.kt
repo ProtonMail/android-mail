@@ -145,3 +145,11 @@ object ChipsListField2 {
         val onListChanged: (List<ChipItem>) -> Unit
     )
 }
+
+fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) {
+        then(modifier())
+    } else {
+        this
+    }
+}

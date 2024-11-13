@@ -44,7 +44,6 @@ import timber.log.Timber
 
 @Composable
 internal fun ComposerForm(
-    newContactSuggestionsEnabled: Boolean,
     emailValidator: (String) -> Boolean,
     recipientsOpen: Boolean,
     initialFocus: FocusedFieldType,
@@ -64,12 +63,8 @@ internal fun ComposerForm(
     var showSubjectAndBody by remember { mutableStateOf(true) }
 
     // Handle visibility of body and subject here, to avoid issues with focus requesters.
-    LaunchedEffect(areContactSuggestionsExpanded, newContactSuggestionsEnabled) {
-        showSubjectAndBody = if (newContactSuggestionsEnabled) {
-            !areContactSuggestionsExpanded.any { it.value }
-        } else {
-            true
-        }
+    LaunchedEffect(areContactSuggestionsExpanded) {
+        showSubjectAndBody = !areContactSuggestionsExpanded.any { it.value }
     }
 
     FocusableForm(
@@ -105,27 +100,15 @@ internal fun ComposerForm(
             )
             MailDivider()
 
-            if (newContactSuggestionsEnabled) {
-                RecipientFields2(
-                    fields = fields,
-                    fieldFocusRequesters = fieldFocusRequesters,
-                    recipientsOpen = recipientsOpen,
-                    emailValidator = emailValidator,
-                    contactSuggestions = contactSuggestions,
-                    areContactSuggestionsExpanded = areContactSuggestionsExpanded,
-                    actions = actions
-                )
-            } else {
-                RecipientFields(
-                    fields = fields,
-                    fieldFocusRequesters = fieldFocusRequesters,
-                    recipientsOpen = recipientsOpen,
-                    emailValidator = emailValidator,
-                    contactSuggestions = contactSuggestions,
-                    areContactSuggestionsExpanded = areContactSuggestionsExpanded,
-                    actions = actions
-                )
-            }
+            RecipientFields2(
+                fields = fields,
+                fieldFocusRequesters = fieldFocusRequesters,
+                recipientsOpen = recipientsOpen,
+                emailValidator = emailValidator,
+                contactSuggestions = contactSuggestions,
+                areContactSuggestionsExpanded = areContactSuggestionsExpanded,
+                actions = actions
+            )
 
             if (showSubjectAndBody) {
                 MailDivider()
