@@ -4464,19 +4464,31 @@ class MailboxViewModelTest {
     }
 
     private fun expectedStarMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
-        coJustRun { starMessages(userId, items.map { MessageId(it.id) }) }
+        coEvery {
+            starMessages(userId, items.map { MessageId(it.id) })
+        } returns
+            emptyList<ch.protonmail.android.mailmessage.domain.model.Message>().right()
     }
 
     private fun expectedUnStarMessagesSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
-        coJustRun { unStarMessages(userId, items.map { MessageId(it.id) }) }
+        coEvery {
+            unStarMessages(userId, items.map { MessageId(it.id) })
+        } returns
+            emptyList<ch.protonmail.android.mailmessage.domain.model.Message>().right()
     }
 
     private fun expectedStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
-        coJustRun { starConversations(userId, items.map { ConversationId(it.id) }) }
+        coEvery {
+            starConversations(userId, items.map { ConversationId(it.id) })
+        } returns
+            emptyList<ch.protonmail.android.mailconversation.domain.entity.Conversation>().right()
     }
 
     private fun expectedUnStarConversationsSucceeds(userId: UserId, items: List<MailboxItemUiModel>) {
-        coJustRun { unStarConversations(userId, items.map { ConversationId(it.id) }) }
+        coEvery {
+            unStarConversations(userId, items.map { ConversationId(it.id) })
+        } returns
+            emptyList<ch.protonmail.android.mailconversation.domain.entity.Conversation>().right()
     }
 
     private fun expectRequestUpsellingBottomSheet(

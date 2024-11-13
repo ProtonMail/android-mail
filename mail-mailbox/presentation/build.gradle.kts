@@ -22,6 +22,7 @@ plugins {
     kotlin("kapt")
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -45,10 +46,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     packaging {

@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.detail.section
 
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.maildetail.presentation.R
@@ -67,7 +68,7 @@ internal class DetailBottomBarSection : ComposeSectionRobot() {
         fun labelAsBottomSheetIsDismissed() {
             composeTestRule.onNodeWithTag(LabelAsBottomSheetTestTags.RootItem, useUnmergedTree = true)
                 .awaitHidden()
-                .assertDoesNotExist()
+                .assertIsNotDisplayed()
         }
     }
 }

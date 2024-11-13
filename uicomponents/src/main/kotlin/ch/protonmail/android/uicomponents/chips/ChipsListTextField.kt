@@ -73,7 +73,11 @@ internal fun ChipsListTextField(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
     val coroutineScope = rememberCoroutineScope()
     val keyboardOptions = remember {
-        KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next, autoCorrect = false)
+        KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next,
+            autoCorrectEnabled = false
+        )
     }
 
     // Similar to what we do for the Message body, we need to ensure

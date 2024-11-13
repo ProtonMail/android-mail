@@ -19,6 +19,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
@@ -40,10 +41,6 @@ android {
 
     buildFeatures {
         compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 }
 

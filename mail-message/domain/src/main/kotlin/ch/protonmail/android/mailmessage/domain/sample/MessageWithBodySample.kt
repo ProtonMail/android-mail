@@ -24,6 +24,8 @@ import ch.protonmail.android.mailmessage.domain.model.MessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Recipient
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 object MessageWithBodySample {
 
@@ -66,12 +68,17 @@ object MessageWithBodySample {
         )
     )
 
+    @OptIn(ExperimentalEncodingApi::class)
     val MessageWithEncryptedAttachments = build(
         message = MessageSample.MessageWithAttachments,
         attachments = listOf(
-            MessageAttachmentSample.document.copy(keyPackets = "encryptedKeyPackets"),
-            MessageAttachmentSample.documentWithReallyLongFileName.copy(keyPackets = "encryptedKeyPackets"),
-            MessageAttachmentSample.embeddedImageAttachment.copy(keyPackets = "encryptedKeyPackets")
+            MessageAttachmentSample.document.copy(keyPackets = Base64.encode("encryptedKeyPackets".toByteArray())),
+            MessageAttachmentSample.documentWithReallyLongFileName.copy(
+                keyPackets = Base64.encode("encryptedKeyPackets".toByteArray())
+            ),
+            MessageAttachmentSample.embeddedImageAttachment.copy(
+                keyPackets = Base64.encode("encryptedKeyPackets".toByteArray())
+            )
         )
     )
 

@@ -37,7 +37,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -66,7 +66,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.PickerDialog
-import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
@@ -87,6 +86,7 @@ import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPre
 import ch.protonmail.android.mailcontact.presentation.ui.FormInputField
 import ch.protonmail.android.mailcontact.presentation.ui.ImageContactAvatar
 import ch.protonmail.android.mailcontact.presentation.ui.InitialsContactAvatar
+import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSecondaryButton
@@ -611,7 +611,7 @@ private fun InputFieldWithTrash(
                 )
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(bounded = false),
+                    indication = ripple(bounded = false),
                     onClickLabel = stringResource(R.string.remove_contact_property),
                     role = Role.Button,
                     onClick = onDeleteClick

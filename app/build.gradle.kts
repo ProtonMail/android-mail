@@ -35,6 +35,7 @@ plugins {
     id("io.sentry.android.gradle")
     id("org.jetbrains.kotlinx.kover")
     id("me.proton.core.gradle-plugins.environment-config") version libs.versions.proton.core.plugin.get()
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 val privateProperties = Properties().apply {
@@ -188,10 +189,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
     hilt {

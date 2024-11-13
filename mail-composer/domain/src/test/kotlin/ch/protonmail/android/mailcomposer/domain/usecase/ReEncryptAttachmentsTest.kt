@@ -60,8 +60,8 @@ class ReEncryptAttachmentsTest {
     private val newSender = SenderEmail(UserAddressSample.AliasAddress.email)
 
     private val mockedSessionKey = SessionKey("mockedSessionKey".encodeToByteArray())
-    private val mockedKeyPacket = Base64.decode("encryptedKeyPackets")
-    private val newMockedKeyPacket = Base64.decode("newEncryptedKeyPackets")
+    private val mockedKeyPacket = "encryptedKeyPackets".toByteArray()
+    private val newMockedKeyPacket = "newEncryptedKeyPackets".toByteArray()
 
     private val armoredPrivateKey = "armoredPrivateKey"
     private val armoredPublicKey = "armoredPublicKey"

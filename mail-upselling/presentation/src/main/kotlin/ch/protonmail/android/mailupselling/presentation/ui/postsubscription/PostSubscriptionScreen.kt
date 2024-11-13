@@ -37,7 +37,7 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -142,7 +142,7 @@ private fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .padding(ProtonDimens.SmallSpacing)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(
+                indication = ripple(
                     radius = MailDimens.PostSubscriptionCloseButtonRippleRadius,
                     color = Color.White
                 ),

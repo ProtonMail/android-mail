@@ -43,6 +43,7 @@ plugins {
     alias(libs.plugins.proton.core.coverage.config)
     alias(libs.plugins.proton.core.coverage) apply false
     alias(libs.plugins.proton.core.global.coverage) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 subprojects {
