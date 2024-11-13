@@ -21,32 +21,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.TextFieldValue
-import ch.protonmail.android.uicomponents.chips.ChipsListState2.Companion.ChipsCreationRegex
+import ch.protonmail.android.uicomponents.chips.ChipsListState.Companion.ChipsCreationRegex
 import ch.protonmail.android.uicomponents.chips.item.ChipItem
-import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItem2
+import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItem
 import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItemElement
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
-fun ChipsListField2(
+fun ChipsListField(
     label: String,
     value: List<ChipItem>,
     modifier: Modifier = Modifier,
     chipValidator: (String) -> Boolean = { true },
     focusRequester: FocusRequester? = null,
     focusOnClick: Boolean = true,
-    actions: ChipsListField2.Actions,
-    contactSuggestionState: ContactSuggestionState2,
+    actions: ChipsListField.Actions,
+    contactSuggestionState: ContactSuggestionState,
     chevronIconContent: @Composable () -> Unit = {}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val state by remember { mutableStateOf(ChipsListState2(chipValidator, actions.onListChanged)) }
+    val state by remember { mutableStateOf(ChipsListState(chipValidator, actions.onListChanged)) }
     var textFieldValue by remember { mutableStateOf(initialTextFieldValue) }
 
     val chipsListActions = remember {
-        ChipsListTextField2.Actions(
+        ChipsListTextField.Actions(
             onTextChanged = { value ->
                 state.type(value.text)
                 textFieldValue = if (ChipsCreationRegex.containsMatchIn(value.text)) initialTextFieldValue else value
@@ -94,7 +94,7 @@ fun ChipsListField2(
                 style = ProtonTheme.typography.defaultNorm
             )
 
-            ChipsListTextField2(
+            ChipsListTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -133,12 +133,12 @@ fun ChipsListField2(
 private val initialTextFieldValue = TextFieldValue("")
 
 @Stable
-data class ContactSuggestionState2(
+data class ContactSuggestionState(
     val areSuggestionsExpanded: Boolean,
-    val contactSuggestionItems: List<ContactSuggestionItem2>
+    val contactSuggestionItems: List<ContactSuggestionItem>
 )
 
-object ChipsListField2 {
+object ChipsListField {
     data class Actions(
         val onSuggestionTermTyped: (String) -> Unit,
         val onSuggestionsDismissed: () -> Unit,

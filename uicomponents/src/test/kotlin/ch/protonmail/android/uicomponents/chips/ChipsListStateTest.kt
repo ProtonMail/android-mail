@@ -7,6 +7,7 @@ import java.util.Random
 import java.util.UUID
 import ch.protonmail.android.uicomponents.chips.item.ChipItem
 import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
+import kotlin.test.assertNotNull
 
 class ChipsListStateTest {
 
@@ -101,7 +102,28 @@ class ChipsListStateTest {
     }
 
     @Test
-    fun `Should not add an item until a space is typed`() {
+    fun `Should not add an item until a new line is typed`() {
+        // Given
+        val state = buildState(isValid = { true })
+
+        // When
+        state.type("w")
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
+        state.type("wo")
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
+        state.type("wor")
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
+        state.type("word")
+        assertThat(state.getItems() is ChipItemsList.Empty, equalTo(true))
+        state.type("\n")
+
+        // Then
+        val itemsList = state.getItems() as ChipItemsList.Unfocused.Single
+        assertThat(itemsList.item, equalTo(ChipItem.Valid("word")))
+    }
+
+    @Test
+    fun `Should not add an item when a space is typed`() {
         // Given
         val state = buildState(isValid = { true })
 
@@ -117,8 +139,7 @@ class ChipsListStateTest {
         state.type(" ")
 
         // Then
-        val itemsList = state.getItems() as ChipItemsList.Unfocused.Single
-        assertThat(itemsList.item, equalTo(ChipItem.Valid("word")))
+        assertNotNull(state.getItems() as? ChipItemsList.Empty)
     }
 
     @Test
@@ -149,7 +170,7 @@ class ChipsListStateTest {
         state.typeWord("hello")
         state.typeWord("world")
         state.type("!")
-        state.type(" ")
+        state.type("\n")
 
         // Then
         val itemsList = state.getItems() as ChipItemsList.Focused
@@ -181,7 +202,7 @@ class ChipsListStateTest {
 
         // When
         state.type("!")
-        state.type(" ")
+        state.type("\n")
 
         // Then
         itemsListUnfocusedMultiple = state.getItems() as ChipItemsList.Unfocused.Multiple

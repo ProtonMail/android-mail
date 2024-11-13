@@ -100,7 +100,7 @@ internal fun ComposerForm(
             )
             MailDivider()
 
-            RecipientFields2(
+            RecipientFields(
                 fields = fields,
                 fieldFocusRequesters = fieldFocusRequesters,
                 recipientsOpen = recipientsOpen,

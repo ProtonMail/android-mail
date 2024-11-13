@@ -28,7 +28,7 @@ import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
 import me.proton.core.util.kotlin.takeIfNotBlank
 
 @Stable
-internal class ChipsListState2(
+internal class ChipsListState(
     private val isValid: (String) -> Boolean,
     private val onListChanged: (List<ChipItem>) -> Unit
 ) {

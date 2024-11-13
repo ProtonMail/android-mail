@@ -49,20 +49,20 @@ import me.proton.core.util.kotlin.takeIfNotBlank
 @Composable
 fun ContactSuggestionItemElement(
     currentText: String,
-    item: ContactSuggestionItem2,
+    item: ContactSuggestionItem,
     onClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .clickable {
                 when (item) {
-                    is ContactSuggestionItem2.ContactGroupSuggestionItem ->
+                    is ContactSuggestionItem.Group ->
                         item.emails
                             .joinToString(separator = "\n")
                             .takeIfNotBlank()
                             ?.let { onClick(it) }
 
-                    is ContactSuggestionItem2.ContactSuggestionItem -> onClick(item.email)
+                    is ContactSuggestionItem.Contact -> onClick(item.email)
                 }
             }
             .fillMaxSize()
@@ -70,14 +70,14 @@ fun ContactSuggestionItemElement(
             .padding(vertical = ProtonDimens.SmallSpacing)
     ) {
         when (item) {
-            is ContactSuggestionItem2.ContactGroupSuggestionItem -> ContactSuggestionGroupEntry(currentText, item)
-            is ContactSuggestionItem2.ContactSuggestionItem -> ContactSuggestionEntry(currentText, item)
+            is ContactSuggestionItem.Group -> ContactSuggestionGroupEntry(currentText, item)
+            is ContactSuggestionItem.Contact -> ContactSuggestionEntry(currentText, item)
         }
     }
 }
 
 @Composable
-private fun ContactSuggestionEntry(currentText: String, item: ContactSuggestionItem2.ContactSuggestionItem) {
+private fun ContactSuggestionEntry(currentText: String, item: ContactSuggestionItem.Contact) {
     Row {
         Box(
             modifier = Modifier
@@ -117,7 +117,7 @@ private fun ContactSuggestionEntry(currentText: String, item: ContactSuggestionI
 }
 
 @Composable
-private fun ContactSuggestionGroupEntry(currentText: String, item: ContactSuggestionItem2.ContactGroupSuggestionItem) {
+private fun ContactSuggestionGroupEntry(currentText: String, item: ContactSuggestionItem.Group) {
     Row {
         Box(
             modifier = Modifier
