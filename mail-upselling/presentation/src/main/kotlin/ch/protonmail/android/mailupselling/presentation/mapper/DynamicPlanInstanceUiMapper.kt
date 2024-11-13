@@ -22,7 +22,7 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.extension.normalizedPrice
 import ch.protonmail.android.mailupselling.presentation.extension.toDecimalString
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan

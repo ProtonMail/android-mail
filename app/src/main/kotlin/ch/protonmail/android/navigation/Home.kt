@@ -54,7 +54,7 @@ import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.route.addAccountSettings
@@ -598,7 +598,7 @@ fun Home(
                 addNotificationsSettings(navController)
                 addDeepLinkHandler(navController)
                 addUpsellingRoutes(
-                    UpsellingBottomSheet.Actions.Empty.copy(
+                    UpsellingScreen.Actions.Empty.copy(
                         onDismiss = { navController.navigateBack() },
                         onUpgrade = { message -> scope.launch { showNormalSnackbar(message) } },
                         onError = { message -> scope.launch { showErrorSnackbar(message) } }

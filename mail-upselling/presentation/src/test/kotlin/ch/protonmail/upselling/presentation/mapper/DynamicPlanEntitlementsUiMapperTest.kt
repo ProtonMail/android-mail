@@ -22,8 +22,8 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Free
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Plus
 import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel

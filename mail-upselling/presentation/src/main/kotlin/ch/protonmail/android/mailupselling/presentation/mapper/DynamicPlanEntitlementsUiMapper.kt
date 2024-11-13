@@ -23,8 +23,8 @@ import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsel
 import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTableElementPreviewData.Entitlements
 import me.proton.core.plan.domain.entity.DynamicEntitlement
 import me.proton.core.plan.domain.entity.DynamicPlan

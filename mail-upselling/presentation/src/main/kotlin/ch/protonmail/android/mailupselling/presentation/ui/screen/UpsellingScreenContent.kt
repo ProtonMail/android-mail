@@ -49,14 +49,12 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheetContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTable
-import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.UpsellingPlanButtonsFooter
+import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsListLayout
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
@@ -68,8 +66,8 @@ import me.proton.core.compose.theme.headlineSmallNorm
 @Composable
 internal fun UpsellingScreenContent(
     modifier: Modifier = Modifier,
-    state: UpsellingBottomSheetContentState.Data,
-    actions: UpsellingBottomSheet.Actions
+    state: UpsellingScreenContentState.Data,
+    actions: UpsellingScreen.Actions
 ) {
     val isStandalone = LocalEntryPointIsStandalone.current
     val isNarrowScreen = LocalConfiguration.current.screenWidthDp <= MailDimens.NarrowScreenWidth.value
@@ -177,8 +175,8 @@ internal fun UpsellingScreenContent(
 private fun UpsellingScreenContentPreview() {
     ProtonTheme3 {
         UpsellingScreenContent(
-            state = UpsellingBottomSheetContentPreviewData.Base,
-            actions = UpsellingBottomSheet.Actions(
+            state = UpsellingContentPreviewData.Base,
+            actions = UpsellingScreen.Actions(
                 onDisplayed = {},
                 onDismiss = {},
                 onError = {},

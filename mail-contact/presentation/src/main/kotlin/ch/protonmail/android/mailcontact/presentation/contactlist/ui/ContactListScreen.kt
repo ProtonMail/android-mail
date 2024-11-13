@@ -28,8 +28,8 @@ import ch.protonmail.android.mailcontact.presentation.contactlist.ContactListVie
 import ch.protonmail.android.mailcontact.presentation.upselling.ContactGroupsUpsellingBottomSheet
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.delay
@@ -58,7 +58,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
         onNewGroupClick = { viewModel.submit(ContactListViewAction.OnNewContactGroupClick) }
     )
 
-    val bottomSheetActions = UpsellingBottomSheet.Actions.Empty.copy(
+    val bottomSheetActions = UpsellingScreen.Actions.Empty.copy(
         onDismiss = { viewModel.submit(ContactListViewAction.OnDismissBottomSheet) },
         onUpgrade = { message ->
             scope.launch { snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message) }

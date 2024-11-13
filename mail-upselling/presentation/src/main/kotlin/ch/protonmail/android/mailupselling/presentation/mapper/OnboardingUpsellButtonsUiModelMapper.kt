@@ -21,8 +21,8 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellBillingMessageUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellButtonsUiModel
 import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject

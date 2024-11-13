@@ -21,7 +21,7 @@ package ch.protonmail.upselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanTitleUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import kotlin.test.Test
 import kotlin.test.assertEquals

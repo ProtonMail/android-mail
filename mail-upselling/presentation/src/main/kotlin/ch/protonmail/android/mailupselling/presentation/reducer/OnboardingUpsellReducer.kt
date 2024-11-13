@@ -24,8 +24,8 @@ import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import javax.inject.Inject
 
 class OnboardingUpsellReducer @Inject constructor(

@@ -21,7 +21,7 @@ package ch.protonmail.upselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanDescriptionUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every

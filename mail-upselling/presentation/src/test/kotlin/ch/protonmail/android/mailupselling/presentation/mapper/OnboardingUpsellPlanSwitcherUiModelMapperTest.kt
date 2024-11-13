@@ -3,7 +3,7 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every
 import io.mockk.mockk

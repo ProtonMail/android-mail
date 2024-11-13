@@ -26,10 +26,10 @@ import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardin
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation.Action
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.Loading
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellOperation.Action
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState.Loading
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType
 import ch.protonmail.android.mailupselling.presentation.usecase.GetOnboardingUpsellingPlans

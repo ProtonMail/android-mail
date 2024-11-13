@@ -46,8 +46,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.settings.SettingsItem
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -132,7 +132,7 @@ fun AccountSettingScreen(
         sheetContent = bottomSheetHeightConstrainedContent {
             if (showBottomSheet) {
                 AutoDeleteUpsellingBottomSheet(
-                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                    actions = UpsellingScreen.Actions.Empty.copy(
                         onDismiss = { accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling) },
                         onUpgrade = { message ->
                             scope.launch {

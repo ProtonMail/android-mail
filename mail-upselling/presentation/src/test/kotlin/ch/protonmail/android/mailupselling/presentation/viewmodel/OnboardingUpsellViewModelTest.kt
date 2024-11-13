@@ -12,8 +12,8 @@ import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryR
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellOperation
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.reducer.OnboardingUpsellReducer
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PlansType

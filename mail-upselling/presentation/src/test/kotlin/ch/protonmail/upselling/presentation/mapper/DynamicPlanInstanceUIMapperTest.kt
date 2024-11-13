@@ -20,7 +20,7 @@ package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import me.proton.core.domain.entity.UserId

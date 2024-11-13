@@ -37,10 +37,10 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.toTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingPaymentEventListener
+import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
 @Composable

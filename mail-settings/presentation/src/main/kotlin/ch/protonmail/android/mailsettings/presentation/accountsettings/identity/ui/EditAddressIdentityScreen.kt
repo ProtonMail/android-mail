@@ -44,8 +44,8 @@ import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.MobileSignatureUpsellingBottomSheet
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.viewmodel.EditAddressIdentityViewModel
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.delay
@@ -113,7 +113,7 @@ fun EditAddressIdentityScreen(
         sheetContent = bottomSheetHeightConstrainedContent {
             if (showBottomSheet) {
                 MobileSignatureUpsellingBottomSheet(
-                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                    actions = UpsellingScreen.Actions.Empty.copy(
                         onDismiss = onDismissUpselling,
                         onUpgrade = { message ->
                             scope.launch {

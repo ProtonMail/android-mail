@@ -20,7 +20,7 @@ package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanIconUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import kotlin.test.Test
 import kotlin.test.assertEquals

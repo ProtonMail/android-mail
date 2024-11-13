@@ -26,10 +26,10 @@ import ch.protonmail.android.mailupselling.presentation.extension.normalizedPric
 import ch.protonmail.android.mailupselling.presentation.extension.toDecimalString
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PROTON_FREE
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans

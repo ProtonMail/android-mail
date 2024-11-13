@@ -22,9 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 
 @Composable
-fun ContactGroupsUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingBottomSheet.Actions) {
+fun ContactGroupsUpsellingBottomSheet(modifier: Modifier = Modifier, actions: UpsellingScreen.Actions) {
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,

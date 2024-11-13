@@ -21,11 +21,10 @@ package ch.protonmail.android.navigation.route
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.model.Destination
 
-fun NavGraphBuilder.addUpsellingRoutes(actions: UpsellingBottomSheet.Actions) {
+fun NavGraphBuilder.addUpsellingRoutes(actions: UpsellingScreen.Actions) {
     composable(route = Destination.Screen.Upselling.Standalone.route) {
         UpsellingScreen(
             bottomSheetActions = actions,

@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import javax.inject.Inject
 

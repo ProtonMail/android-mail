@@ -69,8 +69,8 @@ import ch.protonmail.android.maillabel.presentation.ui.FormDeleteButton
 import ch.protonmail.android.maillabel.presentation.ui.FormInputField
 import ch.protonmail.android.maillabel.presentation.upselling.LabelsUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibilityEffect
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet.DELAY_SHOWING
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
@@ -155,7 +155,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
         sheetContent = bottomSheetHeightConstrainedContent {
             if (showBottomSheet) {
                 LabelsUpsellingBottomSheet(
-                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                    actions = UpsellingScreen.Actions.Empty.copy(
                         onDismiss = { viewModel.submit(LabelFormViewAction.HideUpselling) },
                         onUpgrade = { message -> actions.showUpsellingSnackbar(message) },
                         onError = { message -> actions.showUpsellingErrorSnackbar(message) }

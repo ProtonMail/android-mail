@@ -5,11 +5,11 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValuePlusDrawables
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValueUnlimitedDrawables

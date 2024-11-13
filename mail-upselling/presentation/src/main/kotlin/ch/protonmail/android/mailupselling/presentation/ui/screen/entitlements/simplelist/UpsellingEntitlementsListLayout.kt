@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.theme.ProtonDimens
 

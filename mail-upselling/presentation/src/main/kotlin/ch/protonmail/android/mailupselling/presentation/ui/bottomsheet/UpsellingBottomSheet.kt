@@ -25,22 +25,22 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreenContent
-import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreenContentError
+import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
 
 @Composable
 fun UpsellingBottomSheet(
     modifier: Modifier = Modifier,
-    bottomSheetActions: UpsellingBottomSheet.Actions,
+    bottomSheetActions: UpsellingScreen.Actions,
     upsellingEntryPoint: UpsellingEntryPoint.Feature
 ) {
 
-    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory>(
+    val viewModel = hiltViewModel<UpsellingViewModel, UpsellingViewModel.Factory>(
         key = upsellingEntryPoint.toString()
     ) { factory ->
         factory.create(upsellingEntryPoint)
@@ -55,43 +55,16 @@ fun UpsellingBottomSheet(
     )
 
     when (val state = viewModel.state.collectAsState().value) {
-        UpsellingBottomSheetContentState.Loading -> ProtonCenteredProgress(
+        UpsellingScreenContentState.Loading -> ProtonCenteredProgress(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MailDimens.ExtraLargeSpacing)
         )
-        is UpsellingBottomSheetContentState.Data -> UpsellingScreenContent(modifier, state, actions)
-        is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
+        is UpsellingScreenContentState.Data -> UpsellingScreenContent(modifier, state, actions)
+        is UpsellingScreenContentState.Error -> UpsellingScreenContentError(state = state, actions)
     }
 }
 
 object UpsellingBottomSheet {
-
     const val DELAY_SHOWING = 100L
-
-    data class Actions(
-        override val onError: (String) -> Unit,
-        override val onUpgradeAttempt: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgrade: (String) -> Unit,
-        override val onDismiss: () -> Unit,
-        val onDisplayed: suspend () -> Unit
-    ) : UpsellingActions {
-
-        companion object {
-
-            val Empty = Actions(
-                onDisplayed = {},
-                onUpgradeAttempt = {},
-                onError = {},
-                onUpgrade = {},
-                onUpgradeCancelled = {},
-                onUpgradeErrored = {},
-                onSuccess = {},
-                onDismiss = {}
-            )
-        }
-    }
 }

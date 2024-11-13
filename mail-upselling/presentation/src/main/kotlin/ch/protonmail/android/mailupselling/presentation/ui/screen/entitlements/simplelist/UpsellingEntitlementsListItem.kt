@@ -33,7 +33,7 @@ import androidx.compose.ui.res.painterResource
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import coil.compose.AsyncImage
 import me.proton.core.compose.theme.ProtonDimens

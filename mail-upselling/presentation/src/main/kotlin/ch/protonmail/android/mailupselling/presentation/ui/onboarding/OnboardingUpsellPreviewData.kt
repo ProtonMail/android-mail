@@ -20,15 +20,15 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanSwitcherUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellBillingMessageUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellButtonsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanSwitcherUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum

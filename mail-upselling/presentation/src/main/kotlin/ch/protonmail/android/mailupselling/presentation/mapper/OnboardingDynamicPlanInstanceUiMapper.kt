@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
-import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan

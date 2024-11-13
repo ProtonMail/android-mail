@@ -19,9 +19,9 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject

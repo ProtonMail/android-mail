@@ -127,7 +127,7 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionB
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
-import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import kotlinx.coroutines.launch
@@ -304,7 +304,7 @@ fun MailboxScreen(
                         when (bottomSheetContentState.entryPoint) {
                             MailboxUpsellingEntryPoint.Mailbox -> {
                                 MailboxUpsellingBottomSheet(
-                                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                    actions = UpsellingScreen.Actions.Empty.copy(
                                         onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
                                         onUpgrade = { message -> actions.showNormalSnackbar(message) },
                                         onError = { message -> actions.showErrorSnackbar(message) }
@@ -314,7 +314,7 @@ fun MailboxScreen(
 
                             MailboxUpsellingEntryPoint.AutoDelete -> {
                                 AutoDeleteUpsellingBottomSheet(
-                                    actions = UpsellingBottomSheet.Actions.Empty.copy(
+                                    actions = UpsellingScreen.Actions.Empty.copy(
                                         onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) },
                                         onUpgrade = { message -> actions.showNormalSnackbar(message) },
                                         onError = { message -> actions.showErrorSnackbar(message) }
