@@ -19,10 +19,14 @@
 package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Free
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlement.Plus
+import ch.protonmail.android.mailupselling.presentation.model.comparisontable.ComparisonTableEntitlementItemUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import io.mockk.every
 import io.mockk.mockk
@@ -50,12 +54,14 @@ internal class DynamicPlanEntitlementsUiMapperTest {
     fun `should return the default entitlements when override is unset`() {
         // Given
         every { forceOverride.get() } returns false
-        val expected = listOf(
-            DynamicEntitlementUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+        val expected = PlanEntitlementsUiModel.SimpleList(
+            listOf(
+                PlanEntitlementListUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+            )
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
+        val actual = mapper.toListUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -65,12 +71,15 @@ internal class DynamicPlanEntitlementsUiMapperTest {
     fun `should return the default entitlements when override is set but plan unknown`() {
         // Given
         every { forceOverride.get() } returns false
-        val expected = listOf(
-            DynamicEntitlementUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+        val expected = PlanEntitlementsUiModel.SimpleList(
+            listOf(
+                PlanEntitlementListUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+            )
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.Feature.Mailbox)
+        val actual =
+            mapper.toListUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -80,16 +89,64 @@ internal class DynamicPlanEntitlementsUiMapperTest {
     fun `should return custom entitlements when override is set with known plan`() {
         // Given
         every { forceOverride.get() } returns true
-        val override = listOf(
-            DynamicEntitlementUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+        val override = PlanEntitlementsUiModel.SimpleList(
+            listOf(
+                PlanEntitlementListUiModel.Default(TextUiModel.Text("10 email addresses"), "iconUrl")
+            )
+        )
+
+        // When
+        val actual = mapper.toListUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
+
+        // Then
+        assertTrue(actual.items.isNotEmpty())
+        assertNotEquals(override, actual)
+    }
+
+    @Test
+    fun `should return comparison table when the entry point is Mailbox`() {
+        // Given
+        every { forceOverride.get() } returns false
+        val expected = PlanEntitlementsUiModel.ComparisonTableList(
+            listOf(
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_storage),
+                    freeValue = Free.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_free)),
+                    paidValue = Plus.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_storage_value_plus))
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses),
+                    freeValue = Free.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_free)),
+                    paidValue = Plus.Value(TextUiModel.TextRes(R.string.upselling_comparison_table_email_addresses_value_plus))
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_custom_email_domain),
+                    freeValue = Free.NotPresent,
+                    paidValue = Plus.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_desktop_app),
+                    freeValue = Free.NotPresent,
+                    paidValue = Plus.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_unlimited_folders_labels),
+                    freeValue = Free.NotPresent,
+                    paidValue = Plus.Present
+                ),
+                ComparisonTableEntitlementItemUiModel(
+                    title = TextUiModel.TextRes(R.string.upselling_comparison_table_priority_support),
+                    freeValue = Free.NotPresent,
+                    paidValue = Plus.Present
+                )
+            )
         )
 
         // When
         val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
-        assertTrue(actual.isNotEmpty())
-        assertNotEquals(override, actual)
+        assertEquals(expected, actual)
     }
 
     @Test
@@ -97,60 +154,35 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         // Given
         every { forceOverride.get() } returns true
 
-        val expectedMailboxEntitlements = listOf(
-            DynamicEntitlementUiModel.Overridden(
+        val expectedEntitlements = listOf(
+            PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
                 localResource = R.drawable.ic_upselling_storage
             ),
-            DynamicEntitlementUiModel.Overridden(
+            PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
                 localResource = R.drawable.ic_upselling_inbox
             ),
-            DynamicEntitlementUiModel.Overridden(
+            PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
                 localResource = R.drawable.ic_upselling_globe
             ),
-            DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_desktop_app),
-                localResource = R.drawable.ic_upselling_rocket
-            ),
-            DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_folders_labels),
-                localResource = R.drawable.ic_upselling_tag
-            )
-        )
-
-        val expectedAllTheOtherEntitlements = listOf(
-            DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_storage),
-                localResource = R.drawable.ic_upselling_storage
-            ),
-            DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_email_addresses),
-                localResource = R.drawable.ic_upselling_inbox
-            ),
-            DynamicEntitlementUiModel.Overridden(
-                text = TextUiModel.TextRes(R.string.upselling_plus_feature_custom_domain),
-                localResource = R.drawable.ic_upselling_globe
-            ),
-            DynamicEntitlementUiModel.Overridden(
+            PlanEntitlementListUiModel.Overridden(
                 text = TextUiModel.TextRes(R.string.upselling_plus_feature_plus_7_features),
                 localResource = R.drawable.ic_upselling_gift
             )
         )
 
         val expected = listOf(
-            expectedMailboxEntitlements,
-            expectedAllTheOtherEntitlements,
-            expectedAllTheOtherEntitlements,
-            expectedAllTheOtherEntitlements,
-            expectedAllTheOtherEntitlements,
-            expectedAllTheOtherEntitlements
-        )
+            expectedEntitlements,
+            expectedEntitlements,
+            expectedEntitlements,
+            expectedEntitlements,
+            expectedEntitlements
+        ).map { PlanEntitlementsUiModel.SimpleList(it) }
 
         // When
         val actual = listOf(
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox),
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.ContactGroups),
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Labels),
             mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Folders),

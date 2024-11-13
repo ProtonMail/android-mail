@@ -26,13 +26,18 @@ data class DynamicPlanInstanceUiModel(
     val name: String,
     val userId: UserIdUiModel,
     val price: TextUiModel,
+    val fullPrice: TextUiModel,
     val currency: String,
-    val discount: TextUiModel?,
+    val discount: Int?,
     val cycle: Int,
     val highlighted: Boolean,
     val viewId: Int,
     val dynamicPlan: DynamicPlan
 )
 
+internal fun DynamicPlanInstanceUiModel.isYearly() = this.cycle == YEARLY_CYCLE
+
 internal fun DynamicPlanInstanceUiModel.toTelemetryPayload() =
     UpsellingTelemetryTargetPlanPayload(dynamicPlan.name ?: "", cycle)
+
+private const val YEARLY_CYCLE = 12

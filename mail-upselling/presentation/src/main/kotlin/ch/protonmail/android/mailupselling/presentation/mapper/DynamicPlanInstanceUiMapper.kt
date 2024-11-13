@@ -19,8 +19,9 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.normalizedPrice
+import ch.protonmail.android.mailupselling.presentation.extension.toDecimalString
+import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
@@ -38,15 +39,15 @@ class DynamicPlanInstanceUiMapper @Inject constructor() {
         plan: DynamicPlan
     ): DynamicPlanInstanceUiModel {
         val price = instance.price.values.first()
+
         return DynamicPlanInstanceUiModel(
             userId = UserIdUiModel(userId),
             name = plan.title,
             price = price.normalizedPrice(cycle = instance.cycle),
+            fullPrice = TextUiModel.Text(price.totalPrice().toDecimalString()),
             cycle = instance.cycle,
             currency = price.currency,
-            discount = discount?.let {
-                TextUiModel.TextResWithArgs(R.string.upselling_discount_tag, listOf(it))
-            },
+            discount = discount,
             viewId = computeViewId(userId, instance),
             highlighted = highlighted,
             dynamicPlan = plan

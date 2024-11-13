@@ -27,7 +27,6 @@ import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanIconUi
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanTitleUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
@@ -35,6 +34,9 @@ import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUi
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithIdenticalInstances
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.DynamicPlanPlusWithNoInstances
@@ -83,8 +85,8 @@ internal class DynamicPlanUiMapperTest {
             icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
-            entitlements = listOf(ExpectedEntitlementsUiModel),
-            plans = emptyList()
+            entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
+            list = DynamicPlanInstanceListUiModel.Empty
         )
 
         // When
@@ -95,7 +97,7 @@ internal class DynamicPlanUiMapperTest {
     }
 
     @Test
-    fun `should return a plan with only one option if the instances are the same`() {
+    fun `should return an invalid list if the instances are the same`() {
         // Given
         expectIconUiModel()
         expectTitleUiModel()
@@ -109,6 +111,7 @@ internal class DynamicPlanUiMapperTest {
             userId = UserIdUiModel(UserId),
             name = UpsellingTestData.PlusPlan.title,
             price = TextUiModel.Text("0.1"),
+            fullPrice = TextUiModel.Text("0.1"),
             discount = null,
             currency = "EUR",
             cycle = 1,
@@ -130,8 +133,8 @@ internal class DynamicPlanUiMapperTest {
             icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
-            entitlements = listOf(ExpectedEntitlementsUiModel),
-            plans = listOf(expectedInstance)
+            entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
+            list = DynamicPlanInstanceListUiModel.Invalid
         )
 
         // When
@@ -158,6 +161,7 @@ internal class DynamicPlanUiMapperTest {
             userId = UserIdUiModel(UserId),
             name = plan.title,
             price = TextUiModel.Text("0.1"),
+            fullPrice = TextUiModel.Text("0.1"),
             discount = null,
             currency = "EUR",
             cycle = 1,
@@ -169,7 +173,8 @@ internal class DynamicPlanUiMapperTest {
             userId = UserIdUiModel(UserId),
             name = plan.title,
             price = TextUiModel.Text("0.09"),
-            discount = TextUiModel.TextResWithArgs(R.string.upselling_discount_tag, listOf("10")),
+            fullPrice = TextUiModel.Text("0.09"),
+            discount = 10,
             currency = "EUR",
             cycle = 12,
             highlighted = true,
@@ -199,8 +204,8 @@ internal class DynamicPlanUiMapperTest {
             icon = ExpectedIconUiModel,
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
-            entitlements = listOf(ExpectedEntitlementsUiModel),
-            plans = listOf(expectedShorterInstance, expectedLongerInstance)
+            entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
+            list = DynamicPlanInstanceListUiModel.Data(expectedShorterInstance, expectedLongerInstance)
         )
 
         // When
@@ -223,7 +228,8 @@ internal class DynamicPlanUiMapperTest {
     }
 
     private fun expectEntitlementsUiModel() {
-        every { entitlementsUiMapper.toUiModel(any(), any()) } returns listOf(ExpectedEntitlementsUiModel)
+        every { entitlementsUiMapper.toUiModel(any(), any()) } returns
+            PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel))
     }
 
     @Suppress("LongParameterList")
@@ -246,7 +252,7 @@ internal class DynamicPlanUiMapperTest {
 
         val ExpectedIconUiModel = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
         val ExpectedDescriptionUiModel = DynamicPlanDescriptionUiModel(TextUiModel.Text("description"))
-        val ExpectedEntitlementsUiModel = DynamicEntitlementUiModel.Default(TextUiModel.Text("item"), "")
+        val ExpectedEntitlementsUiModel = PlanEntitlementListUiModel.Default(TextUiModel.Text("item"), "")
         val ExpectedTitleUiModel = DynamicPlanTitleUiModel(TextUiModel.Text("title"))
 
         val UserId = UserId("id")

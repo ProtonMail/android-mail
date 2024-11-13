@@ -19,7 +19,6 @@
 package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
@@ -41,6 +40,7 @@ internal class DynamicPlanInstanceUIMapperTest {
             userId = UserIdUiModel(UserId),
             name = UpsellingTestData.PlusPlan.title,
             price = TextUiModel.Text("0.1"),
+            fullPrice = TextUiModel.Text("0.1"),
             discount = null,
             currency = "EUR",
             cycle = 1,
@@ -71,7 +71,8 @@ internal class DynamicPlanInstanceUIMapperTest {
             userId = UserIdUiModel(UserId),
             name = UpsellingTestData.PlusPlan.title,
             price = TextUiModel.Text("0.09"),
-            discount = TextUiModel.TextResWithArgs(R.string.upselling_discount_tag, listOf("20")),
+            fullPrice = TextUiModel.Text("1.08"),
+            discount = 20,
             currency = "EUR",
             cycle = 12,
             highlighted = true,

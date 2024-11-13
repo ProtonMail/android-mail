@@ -18,10 +18,14 @@
 
 package ch.protonmail.android.mailupselling.presentation.model
 
-internal data class DynamicPlansUiModel(
-    val icon: DynamicPlanIconUiModel,
-    val title: DynamicPlanTitleUiModel,
-    val description: DynamicPlanDescriptionUiModel,
-    val entitlements: PlanEntitlementsUiModel,
-    val list: DynamicPlanInstanceListUiModel
-)
+sealed interface DynamicPlanInstanceListUiModel {
+    data object Empty :
+        DynamicPlanInstanceListUiModel
+    data object Invalid :
+        DynamicPlanInstanceListUiModel
+
+    data class Data(
+        val shorterCycle: DynamicPlanInstanceUiModel,
+        val longerCycle: DynamicPlanInstanceUiModel
+    ) : DynamicPlanInstanceListUiModel
+}

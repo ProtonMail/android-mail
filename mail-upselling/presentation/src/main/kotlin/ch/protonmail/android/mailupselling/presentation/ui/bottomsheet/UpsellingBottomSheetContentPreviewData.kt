@@ -20,12 +20,14 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanIconUiModel
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
@@ -55,27 +57,30 @@ internal object UpsellingBottomSheetContentPreviewData {
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
             title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
             description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
-            entitlements = listOf(
-                DynamicEntitlementUiModel.Overridden(
-                    text = TextUiModel.Text("Entitlement 1"),
-                    localResource = R.drawable.ic_upselling_pass
-                ),
-                DynamicEntitlementUiModel.Overridden(
-                    text = TextUiModel.Text("Entitlement 2"),
-                    localResource = R.drawable.ic_upselling_mail
-                ),
-                DynamicEntitlementUiModel.Overridden(
-                    text = TextUiModel.Text("Entitlement 3"),
-                    localResource = R.drawable.ic_upselling_gift
+            entitlements = PlanEntitlementsUiModel.SimpleList(
+                listOf(
+                    PlanEntitlementListUiModel.Overridden(
+                        text = TextUiModel.Text("Entitlement 1"),
+                        localResource = R.drawable.ic_upselling_pass
+                    ),
+                    PlanEntitlementListUiModel.Overridden(
+                        text = TextUiModel.Text("Entitlement 2"),
+                        localResource = R.drawable.ic_upselling_mail
+                    ),
+                    PlanEntitlementListUiModel.Overridden(
+                        text = TextUiModel.Text("Entitlement 3"),
+                        localResource = R.drawable.ic_upselling_gift
+                    )
                 )
             ),
-            plans = listOf(
+            list = DynamicPlanInstanceListUiModel.Data(
                 DynamicPlanInstanceUiModel(
                     name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
                     discount = null,
                     price = TextUiModel.Text("9.99"),
+                    fullPrice = TextUiModel.Text("19.99"),
                     cycle = 1,
                     highlighted = false,
                     viewId = 123,
@@ -85,8 +90,9 @@ internal object UpsellingBottomSheetContentPreviewData {
                     name = "Upgrade to Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
-                    discount = TextUiModel.Text("SAVE 20%"),
+                    discount = 20,
                     price = TextUiModel.Text("1.49"),
+                    fullPrice = TextUiModel.Text("11.49"),
                     cycle = 12,
                     highlighted = true,
                     viewId = 123,

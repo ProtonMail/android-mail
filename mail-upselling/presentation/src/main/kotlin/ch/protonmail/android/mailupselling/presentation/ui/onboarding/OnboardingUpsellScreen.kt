@@ -71,7 +71,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellOperation.Action
@@ -79,6 +78,7 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPl
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellState
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
 import coil.compose.AsyncImage
@@ -431,7 +431,7 @@ private fun PlanEntitlements(
     val showAllEntitlements = remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {
-        plan.entitlements.forEachIndexed { index, item ->
+        plan.entitlements.items.forEachIndexed { index, item ->
             if (index < numberOfEntitlementsToShow || showAllEntitlements.value) {
                 PlanEntitlement(entitlementUiModel = item)
                 Spacer(
@@ -444,7 +444,7 @@ private fun PlanEntitlements(
 
         PremiumValueSection(modifier, plan.premiumValueDrawables)
 
-        val numberOfEntitlementsNotShown = (plan.entitlements.size - numberOfEntitlementsToShow).coerceAtLeast(0)
+        val numberOfEntitlementsNotShown = (plan.entitlements.items.size - numberOfEntitlementsToShow).coerceAtLeast(0)
         if (numberOfEntitlementsNotShown != 0 && !showAllEntitlements.value) {
             MorePlanEntitlements(
                 numberOfEntitlementsNotShown = numberOfEntitlementsNotShown,
@@ -455,10 +455,10 @@ private fun PlanEntitlements(
 }
 
 @Composable
-private fun PlanEntitlement(entitlementUiModel: DynamicEntitlementUiModel) {
+private fun PlanEntitlement(entitlementUiModel: PlanEntitlementListUiModel) {
     val imageModel = when (entitlementUiModel) {
-        is DynamicEntitlementUiModel.Default -> entitlementUiModel.remoteResource
-        is DynamicEntitlementUiModel.Overridden -> entitlementUiModel.localResource
+        is PlanEntitlementListUiModel.Default -> entitlementUiModel.remoteResource
+        is PlanEntitlementListUiModel.Overridden -> entitlementUiModel.localResource
     }
 
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {

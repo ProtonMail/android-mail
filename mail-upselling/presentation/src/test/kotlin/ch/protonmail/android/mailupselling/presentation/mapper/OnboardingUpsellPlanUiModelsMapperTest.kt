@@ -5,10 +5,11 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValuePlusDrawables
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValueUnlimitedDrawables
@@ -22,8 +23,10 @@ class OnboardingUpsellPlanUiModelsMapperTest {
 
     private val dynamicPlanEntitlementsUiMapper = mockk<DynamicPlanEntitlementsUiMapper> {
         every {
-            toUiModel(any(), UpsellingEntryPoint.PostOnboarding)
-        } returns listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+            toListUiModel(any(), UpsellingEntryPoint.PostOnboarding)
+        } returns PlanEntitlementsUiModel.SimpleList(
+            listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+        )
     }
     private val onboardingDynamicPlanInstanceUiMapper = mockk<OnboardingDynamicPlanInstanceUiMapper> {
         every {
@@ -49,7 +52,9 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                         amount = TextUiModel.Text("0.1"),
                         period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                     ),
-                    entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
+                    entitlements = PlanEntitlementsUiModel.SimpleList(
+                        listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+                    ),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
@@ -61,14 +66,16 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                         amount = TextUiModel.Text("0.1"),
                         period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                     ),
-                    entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
+                    entitlements = PlanEntitlementsUiModel.SimpleList(
+                        listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+                    ),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
                     priceUiModel = OnboardingUpsellPriceUiModel.Free,
-                    entitlements = OnboardingFreeOverriddenEntitlements,
+                    entitlements = PlanEntitlementsUiModel.SimpleList(OnboardingFreeOverriddenEntitlements),
                     payButtonPlanUiModel = null,
                     premiumValueDrawables = emptyList()
                 )
@@ -82,7 +89,9 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                         amount = TextUiModel.Text("1.08"),
                         period = TextUiModel.TextRes(R.string.upselling_onboarding_year)
                     ),
-                    entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
+                    entitlements = PlanEntitlementsUiModel.SimpleList(
+                        listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+                    ),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValueUnlimitedDrawables
                 ),
@@ -94,14 +103,16 @@ class OnboardingUpsellPlanUiModelsMapperTest {
                         amount = TextUiModel.Text("1.08"),
                         period = TextUiModel.TextRes(R.string.upselling_onboarding_year)
                     ),
-                    entitlements = listOf(DynamicEntitlementUiModel.Overridden(TextUiModel.Text("entitlement"), 0)),
+                    entitlements = PlanEntitlementsUiModel.SimpleList(
+                        listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
+                    ),
                     payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
                     premiumValueDrawables = PremiumValuePlusDrawables
                 ),
                 OnboardingUpsellPlanUiModel(
                     title = "Proton Free",
                     priceUiModel = OnboardingUpsellPriceUiModel.Free,
-                    entitlements = OnboardingFreeOverriddenEntitlements,
+                    entitlements = PlanEntitlementsUiModel.SimpleList(OnboardingFreeOverriddenEntitlements),
                     payButtonPlanUiModel = null,
                     premiumValueDrawables = emptyList()
                 )

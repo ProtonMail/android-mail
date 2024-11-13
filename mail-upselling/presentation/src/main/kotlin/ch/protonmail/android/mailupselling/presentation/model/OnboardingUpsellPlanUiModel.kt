@@ -26,7 +26,7 @@ data class OnboardingUpsellPlanUiModels(
 data class OnboardingUpsellPlanUiModel(
     val title: String,
     val priceUiModel: OnboardingUpsellPriceUiModel,
-    val entitlements: List<DynamicEntitlementUiModel>,
+    val entitlements: PlanEntitlementsUiModel.SimpleList,
     val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
     val premiumValueDrawables: List<Int>
 )

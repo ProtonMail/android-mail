@@ -20,7 +20,6 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellButtonsUiModel
@@ -28,6 +27,8 @@ import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPl
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingUpsellPriceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
@@ -87,26 +88,28 @@ internal object OnboardingUpsellPreviewData {
                     amount = TextUiModel.Text("12.99"),
                     period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                 ),
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 3"),
-                        localResource = R.drawable.ic_upselling_gift
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 4"),
-                        localResource = R.drawable.ic_upselling_tag
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 5"),
-                        localResource = R.drawable.ic_upselling_storage
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 3"),
+                            localResource = R.drawable.ic_upselling_gift
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 4"),
+                            localResource = R.drawable.ic_upselling_tag
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 5"),
+                            localResource = R.drawable.ic_upselling_storage
+                        )
                     )
                 ),
                 payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
@@ -120,26 +123,28 @@ internal object OnboardingUpsellPreviewData {
                     amount = TextUiModel.Text("4.99"),
                     period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                 ),
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 3"),
-                        localResource = R.drawable.ic_upselling_gift
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 4"),
-                        localResource = R.drawable.ic_upselling_tag
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 5"),
-                        localResource = R.drawable.ic_upselling_storage
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 3"),
+                            localResource = R.drawable.ic_upselling_gift
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 4"),
+                            localResource = R.drawable.ic_upselling_tag
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 5"),
+                            localResource = R.drawable.ic_upselling_storage
+                        )
                     )
                 ),
                 payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
@@ -148,14 +153,16 @@ internal object OnboardingUpsellPreviewData {
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
                 priceUiModel = OnboardingUpsellPriceUiModel.Free,
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        )
                     )
                 ),
                 payButtonPlanUiModel = null,
@@ -171,26 +178,28 @@ internal object OnboardingUpsellPreviewData {
                     amount = TextUiModel.Text("9.99"),
                     period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                 ),
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 3"),
-                        localResource = R.drawable.ic_upselling_gift
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 4"),
-                        localResource = R.drawable.ic_upselling_tag
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 5"),
-                        localResource = R.drawable.ic_upselling_storage
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 3"),
+                            localResource = R.drawable.ic_upselling_gift
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 4"),
+                            localResource = R.drawable.ic_upselling_tag
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 5"),
+                            localResource = R.drawable.ic_upselling_storage
+                        )
                     )
                 ),
                 payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
@@ -204,26 +213,28 @@ internal object OnboardingUpsellPreviewData {
                     amount = TextUiModel.Text("3.99"),
                     period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
                 ),
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 3"),
-                        localResource = R.drawable.ic_upselling_gift
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 4"),
-                        localResource = R.drawable.ic_upselling_tag
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 5"),
-                        localResource = R.drawable.ic_upselling_storage
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 3"),
+                            localResource = R.drawable.ic_upselling_gift
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 4"),
+                            localResource = R.drawable.ic_upselling_tag
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 5"),
+                            localResource = R.drawable.ic_upselling_storage
+                        )
                     )
                 ),
                 payButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel,
@@ -232,14 +243,16 @@ internal object OnboardingUpsellPreviewData {
             OnboardingUpsellPlanUiModel(
                 title = "Proton Free",
                 priceUiModel = OnboardingUpsellPriceUiModel.Free,
-                entitlements = listOf(
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 1"),
-                        localResource = R.drawable.ic_upselling_pass
-                    ),
-                    DynamicEntitlementUiModel.Overridden(
-                        text = TextUiModel.Text("Entitlement 2"),
-                        localResource = R.drawable.ic_upselling_mail
+                entitlements = PlanEntitlementsUiModel.SimpleList(
+                    listOf(
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 1"),
+                            localResource = R.drawable.ic_upselling_pass
+                        ),
+                        PlanEntitlementListUiModel.Overridden(
+                            text = TextUiModel.Text("Entitlement 2"),
+                            localResource = R.drawable.ic_upselling_mail
+                        )
                     )
                 ),
                 payButtonPlanUiModel = null,
