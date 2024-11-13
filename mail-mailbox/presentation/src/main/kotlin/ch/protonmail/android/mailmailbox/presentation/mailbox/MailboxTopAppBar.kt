@@ -123,7 +123,7 @@ fun MailboxTopAppBar(
                 },
                 actions = {
                     if (uiModel.shouldShowActions) {
-                        UpsellingMailButton(onClick = actions.onOpenUpsellingPage)
+                        UpsellingMailButton(onClick = actions.onNavigateToStandaloneUpselling)
                         IconButton(
                             modifier = Modifier.testTag(MailboxTopAppBarTestTags.SearchButton),
                             onClick = actions.onEnterSearchMode
@@ -224,6 +224,7 @@ object MailboxTopAppBar {
         val onEnterSearchMode: () -> Unit,
         val onSearch: (query: String) -> Unit,
         val onOpenComposer: () -> Unit,
+        val onNavigateToStandaloneUpselling: () -> Unit,
         val onOpenUpsellingPage: () -> Unit,
         val onCloseUpsellingPage: () -> Unit
     )
@@ -266,6 +267,7 @@ fun LoadingMailboxTopAppBarPreview() {
             onEnterSearchMode = {},
             onSearch = {},
             onOpenComposer = {},
+            onNavigateToStandaloneUpselling = {},
             onOpenUpsellingPage = {},
             onCloseUpsellingPage = {}
         )

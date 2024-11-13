@@ -202,6 +202,10 @@ sealed class Destination(val route: String) {
         }
 
         object PostSubscription : Destination("postSubscription")
+
+        object Upselling {
+            data object Standalone : Destination("upselling/standalone")
+        }
     }
 
     object Dialog {
