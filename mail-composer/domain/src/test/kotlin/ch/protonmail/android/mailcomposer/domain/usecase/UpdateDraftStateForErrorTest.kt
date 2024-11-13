@@ -20,16 +20,15 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.DraftState
 import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
-import ch.protonmail.android.mailmessage.domain.model.SendingError
-import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import io.mockk.Called
-import io.mockk.called
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -65,7 +64,7 @@ class UpdateDraftStateForErrorTest {
 
         // Then
         coVerify { draftStateRepository.updateDraftSyncState(userId, messageId, newState) }
-        coVerify { draftStateRepository.updateSendingError(userId, messageId, any()) wasNot called }
+        coVerify(exactly = 0) { draftStateRepository.updateSendingError(userId, messageId, any()) }
     }
 
     @Test
@@ -83,7 +82,7 @@ class UpdateDraftStateForErrorTest {
 
         // Then
         verify { messageRepository wasNot Called }
-        coVerify { draftStateRepository.updateSendingError(userId, messageId, any()) wasNot called }
+        coVerify(exactly = 0) { draftStateRepository.updateSendingError(userId, messageId, any()) }
     }
 
     @Test
