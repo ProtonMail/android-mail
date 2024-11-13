@@ -26,13 +26,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,20 +49,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.isYearly
 import ch.protonmail.android.mailupselling.presentation.model.toTelemetryPayload
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.captionUnspecified
-import me.proton.core.compose.theme.defaultHighlightUnspecified
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -71,7 +71,13 @@ internal fun UpsellingPlanItem(
     planUiModel: DynamicPlanInstanceUiModel,
     actions: UpsellingBottomSheet.Actions
 ) {
-    val colors = requireNotNull(UpsellingColors.BottomSheetContentColors)
+    val billingPeriod = if (planUiModel.isYearly()) {
+        stringResource(R.string.upselling_year)
+    } else {
+        stringResource(R.string.upselling_month)
+    }
+
+    val price = if (planUiModel.isYearly()) planUiModel.fullPrice else planUiModel.price
 
     Box(
         modifier = modifier
@@ -82,40 +88,39 @@ internal fun UpsellingPlanItem(
             var discountTagHeight by remember { mutableIntStateOf(0) }
             UpsellingDiscountTag(
                 modifier = Modifier
-                    .zIndex(UpsellingDimens.DiscountTagDefaultZIndex)
-                    .offset(y = UpsellingDimens.DiscountTagVerticalOffset)
+                    .zIndex(UpsellingLayoutValues.SquarePaymentButtons.discountTagDefaultZIndex)
+                    .offset(y = UpsellingLayoutValues.SquarePaymentButtons.discountTagVerticalOffset)
                     .align(Alignment.TopCenter)
                     .onGloballyPositioned { discountTagHeight = it.size.height },
-                text = TextUiModel.TextResWithArgs(
-                    R.string.upselling_discount_tag,
-                    listOf(planUiModel.discount.toString())
-                )
+                discountRate = planUiModel.discount
             )
         }
 
         Column(
             modifier = Modifier
                 .thenIf(planUiModel.discount != null) {
-                    background(
-                        color = UpsellingColors.PaymentDiscountedItemBackground,
-                        shape = RoundedCornerShape(ProtonDimens.DefaultSpacing)
-                    )
-                    border(
-                        width = MailDimens.DefaultBorder,
-                        color = UpsellingColors.PaymentDiscountedItemBorder,
-                        shape = RoundedCornerShape(ProtonDimens.DefaultSpacing)
-                    )
+                    Modifier
+                        .background(
+                            color = UpsellingLayoutValues.SquarePaymentButtons.highlightedBackgroundColor,
+                            shape = UpsellingLayoutValues.SquarePaymentButtons.shape
+                        )
+                        .border(
+                            width = MailDimens.DefaultBorder,
+                            color = UpsellingLayoutValues.SquarePaymentButtons.highlightedBorderColor,
+                            shape = UpsellingLayoutValues.SquarePaymentButtons.shape
+                        )
                 }
                 .thenIf(planUiModel.discount == null) {
-                    background(
-                        color = UpsellingColors.PaymentStandardItemBackground,
-                        shape = RoundedCornerShape(ProtonDimens.DefaultSpacing)
-                    )
-                    border(
-                        width = MailDimens.DefaultBorder,
-                        color = UpsellingColors.PaymentStandardItemBorder,
-                        shape = RoundedCornerShape(ProtonDimens.DefaultSpacing)
-                    )
+                    Modifier
+                        .background(
+                            color = UpsellingLayoutValues.SquarePaymentButtons.nonHighlightedBackgroundColor,
+                            shape = UpsellingLayoutValues.SquarePaymentButtons.shape
+                        )
+                        .border(
+                            width = MailDimens.DefaultBorder,
+                            color = UpsellingLayoutValues.SquarePaymentButtons.nonHighlightedBorderColor,
+                            shape = UpsellingLayoutValues.SquarePaymentButtons.shape
+                        )
                 },
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -125,8 +130,8 @@ internal fun UpsellingPlanItem(
                     bottom = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing
                 ),
                 text = pluralStringResource(R.plurals.upselling_month, planUiModel.cycle, planUiModel.cycle),
-                style = ProtonTheme.typography.captionUnspecified,
-                color = colors.textNorm
+                style = ProtonTheme.typography.captionRegular,
+                color = UpsellingLayoutValues.SquarePaymentButtons.textColor
             )
             FlowRow(
                 modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
@@ -135,21 +140,51 @@ internal fun UpsellingPlanItem(
             ) {
                 Text(
                     text = planUiModel.currency,
-                    style = ProtonTheme.typography.defaultHighlightUnspecified,
-                    color = colors.textNorm
+                    style = ProtonTheme.typography.body1Bold,
+                    color = UpsellingLayoutValues.SquarePaymentButtons.textColor
                 )
-                Spacer(modifier = Modifier.padding(UpsellingDimens.CurrencyDivider))
+                Spacer(modifier = Modifier.padding(UpsellingLayoutValues.SquarePaymentButtons.currencyDivider))
                 Text(
-                    text = planUiModel.price.string(),
-                    style = ProtonTheme.typography.defaultHighlightUnspecified,
-                    color = colors.textNorm
+                    text = price.string(),
+                    style = ProtonTheme.typography.body1Bold,
+                    color = UpsellingLayoutValues.SquarePaymentButtons.textColor
                 )
                 Text(
-                    text = stringResource(id = R.string.upselling_month),
-                    style = ProtonTheme.typography.captionUnspecified,
-                    color = colors.textWeak,
+                    text = billingPeriod,
+                    style = ProtonTheme.typography.overlineRegular,
+                    color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
+            }
+
+            Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
+
+            Row {
+                if (planUiModel.isYearly()) {
+                    Text(
+                        text = planUiModel.currency,
+                        style = ProtonTheme.typography.overlineRegular,
+                        color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor
+                    )
+                    Spacer(modifier = Modifier.padding(UpsellingLayoutValues.SquarePaymentButtons.currencyDivider))
+                    Text(
+                        text = planUiModel.price.string(),
+                        style = ProtonTheme.typography.overlineRegular,
+                        color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor
+                    )
+                    Text(
+                        text = stringResource(id = R.string.upselling_month),
+                        style = ProtonTheme.typography.overlineRegular,
+                        color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor,
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    )
+                } else {
+                    Text(
+                        text = "",
+                        style = ProtonTheme.typography.overlineRegular,
+                        color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor
+                    )
+                }
             }
 
             val eventListener = UpsellingPaymentEventListener(
@@ -158,7 +193,7 @@ internal fun UpsellingPlanItem(
                 telemetryPayload = planUiModel.toTelemetryPayload(),
                 actions
             )
-            val buttonCornerRadius = UpsellingDimens.ButtonCornerRadius
+            val buttonCornerRadius = UpsellingLayoutValues.SquarePaymentButtons.buttonCornerRadius
             var maxWrappedViewSize by remember { mutableStateOf(IntSize.Zero) }
 
             Box(
@@ -184,14 +219,41 @@ internal fun UpsellingPlanItem(
                             this.cycle = planUiModel.cycle
                             this.plan = planUiModel.dynamicPlan
                             this.text = context.getString(R.string.upselling_get_button, planUiModel.name)
+                            this.outlineProvider = null
+                            this.clipToOutline = false
+                            this.elevation = 0f
+
                             if (!planUiModel.highlighted) {
-                                this.setBackgroundColor(UpsellingColors.SecondaryButtonBackground)
+                                setBackgroundColor(
+                                    UpsellingLayoutValues.SquarePaymentButtons.SecondaryPaymentButtonBackground
+                                )
                             }
+
                             setOnEventListener(eventListener)
                         }
                     }
                 )
             }
+        }
+    }
+}
+
+@AdaptivePreviews
+@Composable
+private fun UpsellingItem() {
+    val plans = UpsellingBottomSheetContentPreviewData.Base.plans.list as DynamicPlanInstanceListUiModel.Data
+    ProtonTheme {
+        Column {
+            UpsellingPlanItem(
+                modifier = Modifier,
+                plans.longerCycle,
+                actions = UpsellingBottomSheet.Actions.Empty
+            )
+            UpsellingPlanItem(
+                modifier = Modifier,
+                plans.shorterCycle,
+                actions = UpsellingBottomSheet.Actions.Empty
+            )
         }
     }
 }

@@ -16,34 +16,33 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
+package ch.protonmail.android.mailupselling.presentation.ui.screen
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
+import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
-import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreenContent
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheet
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheetContentPreviewData
+import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingBottomSheetError
 import ch.protonmail.android.mailupselling.presentation.viewmodel.UpsellingBottomSheetViewModel
 import me.proton.core.compose.component.ProtonCenteredProgress
+import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-fun UpsellingBottomSheet(
+fun UpsellingScreen(
     modifier: Modifier = Modifier,
     bottomSheetActions: UpsellingBottomSheet.Actions,
-    upsellingEntryPoint: UpsellingEntryPoint.Feature
+    entryPoint: UpsellingEntryPoint.Feature
 ) {
 
-    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory>(
-        key = upsellingEntryPoint.toString()
-    ) { factory ->
-        factory.create(upsellingEntryPoint)
+    val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory> { factory ->
+        factory.create(entryPoint)
     }
 
     val actions = bottomSheetActions.copy(
@@ -55,43 +54,33 @@ fun UpsellingBottomSheet(
     )
 
     when (val state = viewModel.state.collectAsState().value) {
-        UpsellingBottomSheetContentState.Loading -> ProtonCenteredProgress(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(MailDimens.ExtraLargeSpacing)
-        )
-        is UpsellingBottomSheetContentState.Data -> UpsellingScreenContent(modifier, state, actions)
+        UpsellingBottomSheetContentState.Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
+        is UpsellingBottomSheetContentState.Data -> {
+            val isStandalone = entryPoint is UpsellingEntryPoint.Standalone
+            CompositionLocalProvider(LocalEntryPointIsStandalone provides isStandalone) {
+                UpsellingScreenContent(modifier, state, actions)
+            }
+        }
         is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
     }
 }
 
-object UpsellingBottomSheet {
-
-    const val DELAY_SHOWING = 100L
-
-    data class Actions(
-        override val onError: (String) -> Unit,
-        override val onUpgradeAttempt: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgradeCancelled: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgradeErrored: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onSuccess: (UpsellingTelemetryTargetPlanPayload) -> Unit,
-        override val onUpgrade: (String) -> Unit,
-        override val onDismiss: () -> Unit,
-        val onDisplayed: suspend () -> Unit
-    ) : UpsellingActions {
-
-        companion object {
-
-            val Empty = Actions(
+@AdaptivePreviews
+@Composable
+private fun BottomSheetPreview() {
+    ProtonTheme3 {
+        UpsellingScreenContent(
+            state = UpsellingBottomSheetContentPreviewData.Base,
+            actions = UpsellingBottomSheet.Actions(
                 onDisplayed = {},
-                onUpgradeAttempt = {},
+                onDismiss = {},
                 onError = {},
+                onUpgradeAttempt = {},
                 onUpgrade = {},
                 onUpgradeCancelled = {},
                 onUpgradeErrored = {},
-                onSuccess = {},
-                onDismiss = {}
+                onSuccess = {}
             )
-        }
+        )
     }
 }

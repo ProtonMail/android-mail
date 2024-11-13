@@ -21,36 +21,35 @@ package ch.protonmail.android.mailupselling.presentation.ui.bottomsheet
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.model.string
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
+import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.overlineStrongUnspecified
 
 @Composable
-internal fun UpsellingDiscountTag(modifier: Modifier = Modifier, text: TextUiModel) {
-    val colors = requireNotNull(UpsellingColors.BottomSheetContentColors)
-
+internal fun UpsellingDiscountTag(modifier: Modifier = Modifier, discountRate: Int) {
     Box(
         modifier = modifier
             .background(
-                Brush.linearGradient(colorStops = UpsellingColors.DiscountTagColorStops),
-                shape = ProtonTheme.shapes.small
+                Brush.linearGradient(colorStops = UpsellingLayoutValues.discountTagColorStops),
+                shape = RoundedCornerShape(8.dp)
             )
             .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = text.string(),
-            style = ProtonTheme.typography.overlineStrongUnspecified,
-            color = colors.backgroundNorm
+            text = stringResource(R.string.upselling_discount_tag, discountRate.toString()),
+            style = ProtonTheme.typography.overlineMedium,
+            color = UpsellingLayoutValues.SquarePaymentButtons.discountTagTextColor
         )
     }
 }
@@ -59,6 +58,6 @@ internal fun UpsellingDiscountTag(modifier: Modifier = Modifier, text: TextUiMod
 @Composable
 private fun UpsellingDiscountTagPreview() {
     ProtonTheme {
-        UpsellingDiscountTag(text = TextUiModel.Text("SAVE 20%"))
+        UpsellingDiscountTag(discountRate = 20)
     }
 }
