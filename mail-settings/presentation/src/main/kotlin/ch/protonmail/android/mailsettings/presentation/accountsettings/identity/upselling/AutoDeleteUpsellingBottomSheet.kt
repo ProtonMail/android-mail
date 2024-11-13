@@ -28,6 +28,6 @@ fun AutoDeleteUpsellingBottomSheet(modifier: Modifier = Modifier, actions: Upsel
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.AutoDelete
+        upsellingEntryPoint = UpsellingEntryPoint.Feature.AutoDelete
     )
 }

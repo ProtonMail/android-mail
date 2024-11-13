@@ -47,7 +47,7 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 
 @HiltViewModel(assistedFactory = UpsellingBottomSheetViewModel.Factory::class)
 internal class UpsellingBottomSheetViewModel @AssistedInject constructor(
-    @Assisted val upsellingEntryPoint: UpsellingEntryPoint.BottomSheet,
+    @Assisted val upsellingEntryPoint: UpsellingEntryPoint.Feature,
     observePrimaryUser: ObservePrimaryUser,
     private val getDynamicPlansAdjustedPrices: GetDynamicPlansAdjustedPrices,
     private val filterDynamicPlansByUserSubscription: FilterDynamicPlansByUserSubscription,
@@ -59,7 +59,7 @@ internal class UpsellingBottomSheetViewModel @AssistedInject constructor(
     @AssistedFactory
     interface Factory {
 
-        fun create(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): UpsellingBottomSheetViewModel
+        fun create(upsellingEntryPoint: UpsellingEntryPoint.Feature): UpsellingBottomSheetViewModel
     }
 
     private val mutableState = MutableStateFlow<UpsellingBottomSheetContentState>(Loading)

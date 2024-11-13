@@ -28,6 +28,6 @@ fun MobileSignatureUpsellingBottomSheet(modifier: Modifier = Modifier, actions: 
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.MobileSignature
+        upsellingEntryPoint = UpsellingEntryPoint.Feature.MobileSignature
     )
 }

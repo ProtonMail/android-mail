@@ -52,7 +52,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -67,7 +67,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -82,7 +82,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.MobileSignature)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.MobileSignature)
 
         // Then
         assertEquals(expected, actual)
@@ -97,7 +97,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.ContactGroups)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.ContactGroups)
 
         // Then
         assertEquals(expected, actual)
@@ -112,7 +112,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Folders)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Folders)
 
         // Then
         assertEquals(expected, actual)
@@ -127,7 +127,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Labels)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Labels)
 
         // Then
         assertEquals(expected, actual)
@@ -142,7 +142,7 @@ internal class DynamicPlanDescriptionUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.AutoDelete)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.AutoDelete)
 
         // Then
         assertEquals(expected, actual)

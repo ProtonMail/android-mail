@@ -55,7 +55,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -70,7 +70,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.BottomSheet.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan.copy(name = "Unknown"), UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertEquals(expected, actual)
@@ -85,7 +85,7 @@ internal class DynamicPlanEntitlementsUiMapperTest {
         )
 
         // When
-        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox)
+        val actual = mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox)
 
         // Then
         assertTrue(actual.isNotEmpty())
@@ -150,12 +150,12 @@ internal class DynamicPlanEntitlementsUiMapperTest {
 
         // When
         val actual = listOf(
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Mailbox),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.ContactGroups),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Labels),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.Folders),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.MobileSignature),
-            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.BottomSheet.AutoDelete)
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Mailbox),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.ContactGroups),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Labels),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.Folders),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.MobileSignature),
+            mapper.toUiModel(UpsellingTestData.PlusPlan, UpsellingEntryPoint.Feature.AutoDelete)
         )
 
         // Then

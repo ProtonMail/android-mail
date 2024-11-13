@@ -28,6 +28,6 @@ fun ContactGroupsUpsellingBottomSheet(modifier: Modifier = Modifier, actions: Up
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.ContactGroups
+        upsellingEntryPoint = UpsellingEntryPoint.Feature.ContactGroups
     )
 }

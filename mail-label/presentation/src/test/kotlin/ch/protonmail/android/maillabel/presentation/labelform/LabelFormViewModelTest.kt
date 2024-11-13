@@ -428,7 +428,7 @@ class LabelFormViewModelTest {
             val loadedState = loadedCreateState
             every { savedStateHandle.get<String>(LabelFormScreen.LabelFormLabelIdKey) } returns null
             coEvery { isLabelLimitReached.invoke(userId, LabelType.MessageLabel) } returns true.right()
-            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.BottomSheet.Labels) } returns flowOf(true)
+            coEvery { observeUpsellingVisibility.invoke(UpsellingEntryPoint.Feature.Labels) } returns flowOf(true)
 
             labelFormViewModel.state.test {
                 // Initial loaded state

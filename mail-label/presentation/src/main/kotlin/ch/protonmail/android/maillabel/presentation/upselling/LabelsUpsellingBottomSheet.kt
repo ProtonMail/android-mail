@@ -28,6 +28,6 @@ fun LabelsUpsellingBottomSheet(modifier: Modifier = Modifier, actions: Upselling
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.Labels
+        upsellingEntryPoint = UpsellingEntryPoint.Feature.Labels
     )
 }

@@ -231,7 +231,7 @@ class FolderFormViewModel @Inject constructor(
             }
 
             isFolderLimitReached -> {
-                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.Folders).first()
+                val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Feature.Folders).first()
                 return if (shouldShowUpselling) {
                     emitNewStateFor(FolderFormEvent.ShowUpselling)
                 } else emitNewStateFor(FolderFormEvent.FolderLimitReached)

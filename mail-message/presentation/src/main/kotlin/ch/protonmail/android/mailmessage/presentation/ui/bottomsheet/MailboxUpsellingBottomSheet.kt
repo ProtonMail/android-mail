@@ -28,6 +28,6 @@ fun MailboxUpsellingBottomSheet(modifier: Modifier = Modifier, actions: Upsellin
     UpsellingBottomSheet(
         modifier,
         bottomSheetActions = actions,
-        upsellingEntryPoint = UpsellingEntryPoint.BottomSheet.Mailbox
+        upsellingEntryPoint = UpsellingEntryPoint.Feature.Mailbox
     )
 }

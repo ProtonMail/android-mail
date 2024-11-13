@@ -98,7 +98,7 @@ class AccountSettingsViewModelTest {
     }
 
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
-        every { this@mockk(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(false)
+        every { this@mockk(UpsellingEntryPoint.Feature.AutoDelete) } returns flowOf(false)
     }
 
     private val userUpgradeCheckStateFlow = MutableStateFlow<UserUpgradeState.UserUpgradeCheckState>(
@@ -525,7 +525,7 @@ class AccountSettingsViewModelTest {
     }
 
     private fun autoDeleteUpsellingIsOn() {
-        every { observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(true)
+        every { observeUpsellingVisibility(UpsellingEntryPoint.Feature.AutoDelete) } returns flowOf(true)
     }
 
     private fun expectIsPaidMailUser(value: Boolean) {

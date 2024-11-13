@@ -34,22 +34,22 @@ internal class DynamicPlanIconUiMapperTest {
     fun `should map to the corresponding ui models`() {
         // Given
         val expected = mapOf(
-            UpsellingEntryPoint.BottomSheet.ContactGroups to DynamicPlanIconUiModel(R.drawable.illustration_upselling_contact_groups),
-            UpsellingEntryPoint.BottomSheet.Folders to DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels),
-            UpsellingEntryPoint.BottomSheet.Labels to DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels),
-            UpsellingEntryPoint.BottomSheet.MobileSignature to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature),
-            UpsellingEntryPoint.BottomSheet.Mailbox to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
-            UpsellingEntryPoint.BottomSheet.AutoDelete to DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
+            UpsellingEntryPoint.Feature.ContactGroups to DynamicPlanIconUiModel(R.drawable.illustration_upselling_contact_groups),
+            UpsellingEntryPoint.Feature.Folders to DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels),
+            UpsellingEntryPoint.Feature.Labels to DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels),
+            UpsellingEntryPoint.Feature.MobileSignature to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature),
+            UpsellingEntryPoint.Feature.Mailbox to DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
+            UpsellingEntryPoint.Feature.AutoDelete to DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
         )
 
         // When
         val actual = mapOf(
-            UpsellingEntryPoint.BottomSheet.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.ContactGroups),
-            UpsellingEntryPoint.BottomSheet.Folders to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Folders),
-            UpsellingEntryPoint.BottomSheet.Labels to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Labels),
-            UpsellingEntryPoint.BottomSheet.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.MobileSignature),
-            UpsellingEntryPoint.BottomSheet.Mailbox to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.Mailbox),
-            UpsellingEntryPoint.BottomSheet.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.BottomSheet.AutoDelete)
+            UpsellingEntryPoint.Feature.ContactGroups to mapper.toUiModel(UpsellingEntryPoint.Feature.ContactGroups),
+            UpsellingEntryPoint.Feature.Folders to mapper.toUiModel(UpsellingEntryPoint.Feature.Folders),
+            UpsellingEntryPoint.Feature.Labels to mapper.toUiModel(UpsellingEntryPoint.Feature.Labels),
+            UpsellingEntryPoint.Feature.MobileSignature to mapper.toUiModel(UpsellingEntryPoint.Feature.MobileSignature),
+            UpsellingEntryPoint.Feature.Mailbox to mapper.toUiModel(UpsellingEntryPoint.Feature.Mailbox),
+            UpsellingEntryPoint.Feature.AutoDelete to mapper.toUiModel(UpsellingEntryPoint.Feature.AutoDelete)
         )
 
         // Then

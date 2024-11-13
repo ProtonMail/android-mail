@@ -92,7 +92,7 @@ internal class UpsellingButtonViewModelTest {
 
         // Then
         coVerify(exactly = 1) {
-            upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.BottomSheet.Mailbox)
+            upsellingTelemetryRepository.trackEvent(Base.MailboxButtonTap, UpsellingEntryPoint.Feature.Mailbox)
         }
     }
 }

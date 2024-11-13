@@ -50,12 +50,12 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
     }
 
     private fun getPlusEntitlements(upsellingEntryPoint: UpsellingEntryPoint) = when (upsellingEntryPoint) {
-        UpsellingEntryPoint.BottomSheet.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
-        UpsellingEntryPoint.BottomSheet.Folders -> FoldersPlusOverriddenEntitlements
-        UpsellingEntryPoint.BottomSheet.Labels -> LabelsPlusOverriddenEntitlements
-        UpsellingEntryPoint.BottomSheet.Mailbox -> MailboxPlusOverriddenEntitlements
-        UpsellingEntryPoint.BottomSheet.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
-        UpsellingEntryPoint.BottomSheet.AutoDelete -> AutoDeletePlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.Folders -> FoldersPlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.Labels -> LabelsPlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.Mailbox -> MailboxPlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.AutoDelete -> AutoDeletePlusOverriddenEntitlements
         UpsellingEntryPoint.PostOnboarding -> OnboardingPlusOverriddenEntitlements
     }
 

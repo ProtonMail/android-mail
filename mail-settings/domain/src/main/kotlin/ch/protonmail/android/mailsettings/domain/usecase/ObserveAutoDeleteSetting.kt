@@ -37,7 +37,7 @@ class ObserveAutoDeleteSetting @Inject constructor(
     operator fun invoke(userId: UserId) = mailSettingsRepository.getMailSettingsFlow(userId)
         .mapSuccessValueOrNull()
         .combine(
-            observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete)
+            observeUpsellingVisibility(UpsellingEntryPoint.Feature.AutoDelete)
         ) { mailSettings, shouldShowUpselling ->
 
             val hasMailSubscription = isPaidMailUser(userId).getOrNull()

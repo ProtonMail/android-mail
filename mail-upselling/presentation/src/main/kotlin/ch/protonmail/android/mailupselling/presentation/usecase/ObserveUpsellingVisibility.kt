@@ -50,7 +50,7 @@ class ObserveUpsellingVisibility @Inject constructor(
     @UpsellingAutodeleteEnabled private val isUpsellingAutoDeleteEnabled: Boolean
 ) {
 
-    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): Flow<Boolean> = combine(
+    operator fun invoke(upsellingEntryPoint: UpsellingEntryPoint.Feature): Flow<Boolean> = combine(
         observePrimaryUser().distinctUntilChanged(),
         purchaseManager.observePurchases()
     ) { user, purchases ->
@@ -64,17 +64,17 @@ class ObserveUpsellingVisibility @Inject constructor(
         userHasAvailablePlans(user.userId)
     }
 
-    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): Boolean {
+    private suspend fun isFeatureFlagOff(upsellingEntryPoint: UpsellingEntryPoint.Feature): Boolean {
         return !when (upsellingEntryPoint) {
-            UpsellingEntryPoint.BottomSheet.ContactGroups -> isUpsellingContactGroupsEnabled()
-            UpsellingEntryPoint.BottomSheet.Folders -> isUpsellingFoldersEnabled()
-            UpsellingEntryPoint.BottomSheet.Labels -> isUpsellingLabelsEnabled()
-            UpsellingEntryPoint.BottomSheet.Mailbox -> {
+            UpsellingEntryPoint.Feature.ContactGroups -> isUpsellingContactGroupsEnabled()
+            UpsellingEntryPoint.Feature.Folders -> isUpsellingFoldersEnabled()
+            UpsellingEntryPoint.Feature.Labels -> isUpsellingLabelsEnabled()
+            UpsellingEntryPoint.Feature.Mailbox -> {
                 observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
             }
 
-            UpsellingEntryPoint.BottomSheet.MobileSignature -> isUpsellingMobileSignatureEnabled
-            UpsellingEntryPoint.BottomSheet.AutoDelete -> isUpsellingAutoDeleteEnabled
+            UpsellingEntryPoint.Feature.MobileSignature -> isUpsellingMobileSignatureEnabled
+            UpsellingEntryPoint.Feature.AutoDelete -> isUpsellingAutoDeleteEnabled
         }
     }
 }

@@ -92,7 +92,7 @@ class ContactListViewModel @Inject constructor(
     private suspend fun handleOnNewContactGroupClick() {
         if (userUpgradeState.isUserPendingUpgrade) return emitNewStateFor(ContactListEvent.UpsellingInProgress)
 
-        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.ContactGroups).first()
+        val shouldShowUpselling = observeUpsellingVisibility(UpsellingEntryPoint.Feature.ContactGroups).first()
 
         if (shouldShowUpselling) {
             emitNewStateFor(ContactListEvent.OpenUpsellingBottomSheet)
@@ -111,7 +111,7 @@ class ContactListViewModel @Inject constructor(
         return combine(
             observeContacts(userId),
             observeContactGroupLabels(userId),
-            observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.ContactGroups)
+            observeUpsellingVisibility(UpsellingEntryPoint.Feature.ContactGroups)
         ) { contacts, contactGroups, isContactGroupsUpsellingVisible ->
             val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled()
             val isContactSearchEnabled = isContactSearchEnabled()

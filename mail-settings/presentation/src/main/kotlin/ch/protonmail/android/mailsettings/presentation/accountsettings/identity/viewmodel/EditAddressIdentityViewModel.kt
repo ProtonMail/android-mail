@@ -84,7 +84,7 @@ class EditAddressIdentityViewModel @Inject constructor(
                 return@map emitNewStateFrom(EditAddressIdentityEvent.Error.LoadingError)
             }.let {
                 val shouldShowUpselling = observeUpsellingVisibility(
-                    UpsellingEntryPoint.BottomSheet.MobileSignature
+                    UpsellingEntryPoint.Feature.MobileSignature
                 ).first()
 
                 if (shouldShowUpselling) {
@@ -103,7 +103,7 @@ class EditAddressIdentityViewModel @Inject constructor(
 
         userUpgradeState.userUpgradeCheckState
             .combine(
-                observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.MobileSignature)
+                observeUpsellingVisibility(UpsellingEntryPoint.Feature.MobileSignature)
             ) { userUpgradeCheckState, shouldShowUpselling ->
                 emitNewStateFrom(
                     EditAddressIdentityEvent.UpgradeStateChanged(userUpgradeCheckState, shouldShowUpselling)
@@ -150,7 +150,7 @@ class EditAddressIdentityViewModel @Inject constructor(
         }
 
         val shouldShowUpselling = observeUpsellingVisibility(
-            UpsellingEntryPoint.BottomSheet.MobileSignature
+            UpsellingEntryPoint.Feature.MobileSignature
         ).first()
 
         if (!action.enabled && shouldShowUpselling) {

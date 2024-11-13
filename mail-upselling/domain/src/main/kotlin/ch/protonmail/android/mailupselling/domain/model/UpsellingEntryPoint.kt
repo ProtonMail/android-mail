@@ -18,28 +18,32 @@
 
 package ch.protonmail.android.mailupselling.domain.model
 
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.Feature
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint.PostOnboarding
+
 sealed interface UpsellingEntryPoint {
 
-    sealed interface BottomSheet : UpsellingEntryPoint {
+    sealed interface BottomSheet : UpsellingEntryPoint
+    sealed interface Standalone : UpsellingEntryPoint
 
-        data object Mailbox : BottomSheet
-        data object ContactGroups : BottomSheet
-        data object Labels : BottomSheet
-        data object Folders : BottomSheet
-        data object MobileSignature : BottomSheet
-        data object AutoDelete : BottomSheet
-
+    sealed interface Feature : UpsellingEntryPoint {
+        data object Mailbox : Standalone, Feature
+        data object ContactGroups : BottomSheet, Feature
+        data object Labels : BottomSheet, Feature
+        data object Folders : BottomSheet, Feature
+        data object MobileSignature : BottomSheet, Feature
+        data object AutoDelete : BottomSheet, Feature
     }
 
     data object PostOnboarding : UpsellingEntryPoint
+}
 
-    fun UpsellingEntryPoint.getDimensionValue(): String = when (this) {
-        BottomSheet.ContactGroups -> "contact_groups"
-        BottomSheet.Folders -> "folders_creation"
-        BottomSheet.Labels -> "labels_creation"
-        BottomSheet.Mailbox -> "mailbox_top_bar"
-        BottomSheet.MobileSignature -> "mobile_signature_edit"
-        BottomSheet.AutoDelete -> "auto_delete_messages"
-        PostOnboarding -> "post_onboarding"
-    }
+fun UpsellingEntryPoint.getDimensionValue(): String = when (this) {
+    Feature.ContactGroups -> "contact_groups"
+    Feature.Folders -> "folders_creation"
+    Feature.Labels -> "labels_creation"
+    Feature.Mailbox -> "mailbox_top_bar"
+    Feature.MobileSignature -> "mobile_signature_edit"
+    Feature.AutoDelete -> "auto_delete_messages"
+    PostOnboarding -> "post_onboarding"
 }

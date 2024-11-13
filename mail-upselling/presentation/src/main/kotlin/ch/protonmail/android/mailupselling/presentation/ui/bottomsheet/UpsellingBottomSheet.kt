@@ -36,7 +36,7 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 fun UpsellingBottomSheet(
     modifier: Modifier = Modifier,
     bottomSheetActions: UpsellingBottomSheet.Actions,
-    upsellingEntryPoint: UpsellingEntryPoint.BottomSheet
+    upsellingEntryPoint: UpsellingEntryPoint.Feature
 ) {
 
     val viewModel = hiltViewModel<UpsellingBottomSheetViewModel, UpsellingBottomSheetViewModel.Factory>(
@@ -59,8 +59,7 @@ fun UpsellingBottomSheet(
                 .fillMaxWidth()
                 .height(MailDimens.ExtraLargeSpacing)
         )
-
-        is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheetContent(modifier, state, actions)
+        is UpsellingBottomSheetContentState.Data -> UpsellingBottomSheet(modifier, actions, upsellingEntryPoint)
         is UpsellingBottomSheetContentState.Error -> UpsellingBottomSheetError(state = state, actions)
     }
 }

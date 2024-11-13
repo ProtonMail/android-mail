@@ -85,7 +85,7 @@ class AccountSettingsViewModel @Inject constructor(
 
             combine(
                 observeMailSettings(userId),
-                observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete),
+                observeUpsellingVisibility(UpsellingEntryPoint.Feature.AutoDelete),
                 autoDeleteUpsellingVisibility,
                 autoDeleteUpsellingInProgressVisibility,
                 subscriptionNeededErrorVisibility

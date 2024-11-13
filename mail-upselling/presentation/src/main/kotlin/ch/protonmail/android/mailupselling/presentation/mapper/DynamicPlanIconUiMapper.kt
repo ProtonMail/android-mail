@@ -26,13 +26,13 @@ import javax.inject.Inject
 internal class DynamicPlanIconUiMapper @Inject constructor() {
 
     @Suppress("MaxLineLength")
-    fun toUiModel(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): DynamicPlanIconUiModel =
+    fun toUiModel(upsellingEntryPoint: UpsellingEntryPoint.Feature): DynamicPlanIconUiModel =
         when (upsellingEntryPoint) {
-            UpsellingEntryPoint.BottomSheet.ContactGroups -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_contact_groups)
-            UpsellingEntryPoint.BottomSheet.Folders -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
-            UpsellingEntryPoint.BottomSheet.Labels -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
-            UpsellingEntryPoint.BottomSheet.MobileSignature -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature)
-            UpsellingEntryPoint.BottomSheet.Mailbox -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
-            UpsellingEntryPoint.BottomSheet.AutoDelete -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
+            UpsellingEntryPoint.Feature.ContactGroups -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_contact_groups)
+            UpsellingEntryPoint.Feature.Folders -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
+            UpsellingEntryPoint.Feature.Labels -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_labels)
+            UpsellingEntryPoint.Feature.MobileSignature -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mobile_signature)
+            UpsellingEntryPoint.Feature.Mailbox -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox)
+            UpsellingEntryPoint.Feature.AutoDelete -> DynamicPlanIconUiModel(R.drawable.illustration_upselling_auto_delete)
         }
 }

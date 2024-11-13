@@ -27,13 +27,13 @@ import javax.inject.Inject
 internal class DynamicPlanTitleUiMapper @Inject constructor() {
 
     @Suppress("MaxLineLength")
-    fun toUiModel(upsellingEntryPoint: UpsellingEntryPoint.BottomSheet): DynamicPlanTitleUiModel =
+    fun toUiModel(upsellingEntryPoint: UpsellingEntryPoint.Feature): DynamicPlanTitleUiModel =
         when (upsellingEntryPoint) {
-            UpsellingEntryPoint.BottomSheet.ContactGroups -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_contact_groups_plus_title))
-            UpsellingEntryPoint.BottomSheet.Folders -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title))
-            UpsellingEntryPoint.BottomSheet.Labels -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title))
-            UpsellingEntryPoint.BottomSheet.MobileSignature -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title))
-            UpsellingEntryPoint.BottomSheet.Mailbox -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
-            UpsellingEntryPoint.BottomSheet.AutoDelete -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_auto_delete_plus_title))
+            UpsellingEntryPoint.Feature.ContactGroups -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_contact_groups_plus_title))
+            UpsellingEntryPoint.Feature.Folders -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_folders_plus_title))
+            UpsellingEntryPoint.Feature.Labels -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_labels_plus_title))
+            UpsellingEntryPoint.Feature.MobileSignature -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mobile_signature_plus_title))
+            UpsellingEntryPoint.Feature.Mailbox -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_mailbox_plus_title))
+            UpsellingEntryPoint.Feature.AutoDelete -> DynamicPlanTitleUiModel(TextUiModel(R.string.upselling_auto_delete_plus_title))
         }
 }
