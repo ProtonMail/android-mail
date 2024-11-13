@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
@@ -48,13 +49,20 @@ internal fun UpsellingPlansList(
         verticalArrangement = Arrangement.Bottom,
         horizontalArrangement = Arrangement.spacedBy(ProtonDimens.SmallSpacing)
     ) {
-        if (dynamicPlansModel.plans.isEmpty()) {
-            TextNoPlansAvailable()
-        } else {
-            dynamicPlansModel.plans.forEach { planUiModel ->
+
+        when (dynamicPlansModel.list) {
+            DynamicPlanInstanceListUiModel.Empty,
+            DynamicPlanInstanceListUiModel.Invalid -> TextNoPlansAvailable()
+
+            is DynamicPlanInstanceListUiModel.Data -> {
                 UpsellingPlanItem(
                     modifier = Modifier.weight(UpsellingDimens.UpsellingPaymentItemWeight),
-                    planUiModel = planUiModel,
+                    planUiModel = dynamicPlansModel.list.shorterCycle,
+                    actions = actions
+                )
+                UpsellingPlanItem(
+                    modifier = Modifier.weight(UpsellingDimens.UpsellingPaymentItemWeight),
+                    planUiModel = dynamicPlansModel.list.longerCycle,
                     actions = actions
                 )
             }

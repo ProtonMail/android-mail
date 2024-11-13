@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.Text
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +34,7 @@ import androidx.compose.ui.res.painterResource
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.DynamicEntitlementUiModel
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
 import coil.compose.AsyncImage
 import me.proton.core.compose.theme.ProtonDimens
@@ -44,7 +44,7 @@ import me.proton.core.compose.theme.defaultSmallNorm
 @Composable
 internal fun UpsellingEntitlementListItem(
     modifier: Modifier = Modifier,
-    entitlementUiModel: DynamicEntitlementUiModel,
+    entitlementUiModel: PlanEntitlementListUiModel,
     color: Color
 ) {
     Row(
@@ -56,8 +56,8 @@ internal fun UpsellingEntitlementListItem(
     ) {
 
         val imageModel = when (entitlementUiModel) {
-            is DynamicEntitlementUiModel.Default -> entitlementUiModel.remoteResource
-            is DynamicEntitlementUiModel.Overridden -> entitlementUiModel.localResource
+            is PlanEntitlementListUiModel.Default -> entitlementUiModel.remoteResource
+            is PlanEntitlementListUiModel.Overridden -> entitlementUiModel.localResource
         }
 
         AsyncImage(

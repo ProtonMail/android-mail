@@ -47,6 +47,7 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.PlanEntitlementsUiModel.SimpleList
 import ch.protonmail.android.mailupselling.presentation.model.UpsellingBottomSheetContentState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingColors
 import me.proton.core.compose.theme.ProtonDimens
@@ -132,11 +133,12 @@ internal fun UpsellingBottomSheetContent(
                 Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
             }
 
-            dynamicPlansModel.entitlements.forEachIndexed { index, model ->
+            // Nullability to be removed within MAILANDR-2322 scope
+            (dynamicPlansModel.entitlements as? SimpleList)?.items?.forEachIndexed { index, model ->
 
                 item { UpsellingEntitlementListItem(entitlementUiModel = model, color = contentColors.textWeak) }
 
-                if (index != dynamicPlansModel.entitlements.lastIndex) {
+                if (index != dynamicPlansModel.entitlements.items.lastIndex) {
                     item {
                         Divider(
                             modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),

@@ -50,6 +50,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.DynamicPlanInstanceUiModel
@@ -85,7 +86,10 @@ internal fun UpsellingPlanItem(
                     .offset(y = UpsellingDimens.DiscountTagVerticalOffset)
                     .align(Alignment.TopCenter)
                     .onGloballyPositioned { discountTagHeight = it.size.height },
-                text = planUiModel.discount
+                text = TextUiModel.TextResWithArgs(
+                    R.string.upselling_discount_tag,
+                    listOf(planUiModel.discount.toString())
+                )
             )
         }
 
