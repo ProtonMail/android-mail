@@ -39,7 +39,7 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.toTelemetryPayload
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingDimens
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.bottomsheet.UpsellingPaymentEventListener
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
@@ -48,7 +48,7 @@ internal fun OnboardingPayButton(
     planInstanceUiModel: OnboardingDynamicPlanInstanceUiModel,
     actions: OnboardingPayButton.Actions
 ) {
-    val buttonCornerRadius = UpsellingDimens.OnboardingPayButtonCornerRadius
+    val buttonCornerRadius = UpsellingLayoutValues.Onboarding.payButtonCornerRadius
     var maxWrappedViewSize by remember { mutableStateOf(IntSize.Zero) }
 
     Box(
