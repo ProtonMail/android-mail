@@ -43,7 +43,7 @@ class PostSubscriptionActivity : AppCompatActivity() {
                     navController = navController,
                     startDestination = Destination.Screen.PostSubscription.route
                 ) {
-                    addPostSubscription()
+                    addPostSubscription(navController)
                 }
 
                 navController.navigate(

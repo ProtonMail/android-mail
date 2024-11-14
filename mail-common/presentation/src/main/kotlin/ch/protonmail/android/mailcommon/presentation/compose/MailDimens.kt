@@ -124,4 +124,6 @@ object MailDimens {
 
     val PlanSwitcherHeight = 68.dp
     val OnboardingUpsellButtonHeight = 48.dp
+
+    val PostSubscriptionCloseButtonRippleRadius = 16.dp
 }
