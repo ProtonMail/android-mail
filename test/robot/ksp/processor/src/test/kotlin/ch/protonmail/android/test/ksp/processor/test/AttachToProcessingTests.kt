@@ -22,10 +22,12 @@ import ch.protonmail.android.test.ksp.processor.test.helpers.getGeneratedSourceF
 import ch.protonmail.android.test.ksp.processor.test.helpers.getKotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+@OptIn(ExperimentalCompilerApi::class)
 internal class AttachToProcessingTests {
 
     @Test
@@ -69,8 +71,7 @@ internal class AttachToProcessingTests {
                 |
                 |import kotlin.Unit
                 |
-                |internal fun MyRobot.customId(block: SectionRobot.() -> Unit): SectionRobot =
-                |    SectionRobot().apply(block)
+                |internal fun MyRobot.customId(block: SectionRobot.() -> Unit): SectionRobot = SectionRobot().apply(block)
                 |
             """.trimMargin(),
             sourceCode
@@ -120,8 +121,7 @@ internal class AttachToProcessingTests {
                 |import kotlin.Unit
                 |import test.different.packageName.MyRobot
                 |
-                |internal fun MyRobot.customId(block: SectionRobot.() -> Unit): SectionRobot =
-                |    SectionRobot().apply(block)
+                |internal fun MyRobot.customId(block: SectionRobot.() -> Unit): SectionRobot = SectionRobot().apply(block)
                 |
             """.trimMargin(),
             sourceCode
@@ -171,8 +171,7 @@ internal class AttachToProcessingTests {
                 |import kotlin.Unit
                 |import test.different.packageName.MyRobot
                 |
-                |internal fun MyRobot.sectionRobot(block: SectionRobot.() -> Unit): SectionRobot =
-                |    SectionRobot().apply(block)
+                |internal fun MyRobot.sectionRobot(block: SectionRobot.() -> Unit): SectionRobot = SectionRobot().apply(block)
                 |
             """.trimMargin(),
             sourceCode

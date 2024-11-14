@@ -22,10 +22,12 @@ import ch.protonmail.android.test.ksp.processor.test.helpers.getGeneratedSourceF
 import ch.protonmail.android.test.ksp.processor.test.helpers.getKotlinCompilation
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+@OptIn(ExperimentalCompilerApi::class)
 internal class AsDslProcessingTests {
 
     @Test

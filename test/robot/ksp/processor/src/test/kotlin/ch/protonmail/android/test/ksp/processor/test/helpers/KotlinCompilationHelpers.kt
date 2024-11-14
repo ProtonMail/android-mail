@@ -20,22 +20,29 @@ package ch.protonmail.android.test.ksp.processor.test.helpers
 
 import java.io.File
 import ch.protonmail.android.test.ksp.processor.UITestSymbolProcessorProvider
+import com.tschuchort.compiletesting.JvmCompilationResult
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
+import com.tschuchort.compiletesting.configureKsp
 import com.tschuchort.compiletesting.kspWithCompilation
-import com.tschuchort.compiletesting.symbolProcessorProviders
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 
-internal fun KotlinCompilation.Result.getGeneratedSourceFile(path: String): File {
-    return outputDirectory.parentFile!!.resolve("ksp")
+@OptIn(ExperimentalCompilerApi::class)
+internal fun JvmCompilationResult.getGeneratedSourceFile(path: String): File {
+    return outputDirectory.parentFile!!
+        .resolve("ksp")
         .resolve("sources")
         .resolve("kotlin")
         .resolve(path)
 }
 
+@OptIn(ExperimentalCompilerApi::class)
 internal fun getKotlinCompilation(kotlinSources: List<SourceFile>): KotlinCompilation {
     return KotlinCompilation().apply {
+        configureKsp(useKsp2 = true) {
+            symbolProcessorProviders += UITestSymbolProcessorProvider()
+        }
         sources = kotlinSources
-        symbolProcessorProviders = listOf(UITestSymbolProcessorProvider())
         inheritClassPath = true
         messageOutputStream = System.out
         kspWithCompilation = true
