@@ -43,7 +43,8 @@ object MailSettingsTestData {
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
         inheritParentFolderColor: Boolean = true,
-        confirmLink: Boolean = true
+        confirmLink: Boolean = true,
+        autoDeleteSpamAndTrashDays: Int? = null
     ) = MailSettings(
         userId = UserIdTestData.userId,
         displayName = "displayName",
@@ -72,6 +73,6 @@ object MailSettingsTestData {
         promptPin = true,
         stickyLabels = true,
         confirmLink = confirmLink,
-        autoDeleteSpamAndTrashDays = null
+        autoDeleteSpamAndTrashDays = autoDeleteSpamAndTrashDays
     )
 }
