@@ -161,7 +161,7 @@ fun PreviewMessageBanners() {
             MessageBannersUiModel(
                 shouldShowPhishingBanner = true,
                 expirationBannerText = TextUiModel("This message will expire in 1 day, 2 hours, 3 minutes"),
-                autoDeleteBannerText = TextUiModel("This message will be deleted in 1 day")
+                autoDeleteBannerText = TextUiModel("This message will be automatically deleted in 1 day")
             )
         )
     }

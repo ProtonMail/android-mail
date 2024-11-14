@@ -81,9 +81,9 @@ fun Duration.toFormattedDurationParts(resources: Resources): List<String> {
  * Returns formatted duration as a string according to Auto-Delete expiration requirements.
  *
  * Examples:
- * "This message will be deleted in less than an hour".
- * "This message will be deleted in less than a day".
- * "This message will be deleted in {days rounded down} days".
+ * "This message will be automatically deleted in less than an hour".
+ * "This message will be automatically deleted in less than a day".
+ * "This message will be automatically deleted in {days rounded down} days".
  */
 fun Duration.toFormattedAutoDeleteExpiration(resources: Resources): String? {
 
