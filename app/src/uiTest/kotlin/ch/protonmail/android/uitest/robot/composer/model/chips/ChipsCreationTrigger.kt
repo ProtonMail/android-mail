@@ -20,5 +20,5 @@ package ch.protonmail.android.uitest.robot.composer.model.chips
 
 internal enum class ChipsCreationTrigger {
     ImeAction,
-    Spacebar
+    NewLine
 }

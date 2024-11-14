@@ -124,17 +124,17 @@ internal class ComposerRecipientsValidChipsTests : MockedNetworkTest(), Composer
 
     @Test
     @TestId("190236")
-    fun testValidRecipientChipOnSpacebarTap() {
+    fun testValidRecipientChipOnNewLine() {
         composerRobot {
             toRecipientSection {
-                createAndVerifyValidChip(trigger = ChipsCreationTrigger.Spacebar)
+                createAndVerifyValidChip(trigger = ChipsCreationTrigger.NewLine)
             }
         }
     }
 
     @Test
     @TestId("190237")
-    fun testMultipleValidRecipientChipsOnSpacebarTap() {
+    fun testMultipleValidRecipientChipsOnNewLine() {
         composerRobot {
             toRecipientSection {
                 withMultipleRecipients(size = 100, state = RecipientChipValidationState.Valid) {

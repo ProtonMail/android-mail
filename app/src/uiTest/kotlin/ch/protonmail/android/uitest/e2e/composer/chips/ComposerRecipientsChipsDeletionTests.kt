@@ -207,7 +207,7 @@ internal class ComposerRecipientsChipsDeletionTests : MockedNetworkTest(), Compo
         composerRobot {
             toRecipientSection {
                 typeRecipient("rec@ipient.com")
-                triggerChipCreation(ChipsCreationTrigger.Spacebar)
+                triggerChipCreation(ChipsCreationTrigger.NewLine)
                 tapBackspace()
 
                 verify { isEmptyField() }
@@ -221,7 +221,7 @@ internal class ComposerRecipientsChipsDeletionTests : MockedNetworkTest(), Compo
         composerRobot {
             toRecipientSection {
                 typeRecipient("example.com")
-                triggerChipCreation(ChipsCreationTrigger.Spacebar)
+                triggerChipCreation(ChipsCreationTrigger.NewLine)
                 tapBackspace()
 
                 verify { isEmptyField() }
@@ -275,7 +275,7 @@ internal class ComposerRecipientsChipsDeletionTests : MockedNetworkTest(), Compo
 
     private fun ComposerRecipientsSection.validateSimpleChipCreationAndDeletion(chipEntry: RecipientChipEntry) {
         typeRecipient(chipEntry.text)
-        triggerChipCreation(ChipsCreationTrigger.Spacebar)
+        triggerChipCreation(ChipsCreationTrigger.NewLine)
         verify { hasRecipientChips(chipEntry) }
 
         deleteChipAt(chipEntry.index)

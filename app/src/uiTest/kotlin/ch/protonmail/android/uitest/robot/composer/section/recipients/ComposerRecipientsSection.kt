@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.robot.composer.section.recipients
 
+import android.view.KeyEvent
 import androidx.compose.ui.input.key.Key
 import ch.protonmail.android.test.ksp.annotations.VerifiesOuter
 import ch.protonmail.android.uitest.robot.ComposeSectionRobot
@@ -35,13 +36,13 @@ internal abstract class ComposerRecipientsSection(
 
     fun typeRecipient(value: String, autoConfirm: Boolean = false) = apply {
         entryModel.typeValue(value)
-        if (autoConfirm) triggerChipCreation(ChipsCreationTrigger.Spacebar)
+        if (autoConfirm) triggerChipCreation(ChipsCreationTrigger.NewLine)
     }
 
     fun typeMultipleRecipients(vararg values: String) {
         values.forEach {
             typeRecipient(it)
-            triggerChipCreation(ChipsCreationTrigger.Spacebar)
+            triggerChipCreation(ChipsCreationTrigger.NewLine)
         }
     }
 
@@ -52,7 +53,7 @@ internal abstract class ComposerRecipientsSection(
     fun triggerChipCreation(trigger: ChipsCreationTrigger = ChipsCreationTrigger.ImeAction) = apply {
         when (trigger) {
             ChipsCreationTrigger.ImeAction -> tapImeAction()
-            ChipsCreationTrigger.Spacebar -> tapSpacebar()
+            ChipsCreationTrigger.NewLine -> typeNewLine()
         }
     }
 
@@ -64,8 +65,8 @@ internal abstract class ComposerRecipientsSection(
         entryModel.tapKey(Key.Backspace)
     }
 
-    private fun tapSpacebar() = apply {
-        entryModel.tapKey(Key.Spacebar)
+    private fun typeNewLine() = apply {
+        entryModel.tapKey(Key(KeyEvent.KEYCODE_ENTER))
     }
 
     private fun tapImeAction() = apply {

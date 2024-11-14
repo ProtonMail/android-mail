@@ -45,7 +45,7 @@ internal interface ComposerChipsTests : ComposerTests {
 
         verify {
             hasRecipientChips(
-                chip.copy(hasDeleteIcon = trigger == ChipsCreationTrigger.Spacebar)
+                chip.copy(hasDeleteIcon = true)
             )
         }
     }
