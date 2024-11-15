@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
+import java.util.concurrent.CopyOnWriteArrayList
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -169,7 +170,7 @@ class MessageDetailViewModel @Inject constructor(
 
     val state: StateFlow<MessageDetailState> = mutableDetailState.asStateFlow()
 
-    private val jobs = mutableListOf<Job>()
+    private val jobs = CopyOnWriteArrayList<Job>()
 
     init {
         Timber.d("Open detail screen for message ID: $messageId")
