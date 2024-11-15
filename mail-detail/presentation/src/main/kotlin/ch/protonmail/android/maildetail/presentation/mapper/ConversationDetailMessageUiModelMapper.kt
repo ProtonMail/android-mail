@@ -33,6 +33,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.isApplicable
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -62,7 +63,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
     suspend fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting
     ): ConversationDetailMessageUiModel.Collapsed {
         val (message, labels) = messageWithLabels
         val senderResolvedName = resolveParticipantName(message.sender, contacts)
@@ -76,7 +78,12 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             hasAttachments = message.numAttachments > message.attachmentCount.calendar,
             isStarred = SystemLabelId.Starred.labelId in message.labelIds,
             isUnread = message.unread,
-            locationIcon = messageLocationUiModelMapper(message.labelIds, labels, folderColorSettings),
+            locationIcon = messageLocationUiModelMapper(
+                message.labelIds,
+                labels,
+                folderColorSettings,
+                autoDeleteSetting
+            ),
             repliedIcon = getRepliedIcon(isReplied = message.isReplied, isRepliedAll = message.isRepliedAll),
             sender = participantUiModelMapper.senderToUiModel(message.sender, contacts),
             shortTime = formatShortTime(message.time.seconds),
@@ -91,6 +98,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         contacts: List<Contact>,
         decryptedMessageBody: DecryptedMessageBody,
         folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting,
         userAddress: UserAddress,
         existingMessageUiState: ConversationDetailMessageUiModel.Expanded? = null
     ): ConversationDetailMessageUiModel.Expanded {
@@ -107,7 +115,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
                 messageWithLabels,
                 contacts,
-                folderColorSettings
+                folderColorSettings,
+                autoDeleteSetting
             ),
             messageDetailFooterUiModel = messageDetailFooterUiModelMapper.toUiModel(messageWithLabels),
             messageBannersUiModel = messageBannersUiModelMapper.createMessageBannersUiModel(message),
@@ -133,14 +142,16 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         message: ConversationDetailMessageUiModel.Expanded,
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting
     ): ConversationDetailMessageUiModel.Expanded {
         return message.copy(
             isUnread = messageWithLabels.message.unread,
             messageDetailHeaderUiModel = messageDetailHeaderUiModelMapper.toUiModel(
                 messageWithLabels,
                 contacts,
-                folderColorSettings
+                folderColorSettings,
+                autoDeleteSetting
             )
         )
     }

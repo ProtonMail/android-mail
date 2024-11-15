@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCol
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
@@ -61,7 +62,8 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
     data class MessageWithLabelsEvent(
         val messageWithLabels: MessageWithLabels,
         val contacts: List<Contact>,
-        val folderColor: FolderColorSettings
+        val folderColor: FolderColorSettings,
+        val autoDeleteSetting: AutoDeleteSetting
     ) : MessageDetailEvent,
         AffectingMessage,
         AffectingMessageBanners,

@@ -45,6 +45,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
@@ -546,7 +547,8 @@ class MessageDetailReducerTest(
                 MessageDetailEvent.MessageWithLabelsEvent(
                     MessageWithLabelsSample.Invoice,
                     emptyList(),
-                    FolderColorSettings()
+                    FolderColorSettings(),
+                    AutoDeleteSetting.Disabled
                 ),
                 shouldReduceMessageBodyState = false,
                 shouldReduceMessageBannersState = true,

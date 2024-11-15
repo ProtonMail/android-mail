@@ -21,6 +21,7 @@ package ch.protonmail.android.mailsettings.domain
 import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
@@ -55,6 +56,9 @@ class ObserveAutoDeleteSettingTest {
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
         every { this@mockk(UpsellingEntryPoint.Feature.AutoDelete) } returns flowOf(false)
     }
+    private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
+        every { this@mockk() } returns flowOf(UserIdTestData.userId)
+    }
 
     private lateinit var usecase: ObserveAutoDeleteSetting
 
@@ -63,7 +67,8 @@ class ObserveAutoDeleteSettingTest {
         usecase = ObserveAutoDeleteSetting(
             mailSettingsRepository,
             isPaidMailUser,
-            observeUpsellingVisibility
+            observeUpsellingVisibility,
+            observePrimaryUserId
         )
     }
 
@@ -74,7 +79,7 @@ class ObserveAutoDeleteSettingTest {
         expectUserIsPaid(false)
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
             assertTrue(actual is AutoDeleteSetting.NotSet.FreeUser)
@@ -88,7 +93,7 @@ class ObserveAutoDeleteSettingTest {
         expectUserIsPaid(true)
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
             assertTrue(actual is AutoDeleteSetting.NotSet.PaidUser)
@@ -104,7 +109,7 @@ class ObserveAutoDeleteSettingTest {
             expectShouldShowUpselling(true)
 
             // When
-            usecase.invoke(UserIdTestData.userId).test {
+            usecase.invoke().test {
                 // Then
                 val actual = awaitItem()
                 assertTrue(actual is AutoDeleteSetting.NotSet.FreeUser.UpsellingOn)
@@ -120,7 +125,7 @@ class ObserveAutoDeleteSettingTest {
             expectShouldShowUpselling(false)
 
             // When
-            usecase.invoke(UserIdTestData.userId).test {
+            usecase.invoke().test {
                 // Then
                 val actual = awaitItem()
                 assertTrue(actual is AutoDeleteSetting.NotSet.FreeUser.UpsellingOff)
@@ -133,7 +138,7 @@ class ObserveAutoDeleteSettingTest {
         emitAutoDeleteSetting(30)
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
             assertEquals(AutoDeleteSetting.Enabled, actual)
@@ -146,7 +151,7 @@ class ObserveAutoDeleteSettingTest {
         emitAutoDeleteSetting(0)
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
             assertEquals(AutoDeleteSetting.Disabled, actual)
@@ -159,7 +164,7 @@ class ObserveAutoDeleteSettingTest {
         emitAutoDeleteSetting(null)
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
             assertTrue(actual is AutoDeleteSetting.NotSet)
@@ -167,15 +172,15 @@ class ObserveAutoDeleteSettingTest {
     }
 
     @Test
-    fun `mail settings returns 'not set' on error getting settings from repo`() = runTest {
+    fun `mail settings returns 'disabled' on error getting settings from repo`() = runTest {
         // Given
         emitAutoDeleteSettingError()
 
         // When
-        usecase.invoke(UserIdTestData.userId).test {
+        usecase.invoke().test {
             // Then
             val actual = awaitItem()
-            assertTrue(actual is AutoDeleteSetting.NotSet)
+            assertTrue(actual is AutoDeleteSetting.Disabled)
         }
     }
 

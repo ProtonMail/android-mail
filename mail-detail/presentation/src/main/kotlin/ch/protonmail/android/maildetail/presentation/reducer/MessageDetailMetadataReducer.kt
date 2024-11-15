@@ -41,7 +41,12 @@ class MessageDetailMetadataReducer @Inject constructor(
         return when (event) {
             is MessageDetailEvent.MessageWithLabelsEvent -> MessageMetadataState.Data(
                 messageDetailActionBarUiModelMapper.toUiModel(event.messageWithLabels.message),
-                messageDetailHeaderUiModelMapper.toUiModel(event.messageWithLabels, event.contacts, event.folderColor),
+                messageDetailHeaderUiModelMapper.toUiModel(
+                    event.messageWithLabels,
+                    event.contacts,
+                    event.folderColor,
+                    event.autoDeleteSetting
+                ),
                 messageDetailFooterUiModelMapper.toUiModel(event.messageWithLabels)
             )
 

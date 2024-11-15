@@ -80,6 +80,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactA
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
@@ -128,6 +129,7 @@ class MessageDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveMessageDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
+    private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
     private val markUnread: MarkMessageAsUnread,
     private val markRead: MarkMessageAsRead,
@@ -365,15 +367,19 @@ class MessageDetailViewModel @Inject constructor(
         val contacts = getContacts(userId).getOrElse { emptyList() }
         return@flatMapLatest combine(
             observeMessageWithLabels(userId, messageId),
-            observeFolderColor(userId)
-        ) { messageWithLabelsEither, folderColor ->
+            observeFolderColor(userId),
+            observeAutoDeleteSetting()
+        ) { messageWithLabelsEither, folderColor, autoDelete ->
+
+
             messageWithLabelsEither.fold(
                 ifLeft = { MessageDetailEvent.NoCachedMetadata },
                 ifRight = { messageWithLabels ->
                     MessageDetailEvent.MessageWithLabelsEvent(
                         messageWithLabels,
                         contacts,
-                        folderColor
+                        folderColor,
+                        autoDelete
                     )
                 }
             )

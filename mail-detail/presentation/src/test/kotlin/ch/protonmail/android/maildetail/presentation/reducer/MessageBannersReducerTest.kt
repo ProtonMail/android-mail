@@ -24,6 +24,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
 import io.mockk.every
@@ -60,7 +61,8 @@ class MessageBannersReducerTest(
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     MessageWithLabelsSample.LotteryScam,
                     emptyList(),
-                    FolderColorSettings()
+                    FolderColorSettings(),
+                    AutoDeleteSetting.Disabled
                 ),
                 expectedState = MessageBannersState.Data(messageBannersUiModel)
             )

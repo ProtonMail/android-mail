@@ -121,7 +121,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactA
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
@@ -159,9 +161,6 @@ import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.collections.associateWith
-import kotlin.collections.contains
-import kotlin.collections.firstOrNull
 
 @HiltViewModel
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
@@ -181,6 +180,7 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeDetailActions: ObserveConversationDetailActions,
     private val observeDestinationMailLabels: ObserveExclusiveDestinationMailLabels,
     private val observeFolderColor: ObserveFolderColorSettings,
+    private val observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val observeCustomMailLabels: ObserveCustomMailLabels,
     private val observeMessage: ObserveMessage,
     private val observeMessageAttachmentStatus: ObserveMessageAttachmentStatus,
@@ -364,8 +364,9 @@ class ConversationDetailViewModel @Inject constructor(
                 observeContacts(userId),
                 observeConversationMessages(userId, conversationId).ignoreLocalErrors(),
                 observeFolderColor(userId),
+                observeAutoDeleteSetting(),
                 observeConversationViewState()
-            ) { contactsEither, messagesEither, folderColorSettings, conversationViewState ->
+            ) { contactsEither, messagesEither, folderColorSettings, autoDelete, conversationViewState ->
                 val contacts = contactsEither.getOrElse {
                     Timber.i("Failed getting contacts for displaying initials. Fallback to display name")
                     emptyList()
@@ -378,6 +379,7 @@ class ConversationDetailViewModel @Inject constructor(
                     messages = messages,
                     contacts = contacts,
                     folderColorSettings = folderColorSettings,
+                    autoDeleteSetting = autoDelete,
                     currentViewState = conversationViewState
                 ).toImmutableList()
 
@@ -424,6 +426,7 @@ class ConversationDetailViewModel @Inject constructor(
         messages: NonEmptyList<MessageWithLabels>,
         contacts: List<Contact>,
         folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting,
         currentViewState: InMemoryConversationStateRepository.MessagesState
     ): NonEmptyList<ConversationDetailMessageUiModel> {
         val messagesList = messages.map { messageWithLabels ->
@@ -440,7 +443,14 @@ class ConversationDetailViewModel @Inject constructor(
             } else {
                 when (val viewState = currentViewState.messagesState[messageWithLabels.message.messageId]) {
                     is InMemoryConversationStateRepository.MessageState.Expanding ->
-                        buildExpandingMessage(buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings))
+                        buildExpandingMessage(
+                            buildCollapsedMessage(
+                                messageWithLabels,
+                                contacts,
+                                folderColorSettings,
+                                autoDeleteSetting
+                            )
+                        )
 
                     is InMemoryConversationStateRepository.MessageState.Expanded -> {
                         buildExpandedMessage(
@@ -448,12 +458,13 @@ class ConversationDetailViewModel @Inject constructor(
                             existingMessageState,
                             contacts,
                             viewState.decryptedBody,
-                            folderColorSettings
+                            folderColorSettings,
+                            autoDeleteSetting
                         )
                     }
 
                     else -> {
-                        buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings)
+                        buildCollapsedMessage(messageWithLabels, contacts, folderColorSettings, autoDeleteSetting)
                     }
                 }
             }
@@ -494,11 +505,13 @@ class ConversationDetailViewModel @Inject constructor(
     private suspend fun buildCollapsedMessage(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting
     ): ConversationDetailMessageUiModel.Collapsed = conversationMessageMapper.toUiModel(
         messageWithLabels,
         contacts,
-        folderColorSettings
+        folderColorSettings,
+        autoDeleteSetting
     )
 
     private fun buildExpandingMessage(
@@ -512,12 +525,14 @@ class ConversationDetailViewModel @Inject constructor(
         existingMessageUiState: ConversationDetailMessageUiModel.Expanded?,
         contacts: List<Contact>,
         decryptedBody: DecryptedMessageBody,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting
     ): ConversationDetailMessageUiModel.Expanded = conversationMessageMapper.toUiModel(
         messageWithLabels,
         contacts,
         decryptedBody,
         folderColorSettings,
+        autoDeleteSetting,
         decryptedBody.userAddress,
         existingMessageUiState
     )

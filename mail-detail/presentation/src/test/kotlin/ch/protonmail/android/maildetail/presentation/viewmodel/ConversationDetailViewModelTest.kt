@@ -117,8 +117,10 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
@@ -165,6 +167,7 @@ class ConversationDetailViewModelTest {
     private val conversationId = ConversationIdSample.WeatherForecast
     private val initialState = ConversationDetailState.Loading
     private val defaultFolderColorSettings = FolderColorSettings()
+    private val defaultAutoDeleteSetting = AutoDeleteSetting.Disabled
 
     private val actionUiModelMapper = ActionUiModelMapper()
     private val messageIdUiModelMapper = MessageIdUiModelMapper()
@@ -177,7 +180,8 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithLabel,
                 contacts = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
@@ -185,7 +189,8 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithTwoLabels,
                 contacts = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithTwoLabels
@@ -193,7 +198,8 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.InvoiceWithoutLabels,
                 contacts = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting
             )
         } returns
             ConversationDetailMessageUiModelSample.InvoiceWithoutLabels
@@ -201,7 +207,8 @@ class ConversationDetailViewModelTest {
             toUiModel(
                 messageWithLabels = MessageWithLabelsSample.AnotherInvoiceWithoutLabels,
                 contacts = any(),
-                folderColorSettings = defaultFolderColorSettings
+                folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting
             )
         } returns
             ConversationDetailMessageUiModelSample.AnotherInvoiceWithoutLabels
@@ -255,6 +262,9 @@ class ConversationDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(defaultFolderColorSettings)
         }
+    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
+        coEvery { this@mockk() } returns flowOf(defaultAutoDeleteSetting)
+    }
     private val observeCustomMailLabels = mockk<ObserveCustomMailLabels> {
         every { this@mockk.invoke(UserIdSample.Primary) } returns flowOf(
             MailLabelTestData.listOfCustomLabels.right()
@@ -356,6 +366,7 @@ class ConversationDetailViewModelTest {
             observeDetailActions = observeConversationDetailActions,
             observeDestinationMailLabels = observeDestinationMailLabels,
             observeFolderColor = observeFolderColorSettings,
+            observeAutoDeleteSetting = observeAutoDeleteSetting,
             observeCustomMailLabels = observeCustomMailLabels,
             observeMessage = observeMessage,
             observeMessageAttachmentStatus = observeAttachmentStatus,
@@ -410,6 +421,7 @@ class ConversationDetailViewModelTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns messages.first()
@@ -443,6 +455,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -477,6 +490,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -516,6 +530,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -569,6 +584,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns
@@ -607,6 +623,7 @@ class ConversationDetailViewModelTest {
                 contacts = emptyList(),
                 decryptedMessageBody = any(),
                 folderColorSettings = any(),
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns
@@ -682,6 +699,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -718,6 +736,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -752,6 +771,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -780,6 +800,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -819,6 +840,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -856,6 +878,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -892,6 +915,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -928,6 +952,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -968,6 +993,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1010,6 +1036,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1079,6 +1106,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1134,6 +1162,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1230,6 +1259,7 @@ class ConversationDetailViewModelTest {
                     contacts = any(),
                     decryptedMessageBody = any(),
                     folderColorSettings = defaultFolderColorSettings,
+                    autoDeleteSetting = defaultAutoDeleteSetting,
                     userAddress = UserAddressSample.PrimaryAddress
                 )
             } returns messages.first()
@@ -1344,6 +1374,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1447,6 +1478,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1470,6 +1502,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1504,6 +1537,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1562,6 +1596,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1686,6 +1721,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1731,6 +1767,7 @@ class ConversationDetailViewModelTest {
                     contacts = any(),
                     decryptedMessageBody = any(),
                     folderColorSettings = defaultFolderColorSettings,
+                    autoDeleteSetting = defaultAutoDeleteSetting,
                     userAddress = UserAddressSample.PrimaryAddress
                 )
             } returns expectedUiModel
@@ -1783,6 +1820,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns expectedUiModel
@@ -1847,6 +1885,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1871,6 +1910,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -1895,6 +1935,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns messages.first()
@@ -2053,7 +2094,14 @@ class ConversationDetailViewModelTest {
         )
 
         coEvery { observeMessageWithLabels(userId, any()) } returns flowOf(invoiceMessage.right())
-        coEvery { conversationMessageMapper.toUiModel(any(), any(), defaultFolderColorSettings) } returns
+        coEvery {
+            conversationMessageMapper.toUiModel(
+                any(),
+                any(),
+                defaultFolderColorSettings,
+                defaultAutoDeleteSetting
+            )
+        } returns
             ConversationDetailMessageUiModelSample.InvoiceWithLabel
         coEvery {
             conversationMessageMapper.toUiModel(
@@ -2061,6 +2109,7 @@ class ConversationDetailViewModelTest {
                 contacts = any(),
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
                 userAddress = UserAddressSample.PrimaryAddress
             )
         } returns

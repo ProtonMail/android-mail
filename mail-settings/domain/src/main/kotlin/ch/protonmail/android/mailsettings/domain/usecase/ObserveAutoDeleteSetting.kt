@@ -19,7 +19,7 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.usecase.ObserveUpsellingVisibility
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
 import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
@@ -36,20 +36,23 @@ class ObserveAutoDeleteSetting @Inject constructor(
     private val mailSettingsRepository: MailSettingsRepository,
     private val isPaidMailUser: IsPaidMailUser,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
-    private val observePrimaryUser: ObservePrimaryUser
+    private val observePrimaryUserId: ObservePrimaryUserId
 ) {
 
-    operator fun invoke(): Flow<AutoDeleteSetting> = observePrimaryUser()
+    operator fun invoke(): Flow<AutoDeleteSetting> = observePrimaryUserId()
         .distinctUntilChanged()
         .filterNotNull()
-        .flatMapConcat {
-            mailSettingsRepository.getMailSettingsFlow(it.userId)
+        .flatMapLatest { userId ->
+            mailSettingsRepository
+                .getMailSettingsFlow(userId)
                 .mapSuccessValueOrNull()
-                .filterNotNull()
         }
         .combine(
             observeUpsellingVisibility(UpsellingEntryPoint.Feature.AutoDelete)
         ) { mailSettings, shouldShowUpselling ->
+
+            // Default to AutoDeleteSetting.Disabled if Mail settings cannot be fetched.
+            mailSettings ?: return@combine AutoDeleteSetting.Disabled
 
             val hasMailSubscription = isPaidMailUser(mailSettings.userId).getOrNull()
 
@@ -68,5 +71,4 @@ class ObserveAutoDeleteSetting @Inject constructor(
                 else -> AutoDeleteSetting.Enabled
             }
         }
-
 }

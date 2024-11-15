@@ -36,6 +36,7 @@ import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.collections.immutable.ImmutableList
@@ -60,7 +61,8 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
     suspend fun toUiModel(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
-        folderColorSettings: FolderColorSettings
+        folderColorSettings: FolderColorSettings,
+        autoDeleteSetting: AutoDeleteSetting
     ): MessageDetailHeaderUiModel {
         val senderResolvedName = resolveParticipantName(messageWithLabels.message.sender, contacts)
         return MessageDetailHeaderUiModel(
@@ -72,7 +74,8 @@ class MessageDetailHeaderUiModelMapper @Inject constructor(
             location = messageLocationUiModelMapper(
                 messageWithLabels.message.labelIds,
                 messageWithLabels.labels,
-                folderColorSettings
+                folderColorSettings,
+                autoDeleteSetting
             ),
             time = formatShortTime(messageWithLabels.message.time.seconds),
             extendedTime = formatExtendedTime(messageWithLabels.message.time.seconds),

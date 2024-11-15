@@ -26,6 +26,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.maildetail.MessageDetailFooterUiModelTestData.messageDetailFooterUiModel
 import ch.protonmail.android.testdata.maildetail.MessageDetailHeaderUiModelTestData.messageDetailHeaderUiModel
@@ -51,10 +52,15 @@ class MessageStateReducerTest(
     }
     private val messageDetailHeaderUiModelMapper = mockk<MessageDetailHeaderUiModelMapper> {
         coEvery {
-            toUiModel(MessageWithLabelsSample.Invoice, emptyList(), FolderColorSettings())
+            toUiModel(MessageWithLabelsSample.Invoice, emptyList(), FolderColorSettings(), AutoDeleteSetting.Disabled)
         } returns messageDetailHeaderUiModel
         coEvery {
-            toUiModel(MessageWithLabelsSample.UnreadInvoice, emptyList(), FolderColorSettings())
+            toUiModel(
+                MessageWithLabelsSample.UnreadInvoice,
+                emptyList(),
+                FolderColorSettings(),
+                AutoDeleteSetting.Disabled
+            )
         } returns messageDetailHeaderUiModel
     }
     private val messageDetailFooterUiModelMapper = mockk<MessageDetailFooterUiModelMapper> {
@@ -96,7 +102,8 @@ class MessageStateReducerTest(
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     MessageWithLabelsSample.Invoice,
                     emptyList(),
-                    FolderColorSettings()
+                    FolderColorSettings(),
+                    AutoDeleteSetting.Disabled
                 ),
                 expectedState = MessageMetadataState.Data(
                     messageUiModel,
@@ -116,7 +123,8 @@ class MessageStateReducerTest(
                 operation = MessageDetailEvent.MessageWithLabelsEvent(
                     MessageWithLabelsSample.UnreadInvoice,
                     emptyList(),
-                    FolderColorSettings()
+                    FolderColorSettings(),
+                    AutoDeleteSetting.Disabled
                 ),
                 expectedState = MessageMetadataState.Data(
                     updatedMessageUiModel,

@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.testdata.contact.ContactSample
 import ch.protonmail.android.testdata.maildetail.MessageBannersUiModelTestData.messageBannersUiModel
@@ -62,6 +63,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
 
     private val colorMapper: ColorMapper = mockk()
     private val folderColorSettings: FolderColorSettings = FolderColorSettings(useFolderColor = false)
+    private val autoDeleteSetting: AutoDeleteSetting = AutoDeleteSetting.Disabled
 
     private val avatarUiModelMapper: DetailAvatarUiModelMapper = mockk {
         every { this@mockk(message = any(), senderResolvedName = any()) } returns
@@ -82,7 +84,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
     }
     private val messageLocationUiModelMapper: MessageLocationUiModelMapper = mockk {
         coEvery {
-            this@mockk(labelIds = any(), labels = any(), colorSettings = any())
+            this@mockk(labelIds = any(), labels = any(), colorSettings = any(), autoDeleteSetting = any())
         } returns MessageLocationUiModelSample.AllMail
     }
     private val resolveParticipantName: ResolveParticipantName = mockk {
@@ -170,7 +172,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val result = mapper.toUiModel(
             messageWithLabels = messageWithLabels,
             contacts = emptyList(),
-            folderColorSettings = folderColorSettings
+            folderColorSettings = folderColorSettings,
+            autoDeleteSetting = autoDeleteSetting
         )
 
         // then
@@ -195,13 +198,21 @@ internal class ConversationDetailMessageUiModelMapperTest {
             contacts = contactsList,
             decryptedMessageBody = decryptedMessageBody,
             folderColorSettings = folderColorSettings,
+            autoDeleteSetting = autoDeleteSetting,
             userAddress = UserAddressSample.PrimaryAddress
         )
 
         // then
         assertEquals(result.isUnread, messageWithLabels.message.unread)
         assertEquals(result.messageId.id, messageWithLabels.message.messageId.id)
-        coVerify { messageDetailHeaderUiModelMapper.toUiModel(messageWithLabels, contactsList, folderColorSettings) }
+        coVerify {
+            messageDetailHeaderUiModelMapper.toUiModel(
+                messageWithLabels,
+                contactsList,
+                folderColorSettings,
+                autoDeleteSetting
+            )
+        }
         coVerify { messageBodyUiModelMapper.toUiModel(messageWithLabels.message.userId, decryptedMessageBody) }
     }
 
@@ -232,7 +243,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -250,7 +261,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -268,7 +279,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -289,7 +300,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         }
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -303,7 +314,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -317,7 +328,7 @@ internal class ConversationDetailMessageUiModelMapperTest {
         val expected = ConversationDetailMessageUiModelSample.ExpiringInvitation
 
         // when
-        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings)
+        val result = mapper.toUiModel(messageWithLabels, contacts = emptyList(), folderColorSettings, autoDeleteSetting)
 
         // then
         assertEquals(expected, result)
@@ -340,7 +351,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             message = previousMessage,
             messageWithLabels = messageWithLabels,
             contacts = listOf(ContactSample.John),
-            folderColorSettings = folderColorSettings
+            folderColorSettings = folderColorSettings,
+            autoDeleteSetting = autoDeleteSetting
         )
 
         // Then
@@ -368,7 +380,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             decryptedMessageBody = decryptedMessageBody,
             folderColorSettings = folderColorSettings,
             userAddress = UserAddressSample.PrimaryAddress,
-            existingMessageUiState = previousState
+            existingMessageUiState = previousState,
+            autoDeleteSetting = autoDeleteSetting
         )
 
         // then

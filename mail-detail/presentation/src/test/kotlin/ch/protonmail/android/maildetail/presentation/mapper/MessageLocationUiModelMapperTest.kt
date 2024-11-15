@@ -28,12 +28,9 @@ import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
-import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.testdata.label.LabelTestData
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
@@ -43,16 +40,13 @@ import kotlin.test.assertEquals
 class MessageLocationUiModelMapperTest {
 
     private val colorMapper: ColorMapper = mockk()
+    private val autoDeleteSetting = AutoDeleteSetting.Disabled
     private val folderColorSettings = FolderColorSettings(useFolderColor = false)
     private val getRootLabel = mockk<GetRootLabel>()
-    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
-        coEvery { this@mockk() } returns flowOf(AutoDeleteSetting.Disabled)
-    }
 
     private val messageLocationUiModelMapper = MessageLocationUiModelMapper(
         colorMapper,
-        getRootLabel,
-        observeAutoDeleteSetting
+        getRootLabel
     )
 
     @Test
@@ -64,14 +58,14 @@ class MessageLocationUiModelMapperTest {
             SystemLabelId.enumOf(SystemLabelId.Archive.labelId.id).iconRes()
         )
         // When
-        val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+        val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings, autoDeleteSetting)
         // Then
         assertEquals(expectedResult, result)
     }
 
     @Suppress("MaxLineLength")
     @Test
-    fun `when AutoDelete is ON and auto-delete system label is found in the list of label ids, its icon is overriden with clock-trashcan`() =
+    fun `when AutoDelete is ON and auto-delete system label is found in the list of label ids, its icon is overridden with clock-trashcan`() =
         runTest {
             // Given
             val labelIds = listOf(
@@ -83,16 +77,16 @@ class MessageLocationUiModelMapperTest {
                 SystemLabelId.autoDeleteList.first().name,
                 R.drawable.ic_proton_trash_clock
             )
-            coEvery { observeAutoDeleteSetting.invoke() } returns flowOf(AutoDeleteSetting.Enabled)
             // When
-            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            val result =
+                messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings, AutoDeleteSetting.Enabled)
             // Then
             assertEquals(expectedResult, result)
         }
 
     @Suppress("MaxLineLength")
     @Test
-    fun `when AutoDelete is OFF and auto-delete system label is found in the list of label ids, its icon is not overriden with clock-trashcan`() =
+    fun `when AutoDelete is OFF and auto-delete system label is found in the list of label ids, its icon is not overridden with clock-trashcan`() =
         runTest {
             // Given
             val labelIds = listOf(
@@ -104,9 +98,9 @@ class MessageLocationUiModelMapperTest {
                 SystemLabelId.Archive.name,
                 SystemLabelId.enumOf(SystemLabelId.Archive.labelId.id).iconRes()
             )
-            coEvery { observeAutoDeleteSetting.invoke() } returns flowOf(AutoDeleteSetting.Disabled)
             // When
-            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            val result =
+                messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings, AutoDeleteSetting.Disabled)
             // Then
             assertEquals(expectedResult, result)
         }
@@ -137,7 +131,8 @@ class MessageLocationUiModelMapperTest {
             every { colorMapper.toColor(any()) } returns customFolderColor.right()
 
             // When
-            val result = messageLocationUiModelMapper(labelIds, labels, FolderColorSettings())
+            val result =
+                messageLocationUiModelMapper(labelIds, labels, FolderColorSettings(), AutoDeleteSetting.Disabled)
 
             // Then
             assertEquals(expectedResult, result)
@@ -166,7 +161,7 @@ class MessageLocationUiModelMapperTest {
         every { colorMapper.toColor(any()) } returns customFolderColor.right()
 
         // When
-        val result = messageLocationUiModelMapper(labelIds, labels, folderColorSettings)
+        val result = messageLocationUiModelMapper(labelIds, labels, folderColorSettings, AutoDeleteSetting.Disabled)
 
         // Then
         assertEquals(expectedResult, result)
@@ -182,7 +177,8 @@ class MessageLocationUiModelMapperTest {
                 SystemLabelId.enumOf(SystemLabelId.AllMail.labelId.id).iconRes()
             )
             // When
-            val result = messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings)
+            val result =
+                messageLocationUiModelMapper(labelIds, emptyList(), folderColorSettings, AutoDeleteSetting.Disabled)
             // Then
             assertEquals(expectedResult, result)
         }

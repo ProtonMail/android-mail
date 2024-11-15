@@ -127,8 +127,10 @@ import ch.protonmail.android.mailmessage.presentation.reducer.MailboxMoreActions
 import ch.protonmail.android.mailmessage.presentation.reducer.MoveToBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.UpsellingBottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.usecase.InjectCssIntoDecryptedMessageBody
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
@@ -252,6 +254,9 @@ class MessageDetailViewModelTest {
         mockk<ObserveFolderColorSettings> {
             every { this@mockk.invoke(userId) } returns flowOf(defaultFolderColorSettings)
         }
+    private val observeAutoDeleteSetting = mockk<ObserveAutoDeleteSetting> {
+        coEvery { this@mockk() } returns flowOf(AutoDeleteSetting.Disabled)
+    }
     private val observeAttachmentWorkerStatus = mockk<ObserveMessageAttachmentStatus>()
     private val markUnread = mockk<MarkMessageAsUnread> {
         coEvery { this@mockk(userId, messageId) } returns MessageSample.Invoice.right()
@@ -273,7 +278,8 @@ class MessageDetailViewModelTest {
             toUiModel(
                 any(),
                 ContactTestData.contacts,
-                defaultFolderColorSettings
+                defaultFolderColorSettings,
+                AutoDeleteSetting.Disabled
             )
         } returns messageDetailHeaderUiModel
     }
@@ -407,6 +413,7 @@ class MessageDetailViewModelTest {
             observeDetailActions = observeDetailActions,
             observeDestinationMailLabels = observeMailLabels,
             observeFolderColor = observeFolderColorSettings,
+            observeAutoDeleteSetting = observeAutoDeleteSetting,
             observeMessage = observeMessage,
             observeMessageAttachmentStatus = observeAttachmentWorkerStatus,
             markUnread = markUnread,

@@ -355,8 +355,7 @@ class ConversationDetailViewModelIntegrationTest {
     private val resolveParticipantName = ResolveParticipantName()
     private val messageLocationUiModelMapper = MessageLocationUiModelMapper(
         colorMapper,
-        getRootLabel,
-        observeAutoDeleteSetting
+        getRootLabel
     )
     private val formatShortTime: FormatShortTime =
         mockk { every { this@mockk.invoke(any()) } returns TextUiModel("10:00") }
@@ -2659,6 +2658,7 @@ class ConversationDetailViewModelIntegrationTest {
         observeDetailActions = observeDetailActions,
         observeDestinationMailLabels = observeDestinationMailLabels,
         observeFolderColor = observeFolderColor,
+        observeAutoDeleteSetting = observeAutoDeleteSetting,
         observeCustomMailLabels = observeCustomMailLabels,
         observeMessage = observeMessage,
         observeMessageAttachmentStatus = observeMessageAttachmentStatus,
