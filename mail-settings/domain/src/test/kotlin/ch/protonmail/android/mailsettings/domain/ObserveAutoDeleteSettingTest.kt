@@ -53,7 +53,7 @@ class ObserveAutoDeleteSettingTest {
         coEvery { this@mockk(UserIdTestData.userId) } returns false.right()
     }
     private val observeUpsellingVisibility = mockk<ObserveUpsellingVisibility> {
-        every { this@mockk(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(false)
+        every { this@mockk(UpsellingEntryPoint.Feature.AutoDelete) } returns flowOf(false)
     }
 
     private lateinit var usecase: ObserveAutoDeleteSetting
@@ -180,7 +180,7 @@ class ObserveAutoDeleteSettingTest {
     }
 
     private fun expectShouldShowUpselling(value: Boolean) {
-        every { observeUpsellingVisibility(UpsellingEntryPoint.BottomSheet.AutoDelete) } returns flowOf(value)
+        every { observeUpsellingVisibility(UpsellingEntryPoint.Feature.AutoDelete) } returns flowOf(value)
     }
 
     private fun expectUserIsPaid(value: Boolean) {
