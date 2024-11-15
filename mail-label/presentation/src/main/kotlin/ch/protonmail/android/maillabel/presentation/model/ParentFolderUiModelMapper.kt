@@ -20,11 +20,18 @@ package ch.protonmail.android.maillabel.presentation.model
 
 import me.proton.core.label.domain.entity.LabelId
 
-fun List<FolderUiModel>.toParentFolderUiModel(labelId: LabelId?, parentLabelId: LabelId?): List<ParentFolderUiModel> {
+internal fun List<FolderUiModel>.toParentFolderUiModel(
+    labelId: LabelId?,
+    parentLabelId: LabelId?
+): List<ParentFolderUiModel> {
     return this.mapIndexed { index, folder ->
+        val isDifferentLabelId = folder.id != labelId
+        val isRootOrFirstLevel = folder.level < 2
+        val isFolderChildOfSelectedLabelId = folder.parent != null && folder.parent.id.id == labelId?.id
+
         ParentFolderUiModel(
             folder = folder,
-            isEnabled = folder.id != labelId && folder.level < 2,
+            isEnabled = isDifferentLabelId && isRootOrFirstLevel && !isFolderChildOfSelectedLabelId,
             isSelected = parentLabelId == folder.id,
             displayDivider = index != 0 && folder.parent == null
         )
