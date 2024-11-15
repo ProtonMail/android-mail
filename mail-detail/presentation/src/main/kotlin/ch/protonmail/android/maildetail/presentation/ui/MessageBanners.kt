@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -133,7 +134,7 @@ fun MessageAutoDeleteBanner(
                 shape = ProtonTheme.shapes.medium
             )
             .background(color = backgroundColor, shape = ProtonTheme.shapes.medium)
-            .padding(ProtonDimens.DefaultSpacing),
+            .padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
