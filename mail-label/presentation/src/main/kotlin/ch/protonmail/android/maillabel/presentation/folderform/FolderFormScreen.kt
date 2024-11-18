@@ -22,8 +22,10 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -337,6 +339,7 @@ fun FolderFormParentFolderField(state: FolderFormState.Data, actions: FolderForm
             ),
             style = ProtonTheme.typography.defaultNorm
         )
+        Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
         Text(
             modifier = Modifier.padding(
                 start = ProtonDimens.DefaultSpacing,
