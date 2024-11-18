@@ -122,7 +122,7 @@ class AccountSettingsViewModel @Inject constructor(
             Data(
                 getRecoveryEmail(userSettings),
                 user?.maxSpace,
-                user?.usedSpace,
+                user?.usedBaseSpace,
                 user?.email,
                 mailSettings?.viewMode?.enum?.let { it == ConversationGrouping },
                 registeredSecurityKeys = securityKeys,
