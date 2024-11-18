@@ -76,10 +76,10 @@
   <string name="upselling_comparison_table_email_addresses">Alamat email</string>
   <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
   <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
-  <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Tanpa batasan jumlah folder dan label</string>
   <string name="upselling_comparison_table_priority_support">Priority customer support</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Select your plan</string>
+  <string name="upselling_select_plan">Pilih paket Anda</string>
   <string name="upselling_select_plan_year">1 year</string>
   <string name="upselling_select_plan_month">1 month</string>
   <!-- Other UI Items -->

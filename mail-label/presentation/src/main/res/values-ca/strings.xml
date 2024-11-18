@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Cap</string>
   <string name="delete_label">Voleu eliminar l\'etiqueta?</string>
   <string name="delete_folder">Voleu eliminar la carpeta?</string>
-  <string name="delete_label_message">Aquesta acció no es pot desfer. Els correus electrònics etiquetats amb aquesta etiqueta no se suprimiran i es poden trobar a la carpeta Tot el correu.</string>
-  <string name="delete_folder_message">Aquesta acció no es pot desfer. Els correus electrònics continguts a aquesta carpeta no se suprimiran i es poden trobar a la carpeta Tot el correu.</string>
+  <string name="delete_label_message">Aquesta acció no es pot desfer. Els correus electrònics amb aquesta etiqueta no se suprimiran i es poden trobar a la carpeta Tot el correu.</string>
+  <string name="delete_folder_message">Aquesta acció no es pot desfer. Els correus electrònics continguts en aquesta carpeta no se suprimiran i es poden trobar a la carpeta Tot el correu.</string>
 </resources>

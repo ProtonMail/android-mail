@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">от 4 до 21 символа</string>
   <string name="set_message_password_supporting_error_text">Пароль должен быть от 4 до 21 символа</string>
   <string name="set_message_password_supporting_text_repeat">Пароли должны совпадать</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Пароли не совпадают</string>
   <string name="set_message_password_button_show">Показать пароль</string>
   <string name="set_message_password_button_hide">Скрыть пароль</string>
   <string name="set_message_password_button_apply">Применить пароль</string>
@@ -96,9 +96,9 @@
   <string name="set_message_password_button_remove_password">Удалить пароль</string>
   <string name="respondInline">Ответить с цитированием</string>
   <plurals name="composer_recipient_suggestion_contacts">
-    <item quantity="one">%d member</item>
-    <item quantity="few">%d members</item>
-    <item quantity="many">%d members</item>
-    <item quantity="other">%d members</item>
+    <item quantity="one">%d участник</item>
+    <item quantity="few">%d участников</item>
+    <item quantity="many">%d участника</item>
+    <item quantity="other">%d участника</item>
   </plurals>
 </resources>

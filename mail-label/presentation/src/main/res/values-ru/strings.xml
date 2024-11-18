@@ -79,8 +79,8 @@
   <string name="folder_saved">Папка сохранена</string>
   <string name="folder_deleted">Папка удалена</string>
   <string name="parent_folder_none">Отсутствует</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label">Удалить ярлык?</string>
+  <string name="delete_folder">Удалить папку?</string>
+  <string name="delete_label_message">Это действие не может быть отменено. Почта с этим ярлыком не будет удалена, её можно будет найти в папке \'Вся почта\'.</string>
+  <string name="delete_folder_message">Это действие не может быть отменено. Почта, содержащаяся в этой папке, не будет удалена, ее можно будет найти в папке \'Вся почта\'.</string>
 </resources>

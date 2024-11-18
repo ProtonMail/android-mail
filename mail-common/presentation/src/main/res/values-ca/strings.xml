@@ -84,7 +84,7 @@
   <string name="yesterday">Ahir</string>
   <string name="auto_delete_banner_text_activate_trash">Suprimeix automàticament els missatges que han estat a la paperera durant més de 30 dies.</string>
   <string name="auto_delete_banner_text_activate_spam">Suprimeix automàticament els missatges que han estat al correu brossa durant més de 30 dies.</string>
-  <string name="auto_delete_banner_text_upgrade">Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.</string>
+  <string name="auto_delete_banner_text_upgrade">Milloreu el vostre pla per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.</string>
   <string name="auto_delete_banner_text_enabled_info">Els missatges que hagin estat a la paperera i al correu brossa més de 30 dies s\'eliminaran automàticament.</string>
   <string name="auto_delete_banner_button_activate_confirm">Activa</string>
   <string name="auto_delete_banner_button_activate_dismiss">No, gràcies</string>

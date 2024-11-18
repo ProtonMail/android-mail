@@ -82,8 +82,8 @@
   <string name="action_more_content_description">Больш</string>
   <string name="common_error_loading_actions">Не ўдалося загрузіць дзеянні</string>
   <string name="yesterday">Учора</string>
-  <string name="auto_delete_banner_text_activate_trash">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.</string>
-  <string name="auto_delete_banner_text_activate_spam">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў спаме больш за 30 дзён.</string>
+  <string name="auto_delete_banner_text_activate_trash">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папцы сметніца больш за 30 дзён.</string>
+  <string name="auto_delete_banner_text_activate_spam">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папцы спам больш за 30 дзён.</string>
   <string name="auto_delete_banner_text_upgrade">Палепшыце свой тарыфны план, каб аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён.</string>
   <string name="auto_delete_banner_text_enabled_info">Паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён будуць выдаляцца аўтаматычна.</string>
   <string name="auto_delete_banner_button_activate_confirm">Уключыць</string>
