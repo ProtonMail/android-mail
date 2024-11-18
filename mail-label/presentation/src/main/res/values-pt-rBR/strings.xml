@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Nenhuma</string>
   <string name="delete_label">Excluir marcador?</string>
   <string name="delete_folder">Excluir pasta?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label_message">Esta ação não pode ser desfeita. E-mails marcados com este marcador não serão excluídos e poderão ser encontrados na pasta \"Todos os e-mails\".</string>
+  <string name="delete_folder_message">Esta ação não pode ser desfeita. E-mails contidos nesta pasta não serão excluídos e poderão ser encontrados na pasta \"Todos os e-mails\".</string>
 </resources>

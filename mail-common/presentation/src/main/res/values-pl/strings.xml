@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d godz.</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Wiadomość zostanie automatycznie usunięta za mniej niż godzinę</string>
+  <string name="expiration_auto_delete_day">Wiadomość zostanie automatycznie usunięta za mniej niż 24 godziny</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Wiadomość zostanie automatycznie usunięta za %s</string>
   <string name="retry">Spróbuj ponownie</string>
   <string name="toolbar_back_content_description">Powrót do poprzedniego ekranu</string>
   <string name="x_error_not_logged_in">Niezalogowano</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Więcej</string>
   <string name="common_error_loading_actions">Ładowanie akcji nie powiodło się</string>
   <string name="yesterday">Wczoraj</string>
+  <string name="auto_delete_banner_text_activate_trash">Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_activate_spam">Automatycznie usuwaj wiadomości, które znajdują się w Spamie dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_upgrade">Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.</string>
+  <string name="auto_delete_banner_text_enabled_info">Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Włącz</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Nie, dziękuję</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Dowiedz się więcej</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Załączniki</string>
   <string name="attachment_download_notification_channel_description">Powiadomienia o pobieraniu załączników</string>

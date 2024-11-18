@@ -87,7 +87,7 @@
   <string name="message_delete_dialog_title">Slett melding</string>
   <string name="message_delete_dialog_message">Er du sikker på at du vil slette denne meldingen permanent?</string>
   <string name="message_deleted">Melding slettet</string>
-  <string name="message_moved">Message moved</string>
+  <string name="message_moved">Meldingen er flyttet</string>
   <string name="error_delete_message_failed">Kunne ikke slette meldingen</string>
   <string name="error_delete_message_failed_wrong_folder">Meldingen er ikke på en plassering der den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>

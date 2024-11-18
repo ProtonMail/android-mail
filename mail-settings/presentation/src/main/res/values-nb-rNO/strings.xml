@@ -64,7 +64,7 @@
   <string name="mail_settings_auto_delete">Automatisk sletting</string>
   <string name="mail_settings_auto_delete_full_text">Automatisk sletting av uønskede meldinger</string>
   <string name="mail_settings_auto_delete_hint">Meldinger i papirkurven eller søppelposten lenger enn 30 dager, slettes automatisk.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Du trenger et betalt Proton Mail-abonnement for å bruke denne funksjonen</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Avbryt</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Slette meldinger?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Dette sletter alle meldinger som er i papirkurven eller søppelposten, i mer enn 30 dager, inkludert meldinger som for øyeblikket er i disse mappene.</string>
@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Ingen inaktive adresser</string>
   <string name="mail_settings_default_email_address_error_loading">Feil ved lasting av innstillinger</string>
   <string name="mail_settings_default_email_address_error_update">Feil under oppdatering av innstillinger</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Oppgrader til en betalt plan for å kunne angi denne adressen som standard.</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Du trenger et betalt Proton Mail-abonnement for å angi denne adressen som standard</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Vis navn &amp; signatur</string>
   <string name="mail_settings_identity_save_button">Lagre</string>

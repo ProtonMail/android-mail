@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Şifrelenmiş parola yöneticisi</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Fotoğraf ve belgeler için şifrelenmiş bulut depolama alanı</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Gelişmiş hesap koruması</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Depolama alanı</string>
+  <string name="upselling_comparison_table_email_addresses">E-posta adresleri</string>
+  <string name="upselling_comparison_table_custom_email_domain">Özel e-posta etki alanı</string>
+  <string name="upselling_comparison_table_desktop_app">Masaüstü uygulamasına erişim</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Sınırsız sayıda klasör ve etiket</string>
+  <string name="upselling_comparison_table_priority_support">Öncelikli müşteri desteği</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Tarifenizi seçin</string>
+  <string name="upselling_select_plan_year">1 yıl</string>
+  <string name="upselling_select_plan_month">1 ay</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">İptal edilmediği sürece aynı fiyat ve koşullarla otomatik olarak yenilenir.</string>
   <string name="upselling_discount_tag">%s%% indirim</string>
   <string name="upselling_month">/ay</string>
+  <string name="upselling_year">/yıl</string>
   <string name="upselling_get_button">%s alın</string>
   <plurals name="upselling_month">
     <item quantity="one">%d ay</item>

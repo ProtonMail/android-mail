@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Šifrovaný správca hesiel</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Šifrované cloudové úložisko pre fotografie a dokumenty</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Rozšírená ochrana účtu</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Úložisko</string>
+  <string name="upselling_comparison_table_email_addresses">Emailové adresy</string>
+  <string name="upselling_comparison_table_custom_email_domain">Vlastná emailová doména</string>
+  <string name="upselling_comparison_table_desktop_app">Prístup k desktopovej aplikácii</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Neobmedzené množstvo priečinkov a štítkov</string>
+  <string name="upselling_comparison_table_priority_support">Prioritná zákaznícka podpora</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Vyberte svoj plán</string>
+  <string name="upselling_select_plan_year">1 rok</string>
+  <string name="upselling_select_plan_month">1 mesiac</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Automatické obnovenie za rovnakú cenu a za rovnakých podmienok až pokým nedôjde k zrušeniu.</string>
   <string name="upselling_discount_tag">UŠETRÍTE %s%%</string>
   <string name="upselling_month">/mesiac</string>
+  <string name="upselling_year">/rok</string>
   <string name="upselling_get_button">Získať %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mesiac</item>

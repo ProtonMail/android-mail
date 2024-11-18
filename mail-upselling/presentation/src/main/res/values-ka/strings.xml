@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">დაშიფრული პაროლების მმართველი</string>
   <string name="upselling_onboarding_unlimited_feature_drive">დაშიფრული ღრუბლოვანი საცავი ფოტოებისა და დოკუმენტებისთვის</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">დამატებითი ანგარიშის დაცვის პროგრამა</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">საცავი</string>
+  <string name="upselling_comparison_table_email_addresses">ელფოსტის მისამართები</string>
+  <string name="upselling_comparison_table_custom_email_domain">თქვენი ელფოსტის დომენი</string>
+  <string name="upselling_comparison_table_desktop_app">წვდომა კომპიუტერის აპთან</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">შეუზღუდავი საქაღალდეები და ჭდეები</string>
+  <string name="upselling_comparison_table_priority_support">მომხმარებლის პრიორიტეტული მხარდაჭერა</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">აირჩიეთ ტარიფი</string>
+  <string name="upselling_select_plan_year">1 წელი</string>
+  <string name="upselling_select_plan_month">1 თვე</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">ავტომატურად განახლდება იგივე ფასით და პირობებით, თუ არ გააუქმებთ.</string>
   <string name="upselling_discount_tag">დაზოგეთ %s%%</string>
   <string name="upselling_month">/თვე</string>
+  <string name="upselling_year">/წელიწადში</string>
   <string name="upselling_get_button">%s-ის მიღება</string>
   <plurals name="upselling_month">
     <item quantity="one">%d თვე</item>

@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">암호화된 비밀번호 관리자</string>
   <string name="upselling_onboarding_unlimited_feature_drive">사진 및 문서에 대한 암호화된 클라우드 스토리지</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">향상된 계정 보호</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">저장 공간</string>
+  <string name="upselling_comparison_table_email_addresses">이메일 주소</string>
+  <string name="upselling_comparison_table_custom_email_domain">사용자 지정 이메일 도메인</string>
+  <string name="upselling_comparison_table_desktop_app">데스크톱 앱으로의 접근 가능</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">무제한 폴더 및 라벨</string>
+  <string name="upselling_comparison_table_priority_support">우선 고객 지원</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">플랜 선택</string>
+  <string name="upselling_select_plan_year">1년</string>
+  <string name="upselling_select_plan_month">1개월</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">취소되기 전까지 같은 가격과 규정으로 갱신됩니다.</string>
   <string name="upselling_discount_tag">%s%% 절약</string>
   <string name="upselling_month">/월</string>
+  <string name="upselling_year">/연간</string>
   <string name="upselling_get_button">%s 받기</string>
   <plurals name="upselling_month">
     <item quantity="other">%d개월</item>

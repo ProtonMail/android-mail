@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">E-postadressen er ugyldig</string>
   <string name="composer_error_invalid_sender">Avsenderadressen er ugyldig</string>
   <string name="change_sender_button_content_description">Endre avsender</string>
-  <string name="composer_change_sender_paid_feature">Oppgrader til en betalt plan for å endre avsenderadressen.</string>
+  <string name="composer_change_sender_paid_feature">Du trenger et betalt Proton Mail-abonnement for å endre avsenderadressen</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke endre avsender da innhenting av brukerens abonnement mislyktes. Prøv igjen.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>

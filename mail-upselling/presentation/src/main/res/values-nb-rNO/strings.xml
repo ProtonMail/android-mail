@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Kryptert passordbehandler</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Kryptert skylagring for bilder og dokumenter</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Avansert kontobeskyttelse</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Lagring</string>
+  <string name="upselling_comparison_table_email_addresses">E-postadresser</string>
+  <string name="upselling_comparison_table_custom_email_domain">Egendefinert e-postdomene</string>
+  <string name="upselling_comparison_table_desktop_app">Tilgang til skrivebordsappen</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Ubegrenset antall mapper og etiketter</string>
+  <string name="upselling_comparison_table_priority_support">Prioritert kundestøtte</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Velg din plan</string>
+  <string name="upselling_select_plan_year">1 år</string>
+  <string name="upselling_select_plan_month">1 måned</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Fornyes automatisk til samme pris og vilkår med mindre det kanselleres.</string>
   <string name="upselling_discount_tag">Spar %s%%</string>
   <string name="upselling_month">/måned</string>
+  <string name="upselling_year">/år</string>
   <string name="upselling_get_button">Skaff deg %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d måned</item>

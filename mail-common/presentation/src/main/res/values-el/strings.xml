@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%dμ</string>
   <string name="expiration_hours_arg">%dω</string>
   <string name="expiration_minutes_arg">%dλ</string>
+  <string name="expiration_auto_delete_hour">Αυτό το μήνυμα θα διαγραφεί αυτόματα σε λιγότερο από μία ώρα</string>
+  <string name="expiration_auto_delete_day">Αυτό το μήνυμα θα διαγραφεί αυτόματα σε λιγότερο από μία μέρα</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Αυτό το μήνυμα θα διαγραφεί αυτόματα σε %s</string>
   <string name="retry">Δοκιμάστε ξανά</string>
   <string name="toolbar_back_content_description">Επιστροφή στην προηγούμενη οθόνη</string>
   <string name="x_error_not_logged_in">Δεν έχει γίνει είσοδος</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Περισσότερα</string>
   <string name="common_error_loading_actions">Αποτυχία φόρτωσης ενεργειών</string>
   <string name="yesterday">Χθες</string>
+  <string name="auto_delete_banner_text_activate_trash">Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα για περισσότερες από 30 ημέρες.</string>
+  <string name="auto_delete_banner_text_activate_spam">Αυτόματη διαγραφή μηνυμάτων που είναι στα ανεπιθύμητα για περισσότερες από 30 ημέρες.</string>
+  <string name="auto_delete_banner_text_upgrade">Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.</string>
+  <string name="auto_delete_banner_text_enabled_info">Μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα εξαλείφονται αυτόματα και οριστικά.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Ενεργοποίηση</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Όχι, ευχαριστώ</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Μάθετε περισσότερα</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Συνημμένα</string>
   <string name="attachment_download_notification_channel_description">Ειδοποιήσεις για λήψεις συνημμένων</string>

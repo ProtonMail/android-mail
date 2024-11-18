@@ -29,11 +29,11 @@
   <string name="composer_error_invalid_email">L\'adreça de correu electrònic no és vàlida</string>
   <string name="composer_error_invalid_sender">L\'adreça del remitent no és vàlida</string>
   <string name="change_sender_button_content_description">Canvia el remitent</string>
-  <string name="composer_change_sender_paid_feature">Upgrade to a paid plan to change the sender address</string>
+  <string name="composer_change_sender_paid_feature">Necessiteu una subscripció de Proton Mail de pagament per canviar l\'adreça del remitent.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">No es pot canviar el remitent perquè no s\'ha pogut obtenir la subscripció de l\'usuari. Torna-ho a provar.</string>
   <string name="composer_error_store_draft_sender_address">S\'ha produït un error en desar l\'adreça del remitent.</string>
   <string name="composer_error_store_draft_body">S\'ha produït un error en desar el cos de l\'esborrany.</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">S\'han eliminat un o més destinataris duplicats.</string>
   <string name="composer_error_store_draft_subject">S\'ha produït un error en desar l\'assumpte.</string>
   <string name="composer_error_store_draft_recipients">S\'ha produït un error en desar els destinataris de l\'esborrany.</string>
   <string name="composer_error_loading_draft">El contingut d\'aquest esborrany no està disponible en aquest moment. L\'edició substituirà qualsevol contingut preexistent.</string>

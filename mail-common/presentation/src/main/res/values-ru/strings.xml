@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d д.</string>
   <string name="expiration_hours_arg">%d ч.</string>
   <string name="expiration_minutes_arg">%d мин.</string>
+  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
+  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
   <string name="retry">Повторить</string>
   <string name="toolbar_back_content_description">Обратно к предыдущему экрану</string>
   <string name="x_error_not_logged_in">Вход не выполнен</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Ещё</string>
   <string name="common_error_loading_actions">Неудачные действия при скачивании</string>
   <string name="yesterday">Вчера</string>
+  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
+  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Enable</string>
+  <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вложения</string>
   <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>

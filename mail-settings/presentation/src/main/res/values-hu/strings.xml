@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Nincsenek kikapcsolt címek</string>
   <string name="mail_settings_default_email_address_error_loading">Hiba az beállítások betöltése során</string>
   <string name="mail_settings_default_email_address_error_update">Hiba az beállítások frissítése során</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">You need a paid Proton Mail subscription to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Megjelenített név és aláírás</string>
   <string name="mail_settings_identity_save_button">Mentés</string>

@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d t</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
+  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
   <string name="x_error_not_logged_in">Inte inloggad</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Mer</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
+  <string name="auto_delete_banner_text_activate_trash">Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.</string>
+  <string name="auto_delete_banner_text_activate_spam">Ta bort meddelanden som har legat i skräppost i mer än 30 dagar automatiskt.</string>
+  <string name="auto_delete_banner_text_upgrade">Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.</string>
+  <string name="auto_delete_banner_text_enabled_info">Meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar kommer att tas bort automatiskt.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Aktivera</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Nej, tack</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Lär dig mer</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Bilagor</string>
   <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>

@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Aucune adresse inactive</string>
   <string name="mail_settings_default_email_address_error_loading">Une erreur s\'est produite lors du chargement des paramètres.</string>
   <string name="mail_settings_default_email_address_error_update">Une erreur s\'est produite lors de la mise à jour des paramètres.</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Passez à un abonnement payant pour définir cette adresse par défaut.</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Vous devez disposer d\'un abonnement payant à Proton Mail pour configurer cette adresse comme par défaut.</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Nom d\'affichage et signature</string>
   <string name="mail_settings_identity_save_button">Enregistrer</string>

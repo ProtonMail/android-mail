@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d дз</string>
   <string name="expiration_hours_arg">%dг</string>
   <string name="expiration_minutes_arg">%d хв</string>
+  <string name="expiration_auto_delete_hour">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз гадзіну</string>
+  <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Гэта паведамленне будзе аўтаматычна выдалена за %s</string>
   <string name="retry">Паўтарыць</string>
   <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
   <string name="x_error_not_logged_in">Уваход не выкананы</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Больш</string>
   <string name="common_error_loading_actions">Не ўдалося загрузіць дзеянні</string>
   <string name="yesterday">Учора</string>
+  <string name="auto_delete_banner_text_activate_trash">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.</string>
+  <string name="auto_delete_banner_text_activate_spam">Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў спаме больш за 30 дзён.</string>
+  <string name="auto_delete_banner_text_upgrade">Палепшыце свой тарыфны план, каб аўтаматычна выдаляць паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён.</string>
+  <string name="auto_delete_banner_text_enabled_info">Паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён будуць выдаляцца аўтаматычна.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Уключыць</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Не, дзякуй</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Даведацца больш</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Далучэнні</string>
   <string name="attachment_download_notification_channel_description">Апавяшчэнні аб спампоўванні далучэнняў</string>

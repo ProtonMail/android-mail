@@ -87,7 +87,7 @@
   <string name="message_delete_dialog_title">İletiyi sil</string>
   <string name="message_delete_dialog_message">Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
   <string name="message_deleted">İleti silindi</string>
-  <string name="message_moved">Message moved</string>
+  <string name="message_moved">İleti taşındı</string>
   <string name="error_delete_message_failed">İleti silinemedi</string>
   <string name="error_delete_message_failed_wrong_folder">İleti silinebilecek bir konumda değil</string>
   <string name="error_delete_conversation_failed">Yazışma silinemedi</string>

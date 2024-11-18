@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Verschlüsselter Passwortmanager</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Verschlüsselter Cloud-Speicher für Fotos und Dokumente</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Erweiterter Schutz von Konten</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Speicher</string>
+  <string name="upselling_comparison_table_email_addresses">E‐Mail‐Adressen</string>
+  <string name="upselling_comparison_table_custom_email_domain">Eigene E-Mail-Domain</string>
+  <string name="upselling_comparison_table_desktop_app">Zugang zur Desktop-App</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
+  <string name="upselling_comparison_table_priority_support">Vorrangiger Kundensupport</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Wähle dein Abonnement</string>
+  <string name="upselling_select_plan_year">1 Jahr</string>
+  <string name="upselling_select_plan_month">1 Monat</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Verlängert sich automatisch zum gleichen Preis und zu den gleichen Bedingungen, wenn es nicht gekündigt wird.</string>
   <string name="upselling_discount_tag">SPARE %s%%</string>
   <string name="upselling_month">/Monat</string>
+  <string name="upselling_year">/Jahr</string>
   <string name="upselling_get_button">%s holen</string>
   <plurals name="upselling_month">
     <item quantity="one">%d Monat</item>

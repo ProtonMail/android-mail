@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Ni nedejavnih naslovov</string>
   <string name="mail_settings_default_email_address_error_loading">Napaka pri nalaganju nastavitev</string>
   <string name="mail_settings_default_email_address_error_update">Napaka pri shranjevanju novih nastavitev</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">You need a paid Proton Mail subscription to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Prikazano ime &amp; podpis</string>
   <string name="mail_settings_identity_save_button">Shrani</string>

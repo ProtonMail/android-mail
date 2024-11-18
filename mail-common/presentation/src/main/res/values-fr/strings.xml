@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d j</string>
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Ce message sera automatiquement supprimé dans moins d\'une heure.</string>
+  <string name="expiration_auto_delete_day">Ce message sera automatiquement supprimé dans moins d\'un jour.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Ce message sera automatiquement supprimé dans %s.</string>
   <string name="retry">Réessayer</string>
   <string name="toolbar_back_content_description">Retour à l\'écran précédent</string>
   <string name="x_error_not_logged_in">Non connecté</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Plus</string>
   <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
+  <string name="auto_delete_banner_text_activate_trash">Supprimez automatiquement les messages qui sont dans le dossier Corbeille depuis plus de 30 jours.</string>
+  <string name="auto_delete_banner_text_activate_spam">Supprimez automatiquement les messages qui sont dans le dossier Indésirables/spam depuis plus de 30 jours.</string>
+  <string name="auto_delete_banner_text_upgrade">Changez d\'abonnement pour supprimer automatiquement les messages dans les dossiers Corbeille ou Indésirables/spam depuis plus de 30 jours.</string>
+  <string name="auto_delete_banner_text_enabled_info">Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Activer</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Non, merci</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">En savoir plus</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Pièces jointes</string>
   <string name="attachment_download_notification_channel_description">Notifications pour les téléchargements de pièces jointes</string>

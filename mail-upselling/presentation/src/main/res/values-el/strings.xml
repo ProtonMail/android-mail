@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Κρυπτογραφημένος διαχειριστής κωδικών πρόσβασης</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Κρυπτογραφημένος χώρος αποθήκευσης στο cloud για φωτογραφίες και έγγραφα</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Προηγμένη προστασία λογαριασμού</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Αποθηκευτικός χώρος</string>
+  <string name="upselling_comparison_table_email_addresses">Διευθύνσεις ηλεκτρονικού ταχυδρομείου</string>
+  <string name="upselling_comparison_table_custom_email_domain">Προσαρμοσμένος τομέας ηλεκτρονικού ταχυδρομείου</string>
+  <string name="upselling_comparison_table_desktop_app">Πρόσβαση στην εφαρμογή επιφάνειας εργασίας</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Απεριόριστοι φάκελοι και ετικέτες</string>
+  <string name="upselling_comparison_table_priority_support">Προτεραιότητα στην υποστήριξη πελατών</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Επιλέξτε το πλάνο σας</string>
+  <string name="upselling_select_plan_year">1 έτος</string>
+  <string name="upselling_select_plan_month">1 μήνας</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Ανανεώνεται αυτόματα στην ίδια τιμή και με τους ίδιους όρους, εκτός εάν ακυρωθεί.</string>
   <string name="upselling_discount_tag">ΕΞΟΙΚΟΝΟΜΗΣΤΕ %s%%</string>
   <string name="upselling_month">/μήνα</string>
+  <string name="upselling_year">/έτος</string>
   <string name="upselling_get_button">Αποκτήστε %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d μήνα</item>

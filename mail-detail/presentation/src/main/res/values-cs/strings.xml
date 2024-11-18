@@ -91,7 +91,7 @@
   <string name="message_delete_dialog_title">Smazat zprávu</string>
   <string name="message_delete_dialog_message">Jste si jisti, že chcete trvale smazat tuto zprávu?</string>
   <string name="message_deleted">Zpráva smazána</string>
-  <string name="message_moved">Message moved</string>
+  <string name="message_moved">Zpráva přesunuta</string>
   <string name="error_delete_message_failed">Smazání zprávy selhalo</string>
   <string name="error_delete_message_failed_wrong_folder">Zpráva se nenachází v místě, kde ji lze smazat</string>
   <string name="error_delete_conversation_failed">Smazání konverzace selhalo</string>

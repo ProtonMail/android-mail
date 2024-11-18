@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d t</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Denne meldingen slettes automatisk om mindre enn en time</string>
+  <string name="expiration_auto_delete_day">Denne meldingen slettes automatisk om mindre enn en dag</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Denne meldingen slettes automatisk om %s</string>
   <string name="retry">Prøv på nytt</string>
   <string name="toolbar_back_content_description">Tilbake til forrige skjerm</string>
   <string name="x_error_not_logged_in">Ikke pålogget</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Mer</string>
   <string name="common_error_loading_actions">Feil ved henting av handlinger</string>
   <string name="yesterday">I går</string>
+  <string name="auto_delete_banner_text_activate_trash">Slett automatisk meldinger som har ligget i papirkurven i mer enn 30 dager.</string>
+  <string name="auto_delete_banner_text_activate_spam">Slett automatisk meldinger som har ligget i søppelpostmappen i mer enn 30 dager.</string>
+  <string name="auto_delete_banner_text_upgrade">Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager.</string>
+  <string name="auto_delete_banner_text_enabled_info">Meldinger i papirkurven eller søppelposten som har vært der lenger enn 30 dager, slettes automatisk.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Aktiver</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Nei takk</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Lær mer</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Vedlegg</string>
   <string name="attachment_download_notification_channel_description">Varsler for nedlasting av vedlegg</string>

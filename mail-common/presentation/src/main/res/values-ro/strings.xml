@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d z</string>
   <string name="expiration_hours_arg">%d h</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Acest mesaj va fi șters automat peste o oră.</string>
+  <string name="expiration_auto_delete_day">Acest mesaj va fi șters automat în mai puțin de o zi.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Acest mesaj va fi șters automat la peste %s.</string>
   <string name="retry">Reîncercare</string>
   <string name="toolbar_back_content_description">Înapoi la ecranul anterior</string>
   <string name="x_error_not_logged_in">Neconectat</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Detalii</string>
   <string name="common_error_loading_actions">Încărcarea acțiunilor a eșuat.</string>
   <string name="yesterday">Ieri</string>
+  <string name="auto_delete_banner_text_activate_trash">Ștergere automată mesaje din gunoi mai vechi de 30 de zile.</string>
+  <string name="auto_delete_banner_text_activate_spam">Ștergere automată mesaje din folderul «Nedorite» mai vechi de 30 de zile.</string>
+  <string name="auto_delete_banner_text_upgrade">Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.</string>
+  <string name="auto_delete_banner_text_enabled_info">Mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile vor fi șterse automat.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Activare</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Nu, mulțumesc</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Detalii</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Fișiere atașate</string>
   <string name="attachment_download_notification_channel_description">Notificări pentru descărcări atașamente</string>

@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">E-postadress är ogiltig</string>
   <string name="composer_error_invalid_sender">Avsändaradress är ogiltig</string>
   <string name="change_sender_button_content_description">Ändra avsändare</string>
-  <string name="composer_change_sender_paid_feature">Uppgradera till ett betalt paket för att ändra avsändarens adress</string>
+  <string name="composer_change_sender_paid_feature">Du behöver en betald Proton Mail-prenumeration för att ändra avsändaradressen</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan inte att ändra avsändare eftersom det misslyckades att hämta användarens prenumeration. Försök igen.</string>
   <string name="composer_error_store_draft_sender_address">Misslyckades att lagra avsändaradressen för detta utkast</string>
   <string name="composer_error_store_draft_body">Misslyckades att lagra innehåll för detta utkast</string>

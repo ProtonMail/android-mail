@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d დღე</string>
   <string name="expiration_hours_arg">%dსთ</string>
   <string name="expiration_minutes_arg">%d წთ</string>
+  <string name="expiration_auto_delete_hour">ეს შეტყობინება ავტომატურად წიაშლება საათზე ნაკლებ დროში</string>
+  <string name="expiration_auto_delete_day">ეს შეტყობინება ავტომატურად წიაშლება დღეზე ნაკლებ დროში</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">ამ შეტყობინების ავტომატური წაიშლება %s-ში</string>
   <string name="retry">თავიდან</string>
   <string name="toolbar_back_content_description">წინა ეკრანზე გადასვლა</string>
   <string name="x_error_not_logged_in">შესული არ ბრძანდებით</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">მეტი</string>
   <string name="common_error_loading_actions">ქმედებების ჩატვირთვის შეცდომა</string>
   <string name="yesterday">გუშინ</string>
+  <string name="auto_delete_banner_text_activate_trash">ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.</string>
+  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_upgrade">ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.</string>
+  <string name="auto_delete_banner_text_enabled_info">ნაგვის ყუთში 30 დღეზე მეტ ხანს მყოფი შეტყობინებები და სპამი ავტომატურად წაიშლება.</string>
+  <string name="auto_delete_banner_button_activate_confirm">ჩართვა</string>
+  <string name="auto_delete_banner_button_activate_dismiss">არა, გმადლობთ</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">გაიგეთ მეტი</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">მიმაგრებები</string>
   <string name="attachment_download_notification_channel_description">მიმაგრებული ფაილების გადმოწერის გაფრთხილება</string>

@@ -61,17 +61,17 @@
   <string name="mail_settings_labels">標籤</string>
   <string name="mail_settings_folders">資料夾</string>
   <string name="mail_settings_conversation_mode">往來對話群组模式</string>
-  <string name="mail_settings_auto_delete">Auto-delete</string>
-  <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
-  <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
-  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Enable</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disable</string>
+  <string name="mail_settings_auto_delete">自動刪除</string>
+  <string name="mail_settings_auto_delete_full_text">自動刪除垃圾訊息</string>
+  <string name="mail_settings_auto_delete_hint">垃圾桶與垃圾郵件將在30天後自動刪除。</string>
+  <string name="mail_settings_auto_delete_subscription_needed">您需要付費訂閱 Proton Mail 才能使用此功能</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">取消</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">刪除郵件?</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">這將會刪除所有位於垃圾桶或垃圾郵件匣中超過30天的郵件，包含現存的郵件。</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">啟用</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_title">停用自動刪除？</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">已排程刪除的信件會留在垃圾桶和垃圾郵件匣中。</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">停用</string>
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">收件匣可將同一往來對話的電郵，以群組或單獨方式陳列顯示</string>
   <!-- Default email address settings -->
@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">無未啟用的地址</string>
   <string name="mail_settings_default_email_address_error_loading">載入設定時發生錯誤</string>
   <string name="mail_settings_default_email_address_error_update">更新設定值發生錯誤</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Upgrade to a paid plan to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">You need a paid Proton Mail subscription to set this address as default</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">顯示名稱 &amp; 簽名檔</string>
   <string name="mail_settings_identity_save_button">儲存</string>

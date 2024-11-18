@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Utilitzeu la vostra pròpia signatura mòbil i gaudiu d\'altres característiques prèmium amb el Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Personalitzeu la signatura</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Gaudiu d’una bústia més ordenada i dels avantatges d’altres funcions prèmium amb Mail Plus</string>
+  <string name="upselling_auto_delete_plus_title">Buida la paperera i el correu brossa</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB d\'emmagatzematge</string>
   <string name="upselling_plus_feature_email_addresses">10 adreces de correu electrònic</string>
@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contrasenyes xifrat</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge en el núvol xifrat per a fotos i documents</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protecció avançada del compte</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Emmagatzematge</string>
+  <string name="upselling_comparison_table_email_addresses">Adreces de correu electrònic</string>
+  <string name="upselling_comparison_table_custom_email_domain">Domini de correu electrònic personalitzat</string>
+  <string name="upselling_comparison_table_desktop_app">Accés a l\'aplicació d\'escriptori</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Nombre il·limitat de carpetes i etiquetes</string>
+  <string name="upselling_comparison_table_priority_support">Atenció al client prioritària</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Seleccioneu el vostre pla</string>
+  <string name="upselling_select_plan_year">1 any</string>
+  <string name="upselling_select_plan_month">1 mes</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Es renova automàticament al mateix preu i condicions tret que es cancel·li.</string>
   <string name="upselling_discount_tag">ESTALVIEU EL %s%%</string>
   <string name="upselling_month">/mes</string>
+  <string name="upselling_year">/any</string>
   <string name="upselling_get_button">Obtingueu %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mes</item>
@@ -93,7 +106,7 @@
   <string name="upselling_onboarding_switcher_annual">Anual</string>
   <string name="upselling_onboarding_best_value">Millor oferta</string>
   <string name="upselling_onboarding_month">/mes</string>
-  <string name="upselling_onboarding_year">/year</string>
+  <string name="upselling_onboarding_year">/any</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d característica més</item>
     <item quantity="other">%d característiques més</item>

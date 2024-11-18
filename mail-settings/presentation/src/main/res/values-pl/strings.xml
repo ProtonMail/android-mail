@@ -64,7 +64,7 @@
   <string name="mail_settings_auto_delete">Automatyczne usuwanie</string>
   <string name="mail_settings_auto_delete_full_text">Automatyczne usuwanie niechcianych wiadomości</string>
   <string name="mail_settings_auto_delete_hint">Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Do korzystania z funkcji wymagana jest płatna subskrypcja Proton Mail</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Anuluj</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Usunąć wiadomości?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Wszystkie wiadomości, które znajdują się w Koszu lub w Spamie dłużej niż 30 dni zostaną usunięte.</string>
@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Brak nieaktywnych adresów</string>
   <string name="mail_settings_default_email_address_error_loading">Wystąpił błąd podczas ładowania ustawień</string>
   <string name="mail_settings_default_email_address_error_update">Wystąpił błąd podczas aktualizowania ustawień</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Ulepsz do płatnego planu, aby ustawić ten adres jako domyślny</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Do ustawienia adresu jako domyślnego wymagana jest płatna subskrypcja Proton Mail</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Nazwa wyświetlana i podpis</string>
   <string name="mail_settings_identity_save_button">Zapisz</string>

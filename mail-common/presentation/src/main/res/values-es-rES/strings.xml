@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d h</string>
   <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Este mensaje se eliminará automáticamente en menos de una hora.</string>
+  <string name="expiration_auto_delete_day">Este mensaje se eliminará automáticamente en menos de un día.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Este mensaje se eliminará automáticamente en %s.</string>
   <string name="retry">Reintentar</string>
   <string name="toolbar_back_content_description">Volver a la pantalla anterior</string>
   <string name="x_error_not_logged_in">No se ha iniciado sesión.</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Más</string>
   <string name="common_error_loading_actions">Error al cargar las acciones</string>
   <string name="yesterday">Ayer</string>
+  <string name="auto_delete_banner_text_activate_trash">Elimina mensajes automáticamente que han estado en la carpeta Papelera por más de 30 días.</string>
+  <string name="auto_delete_banner_text_activate_spam">Elimina mensajes automáticamente que han estado en la carpeta Spam por más de 30 días.</string>
+  <string name="auto_delete_banner_text_upgrade">Mejora tu plan para eliminar automáticamente los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días.</string>
+  <string name="auto_delete_banner_text_enabled_info">Los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días serán eliminados automáticamente.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Activar</string>
+  <string name="auto_delete_banner_button_activate_dismiss">No, gracias</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Más información</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Archivos adjuntos</string>
   <string name="attachment_download_notification_channel_description">Notificaciones de descargas de archivos adjuntos</string>

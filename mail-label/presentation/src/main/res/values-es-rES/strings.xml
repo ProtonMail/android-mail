@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Ninguna</string>
   <string name="delete_label">¿Eliminar la etiqueta?</string>
   <string name="delete_folder">¿Eliminar la carpeta?</string>
-  <string name="delete_label_message">Esta acción no puede deshacerse. Los correos electrónicos con esta etiqueta no se borrarán y se pueden encontrar en la carpeta \'Todos los mensajes\'.</string>
-  <string name="delete_folder_message">Esta acción no puede deshacerse. Los correos electrónicos en esta carpeta no se borrarán y pueden ser encontrados en la carpeta \'Todos los mensajes\'.</string>
+  <string name="delete_label_message">Esta acción no puede deshacerse. Los correos electrónicos con esta etiqueta no se borrarán y se pueden encontrar en la carpeta «Todos los mensajes».</string>
+  <string name="delete_folder_message">Esta acción no puede deshacerse. Los correos electrónicos en esta carpeta no se borrarán y pueden ser encontrados en la carpeta «Todos los mensajes».</string>
 </resources>

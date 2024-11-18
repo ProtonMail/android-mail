@@ -36,7 +36,7 @@
   <string name="upselling_mobile_signature_plus_description_override">Usa tu propia firma de móvil y disfruta de otras funciones prémium con Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Personaliza tu firma</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Disfruta de un buzón ordenado y del beneficio de otras funciones premium con Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_description_override">Disfruta de un buzón más ordenado y del beneficio de otras funciones premium con Mail Plus.</string>
   <string name="upselling_auto_delete_plus_title">Borrar la papelera y spam antiguos</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB de almacenamiento</string>
@@ -71,9 +71,22 @@
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contraseñas cifrado</string>
   <string name="upselling_onboarding_unlimited_feature_drive">Almacenamiento en la nube cifrado de fotos y documentos</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protección de cuentas avanzada</string>
+  <!-- Comparison Table -->
+  <string name="upselling_comparison_table_storage">Almacenamiento</string>
+  <string name="upselling_comparison_table_email_addresses">Direcciones de correo electrónico</string>
+  <string name="upselling_comparison_table_custom_email_domain">Dominio de correo electrónico personalizado</string>
+  <string name="upselling_comparison_table_desktop_app">Acceso a la aplicación de escritorio</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Número ilimitado de carpetas y etiquetas</string>
+  <string name="upselling_comparison_table_priority_support">Atención al cliente prioritaria</string>
+  <!-- Rectangular plan buttons -->
+  <string name="upselling_select_plan">Elige tu plan</string>
+  <string name="upselling_select_plan_year">1 año</string>
+  <string name="upselling_select_plan_month">1 mes</string>
   <!-- Other UI Items -->
+  <string name="upselling_auto_renew_text">Se renueva automáticamente al mismo precio y términos a menos que se cancele.</string>
   <string name="upselling_discount_tag">AHORRA UN %s%%</string>
   <string name="upselling_month">/mes</string>
+  <string name="upselling_year">/año</string>
   <string name="upselling_get_button">Obtener %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mes</item>

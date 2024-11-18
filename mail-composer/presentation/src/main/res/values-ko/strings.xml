@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">올바르지 않은 이메일 주소입니다</string>
   <string name="composer_error_invalid_sender">보낸 이의 주소가 잘못되었습니다</string>
   <string name="change_sender_button_content_description">보낸 사람 변경</string>
-  <string name="composer_change_sender_paid_feature">보낸 사람의 주소를 변경하려면 유료 플랜으로 업그레이드 하세요</string>
+  <string name="composer_change_sender_paid_feature">이 전송자의 주소를 변경하려면 유료 Proton Mail 구독이 필요합니다.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">사용자의 구독을 실패했기 때문에 발신자를 변경할 수 없습니다. 다시 시도하십시오.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>

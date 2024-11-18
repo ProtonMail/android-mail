@@ -21,6 +21,9 @@
   <string name="expiration_days_arg">%dd</string>
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_auto_delete_hour">Tato zpráva bude automaticky smazána za méně než hodinu</string>
+  <string name="expiration_auto_delete_day">Tato zpráva bude automaticky smazána za méně než den</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tato zpráva bude automaticky smazána za %s</string>
   <string name="retry">Obnovit</string>
   <string name="toolbar_back_content_description">Zpět na předchozí obrazovku</string>
   <string name="x_error_not_logged_in">Nejste přihlášeni</string>
@@ -79,6 +82,13 @@
   <string name="action_more_content_description">Více</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
   <string name="yesterday">Včera</string>
+  <string name="auto_delete_banner_text_activate_trash">Automaticky smazat zprávy, které jsou v koši déle než 30 dní.</string>
+  <string name="auto_delete_banner_text_activate_spam">Automaticky smazat zprávy, které jsou ve spamu déle než 30 dní.</string>
+  <string name="auto_delete_banner_text_upgrade">Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní.</string>
+  <string name="auto_delete_banner_text_enabled_info">Zprávy, které byly v koši a spamu déle než 30 dní, budou automaticky smazány.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Povolit</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Ne, děkuji</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Zjistit více</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Přílohy</string>
   <string name="attachment_download_notification_channel_description">Upozornění na stahování příloh</string>
