@@ -38,6 +38,7 @@ import me.proton.core.notification.data.NotificationEventListener
 import me.proton.core.push.data.PushEventListener
 import me.proton.core.user.data.UserAddressEventListener
 import me.proton.core.user.data.UserEventListener
+import me.proton.core.user.data.UserSpaceEventListener
 import me.proton.core.usersettings.data.UserSettingsEventListener
 import javax.inject.Singleton
 
@@ -45,6 +46,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Suppress("LongParameterList")
 object EventManagerModule {
+
     @Provides
     @Singleton
     @ElementsIntoSet
@@ -62,11 +64,13 @@ object EventManagerModule {
         notificationEventListener: NotificationEventListener,
         pushEventListener: PushEventListener,
         unreadMessagesCountEventListener: UnreadMessagesCountEventListener,
-        unreadConversationsCountEventListener: UnreadConversationsCountEventListener
+        unreadConversationsCountEventListener: UnreadConversationsCountEventListener,
+        userSpaceEventListener: UserSpaceEventListener
     ): Set<EventListener<*, *>> = setOf(
         userEventListener,
         userAddressEventListener,
         userSettingsEventListener,
+        userSpaceEventListener,
         mailSettingsEventListener,
         contactEventListener,
         contactEmailEventListener,
@@ -86,7 +90,5 @@ object EventManagerModule {
         @Binds
         @Singleton
         fun bindsEventManagerQueryMapProvider(impl: MailEventManagerQueryMapProvider): EventManagerQueryMapProvider
-
     }
-
 }
