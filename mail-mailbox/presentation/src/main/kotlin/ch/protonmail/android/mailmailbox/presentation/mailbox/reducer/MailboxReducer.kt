@@ -42,6 +42,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import javax.inject.Inject
 
@@ -250,6 +251,11 @@ class MailboxReducer @Inject constructor(
                             R.string.mail_settings_auto_delete_dialog_enabling_button_confirm
                         )
                     )
+                )
+
+                is MailboxEvent.AutoDeleteStateChanged -> AutoDeleteSettingState.Data(
+                    isEnabled = operation.isFeatureFlagEnabled &&
+                        operation.autoDeleteSetting is AutoDeleteSetting.Enabled
                 )
             }
         } else {

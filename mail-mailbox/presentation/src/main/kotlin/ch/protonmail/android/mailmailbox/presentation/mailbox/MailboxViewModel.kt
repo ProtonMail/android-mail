@@ -35,7 +35,6 @@ import ch.protonmail.android.mailcommon.presentation.mapper.ActionUiModelMapper
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
-import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.domain.usecase.GetContacts
 import ch.protonmail.android.mailconversation.domain.usecase.DeleteConversations
@@ -316,25 +315,12 @@ class MailboxViewModel @Inject constructor(
         autoDeleteSetting: AutoDeleteSetting,
         featureEnabled: Boolean
     ) {
-        if (!featureEnabled) return emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(null))
-
-        if (currentMailLabel.id == MailLabelId.System.Trash || currentMailLabel.id == MailLabelId.System.Spam) {
-            val autoDeleteBannerUiModel = when (autoDeleteSetting) {
-                AutoDeleteSetting.Disabled -> null
-                AutoDeleteSetting.Enabled -> AutoDeleteBannerUiModel.Info
-                AutoDeleteSetting.NotSet.PaidUser -> {
-                    if (currentMailLabel.id == MailLabelId.System.Trash) {
-                        AutoDeleteBannerUiModel.Activate.Trash
-                    } else AutoDeleteBannerUiModel.Activate.Spam
-                }
-
-                AutoDeleteSetting.NotSet.FreeUser.UpsellingOff -> null
-                AutoDeleteSetting.NotSet.FreeUser.UpsellingOn -> AutoDeleteBannerUiModel.Upgrade
-            }
-            emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(autoDeleteBannerUiModel))
-        } else {
-            emitNewStateFrom(MailboxEvent.AutoDeleteBannerStateChanged(null))
-        }
+        val operation = MailboxEvent.AutoDeleteStateChanged(
+            featureEnabled,
+            currentMailLabel.id,
+            autoDeleteSetting
+        )
+        emitNewStateFrom(operation)
     }
 
     private fun handleSwipeActionPreferences(userId: UserId, currentMailLabel: MailLabel): Flow<MailboxEvent> {

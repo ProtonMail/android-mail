@@ -53,6 +53,9 @@ import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
+import ch.protonmail.android.maillabel.domain.model.MailLabel
+import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -73,6 +76,8 @@ fun MailboxItem(
     modifier: Modifier = Modifier,
     actions: ComposeMailboxItem.Actions,
     item: MailboxItemUiModel,
+    currentMailLabelId: MailLabel,
+    autoDeleteEnabled: Boolean = false,
     selectionMode: Boolean = false,
     isSelected: Boolean = false
 ) {
@@ -158,8 +163,17 @@ fun MailboxItem(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                val showExpirationValue = when {
+                    item.shouldShowExpirationLabel &&
+                        autoDeleteEnabled &&
+                        currentMailLabelId.id.labelId.id in
+                        listOf(SystemLabelId.Trash.labelId.id, SystemLabelId.Spam.labelId.id) -> false
+
+                    else -> item.shouldShowExpirationLabel
+                }
+
                 ExpirationLabel(
-                    hasExpirationTime = item.shouldShowExpirationLabel,
+                    hasExpirationTime = showExpirationValue,
                     modifier = Modifier.padding(end = ProtonDimens.ExtraSmallSpacing)
                 )
                 Labels(labels = item.labels)
@@ -384,7 +398,8 @@ private fun DroidConMailboxItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.DroidConLondon,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -396,7 +411,8 @@ private fun DroidConWithoutCountMailboxItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.DroidConLondonWithZeroMessages,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -408,7 +424,8 @@ private fun WeatherMailboxItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.WeatherForecast,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -420,7 +437,8 @@ private fun LongRecipientItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.MultipleRecipientWithLabel,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -432,7 +450,8 @@ private fun LongSubjectItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithIcons,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -444,7 +463,8 @@ private fun LongSubjectWithIconItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.LongSubjectWithoutIcons,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }
@@ -456,7 +476,8 @@ private fun NoRecipientIconItemPreview() {
         MailboxItem(
             modifier = Modifier,
             item = MailboxItemUiModelPreviewData.Conversation.NoParticipant,
-            actions = ComposeMailboxItem.Actions.Empty
+            actions = ComposeMailboxItem.Actions.Empty,
+            currentMailLabelId = MailLabel.System(MailLabelId.System.Inbox)
         )
     }
 }

@@ -467,6 +467,7 @@ fun MailboxScreen(
                     state = mailboxListState,
                     listState = lazyListState,
                     viewState = mailboxListState,
+                    autoDeleteState = mailboxState.autoDeleteSettingState,
                     unreadFilterState = mailboxState.unreadFilterState,
                     actions = actions
                 )
@@ -512,6 +513,7 @@ private fun MailboxSwipeRefresh(
     viewState: MailboxListState.Data,
     listState: LazyListState,
     unreadFilterState: UnreadFilterState,
+    autoDeleteState: AutoDeleteSettingState,
     actions: MailboxScreen.Actions,
     modifier: Modifier = Modifier,
     topBarHeight: Dp = 0.dp
@@ -601,12 +603,12 @@ private fun MailboxSwipeRefresh(
 
             is MailboxScreenState.OfflineWithData -> {
                 actions.onOfflineWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, autoDeleteState, items, actions)
             }
 
             is MailboxScreenState.ErrorWithData -> {
                 actions.onErrorWithData()
-                MailboxItemsList(state, listState, currentViewState, items, actions)
+                MailboxItemsList(state, listState, currentViewState, autoDeleteState, items, actions)
             }
 
             is MailboxScreenState.NewSearch -> {}
@@ -623,7 +625,14 @@ private fun MailboxSwipeRefresh(
             is MailboxScreenState.AppendLoading,
             is MailboxScreenState.AppendError,
             is MailboxScreenState.AppendOfflineError,
-            is MailboxScreenState.Data -> MailboxItemsList(state, listState, currentViewState, items, actions)
+            is MailboxScreenState.Data -> MailboxItemsList(
+                state,
+                listState,
+                currentViewState,
+                autoDeleteState,
+                items,
+                actions
+            )
         }
         PullRefreshIndicator(
             refreshing = refreshing,
@@ -640,6 +649,7 @@ private fun MailboxItemsList(
     state: MailboxListState,
     listState: LazyListState,
     viewState: MailboxScreenState,
+    autoDeleteState: AutoDeleteSettingState,
     items: LazyPagingItems<MailboxItemUiModel>,
     actions: MailboxScreen.Actions
 ) {
@@ -729,6 +739,8 @@ private fun MailboxItemsList(
                         item = item,
                         actions = itemActions,
                         selectionMode = state is MailboxListState.Data.SelectionMode,
+                        currentMailLabelId = state.currentMailLabel,
+                        autoDeleteEnabled = (autoDeleteState as? AutoDeleteSettingState.Data)?.isEnabled == true,
                         // See doc 0014
                         isSelected = when (state) {
                             is MailboxListState.Data.SelectionMode ->

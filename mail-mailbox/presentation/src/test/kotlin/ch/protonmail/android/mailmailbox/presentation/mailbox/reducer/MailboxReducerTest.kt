@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.DialogState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
-import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
@@ -46,6 +45,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.label.LabelTestData
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
@@ -537,8 +537,10 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
-                MailboxEvent.AutoDeleteBannerStateChanged(
-                    autoDeleteBannerUiModel = AutoDeleteBannerUiModel.Upgrade
+                MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = false,
+                    autoDeleteSetting = AutoDeleteSetting.Enabled,
+                    currentLabelId = MailLabelId.System.Spam
                 ),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = false,

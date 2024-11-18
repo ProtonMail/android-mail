@@ -979,7 +979,7 @@ class MailboxViewModelTest {
         every {
             mailboxReducer.newStateFrom(
                 expectedStateAfterClearAllStatus,
-                MailboxEvent.AutoDeleteBannerStateChanged(null)
+                any<MailboxEvent.AutoDeleteStateChanged>()
             )
         } returns expectedStateAfterAutoDelete
 

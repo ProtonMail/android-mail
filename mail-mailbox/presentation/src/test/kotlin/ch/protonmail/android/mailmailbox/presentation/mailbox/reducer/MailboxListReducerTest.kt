@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -421,7 +422,11 @@ internal class MailboxListReducerTest(
                         uiModel = AutoDeleteBannerUiModel.Upgrade
                     )
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(null),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = false,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.Disabled
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -450,7 +455,11 @@ internal class MailboxListReducerTest(
                         uiModel = AutoDeleteBannerUiModel.Info
                     )
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(null),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = false,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.Disabled
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -479,7 +488,11 @@ internal class MailboxListReducerTest(
                         uiModel = AutoDeleteBannerUiModel.Activate.Trash
                     )
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(null),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = false,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.Disabled
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -495,7 +508,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Data.ViewMode(
-                    currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
+                    currentMailLabel = SystemLabelId.Spam.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
                     offlineEffect = Effect.empty(),
@@ -508,9 +521,13 @@ internal class MailboxListReducerTest(
                         uiModel = AutoDeleteBannerUiModel.Activate.Spam
                     )
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(null),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = false,
+                    currentLabelId = MailLabelId.System.Spam,
+                    autoDeleteSetting = AutoDeleteSetting.Enabled
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
-                    currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
+                    currentMailLabel = SystemLabelId.Spam.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
                     offlineEffect = Effect.empty(),
@@ -519,7 +536,9 @@ internal class MailboxListReducerTest(
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
-                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Visible(
+                        uiModel = AutoDeleteBannerUiModel.Info
+                    )
                 )
             ),
             TestInput(
@@ -535,7 +554,11 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(AutoDeleteBannerUiModel.Info),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = true,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.Enabled
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -564,7 +587,11 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(AutoDeleteBannerUiModel.Upgrade),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = true,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.NotSet.FreeUser.UpsellingOn
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -593,7 +620,11 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(AutoDeleteBannerUiModel.Activate.Trash),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = true,
+                    currentLabelId = MailLabelId.System.Trash,
+                    autoDeleteSetting = AutoDeleteSetting.NotSet.PaidUser
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
@@ -611,7 +642,7 @@ internal class MailboxListReducerTest(
             ),
             TestInput(
                 currentState = MailboxListState.Data.ViewMode(
-                    currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
+                    currentMailLabel = SystemLabelId.Spam.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
                     offlineEffect = Effect.empty(),
@@ -622,9 +653,13 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxEvent.AutoDeleteBannerStateChanged(AutoDeleteBannerUiModel.Activate.Spam),
+                operation = MailboxEvent.AutoDeleteStateChanged(
+                    isFeatureFlagEnabled = true,
+                    currentLabelId = MailLabelId.System.Spam,
+                    autoDeleteSetting = AutoDeleteSetting.NotSet.PaidUser
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
-                    currentMailLabel = SystemLabelId.Trash.toMailLabelSystem(),
+                    currentMailLabel = SystemLabelId.Spam.toMailLabelSystem(),
                     openItemEffect = Effect.empty(),
                     scrollToMailboxTop = Effect.empty(),
                     offlineEffect = Effect.empty(),

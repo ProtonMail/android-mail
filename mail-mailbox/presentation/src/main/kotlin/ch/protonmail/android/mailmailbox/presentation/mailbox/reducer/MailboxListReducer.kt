@@ -35,6 +35,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
@@ -81,7 +82,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxViewAction.SearchResult -> reduceSearchResult(currentState)
             is MailboxViewAction.ExitSearchMode -> reduceExitSearchMode(currentState)
             is MailboxEvent.ClearAllOperationStatus -> reduceClearState(operation, currentState)
-            is MailboxEvent.AutoDeleteBannerStateChanged -> reduceAutoDeleteBannerState(operation, currentState)
+            is MailboxEvent.AutoDeleteStateChanged -> reduceAutoDeleteBannerState(operation, currentState)
         }
     }
 
@@ -503,36 +504,44 @@ class MailboxListReducer @Inject constructor() {
         }
 
     private fun reduceAutoDeleteBannerState(
-        operation: MailboxEvent.AutoDeleteBannerStateChanged,
+        operation: MailboxEvent.AutoDeleteStateChanged,
         currentState: MailboxListState
     ): MailboxListState {
+        val currentMailLabel = operation.currentLabelId
+        val autoDeleteBannerUiModel =
+            if (currentMailLabel == MailLabelId.System.Trash || currentMailLabel == MailLabelId.System.Spam) {
+                when (operation.autoDeleteSetting) {
+                    AutoDeleteSetting.Disabled -> null
+                    AutoDeleteSetting.Enabled -> AutoDeleteBannerUiModel.Info
+                    AutoDeleteSetting.NotSet.PaidUser -> {
+                        if (currentMailLabel == MailLabelId.System.Trash) {
+                            AutoDeleteBannerUiModel.Activate.Trash
+                        } else AutoDeleteBannerUiModel.Activate.Spam
+                    }
 
-        val autoDeleteBannerState = if (operation.autoDeleteBannerUiModel != null) {
-            MailboxListState.Data.AutoDeleteBannerState.Visible(
-                uiModel = operation.autoDeleteBannerUiModel
-            )
-        } else {
-            MailboxListState.Data.AutoDeleteBannerState.Hidden
-        }
+                    AutoDeleteSetting.NotSet.FreeUser.UpsellingOff -> null
+                    AutoDeleteSetting.NotSet.FreeUser.UpsellingOn -> AutoDeleteBannerUiModel.Upgrade
+                }
+            } else {
+                null
+            }
+
+        val autoDeleteBannerState = autoDeleteBannerUiModel?.let {
+            MailboxListState.Data.AutoDeleteBannerState.Visible(it)
+        } ?: MailboxListState.Data.AutoDeleteBannerState.Hidden
 
         return when (currentState) {
-
             is MailboxListState.Data.ViewMode -> {
-                currentState.copy(
-                    autoDeleteBannerState = autoDeleteBannerState
-                )
+                currentState.copy(autoDeleteBannerState = autoDeleteBannerState)
             }
 
             is MailboxListState.Data.SelectionMode -> {
-                currentState.copy(
-                    autoDeleteBannerState = autoDeleteBannerState
-                )
+                currentState.copy(autoDeleteBannerState = autoDeleteBannerState)
             }
 
             else -> currentState
         }
     }
-
 
     private fun MailLabel.isClearableLocation() =
         this.id == MailLabelId.System.Trash || this.id == MailLabelId.System.Spam

@@ -20,7 +20,6 @@ package ch.protonmail.android.mailmailbox.presentation.mailbox.model
 
 import android.content.Context
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
-import ch.protonmail.android.mailcommon.presentation.ui.AutoDeleteBannerUiModel
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
@@ -39,6 +38,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
+import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.mailsettings.domain.entity.ViewMode
@@ -173,9 +173,11 @@ internal sealed interface MailboxEvent : MailboxOperation {
         val selectedLabelCount: Int?
     ) : MailboxEvent, AffectingTopAppBar, AffectingUnreadFilter, AffectingMailboxList
 
-    data class AutoDeleteBannerStateChanged(
-        val autoDeleteBannerUiModel: AutoDeleteBannerUiModel?
-    ) : MailboxEvent, AffectingMailboxList
+    data class AutoDeleteStateChanged(
+        val isFeatureFlagEnabled: Boolean,
+        val currentLabelId: MailLabelId,
+        val autoDeleteSetting: AutoDeleteSetting
+    ) : MailboxEvent, AffectingMailboxList, AffectingAutoDelete
 
     data class SelectedLabelChanged(
         val selectedLabel: MailLabel
