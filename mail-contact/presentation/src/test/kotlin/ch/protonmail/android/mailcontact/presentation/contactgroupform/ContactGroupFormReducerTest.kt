@@ -209,6 +209,14 @@ class ContactGroupFormReducerTest(
             ),
             TestInput(
                 currentState = loadedUpdateContactGroupState,
+                event = ContactGroupFormEvent.SubscriptionNeededError,
+                expectedState = loadedUpdateContactGroupState.copy(
+                    subscriptionNeededError = Effect.of(TextUiModel(R.string.contact_group_form_subscription_error)),
+                    displaySaveLoader = false
+                )
+            ),
+            TestInput(
+                currentState = loadedUpdateContactGroupState,
                 event = ContactGroupFormEvent.DeletingSuccess,
                 expectedState = loadedUpdateContactGroupState.copy(
                     deleteDialogState = DeleteDialogState.Hidden,

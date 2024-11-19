@@ -35,6 +35,7 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormEvent.UpdateContactGroupFormUiModel -> {
                 reduceUpdateContactGroupFormUiModel(currentState, event)
             }
+
             ContactGroupFormEvent.Close -> reduceClose(currentState)
             ContactGroupFormEvent.LoadError -> reduceLoadError(currentState)
             ContactGroupFormEvent.ContactGroupCreated -> reduceContactGroupCreated(currentState)
@@ -47,6 +48,7 @@ class ContactGroupFormReducer @Inject constructor() {
             ContactGroupFormEvent.DismissDeleteDialog -> reduceDismissDeleteDialog(currentState)
             ContactGroupFormEvent.DeletingSuccess -> reduceContactGroupDeleted(currentState)
             ContactGroupFormEvent.DeletingError -> reduceDeletingContactGroupError(currentState)
+            ContactGroupFormEvent.SubscriptionNeededError -> reduceSubscriptionNeededError(currentState)
         }
     }
 
@@ -60,6 +62,7 @@ class ContactGroupFormReducer @Inject constructor() {
                 colors = event.colors,
                 isSaveEnabled = event.contactGroupFormUiModel.name.isNotBlank()
             )
+
             is ContactGroupFormState.Loading -> ContactGroupFormState.Data(
                 contactGroup = event.contactGroupFormUiModel,
                 colors = event.colors,
@@ -77,6 +80,7 @@ class ContactGroupFormReducer @Inject constructor() {
                 contactGroup = event.contactGroupFormUiModel,
                 isSaveEnabled = event.contactGroupFormUiModel.name.isNotBlank()
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -102,23 +106,28 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Data -> currentState.copy(
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success))
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
+
     private fun reduceContactGroupUpdated(currentState: ContactGroupFormState): ContactGroupFormState {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_update_success))
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
+
     private fun reduceSaveContactGroupError(currentState: ContactGroupFormState): ContactGroupFormState {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error)),
                 displaySaveLoader = false
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -129,6 +138,7 @@ class ContactGroupFormReducer @Inject constructor() {
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.contact_group_form_save_error_already_exists)),
                 displaySaveLoader = false
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -138,14 +148,17 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Data -> currentState.copy(
                 displaySaveLoader = true
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
+
     private fun reduceUpdateMembersError(currentState: ContactGroupFormState): ContactGroupFormState {
         return when (currentState) {
             is ContactGroupFormState.Data -> currentState.copy(
                 showErrorSnackbar = Effect.of(TextUiModel(R.string.add_members_error))
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -158,6 +171,7 @@ class ContactGroupFormReducer @Inject constructor() {
                     message = TextUiModel(R.string.contact_group_delete_dialog_message)
                 )
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -167,6 +181,7 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Data -> currentState.copy(
                 deleteDialogState = DeleteDialogState.Hidden
             )
+
             is ContactGroupFormState.Loading -> currentState
         }
     }
@@ -187,6 +202,17 @@ class ContactGroupFormReducer @Inject constructor() {
             is ContactGroupFormState.Data -> currentState.copy(
                 deletionError = Effect.of(TextUiModel(R.string.contact_group_details_deletion_error)),
                 deleteDialogState = DeleteDialogState.Hidden
+            )
+
+            is ContactGroupFormState.Loading -> currentState
+        }
+    }
+
+    private fun reduceSubscriptionNeededError(currentState: ContactGroupFormState): ContactGroupFormState {
+        return when (currentState) {
+            is ContactGroupFormState.Data -> currentState.copy(
+                subscriptionNeededError = Effect.of(TextUiModel(R.string.contact_group_form_subscription_error)),
+                displaySaveLoader = false
             )
 
             is ContactGroupFormState.Loading -> currentState

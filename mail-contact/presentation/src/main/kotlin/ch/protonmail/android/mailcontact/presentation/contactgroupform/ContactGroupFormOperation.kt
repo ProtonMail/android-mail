@@ -61,6 +61,7 @@ sealed interface ContactGroupFormEvent : ContactGroupFormOperation {
     object ContactGroupCreated : ContactGroupFormEvent
     object ContactGroupUpdated : ContactGroupFormEvent
     object UpdateMembersError : ContactGroupFormEvent
+    object SubscriptionNeededError : ContactGroupFormEvent
     data object ShowDeleteDialog : ContactGroupFormEvent
     data object DismissDeleteDialog : ContactGroupFormEvent
     data object DeletingSuccess : ContactGroupFormEvent

@@ -43,7 +43,8 @@ sealed interface ContactGroupFormState {
         val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
         val deleteDialogState: DeleteDialogState = DeleteDialogState.Hidden,
         val deletionSuccess: Effect<TextUiModel> = Effect.empty(),
-        val deletionError: Effect<TextUiModel> = Effect.empty()
+        val deletionError: Effect<TextUiModel> = Effect.empty(),
+        val subscriptionNeededError: Effect<TextUiModel> = Effect.empty()
     ) : ContactGroupFormState {
         val displayDeleteButton = contactGroup.id != null
     }

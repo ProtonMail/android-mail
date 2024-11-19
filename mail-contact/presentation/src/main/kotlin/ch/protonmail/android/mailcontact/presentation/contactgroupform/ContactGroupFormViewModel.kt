@@ -23,6 +23,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.model.ColorHexWithName
@@ -63,6 +64,7 @@ class ContactGroupFormViewModel @Inject constructor(
     private val editContactGroup: EditContactGroup,
     private val deleteContactGroup: DeleteContactGroup,
     private val colorMapper: ColorMapper,
+    private val isPaidMailUser: IsPaidMailUser,
     getColorHexWithNameList: GetColorHexWithNameList,
     observePrimaryUserId: ObservePrimaryUserId
 ) : ViewModel() {
@@ -240,20 +242,24 @@ class ContactGroupFormViewModel @Inject constructor(
     private suspend fun handleCreateContactGroup(contactGroupFormUiModel: ContactGroupFormUiModel) {
         emitNewStateFor(ContactGroupFormEvent.SavingContactGroup)
 
-        createContactGroup(
-            userId = primaryUserId(),
-            name = contactGroupFormUiModel.name,
-            color = ColorRgbHex(contactGroupFormUiModel.color.getHexStringFromColor()),
-            contactEmailIds = contactGroupFormUiModel.members.map { it.id }
-        ).getOrElse {
-            return if (it is CreateContactGroupError.GroupNameDuplicate) {
-                emitNewStateFor(ContactGroupFormEvent.DuplicatedContactGroupName)
-            } else {
-                emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+        if (isPaidMailUser(primaryUserId()).getOrElse { false }) {
+            createContactGroup(
+                userId = primaryUserId(),
+                name = contactGroupFormUiModel.name,
+                color = ColorRgbHex(contactGroupFormUiModel.color.getHexStringFromColor()),
+                contactEmailIds = contactGroupFormUiModel.members.map { it.id }
+            ).getOrElse {
+                return if (it is CreateContactGroupError.GroupNameDuplicate) {
+                    emitNewStateFor(ContactGroupFormEvent.DuplicatedContactGroupName)
+                } else {
+                    emitNewStateFor(ContactGroupFormEvent.SaveContactGroupError)
+                }
             }
-        }
 
-        emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)
+            emitNewStateFor(ContactGroupFormEvent.ContactGroupCreated)
+        } else {
+            return emitNewStateFor(ContactGroupFormEvent.SubscriptionNeededError)
+        }
     }
 
     private suspend fun handleUpdateContactGroup(labelId: LabelId, contactGroupFormUiModel: ContactGroupFormUiModel) {

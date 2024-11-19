@@ -158,6 +158,12 @@ fun ContactGroupFormScreen(
                             type = ProtonSnackbarType.ERROR
                         )
                     }
+                    ConsumableTextEffect(effect = state.subscriptionNeededError) { message ->
+                        snackbarHostErrorState.showSnackbar(
+                            message = message,
+                            type = ProtonSnackbarType.NORM
+                        )
+                    }
                     ConsumableTextEffect(effect = state.deletionSuccess) { message ->
                         actions.exitToContactsWithNormMessage(message)
                     }

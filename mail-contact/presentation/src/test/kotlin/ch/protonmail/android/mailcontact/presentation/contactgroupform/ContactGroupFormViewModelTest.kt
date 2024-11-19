@@ -24,6 +24,7 @@ import app.cash.turbine.test
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.DataErrorSample
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
@@ -107,6 +108,9 @@ class ContactGroupFormViewModelTest {
     private val getColorHexWithNameList = mockk<GetColorHexWithNameList> {
         every { this@mockk.invoke() } returns testColors
     }
+    private val isPaidMailUser = mockk<IsPaidMailUser> {
+        coEvery { this@mockk(UserIdTestData.userId) } returns false.right()
+    }
 
     private val reducer = ContactGroupFormReducer()
 
@@ -123,6 +127,7 @@ class ContactGroupFormViewModelTest {
             editContactGroupMock,
             deleteContactGroupMock,
             colorMapper,
+            isPaidMailUser,
             getColorHexWithNameList,
             observePrimaryUserId
         )
@@ -285,6 +290,7 @@ class ContactGroupFormViewModelTest {
             expectedContactGroup.color.getHexStringFromColor(),
             expectedContactGroup.members.map { it.id }
         )
+        expectIsPaidMailUser(true)
 
         // When
         contactGroupFormViewModel.state.test {
@@ -300,6 +306,40 @@ class ContactGroupFormViewModelTest {
                 colors = testColors,
                 closeWithSuccess = Effect.of(TextUiModel(R.string.contact_group_form_create_success)),
                 displaySaveLoader = true
+            )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `when create and on save action is submitted, without mail subscription then error is emitted`() = runTest {
+        // Given
+        val expectedContactGroup = emptyContactGroupFormUiModel(Color.Red)
+        expectSavedStateLabelId(null)
+        expectCreateContactGroup(
+            testUserId,
+            expectedContactGroup.name,
+            expectedContactGroup.color.getHexStringFromColor(),
+            expectedContactGroup.members.map { it.id }
+        )
+        expectIsPaidMailUser(false)
+
+        // When
+        contactGroupFormViewModel.state.test {
+            // Then
+            awaitItem() // ContactGroup was loaded
+
+            contactGroupFormViewModel.submit(ContactGroupFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+
+            val expected = ContactGroupFormState.Data(
+                contactGroup = expectedContactGroup,
+                colors = testColors,
+                closeWithSuccess = Effect.empty(),
+                subscriptionNeededError = Effect.of(TextUiModel(R.string.contact_group_form_subscription_error)),
+                displaySaveLoader = false
             )
 
             assertEquals(expected, actual)
@@ -621,6 +661,10 @@ class ContactGroupFormViewModelTest {
         every {
             savedStateHandleMock.get<String>(ContactGroupFormScreen.ContactGroupFormLabelIdKey)
         } returns labelId?.id
+    }
+
+    private fun expectIsPaidMailUser(value: Boolean) {
+        coEvery { isPaidMailUser(UserIdTestData.userId) } returns value.right()
     }
 
     private fun expectContactGroup(
