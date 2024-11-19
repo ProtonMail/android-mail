@@ -105,9 +105,8 @@ internal class ComposerDraftsSendButtonTests : MockedNetworkTest(
 
         composerRobot {
             fullscreenLoaderSection { waitUntilGone() }
-            toRecipientSection {
-                focusField().also { deleteChipAt(position = 0) }
-            }
+
+            toRecipientSection { deleteChipAt(position = 0) }
 
             topAppBarSection { verify { isSendButtonDisabled() } }
         }
