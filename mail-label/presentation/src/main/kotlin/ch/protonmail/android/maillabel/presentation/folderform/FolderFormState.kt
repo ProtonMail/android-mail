@@ -50,6 +50,7 @@ sealed interface FolderFormState {
         val openParentFolderList: Effect<Unit>
         val closeWithSuccess: Effect<TextUiModel>
         val showErrorSnackbar: Effect<TextUiModel>
+        val showNormSnackbar: Effect<TextUiModel>
 
         data class Create(
             override val isSaveEnabled: Boolean,
@@ -65,6 +66,7 @@ sealed interface FolderFormState {
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
             override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+            override val showNormSnackbar: Effect<TextUiModel> = Effect.empty(),
             val displayCreateLoader: Boolean = false,
             val upsellingVisibility: Effect<BottomSheetVisibilityEffect> = Effect.empty(),
             val upsellingInProgress: Effect<TextUiModel> = Effect.empty()
@@ -84,6 +86,7 @@ sealed interface FolderFormState {
             override val close: Effect<Unit> = Effect.empty(),
             override val closeWithSuccess: Effect<TextUiModel> = Effect.empty(),
             override val showErrorSnackbar: Effect<TextUiModel> = Effect.empty(),
+            override val showNormSnackbar: Effect<TextUiModel> = Effect.empty(),
             val labelId: LabelId,
             val confirmDeleteDialogState: DeleteDialogState = DeleteDialogState.Hidden
         ) : Data

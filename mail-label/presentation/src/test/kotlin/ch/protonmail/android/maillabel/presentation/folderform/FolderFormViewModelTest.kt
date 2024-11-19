@@ -532,7 +532,7 @@ class FolderFormViewModelTest {
                 loadedState.copy(
                     name = defaultTestUpdatedName,
                     isSaveEnabled = true,
-                    showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
+                    showNormSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
                 ),
                 awaitItem()
             )

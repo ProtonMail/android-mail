@@ -196,7 +196,7 @@ fun LabelFormScreen(actions: LabelFormScreen.Actions, viewModel: LabelFormViewMo
                         ConsumableLaunchedEffect(effect = state.showLabelLimitReachedSnackbar) {
                             snackbarHostState.showSnackbar(
                                 message = labelLimitReachedMessage,
-                                type = ProtonSnackbarType.ERROR
+                                type = ProtonSnackbarType.NORM
                             )
                         }
                         val saveLabelErrorMessage = stringResource(id = R.string.save_label_error)

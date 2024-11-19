@@ -218,6 +218,10 @@ fun FolderFormScreen(
                                 snackbarHostState.snackbarHostState.currentSnackbarData?.dismiss()
                                 snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM)
                             }
+
+                            ConsumableTextEffect(effect = state.showNormSnackbar) { message ->
+                                snackbarHostState.showSnackbar(message = message, type = ProtonSnackbarType.NORM)
+                            }
                         }
                     }
 

@@ -199,11 +199,11 @@ class FolderFormReducer @Inject constructor() {
     private fun reduceFolderLimitReached(currentState: FolderFormState): FolderFormState {
         return when (currentState) {
             is FolderFormState.Data.Create -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error)),
+                showNormSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error)),
                 displayCreateLoader = false
             )
             is FolderFormState.Data.Update -> currentState.copy(
-                showErrorSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
+                showNormSnackbar = Effect.of(TextUiModel(R.string.folder_limit_reached_error))
             )
             is FolderFormState.Loading -> currentState
         }

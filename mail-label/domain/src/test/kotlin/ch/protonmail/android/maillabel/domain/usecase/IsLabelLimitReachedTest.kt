@@ -45,10 +45,10 @@ class IsLabelLimitReachedTest {
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
     @Test
-    fun `given paid user has not limit, when paid user, then return false`() = runTest {
+    fun `given paid user with mail subscription, return false`() = runTest {
         // Given
         val expectedResult = false
-        coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
+        coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidMailUser)
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
@@ -56,6 +56,25 @@ class IsLabelLimitReachedTest {
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
         verify { labelRepository wasNot called }
+        assertEquals(expectedResult.right(), result)
+    }
+
+    @Test
+    fun `given paid user without mail subscription and 3 existing labels, return true`() = runTest {
+        // Given
+        val expectedResult = true
+        coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
+        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
+            LabelTestData.buildLabel(id = "LabelId1"),
+            LabelTestData.buildLabel(id = "LabelId2"),
+            LabelTestData.buildLabel(id = "LabelId3")
+        )
+
+        // When
+        val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
+
+        // Then
+        coVerify { observeUser(UserIdTestData.userId) }
         assertEquals(expectedResult.right(), result)
     }
 
