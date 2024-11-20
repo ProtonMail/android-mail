@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation.route
 
+import androidx.compose.material.DrawerState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -67,7 +68,7 @@ internal fun NavGraphBuilder.addConversationDetail(actions: ConversationDetail.A
 
 internal fun NavGraphBuilder.addMailbox(
     navController: NavHostController,
-    openDrawerMenu: () -> Unit,
+    drawerState: DrawerState,
     showOfflineSnackbar: () -> Unit,
     showNormalSnackbar: (message: String) -> Unit,
     showErrorSnackbar: (String) -> Unit
@@ -93,7 +94,6 @@ internal fun NavGraphBuilder.addMailbox(
                     navController.navigate(destination)
                 },
                 navigateToComposer = { navController.navigate(Destination.Screen.Composer.route) },
-                openDrawerMenu = openDrawerMenu,
                 showOfflineSnackbar = showOfflineSnackbar,
                 showNormalSnackbar = showNormalSnackbar,
                 showErrorSnackbar = showErrorSnackbar,
@@ -102,7 +102,8 @@ internal fun NavGraphBuilder.addMailbox(
                 onNavigateToStandaloneUpselling = {
                     navController.navigate(Destination.Screen.Upselling.Standalone.route)
                 }
-            )
+            ),
+            drawerState = drawerState
         )
     }
 }

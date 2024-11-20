@@ -337,7 +337,7 @@ fun Home(
                 )
                 addMailbox(
                     navController,
-                    openDrawerMenu = { scope.launch { scaffoldState.drawerState.open() } },
+                    drawerState = scaffoldState.drawerState,
                     showOfflineSnackbar = { showOfflineSnackbar() },
                     showNormalSnackbar = { showNormalSnackbar(it) },
                     showErrorSnackbar = { showErrorSnackbar(it) }

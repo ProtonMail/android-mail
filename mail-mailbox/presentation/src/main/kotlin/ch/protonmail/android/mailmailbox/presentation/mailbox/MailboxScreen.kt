@@ -46,6 +46,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
+import androidx.compose.material.DrawerState
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
@@ -152,6 +153,7 @@ import ch.protonmail.android.mailcommon.presentation.R.string as commonString
 fun MailboxScreen(
     modifier: Modifier = Modifier,
     actions: MailboxScreen.Actions,
+    drawerState: DrawerState,
     viewModel: MailboxViewModel = hiltViewModel()
 ) {
     val mailboxState by viewModel.state.collectAsStateWithLifecycle()
@@ -167,6 +169,10 @@ fun MailboxScreen(
 
     BackHandler((mailboxState.mailboxListState as? MailboxListState.Data.ViewMode)?.isInInboxLabel()?.not() ?: false) {
         viewModel.submit(MailboxViewAction.NavigateToInboxLabel)
+    }
+
+    BackHandler(drawerState.isOpen) {
+        scope.launch { drawerState.close() }
     }
 
     BackHandler(bottomSheetState.isVisible) {
@@ -228,7 +234,8 @@ fun MailboxScreen(
             viewModel.submit(MailboxViewAction.RequestUpsellingBottomSheet(MailboxUpsellingEntryPoint.AutoDelete))
         },
         onAutoDeleteDialogAction = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(it)) },
-        onAutoDeleteDialogShow = { viewModel.submit(MailboxViewAction.ShowAutoDeleteDialog) }
+        onAutoDeleteDialogShow = { viewModel.submit(MailboxViewAction.ShowAutoDeleteDialog) },
+        openDrawerMenu = { scope.launch { drawerState.open() } }
     )
 
     mailboxState.bottomSheetState?.let {

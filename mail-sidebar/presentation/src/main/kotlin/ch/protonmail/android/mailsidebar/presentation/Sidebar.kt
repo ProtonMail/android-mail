@@ -20,7 +20,6 @@ package ch.protonmail.android.mailsidebar.presentation
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -76,10 +75,6 @@ fun Sidebar(
     fun close() = scope.launch {
         viewState.accountPrimaryState.dismissDialog()
         viewState.drawerState.close()
-    }
-
-    BackHandler(drawerState.isOpen) {
-        close()
     }
 
     when (val viewModelState = rememberAsState(viewModel.state, viewModel.initialState).value) {
