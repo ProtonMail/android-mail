@@ -1,23 +1,18 @@
 package ch.protonmail.android.uicomponents.chips
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +21,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.Key
@@ -39,24 +33,19 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
-import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonDimens.ExtraSmallSpacing
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
-@OptIn(
-    ExperimentalLayoutApi::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ChipsListTextField(
     state: ChipsListState,
-    textFieldValue: TextFieldValue,
+    textFieldState: TextFieldState,
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester? = null,
     cursorColor: Color = ProtonTheme.colors.brandDarken20,
@@ -68,24 +57,12 @@ internal fun ChipsListTextField(
     val localDensity = LocalDensity.current
     var textMaxWidth by remember { mutableStateOf(Dp.Unspecified) }
 
-    var rect by remember { mutableStateOf(Rect.Zero) }
-
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
-    val coroutineScope = rememberCoroutineScope()
     val keyboardOptions = remember {
         KeyboardOptions.Default.copy(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Next,
             autoCorrectEnabled = false
         )
-    }
-
-    // Similar to what we do for the Message body, we need to ensure
-    // that the cursor is always on screen when the user types.
-    fun bringRectIntoView(rect: Rect) = coroutineScope.launch { bringIntoViewRequester.bringIntoView(rect) }
-
-    LaunchedEffect(textFieldValue.text) {
-        bringRectIntoView(rect)
     }
 
     FlowRow(
@@ -122,7 +99,6 @@ internal fun ChipsListTextField(
                 .weight(1f)
                 .align(Alignment.CenterVertically)
                 .testTag(ChipsTestTags.BasicTextField)
-                .bringIntoViewRequester(bringIntoViewRequester)
                 .thenIf(focusRequester != null) {
                     focusRequester(focusRequester!!)
                 }
@@ -135,40 +111,20 @@ internal fun ChipsListTextField(
                 .onKeyEvent { keyEvent ->
                     if (keyEvent.key == Key.Backspace) {
                         actions.onItemDeleted(null)
-                        bringRectIntoView(rect)
                         true
                     } else {
                         false
                     }
                 }
                 .onFocusChanged { actions.onFocusChanged(it) },
-            value = textFieldValue,
+            state = textFieldState,
             keyboardOptions = keyboardOptions,
-            keyboardActions = KeyboardActions(
-                onNext = {
-                    // If there's some text, trigger the chip creation and do not move the focus.
-                    if (textFieldValue.text.isNotEmpty()) {
-                        actions.onTriggerChipCreation()
-                    } else {
-                        focusManager.moveFocus(FocusDirection.Next)
-                    }
-                },
-                onDone = {
-                    focusManager.clearFocus()
-                },
-                onPrevious = {
-                    focusManager.moveFocus(FocusDirection.Previous)
+            onKeyboardAction = {
+                if (textFieldState.text.isNotEmpty()) {
+                    actions.onTriggerChipCreation()
+                } else {
+                    focusManager.moveFocus(FocusDirection.Next)
                 }
-            ),
-            onValueChange = {
-                // Triggering the chip creation manually causes the same value to be dispatched again.
-                // This is needed for some custom keyboards such as SwiftKey.
-                if (it.text == textFieldValue.text && it.selection == textFieldValue.selection) return@BasicTextField
-
-                actions.onTextChanged(it)
-            },
-            onTextLayout = {
-                rect = it.getCursorRect(textFieldValue.selection.end)
             },
             cursorBrush = SolidColor(cursorColor),
             textStyle = textStyle
@@ -178,7 +134,6 @@ internal fun ChipsListTextField(
 
 object ChipsListTextField {
     data class Actions(
-        val onTextChanged: (value: TextFieldValue) -> Unit,
         val onFocusChanged: (focusChange: FocusState) -> Unit,
         val onItemDeleted: (index: Int?) -> Unit,
         val onTriggerChipCreation: () -> Unit
