@@ -28,7 +28,6 @@ import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.text
-import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
@@ -436,17 +435,6 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
-                MailboxViewAction.StorageLimitDoNotRemind,
-                shouldReduceMailboxListState = false,
-                shouldReduceTopAppBarState = false,
-                shouldReduceUnreadFilterState = false,
-                shouldReduceBottomAppBarState = false,
-                shouldReduceActionMessage = false,
-                shouldReduceDeleteDialog = false,
-                shouldReduceBottomSheetState = false,
-                shouldReduceStorageLimitState = true
-            ),
-            TestInput(
                 MailboxViewAction.StorageLimitConfirmed,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
@@ -772,11 +760,7 @@ internal class MailboxReducerTest(
             ),
             TestInput(
                 MailboxEvent.StorageLimitStatusChanged(
-                    userAccountStorageStatus = UserAccountStorageStatus(usedSpace = 5_000, maxSpace = 10_000),
-                    storageLimitPreference = StorageLimitPreference(
-                        firstLimitWarningConfirmed = false,
-                        secondLimitWarningConfirmed = false
-                    )
+                    userAccountStorageStatus = UserAccountStorageStatus(usedSpace = 5_000, maxSpace = 10_000)
                 ),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,

@@ -18,25 +18,11 @@
 
 package ch.protonmail.android.mailmailbox.domain.model
 
-import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus.Companion.FIRST_LIMIT_VALUE
-import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus.Companion.SECOND_LIMIT_VALUE
-
 data class UserAccountStorageStatus(
     /** Used space size in Bytes. */
     val usedSpace: Long,
     /** Max space size in Bytes. */
     val maxSpace: Long
-) {
-
-    companion object {
-
-        const val FIRST_LIMIT_VALUE = 0.8f
-        const val SECOND_LIMIT_VALUE = 0.9f
-    }
-}
+)
 
 fun UserAccountStorageStatus.isOverQuota() = usedSpace >= maxSpace
-fun UserAccountStorageStatus.isOverFirstLimit() = usedSpace >= maxSpace * FIRST_LIMIT_VALUE
-fun UserAccountStorageStatus.isOverSecondLimit() = usedSpace >= maxSpace * SECOND_LIMIT_VALUE
-fun UserAccountStorageStatus.isBelowFirstLimit() = usedSpace < maxSpace * FIRST_LIMIT_VALUE
-fun UserAccountStorageStatus.isBelowSecondLimit() = usedSpace < maxSpace * SECOND_LIMIT_VALUE

@@ -257,8 +257,7 @@ fun MailboxScreen(
     StorageLimitDialogs(
         storageLimitState = mailboxState.storageLimitState,
         actions = StorageLimitDialogs.Actions(
-            dialogConfirmed = { viewModel.submit(MailboxViewAction.StorageLimitConfirmed) },
-            doNotRemindClicked = { viewModel.submit(MailboxViewAction.StorageLimitDoNotRemind) }
+            dialogConfirmed = { viewModel.submit(MailboxViewAction.StorageLimitConfirmed) }
         )
     )
 

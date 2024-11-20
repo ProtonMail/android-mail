@@ -59,20 +59,14 @@ import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
-import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
-import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
-import ch.protonmail.android.mailmailbox.domain.model.isBelowFirstLimit
-import ch.protonmail.android.mailmailbox.domain.model.isBelowSecondLimit
 import ch.protonmail.android.mailmailbox.domain.model.toMailboxItemType
 import ch.protonmail.android.mailmailbox.domain.usecase.GetMailboxActions
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveCurrentViewMode
 import ch.protonmail.android.mailmailbox.domain.usecase.ObservePrimaryUserAccountStorageStatus
-import ch.protonmail.android.mailmailbox.domain.usecase.ObserveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordRatingBoosterTriggered
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelConversations
 import ch.protonmail.android.mailmailbox.domain.usecase.RelabelMessages
-import ch.protonmail.android.mailmailbox.domain.usecase.SaveStorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.usecase.ShouldShowRatingBooster
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.MailboxItemUiModelMapper
 import ch.protonmail.android.mailmailbox.presentation.mailbox.mapper.SwipeActionsMapper
@@ -189,8 +183,6 @@ class MailboxViewModel @Inject constructor(
     private val dispatchersProvider: DispatcherProvider,
     private val deleteSearchResults: DeleteSearchResults,
     private val observePrimaryUserAccountStorageStatus: ObservePrimaryUserAccountStorageStatus,
-    private val observeStorageLimitPreference: ObserveStorageLimitPreference,
-    private val saveStorageLimitPreference: SaveStorageLimitPreference,
     private val shouldUpgradeStorage: ShouldUpgradeStorage,
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
@@ -268,22 +260,8 @@ class MailboxViewModel @Inject constructor(
             }
             .launchIn(viewModelScope)
 
-        combine(
-            observePrimaryUserAccountStorageStatus(),
-            observeStorageLimitPreference()
-        ) { storageStatus, storageLimitPreference ->
-
-            storageLimitPreference.fold(
-                ifLeft = { null },
-                ifRight = { preference ->
-                    revokeStorageConfirmationsIfNeeded(storageStatus, preference)
-
-                    MailboxEvent.StorageLimitStatusChanged(
-                        userAccountStorageStatus = storageStatus,
-                        storageLimitPreference = preference
-                    )
-                }
-            )
+        observePrimaryUserAccountStorageStatus().map {
+            MailboxEvent.StorageLimitStatusChanged(userAccountStorageStatus = it)
         }
             .filterNotNull()
             .distinctUntilChanged()
@@ -346,7 +324,6 @@ class MailboxViewModel @Inject constructor(
     internal fun submit(viewAction: MailboxViewAction) {
         viewModelScope.launch {
             when (viewAction) {
-                is MailboxViewAction.StorageLimitDoNotRemind -> handleStorageLimitDoNotRemind(viewAction)
                 is MailboxViewAction.StorageLimitConfirmed -> emitNewStateFrom(viewAction)
 
                 is MailboxViewAction.ExitSelectionMode,
@@ -423,46 +400,6 @@ class MailboxViewModel @Inject constructor(
             }
         }
         emitNewStateFrom(viewAction)
-    }
-
-    private fun revokeStorageConfirmationsIfNeeded(
-        storageStatus: UserAccountStorageStatus,
-        storageQuotaPreference: StorageLimitPreference
-    ) {
-        if (storageStatus.isBelowSecondLimit() && storageQuotaPreference.secondLimitWarningConfirmed) {
-            viewModelScope.launch {
-                saveStorageLimitPreference.saveSecondLimitWarningPreference(false)
-            }
-        }
-
-        if (storageStatus.isBelowFirstLimit() && storageQuotaPreference.firstLimitWarningConfirmed) {
-            viewModelScope.launch {
-                saveStorageLimitPreference.saveFirstLimitWarningPreference(false)
-            }
-        }
-    }
-
-    private fun handleStorageLimitDoNotRemind(viewAction: MailboxViewAction) {
-        emitNewStateFrom(viewAction)
-
-        when (state.value.storageLimitState) {
-            is StorageLimitState.Notifiable.FirstLimitOver -> {
-                viewModelScope.launch {
-                    saveStorageLimitPreference.saveFirstLimitWarningPreference(true)
-                }
-            }
-
-            is StorageLimitState.Notifiable.SecondLimitOver -> {
-                viewModelScope.launch {
-                    saveStorageLimitPreference.saveSecondLimitWarningPreference(true)
-                }
-            }
-
-            else -> {
-                Timber.w("StorageLimitDoNotRemind not supported in state: ${state.value.storageLimitState}")
-            }
-        }
-
     }
 
     private suspend fun handleExitSearchMode(viewAction: MailboxViewAction) {

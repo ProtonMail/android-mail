@@ -22,7 +22,6 @@ import android.content.Context
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmailbox.domain.model.StorageLimitPreference
 import ch.protonmail.android.mailmailbox.domain.model.UserAccountStorageStatus
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingActionMessage
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingAutoDelete
@@ -60,7 +59,6 @@ internal sealed interface MailboxOperation {
 }
 
 internal sealed interface MailboxViewAction : MailboxOperation {
-    object StorageLimitDoNotRemind : MailboxViewAction, AffectingStorageLimit
     object StorageLimitConfirmed : MailboxViewAction, AffectingStorageLimit
 
     data class OnItemLongClicked(
@@ -164,8 +162,7 @@ internal sealed interface MailboxEvent : MailboxOperation {
     ) : MailboxEvent, MailboxOperation.AffectingUpgradeStorage
 
     data class StorageLimitStatusChanged(
-        val userAccountStorageStatus: UserAccountStorageStatus,
-        val storageLimitPreference: StorageLimitPreference
+        val userAccountStorageStatus: UserAccountStorageStatus
     ) : MailboxEvent, AffectingStorageLimit
 
     data class NewLabelSelected(

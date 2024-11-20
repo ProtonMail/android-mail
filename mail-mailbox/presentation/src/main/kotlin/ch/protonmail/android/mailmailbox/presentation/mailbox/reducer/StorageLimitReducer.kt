@@ -18,9 +18,7 @@
 
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
-import ch.protonmail.android.mailmailbox.domain.model.isOverFirstLimit
 import ch.protonmail.android.mailmailbox.domain.model.isOverQuota
-import ch.protonmail.android.mailmailbox.domain.model.isOverSecondLimit
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -36,7 +34,6 @@ class StorageLimitReducer @Inject constructor() {
 
         return when (event) {
             is MailboxEvent.StorageLimitStatusChanged -> newStateForStatusChange(currentState, event)
-            is MailboxViewAction.StorageLimitDoNotRemind,
             is MailboxViewAction.StorageLimitConfirmed -> newStateForWarningConfirmed(currentState)
         }
     }
@@ -48,9 +45,6 @@ class StorageLimitReducer @Inject constructor() {
         return when (currentState) {
             is StorageLimitState.None -> createInitialState(event)
             is StorageLimitState.Notifiable.QuotaOver -> handleStatusChangeWhenQuotaOver(currentState, event)
-            is StorageLimitState.Notifiable.FirstLimitOver -> handleStatusChangeWhenFirstLimitOver(currentState, event)
-            is StorageLimitState.Notifiable.SecondLimitOver ->
-                handleStatusChangeWhenSecondLimitOver(currentState, event)
             is StorageLimitState.HasEnoughSpace -> handleStatusChangeWhenHasEnoughSpace(event)
         }
     }
@@ -58,10 +52,6 @@ class StorageLimitReducer @Inject constructor() {
     private fun createInitialState(event: MailboxEvent.StorageLimitStatusChanged): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
             StorageLimitState.Notifiable.QuotaOver(false)
-        } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.Notifiable.SecondLimitOver(event.storageLimitPreference.secondLimitWarningConfirmed)
-        } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.Notifiable.FirstLimitOver(event.storageLimitPreference.firstLimitWarningConfirmed)
         } else {
             StorageLimitState.HasEnoughSpace
         }
@@ -73,40 +63,6 @@ class StorageLimitReducer @Inject constructor() {
     ): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
             currentState
-        } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.Notifiable.SecondLimitOver(currentState.confirmed)
-        } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.Notifiable.FirstLimitOver(currentState.confirmed)
-        } else {
-            StorageLimitState.HasEnoughSpace
-        }
-    }
-
-    private fun handleStatusChangeWhenSecondLimitOver(
-        currentState: StorageLimitState.Notifiable.SecondLimitOver,
-        event: MailboxEvent.StorageLimitStatusChanged
-    ): StorageLimitState {
-        return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.Notifiable.QuotaOver(false)
-        } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            currentState
-        } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.Notifiable.FirstLimitOver(currentState.confirmed)
-        } else {
-            StorageLimitState.HasEnoughSpace
-        }
-    }
-
-    private fun handleStatusChangeWhenFirstLimitOver(
-        currentState: StorageLimitState.Notifiable.FirstLimitOver,
-        event: MailboxEvent.StorageLimitStatusChanged
-    ): StorageLimitState {
-        return if (event.userAccountStorageStatus.isOverQuota()) {
-            StorageLimitState.Notifiable.QuotaOver(false)
-        } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.Notifiable.SecondLimitOver(false)
-        } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            currentState
         } else {
             StorageLimitState.HasEnoughSpace
         }
@@ -115,10 +71,6 @@ class StorageLimitReducer @Inject constructor() {
     private fun handleStatusChangeWhenHasEnoughSpace(event: MailboxEvent.StorageLimitStatusChanged): StorageLimitState {
         return if (event.userAccountStorageStatus.isOverQuota()) {
             StorageLimitState.Notifiable.QuotaOver(false)
-        } else if (event.userAccountStorageStatus.isOverSecondLimit()) {
-            StorageLimitState.Notifiable.SecondLimitOver(false)
-        } else if (event.userAccountStorageStatus.isOverFirstLimit()) {
-            StorageLimitState.Notifiable.FirstLimitOver(false)
         } else {
             StorageLimitState.HasEnoughSpace
         }
@@ -127,8 +79,6 @@ class StorageLimitReducer @Inject constructor() {
     private fun newStateForWarningConfirmed(currentState: StorageLimitState): StorageLimitState {
         return when (currentState) {
             is StorageLimitState.Notifiable.QuotaOver -> StorageLimitState.Notifiable.QuotaOver(true)
-            is StorageLimitState.Notifiable.FirstLimitOver -> StorageLimitState.Notifiable.FirstLimitOver(true)
-            is StorageLimitState.Notifiable.SecondLimitOver -> StorageLimitState.Notifiable.SecondLimitOver(true)
             else -> currentState
         }
     }
