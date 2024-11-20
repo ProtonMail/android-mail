@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.hasEmailData
 import ch.protonmail.android.mailcommon.domain.usecase.GetPrimaryAddress
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcomposer.domain.annotations.IsNewBodyTextFieldEnabled
 import ch.protonmail.android.mailcomposer.domain.model.DecryptedDraftFields
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
@@ -164,7 +165,8 @@ class ComposerViewModel @Inject constructor(
     getDecryptedDraftFields: GetDecryptedDraftFields,
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
-    provideNewDraftId: ProvideNewDraftId
+    provideNewDraftId: ProvideNewDraftId,
+    @IsNewBodyTextFieldEnabled val isNewBodyTextFieldEnabled: Boolean
 ) : ViewModel() {
 
     private val actionMutex = Mutex()

@@ -225,6 +225,7 @@ class ComposerViewModelTest {
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val sortContactsForSuggestions = SortContactsForSuggestions(getInitials, testDispatcher)
     private val reducer = ComposerReducer(attachmentUiModelMapper)
+    private val isNewBodyTextFieldUsed = false
 
     private val viewModel by lazy {
         ComposerViewModel(
@@ -272,7 +273,8 @@ class ComposerViewModelTest {
             getDecryptedDraftFields,
             savedStateHandle,
             observePrimaryUserIdMock,
-            provideNewDraftIdMock
+            provideNewDraftIdMock,
+            isNewBodyTextFieldUsed
         )
     }
 
