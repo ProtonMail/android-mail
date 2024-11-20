@@ -22,7 +22,7 @@ import android.content.Context
 import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import ch.protonmail.android.mailsettings.presentation.R
@@ -43,9 +43,11 @@ import kotlin.test.assertTrue
 internal class GetMobileFooterTest {
 
     private val context = mockk<Context>()
-    private val isPaidUser: IsPaidUser = mockk()
     private val mobileFooterRepository: MobileFooterRepository = mockk()
-    private val getMobileFooter = GetMobileFooter(context, isPaidUser, mobileFooterRepository)
+    private val isPaidMailUser = mockk<IsPaidMailUser> {
+        coEvery { this@mockk(BaseUserId) } returns false.right()
+    }
+    private val getMobileFooter = GetMobileFooter(context, isPaidMailUser, mobileFooterRepository)
 
     @After
     fun teardown() {
@@ -65,10 +67,10 @@ internal class GetMobileFooterTest {
     }
 
     @Test
-    fun `should propagate the paid user mobile footer when the user is a paid user`() = runTest {
+    fun `should propagate the paid user mobile footer when the user is a paid mail user`() = runTest {
         // Given
         val expectedFooter = MobileFooter.PaidUserMobileFooter("footer", false).right()
-        expectPaidUser()
+        expectPaidMailUser()
         coEvery { mobileFooterRepository.getMobileFooter(BaseUserId) } returns expectedFooter
 
         // When
@@ -82,7 +84,7 @@ internal class GetMobileFooterTest {
     fun `should propagate the error when cannot determine if the user is paid or not`() = runTest {
         // Given
         val expectedError = DataError.Local.Unknown.left()
-        coEvery { isPaidUser(BaseUserId) } returns expectedError
+        coEvery { isPaidMailUser(BaseUserId) } returns expectedError
 
         // When
         val result = getMobileFooter(BaseUserId)
@@ -95,7 +97,7 @@ internal class GetMobileFooterTest {
     fun `should propagate the default footer when the mobile footer has never been set`() = runTest {
         // Given
         val expectedDefault = MobileFooter.PaidUserMobileFooter(BaseDefaultString, true)
-        expectPaidUserWithNoFooter()
+        expectPaidMailUserWithNoFooter()
         coEvery {
             context.getString(R.string.mail_settings_identity_mobile_footer_default_free)
         } returns BaseDefaultString
@@ -110,18 +112,18 @@ internal class GetMobileFooterTest {
         verify(exactly = 1) { context.getString(R.string.mail_settings_identity_mobile_footer_default_free) }
     }
 
-    private fun expectPaidUserWithNoFooter() {
+    private fun expectPaidMailUserWithNoFooter() {
         val error = DataError.Local.NoDataCached.left()
-        coEvery { isPaidUser(BaseUserId) } returns true.right()
+        coEvery { isPaidMailUser(BaseUserId) } returns true.right()
         coEvery { mobileFooterRepository.getMobileFooter(BaseUserId) } returns error
     }
 
-    private fun expectPaidUser() {
-        coEvery { isPaidUser(BaseUserId) } returns true.right()
+    private fun expectPaidMailUser() {
+        coEvery { isPaidMailUser(BaseUserId) } returns true.right()
     }
 
     private fun expectFreeUser() {
-        coEvery { isPaidUser(BaseUserId) } returns false.right()
+        coEvery { isPaidMailUser(BaseUserId) } returns false.right()
         every { context.getString(any()) } returns "Any string"
     }
 

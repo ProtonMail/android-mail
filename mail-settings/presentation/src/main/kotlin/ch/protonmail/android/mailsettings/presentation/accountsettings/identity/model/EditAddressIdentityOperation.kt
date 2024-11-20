@@ -73,4 +73,5 @@ sealed interface EditAddressIdentityEvent : EditAddressIdentityOperation {
     data object HideUpselling : EditAddressIdentityEvent
     data object ShowUpselling : EditAddressIdentityEvent
     data object UpsellingInProgress : EditAddressIdentityEvent
+    data object SubscriptionNeededError : EditAddressIdentityEvent
 }

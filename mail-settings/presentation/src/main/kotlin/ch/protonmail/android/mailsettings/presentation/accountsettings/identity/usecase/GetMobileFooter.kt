@@ -23,7 +23,7 @@ import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.model.DataError
-import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailsettings.domain.model.MobileFooter
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import ch.protonmail.android.mailsettings.presentation.R
@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 class GetMobileFooter @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val isPaidUser: IsPaidUser,
+    private val isPaidMailUser: IsPaidMailUser,
     private val mobileFooterRepository: MobileFooterRepository
 ) {
 
@@ -51,11 +51,11 @@ class GetMobileFooter @Inject constructor(
     }
 
     suspend operator fun invoke(userId: UserId): Either<DataError, MobileFooter> = either {
-        val isPaidUser = isPaidUser(userId).getOrElse {
+        val isPaidMailUser = isPaidMailUser(userId).getOrElse {
             raise(DataError.Local.Unknown)
         }
 
-        if (!isPaidUser) {
+        if (!isPaidMailUser) {
             return@either freeUserMobileFooter
         }
 
