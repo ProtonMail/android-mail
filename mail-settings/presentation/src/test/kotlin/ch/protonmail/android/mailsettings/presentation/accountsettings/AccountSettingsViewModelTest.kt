@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUser
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveUserSettings
 import ch.protonmail.android.mailsettings.presentation.R.string
@@ -398,7 +397,6 @@ class AccountSettingsViewModelTest {
     fun `state has auto-delete upgrading in progress visible when upselling in progress and setting clicked`() =
         runTest {
             // given
-            autoDeleteUpsellingIsOn()
             every { userUpgradeState.isUserPendingUpgrade } returns true
 
             viewModel.state.test {
@@ -415,8 +413,12 @@ class AccountSettingsViewModelTest {
                 // then
                 val data = awaitItem() as Data
                 assertEquals(
-                    Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)),
+                    Effect.of(TextUiModel(string.upselling_snackbar_upgrade_in_progress)),
                     data.autoDeleteSettingsState.upsellingInProgress
+                )
+                assertEquals(
+                    Effect.empty(),
+                    data.autoDeleteSettingsState.subscriptionNeededError
                 )
             }
         }
@@ -443,6 +445,10 @@ class AccountSettingsViewModelTest {
                 assertEquals(
                     Effect.of(TextUiModel(string.mail_settings_auto_delete_subscription_needed)),
                     data.autoDeleteSettingsState.subscriptionNeededError
+                )
+                assertEquals(
+                    Effect.empty(),
+                    data.autoDeleteSettingsState.upsellingInProgress
                 )
             }
         }

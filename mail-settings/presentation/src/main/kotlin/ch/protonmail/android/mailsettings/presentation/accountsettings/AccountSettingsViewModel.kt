@@ -151,17 +151,18 @@ class AccountSettingsViewModel @Inject constructor(
     private fun getRecoveryEmail(userSettings: UserSettings?) = userSettings?.email?.value?.takeIfNotBlank()
 
     private fun handleSettingsItemClicked() {
+        val isUpsellingInProgress = userUpgradeState.isUserPendingUpgrade
+
+        if (isUpsellingInProgress) {
+            autoDeleteUpsellingInProgressVisibility.value = Effect.of(
+                TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)
+            )
+
+            return
+        }
 
         if (autoDeleteState.value.isUpsellingVisible) {
-            val isUpsellingInProgress = userUpgradeState.isUserPendingUpgrade
-
-            if (isUpsellingInProgress) {
-                autoDeleteUpsellingInProgressVisibility.value = Effect.of(
-                    TextUiModel(R.string.upselling_snackbar_upgrade_in_progress)
-                )
-            } else {
-                autoDeleteUpsellingVisibility.value = BottomSheetVisibilityEffect.Show
-            }
+            autoDeleteUpsellingVisibility.value = BottomSheetVisibilityEffect.Show
         } else if (autoDeleteState.value.doesSettingNeedSubscription) {
             subscriptionNeededErrorVisibility.value = Effect.of(
                 TextUiModel(R.string.mail_settings_auto_delete_subscription_needed)
@@ -172,5 +173,4 @@ class AccountSettingsViewModel @Inject constructor(
     private fun handleDismissUpselling() {
         autoDeleteUpsellingVisibility.value = BottomSheetVisibilityEffect.Hide
     }
-
 }
