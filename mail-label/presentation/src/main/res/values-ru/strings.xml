@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Вся почта</string>
   <string name="label_title_all_drafts">Все черновики</string>
   <string name="label_title_all_sent">Все отправленные</string>
-  <string name="label_title_all_scheduled">All scheduled</string>
+  <string name="label_title_all_scheduled">Все запланированные</string>
   <string name="label_title_snoozed">Отложенные</string>
   <string name="label_title_folders">Папки</string>
   <string name="label_title_parent_folder">Родительская папка</string>
@@ -55,8 +55,8 @@
   <string name="save_label_error">Ошибка сохранения ярлыка, повторите попытку позже</string>
   <string name="save_folder_error">Ошибка сохранения папки, повторите попытку позже</string>
   <string name="label_already_exists">Ярлык или папка с этим названием уже существует</string>
-  <string name="label_limit_reached_error">Достигнут предел количества ярлыков</string>
-  <string name="folder_limit_reached_error">Достигнут предел количества папок</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Ошибка удаления ярлыка</string>
   <string name="input_field_clear_content_description">Очистить текст</string>
   <string name="label_list_item_content_description">Элемент списка меток</string>

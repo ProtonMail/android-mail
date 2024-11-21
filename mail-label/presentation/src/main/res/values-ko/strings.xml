@@ -55,8 +55,8 @@
   <string name="save_label_error">라벨 저장 오류, 다시 시도하십시오.</string>
   <string name="save_folder_error">파일 저장 중 오류 발생, 다시 시도하십시오.</string>
   <string name="label_already_exists">이 이름을 가진 라벨 및 폴더가 이미 존재합니다.</string>
-  <string name="label_limit_reached_error">라벨 제한 도달</string>
-  <string name="folder_limit_reached_error">폴더 개수 제한 도달</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">라벨 삭제 오류</string>
   <string name="input_field_clear_content_description">텍스트 지우기</string>
   <string name="label_list_item_content_description">라벨 목록 내의 항목</string>

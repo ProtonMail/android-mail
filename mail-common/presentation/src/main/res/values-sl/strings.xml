@@ -21,8 +21,8 @@
   <string name="expiration_days_arg">%dd</string>
   <string name="expiration_hours_arg">%d u</string>
   <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
-  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
+  <string name="expiration_auto_delete_hour">To sporočilo bo samodejno izbrisano čez manj kot eno uro</string>
+  <string name="expiration_auto_delete_day">To sporočilo bo samodejno izbrisano čez manj kot en dan</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
   <string name="retry">Poskusite znova</string>
   <string name="toolbar_back_content_description">Nazaj na prejšnji zaslon</string>
@@ -82,13 +82,13 @@
   <string name="action_more_content_description">Več</string>
   <string name="common_error_loading_actions">Neuspešno nalaganje dejanj</string>
   <string name="yesterday">Včeraj</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_activate_trash">Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.</string>
+  <string name="auto_delete_banner_text_activate_spam">Samodejno izbriši sporočila, ki so med neželeno pošto več kot 30 dni.</string>
   <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
-  <string name="auto_delete_banner_button_activate_confirm">Enable</string>
-  <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
+  <string name="auto_delete_banner_text_enabled_info">Sporočila, ki bodo v smetnjaku ali v neželeni pošti več kot 30 dni, se bodo samodejno izbrisala.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Omogoči</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Ne, hvala</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Več o tem</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Priponke</string>
   <string name="attachment_download_notification_channel_description">Obvestila o prenosih priponk</string>

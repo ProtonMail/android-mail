@@ -40,7 +40,7 @@
   <string name="attachment_type_presentation">Apresentação</string>
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Mover para...</string>
-  <string name="bottom_sheet_done_action">Concluído</string>
+  <string name="bottom_sheet_done_action">Terminado</string>
   <string name="bottom_sheet_archive_action">Arquivar também?</string>
   <string name="bottom_sheet_label_as_title">Etiquetar como...</string>
   <string name="bottom_sheet_more_header_message_from">Mensagem de %s</string>

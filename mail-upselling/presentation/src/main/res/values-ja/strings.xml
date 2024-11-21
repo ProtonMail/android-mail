@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">自分のモバイル署名を使用し、Mail Plus の他のプレミアム機能を楽しんでください。</string>
   <string name="upselling_mobile_signature_plus_title">署名をカスタマイズする</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Mail Plusで、より整理されたメールボックスと他のプレミアム機能をお楽しみください。</string>
+  <string name="upselling_auto_delete_plus_title">古いゴミやスパムを削除</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB のストレージ</string>
   <string name="upselling_plus_feature_email_addresses">10個のメールアドレス</string>
@@ -53,7 +53,7 @@
   <string name="upselling_unlimited_feature_drive">安全なクラウドストレージ</string>
   <string name="upselling_unlimited_feature_pass">暗号化されたパスワードマネージャー</string>
   <!-- Onboarding Upselling -->
-  <string name="upselling_onboarding_premium_value_included">Premium value included</string>
+  <string name="upselling_onboarding_premium_value_included">プレミアムな価値が含まれています</string>
   <string name="upselling_onboarding_feature_e2e">エンドツーエンド暗号化</string>
   <string name="upselling_onboarding_feature_folders_labels">無制限のフォルダーとラベル</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB のストレージと 1 つのメールアドレス</string>
@@ -72,21 +72,21 @@
   <string name="upselling_onboarding_unlimited_feature_drive">写真や文書のための暗号化クラウドストレージ</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">高度なアカウント保護</string>
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Storage</string>
-  <string name="upselling_comparison_table_email_addresses">Email addresses</string>
+  <string name="upselling_comparison_table_storage">容量</string>
+  <string name="upselling_comparison_table_email_addresses">メールアドレス</string>
   <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
-  <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
-  <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
-  <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+  <string name="upselling_comparison_table_desktop_app">デスクトップアプリへアクセス</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">無制限のフォルダとラベル</string>
+  <string name="upselling_comparison_table_priority_support">優先的なカスタマーサポート</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Select your plan</string>
-  <string name="upselling_select_plan_year">1 year</string>
-  <string name="upselling_select_plan_month">1 month</string>
+  <string name="upselling_select_plan">プランを選択</string>
+  <string name="upselling_select_plan_year">1 年</string>
+  <string name="upselling_select_plan_month">1 ヶ月</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text">キャンセルするまで同じ金額、同じ期間で自動更新</string>
   <string name="upselling_discount_tag">SAVE %s%%</string>
   <string name="upselling_month">/月</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/ 年間</string>
   <string name="upselling_get_button">%sを入手</string>
   <plurals name="upselling_month">
     <item quantity="other">%d ヶ月</item>
@@ -105,13 +105,26 @@
   <string name="upselling_onboarding_switcher_annual">年額</string>
   <string name="upselling_onboarding_best_value">最高の価値</string>
   <string name="upselling_onboarding_month">/月</string>
-  <string name="upselling_onboarding_year">/year</string>
+  <string name="upselling_onboarding_year">/ 年間</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="other">%d の追加機能</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">毎月%s%sで請求されます</string>
+  <string name="upselling_onboarding_billing_annual">12 ヶ月毎%s%sで請求されます</string>
   <string name="upselling_onboarding_get_plan">%sを入手</string>
   <string name="upselling_onboarding_continue_with_proton_free">Proton Free で続行</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_save_label">%s%%節約</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Close</string>
+  <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
+  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
 </resources>

@@ -55,8 +55,8 @@
   <string name="save_label_error">保存标签出错。请稍后再试。</string>
   <string name="save_folder_error">保存文件夹错误，请稍后再试</string>
   <string name="label_already_exists">标签或文件夹名称已经存在</string>
-  <string name="label_limit_reached_error">标签数量达到上限</string>
-  <string name="folder_limit_reached_error">文件夹数量达到上限</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">删除标签失败</string>
   <string name="input_field_clear_content_description">清除文本</string>
   <string name="label_list_item_content_description">标签项</string>

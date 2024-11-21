@@ -43,7 +43,7 @@
   <string name="action_trash_description">Μετακίνηση στα Διαγραμμένα</string>
   <string name="action_delete_description">Διαγραφή</string>
   <string name="action_archive_description">Αρχειοθετημένα</string>
-  <string name="action_spam_description">Μετακίνηση στα ανεπιθύμητα</string>
+  <string name="action_spam_description">Μετακίνηση στα ενοχλητικά</string>
   <string name="action_view_in_light_mode_description">Προβολή μηνύματος σε φωτεινή διαμόρφωση</string>
   <string name="action_view_in_dark_mode_description">Προβολή μηνύματος σε σκούρα διαμόρφωση</string>
   <string name="action_print_description">Εκτύπωση</string>
@@ -83,9 +83,9 @@
   <string name="common_error_loading_actions">Αποτυχία φόρτωσης ενεργειών</string>
   <string name="yesterday">Χθες</string>
   <string name="auto_delete_banner_text_activate_trash">Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα για περισσότερες από 30 ημέρες.</string>
-  <string name="auto_delete_banner_text_activate_spam">Αυτόματη διαγραφή μηνυμάτων που είναι στα ανεπιθύμητα για περισσότερες από 30 ημέρες.</string>
-  <string name="auto_delete_banner_text_upgrade">Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.</string>
-  <string name="auto_delete_banner_text_enabled_info">Μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα εξαλείφονται αυτόματα και οριστικά.</string>
+  <string name="auto_delete_banner_text_activate_spam">Αυτόματη διαγραφή μηνυμάτων που παραμένουν στα Ενοχλητικά για περισσότερες από 30 ημέρες.</string>
+  <string name="auto_delete_banner_text_upgrade">Αναβαθμίστε για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.</string>
+  <string name="auto_delete_banner_text_enabled_info">Μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα και οριστικά.</string>
   <string name="auto_delete_banner_button_activate_confirm">Ενεργοποίηση</string>
   <string name="auto_delete_banner_button_activate_dismiss">Όχι, ευχαριστώ</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Μάθετε περισσότερα</string>
@@ -123,6 +123,6 @@
   <string name="color_olive">Λαδί</string>
   <string name="color_pickle">Τουρσί</string>
   <string name="undo_button_label">Αναίρεση</string>
-  <string name="undo_success_message">Η ενέργεια επανήλθε</string>
-  <string name="undo_failure_message">Η επαναφορά ενέργειας απέτυχε</string>
+  <string name="undo_success_message">Η ενέργεια αναιρέθηκε</string>
+  <string name="undo_failure_message">Η αναίρεση απέτυχε</string>
 </resources>

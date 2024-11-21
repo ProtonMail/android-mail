@@ -55,8 +55,8 @@
   <string name="save_label_error">Lagringsfejl af etiket. Prøv igen senere.</string>
   <string name="save_folder_error">Lagringsfejl af mappe. Prøv igen senere.</string>
   <string name="label_already_exists">En etiket eller mappe med dette navn findes allerede</string>
-  <string name="label_limit_reached_error">Etiketgrænse nået</string>
-  <string name="folder_limit_reached_error">Mappegrænse nået</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Sletningsfejl af etiket</string>
   <string name="input_field_clear_content_description">Ryd tekst</string>
   <string name="label_list_item_content_description">Etiket på emneliste</string>
@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Ingen</string>
   <string name="delete_label">Slet etikette?</string>
   <string name="delete_folder">Slet mappe?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label_message">Denne handling kan ikke fortrydes. E-mails, der er mærket med denne etiket, slettes ikke og kan findes i mappen \'Alle e-mails\'.</string>
+  <string name="delete_folder_message">Denne handling kan ikke fortrydes. E-mails i denne mappe slettes ikke og kan findes i mappen \'Alle e-mails\'.</string>
 </resources>

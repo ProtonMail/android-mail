@@ -21,9 +21,9 @@
   <string name="expiration_days_arg">%d d</string>
   <string name="expiration_hours_arg">%d t</string>
   <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
-  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+  <string name="expiration_auto_delete_hour">Detta meddelande kommer att tas bort automatiskt om mindre än en timme</string>
+  <string name="expiration_auto_delete_day">Detta meddelande kommer att tas bort automatiskt om mindre än en dag</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Detta meddelande kommer tas bort automatiskt om %s</string>
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
   <string name="x_error_not_logged_in">Inte inloggad</string>

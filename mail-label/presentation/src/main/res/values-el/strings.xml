@@ -54,9 +54,9 @@
   <string name="color_picker_title">Χρώμα</string>
   <string name="save_label_error">Σφάλμα αποθήκευσης ετικέτας, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="save_folder_error">Σφάλμα αποθήκευσης φακέλου, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
-  <string name="label_already_exists">Μια ετικέτα ή ένας φάκελος, υπάρχει ήδη με αυτό το όνομα</string>
-  <string name="label_limit_reached_error">Μέγιστο όριο ετικετών</string>
-  <string name="folder_limit_reached_error">Μέγιστο όριο φακέλων</string>
+  <string name="label_already_exists">Μια ετικέτα ή ένας φάκελος υπάρχει ήδη με αυτό το όνομα</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Σφάλμα κατά τη διαγραφή ετικέτας</string>
   <string name="input_field_clear_content_description">Διαγραφή κειμένου</string>
   <string name="label_list_item_content_description">Εφαρμογή ετικέτας στο στοιχείο λίστας</string>

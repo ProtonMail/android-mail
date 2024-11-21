@@ -99,7 +99,7 @@
   <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>
   <string name="mailbox_search_placeholder_text">Пошук паведамленняў</string>
   <string name="mailbox_search_no_results_title">Вынікі не знойдзены</string>
-  <string name="mailbox_search_no_results_explanation">Пошук па даце, імі, адрасе электроннай пошце або радку тэмы</string>
+  <string name="mailbox_search_no_results_explanation">Пошук па даце, імені, адрасе электроннай пошце або радку тэмы</string>
   <string name="mailbox_action_button_clear_trash">Ачысціць сметніцу</string>
   <string name="mailbox_action_button_clear_spam">Ачысціць спам</string>
   <string name="mailbox_action_clear_trash_dialog_title">Ачысціць папку Сметніцы</string>

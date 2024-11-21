@@ -55,8 +55,8 @@
   <string name="save_label_error">Fehler beim Speichern der Kategorie. Bitte versuche es später erneut.</string>
   <string name="save_folder_error">Fehler beim Speichern des Ordners. Bitte versuche es erneut.</string>
   <string name="label_already_exists">Eine Kategorie oder Ordner mit diesem Namen existiert bereits.</string>
-  <string name="label_limit_reached_error">Kategorielimit erreicht</string>
-  <string name="folder_limit_reached_error">Ordnerlimit erreicht</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Fehler beim Löschen der Kategorie.</string>
   <string name="input_field_clear_content_description">Text löschen</string>
   <string name="label_list_item_content_description">Eintrag kategorisieren</string>

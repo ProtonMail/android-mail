@@ -49,9 +49,9 @@
   <string name="mailbox_is_empty_trash_description">Kosz jest pusty</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Wiadomość została przeniesiona do Kosza</item>
-    <item quantity="few">%d wiadomości zostały przeniesione do Kosza</item>
-    <item quantity="many">%d wiadomości zostało przeniesionych do Kosza</item>
-    <item quantity="other">%d wiadomości zostało przeniesionych do Kosza</item>
+    <item quantity="few">Przeniesiono %d wiadomości do Kosza</item>
+    <item quantity="many">Przeniesiono %d wiadomości do Kosza</item>
+    <item quantity="other">Przeniesiono %d wiadomości do Kosza</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Usuń wątek</item>

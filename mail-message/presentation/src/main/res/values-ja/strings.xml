@@ -45,26 +45,26 @@
   <string name="bottom_sheet_more_header_message_from">\"%s\"からのメッセージ</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">リンクをコピー</string>
-  <string name="message_link_long_click_copy_description">Text copied from Proton Mail</string>
+  <string name="message_link_long_click_copy_description">Proton Mailからコピーされました</string>
   <string name="message_link_long_click_share">共有リンク</string>
-  <string name="message_link_long_click_share_via">Share link via</string>
+  <string name="message_link_long_click_share_via">でリンクを共有</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">アドレスをコピー</string>
-  <string name="contact_actions_copy_address_description">Copy contact address</string>
+  <string name="contact_actions_copy_address_description">連絡先アドレスをコピー</string>
   <string name="contact_actions_copy_address_performed">住所がクリップボードにコピーされました</string>
   <string name="contact_actions_copy_name">名前をコピー</string>
-  <string name="contact_actions_copy_name_description">Copy contact name</string>
-  <string name="contact_actions_copy_name_performed">Name copied to clipboard</string>
+  <string name="contact_actions_copy_name_description">連絡先名をコピー</string>
+  <string name="contact_actions_copy_name_performed">名前がクリップボードにコピーされました</string>
   <string name="contact_actions_new_message">新しいメッセージ</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">この連絡先に新しいメッセージを作成開始</string>
   <string name="contact_actions_add_contact">連絡先を追加</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
+  <string name="contact_actions_add_contact_description">この宛先を連絡先として保存</string>
   <string name="contact_actions_view_contact_details">連絡先の詳細を表示</string>
-  <string name="contact_actions_view_contact_details_description">View details of the contact</string>
+  <string name="contact_actions_view_contact_details_description">連絡先の詳細を閲覧</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">許可が必要です</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_message">Proton Mailは宛先提案のために、連絡先の読み込みの許可が必要です。</string>
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
-  <string name="device_contacts_permission_dialog_action_button">Request permission</string>
+  <string name="device_contacts_permission_dialog_action_button">許可を要求</string>
   <string name="device_contacts_permission_dialog_action_button_deny">拒否</string>
 </resources>

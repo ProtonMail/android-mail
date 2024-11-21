@@ -116,4 +116,17 @@
   <string name="upselling_onboarding_get_plan">Obtén %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continúa con Proton Free</string>
   <string name="upselling_onboarding_save_label">Ahorra un %s%%</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Cerrar</string>
+  <string name="post_subscription_continue_button">Continuar</string>
+  <string name="post_subscription_welcome_page_title">Te damos la bienvenida a Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Gracias por apoyarnos a mantener internet seguro y privado para todos.</string>
+  <string name="post_subscription_welcome_page_unlocked">Has desbloqueado</string>
+  <string name="post_subscription_plus_feature_storage">15 GB de espacio de almacenamiento</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 direcciones de correo electrónico extra</string>
+  <string name="post_subscription_plus_feature_email_domains">Soporte para 1 dominio de correo electrónico personalizado</string>
+  <string name="post_subscription_plus_feature_folders_labels">Número ilimitado de carpetas y etiquetas</string>
+  <string name="post_subscription_plus_feature_aliases">10 alias de hide-my-email</string>
+  <string name="post_subscription_plus_feature_desktop_app">Nueva aplicación de escritorio de Proton Mail</string>
+  <string name="post_subscription_plus_feature_customer_support">Soporte al cliente prioritario</string>
 </resources>

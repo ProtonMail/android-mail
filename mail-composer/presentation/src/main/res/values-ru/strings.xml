@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Изменить отправителя</string>
   <string name="composer_change_sender_paid_feature">You need a paid Proton Mail subscription to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Невозможно изменить отправителя, так как подписка пользователя не удалась. Попробуйте еще раз.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Сохранение адреса отправителя этого черновика не удалось</string>
+  <string name="composer_error_store_draft_body">Сохранение адреса отправителя этого черновика не удалось</string>
   <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">Не удалось сохранить тему этого черновика</string>
   <string name="composer_error_store_draft_recipients">Сохранение получателей этого черновика не удалось</string>
   <string name="composer_error_loading_draft">Содержимое этого черновика в данный момент недоступно. Изменение приведет к замене всего ранее существовавшего содержимого.</string>
   <string name="composer_add_attachments_content_description">Добавить вложения</string>

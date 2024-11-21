@@ -19,7 +19,7 @@
 <resources>
   <string name="contact_list_title">Επαφές</string>
   <string name="contact_list_loading_error">Σφάλμα φόρτωσης επαφών, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
-  <string name="no_contacts">Δεν βρέθηκαν επαφές</string>
+  <string name="no_contacts">Δε βρέθηκαν επαφές</string>
   <string name="no_contact_groups">Δε βρέθηκαν ομάδες επαφών</string>
   <string name="no_contacts_description">Βελτιώστε την εμπειρία ηλεκτρονικού ταχυδρομείου δημιουργώντας μια νέα επαφή ή εισάγοντας υπάρχουσες.</string>
   <string name="no_contact_groups_description">Βελτιώστε την εμπειρία ηλεκτρονικού ταχυδρομείου δημιουργώντας μια νέα ομάδα επαφών.</string>
@@ -33,7 +33,7 @@
   <string name="new_contact">Νέα επαφή</string>
   <string name="new_group">Νέα ομάδα</string>
   <string name="import_contact">Ανέβασμα επαφών συσκευής</string>
-  <string name="no_contact_email">Δεν υπάρχει διεύθυνση E-mail</string>
+  <string name="no_contact_email">Δεν υπάρχει διεύθυνση ηλεκτρονικού ταχυδρομείου</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
   <string name="contact_details_loading_error">Σφάλμα φόρτωσης επαφής, παρακαλούμε δοκιμάστε ξανά αργότερα</string>
   <string name="contact_details_delete_success">Η επαφή διαγράφηκε</string>

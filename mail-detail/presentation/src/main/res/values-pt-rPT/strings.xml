@@ -44,14 +44,14 @@
   <string name="error_star_operation_failed">A operação de adicionar estrela falhou. Por favor, tente novamente.</string>
   <string name="error_unstar_operation_failed">A operação de remover estrela falhou. Por favor, tente novamente.</string>
   <string name="error_move_to_trash_failed">Erro no envio para a lixeira. Tente novamente.</string>
-  <string name="message_moved_to_trash">Mensagem movida para a pasta Lixeira</string>
+  <string name="message_moved_to_trash">Mensagem movida para a lixeira</string>
   <string name="message_moved_to_archive">Mensagem movida para a pasta Arquivo</string>
   <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
   <string name="message_moved_to_spam">A mensagem foi movida para a pasta Spam.</string>
   <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
   <string name="message_moved_to_selected_destination">Mensagem movida para %1$s</string>
   <string name="error_move_message_failed">Erro ao mover a mensagem. Tente novamente.</string>
-  <string name="conversation_moved_to_trash">Conversa movida para a pasta Lixeira</string>
+  <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
   <string name="conversation_moved_to_archive">Conversa movida para a pasta Arquivo</string>
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>

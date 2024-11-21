@@ -55,8 +55,8 @@
   <string name="save_label_error">Chyba při ukládání štítku, zkuste to prosím později</string>
   <string name="save_folder_error">Chyba při ukládání složky, zkuste to prosím později</string>
   <string name="label_already_exists">Štítek nebo složka s tímto názvem již existuje</string>
-  <string name="label_limit_reached_error">Dosažen limit počtu štítků</string>
-  <string name="folder_limit_reached_error">Dosažen limit počtu složek</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Chyba při mazání štítku</string>
   <string name="input_field_clear_content_description">Smazat text</string>
   <string name="label_list_item_content_description">Položka seznamu štítků</string>

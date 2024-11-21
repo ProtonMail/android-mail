@@ -116,4 +116,17 @@
   <string name="upselling_onboarding_get_plan">მიიღეთ %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">გაგრძელება Proton Free-ით</string>
   <string name="upselling_onboarding_save_label">დაზოგეთ %s%%</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Close</string>
+  <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
+  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
 </resources>

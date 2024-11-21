@@ -55,8 +55,8 @@
   <string name="save_label_error">Feil ved lagring av etikett. Prøv igjen senere.</string>
   <string name="save_folder_error">Feil ved lagring av mappe. Prøv igjen senere.</string>
   <string name="label_already_exists">Etikett eller mappe med dette navnet eksisterer allerede.</string>
-  <string name="label_limit_reached_error">Grense for antall etiketter nådd</string>
-  <string name="folder_limit_reached_error">Grense for antall mapper nådd</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Feil ved sletting av etikett</string>
   <string name="input_field_clear_content_description">Tøm tekst</string>
   <string name="label_list_item_content_description">Element i etikettliste</string>

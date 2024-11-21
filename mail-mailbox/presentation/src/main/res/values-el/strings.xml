@@ -41,7 +41,7 @@
   <string name="mailbox_is_empty_description">Είστε ενημερωμένοι</string>
   <string name="mailbox_is_empty_no_unread_messages_title">Κανένα μη αναγνωσμένο μήνυμα</string>
   <string name="mailbox_is_empty_folder_description">Αυτός ο φάκελος είναι κενός</string>
-  <string name="mailbox_is_empty_spam_description">Ο φάκελος Ενοχλητικών είναι κενός</string>
+  <string name="mailbox_is_empty_spam_description">Ο φάκελος Ενοχλητικά είναι κενός</string>
   <string name="mailbox_is_empty_trash_description">Τα Διαγραμμένα είναι άδεια</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>
@@ -83,13 +83,13 @@
   <string name="mailbox_search_no_results_title">Δε βρέθηκαν αποτελέσματα</string>
   <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλεκτρονικού ταχυδρομείου ή γραμμή θέματος</string>
   <string name="mailbox_action_button_clear_trash">Εκκαθάριση Διαγραμμένων</string>
-  <string name="mailbox_action_button_clear_spam">Άδειασμα Ενοχλητικών</string>
+  <string name="mailbox_action_button_clear_spam">Εκκαθάριση Ενοχλητικών</string>
   <string name="mailbox_action_clear_trash_dialog_title">Εκκαθάριση φακέλου Διαγραμμένων</string>
   <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Διαγραμμένα\";</string>
-  <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Ανεπιθύμητα\";</string>
-  <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στο φάκελο \"Ανεπιθύμητα\";</string>
-  <string name="mailbox_action_clear_operation_scheduled">"Έχει προγραμματιστεί η λειτουργία εκκαθάρισης"</string>
+  <string name="mailbox_action_clear_spam_dialog_body_message">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Ενοχλητικά\";</string>
+  <string name="mailbox_action_clear_spam_dialog_body_conversation">Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά όλες τις συνομιλίες στο φάκελο \"Ενοχλητικά\";</string>
+  <string name="mailbox_action_clear_operation_scheduled">"Η λειτουργία εκκαθάρισης έχει προγραμματιστεί"</string>
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Προειδοποίηση</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Ο αποθηκευτικός χώρος του λογαριασμού Proton σας είναι γεμάτος περισσότερο από 80%. Ελευθερώστε χώρο ή αναβαθμίστε για περισσότερο χώρο αποθήκευσης.</string>

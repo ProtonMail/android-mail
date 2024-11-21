@@ -72,7 +72,7 @@
   <string name="upselling_onboarding_unlimited_feature_drive">Penyimpanan cloud terenkripsi untuk foto dan dokumen</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Perlindungan akun tingkat lanjut</string>
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Storage</string>
+  <string name="upselling_comparison_table_storage">Penyimpanan</string>
   <string name="upselling_comparison_table_email_addresses">Alamat email</string>
   <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
   <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
@@ -80,13 +80,13 @@
   <string name="upselling_comparison_table_priority_support">Priority customer support</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Pilih paket Anda</string>
-  <string name="upselling_select_plan_year">1 year</string>
-  <string name="upselling_select_plan_month">1 month</string>
+  <string name="upselling_select_plan_year">1 tahun</string>
+  <string name="upselling_select_plan_month">1 bulan</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/tahun</string>
   <string name="upselling_get_button">Dapatkan %s</string>
   <plurals name="upselling_month">
     <item quantity="other">%d bulan</item>
@@ -114,4 +114,17 @@
   <string name="upselling_onboarding_get_plan">Dapatkan %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Lanjut dengan Proton Free</string>
   <string name="upselling_onboarding_save_label">Hemat %s%%</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Close</string>
+  <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
+  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
 </resources>

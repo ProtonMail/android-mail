@@ -64,13 +64,13 @@
   <string name="mail_settings_auto_delete">Αυτόματη διαγραφή</string>
   <string name="mail_settings_auto_delete_full_text">Αυτόματη διαγραφή ανεπιθύμητων μηνυμάτων</string>
   <string name="mail_settings_auto_delete_hint">Μηνύματα στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">Χρειάζεστε μια συνδρομή Proton Mail επί πληρωμή για να χρησιμοποιήσετε αυτήν τη δυνατότητα</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Χρειάζεστε μια συνδρομή Proton Mail επί πληρωμή για να χρησιμοποιήσετε αυτήν την δυνατότητα</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Ακύρωση</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Διαγραφή μηνυμάτων;</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Αυτό θα διαγράφει όλα τα μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, συμπεριλαμβανομένων όσων βρίσκονται ήδη σε αυτούς τους φακέλους.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Ενεργοποίηση</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Απενεργοποίηση αυτόματης διαγραφής;</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Τα προγραμματισμένα για οριστική εξάλειψη μηνύματα θα παραμείνουν στους φακέλους Διαγραμμένα και Ενοχλητικά.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Τα προγραμματισμένα για διαγραφή μηνύματα θα παραμείνουν στους φακέλους Διαγραμμένα και Ενοχλητικά.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Απενεργοποίηση</string>
   <string name="mail_settings_not_set">Μη ορισμένο</string>
   <string name="mail_settings_conversation_mode_hint">Ομαδοποιήστε τα μηνύματα της ίδιας συνομιλίας στα εισερχόμενά σας ή εμφανίστε τα ξεχωριστά</string>
@@ -89,7 +89,7 @@
   <string name="mail_settings_identity_signature">Υπογραφή</string>
   <string name="mail_settings_identity_signature_hint">Η Υπογραφή μου</string>
   <string name="mail_settings_identity_mobile_footer">Υπογραφή κινητού</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Αυτό προστέθηκε μετά την υπογραφή σας.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Αυτό προστίθεται κάτω από την υπογραφή σας.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Υπογραφή κινητού</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Στάλθηκε από το Proton Mail Android</string>
   <string name="mail_settings_identity_error_updating">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
@@ -97,7 +97,7 @@
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Αυτόματη εμφάνιση απομακρυσμένου περιεχομένου</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Αυτόματη εμφάνιση ενσωματωμένων εικόνων</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Αποφύγετε τη λήψη στιγμιότυπων οθόνης</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Αποτρέψτε τη λήψη στιγμιότυπων οθόνης</string>
   <string name="mail_settings_privacy_request_link_confirmation">Ζητήστε σύνδεσμο επιβεβαίωσης</string>
   <string name="mail_settings_privacy_background_sync">Συγχρονισμός στο παρασκήνιο</string>
   <string name="mail_settings_privacy_background_sync_description">Εάν αυτή η επιλογή είναι ενεργοποιημένη, η εφαρμογή θα συγχρονιστεί με τον διακομιστή στο παρασκήνιο. Η απενεργοποίηση αυτής της λειτουργίας θα απενεργοποιήσει επίσης τις ειδοποιήσεις push.</string>
@@ -119,10 +119,10 @@
   <string name="mail_settings_swipe_action_star_description">Με/χωρίς αστέρι</string>
   <string name="mail_settings_swipe_action_trash_description">Μετακίνηση στα Διαγραμμένα</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Ειδοποιήσεις ώθησης</string>
+  <string name="mail_settings_notifications_title">Ειδοποιήσεις Push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Εκτεταμένες ειδοποιήσεις</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Ενεργοποιήστε αυτή τη λειτουργία για να δείτε τον αποστολέα των μηνυμάτων ηλεκτρονικού ταχυδρομείου στις ειδοποιήσεις ώθησης.</string>
-  <string name="mail_settings_notifications_notifications_settings">Ρυθμίσεις ειδοποίησης</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Ενεργοποιήστε αυτή τη λειτουργία για να δείτε τον αποστολέα των μηνυμάτων ηλεκτρονικού ταχυδρομείου στις ειδοποιήσεις push.</string>
+  <string name="mail_settings_notifications_notifications_settings">Ρυθμίσεις ειδοποιήσεων</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Μεταβείτε στις ρυθμίσεις ειδοποιήσεων συστήματος</string>
   <string name="mail_settings_notifications_update_error">Σφάλμα κατά την ενημέρωση ρυθμίσεων</string>
   <string name="mail_settings_notifications_loading_error">Σφάλμα κατά τη φόρτωση ρυθμίσεων</string>
@@ -142,7 +142,7 @@
   <string name="mail_settings_pin_insertion_set_title">Ορισμός κωδικού PIN</string>
   <string name="mail_settings_pin_insertion_confirm_title">Επιβεβαιώστε τον κωδικό PIN</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Εικονίδιο κλειδαριάς</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Τελεία PIN</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">Κουκκίδα Pin</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backspace</string>
   <string name="mail_settings_pin_insertion_biometric_description">Βιομετρική Ταυτοποίηση</string>
   <string name="mail_settings_pin_insertion_button_create">Δημιουργία</string>
@@ -153,12 +153,12 @@
     <item quantity="other">%s προσπάθειες απομένουν.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
-    <item quantity="one">%s υπόλοιπη προσπάθεια μέχρι ασφαλή διαγραφή δεδομένων.</item>
-    <item quantity="other">%s υπόλοιπες προσπάθειες μέχρι ασφαλή διαγραφή δεδομένων.</item>
+    <item quantity="one">%s υπόλοιπη προσπάθεια μέχρι την ασφαλή διαγραφή δεδομένων.</item>
+    <item quantity="other">%s υπόλοιπες προσπάθειες μέχρι την ασφαλή διαγραφή δεδομένων.</item>
   </plurals>
   <string name="mail_settings_pin_insertion_error_unknown">Παρουσιάστηκε σφάλμα κατά την επαλήθευση του κωδικού PIN.</string>
-  <string name="mail_settings_pin_insertion_signout_text">Έξοδος</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">Έξοδος</string>
+  <string name="mail_settings_pin_insertion_signout_text">Αποσύνδεση</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">Αποσύνδεση</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ναι</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Όχι</string>

@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Prekliči</string>
   <string name="contact_details_delete_dialog_confirm_button">V redu</string>
   <string name="contact_form_save_error">Napaka pri shranjevanju stika, poskusite znova pozneje</string>
-  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
+  <string name="contact_form_save_error_limit_reached">Dosežena omejitev števila stikov</string>
   <string name="all_contacts_tab">Stiki</string>
   <string name="contact_groups_tab">Skupine</string>
   <plurals name="contact_group_details_member_count">
@@ -134,7 +134,7 @@
   <string name="contact_group_form_update_success">Skupina stikov posodobljena</string>
   <string name="contact_group_form_save_error">Napaka pri shranjevanju skupine stikov, poskusite znova pozneje</string>
   <string name="contact_group_form_save_error_already_exists">Skupina z enakim imenom že obstaja</string>
-  <string name="contact_group_form_subscription_error">You need a paid Proton Mail subscription to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Za ustvarjanje skupin stikov potrebujete plačljivo naročnino na Proton Mail</string>
   <string name="members_loading_error">Napaka pri nalaganju članov, poskusite znova pozneje</string>
   <string name="members_done">Končano</string>
   <string name="add_members_error">Napaka pri dodajanju članov, poskusite znova pozneje</string>

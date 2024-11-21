@@ -55,8 +55,8 @@
   <string name="save_label_error">Une erreur s\'est produite lors de l\'enregistrement du label. Veuillez réessayer plus tard.</string>
   <string name="save_folder_error">Une erreur s\'est produite lors de l\'enregistrement du dossier, réessayez plus tard.</string>
   <string name="label_already_exists">Un label ou un dossier portant ce nom existe déjà.</string>
-  <string name="label_limit_reached_error">Le nombre maximum de labels a été atteint.</string>
-  <string name="folder_limit_reached_error">Le nombre maximum de dossiers a été atteint.</string>
+  <string name="label_limit_reached_error">Vous devez disposer d\'un abonnement payant à Proton Mail pour créer plus de labels.</string>
+  <string name="folder_limit_reached_error">Vous devez disposer d\'un abonnement payant à Proton Mail pour créer plus de dossiers.</string>
   <string name="delete_label_error">Une erreur s\'est produite lors de la suppression du label.</string>
   <string name="input_field_clear_content_description">Effacer le texte</string>
   <string name="label_list_item_content_description">Élément de la liste des labels</string>

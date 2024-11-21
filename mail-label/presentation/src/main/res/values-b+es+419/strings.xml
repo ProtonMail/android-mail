@@ -55,8 +55,8 @@
   <string name="save_label_error">Error al guardar la etiqueta,. Intente de nuevo más tarde</string>
   <string name="save_folder_error">Error al guardar la carpeta. Inténtelo de nuevo más tarde.</string>
   <string name="label_already_exists">Ya existe una etiqueta o carpeta con este nombre</string>
-  <string name="label_limit_reached_error">Se alcanzó el límite de etiquetas.</string>
-  <string name="folder_limit_reached_error">Se alcanzó el límite de carpetas.</string>
+  <string name="label_limit_reached_error">Necesita una suscripción de pago a Proton Mail para crear más etiquetas.</string>
+  <string name="folder_limit_reached_error">Necesita una suscripción de pago a Proton Mail para crear más carpetas.</string>
   <string name="delete_label_error">Error al eliminar la etiqueta</string>
   <string name="input_field_clear_content_description">Borrar texto</string>
   <string name="label_list_item_content_description">Elemento de lista de etiquetas</string>

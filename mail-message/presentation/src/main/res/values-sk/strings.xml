@@ -43,7 +43,7 @@
   <!-- Bottom Sheet -->
   <string name="bottom_sheet_move_to_title">Presunúť do...</string>
   <string name="bottom_sheet_done_action">Hotovo</string>
-  <string name="bottom_sheet_archive_action">Taktiež archivovať?</string>
+  <string name="bottom_sheet_archive_action">Aj archivované?</string>
   <string name="bottom_sheet_label_as_title">Označiť ako...</string>
   <string name="bottom_sheet_more_header_message_from">Správa od %s</string>
   <!-- Message body link actions -->

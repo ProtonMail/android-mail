@@ -55,8 +55,8 @@
   <string name="save_label_error">Napaka pri shranjevanju oznake, poskusite znova pozneje</string>
   <string name="save_folder_error">Napaka pri shranjevanju mape, poskusite znova pozneje</string>
   <string name="label_already_exists">Oznaka ali mapa s tem imenom že obstaja</string>
-  <string name="label_limit_reached_error">Dosežena omejitev števila oznak</string>
-  <string name="folder_limit_reached_error">Dosežena omejitev števila map</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Napaka pri brisanju oznake</string>
   <string name="input_field_clear_content_description">Izbriši besedilo</string>
   <string name="label_list_item_content_description">Dodaj oznako predmetu na seznamu</string>
@@ -79,8 +79,8 @@
   <string name="folder_saved">Mapa skranjena</string>
   <string name="folder_deleted">Mapa je izbrisana.</string>
   <string name="parent_folder_none">Brez</string>
-  <string name="delete_label">Delete label?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label">Želite izbrisati oznako?</string>
+  <string name="delete_folder">Želite izbrisati mapo?</string>
+  <string name="delete_label_message">Tega dejanja ni mogoče razveljaviti. Sporočila, označena s to oznako, ne bodo izbrisana in jih je mogoče najti v mapi \"Vsa pošta\".</string>
+  <string name="delete_folder_message">Tega dejanja ni mogoče razveljaviti. Sporočila, shranjena v tej mapi, ne bodo izbrisana in jih je mogoče najti v mapi \"Vsa pošta\".</string>
 </resources>

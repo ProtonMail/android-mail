@@ -44,9 +44,9 @@
   <string name="error_move_to_trash_failed">ごみ箱への移動に失敗しました。再試行してください。</string>
   <string name="message_moved_to_trash">メッセージをごみ箱に移動しました</string>
   <string name="message_moved_to_archive">メッセージをアーカイブに移動しました</string>
-  <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>
-  <string name="message_moved_to_spam">Message moved to Spam</string>
-  <string name="error_move_to_spam_failed">Move to spam failed. Please retry.</string>
+  <string name="error_move_to_archive_failed">アーカイブへの移動に失敗しました。再度お試しください。</string>
+  <string name="message_moved_to_spam">メッセージはスパムに移動されました</string>
+  <string name="error_move_to_spam_failed">スパムへの移動に失敗しました。再度お試しください。</string>
   <string name="message_moved_to_selected_destination">メッセージが %1$s に移動されました</string>
   <string name="error_move_message_failed">メッセージの移動に失敗しました。再試行してください。</string>
   <string name="conversation_moved_to_trash">会話をごみ箱に移動しました</string>
@@ -72,7 +72,7 @@
   <string name="message_phishing_banner_text">このメッセージはフィッシングの可能性があります。ご注意ください。</string>
   <string name="message_expiration_banner_text">このメッセージは %1$s後に失効します</string>
   <!-- External link confirmation dialog -->
-  <string name="external_link_confirmation_dialog_text">You are about to leave the app and navigate to:</string>
+  <string name="external_link_confirmation_dialog_text">アプリを終了して次のページに移動しようとしています：</string>
   <string name="external_link_confirmation_dialog_do_not_ask_again">今後表示しない</string>
   <string name="external_link_confirmation_dialog_cancel_button">キャンセル</string>
   <string name="external_link_confirmation_dialog_continue_button">続行</string>
@@ -85,13 +85,13 @@
   <string name="message_delete_dialog_title">メッセージを削除する</string>
   <string name="message_delete_dialog_message">このメッセージを完全に削除してよろしいですか？</string>
   <string name="message_deleted">メッセージが削除されました</string>
-  <string name="message_moved">Message moved</string>
+  <string name="message_moved">メッセージは移動しました</string>
   <string name="error_delete_message_failed">メッセージの削除に失敗しました</string>
   <string name="error_delete_message_failed_wrong_folder">メッセージは削除できる場所にありません</string>
   <string name="error_delete_conversation_failed">会話の削除に失敗しました</string>
-  <string name="error_delete_conversation_failed_wrong_folder">Conversation is not in a location where it can be deleted</string>
+  <string name="error_delete_conversation_failed_wrong_folder">会話は削除できる場所にありません。</string>
   <string name="conversation_delete_dialog_title">会話を削除</string>
-  <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
+  <string name="conversation_delete_dialog_message">本当にこの会話を完全に削除しますか？</string>
   <string name="conversation_deleted">会話が削除されました</string>
   <string name="message_body_load_remote_content_button_text">外部コンテンツの読み込み</string>
   <string name="message_body_load_embedded_images_button_text">埋め込み画像を読み込む</string>
@@ -105,9 +105,9 @@
   <string name="message_report_phishing_dialog_cancel_button">キャンセル</string>
   <string name="open_on_protoncalendar_banner_title">Proton Calendar で開く</string>
   <string name="open_on_protoncalendar_banner_description">安全で暗号化されたカレンダー</string>
-  <string name="error_print_failed">Failed to print message</string>
-  <string name="trashed_messages_banner">This conversation contains trashed messages.</string>
-  <string name="non_trashed_messages_banner">This conversation contains non-trashed messages.</string>
+  <string name="error_print_failed">メッセージの印刷に失敗しました</string>
+  <string name="trashed_messages_banner">この会話にはゴミ箱にあるメッセージが含まれています</string>
+  <string name="non_trashed_messages_banner">この会話には削除されていないメッセージが含まれています。</string>
   <string name="show">表示</string>
   <string name="hide">非表示</string>
 </resources>

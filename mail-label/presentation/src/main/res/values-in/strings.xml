@@ -55,8 +55,8 @@
   <string name="save_label_error">Terjadi kesalahan menyimpan label, silakan coba lagi nanti</string>
   <string name="save_folder_error">Terdapat kesalahan dalam menyimpan folder. Silakan coba lagi nanti</string>
   <string name="label_already_exists">Label atau folder dengan nama ini sudah ada</string>
-  <string name="label_limit_reached_error">Batas jumlah label tercapai</string>
-  <string name="folder_limit_reached_error">Batas jumlah folder tercapai</string>
+  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
+  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
   <string name="delete_label_error">Terdapar kesalahan dalam menghapus label</string>
   <string name="input_field_clear_content_description">Hapus teks</string>
   <string name="label_list_item_content_description">Item daftar label</string>
@@ -70,7 +70,7 @@
   <string name="folder_settings_folder_colors">Gunakan warna folder</string>
   <string name="folder_settings_parent_color">Ikuti warna folder induk</string>
   <string name="folder_list_loading_error">Terdapat kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
-  <string name="folder_loading_error">Terjadi kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
+  <string name="folder_loading_error">Terdapat kesalahan dalam memuat folder. Silakan coba lagi nanti</string>
   <string name="switch_on">Aktif</string>
   <string name="switch_off">Nonaktif</string>
   <string name="folder_form_parent">Folder induk</string>

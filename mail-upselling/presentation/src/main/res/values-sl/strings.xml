@@ -72,21 +72,21 @@
   <string name="upselling_onboarding_unlimited_feature_drive">Šifrirana shramba v oblaku za fotografije in dokumente</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Napredna zaščita računa</string>
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Storage</string>
+  <string name="upselling_comparison_table_storage">Shramba</string>
   <string name="upselling_comparison_table_email_addresses">Email addresses</string>
   <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
   <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
-  <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
-  <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Neomejeno število map in oznak</string>
+  <string name="upselling_comparison_table_priority_support">Prednostna podpora strankam</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Select your plan</string>
-  <string name="upselling_select_plan_year">1 year</string>
-  <string name="upselling_select_plan_month">1 month</string>
+  <string name="upselling_select_plan">Izberite si paket</string>
+  <string name="upselling_select_plan_year">1 leto</string>
+  <string name="upselling_select_plan_month">1 mesec</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
   <string name="upselling_discount_tag">PRIHRANITE %s%%</string>
   <string name="upselling_month">/mesec</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/leto</string>
   <string name="upselling_get_button">Pridobi %s</string>
   <plurals name="upselling_month">
     <item quantity="one">%d mesec</item>
@@ -108,16 +108,29 @@
   <string name="upselling_onboarding_switcher_annual">Letno</string>
   <string name="upselling_onboarding_best_value">Najboljša vrednost</string>
   <string name="upselling_onboarding_month">/mesec</string>
-  <string name="upselling_onboarding_year">/year</string>
+  <string name="upselling_onboarding_year">/leto</string>
   <plurals name="upselling_onboarding_more_features">
     <item quantity="one">%d več funkcij</item>
     <item quantity="two">%d več funkcij</item>
     <item quantity="few">%d več funkcij</item>
     <item quantity="other">%d več funkcij</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">Zaračunano %s %s mesečno</string>
+  <string name="upselling_onboarding_billing_annual">Zaračunano %s %s vsakih 12 mesecev</string>
   <string name="upselling_onboarding_get_plan">Pridobite %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Nadaljujte s Proton Free</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_save_label">Prihranite %s %%</string>
+  <!-- Post subscription -->
+  <string name="post_subscription_close_button_content_description">Close</string>
+  <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
+  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
+  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
+  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
+  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
 </resources>
