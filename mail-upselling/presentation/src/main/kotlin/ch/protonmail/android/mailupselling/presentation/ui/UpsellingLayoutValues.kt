@@ -49,14 +49,15 @@ internal object UpsellingLayoutValues {
     val autoRenewText = Color.White
     val autoRenewTextSize = 12.sp
 
+    const val topSpacingWeight = 0.3f
+    const val bottomSpacingWeight = 0.4f
+
     object ComparisonTable {
 
         val highlightBarColor = Color.White.copy(alpha = 0.08f)
         val highlightBarShape = RoundedCornerShape(8.dp)
         val spacerHeight = 1.dp
         val spacerBackgroundColor = Color.White.copy(alpha = 0.12f)
-
-        const val columnWeight = 0.3f
 
         val plusBadgeGradient = Brush.linearGradient(
             listOf(Color(0xFFD8AAFF), Color(0xFF6D4AFF))

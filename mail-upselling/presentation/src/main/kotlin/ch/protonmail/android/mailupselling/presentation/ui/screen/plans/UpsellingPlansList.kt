@@ -41,7 +41,7 @@ internal fun UpsellingPlansList(
     actions: UpsellingScreen.Actions
 ) {
     Column {
-        UpsellingAutoRenewPolicyText(modifier = Modifier.padding(vertical = ProtonDimens.DefaultSpacing))
+        UpsellingAutoRenewPolicyText(modifier = Modifier.padding(ProtonDimens.DefaultSpacing))
 
         FlowRow(
             modifier = modifier,

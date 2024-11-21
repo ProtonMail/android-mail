@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,24 +37,28 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.comparisontable.ComparisonTable
-import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
 import ch.protonmail.android.mailupselling.presentation.ui.screen.entitlements.simplelist.UpsellingEntitlementsListLayout
+import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingPlanButtonsFooter
 import ch.protonmail.android.uicomponents.chips.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -75,13 +78,15 @@ internal fun UpsellingScreenContent(
     val dynamicPlansModel = state.plans
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .thenIf(isStandalone) { Modifier.fillMaxHeight() }
-            .background(UpsellingLayoutValues.backgroundGradient)
-    ) {
+    val shouldShowImage by remember {
+        derivedStateOf { scrollState.value == 0 }
+    }
+
+    if (shouldShowImage) {
         IconButton(
+            modifier = Modifier
+                .padding(ProtonDimens.ExtraSmallSpacing)
+                .zIndex(1f),
             onClick = actions.onDismiss
         ) {
             Box(
@@ -100,68 +105,67 @@ internal fun UpsellingScreenContent(
                 )
             }
         }
+    }
 
-        Column(
-            modifier = Modifier
-                .thenIf(isStandalone) { Modifier.fillMaxHeight() }
-                .verticalScroll(scrollState),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (!isNarrowScreen) {
-                Image(
-                    modifier = Modifier.padding(
-                        start = ProtonDimens.DefaultSpacing,
-                        end = ProtonDimens.DefaultSpacing
-                    ),
-                    painter = painterResource(id = dynamicPlansModel.icon.iconResId),
-                    contentDescription = NO_CONTENT_DESCRIPTION
-                )
-            }
+    Column(
+        modifier = modifier
+            .thenIf(isStandalone) { Modifier.fillMaxHeight() }
+            .verticalScroll(scrollState)
+            .background(UpsellingLayoutValues.backgroundGradient),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-            Text(
+        Spacer(modifier = Modifier.weight(UpsellingLayoutValues.topSpacingWeight))
+
+        if (!isNarrowScreen) {
+            Image(
                 modifier = Modifier
                     .padding(horizontal = ProtonDimens.DefaultSpacing)
                     .padding(top = ProtonDimens.DefaultSpacing),
-                text = dynamicPlansModel.title.text.string(),
-                style = if (isNarrowScreen) {
-                    ProtonTheme.typography.headlineSmallNorm
-                } else ProtonTheme.typography.headlineNorm,
-                color = UpsellingLayoutValues.titleColor,
-                textAlign = TextAlign.Center
+                painter = painterResource(id = dynamicPlansModel.icon.iconResId),
+                contentDescription = NO_CONTENT_DESCRIPTION
             )
+        }
 
-            Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
+        Text(
+            modifier = Modifier
+                .padding(horizontal = ProtonDimens.DefaultSpacing)
+                .padding(top = ProtonDimens.DefaultSpacing),
+            text = dynamicPlansModel.title.text.string(),
+            style = if (isNarrowScreen) {
+                ProtonTheme.typography.headlineSmallNorm
+            } else ProtonTheme.typography.headlineNorm,
+            color = UpsellingLayoutValues.titleColor,
+            textAlign = TextAlign.Center
+        )
 
-            Text(
-                modifier = Modifier
-                    .padding(horizontal = ProtonDimens.DefaultSpacing)
-                    .padding(top = ProtonDimens.SmallSpacing),
-                text = dynamicPlansModel.description.text.string(),
-                style = ProtonTheme.typography.body2Regular,
-                color = UpsellingLayoutValues.subtitleColor,
-                textAlign = TextAlign.Center
+        Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
+
+        Text(
+            modifier = Modifier
+                .padding(horizontal = ProtonDimens.DefaultSpacing)
+                .padding(top = ProtonDimens.SmallSpacing),
+            text = dynamicPlansModel.description.text.string(),
+            style = ProtonTheme.typography.body2Regular,
+            color = UpsellingLayoutValues.subtitleColor,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+
+        when (state.plans.entitlements) {
+            is PlanEntitlementsUiModel.ComparisonTableList -> ComparisonTable(state.plans.entitlements)
+            is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
+        }
+
+        Spacer(modifier = Modifier.weight(UpsellingLayoutValues.bottomSpacingWeight))
+
+        if (dynamicPlansModel.list is DynamicPlanInstanceListUiModel.Data) {
+            UpsellingPlanButtonsFooter(
+                modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
+                dynamicPlansModel.list,
+                actions
             )
-
-            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
-
-            when (state.plans.entitlements) {
-                is PlanEntitlementsUiModel.ComparisonTableList -> ComparisonTable(state.plans.entitlements)
-                is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
-            }
-
-            if (isStandalone) {
-                Spacer(modifier = Modifier.weight(1f))
-            } else {
-                Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
-            }
-
-            if (dynamicPlansModel.list is DynamicPlanInstanceListUiModel.Data) {
-                UpsellingPlanButtonsFooter(
-                    modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-                    dynamicPlansModel.list,
-                    actions
-                )
-            }
         }
     }
 

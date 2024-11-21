@@ -46,18 +46,19 @@ import me.proton.core.compose.theme.ProtonTheme3
 @Composable
 internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.ComparisonTableList) {
     var highlightHeight by remember { mutableStateOf(0.dp) }
-    var highlightWidth by remember { mutableStateOf(0.dp) }
+    var plusCellHeaderWidth by remember { mutableStateOf(0.dp) }
     val localDensity = LocalDensity.current
 
     Box {
         Box(
             modifier = Modifier
+                .padding(top = ProtonDimens.ExtraSmallSpacing)
                 .padding(end = ProtonDimens.DefaultSpacing)
                 .background(
                     color = UpsellingLayoutValues.ComparisonTable.highlightBarColor,
                     shape = UpsellingLayoutValues.ComparisonTable.highlightBarShape
                 )
-                .width(highlightWidth)
+                .width(plusCellHeaderWidth)
                 .height(highlightHeight)
                 .align(Alignment.BottomEnd)
         )
@@ -71,10 +72,10 @@ internal fun ComparisonTable(entitlementsUiModel: PlanEntitlementsUiModel.Compar
                 }
         ) {
 
-            ComparisonTableHeaderRow(onPaidColumnPlaced = { highlightWidth = it })
+            ComparisonTableHeaderRow(onPaidColumnPlaced = { plusCellHeaderWidth = it })
 
             entitlementsUiModel.items.forEachIndexed { index, item ->
-                ComparisonTableEntitlement(item)
+                ComparisonTableEntitlement(item, plusCellWidth = plusCellHeaderWidth)
 
                 if (index < entitlementsUiModel.items.size - 1) {
                     Spacer(

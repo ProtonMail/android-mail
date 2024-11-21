@@ -33,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
@@ -44,11 +46,11 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
 
 @Composable
-internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemUiModel) {
+internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemUiModel, plusCellWidth: Dp) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = ProtonDimens.SmallSpacing)
+            .padding(vertical = ProtonDimens.ExtraSmallSpacing)
     ) {
         Text(
             modifier = Modifier
@@ -69,7 +71,7 @@ internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemU
 
         Text(
             modifier = Modifier
-                .weight(UpsellingLayoutValues.ComparisonTable.columnWeight)
+                .width(plusCellWidth)
                 .align(Alignment.CenterVertically),
             text = freeText,
             style = ProtonTheme.typography.body1Medium,
@@ -84,7 +86,7 @@ internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemU
             ComparisonTableEntitlement.Plus.Present -> {
                 Icon(
                     modifier = Modifier
-                        .weight(UpsellingLayoutValues.ComparisonTable.columnWeight)
+                        .width(plusCellWidth)
                         .align(Alignment.CenterVertically),
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_proton_checkmark_circle_filled),
                     tint = UpsellingLayoutValues.ComparisonTable.iconColor,
@@ -95,7 +97,7 @@ internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemU
             is ComparisonTableEntitlement.Plus.Value -> {
                 Text(
                     modifier = Modifier
-                        .weight(UpsellingLayoutValues.ComparisonTable.columnWeight)
+                        .width(plusCellWidth)
                         .align(Alignment.CenterVertically),
                     text = paidValue.text.string(),
                     style = ProtonTheme.typography.body1Medium,
@@ -112,6 +114,6 @@ internal fun ComparisonTableEntitlement(uiModel: ComparisonTableEntitlementItemU
 @Composable
 private fun ComparisonTableEntitlementPreview() {
     ProtonTheme3 {
-        ComparisonTableEntitlement(ComparisonTableElementPreviewData.Entitlements.last())
+        ComparisonTableEntitlement(ComparisonTableElementPreviewData.Entitlements.last(), plusCellWidth = 30.dp)
     }
 }

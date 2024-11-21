@@ -47,13 +47,13 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
-import ch.protonmail.android.mailupselling.presentation.ui.screen.plans.UpsellingPlansList
 import ch.protonmail.android.mailupselling.presentation.ui.screen.LocalEntryPointIsStandalone
 import ch.protonmail.android.mailupselling.presentation.ui.screen.LocalPaymentButtonsHorizontalEnabled
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.cyclebuttons.CycleOptions
+import ch.protonmail.android.mailupselling.presentation.ui.screen.plans.UpsellingPlansList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTheme3
@@ -65,7 +65,9 @@ internal fun UpsellingPlanButtonsFooter(
     plans: DynamicPlanInstanceListUiModel.Data,
     actions: UpsellingScreen.Actions
 ) {
-    Column(modifier.background(UpsellingLayoutValues.UpsellingPlanButtonsFooter.backgroundColor)) {
+    Column(
+        modifier.background(UpsellingLayoutValues.UpsellingPlanButtonsFooter.backgroundColor)
+    ) {
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
@@ -114,7 +116,9 @@ private fun PaymentButtonsHorizontalLayout(
             )
         }
 
-        UpsellingAutoRenewPolicyText(modifier = Modifier.padding(vertical = ProtonDimens.DefaultSpacing))
+        Spacer(modifier = Modifier.weight(1f))
+
+        UpsellingAutoRenewPolicyText(modifier = Modifier.padding(ProtonDimens.DefaultSpacing))
 
         val userId = plans.longerCycle.userId.value
         val eventListener = UpsellingPaymentEventListener(
