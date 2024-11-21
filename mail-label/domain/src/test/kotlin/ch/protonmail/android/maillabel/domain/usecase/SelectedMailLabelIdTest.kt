@@ -20,7 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
-import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import io.mockk.every
@@ -30,21 +30,21 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
-import me.proton.core.user.domain.entity.User
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class SelectedMailLabelIdTest {
 
     private val appScope = TestScope()
-    private val observePrimaryUser: ObservePrimaryUser = mockk {
+    private val observePrimaryUserId: ObservePrimaryUserId = mockk {
         every { this@mockk() } returns emptyFlow()
     }
     private val selectedMailLabelId by lazy {
         SelectedMailLabelId(
             appScope = appScope,
-            observePrimaryUser = observePrimaryUser
+            observePrimaryUserId = observePrimaryUserId
         )
     }
 
@@ -83,8 +83,8 @@ class SelectedMailLabelIdTest {
     @Test
     fun `emits inbox when primary user changes`() = runTest {
         // given
-        val userFlow = MutableStateFlow<User?>(null)
-        every { observePrimaryUser() } returns userFlow
+        val userFlow = MutableStateFlow<UserId?>(null)
+        every { observePrimaryUserId() } returns userFlow
 
         selectedMailLabelId.flow.test {
             assertEquals(MailLabelId.System.Inbox, awaitItem())
@@ -92,7 +92,7 @@ class SelectedMailLabelIdTest {
             assertEquals(MailLabelId.System.Archive, awaitItem())
 
             // when
-            userFlow.emit(UserSample.Primary)
+            userFlow.emit(UserSample.Primary.userId)
             appScope.advanceUntilIdle()
 
             // then
