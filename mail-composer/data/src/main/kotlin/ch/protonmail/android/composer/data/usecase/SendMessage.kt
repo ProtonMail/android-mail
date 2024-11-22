@@ -27,11 +27,11 @@ import ch.protonmail.android.composer.data.remote.resource.SendMessageBody
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentSendingError
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
-import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailcomposer.domain.usecase.FindLocalDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveMessagePassword
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailSettings
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -103,7 +103,7 @@ class SendMessage @Inject constructor(
             modulus = modulus
         )
             .mapLeft {
-                Timber.e("Error generating packages: $it")
+                Timber.tag("SendMessage").e("Error generating packages: $it")
                 Error.GeneratingPackages
             }
             .bind()
@@ -121,9 +121,9 @@ class SendMessage @Inject constructor(
         ).mapLeft { Error.SendingToApi(it) }
 
         response.onLeft {
-            Timber.e("API error sending message ID: $messageId", it)
+            Timber.tag("SendMessage").e("API error sending - error: %s - messageId: %s", it, messageId)
         }.onRight {
-            Timber.d("Success sending message ID: $messageId")
+            Timber.tag("SendMessage").d("Success sending message ID: $messageId")
         }.bind()
     }
 
@@ -135,7 +135,9 @@ class SendMessage @Inject constructor(
         val sendPreferencesResults = runCatching {
             obtainSendPreferences(userId, emails)
         }.getOrElse {
-            Timber.e("Unexpected exception ${it.message} while obtaining send preferences for $userId")
+            Timber.tag("SendMessage").e(
+                "Unexpected exception ${it.message} while obtaining send preferences for $userId"
+            )
             return Error.SendPreferences(emptyMap()).left()
         }
 

@@ -51,7 +51,7 @@ internal class DecryptNotificationContent @Inject constructor(
     private fun KeyHolderContext.tryDecrypt(notification: String, userId: UserId): DecryptedNotification? = try {
         decryptText(notification).run { DecryptedNotification(this.deserialize<PushNotification>()) }
     } catch (e: CryptoException) {
-        Timber.e("Failed to decrypt notification for user id: ${userId.id}.")
+        Timber.e("Failed to decrypt notification for user id: %s - %s", e, userId.id)
         null
     }
 

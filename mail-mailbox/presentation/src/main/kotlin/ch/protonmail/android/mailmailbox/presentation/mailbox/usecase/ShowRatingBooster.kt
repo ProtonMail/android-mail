@@ -32,7 +32,7 @@ class ShowRatingBooster @Inject constructor(
             if (it.isSuccessful) {
                 reviewManager.launchReviewFlow(activity, it.result)
             } else {
-                Timber.e("Showing the rating booster was unsuccessful", it.exception)
+                Timber.d("Showing the rating booster was unsuccessful", it.exception)
             }
         }
     }

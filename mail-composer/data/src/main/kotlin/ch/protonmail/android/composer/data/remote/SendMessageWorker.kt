@@ -24,10 +24,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import ch.protonmail.android.composer.data.usecase.SendMessage
 import ch.protonmail.android.mailcommon.domain.util.requireNotBlank
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import me.proton.core.domain.entity.UserId
@@ -48,7 +48,10 @@ internal class SendMessageWorker @AssistedInject constructor(
 
         return sendMessage(userId, messageId).fold(
             ifLeft = {
-                Timber.e("error sending $it")
+                Timber
+                    .tag("SendMessageWorker")
+                    .e("API error sending message - error: %s - messageId: %s", it, messageId)
+
                 updateDraftStateForError(userId, messageId, DraftSyncState.ErrorSending, it.toSendingError())
                 Result.failure()
             },

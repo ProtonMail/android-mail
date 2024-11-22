@@ -1259,7 +1259,7 @@ class MailboxViewModel @Inject constructor(
         try {
             showRatingBooster(operation.context as Activity)
         } catch (exception: ClassCastException) {
-            Timber.e("Showing the rating booster was unsuccessful", exception)
+            Timber.d("Showing the rating booster was unsuccessful", exception)
         }
     }
 

@@ -28,8 +28,7 @@ suspend fun <T> BaseDao<T>.upsertOrError(vararg entities: T): Either<DaoError.Up
     runCatching {
         insertOrUpdate(*entities)
     }.onFailure {
-        // Leave this logging here for now, we temporarily log this to Sentry at least for the next release.
-        Timber.w("Error when performing upsertOrError - ${it::class.java} - ${it.message}")
+        Timber.d("Error when performing upsertOrError - ${it::class.java} - ${it.message}")
 
         raise(DaoError.UpsertError(it))
     }

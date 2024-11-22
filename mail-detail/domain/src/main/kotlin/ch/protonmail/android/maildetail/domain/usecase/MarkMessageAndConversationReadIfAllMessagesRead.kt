@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
 import ch.protonmail.android.mailconversation.domain.usecase.MarkConversationsAsRead
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError
-import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.ConversationHasUnreadMessages
 import ch.protonmail.android.maildetail.domain.model.MarkConversationReadError.DataSourceError
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -89,7 +88,7 @@ class MarkMessageAndConversationReadIfAllMessagesRead @Inject constructor(
                                         ifRight = { Unit.right() }
                                     )
                             } else {
-                                ConversationHasUnreadMessages.left()
+                                Unit.right()
                             }
                         }
                 }

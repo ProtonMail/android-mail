@@ -44,6 +44,11 @@ class LoggingTestRule(
         assertEquals(expectedLog, errorLogs.lastOrNull())
     }
 
+    fun assertDebugLogged(message: String) {
+        val expectedLog = TestTree.Log(Log.DEBUG, null, message, null)
+        val debugLogs = testTree.logs.filter { it.priority == Log.DEBUG }
+        assertEquals(expectedLog, debugLogs.lastOrNull())
+    }
     fun assertWarningLogged(message: String) {
         val expectedLog = TestTree.Log(Log.WARN, null, message, null)
         val warningLogs = testTree.logs.filter { it.priority == Log.WARN }
