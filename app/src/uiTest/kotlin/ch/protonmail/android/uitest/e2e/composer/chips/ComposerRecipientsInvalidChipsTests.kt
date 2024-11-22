@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.uitest.e2e.composer.chips
 
+import androidx.test.filters.SdkSuppress
 import ch.protonmail.android.di.ServerProofModule
 import ch.protonmail.android.networkmocks.mockwebserver.combineWith
 import ch.protonmail.android.test.annotations.suite.RegressionTest
@@ -45,6 +46,7 @@ import org.junit.Test
 
 @RegressionTest
 @HiltAndroidTest
+@SdkSuppress(maxSdkVersion = 33) // To be lifted after MAILANDR-1656 + MAILANDR-1843
 @UninstallModules(ServerProofModule::class)
 internal class ComposerRecipientsInvalidChipsTests : MockedNetworkTest(), ComposerChipsTests {
 
