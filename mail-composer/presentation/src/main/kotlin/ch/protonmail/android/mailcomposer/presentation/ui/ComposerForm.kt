@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.presentation.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +41,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionUi
 import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsField
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.uicomponents.keyboardVisibilityAsState
+import me.proton.core.compose.theme.ProtonDimens
 import timber.log.Timber
 
 @Composable
@@ -117,6 +119,7 @@ internal fun ComposerForm(
                     initialValue = fields.subject,
                     onSubjectChange = actions.onSubjectChanged,
                     modifier = maxWidthModifier
+                        .padding(ProtonDimens.DefaultSpacing)
                         .testTag(ComposerTestTags.Subject)
                         .retainFieldFocusOnConfigurationChange(FocusedFieldType.SUBJECT)
                 )

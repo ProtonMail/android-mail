@@ -18,24 +18,28 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.TextFieldValue
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.uicomponents.text.defaultTextFieldColors
+import kotlinx.coroutines.flow.collectLatest
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
@@ -45,39 +49,47 @@ internal fun SubjectTextField(
     onSubjectChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var text by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue(initialValue))
+    val textFieldState = rememberTextFieldState(initialValue)
+
+    val keyboardOptions = remember {
+        KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next)
     }
 
     var userUpdated by rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(key1 = initialValue) {
-        if (!userUpdated) {
-            text = TextFieldValue(initialValue)
-        }
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { textFieldState.text }
+            .collectLatest {
+                if (it.toString() != initialValue) userUpdated = true
+
+                // This skips the onSubjectChange call when the SubjectTextField enters the composition
+                // without the user making any change to prevent an invalid draft creation.
+                if (userUpdated) onSubjectChange(it.toString())
+            }
     }
 
-    TextField(
-        value = text,
-        onValueChange = {
-            text = it
-            onSubjectChange(it.text)
-            userUpdated = true
-        },
+    BasicTextField(
         modifier = modifier,
+        state = textFieldState,
         textStyle = ProtonTheme.typography.defaultNorm,
-        colors = TextFieldDefaults.defaultTextFieldColors(),
-        maxLines = 3,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            capitalization = KeyboardCapitalization.Sentences,
-            imeAction = ImeAction.Next
-        ),
-        placeholder = {
-            Text(
-                modifier = Modifier.testTag(ComposerTestTags.SubjectPlaceholder),
-                text = stringResource(R.string.subject_placeholder),
-                color = ProtonTheme.colors.textHint,
-                style = ProtonTheme.typography.defaultNorm
-            )
+        cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
+        lineLimits = TextFieldLineLimits.SingleLine,
+        keyboardOptions = keyboardOptions,
+        decorator = @Composable { innerTextField ->
+            if (textFieldState.text.isEmpty()) {
+                PlaceholderText()
+            }
+            innerTextField()
         }
+    )
+}
+
+@Composable
+private fun PlaceholderText() {
+    Text(
+        modifier = Modifier.testTag(ComposerTestTags.SubjectPlaceholder),
+        text = stringResource(R.string.subject_placeholder),
+        color = ProtonTheme.colors.textHint,
+        style = ProtonTheme.typography.defaultNorm
     )
 }
