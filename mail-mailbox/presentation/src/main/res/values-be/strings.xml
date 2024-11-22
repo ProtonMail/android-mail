@@ -55,9 +55,9 @@
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Выдаліць размову</item>
-    <item quantity="few">Выдалены %d размовы</item>
-    <item quantity="many">Выдалены %d размоў</item>
-    <item quantity="other">Выдалены %d размоў</item>
+    <item quantity="few">Выдаліць %d размовы</item>
+    <item quantity="many">Выдаліць %d размоў</item>
+    <item quantity="other">Выдаліць %d размоў</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_title">
     <item quantity="one">Выдаліць паведамленне</item>
@@ -89,7 +89,7 @@
     <item quantity="many">%d размоў незваротна выдалены</item>
     <item quantity="other">%d размоў незваротна выдалены</item>
   </plurals>
-  <string name="mailbox_action_label_messages_failed">Збой аперацыі з меткаю</string>
+  <string name="mailbox_action_label_messages_failed">Збой аперацыі з меткай</string>
   <string name="mailbox_action_label_messages_failed_retrieving_labels">Не ўдалося атрымаць меткі</string>
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>

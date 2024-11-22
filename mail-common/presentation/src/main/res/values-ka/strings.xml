@@ -83,7 +83,7 @@
   <string name="common_error_loading_actions">ქმედებების ჩატვირთვის შეცდომა</string>
   <string name="yesterday">გუშინ</string>
   <string name="auto_delete_banner_text_activate_trash">ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_activate_spam">სპამის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.</string>
   <string name="auto_delete_banner_text_upgrade">ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.</string>
   <string name="auto_delete_banner_text_enabled_info">ნაგვის ყუთში 30 დღეზე მეტ ხანს მყოფი შეტყობინებები და სპამი ავტომატურად წაიშლება.</string>
   <string name="auto_delete_banner_button_activate_confirm">ჩართვა</string>

@@ -74,7 +74,7 @@
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">容量</string>
   <string name="upselling_comparison_table_email_addresses">メールアドレス</string>
-  <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
+  <string name="upselling_comparison_table_custom_email_domain">独自メールドメイン</string>
   <string name="upselling_comparison_table_desktop_app">デスクトップアプリへアクセス</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">無制限のフォルダとラベル</string>
   <string name="upselling_comparison_table_priority_support">優先的なカスタマーサポート</string>

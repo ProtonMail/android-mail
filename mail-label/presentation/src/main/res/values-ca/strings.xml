@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Tots els esborranys</string>
   <string name="label_title_all_sent">Tots els enviats</string>
   <string name="label_title_all_scheduled">Totes les programacions</string>
-  <string name="label_title_snoozed">Posposats</string>
+  <string name="label_title_snoozed">En pausa</string>
   <string name="label_title_folders">Carpetes</string>
   <string name="label_title_parent_folder">Carpeta principal</string>
   <string name="label_title_labels">Etiquetes</string>
@@ -55,8 +55,8 @@
   <string name="save_label_error">S\'ha produït un error en desar l\'etiqueta. Proveu de nou més tard.</string>
   <string name="save_folder_error">S\'ha produït un error en desar la carpeta. Torneu a provar més tard.</string>
   <string name="label_already_exists">Ja existeix una etiqueta o una carpeta amb aquest nom.</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Necessiteu una subscripció de Proton Mail de pagament per a crear més etiquetes.</string>
+  <string name="folder_limit_reached_error">Necessiteu una subscripció de Proton Mail de pagament per a crear més carpetes.</string>
   <string name="delete_label_error">S\'ha produït un error en eliminar l\'etiqueta.</string>
   <string name="input_field_clear_content_description">Esborra el text</string>
   <string name="label_list_item_content_description">Element de la llista d\'etiquetes</string>

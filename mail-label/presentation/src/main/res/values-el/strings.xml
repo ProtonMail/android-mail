@@ -74,13 +74,13 @@
   <string name="switch_on">Ενεργό</string>
   <string name="switch_off">Ανενεργό</string>
   <string name="folder_form_parent">Γονικός φάκελος</string>
-  <string name="folder_form_no_parent">Κανένα</string>
+  <string name="folder_form_no_parent">Κανένας</string>
   <string name="folder_form_notifications">Ειδοποιήσεις</string>
   <string name="folder_saved">Ο φάκελος αποθηκεύτηκε</string>
   <string name="folder_deleted">Ο φάκελος διεγράφη</string>
-  <string name="parent_folder_none">Κανένα</string>
+  <string name="parent_folder_none">Κανένας</string>
   <string name="delete_label">Διαγραφή ετικέτας;</string>
   <string name="delete_folder">Διαγραφή φακέλου;</string>
-  <string name="delete_label_message">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Τα μηνύματα ηλεκτρονικού ταχυδρομείου με αυτήν την ετικέτα δε θα διαγραφούν και μπορούν να βρεθούν στο φάκελο \"Όλα τα μηνύματα\".</string>
-  <string name="delete_folder_message">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Τα μηνύματα ηλεκτρονικού ταχυδρομείου που περιέχονται σε αυτόν τον φάκελο δε θα διαγραφούν και μπορούν να βρεθούν στο φάκελο \"Όλα τα μηνύματα\".</string>
+  <string name="delete_label_message">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Τα μηνύματα ηλεκτρονικού ταχυδρομείου με αυτήν την ετικέτα δεν θα διαγραφούν και μπορείτε να τα βρείτε στον φάκελο \"Όλα τα μηνύματα\".</string>
+  <string name="delete_folder_message">Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Τα μηνύματα ηλεκτρονικού ταχυδρομείου που περιέχονται σε αυτόν τον φάκελο δεν θα διαγραφούν και μπορείτε να τα βρείτε στον φάκελο \"Όλα τα μηνύματα\".</string>
 </resources>
