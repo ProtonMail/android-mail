@@ -91,8 +91,12 @@ fun FolderListScreen(actions: FolderListScreen.Actions, viewModel: FolderListVie
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(FolderListViewAction.OnDismissSettings) } }
+    DisposableEffect(Unit) {
+        onDispose {
+            if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+                viewModel.submit(FolderListViewAction.OnDismissSettings)
+            }
+        }
     }
 
     BackHandler(bottomSheetState.isVisible) {

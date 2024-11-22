@@ -113,9 +113,11 @@ fun AccountSettingScreen(
         skipHalfExpanded = true
     )
 
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) {
-            onDispose { accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling) }
+    DisposableEffect(Unit) {
+        onDispose {
+            if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+                accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling)
+            }
         }
     }
 

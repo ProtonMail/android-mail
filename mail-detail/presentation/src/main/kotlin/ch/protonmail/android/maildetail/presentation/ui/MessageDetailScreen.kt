@@ -136,8 +136,12 @@ fun MessageDetailScreen(
         }
     }
 
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(MessageViewAction.DismissBottomSheet) } }
+    DisposableEffect(Unit) {
+        onDispose {
+            if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+                viewModel.submit(MessageViewAction.DismissBottomSheet)
+            }
+        }
     }
 
     BackHandler(bottomSheetState.isVisible) {

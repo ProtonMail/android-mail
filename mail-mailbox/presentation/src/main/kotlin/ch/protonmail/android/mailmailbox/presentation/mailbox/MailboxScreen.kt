@@ -250,8 +250,12 @@ fun MailboxScreen(
         }
     }
 
-    if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
-        DisposableEffect(Unit) { onDispose { viewModel.submit(MailboxViewAction.DismissBottomSheet) } }
+    DisposableEffect(Unit) {
+        onDispose {
+            if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+                viewModel.submit(MailboxViewAction.DismissBottomSheet)
+            }
+        }
     }
 
     StorageLimitDialogs(
