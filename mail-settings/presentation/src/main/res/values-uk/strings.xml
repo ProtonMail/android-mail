@@ -61,17 +61,17 @@
   <string name="mail_settings_labels">Мітки</string>
   <string name="mail_settings_folders">Теки</string>
   <string name="mail_settings_conversation_mode">Режим розмов</string>
-  <string name="mail_settings_auto_delete">Auto-delete</string>
+  <string name="mail_settings_auto_delete">Автовидалення</string>
   <string name="mail_settings_auto_delete_full_text">Auto-delete unwanted messages</string>
   <string name="mail_settings_auto_delete_hint">Messages in trash or spam longer than 30 days will be automatically deleted.</string>
   <string name="mail_settings_auto_delete_subscription_needed">You need a paid Proton Mail subscription to use this feature</string>
-  <string name="mail_settings_auto_delete_dialog_button_cancel">Cancel</string>
+  <string name="mail_settings_auto_delete_dialog_button_cancel">Скасувати</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Delete messages?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Enable</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Увімкнути</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Disable auto-delete?</string>
   <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Disable</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Вимкнути</string>
   <string name="mail_settings_not_set">Не встановлено</string>
   <string name="mail_settings_conversation_mode_hint">Групуйте електронні листи в одній розмові або переглядайте їх окремо</string>
   <!-- Default email address settings -->

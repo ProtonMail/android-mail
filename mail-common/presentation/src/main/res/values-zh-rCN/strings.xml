@@ -21,9 +21,9 @@
   <string name="expiration_days_arg">%d 天</string>
   <string name="expiration_hours_arg">%d 小时</string>
   <string name="expiration_minutes_arg">%d 分钟</string>
-  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
-  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+  <string name="expiration_auto_delete_hour">此消息将在一小时内自动删除</string>
+  <string name="expiration_auto_delete_day">此消息将在一天内自动删除</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">此消息将于 %s 内自动删除</string>
   <string name="retry">重试</string>
   <string name="toolbar_back_content_description">返回前一界面</string>
   <string name="x_error_not_logged_in">未登录</string>

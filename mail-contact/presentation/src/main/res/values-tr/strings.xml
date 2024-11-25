@@ -80,7 +80,7 @@
   <string name="other_section">Ek bilgiler</string>
   <string name="display_name">Görüntülenecek ad</string>
   <string name="first_name">Ad</string>
-  <string name="last_name">Soyad</string>
+  <string name="last_name">Soyadı</string>
   <string name="email_address">E-posta adresi</string>
   <string name="phone_number">Telefon numarası</string>
   <string name="additional_info">Ek bilgiler</string>

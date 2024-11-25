@@ -96,7 +96,7 @@
   <string name="error_delete_message_failed_wrong_folder">Повідомлення знаходиться не в тому місці, де його можна видалити</string>
   <string name="error_delete_conversation_failed">Не вдалося видалити розмову</string>
   <string name="error_delete_conversation_failed_wrong_folder">Розмова знаходиться в тому місці, де її можна видалити</string>
-  <string name="conversation_delete_dialog_title">Delete conversation</string>
+  <string name="conversation_delete_dialog_title">Видалити розмову</string>
   <string name="conversation_delete_dialog_message">Are you sure you want to permanently delete this conversation?</string>
   <string name="conversation_deleted">Розмову видалено</string>
   <string name="message_body_load_remote_content_button_text">Завантажити зовнішній вміст</string>
