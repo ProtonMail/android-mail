@@ -27,9 +27,20 @@ object PostSubscriptionColors {
     val HorizontalDividerColor = Color(0x3DFFFFFF)
     val BottomSectionBackgroundColor = Color(0x14FFFFFF)
     val OtherPageIndicatorColor = Color(0x33FFFFFF)
+    // Welcome page
     val ContentTextColor = Color(0xFFEDC1FF)
     val EntitlementTextColor = Color(0xCCFFFFFF)
     val FadedContentColor = Color(0x1FFFFFFF)
+    // Discover all apps page
+    val CardBackground = Color(0x00FFFFFF)
+    val CardDividerColor = Color(0x00FFFFFF)
+    val AppItemBackground = Color(0x0FFFFFFF)
+    val AppMessageTextColor = Color(0xCCFFFFFF)
+    val InstallButtonBackgroundColor = Color(0x1AFFFFFF)
+    val InstallButtonContentColor = Color(0x1AFFFFFF)
+    val InstallButtonDisabledBackgroundColor = Color(0x14FFFFFF)
+    val InstallButtonDisabledContentColor = Color(0x14FFFFFF)
+    val InstallButtonDisabledTextColor = Color(0x80FFFFFF)
 }
 
 object PostSubscriptionDimens {
