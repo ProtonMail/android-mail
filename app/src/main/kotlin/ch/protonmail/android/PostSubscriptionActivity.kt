@@ -43,14 +43,14 @@ class PostSubscriptionActivity : AppCompatActivity() {
                     navController = navController,
                     startDestination = Destination.Screen.PostSubscription.route
                 ) {
-                    addPostSubscription(navController)
+                    addPostSubscription(
+                        onClose = { this@PostSubscriptionActivity.finish() }
+                    )
                 }
 
                 navController.navigate(
                     Destination.Screen.PostSubscription.route
-                ) {
-                    popUpTo(navController.graph.id) { inclusive = true }
-                }
+                )
             }
         }
     }

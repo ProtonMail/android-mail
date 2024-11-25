@@ -583,10 +583,10 @@ internal fun NavGraphBuilder.addContactSearch(navController: NavHostController) 
     }
 }
 
-fun NavGraphBuilder.addPostSubscription(navController: NavHostController) {
+fun NavGraphBuilder.addPostSubscription(onClose: () -> Unit) {
     composable(route = Destination.Screen.PostSubscription.route) {
         PostSubscriptionScreen(
-            onClose = { navController.popBackStack() }
+            onClose = onClose
         )
     }
 }
