@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.postsubscription
 
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -40,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
@@ -67,7 +70,10 @@ import me.proton.core.compose.theme.headlineUnspecified
 fun PostSubscriptionDiscoverAllAppsPage(state: PostSubscriptionState, modifier: Modifier = Modifier) {
     when (state) {
         is PostSubscriptionState.Loading -> ProtonCenteredProgress()
-        is PostSubscriptionState.Data -> PostSubscriptionDiscoverAllAppsPage(state, modifier)
+        is PostSubscriptionState.Data -> PostSubscriptionDiscoverAllAppsPage(
+            state = state,
+            modifier = modifier
+        )
     }
 }
 
@@ -102,7 +108,14 @@ private fun PostSubscriptionDiscoverAllAppsPage(state: PostSubscriptionState.Dat
                         appName = app.name,
                         appMessage = app.message,
                         isInstalled = app.isInstalled,
-                        onButtonClick = {}
+                        onButtonClick = {
+                            currentContext.startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(PLAY_STORE_APP_DETAILS_BASE_URL + app.packageName)
+                                )
+                            )
+                        }
                     )
                     if (index != state.apps.size - 1) {
                         HorizontalDivider(color = CardDividerColor)
@@ -180,3 +193,5 @@ private fun AppItem(
         }
     }
 }
+
+private const val PLAY_STORE_APP_DETAILS_BASE_URL = "https://play.google.com/store/apps/details?id="

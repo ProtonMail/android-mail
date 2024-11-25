@@ -77,7 +77,10 @@ import me.proton.core.compose.theme.defaultStrongUnspecified
 fun PostSubscriptionScreen(onClose: () -> Unit, viewModel: PostSubscriptionViewModel = hiltViewModel()) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
 
-    PostSubscriptionScreen(state, onClose)
+    PostSubscriptionScreen(
+        state = state,
+        onClose = onClose
+    )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -110,7 +113,7 @@ private fun PostSubscriptionScreen(state: PostSubscriptionState, onClose: () -> 
             ) { page ->
                 when (page) {
                     FIRST_PAGE -> PostSubscriptionWelcomePage()
-                    SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(state)
+                    SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(state = state)
                 }
             }
 
