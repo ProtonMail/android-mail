@@ -31,6 +31,9 @@
         <package android:name="com.android.webview" />
         <package android:name="com.google.android.webview" />
         <package android:name="me.proton.android.calendar" />
+        <package android:name="me.proton.android.drive" />
+        <package android:name="ch.protonvpn.android" />
+        <package android:name="proton.android.pass" />
     </queries>
 
     <application
