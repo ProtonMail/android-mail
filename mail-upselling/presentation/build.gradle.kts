@@ -55,6 +55,7 @@ android {
 dependencies {
     kapt(libs.bundles.app.annotationProcessors)
     implementation(libs.dagger.hilt.android)
+    implementation(libs.kotlinx.immutableCollections)
 
     implementation(project(":mail-upselling:domain"))
     implementation(project(":mail-common:domain"))
