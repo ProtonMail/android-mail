@@ -43,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -52,23 +53,42 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.postsubscription.AppUiModel
+import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionState
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BackgroundGradientColorStops
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionBackgroundColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.CloseButtonBackground
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.HorizontalDividerColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.OtherPageIndicatorColor
+import ch.protonmail.android.mailupselling.presentation.viewmodel.postsubscription.PostSubscriptionViewModel
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.component.protonButtonColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultStrongUnspecified
 
+@Composable
+fun PostSubscriptionScreen(onClose: () -> Unit, viewModel: PostSubscriptionViewModel = hiltViewModel()) {
+    val state = viewModel.state.collectAsStateWithLifecycle().value
+
+    PostSubscriptionScreen(state, onClose)
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PostSubscriptionScreen(onClose: () -> Unit) {
+private fun PostSubscriptionScreen(state: PostSubscriptionState, onClose: () -> Unit) {
     val pagerState = rememberPagerState(pageCount = { PAGE_COUNT })
+    val coroutineScope = rememberCoroutineScope()
+
+    fun scrollToPage(page: Int) = coroutineScope.launch {
+        pagerState.animateScrollToPage(page)
+    }
 
     Column(
         modifier = Modifier
@@ -85,10 +105,12 @@ fun PostSubscriptionScreen(onClose: () -> Unit) {
         ) {
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
-                state = pagerState
+                state = pagerState,
+                userScrollEnabled = false
             ) { page ->
                 when (page) {
                     FIRST_PAGE -> PostSubscriptionWelcomePage()
+                    SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(state)
                 }
             }
 
@@ -97,7 +119,16 @@ fun PostSubscriptionScreen(onClose: () -> Unit) {
 
         HorizontalDivider(color = HorizontalDividerColor)
 
-        BottomSection(pagerState = pagerState)
+        BottomSection(
+            pagerState = pagerState,
+            onButtonClick = {
+                if (pagerState.currentPage < pagerState.pageCount - 1) {
+                    scrollToPage(pagerState.currentPage + 1)
+                } else {
+                    onClose()
+                }
+            }
+        )
     }
 }
 
@@ -130,7 +161,11 @@ private fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun BottomSection(pagerState: PagerState, modifier: Modifier = Modifier) {
+private fun BottomSection(
+    pagerState: PagerState,
+    onButtonClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -145,14 +180,20 @@ private fun BottomSection(pagerState: PagerState, modifier: Modifier = Modifier)
             modifier = Modifier
                 .fillMaxWidth()
                 .height(MailDimens.ExtraLargeSpacing),
-            onClick = {},
+            onClick = onButtonClick,
             colors = ButtonDefaults.protonButtonColors(
                 backgroundColor = Color.White,
                 contentColor = ProtonTheme.colors.shade100
             )
         ) {
             Text(
-                text = stringResource(id = R.string.post_subscription_continue_button),
+                text = stringResource(
+                    id = if (pagerState.currentPage == pagerState.pageCount - 1) {
+                        R.string.post_subscription_got_it_button
+                    } else {
+                        R.string.post_subscription_continue_button
+                    }
+                ),
                 style = ProtonTheme.typography.defaultStrongUnspecified.copy(color = ProtonTheme.colors.shade100)
             )
         }
@@ -192,13 +233,46 @@ private fun PageIndicator(pagerState: PagerState) {
     }
 }
 
-private const val PAGE_COUNT = 1
 private const val FIRST_PAGE = 0
+private const val SECOND_PAGE = 1
+private const val PAGE_COUNT = 2
 
 @Preview(showBackground = true)
 @Composable
 fun PostSubscriptionContentPreview() {
     PostSubscriptionScreen(
+        state = PostSubscriptionState.Data(
+            apps = listOf(
+                AppUiModel(
+                    packageName = "",
+                    logo = R.drawable.ic_logo_calendar,
+                    name = R.string.post_subscription_proton_calendar,
+                    message = R.string.post_subscription_proton_calendar_message,
+                    isInstalled = false
+                ),
+                AppUiModel(
+                    packageName = "",
+                    logo = R.drawable.ic_logo_drive,
+                    name = R.string.post_subscription_proton_drive,
+                    message = R.string.post_subscription_proton_drive_message,
+                    isInstalled = false
+                ),
+                AppUiModel(
+                    packageName = "",
+                    logo = R.drawable.ic_logo_vpn,
+                    name = R.string.post_subscription_proton_vpn,
+                    message = R.string.post_subscription_proton_vpn_message,
+                    isInstalled = true
+                ),
+                AppUiModel(
+                    packageName = "",
+                    logo = R.drawable.ic_logo_pass,
+                    name = R.string.post_subscription_proton_pass,
+                    message = R.string.post_subscription_proton_pass_message,
+                    isInstalled = true
+                )
+            ).toImmutableList()
+        ),
         onClose = {}
     )
 }
