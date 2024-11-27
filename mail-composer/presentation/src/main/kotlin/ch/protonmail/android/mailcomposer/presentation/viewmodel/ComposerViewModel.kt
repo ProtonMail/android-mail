@@ -285,7 +285,7 @@ class ComposerViewModel @Inject constructor(
 
     private fun prefillForDraftAction(draftAction: DraftAction) {
         val parentMessageId = draftAction.getParentMessageId() ?: return
-        Timber.d("Opening composer for draft action $draftAction / ${currentMessageId()}")
+        Timber.d("Opening composer for draft action ${draftAction::class.java.simpleName} / ${currentMessageId()}")
         emitNewStateFor(ComposerEvent.OpenWithMessageAction(currentMessageId(), draftAction))
 
         viewModelScope.launch {
@@ -294,7 +294,6 @@ class ComposerViewModel @Inject constructor(
                 .getOrNull()
                 ?: return@launch
 
-            Timber.d("Parent message draft data received $parentMessage")
             val draftFields = parentMessageToDraftFields(primaryUserId(), parentMessage, draftAction)
                 .onLeft { emitNewStateFor(ComposerEvent.ErrorLoadingParentMessageData) }
                 .getOrNull()
@@ -305,7 +304,6 @@ class ComposerViewModel @Inject constructor(
                 .getOrNull()
                 ?: return@launch
 
-            Timber.d("Quoted parent body $draftFields")
             uploadDraftContinuouslyWhileInForeground(draftAction)
             val validatedSender = senderValidationResult.validAddress
 
@@ -351,7 +349,6 @@ class ComposerViewModel @Inject constructor(
         viewModelScope.launch {
             getDecryptedDraftFields(primaryUserId(), currentMessageId())
                 .onRight { draftFields ->
-                    Timber.d("Opening existing draft with body $draftFields")
                     uploadDraftContinuouslyWhileInForeground(DraftAction.Compose)
                     storeExternalAttachments(primaryUserId(), currentMessageId())
                     emitNewStateFor(
@@ -383,7 +380,9 @@ class ComposerViewModel @Inject constructor(
     @Suppress("ComplexMethod")
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
+            logViewModelAction(action, "waiting for lock.")
             actionMutex.withLock {
+                logViewModelAction(action, "acquired lock.")
                 composerIdlingResource.increment()
                 when (action) {
                     is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
@@ -417,6 +416,7 @@ class ComposerViewModel @Inject constructor(
                 }
                 composerIdlingResource.decrement()
             }
+            logViewModelAction(action, "released lock.")
         }
     }
 
@@ -838,6 +838,16 @@ class ComposerViewModel @Inject constructor(
                     }
                 }
             }
+    }
+
+    // Function to log at the debug level within the Composer ViewModel scope.
+    // This is introduced to identify potential issues with the current mutex implementation and determine
+    // whether and how we can properly remove it.
+    private fun logViewModelAction(action: ComposerAction, message: String) {
+        // Ignore DraftBodyChanged for now, it causes too much noise.
+        if (action is ComposerAction.DraftBodyChanged) return
+
+        Timber.tag("ComposerViewModel").d("Action ${action::class.java.simpleName} - $message")
     }
 
     companion object {
