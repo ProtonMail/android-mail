@@ -32,7 +32,6 @@ import me.proton.core.eventmanager.domain.entity.Event
 import me.proton.core.eventmanager.domain.entity.EventsResponse
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.util.kotlin.deserialize
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,7 +49,6 @@ open class UnreadMessagesCountEventListener @Inject constructor(
         config: EventManagerConfig,
         response: EventsResponse
     ): List<Event<String, UnreadMessageCountResource>>? {
-        Timber.d("Unread count event: Deserializing $response for MESSAGE")
         return response.body.deserialize<UnreadMessageEvents>().events?.map {
             val eventId = UUID.randomUUID().toString()
             Event(Action.Update, eventId, it)

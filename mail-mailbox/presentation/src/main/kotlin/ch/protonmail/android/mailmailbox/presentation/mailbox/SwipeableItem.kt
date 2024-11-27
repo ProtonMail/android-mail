@@ -107,7 +107,6 @@ fun SwipeableItem(
 
     val haptic = LocalHapticFeedback.current
     LaunchedEffect(key1 = willDismissDirection) {
-        Timber.d("Haptic effect")
         if (willDismissDirection != null) {
             Timber.d("Haptic effect: triggered")
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
