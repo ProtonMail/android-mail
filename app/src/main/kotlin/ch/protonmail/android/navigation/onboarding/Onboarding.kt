@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.route.addOnboarding
 import ch.protonmail.android.navigation.route.addOnboardingUpselling
@@ -32,7 +33,9 @@ import io.sentry.compose.withSentryObservableEffect
 
 @Composable
 fun Onboarding() {
-    val navController = rememberNavController().withSentryObservableEffect()
+    val navController = rememberNavController()
+        .withSentryObservableEffect()
+        .withDestinationChangedObservableEffect()
     val onboardingStepViewModel = hiltViewModel<OnboardingStepViewModel>()
 
     val exitAction = remember {

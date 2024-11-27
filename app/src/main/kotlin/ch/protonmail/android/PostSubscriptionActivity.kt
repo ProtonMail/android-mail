@@ -23,6 +23,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.route.addPostSubscription
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +38,9 @@ class PostSubscriptionActivity : AppCompatActivity() {
 
         setContent {
             ProtonTheme {
-                val navController = rememberNavController().withSentryObservableEffect()
+                val navController = rememberNavController()
+                    .withSentryObservableEffect()
+                    .withDestinationChangedObservableEffect()
 
                 NavHost(
                     navController = navController,

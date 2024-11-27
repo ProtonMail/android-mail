@@ -55,6 +55,7 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
+import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
 import ch.protonmail.android.navigation.model.Destination.Dialog
 import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.route.addAccountSettings
@@ -109,7 +110,9 @@ fun Home(
     launcherActions: Launcher.Actions,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val navController = rememberNavController().withSentryObservableEffect()
+    val navController = rememberNavController()
+        .withSentryObservableEffect()
+        .withDestinationChangedObservableEffect()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = navBackStackEntry?.destination?.route
 
