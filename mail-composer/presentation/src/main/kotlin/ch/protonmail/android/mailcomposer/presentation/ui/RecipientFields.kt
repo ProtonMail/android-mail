@@ -69,6 +69,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
     val recipientsButtonRotation = remember { Animatable(0F) }
     val isShowingToSuggestions = areContactSuggestionsExpanded[ContactSuggestionsField.TO] == true
     val isShowingCcSuggestions = areContactSuggestionsExpanded[ContactSuggestionsField.CC] == true
+    val isShowingBccSuggestions = areContactSuggestionsExpanded[ContactSuggestionsField.BCC] == true
     val hasCcBccContent = fields.cc.isNotEmpty() || fields.bcc.isNotEmpty()
     val shouldShowCcBcc = recipientsOpen || hasCcBccContent
 
@@ -88,7 +89,9 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
                 onSuggestionTermTyped = {
                     actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.TO)
                 },
-                onSuggestionsDismissed = { actions.onContactSuggestionsDismissed(ContactSuggestionsField.TO) },
+                onSuggestionsDismissed = {
+                    if (isShowingToSuggestions) actions.onContactSuggestionsDismissed(ContactSuggestionsField.TO)
+                },
                 onListChanged = {
                     actions.onToChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
                 }
@@ -145,7 +148,7 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
                         actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.CC)
                     },
                     onSuggestionsDismissed = {
-                        actions.onContactSuggestionsDismissed(ContactSuggestionsField.CC)
+                        if (isShowingCcSuggestions) actions.onContactSuggestionsDismissed(ContactSuggestionsField.CC)
                     },
                     onListChanged = {
                         actions.onCcChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
@@ -174,7 +177,8 @@ internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
                             actions.onContactSuggestionTermChanged(it, ContactSuggestionsField.BCC)
                         },
                         onSuggestionsDismissed = {
-                            actions.onContactSuggestionsDismissed(ContactSuggestionsField.BCC)
+                            if (isShowingBccSuggestions)
+                                actions.onContactSuggestionsDismissed(ContactSuggestionsField.BCC)
                         },
                         onListChanged = {
                             actions.onBccChanged(it.mapNotNull { chipItem -> chipItem.toRecipientUiModel() })
