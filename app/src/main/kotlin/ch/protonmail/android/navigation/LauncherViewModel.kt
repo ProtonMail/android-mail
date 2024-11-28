@@ -36,7 +36,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.proton.core.account.domain.entity.AccountType
 import me.proton.core.account.domain.entity.isDisabled
 import me.proton.core.account.domain.entity.isReady
 import me.proton.core.account.domain.entity.isStepNeeded
@@ -44,12 +43,12 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
+import me.proton.core.accountmanager.presentation.onAccountDeviceSecretNeeded
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.auth.presentation.onAddAccountResult
-import me.proton.core.domain.entity.Product
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
@@ -58,8 +57,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LauncherViewModel @Inject constructor(
-    private val product: Product,
-    private val requiredAccountType: AccountType,
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
@@ -114,6 +111,7 @@ class LauncherViewModel @Inject constructor(
             .onSessionSecondFactorNeeded { authOrchestrator.startSecondFactorWorkflow(it) }
             .onAccountTwoPassModeNeeded { authOrchestrator.startTwoPassModeWorkflow(it) }
             .onAccountCreateAddressNeeded { authOrchestrator.startChooseAddressWorkflow(it) }
+            .onAccountDeviceSecretNeeded { authOrchestrator.startDeviceSecretWorkflow(it) }
     }
 
     fun submit(action: Action) {
@@ -131,11 +129,7 @@ class LauncherViewModel @Inject constructor(
     }
 
     private fun onAddAccount() {
-        authOrchestrator.startAddAccountWorkflow(
-            requiredAccountType = AccountType.Internal,
-            creatableAccountType = AccountType.Internal,
-            product = product
-        )
+        authOrchestrator.startAddAccountWorkflow()
     }
 
     private suspend fun onOpenPasswordManagement() {
@@ -162,7 +156,7 @@ class LauncherViewModel @Inject constructor(
 
     private suspend fun onSignIn(userId: UserId?) {
         val account = userId?.let { getAccountOrNull(it) }
-        authOrchestrator.startLoginWorkflow(requiredAccountType, username = account?.username)
+        authOrchestrator.startLoginWorkflow(account?.username)
     }
 
     private suspend fun onSwitch(userId: UserId) {

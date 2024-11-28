@@ -41,20 +41,18 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import me.proton.core.account.domain.entity.Account
-import me.proton.core.account.domain.entity.AccountType.Internal
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.accountmanager.presentation.AccountManagerObserver
 import me.proton.core.accountmanager.presentation.observe
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressFailed
 import me.proton.core.accountmanager.presentation.onAccountCreateAddressNeeded
+import me.proton.core.accountmanager.presentation.onAccountDeviceSecretNeeded
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeFailed
 import me.proton.core.accountmanager.presentation.onAccountTwoPassModeNeeded
 import me.proton.core.accountmanager.presentation.onSessionForceLogout
 import me.proton.core.accountmanager.presentation.onSessionSecondFactorNeeded
 import me.proton.core.auth.presentation.AuthOrchestrator
 import me.proton.core.auth.presentation.MissingScopeObserver
-import me.proton.core.domain.entity.Product
-import me.proton.core.domain.entity.Product.Mail
 import me.proton.core.humanverification.presentation.HumanVerificationManagerObserver
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
@@ -186,11 +184,7 @@ class LauncherViewModelTest {
         viewModel.submit(LauncherViewModel.Action.AddAccount)
         // THEN
         verify {
-            authOrchestrator.startAddAccountWorkflow(
-                requiredAccountType = Internal,
-                creatableAccountType = Internal,
-                product = Product.Mail
-            )
+            authOrchestrator.startAddAccountWorkflow()
         }
     }
 
@@ -199,7 +193,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.SignIn(userId = null))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(Internal, any(), any()) }
+        verify { authOrchestrator.startLoginWorkflow(any()) }
     }
 
     @Test
@@ -209,7 +203,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.SignIn(userId))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(Internal, user1Username) }
+        verify { authOrchestrator.startLoginWorkflow(user1Username) }
     }
 
     @Test
@@ -219,7 +213,7 @@ class LauncherViewModelTest {
         // WHEN
         viewModel.submit(LauncherViewModel.Action.Switch(userId))
         // THEN
-        verify { authOrchestrator.startLoginWorkflow(Internal, user1Username) }
+        verify { authOrchestrator.startLoginWorkflow(user1Username) }
     }
 
     @Test
@@ -249,6 +243,7 @@ class LauncherViewModelTest {
         verify(exactly = 1) { amObserver.onAccountCreateAddressFailed(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountCreateAddressNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountTwoPassModeFailed(any(), any()) }
+        verify(exactly = 1) { amObserver.onAccountDeviceSecretNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onAccountTwoPassModeNeeded(any(), any()) }
         verify(exactly = 1) { amObserver.onSessionSecondFactorNeeded(any(), any()) }
     }
@@ -390,8 +385,6 @@ class LauncherViewModelTest {
     }
 
     private fun buildViewModel() = LauncherViewModel(
-        Mail,
-        Internal,
         accountManager,
         authOrchestrator,
         plansOrchestrator,
@@ -405,6 +398,7 @@ class LauncherViewModelTest {
         mockkStatic(AccountManagerObserver::onAccountCreateAddressNeeded)
         mockkStatic(AccountManagerObserver::onAccountTwoPassModeFailed)
         mockkStatic(AccountManagerObserver::onAccountTwoPassModeNeeded)
+        mockkStatic(AccountManagerObserver::onAccountDeviceSecretNeeded)
         mockkStatic(AccountManagerObserver::onSessionForceLogout)
         mockkStatic(AccountManagerObserver::onSessionSecondFactorNeeded)
         return mockk {
@@ -412,6 +406,7 @@ class LauncherViewModelTest {
             every { onAccountCreateAddressNeeded(any(), any()) } returns this
             every { onAccountTwoPassModeFailed(any(), any()) } returns this
             every { onAccountTwoPassModeNeeded(any(), any()) } returns this
+            every { onAccountDeviceSecretNeeded(any(), any()) } returns this
             every { onSessionForceLogout(any(), any()) } returns this
             every { onSessionSecondFactorNeeded(any(), any()) } returns this
         }

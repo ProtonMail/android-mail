@@ -29,7 +29,6 @@ import me.proton.core.auth.domain.usecase.PostLoginAccountSetup
 import me.proton.core.auth.presentation.DefaultHelpOptionHandler
 import me.proton.core.auth.presentation.DefaultUserCheck
 import me.proton.core.auth.presentation.HelpOptionHandler
-import me.proton.core.auth.presentation.ui.LoginActivity
 import me.proton.core.user.domain.UserManager
 import javax.inject.Singleton
 
@@ -47,10 +46,6 @@ object AuthModule {
         accountManager,
         userManager
     )
-
-    @Provides
-    @Singleton
-    fun provideLoginBlockingHelp(): LoginActivity.BlockingHelp? = null
 
     @Provides
     @Singleton
