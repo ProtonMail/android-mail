@@ -65,7 +65,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.filelogsprovider"
+            android:authorities="${applicationId}.logsfileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
