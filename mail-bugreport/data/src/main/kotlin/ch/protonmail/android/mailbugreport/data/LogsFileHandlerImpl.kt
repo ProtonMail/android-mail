@@ -42,15 +42,15 @@ class LogsFileHandlerImpl @Inject constructor(
 
     override val coroutineContext: CoroutineContext = coroutineDispatcher + SupervisorJob()
 
-    private val logDir by lazy { File(context.cacheDir, LogsDirName) }
+    private val logDir by lazy {
+        File(context.cacheDir, LogsDirName)
+            .apply { mkdirs() }
+    }
 
     private var currentLogFile: File? = null
     private var fileWriter: FileWriter? = null
 
-    override fun getParentPath(): File {
-        logDir.mkdirs()
-        return logDir
-    }
+    override fun getParentPath(): File = logDir
 
     override fun getLastLogFile(): File? = currentLogFile
 
@@ -111,6 +111,7 @@ class LogsFileHandlerImpl @Inject constructor(
     }
 
     companion object {
+
         private const val LogsDirName = "logs"
         private const val MaxFileSizeBytes = 2 * 1024 * 1024 // 2 MB
         private const val MaxLogFiles = 3

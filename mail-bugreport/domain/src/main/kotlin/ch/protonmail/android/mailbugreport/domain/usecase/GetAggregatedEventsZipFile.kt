@@ -39,6 +39,8 @@ class GetAggregatedEventsZipFile @Inject constructor(
 
     suspend operator fun invoke() = withContext(Dispatchers.IO) {
         runCatching {
+            logcatProvider.getLogcatFile() // Force dump the logcat to ensure it's up to date.
+
             val logcatDir = logcatProvider.getParentPath()
             val logFilesDir = logsFileHandler.getParentPath()
             val outputFile = File(applicationContext.cacheDir, FilePath).also {

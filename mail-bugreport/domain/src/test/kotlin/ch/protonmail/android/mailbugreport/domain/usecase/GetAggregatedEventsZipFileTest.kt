@@ -22,6 +22,7 @@ import java.io.File
 import android.content.Context
 import ch.protonmail.android.mailbugreport.domain.LogcatProvider
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -52,6 +53,7 @@ class GetAggregatedEventsZipFileTest {
         val mockLogcatDir = mockk<File>()
         val mockLogsDir = mockk<File>()
 
+        coEvery { logcatProvider.getLogcatFile() } returns mockk()
         every { logcatProvider.getParentPath() } returns mockLogcatDir
         every { logsFileHandler.getParentPath() } returns mockLogsDir
         every { mockLogcatDir.isDirectory } returns true

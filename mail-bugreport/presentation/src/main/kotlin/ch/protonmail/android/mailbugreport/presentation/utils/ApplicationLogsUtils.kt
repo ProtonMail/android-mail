@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailbugreport.presentation.utils
 
 import java.io.File
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.FileProvider
@@ -39,6 +40,7 @@ internal object ApplicationLogsUtils {
 
         val shareIntent = Intent(Intent.ACTION_SEND).apply {
             type = "application/zip"
+            clipData = ClipData.newRawUri("", fileUri)
             putExtra(Intent.EXTRA_STREAM, fileUri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }

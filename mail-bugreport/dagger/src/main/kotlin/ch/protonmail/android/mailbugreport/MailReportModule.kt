@@ -37,6 +37,7 @@ import javax.inject.Singleton
 object MailReportModule {
 
     @Provides
+    @Singleton
     @LogsExportingFeatureEnabled
     fun provideIsLogsExportingEnabled(isEnabled: IsLogsExportingInternalFeatureEnabled) = isEnabled()
 
