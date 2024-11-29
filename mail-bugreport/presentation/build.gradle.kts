@@ -25,7 +25,7 @@ plugins {
 }
 
 android {
-    namespace = "ch.protonmail.android.mailreport.presentation"
+    namespace = "ch.protonmail.android.mailbugreport.presentation"
     compileSdk = Config.compileSdk
 
     defaultConfig {
