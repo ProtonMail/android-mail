@@ -41,7 +41,8 @@ class GetAggregatedEventsZipFile @Inject constructor(
         runCatching {
             val logcatDir = logcatProvider.getParentPath()
             val logFilesDir = logsFileHandler.getParentPath()
-            val outputFile = File(applicationContext.cacheDir, FileName).also {
+            val outputFile = File(applicationContext.cacheDir, FilePath).also {
+                it.mkdirs()
                 if (it.exists()) it.delete()
             }
 
@@ -76,6 +77,6 @@ class GetAggregatedEventsZipFile @Inject constructor(
 
     private companion object {
 
-        const val FileName = "protonmail_events.zip"
+        const val FilePath = "export_logs/protonmail_events.zip"
     }
 }
