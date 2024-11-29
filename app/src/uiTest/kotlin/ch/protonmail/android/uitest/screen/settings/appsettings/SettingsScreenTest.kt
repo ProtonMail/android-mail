@@ -75,8 +75,10 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
                         onCombinedContactsClick = {},
                         onSwipeActionsClick = {},
                         onClearCacheClick = {},
-                        onBackClick = {}
-                    )
+                        onBackClick = {},
+                        onExportLogsClick = {}
+                    ),
+                    shouldShowExportLogs = false
                 )
             }
         }

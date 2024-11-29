@@ -19,6 +19,8 @@
 package ch.protonmail.android.navigation.model
 
 import ch.protonmail.android.feature.account.SignOutAccountDialog.USER_ID_KEY
+import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsViewItemMode
+import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView.ApplicationLogsViewMode
 import ch.protonmail.android.mailcommon.domain.model.BasicContactInfo
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.encode
@@ -130,6 +132,11 @@ sealed class Destination(val route: String) {
 
         object ThemeSettings : Destination("settings/theme")
         object Notifications : Destination("settings/notifications")
+        object ApplicationLogs : Destination("settings/applicationLogs")
+        object ApplicationLogsView : Destination("settings/applicationLogs/view/${ApplicationLogsViewMode.wrap()}") {
+            operator fun invoke(item: ApplicationLogsViewItemMode) =
+                route.replace(ApplicationLogsViewMode.wrap(), item.serialize())
+        }
         object DeepLinksHandler : Destination("deepLinksHandler")
         object LabelList : Destination("labelList")
         object CreateLabel : Destination("labelForm")

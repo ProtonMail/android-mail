@@ -48,6 +48,7 @@ object SettingsScreenPreviewData {
         onCombinedContactsClick = {},
         onSwipeActionsClick = {},
         onClearCacheClick = {},
+        onExportLogsClick = {},
         onBackClick = {}
     )
 }

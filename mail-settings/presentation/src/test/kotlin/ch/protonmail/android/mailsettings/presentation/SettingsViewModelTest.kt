@@ -68,6 +68,7 @@ class SettingsViewModelTest {
     private val clearLocalStorage = mockk<ClearLocalStorage>()
 
     private val appInformation = AppInformation(appVersionName = "6.0.0-alpha")
+    private val isLogsExportingEnabled = false
 
     private lateinit var viewModel: SettingsViewModel
 
@@ -80,7 +81,8 @@ class SettingsViewModelTest {
             observeAppSettings,
             observePrimaryUser,
             observeOverallLocalStorageUsage,
-            clearLocalStorage
+            clearLocalStorage,
+            isLogsExportingEnabled
         )
     }
 

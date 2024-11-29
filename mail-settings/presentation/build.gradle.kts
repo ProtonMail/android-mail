@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.proton.core.userSettings)
     implementation(libs.proton.core.mailSettings)
 
+    implementation(project(":mail-bugreport:domain"))
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-common:presentation"))
     implementation(project(":mail-message:data"))

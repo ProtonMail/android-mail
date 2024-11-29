@@ -204,6 +204,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     navController.navigate(Destination.Screen.SwipeActionsSettings.route)
                 },
                 onClearCacheClick = {},
+                onExportLogsClick = {
+                    navController.navigate(Destination.Screen.ApplicationLogs.route)
+                },
                 onBackClick = {
                     navController.navigateBack()
                 }

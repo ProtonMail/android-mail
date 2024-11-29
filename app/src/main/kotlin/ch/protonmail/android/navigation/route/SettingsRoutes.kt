@@ -24,6 +24,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import ch.protonmail.android.LockScreenActivity
 import ch.protonmail.android.MainActivity
+import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsPeekView
+import ch.protonmail.android.mailbugreport.presentation.ui.ApplicationLogsScreen
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.presentation.accountsettings.AccountSettingScreen
@@ -209,6 +211,20 @@ internal fun NavGraphBuilder.addNotificationsSettings(navController: NavHostCont
         PushNotificationsSettingsScreen(
             modifier = Modifier,
             onBackClick = { navController.navigateBack() }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.addExportLogsSettings(navController: NavHostController) {
+    composable(route = Screen.ApplicationLogs.route) {
+        ApplicationLogsScreen(
+            onBackClick = { navController.navigateBack() },
+            onViewItemClick = { navController.navigate(Screen.ApplicationLogsView(it)) }
+        )
+    }
+    composable(route = Screen.ApplicationLogsView.route) {
+        ApplicationLogsPeekView(
+            onBack = { navController.navigateBack() }
         )
     }
 }

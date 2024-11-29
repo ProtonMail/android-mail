@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.model.ClearDataAction
@@ -44,7 +45,8 @@ class SettingsViewModel @Inject constructor(
     observeAppSettings: ObserveAppSettings,
     observePrimaryUser: ObservePrimaryUser,
     observeOverallLocalDataUsage: ObserveOverallLocalStorageUsage,
-    private val clearLocalStorage: ClearLocalStorage
+    private val clearLocalStorage: ClearLocalStorage,
+    @LogsExportingFeatureEnabled val isLogsExportingEnabled: Boolean
 ) : ViewModel() {
 
     val state = combine(

@@ -76,7 +76,8 @@ fun MainSettingsScreen(
         is Data -> MainSettingsScreen(
             modifier = modifier,
             state = settingsState,
-            actions = dataActions
+            actions = dataActions,
+            shouldShowExportLogs = settingsViewModel.isLogsExportingEnabled
         )
 
         is Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
@@ -88,6 +89,7 @@ fun MainSettingsScreen(
 fun MainSettingsScreen(
     state: Data,
     actions: MainSettingsScreen.Actions,
+    shouldShowExportLogs: Boolean,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -173,6 +175,16 @@ fun MainSettingsScreen(
                     hint = "${state.appInformation.appVersionName} (${state.appInformation.appVersionCode})",
                     isClickable = false
                 )
+                Divider()
+            }
+
+            if (shouldShowExportLogs) {
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(string.mail_settings_app_logs),
+                        onClick = actions.onExportLogsClick
+                    )
+                }
             }
         }
     }
@@ -318,6 +330,7 @@ object MainSettingsScreen {
         val onCombinedContactsClick: () -> Unit,
         val onSwipeActionsClick: () -> Unit,
         val onClearCacheClick: () -> Unit,
+        val onExportLogsClick: () -> Unit,
         val onBackClick: () -> Unit
     )
 }
@@ -337,12 +350,14 @@ fun PreviewMainSettingsScreen() {
     ProtonTheme {
         MainSettingsScreen(
             state = SettingsScreenPreviewData.Data,
-            actions = SettingsScreenPreviewData.Actions
+            actions = SettingsScreenPreviewData.Actions,
+            shouldShowExportLogs = false
         )
     }
 }
 
 object SettingsScreenTestTags {
+
     const val RootItem = "SettingsScreenTestTag"
     const val SettingsList = "SettingsListTestTag"
     const val AccountSettingsItem = "AccountSettingsItemTestTag"
