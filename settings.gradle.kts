@@ -98,6 +98,11 @@ include(":mail-sidebar:data")
 include(":mail-sidebar:domain")
 include(":mail-sidebar:presentation")
 
+include(":mail-bugreport:dagger")
+include(":mail-bugreport:data")
+include(":mail-bugreport:domain")
+include(":mail-bugreport:presentation")
+
 include(":uicomponents")
 
 include(":test:annotations")
