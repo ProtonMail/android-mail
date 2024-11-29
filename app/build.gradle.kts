@@ -242,7 +242,8 @@ dependencies {
     implementation(project(":mail-sidebar"))
     implementation(project(":uicomponents"))
 
-    debugImplementation(libs.bundles.app.debug)
+    val devImplementation by configurations
+    devImplementation(libs.bundles.app.debug)
 
     // Environment configuration
     releaseImplementation(libs.proton.core.configuration.dagger.static)

@@ -49,7 +49,6 @@ android {
 
 dependencies {
     debugImplementation(libs.bundles.compose.debug)
-    debugImplementation(libs.bundles.app.debug)
 
     implementation(libs.bundles.module.presentation)
     implementation(libs.bundles.compose)
