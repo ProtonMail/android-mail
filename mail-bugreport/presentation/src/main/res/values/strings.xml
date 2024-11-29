@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2022 Proton Technologies AG
+  ~ This file is part of Proton Technologies AG and Proton Mail.
+  ~
+  ~ Proton Mail is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ Proton Mail is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!-- For now, do not translate these as the feature is not open to the public and under development -->
+<resources>
+    <string name="application_events_title" translatable="false">Application logs</string>
+
+    <string name="application_events_header_view" translatable="false">View logs</string>
+    <string name="application_events_view_logcat" translatable="false">View logcat</string>
+
+    <string name="application_events_view_logcat_hint" translatable="false">Display a dump of the logcat events</string>
+    <string name="application_events_view_events" translatable="false">View application events</string>
+    <string name="application_events_view_events_hint" translatable="false">Display the latest application events</string>
+
+    <string name="application_events_header_export" translatable="false">Export</string>
+    <string name="application_events_share" translatable="false">Share logs</string>
+    <string name="application_events_save_to_disk" translatable="false">Save logs to disk</string>
+    <string name="application_events_export_error" translatable="false">An error occurred while exporting the events</string>
+</resources>
