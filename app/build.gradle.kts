@@ -19,7 +19,11 @@
 import java.util.Properties
 import com.android.build.api.dsl.VariantDimension
 import configuration.extensions.protonEnvironment
-import org.gradle.kotlin.dsl.get
+import kotlin.collections.forEach
+import kotlin.collections.listOf
+import kotlin.collections.mapOf
+import kotlin.collections.plusAssign
+import kotlin.collections.set
 
 plugins {
     id("com.android.application")
@@ -226,6 +230,7 @@ dependencies {
     implementation(libs.bundles.appLibs)
     implementation(libs.proton.core.proguardRules)
 
+    implementation(project(":mail-bugreport"))
     implementation(project(":mail-common"))
     implementation(project(":mail-composer"))
     implementation(project(":mail-contact"))
