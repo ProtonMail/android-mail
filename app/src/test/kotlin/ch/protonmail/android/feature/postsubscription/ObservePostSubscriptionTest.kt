@@ -52,7 +52,6 @@ class ObservePostSubscriptionTest {
     }
 
     private val observePostSubscription = ObservePostSubscription(
-        coroutineScope = coroutineScope,
         isPostSubscriptionFlowEnabled = isPostSubscriptionFlowEnabled,
         observePrimaryUserId = observePrimaryUserId,
         purchaseManager = purchaseManager,
@@ -69,7 +68,7 @@ class ObservePostSubscriptionTest {
         } returns flowOf(listOf(basePurchase.copy(purchaseState = PurchaseState.Acknowledged)))
 
         // When
-        observePostSubscription.start(activity)
+        observePostSubscription.start(activity, coroutineScope)
         coroutineScope.advanceUntilIdle()
 
         // Then
@@ -85,7 +84,7 @@ class ObservePostSubscriptionTest {
         } returns flowOf(listOf(basePurchase.copy(purchaseState = PurchaseState.Pending)))
 
         // When
-        observePostSubscription.start(activity)
+        observePostSubscription.start(activity, coroutineScope)
         coroutineScope.advanceUntilIdle()
 
         // Then

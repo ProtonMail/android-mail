@@ -29,6 +29,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import ch.protonmail.android.feature.postsubscription.ObservePostSubscription
 import ch.protonmail.android.mailcommon.domain.system.DeviceCapabilities
 import ch.protonmail.android.mailcommon.presentation.system.LocalDeviceCapabilitiesProvider
@@ -75,7 +76,8 @@ class MainActivity : AppCompatActivity() {
         // Register activities for result.
         launcherViewModel.register(this)
 
-        observePostSubscription.start(this)
+        // Pass this activity's lifecycleScope to allow proper cancellation.
+        observePostSubscription.start(this, lifecycleScope)
 
         shareIntentObserver.onNewIntent(intent)
 

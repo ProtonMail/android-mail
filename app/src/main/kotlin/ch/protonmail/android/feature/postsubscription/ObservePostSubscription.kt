@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.feature.postsubscription
 
+import java.lang.ref.WeakReference
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import ch.protonmail.android.PostSubscriptionActivity
-import ch.protonmail.android.mailcommon.domain.coroutines.AppScope
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -36,7 +36,6 @@ import me.proton.core.user.domain.extension.hasSubscriptionForMail
 import javax.inject.Inject
 
 class ObservePostSubscription @Inject constructor(
-    @AppScope private val coroutineScope: CoroutineScope,
     private val isPostSubscriptionFlowEnabled: IsPostSubscriptionFlowEnabled,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val purchaseManager: PurchaseManager,
@@ -44,31 +43,38 @@ class ObservePostSubscription @Inject constructor(
     private val userManager: UserManager
 ) {
 
-    fun start(activity: AppCompatActivity) = coroutineScope.launch {
-        observePrimaryUserId().filterNotNull().distinctUntilChanged().collectLatest { userId ->
-            // Cancel observation if the user already has a subscription.
-            if (userManager.getUser(userId).hasSubscriptionForMail()) return@collectLatest
+    fun start(activity: AppCompatActivity, scope: CoroutineScope) {
+        val activityReference = WeakReference(activity)
 
-            if (!isPostSubscriptionFlowEnabled(userId)) return@collectLatest
+        scope.launch {
+            observePrimaryUserId().filterNotNull().distinctUntilChanged().collectLatest { userId ->
+                // Cancel observation if the user already has a subscription.
+                if (userManager.getUser(userId).hasSubscriptionForMail()) return@collectLatest
 
-            val sessionId = sessionManager.getSessionId(userId)
+                if (!isPostSubscriptionFlowEnabled(userId)) return@collectLatest
 
-            purchaseManager.observePurchases().distinctUntilChanged().collectLatest purchases@{ purchases ->
-                // Make sure the purchase was completed from the app
-                val currentSessionPurchases = purchases.filter { it.sessionId == sessionId }
-                val isMailPlusCompletedPurchaseFound = currentSessionPurchases.any {
-                    it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState == PurchaseState.Acknowledged
-                }
+                val sessionId = sessionManager.getSessionId(userId)
 
-                if (isMailPlusCompletedPurchaseFound) {
-                    val intent = Intent(activity, PostSubscriptionActivity::class.java)
-                    activity.startActivity(intent)
+                purchaseManager.observePurchases().distinctUntilChanged().collectLatest purchases@{ purchases ->
+                    // Make sure the purchase was completed from the app
+                    val currentSessionPurchases = purchases.filter { it.sessionId == sessionId }
+                    val isMailPlusCompletedPurchaseFound = currentSessionPurchases.any {
+                        it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState == PurchaseState.Acknowledged
+                    }
+
+                    activityReference.get()?.let { activity ->
+                        if (isMailPlusCompletedPurchaseFound) {
+                            val intent = Intent(activity, PostSubscriptionActivity::class.java)
+                            activity.startActivity(intent)
+                        }
+                    }
                 }
             }
         }
     }
 
     companion object {
+
         private const val MAIL_PLUS_PLAN_NAME = "mail2022"
     }
 }
