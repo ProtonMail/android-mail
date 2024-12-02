@@ -29,7 +29,7 @@
   <string name="composer_error_invalid_email">Indirizzo email non valido</string>
   <string name="composer_error_invalid_sender">Indirizzo mittente non valido</string>
   <string name="change_sender_button_content_description">Cambia il mittente</string>
-  <string name="composer_change_sender_paid_feature">Per modificare l\'indirizzo del mittente è necessario un abbonamento a Proton Mail a pagamento</string>
+  <string name="composer_change_sender_paid_feature">Passa a un abbonamento Proton Mail a pagamento per cambiare l\'indirizzo mittente</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Caricamento dell\'abbonamento non riuscito. Cambio del mittente non riuscito.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Aggiungi una password</string>
   <string name="composer_button_set_expiration">Imposta la scadenza</string>
   <string name="composer_expiration_time_bottom_sheet_title">Scadenza</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Salva</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Chiudi</string>
   <string name="composer_bottom_bar_expiration_time_none">Nessuna</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>

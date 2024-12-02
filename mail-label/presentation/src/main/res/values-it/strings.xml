@@ -55,8 +55,8 @@
   <string name="save_label_error">Salvataggio dell\'etichetta non riuscito</string>
   <string name="save_folder_error">Salvataggio della cartella non riuscito</string>
   <string name="label_already_exists">Esiste già un\'etichetta o una cartella con questo nome</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare più etichette</string>
+  <string name="folder_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare più cartelle</string>
   <string name="delete_label_error">Eliminazione dell\'etichetta non riuscita</string>
   <string name="input_field_clear_content_description">Cancella il testo</string>
   <string name="label_list_item_content_description">Elemento della lista di etichette</string>
@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Nessuna</string>
   <string name="delete_label">Elimina l\'etichetta</string>
   <string name="delete_folder">Elimina la cartella</string>
-  <string name="delete_label_message">Sei sicuro di voler eliminare definitivamente questa etichetta? I messaggi non verranno eliminati e saranno presenti nella cartella Tutta la posta.</string>
-  <string name="delete_folder_message">Sei sicuro di voler eliminare definitivamente questa cartella? I messaggi non verranno eliminati e saranno presenti nella cartella Tutta la posta.</string>
+  <string name="delete_label_message">Sei sicuro di voler eliminare definitivamente questa etichetta? I messaggi non verranno eliminati e saranno presenti nella cartella Tutta la posta.</string>
+  <string name="delete_folder_message">Sei sicuro di voler eliminare definitivamente questa cartella? I messaggi non verranno eliminati e saranno presenti nella cartella Tutta la posta.</string>
 </resources>

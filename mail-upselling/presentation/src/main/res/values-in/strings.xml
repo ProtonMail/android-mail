@@ -74,16 +74,16 @@
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Penyimpanan</string>
   <string name="upselling_comparison_table_email_addresses">Alamat email</string>
-  <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
-  <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
+  <string name="upselling_comparison_table_custom_email_domain">Domain email khusus</string>
+  <string name="upselling_comparison_table_desktop_app">Akses ke aplikasi desktop</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Tanpa batasan jumlah folder dan label</string>
-  <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+  <string name="upselling_comparison_table_priority_support">Dukungan pelanggan prioritas</string>
   <!-- Rectangular plan buttons -->
   <string name="upselling_select_plan">Pilih paket Anda</string>
   <string name="upselling_select_plan_year">1 tahun</string>
   <string name="upselling_select_plan_month">1 bulan</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text">Diperbarui secara otomatis pada harga dan ketentuan yang sama kecuali dibatalkan.</string>
   <string name="upselling_discount_tag">HEMAT %s%%</string>
   <string name="upselling_month">/bulan</string>
   <string name="upselling_year">/tahun</string>
@@ -115,16 +115,28 @@
   <string name="upselling_onboarding_continue_with_proton_free">Lanjut dengan Proton Free</string>
   <string name="upselling_onboarding_save_label">Hemat %s%%</string>
   <!-- Post subscription -->
-  <string name="post_subscription_close_button_content_description">Close</string>
-  <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
-  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
+  <string name="post_subscription_close_button_content_description">Tutup</string>
+  <string name="post_subscription_continue_button">Lanjutkan</string>
+  <string name="post_subscription_got_it_button">Mengerti</string>
+  <string name="post_subscription_welcome_page_title">Selamat datang di Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Terima kasih telah mendukung kami dalam menjaga internet tetap aman dan privat untuk semua orang.</string>
+  <string name="post_subscription_welcome_page_unlocked">Anda membuka</string>
+  <string name="post_subscription_plus_feature_storage">Penyimpanan 15 GB</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 alamat email tambahan</string>
   <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
   <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
-  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
+  <string name="post_subscription_plus_feature_aliases">10 alias hide-my-email</string>
   <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
+  <string name="post_subscription_plus_feature_customer_support">Dukungan pelanggan prioritas</string>
+  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_proton_calendar">Proton Calendar</string>
+  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_drive">Proton Drive</string>
+  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_vpn">Proton VPN</string>
+  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_pass">Proton Pass</string>
+  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_button_installed">Installed</string>
+  <string name="post_subscription_button_get_the_app">Get the app</string>
 </resources>

@@ -55,8 +55,8 @@
   <string name="save_label_error">Erro ao salvar o marcador, tente novamente mais tarde</string>
   <string name="save_folder_error">Erro ao salvar a pasta, tente novamente mais tarde</string>
   <string name="label_already_exists">Já existe um marcador ou pasta com este nome</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Você precisa de uma assinatura paga do Proton Mail para mais marcadores</string>
+  <string name="folder_limit_reached_error">Você precisa de uma assinatura paga do Proton Mail para mais pastas</string>
   <string name="delete_label_error">Erro ao excluir marcador</string>
   <string name="input_field_clear_content_description">Limpar texto</string>
   <string name="label_list_item_content_description">Item da lista de marcadores</string>

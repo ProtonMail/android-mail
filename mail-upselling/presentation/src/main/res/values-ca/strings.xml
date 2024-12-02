@@ -119,6 +119,7 @@
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Tanca</string>
   <string name="post_subscription_continue_button">Continua</string>
+  <string name="post_subscription_got_it_button">Entesos</string>
   <string name="post_subscription_welcome_page_title">Us donem la benvinguda a Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Gràcies per ajudar-nos a mantenir internet segur i privat per a tothom.</string>
   <string name="post_subscription_welcome_page_unlocked">Heu desbloquejat</string>
@@ -129,4 +130,15 @@
   <string name="post_subscription_plus_feature_aliases">10 àlies de hide-my-email</string>
   <string name="post_subscription_plus_feature_desktop_app">Nova aplicació d\'escriptori de Proton Mail</string>
   <string name="post_subscription_plus_feature_customer_support">Atenció al client prioritària</string>
+  <string name="post_subscription_discover_apps_page_title">Descobriu totes les aplicacions</string>
+  <string name="post_subscription_proton_calendar">Proton Calendar</string>
+  <string name="post_subscription_proton_calendar_message">Heu desbloquejat l\'ús compartit de calendaris i 8 vegades més calendaris.</string>
+  <string name="post_subscription_proton_drive">Proton Drive</string>
+  <string name="post_subscription_proton_drive_message">La vostra nova subscripció ha augmentat el vostre emmagatzematge fins a 15 GB.</string>
+  <string name="post_subscription_proton_vpn">Proton VPN</string>
+  <string name="post_subscription_proton_vpn_message">La millor VPN per a velocitat i seguretat.</string>
+  <string name="post_subscription_proton_pass">Proton Pass</string>
+  <string name="post_subscription_proton_pass_message">Emmagatzematge segur de contrasenyes i inici de sessió fàcil als vostres comptes.</string>
+  <string name="post_subscription_button_installed">Instal·lat</string>
+  <string name="post_subscription_button_get_the_app">Aconseguiu l\'aplicació</string>
 </resources>

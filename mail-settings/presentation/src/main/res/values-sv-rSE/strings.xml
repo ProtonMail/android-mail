@@ -70,7 +70,7 @@
   <string name="mail_settings_auto_delete_dialog_enabling_text">Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktivera</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Inaktivera automatisk borttagning?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Emails scheduled for deletion will remain in the trash and spam folders.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">E-postmeddelanden som schemalagts för borttagning kommer finnas kvar i papperskorgen och skräppostmapparna.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Inaktivera</string>
   <string name="mail_settings_not_set">Inte inställd</string>
   <string name="mail_settings_conversation_mode_hint">Gruppera e-postmeddelanden i samma konversation tillsammans i din inkorg eller visa dem separat</string>
@@ -78,14 +78,14 @@
   <string name="mail_settings_default_email_address_title">Standard e-postadress</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Inaktiva adresser</string>
   <string name="mail_settings_default_email_address_no_inactive_addresses">Inga inaktiva adresser</string>
-  <string name="mail_settings_default_email_address_error_loading">Fel vid laddning av inställningar</string>
+  <string name="mail_settings_default_email_address_error_loading">Fel vid inläsning av inställningar</string>
   <string name="mail_settings_default_email_address_error_update">Fel vid uppdatering av inställningar</string>
   <string name="mail_settings_default_email_address_error_update_subscription">Du behöver en betald Proton Mail-prenumeration för att ställa in denna adress som standard</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Visa namn &amp; signatur</string>
   <string name="mail_settings_identity_save_button">Spara</string>
-  <string name="mail_settings_identity_display_name">Visa namn</string>
-  <string name="mail_settings_identity_display_name_hint">Visa namn</string>
+  <string name="mail_settings_identity_display_name">Visningsnamn</string>
+  <string name="mail_settings_identity_display_name_hint">Visningsnamn</string>
   <string name="mail_settings_identity_signature">Signatur</string>
   <string name="mail_settings_identity_signature_hint">Signatur</string>
   <string name="mail_settings_identity_mobile_footer">Mobilsignatur</string>
@@ -97,7 +97,7 @@
   <!-- Privacy settings -->
   <string name="mail_settings_privacy_auto_show_remote_content">Visa fjärrinnehåll automatiskt</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">Visa inbäddade bilder automatiskt</string>
-  <string name="mail_settings_privacy_prevent_taking_screenshots">Förhindra att ta skärmdumpar</string>
+  <string name="mail_settings_privacy_prevent_taking_screenshots">Förhindra tagning av skärmdumpar</string>
   <string name="mail_settings_privacy_request_link_confirmation">Begär länkbekräftelse</string>
   <string name="mail_settings_privacy_background_sync">Bakgrundssynkronisering</string>
   <string name="mail_settings_privacy_background_sync_description">Om detta alternativ är aktiverat kommer appen synkroniseras med servern i bakgrunden. Inaktivering av denna funktion kommer även att inaktivera push-notiser.</string>
@@ -142,7 +142,7 @@
   <string name="mail_settings_pin_insertion_set_title">Ställ in PIN-kod</string>
   <string name="mail_settings_pin_insertion_confirm_title">Bekräfta PIN-kod</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">Låsikon</string>
-  <string name="mail_settings_pin_insertion_pin_dot_description">Pin dot</string>
+  <string name="mail_settings_pin_insertion_pin_dot_description">PIN-punkt</string>
   <string name="mail_settings_pin_insertion_backspace_description">Backsteg</string>
   <string name="mail_settings_pin_insertion_biometric_description">Biometrisk autentisering</string>
   <string name="mail_settings_pin_insertion_button_create">Skapa</string>
@@ -156,7 +156,7 @@
     <item quantity="one">%s återstående försök innan all data raderas av säkerhetsskäl</item>
     <item quantity="other">%s återstående försök före all data raderas av säkerhetsskäl</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">Det var ett fel att verifiera din PIN-kod.</string>
+  <string name="mail_settings_pin_insertion_error_unknown">Ett fel uppstod vid verifieringen av din PIN-kod.</string>
   <string name="mail_settings_pin_insertion_signout_text">Logga ut</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Logga ut</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">Är du säker på att du vill logga ut?</string>

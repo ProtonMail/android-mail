@@ -55,8 +55,8 @@
   <string name="save_label_error">Fout tijdens opslaan label, probeer het later opnieuw</string>
   <string name="save_folder_error">Fout tijdens opslaan folder, probeer het later opnieuw</string>
   <string name="label_already_exists">Label of map met deze naam bestaat al</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">U heeft een betaald Proton Mail abonnement nodig om meer labels te maken</string>
+  <string name="folder_limit_reached_error">U heeft een betaald Proton Mail abonnement nodig om meer mappen te maken</string>
   <string name="delete_label_error">Fout bij het verwijderen van label</string>
   <string name="input_field_clear_content_description">Tekst wissen</string>
   <string name="label_list_item_content_description">Label lijst item</string>

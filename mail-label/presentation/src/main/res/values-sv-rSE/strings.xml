@@ -55,8 +55,8 @@
   <string name="save_label_error">Gick inte spara etikett, försök igen senare</string>
   <string name="save_folder_error">Det gick inte spara mapp, försök igen senare</string>
   <string name="label_already_exists">En etikett eller mapp med detta namn finns redan</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Du behöver en betald Proton Mail-prenumeration för att skapa fler etiketter</string>
+  <string name="folder_limit_reached_error">Du behöver en betald Proton Mail-prenumeration för att skapa fler mappar</string>
   <string name="delete_label_error">Gick inte ta bort etikett</string>
   <string name="input_field_clear_content_description">Rensa text</string>
   <string name="label_list_item_content_description">Märk listobjekten</string>
@@ -66,7 +66,7 @@
   <string name="create_folder_content_description">Lägg till mapp</string>
   <string name="folder_settings_content_description">Mappinställningar</string>
   <string name="folder_settings_title">Inställningar</string>
-  <string name="folder_settings_done_button">Klar</string>
+  <string name="folder_settings_done_button">Slutför</string>
   <string name="folder_settings_folder_colors">Använd mappfärger</string>
   <string name="folder_settings_parent_color">Ärv överordnad mappfärg</string>
   <string name="folder_list_loading_error">Det gick inte läsa in mappar, försök igen senare</string>
@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Ingen</string>
   <string name="delete_label">Ta bort etikett?</string>
   <string name="delete_folder">Ta bort mapp?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label_message">Denna åtgärd kan inte ångras. E-postmeddelanden som är taggade med denna etikett raderas inte och kan hittas i mappen All e-post.</string>
+  <string name="delete_folder_message">Denna åtgärd kan inte ångras. E-postmeddelanden som finns i den här mappen kommer inte att tas bort och kan hittas i mappen All e-post.</string>
 </resources>

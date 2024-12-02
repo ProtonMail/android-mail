@@ -82,9 +82,9 @@
   <string name="action_more_content_description">Lainnya</string>
   <string name="common_error_loading_actions">Tindakan gagal dimuat</string>
   <string name="yesterday">Kemarin</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
+  <string name="auto_delete_banner_text_activate_trash">Hapus pesan yang telah berada ke sampah selama lebih dari 30 hari secara otomatis.</string>
+  <string name="auto_delete_banner_text_activate_spam">Hapus pesan yang telah ditandai sebagai spam selama lebih dari 30 hari secara otomatis.</string>
+  <string name="auto_delete_banner_text_upgrade">Tingkatkan untuk menghapus pesan yang telah berada di sampah dan spam selama lebih dari 30 hari secara otomatis.</string>
   <string name="auto_delete_banner_text_enabled_info">Pesan yang telah berada di sampah dan spam selama lebih dari 30 hari akan dihapus secara otomatis.</string>
   <string name="auto_delete_banner_button_activate_confirm">Aktifkan</string>
   <string name="auto_delete_banner_button_activate_dismiss">Tidak, terima kasih</string>

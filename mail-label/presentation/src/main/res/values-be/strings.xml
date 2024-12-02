@@ -55,8 +55,8 @@
   <string name="save_label_error">Памылка захавання меткі. Паспрабуйце пазней</string>
   <string name="save_folder_error">Памылка захавання папкі. Паспрабуйце яшчэ раз пазней</string>
   <string name="label_already_exists">Метка або папка з такой назвай ужо існуе</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Неабходна платная падпіска Proton Mail, каб стварыць больш метак</string>
+  <string name="folder_limit_reached_error">Неабходна платная падпіска Proton Mail, каб стварыць больш папак</string>
   <string name="delete_label_error">Памылка пры выдаленні меткі</string>
   <string name="input_field_clear_content_description">Ачысціць тэкст</string>
   <string name="label_list_item_content_description">Элемент спіса метак</string>

@@ -55,8 +55,8 @@
   <string name="save_label_error">儲存存標籤時發生錯誤，請稍後再試。</string>
   <string name="save_folder_error">儲存資料夾時發生錯誤，請稍後再試</string>
   <string name="label_already_exists">以此為名的標籤或資料夾已存在</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">您需要付費訂閱 Proton Mail 才能創建更多標籤</string>
+  <string name="folder_limit_reached_error">您需要付費訂閱 Proton Mail 才能創建更多資料夾</string>
   <string name="delete_label_error">刪除標籖出錯</string>
   <string name="input_field_clear_content_description">清除文字</string>
   <string name="label_list_item_content_description">標籤清單項目</string>
@@ -82,5 +82,5 @@
   <string name="delete_label">刪除標籤?</string>
   <string name="delete_folder">刪除資料夾?</string>
   <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_folder_message">此動作無法復原。儲存於此資料夾中的電子郵件不會刪除，可於 [所有郵件] 資料夾中找到。</string>
 </resources>

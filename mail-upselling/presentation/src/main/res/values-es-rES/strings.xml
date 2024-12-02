@@ -119,6 +119,7 @@
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Cerrar</string>
   <string name="post_subscription_continue_button">Continuar</string>
+  <string name="post_subscription_got_it_button">Entendido</string>
   <string name="post_subscription_welcome_page_title">Te damos la bienvenida a Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Gracias por apoyarnos a mantener internet seguro y privado para todos.</string>
   <string name="post_subscription_welcome_page_unlocked">Has desbloqueado</string>
@@ -129,4 +130,15 @@
   <string name="post_subscription_plus_feature_aliases">10 alias de hide-my-email</string>
   <string name="post_subscription_plus_feature_desktop_app">Nueva aplicación de escritorio de Proton Mail</string>
   <string name="post_subscription_plus_feature_customer_support">Soporte al cliente prioritario</string>
+  <string name="post_subscription_discover_apps_page_title">Descubre todas las aplicaciones</string>
+  <string name="post_subscription_proton_calendar">Proton Calendar</string>
+  <string name="post_subscription_proton_calendar_message">Has desbloqueado el uso compartido de calendarios y 8 veces más calendarios.</string>
+  <string name="post_subscription_proton_drive">Proton Drive</string>
+  <string name="post_subscription_proton_drive_message">Tu nueva suscripción ha aumentado tu almacenamiento a 15 GB.</string>
+  <string name="post_subscription_proton_vpn">Proton VPN</string>
+  <string name="post_subscription_proton_vpn_message">La mejor VPN en términos de velocidad y seguridad.</string>
+  <string name="post_subscription_proton_pass">Proton Pass</string>
+  <string name="post_subscription_proton_pass_message">Almacenamiento seguro de contraseñas e inicio de sesión fácil en tus cuentas.</string>
+  <string name="post_subscription_button_installed">Instalado</string>
+  <string name="post_subscription_button_get_the_app">Obtener la aplicación</string>
 </resources>

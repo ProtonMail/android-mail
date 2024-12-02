@@ -55,8 +55,8 @@
   <string name="save_label_error">Etiket kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="save_folder_error">Klasör kaydedilirken sorun çıktı. Lütfen bir süre sonra yeniden deneyin</string>
   <string name="label_already_exists">Aynı adlı bir etiket ya da klasör zaten var</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Daha fazla etiket oluşturabilmek için ücretli bir Proton Mail aboneliğiniz olmalıdır</string>
+  <string name="folder_limit_reached_error">Daha fazla klasör oluşturabilmek için ücretli bir Proton Mail aboneliğiniz olmalıdır</string>
   <string name="delete_label_error">Etiket silinirken sorun çıktı</string>
   <string name="input_field_clear_content_description">Metni temizle</string>
   <string name="label_list_item_content_description">Liste ögesini etiketle</string>

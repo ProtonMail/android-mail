@@ -130,7 +130,7 @@
   <string name="contact_group_form_update_success">Gruppo aggiornato</string>
   <string name="contact_group_form_save_error">Salvataggio del gruppo non riuscito</string>
   <string name="contact_group_form_save_error_already_exists">Esiste già un gruppo con questo nome</string>
-  <string name="contact_group_form_subscription_error">Per creare gruppi di contatti è necessario un abbonamento a Proton Mail a pagamento</string>
+  <string name="contact_group_form_subscription_error">Passa a un abbonamento Proton Mail a pagamento per creare gruppi di contatti</string>
   <string name="members_loading_error">Caricamento dei membri non riuscito</string>
   <string name="members_done">Continua</string>
   <string name="add_members_error">Aggiunta dei membri non riuscita</string>

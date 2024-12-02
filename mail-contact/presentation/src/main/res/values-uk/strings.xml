@@ -97,7 +97,7 @@
   <string name="contact_details_delete_dialog_cancel_button">Скасувати</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
   <string name="contact_form_save_error">Помилка збереження контакту, повторіть спробу пізніше</string>
-  <string name="contact_form_save_error_limit_reached">Contact limit reached</string>
+  <string name="contact_form_save_error_limit_reached">Досягнуто ліміту контактів</string>
   <string name="all_contacts_tab">Контакти</string>
   <string name="contact_groups_tab">Групи</string>
   <plurals name="contact_group_details_member_count">
@@ -134,7 +134,7 @@
   <string name="contact_group_form_update_success">Групу контактів оновлено</string>
   <string name="contact_group_form_save_error">Помилка збереження групи контактів, повторіть спробу пізніше</string>
   <string name="contact_group_form_save_error_already_exists">Група з цією назвою вже існує</string>
-  <string name="contact_group_form_subscription_error">You need a paid Proton Mail subscription to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Вам потрібна платна Proton Mail підписка для створення контактних груп</string>
   <string name="members_loading_error">Помилка завантаження учасників, повторіть спробу пізніше</string>
   <string name="members_done">Готово</string>
   <string name="add_members_error">Помилка додавання учасників, повторіть спробу пізніше</string>
@@ -149,8 +149,8 @@
     <item quantity="many">%d учасників</item>
     <item quantity="other">%d учасників</item>
   </plurals>
-  <string name="contact_search_placeholder">Search for contact or group</string>
-  <string name="contact_search_content_description">Search for contact or group</string>
-  <string name="contact_search_arrow_back_content_description">Go back to contacts</string>
+  <string name="contact_search_placeholder">Пошук контакту або групи</string>
+  <string name="contact_search_content_description">Пошук контакту або групи</string>
+  <string name="contact_search_arrow_back_content_description">Повернутися до контактів</string>
   <string name="contact_search_no_results">Результатів не знайдено.</string>
 </resources>

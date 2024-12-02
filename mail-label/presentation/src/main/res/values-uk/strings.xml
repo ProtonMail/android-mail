@@ -55,8 +55,8 @@
   <string name="save_label_error">Помилка під час збереження мітки, повторіть спробу пізніше</string>
   <string name="save_folder_error">Помилка під час збереження теки, повторіть спробу пізніше</string>
   <string name="label_already_exists">Мітка або тека з такою назвою вже існує</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Вам потрібна платна Proton Mail підписка, щоб створити більше міток</string>
+  <string name="folder_limit_reached_error">Вам потрібна платна Proton Mail підписка, щоб створити більше тек</string>
   <string name="delete_label_error">Не вдалося видалити мітку</string>
   <string name="input_field_clear_content_description">Очистити</string>
   <string name="label_list_item_content_description">Елемент списку міток</string>
@@ -80,7 +80,7 @@
   <string name="folder_deleted">Теку видалено</string>
   <string name="parent_folder_none">Немає</string>
   <string name="delete_label">Видалити мітку?</string>
-  <string name="delete_folder">Delete folder?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
-  <string name="delete_folder_message">This action cannot be undone. Emails contained in this folder will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_folder">Видалити теку?</string>
+  <string name="delete_label_message">Цю дію неможливо скасувати. Листи, позначені цією міткою, не будуть видалені, і їх можна буде знайти у теці «Уся пошта».</string>
+  <string name="delete_folder_message">Цю дію неможливо скасувати. Листи, що містяться в цій теці, не будуть видалені, і їх можна буде знайти у теці «Уся пошта».</string>
 </resources>

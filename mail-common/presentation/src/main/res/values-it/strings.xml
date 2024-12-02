@@ -21,9 +21,9 @@
   <string name="expiration_days_arg">%d g</string>
   <string name="expiration_hours_arg">%d h</string>
   <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Questo messaggio verrà eliminato automaticamente in meno di un\'ora</string>
-  <string name="expiration_auto_delete_day">Questo messaggio verrà eliminato automaticamente in meno di un giorno</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Questo messaggio verrà automaticamente eliminato tra %s</string>
+  <string name="expiration_auto_delete_hour">Questo messaggio verrà eliminato automaticamente entro un\'ora</string>
+  <string name="expiration_auto_delete_day">Questo messaggio verrà eliminato automaticamente entro un giorno</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Questo messaggio verrà eliminato automaticamente tra %s</string>
   <string name="retry">Riprova</string>
   <string name="toolbar_back_content_description">Torna alla schermata precedente</string>
   <string name="x_error_not_logged_in">Accesso non effettuato</string>
@@ -82,13 +82,13 @@
   <string name="action_more_content_description">Altro</string>
   <string name="common_error_loading_actions">Caricamento delle azioni non riuscito</string>
   <string name="yesterday">Ieri</string>
-  <string name="auto_delete_banner_text_activate_trash">Elimina automaticamente i messaggi che sono rimasti nel cestino per più di 30 giorni.</string>
-  <string name="auto_delete_banner_text_activate_spam">Elimina automaticamente i messaggi che sono rimasti nello spam per più di 30 giorni.</string>
-  <string name="auto_delete_banner_text_upgrade">Aggiorna per eliminare automaticamente i messaggi che sono rimasti nel cestino o nello spam per più di 30 giorni.</string>
-  <string name="auto_delete_banner_text_enabled_info">I messaggi che sono nel cestino o nello spam da più di 30 giorni saranno eliminati.</string>
+  <string name="auto_delete_banner_text_activate_trash">Elimina automaticamente i messaggi che sono rimasti nel cestino per oltre 30 giorni</string>
+  <string name="auto_delete_banner_text_activate_spam">Elimina automaticamente i messaggi che sono rimasti nella cartella spam per oltre 30 giorni</string>
+  <string name="auto_delete_banner_text_upgrade">Effettua l\'upgrade per eliminare automaticamente i messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni</string>
+  <string name="auto_delete_banner_text_enabled_info">I messaggi che sono rimasti nel cestino o nella cartella spam per oltre 30 giorni verranno eliminati</string>
   <string name="auto_delete_banner_button_activate_confirm">Abilita</string>
-  <string name="auto_delete_banner_button_activate_dismiss">No, grazie</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">Per saperne di più</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Annulla</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">Scopri di più</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Allegati</string>
   <string name="attachment_download_notification_channel_description">Stato dello scaricamento degli allegati</string>

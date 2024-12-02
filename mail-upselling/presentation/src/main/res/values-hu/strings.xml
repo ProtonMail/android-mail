@@ -119,6 +119,7 @@
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Close</string>
   <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_got_it_button">Got it</string>
   <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
   <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
@@ -129,4 +130,15 @@
   <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
   <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
   <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
+  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_proton_calendar">Proton Calendar</string>
+  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_drive">Proton Drive</string>
+  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_vpn">Proton VPN</string>
+  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_pass">Proton Pass</string>
+  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_button_installed">Installed</string>
+  <string name="post_subscription_button_get_the_app">Get the app</string>
 </resources>

@@ -85,7 +85,7 @@
   <string name="message_delete_dialog_title">刪除訊息</string>
   <string name="message_delete_dialog_message">您確定要永久刪除此郵件嗎？</string>
   <string name="message_deleted">郵件已刪除</string>
-  <string name="message_moved">Message moved</string>
+  <string name="message_moved">郵件已移動</string>
   <string name="error_delete_message_failed">刪除信件失敗</string>
   <string name="error_delete_message_failed_wrong_folder">訊息位在無法刪除的地方</string>
   <string name="error_delete_conversation_failed">刪除對話失敗</string>

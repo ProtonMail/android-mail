@@ -159,7 +159,7 @@
   <string name="mail_settings_pin_insertion_error_unknown">Παρουσιάστηκε σφάλμα κατά την επαλήθευση του κωδικού PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Αποσύνδεση</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Αποσύνδεση</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε;</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Θέλετε σίγουρα να αποσυνδεθείτε;</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Ναι</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Όχι</string>
   <string name="mail_settings_pin_insertion_created_success">Ο κωδικός PIN δημιουργήθηκε με επιτυχία.</string>

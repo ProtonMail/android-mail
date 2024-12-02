@@ -35,7 +35,7 @@
   <string name="mailbox_default_recipient">(Ingen mottagare)</string>
   <string name="mailbox_default_sender">(Ingen avsändare)</string>
   <string name="mailbox_error_message_offline">Du är offline, kan inte hämta objekt</string>
-  <string name="mailbox_error_message_generic">Misslyckades att ladda brevlåda</string>
+  <string name="mailbox_error_message_generic">Inläsning av brevlåda misslyckades</string>
   <string name="mailbox_error_message_unexpected">Något gick oväntat fel</string>
   <string name="mailbox_is_empty_title">Inga meddelanden</string>
   <string name="mailbox_is_empty_description">Du är uppdaterad</string>
@@ -56,7 +56,7 @@
     <item quantity="other">Ta bort %d meddelanden</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_message">
-    <item quantity="one">Är du säker på att du vill ta bort denna konversationen permanent?</item>
+    <item quantity="one">Är du säker på att du vill ta bort denna konversation permanent?</item>
     <item quantity="other">Är du säker på att du vill ta bort dessa konversationer permanent?</item>
   </plurals>
   <plurals name="mailbox_action_delete_message_dialog_message">
@@ -68,7 +68,7 @@
     <item quantity="other">%d meddelanden permanent borttagna</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation">
-    <item quantity="one">Konversation permanent borttaget</item>
+    <item quantity="one">Konversation permanent borttagen</item>
     <item quantity="other">%d konversationer permanent borttagna</item>
   </plurals>
   <string name="mailbox_action_label_messages_failed">Etikettåtgärd misslyckades</string>
@@ -86,7 +86,7 @@
   <string name="mailbox_action_button_clear_spam">Töm skräppost</string>
   <string name="mailbox_action_clear_trash_dialog_title">Töm skräppostmapp</string>
   <string name="mailbox_action_clear_spam_dialog_title">Töm skräppostmapp</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Are you sure you want to permanently delete all messages in your Trash folder?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din papperskorg?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Är du säker på att du vill ta bort alla konversationer permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Rensningsåtgärd är schemalagd"</string>

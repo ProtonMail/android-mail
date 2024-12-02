@@ -55,8 +55,8 @@
   <string name="save_label_error">ラベルの保存中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="save_folder_error">フォルダの保存中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="label_already_exists">この名前のラベルまたはフォルダーはすでに存在しています</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">もっとラベルを作るにはProton Mailサブスクリプションの支払いが必要です</string>
+  <string name="folder_limit_reached_error">もっとフォルダを作るにはProton Mailサブスクリプションの支払いが必要です</string>
   <string name="delete_label_error">ラベルの削除中にエラーが発生しました</string>
   <string name="input_field_clear_content_description">テキストクリア</string>
   <string name="label_list_item_content_description">ラベルリスト項目</string>

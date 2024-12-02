@@ -80,7 +80,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">არააქტიური მისამართების გარეშე</string>
   <string name="mail_settings_default_email_address_error_loading">პარამეტრების ჩატვირთვის შეცდომა</string>
   <string name="mail_settings_default_email_address_error_update">პარამეტრების განახლების შეცდომა</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">You need a paid Proton Mail subscription to set this address as default</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">ამ მისამართის ნაგულისხმევად დასაყენებლად Proton Mail-ის ფასიანი გამოწერა გჭირდებათ</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">სახელისა &amp; ხელმოწერის ჩვენება</string>
   <string name="mail_settings_identity_save_button">შენახვა</string>

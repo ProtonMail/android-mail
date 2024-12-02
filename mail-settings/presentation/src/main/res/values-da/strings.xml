@@ -61,7 +61,7 @@
   <string name="mail_settings_labels">Etiketter</string>
   <string name="mail_settings_folders">Mapper</string>
   <string name="mail_settings_conversation_mode">Samtaletilstand</string>
-  <string name="mail_settings_auto_delete">Auto-delete</string>
+  <string name="mail_settings_auto_delete">Auto-slet</string>
   <string name="mail_settings_auto_delete_full_text">Slet uønskede beskeder automatisk</string>
   <string name="mail_settings_auto_delete_hint">Beskeder i papirkurven eller spam, der ligger længere end 30 dage, bliver automatisk slettet.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Du skal have et betalt Proton Mail-abonnement for at bruge denne funktion.</string>
