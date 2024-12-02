@@ -445,10 +445,11 @@ private fun PlanEntitlements(
         PremiumValueSection(modifier, plan.premiumValueDrawables)
 
         val numberOfEntitlementsNotShown = (plan.entitlements.items.size - numberOfEntitlementsToShow).coerceAtLeast(0)
-        if (numberOfEntitlementsNotShown != 0 && !showAllEntitlements.value) {
+        if (numberOfEntitlementsNotShown != 0) {
             MorePlanEntitlements(
+                showAllEntitlements = showAllEntitlements.value,
                 numberOfEntitlementsNotShown = numberOfEntitlementsNotShown,
-                onClick = { showAllEntitlements.value = true }
+                onClick = { showAllEntitlements.value = !showAllEntitlements.value }
             )
         }
     }
@@ -484,6 +485,7 @@ private fun PlanEntitlement(entitlementUiModel: PlanEntitlementListUiModel) {
 @Composable
 private fun MorePlanEntitlements(
     modifier: Modifier = Modifier,
+    showAllEntitlements: Boolean,
     numberOfEntitlementsNotShown: Int,
     onClick: () -> Unit
 ) {
@@ -501,7 +503,9 @@ private fun MorePlanEntitlements(
         Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
         Icon(
             modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = R.drawable.ic_proton_chevron_down),
+            painter = painterResource(
+                id = if (showAllEntitlements) R.drawable.ic_proton_chevron_up else R.drawable.ic_proton_chevron_down
+            ),
             contentDescription = NO_CONTENT_DESCRIPTION,
             tint = ProtonTheme.colors.iconAccent
         )
