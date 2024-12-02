@@ -155,7 +155,7 @@ private fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Icon(
             modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = R.drawable.ic_proton_close),
+            painter = painterResource(id = R.drawable.ic_proton_cross_big),
             contentDescription = stringResource(id = R.string.post_subscription_close_button_content_description),
             tint = Color.White
         )
