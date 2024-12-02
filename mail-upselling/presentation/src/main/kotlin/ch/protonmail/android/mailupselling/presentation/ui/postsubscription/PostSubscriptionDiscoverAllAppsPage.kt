@@ -39,6 +39,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionState
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.AppItemBackground
@@ -67,19 +69,32 @@ import me.proton.core.compose.theme.defaultSmallUnspecified
 import me.proton.core.compose.theme.headlineUnspecified
 
 @Composable
-fun PostSubscriptionDiscoverAllAppsPage(state: PostSubscriptionState, modifier: Modifier = Modifier) {
+fun PostSubscriptionDiscoverAllAppsPage(
+    state: PostSubscriptionState,
+    trackTelemetryEvent: (PostSubscriptionTelemetryEventType) -> Unit,
+    modifier: Modifier = Modifier
+) {
     when (state) {
         is PostSubscriptionState.Loading -> ProtonCenteredProgress()
         is PostSubscriptionState.Data -> PostSubscriptionDiscoverAllAppsPage(
             state = state,
+            trackTelemetryEvent = trackTelemetryEvent,
             modifier = modifier
         )
     }
 }
 
 @Composable
-private fun PostSubscriptionDiscoverAllAppsPage(state: PostSubscriptionState.Data, modifier: Modifier = Modifier) {
+private fun PostSubscriptionDiscoverAllAppsPage(
+    state: PostSubscriptionState.Data,
+    trackTelemetryEvent: (PostSubscriptionTelemetryEventType) -> Unit,
+    modifier: Modifier = Modifier
+) {
     val currentContext = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        trackTelemetryEvent(PostSubscriptionTelemetryEventType.LastStepDisplayed)
+    }
 
     LazyColumn(
         modifier = modifier
@@ -109,6 +124,8 @@ private fun PostSubscriptionDiscoverAllAppsPage(state: PostSubscriptionState.Dat
                         appMessage = app.message,
                         isInstalled = app.isInstalled,
                         onButtonClick = {
+                            trackTelemetryEvent(PostSubscriptionTelemetryEventType.DownloadApp(app.packageName))
+
                             currentContext.startActivity(
                                 Intent(
                                     Intent.ACTION_VIEW,

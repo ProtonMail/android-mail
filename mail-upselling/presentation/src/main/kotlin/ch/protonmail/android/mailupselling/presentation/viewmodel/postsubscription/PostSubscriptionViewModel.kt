@@ -21,8 +21,10 @@ package ch.protonmail.android.mailupselling.presentation.viewmodel.postsubscript
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.lifecycle.ViewModel
+import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.AppUiModel
+import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionOperation
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,7 +36,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostSubscriptionViewModel @Inject constructor(
-    @ApplicationContext private val applicationContext: Context
+    @ApplicationContext private val applicationContext: Context,
+    private val postSubscriptionTelemetryRepository: PostSubscriptionTelemetryRepository
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow<PostSubscriptionState>(PostSubscriptionState.Loading)
@@ -53,6 +56,10 @@ class PostSubscriptionViewModel @Inject constructor(
                 apps = apps
             )
         )
+    }
+
+    fun submit(operation: PostSubscriptionOperation) = when (operation) {
+        is PostSubscriptionOperation.TrackTelemetryEvent -> handleTrackTelemetryEvent(operation)
     }
 
     private fun toUiModel(packageName: String): AppUiModel {
@@ -103,6 +110,10 @@ class PostSubscriptionViewModel @Inject constructor(
             Timber.d(exception)
             false
         }
+    }
+
+    private fun handleTrackTelemetryEvent(operation: PostSubscriptionOperation.TrackTelemetryEvent) {
+        postSubscriptionTelemetryRepository.trackEvent(operation.eventType)
     }
 }
 

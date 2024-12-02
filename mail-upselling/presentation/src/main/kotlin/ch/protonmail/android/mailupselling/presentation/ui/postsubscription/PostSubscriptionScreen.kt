@@ -56,8 +56,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.AppUiModel
+import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionOperation
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionState
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BackgroundGradientColorStops
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionBackgroundColor
@@ -80,13 +82,18 @@ fun PostSubscriptionScreen(onClose: () -> Unit, viewModel: PostSubscriptionViewM
 
     PostSubscriptionScreen(
         state = state,
+        trackTelemetryEvent = { viewModel.submit(PostSubscriptionOperation.TrackTelemetryEvent(it)) },
         onClose = onClose
     )
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun PostSubscriptionScreen(state: PostSubscriptionState, onClose: () -> Unit) {
+private fun PostSubscriptionScreen(
+    state: PostSubscriptionState,
+    trackTelemetryEvent: (PostSubscriptionTelemetryEventType) -> Unit,
+    onClose: () -> Unit
+) {
     val pagerState = rememberPagerState(pageCount = { PAGE_COUNT })
     val coroutineScope = rememberCoroutineScope()
 
@@ -113,7 +120,10 @@ private fun PostSubscriptionScreen(state: PostSubscriptionState, onClose: () -> 
             ) { page ->
                 when (page) {
                     FIRST_PAGE -> PostSubscriptionWelcomePage()
-                    SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(state = state)
+                    SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(
+                        state = state,
+                        trackTelemetryEvent = trackTelemetryEvent
+                    )
                 }
             }
 
@@ -276,6 +286,7 @@ fun PostSubscriptionContentPreview() {
                 )
             ).toImmutableList()
         ),
+        trackTelemetryEvent = {},
         onClose = {}
     )
 }
