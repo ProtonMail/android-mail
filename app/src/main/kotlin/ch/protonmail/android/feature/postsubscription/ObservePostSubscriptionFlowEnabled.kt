@@ -19,17 +19,15 @@
 package ch.protonmail.android.feature.postsubscription
 
 import me.proton.core.domain.entity.UserId
-import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
 import me.proton.core.featureflag.domain.FeatureFlagManager
 import me.proton.core.featureflag.domain.entity.FeatureId
 import javax.inject.Inject
 
-class IsPostSubscriptionFlowEnabled @Inject constructor(
+class ObservePostSubscriptionFlowEnabled @Inject constructor(
     private val featureFlagManager: FeatureFlagManager
 ) {
 
-    @OptIn(ExperimentalProtonFeatureFlag::class)
-    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+    operator fun invoke(userId: UserId?) = featureFlagManager.observe(userId, FeatureId(FeatureFlagId))
 
     private companion object {
 

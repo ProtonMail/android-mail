@@ -13,6 +13,9 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import me.proton.core.accountmanager.domain.SessionManager
+import me.proton.core.featureflag.domain.entity.FeatureFlag
+import me.proton.core.featureflag.domain.entity.FeatureId
+import me.proton.core.featureflag.domain.entity.Scope
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.payment.domain.PurchaseManager
 import me.proton.core.payment.domain.entity.Purchase
@@ -37,8 +40,16 @@ class ObservePostSubscriptionTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val coroutineScope = TestScope(testDispatcher)
-    private val isPostSubscriptionFlowEnabled = mockk<IsPostSubscriptionFlowEnabled> {
-        every { this@mockk.invoke(UserIdTestData.userId) } returns true
+    private val observePostSubscriptionFlowEnabled = mockk<ObservePostSubscriptionFlowEnabled> {
+        every { this@mockk.invoke(UserIdTestData.userId) } returns flowOf(
+            FeatureFlag(
+                userId = UserIdTestData.userId,
+                featureId = FeatureId(""),
+                scope = Scope.Unleash,
+                defaultValue = false,
+                value = true
+            )
+        )
     }
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(UserIdTestData.userId)
@@ -52,7 +63,7 @@ class ObservePostSubscriptionTest {
     }
 
     private val observePostSubscription = ObservePostSubscription(
-        isPostSubscriptionFlowEnabled = isPostSubscriptionFlowEnabled,
+        observePostSubscriptionFlowEnabled = observePostSubscriptionFlowEnabled,
         observePrimaryUserId = observePrimaryUserId,
         purchaseManager = purchaseManager,
         sessionManager = sessionManager,

@@ -36,7 +36,7 @@ import me.proton.core.user.domain.extension.hasSubscriptionForMail
 import javax.inject.Inject
 
 class ObservePostSubscription @Inject constructor(
-    private val isPostSubscriptionFlowEnabled: IsPostSubscriptionFlowEnabled,
+    private val observePostSubscriptionFlowEnabled: ObservePostSubscriptionFlowEnabled,
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val purchaseManager: PurchaseManager,
     private val sessionManager: SessionManager,
@@ -51,21 +51,25 @@ class ObservePostSubscription @Inject constructor(
                 // Cancel observation if the user already has a subscription.
                 if (userManager.getUser(userId).hasSubscriptionForMail()) return@collectLatest
 
-                if (!isPostSubscriptionFlowEnabled(userId)) return@collectLatest
+                observePostSubscriptionFlowEnabled(userId).collectLatest featureFlag@{ isPostSubscriptionFlowEnabled ->
+                    // Proceed only if the FF is enabled
+                    if (isPostSubscriptionFlowEnabled?.value == true) {
 
-                val sessionId = sessionManager.getSessionId(userId)
+                        val sessionId = sessionManager.getSessionId(userId)
 
-                purchaseManager.observePurchases().distinctUntilChanged().collectLatest purchases@{ purchases ->
-                    // Make sure the purchase was completed from the app
-                    val currentSessionPurchases = purchases.filter { it.sessionId == sessionId }
-                    val isMailPlusCompletedPurchaseFound = currentSessionPurchases.any {
-                        it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState == PurchaseState.Acknowledged
-                    }
+                        purchaseManager.observePurchases().distinctUntilChanged().collectLatest purchases@{ purchases ->
+                            // Make sure the purchase was completed from the app
+                            val currentSessionPurchases = purchases.filter { it.sessionId == sessionId }
+                            val isMailPlusCompletedPurchaseFound = currentSessionPurchases.any {
+                                it.planName == MAIL_PLUS_PLAN_NAME && it.purchaseState == PurchaseState.Acknowledged
+                            }
 
-                    activityReference.get()?.let { activity ->
-                        if (isMailPlusCompletedPurchaseFound) {
-                            val intent = Intent(activity, PostSubscriptionActivity::class.java)
-                            activity.startActivity(intent)
+                            activityReference.get()?.let { activity ->
+                                if (isMailPlusCompletedPurchaseFound) {
+                                    val intent = Intent(activity, PostSubscriptionActivity::class.java)
+                                    activity.startActivity(intent)
+                                }
+                            }
                         }
                     }
                 }
