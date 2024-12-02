@@ -28,6 +28,8 @@ import ch.protonmail.android.mailupselling.domain.annotations.PaymentButtonsHori
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingOnboardingEnabled
+import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepository
+import ch.protonmail.android.mailupselling.domain.repository.PostSubscriptionTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepositoryImpl
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
@@ -108,6 +110,12 @@ interface UpsellingModuleBindings {
     @Binds
     @Reusable
     fun provideTelemetryRepository(impl: UpsellingTelemetryRepositoryImpl): UpsellingTelemetryRepository
+
+    @Binds
+    @Reusable
+    fun providePostSubscriptionTelemetryRepo(
+        impl: PostSubscriptionTelemetryRepositoryImpl
+    ): PostSubscriptionTelemetryRepository
 }
 
 @Module
