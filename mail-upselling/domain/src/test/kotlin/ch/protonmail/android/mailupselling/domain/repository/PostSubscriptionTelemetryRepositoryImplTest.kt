@@ -3,8 +3,10 @@ package ch.protonmail.android.mailupselling.domain.repository
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsPostSubscriptionTelemetryEnabled
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -18,12 +20,14 @@ import kotlin.test.Test
 class PostSubscriptionTelemetryRepositoryImplTest {
 
     private val getPrimaryUser = mockk<GetPrimaryUser>()
+    private val isPostSubscriptionTelemetryEnabled = mockk<IsPostSubscriptionTelemetryEnabled>()
     private val telemetryManager = mockk<TelemetryManager>()
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
     private val postSubscriptionTelemetryRepository = PostSubscriptionTelemetryRepositoryImpl(
         getPrimaryUser,
+        isPostSubscriptionTelemetryEnabled,
         telemetryManager,
         scopeProvider
     )
@@ -41,10 +45,25 @@ class PostSubscriptionTelemetryRepositoryImplTest {
     }
 
     @Test
+    fun `should not track event when FF is turned off`() {
+        // Given
+        val user = UserTestData.Primary
+        coEvery { getPrimaryUser() } returns user
+        every { isPostSubscriptionTelemetryEnabled(user.userId) } returns false
+
+        // When
+        postSubscriptionTelemetryRepository.trackEvent(PostSubscriptionTelemetryEventType.LastStepDisplayed)
+
+        // Then
+        verify(exactly = 0) { telemetryManager.enqueue(any(), any(), any()) }
+    }
+
+    @Test
     fun `should track last step displayed event`() {
         // Given
         val user = UserTestData.Primary
         coEvery { getPrimaryUser() } returns user
+        every { isPostSubscriptionTelemetryEnabled(user.userId) } returns true
 
         // When
         postSubscriptionTelemetryRepository.trackEvent(PostSubscriptionTelemetryEventType.LastStepDisplayed)
@@ -61,6 +80,7 @@ class PostSubscriptionTelemetryRepositoryImplTest {
         // Given
         val user = UserTestData.Primary
         coEvery { getPrimaryUser() } returns user
+        every { isPostSubscriptionTelemetryEnabled(user.userId) } returns true
 
         // When
         postSubscriptionTelemetryRepository.trackEvent(

@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.domain.repository
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsPostSubscriptionTelemetryEnabled
 import kotlinx.coroutines.launch
 import me.proton.core.auth.domain.usecase.GetPrimaryUser
 import me.proton.core.telemetry.domain.TelemetryManager
@@ -31,6 +32,7 @@ import javax.inject.Inject
 
 class PostSubscriptionTelemetryRepositoryImpl @Inject constructor(
     private val getPrimaryUser: GetPrimaryUser,
+    private val isPostSubscriptionTelemetryEnabled: IsPostSubscriptionTelemetryEnabled,
     private val telemetryManager: TelemetryManager,
     private val scopeProvider: CoroutineScopeProvider
 ) : PostSubscriptionTelemetryRepository {
@@ -39,6 +41,8 @@ class PostSubscriptionTelemetryRepositoryImpl @Inject constructor(
         scopeProvider.GlobalDefaultSupervisedScope.launch {
 
             val user = getPrimaryUser() ?: return@launch
+
+            if (!isPostSubscriptionTelemetryEnabled(user.userId)) return@launch
 
             val event = when (eventType) {
                 is PostSubscriptionTelemetryEventType.LastStepDisplayed -> getLastStepDisplayedEvent()
