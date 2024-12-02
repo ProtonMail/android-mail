@@ -185,6 +185,7 @@ private fun Entitlement(
     Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
     Text(
         text = stringResource(id = textId),
+        textAlign = TextAlign.Center,
         style = ProtonTheme.typography.defaultUnspecified.copy(
             color = textColor
         )
