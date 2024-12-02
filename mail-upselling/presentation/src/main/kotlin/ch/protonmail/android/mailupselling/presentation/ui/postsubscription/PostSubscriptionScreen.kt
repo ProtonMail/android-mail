@@ -61,6 +61,7 @@ import ch.protonmail.android.mailupselling.presentation.model.postsubscription.A
 import ch.protonmail.android.mailupselling.presentation.model.postsubscription.PostSubscriptionState
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BackgroundGradientColorStops
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionBackgroundColor
+import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionButtonTextColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.CloseButtonBackground
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.HorizontalDividerColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.OtherPageIndicatorColor
@@ -185,7 +186,7 @@ private fun BottomSection(
             onClick = onButtonClick,
             colors = ButtonDefaults.protonButtonColors(
                 backgroundColor = Color.White,
-                contentColor = ProtonTheme.colors.shade100
+                contentColor = BottomSectionButtonTextColor
             )
         ) {
             Text(
@@ -196,7 +197,7 @@ private fun BottomSection(
                         R.string.post_subscription_continue_button
                     }
                 ),
-                style = ProtonTheme.typography.defaultStrongUnspecified.copy(color = ProtonTheme.colors.shade100)
+                style = ProtonTheme.typography.defaultStrongUnspecified.copy(color = BottomSectionButtonTextColor)
             )
         }
         Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))

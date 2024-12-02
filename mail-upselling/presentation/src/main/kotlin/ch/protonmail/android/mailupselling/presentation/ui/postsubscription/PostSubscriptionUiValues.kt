@@ -26,6 +26,7 @@ object PostSubscriptionColors {
     val CloseButtonBackground = Color(0x14FFFFFF)
     val HorizontalDividerColor = Color(0x3DFFFFFF)
     val BottomSectionBackgroundColor = Color(0x14FFFFFF)
+    val BottomSectionButtonTextColor = Color(0xFF0C0C14)
     val OtherPageIndicatorColor = Color(0x33FFFFFF)
     // Welcome page
     val ContentTextColor = Color(0xFFEDC1FF)
