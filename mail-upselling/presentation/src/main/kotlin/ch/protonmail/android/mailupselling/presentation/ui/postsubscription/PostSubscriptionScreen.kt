@@ -108,8 +108,7 @@ private fun PostSubscriptionScreen(state: PostSubscriptionState, onClose: () -> 
         ) {
             HorizontalPager(
                 modifier = Modifier.fillMaxSize(),
-                state = pagerState,
-                userScrollEnabled = false
+                state = pagerState
             ) { page ->
                 when (page) {
                     FIRST_PAGE -> PostSubscriptionWelcomePage()
