@@ -43,7 +43,7 @@ internal fun ApplicationLogsScreenList(modifier: Modifier = Modifier, actions: A
         item {
             ProtonSettingsItem(
                 name = stringResource(R.string.application_events_view_logcat),
-                hint = stringResource(R.string.application_events_view_events_hint),
+                hint = stringResource(R.string.application_events_view_logcat_hint),
                 onClick = actions.onShowLogcat
             )
         }
