@@ -20,6 +20,7 @@ package ch.protonmail.android.uitest.robot.detail.section
 
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.isNotDisplayed
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetTestTags
@@ -86,7 +87,7 @@ internal class MoveToBottomSheetSection : ComposeSectionRobot() {
         fun isHidden() {
             rootItem
                 .awaitHidden()
-                .assertDoesNotExist()
+                .isNotDisplayed()
         }
 
         fun headerTextIsShown() {
