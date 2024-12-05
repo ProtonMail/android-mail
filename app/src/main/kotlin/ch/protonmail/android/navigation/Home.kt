@@ -19,6 +19,7 @@
 package ch.protonmail.android.navigation
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarDuration
@@ -294,6 +295,7 @@ fun Home(
             Modifier.padding(contentPadding)
         ) {
             NavHost(
+                modifier = Modifier.fillMaxSize(),
                 navController = navController,
                 startDestination = Screen.Mailbox.route
             ) {

@@ -21,6 +21,8 @@ package ch.protonmail.android
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
@@ -43,6 +45,7 @@ class PostSubscriptionActivity : AppCompatActivity() {
                     .withDestinationChangedObservableEffect()
 
                 NavHost(
+                    modifier = Modifier.fillMaxSize(),
                     navController = navController,
                     startDestination = Destination.Screen.PostSubscription.route
                 ) {

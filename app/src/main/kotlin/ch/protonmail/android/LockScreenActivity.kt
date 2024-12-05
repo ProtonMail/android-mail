@@ -23,6 +23,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -50,6 +52,7 @@ internal class LockScreenActivity : AppCompatActivity() {
                     .withDestinationChangedObservableEffect()
 
                 NavHost(
+                    modifier = Modifier.fillMaxSize(),
                     navController = navController,
                     startDestination = Destination.Screen.AutoLockPinScreen.route
                 ) {
