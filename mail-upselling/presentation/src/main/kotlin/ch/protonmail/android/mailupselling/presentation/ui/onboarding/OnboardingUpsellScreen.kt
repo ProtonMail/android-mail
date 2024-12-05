@@ -37,10 +37,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -165,31 +165,30 @@ private fun OnboardingUpsellScreenContent(
             )
         }
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(horizontal = ProtonDimens.DefaultSpacing),
+                .padding(horizontal = ProtonDimens.DefaultSpacing)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            item {
-                PlanSwitcher(
-                    planSwitcherUiModel = state.planSwitcherUiModel,
-                    selectedPlansType = selectedPlansType.value,
-                    onSwitch = {
-                        selectedPlansType.value = it
-                        onPlanSelected(selectedPlansType.value, selectedPlan.value)
-                    }
-                )
-                Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-            }
+            PlanSwitcher(
+                planSwitcherUiModel = state.planSwitcherUiModel,
+                selectedPlansType = selectedPlansType.value,
+                onSwitch = {
+                    selectedPlansType.value = it
+                    onPlanSelected(selectedPlansType.value, selectedPlan.value)
+                }
+            )
+            Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
 
             val plans = when (selectedPlansType.value) {
                 PlansType.Monthly -> state.planUiModels.monthlyPlans
                 PlansType.Annual -> state.planUiModels.annualPlans
             }
 
-            itemsIndexed(plans) { index, item ->
+            plans.forEachIndexed { index, item ->
                 PlanCard(
                     plan = item,
                     isSelected = item.title == selectedPlan.value,
