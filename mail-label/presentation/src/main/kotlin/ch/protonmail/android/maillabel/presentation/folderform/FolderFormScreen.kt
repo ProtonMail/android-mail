@@ -160,13 +160,12 @@ fun FolderFormScreen(
             when (bottomSheetEffect) {
                 BottomSheetVisibilityEffect.Hide -> {
                     bottomSheetState.hide()
+                    showBottomSheet = false
                 }
 
                 BottomSheetVisibilityEffect.Show -> {
-                    if (!showBottomSheet) {
-                        showBottomSheet = true
-                        delay(DELAY_SHOWING)
-                    }
+                    showBottomSheet = true
+                    delay(DELAY_SHOWING)
                     focusManager.clearFocus()
                     bottomSheetState.show()
                 }

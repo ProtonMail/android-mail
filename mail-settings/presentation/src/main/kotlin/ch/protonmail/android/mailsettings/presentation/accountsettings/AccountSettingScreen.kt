@@ -264,13 +264,12 @@ fun AccountSettingScreen(
                     when (bottomSheetEffect) {
                         BottomSheetVisibilityEffect.Hide -> scope.launch {
                             bottomSheetState.hide()
+                            showBottomSheet = false
                         }
 
                         BottomSheetVisibilityEffect.Show -> scope.launch {
-                            if (!showBottomSheet) {
-                                showBottomSheet = true
-                                delay(DELAY_SHOWING)
-                            }
+                            showBottomSheet = true
+                            delay(DELAY_SHOWING)
                             bottomSheetState.show()
                         }
                     }
