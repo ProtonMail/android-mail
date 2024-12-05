@@ -84,6 +84,7 @@ class PrepareAttachmentForSharingTest {
     private val contentValuesProvider = mockk<ContentValuesProvider>()
     private val getUriFromMediaScanner = mockk<GetUriFromMediaScanner>()
     private val sanitizeFullFileName = spyk<SanitizeFullFileName>()
+    private val generateUniqueFileName = spyk<GenerateUniqueFileName>()
     private val prepareAttachmentForSharing =
         PrepareAttachmentForSharing(
             context,
@@ -92,6 +93,7 @@ class PrepareAttachmentForSharingTest {
             contentValuesProvider,
             getUriFromMediaScanner,
             sanitizeFullFileName,
+            generateUniqueFileName,
             UnconfinedTestDispatcher()
         )
 

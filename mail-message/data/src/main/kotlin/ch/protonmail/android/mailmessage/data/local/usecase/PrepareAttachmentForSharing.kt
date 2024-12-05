@@ -53,6 +53,7 @@ class PrepareAttachmentForSharing @Inject constructor(
     private val contentValuesProvider: ContentValuesProvider,
     private val getUriFromMediaScanner: GetUriFromMediaScanner,
     private val sanitizeFileName: SanitizeFullFileName,
+    private val generateUniqueFileName: GenerateUniqueFileName,
     @IODispatcher private val ioDispatcher: CoroutineDispatcher
 ) {
 
@@ -70,7 +71,7 @@ class PrepareAttachmentForSharing @Inject constructor(
             ?: return@withContext PrepareAttachmentForSharingError.AttachmentNotFound.left()
 
         val contentResolver = context.contentResolver
-        val fileName = sanitizeFileName(messageAttachment.name)
+        val fileName = generateUniqueFileName(sanitizeFileName(messageAttachment.name))
         val attachmentMimeType = messageAttachment.mimeType
         try {
             if (buildVersionProvider.sdkInt() >= Build.VERSION_CODES.Q) {
