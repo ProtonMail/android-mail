@@ -1,5 +1,6 @@
 package ch.protonmail.android.mailupselling.domain.repository
 
+import java.time.Instant
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEvent
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventDimensions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
@@ -8,6 +9,7 @@ import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import me.proton.core.auth.domain.usecase.GetPrimaryUser
@@ -15,6 +17,7 @@ import me.proton.core.telemetry.domain.TelemetryManager
 import me.proton.core.telemetry.domain.entity.TelemetryPriority
 import me.proton.core.test.kotlin.TestCoroutineScopeProvider
 import me.proton.core.test.kotlin.TestDispatcherProvider
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class PostSubscriptionTelemetryRepositoryImplTest {
@@ -31,6 +34,11 @@ class PostSubscriptionTelemetryRepositoryImplTest {
         telemetryManager,
         scopeProvider
     )
+
+    @BeforeTest
+    fun setup() {
+        mockInstant()
+    }
 
     @Test
     fun `should not track events when primary user is not found`() {
@@ -92,5 +100,10 @@ class PostSubscriptionTelemetryRepositoryImplTest {
         dimensions.addSelectedApp("android_calendar")
         val event = PostSubscriptionTelemetryEvent.DownloadApp(dimensions).toTelemetryEvent()
         verify { telemetryManager.enqueue(user.userId, event, TelemetryPriority.Immediate) }
+    }
+
+    private fun mockInstant() {
+        mockkStatic(Instant::class)
+        every { Instant.now() } returns mockk { every { epochSecond } returns 0 }
     }
 }
