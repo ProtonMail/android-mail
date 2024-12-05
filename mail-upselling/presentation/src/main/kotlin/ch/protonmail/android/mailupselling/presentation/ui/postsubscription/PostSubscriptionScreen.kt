@@ -18,8 +18,8 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.postsubscription
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -87,7 +87,6 @@ fun PostSubscriptionScreen(onClose: () -> Unit, viewModel: PostSubscriptionViewM
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PostSubscriptionScreen(
     state: PostSubscriptionState,
@@ -99,6 +98,10 @@ private fun PostSubscriptionScreen(
 
     fun scrollToPage(page: Int) = coroutineScope.launch {
         pagerState.animateScrollToPage(page)
+    }
+
+    BackHandler {
+        onClose()
     }
 
     Column(
@@ -172,7 +175,6 @@ private fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BottomSection(
     pagerState: PagerState,
@@ -215,7 +217,6 @@ private fun BottomSection(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PageIndicator(pagerState: PagerState) {
     Row {
