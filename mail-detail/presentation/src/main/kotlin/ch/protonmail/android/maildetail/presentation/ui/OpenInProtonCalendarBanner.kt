@@ -73,13 +73,14 @@ fun OpenInProtonCalendarBanner(modifier: Modifier = Modifier, onOpenInProtonCale
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
             Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-            Column {
+            Column(modifier = Modifier.align(Alignment.CenterVertically)) {
                 Text(
                     style = ProtonTheme.typography.defaultSmallStrongNorm,
                     color = ProtonTheme.colors.textAccent,
                     maxLines = 1,
                     text = stringResource(id = R.string.open_on_protoncalendar_banner_title)
                 )
+                Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing / 2))
                 Text(
                     style = ProtonTheme.typography.captionWeak,
                     color = ProtonTheme.colors.textWeak,
