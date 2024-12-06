@@ -82,90 +82,93 @@ internal fun UpsellingScreenContent(
         derivedStateOf { scrollState.value == 0 }
     }
 
-    if (shouldShowImage) {
-        IconButton(
-            modifier = Modifier
-                .padding(ProtonDimens.ExtraSmallSpacing)
-                .zIndex(1f),
-            onClick = actions.onDismiss
-        ) {
-            Box(
-                contentAlignment = Alignment.Center,
+    Box {
+        if (shouldShowImage) {
+            IconButton(
                 modifier = Modifier
-                    .size(UpsellingLayoutValues.closeButtonSize)
-                    .background(
-                        color = UpsellingLayoutValues.closeButtonBackgroundColor,
-                        shape = CircleShape
-                    )
+                    .padding(ProtonDimens.ExtraSmallSpacing)
+                    .align(alignment = Alignment.TopStart)
+                    .zIndex(1f),
+                onClick = actions.onDismiss
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    tint = UpsellingLayoutValues.closeButtonColor,
-                    contentDescription = stringResource(R.string.upselling_close_button_content_description)
-                )
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .size(UpsellingLayoutValues.closeButtonSize)
+                        .background(
+                            color = UpsellingLayoutValues.closeButtonBackgroundColor,
+                            shape = CircleShape
+                        )
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        tint = UpsellingLayoutValues.closeButtonColor,
+                        contentDescription = stringResource(R.string.upselling_close_button_content_description)
+                    )
+                }
             }
         }
-    }
 
-    Column(
-        modifier = modifier
-            .thenIf(isStandalone) { Modifier.fillMaxHeight() }
-            .verticalScroll(scrollState)
-            .background(UpsellingLayoutValues.backgroundGradient),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        Column(
+            modifier = modifier
+                .thenIf(isStandalone) { Modifier.fillMaxHeight() }
+                .verticalScroll(scrollState)
+                .background(UpsellingLayoutValues.backgroundGradient),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        Spacer(modifier = Modifier.weight(UpsellingLayoutValues.topSpacingWeight))
+            Spacer(modifier = Modifier.weight(UpsellingLayoutValues.topSpacingWeight))
 
-        if (!isNarrowScreen) {
-            Image(
+            if (!isNarrowScreen) {
+                Image(
+                    modifier = Modifier
+                        .padding(horizontal = ProtonDimens.DefaultSpacing)
+                        .padding(top = ProtonDimens.DefaultSpacing),
+                    painter = painterResource(id = dynamicPlansModel.icon.iconResId),
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            }
+
+            Text(
                 modifier = Modifier
                     .padding(horizontal = ProtonDimens.DefaultSpacing)
                     .padding(top = ProtonDimens.DefaultSpacing),
-                painter = painterResource(id = dynamicPlansModel.icon.iconResId),
-                contentDescription = NO_CONTENT_DESCRIPTION
+                text = dynamicPlansModel.title.text.string(),
+                style = if (isNarrowScreen) {
+                    ProtonTheme.typography.headlineSmallNorm
+                } else ProtonTheme.typography.headlineNorm,
+                color = UpsellingLayoutValues.titleColor,
+                textAlign = TextAlign.Center
             )
-        }
 
-        Text(
-            modifier = Modifier
-                .padding(horizontal = ProtonDimens.DefaultSpacing)
-                .padding(top = ProtonDimens.DefaultSpacing),
-            text = dynamicPlansModel.title.text.string(),
-            style = if (isNarrowScreen) {
-                ProtonTheme.typography.headlineSmallNorm
-            } else ProtonTheme.typography.headlineNorm,
-            color = UpsellingLayoutValues.titleColor,
-            textAlign = TextAlign.Center
-        )
+            Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
 
-        Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
-
-        Text(
-            modifier = Modifier
-                .padding(horizontal = ProtonDimens.DefaultSpacing)
-                .padding(top = ProtonDimens.SmallSpacing),
-            text = dynamicPlansModel.description.text.string(),
-            style = ProtonTheme.typography.body2Regular,
-            color = UpsellingLayoutValues.subtitleColor,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
-
-        when (state.plans.entitlements) {
-            is PlanEntitlementsUiModel.ComparisonTableList -> ComparisonTable(state.plans.entitlements)
-            is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
-        }
-
-        Spacer(modifier = Modifier.weight(UpsellingLayoutValues.bottomSpacingWeight))
-
-        if (dynamicPlansModel.list is DynamicPlanInstanceListUiModel.Data) {
-            UpsellingPlanButtonsFooter(
-                modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-                dynamicPlansModel.list,
-                actions
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = ProtonDimens.DefaultSpacing)
+                    .padding(top = ProtonDimens.SmallSpacing),
+                text = dynamicPlansModel.description.text.string(),
+                style = ProtonTheme.typography.body2Regular,
+                color = UpsellingLayoutValues.subtitleColor,
+                textAlign = TextAlign.Center
             )
+
+            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+
+            when (state.plans.entitlements) {
+                is PlanEntitlementsUiModel.ComparisonTableList -> ComparisonTable(state.plans.entitlements)
+                is PlanEntitlementsUiModel.SimpleList -> UpsellingEntitlementsListLayout(state.plans.entitlements)
+            }
+
+            Spacer(modifier = Modifier.weight(UpsellingLayoutValues.bottomSpacingWeight))
+
+            if (dynamicPlansModel.list is DynamicPlanInstanceListUiModel.Data) {
+                UpsellingPlanButtonsFooter(
+                    modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
+                    dynamicPlansModel.list,
+                    actions
+                )
+            }
         }
     }
 
