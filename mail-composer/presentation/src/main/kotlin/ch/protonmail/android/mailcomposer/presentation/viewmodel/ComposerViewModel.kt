@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
+import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.model.decode
 import ch.protonmail.android.mailcommon.domain.model.hasEmailData
@@ -166,6 +167,7 @@ class ComposerViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     observePrimaryUserId: ObservePrimaryUserId,
     provideNewDraftId: ProvideNewDraftId,
+    @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher,
     @IsNewBodyTextFieldEnabled val isNewBodyTextFieldEnabled: Boolean
 ) : ViewModel() {
 
@@ -529,13 +531,10 @@ class ComposerViewModel @Inject constructor(
                 isBodyEmptyOrEqualsToSignatureAndFooter(currentDraftBody()) -> action
 
             else -> {
-                viewModelScope.launch {
-                    withContext(NonCancellable) {
-                        draftUploader.stopContinuousUpload()
-                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
-                        draftUploader.upload(primaryUserId(), currentMessageId())
-                    }
-                }
+                draftUploader.stopContinuousUpload()
+                storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
+                draftUploader.upload(primaryUserId(), currentMessageId())
+
                 ComposerEvent.OnCloseWithDraftSaved
             }
         }
@@ -575,13 +574,9 @@ class ComposerViewModel @Inject constructor(
         return when {
             draftFields.areBlank() -> action
             else -> {
-                viewModelScope.launch {
-                    withContext(NonCancellable) {
-                        draftUploader.stopContinuousUpload()
-                        storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
-                        sendMessage(primaryUserId(), currentMessageId())
-                    }
-                }
+                draftUploader.stopContinuousUpload()
+                storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
+                sendMessage(primaryUserId(), currentMessageId())
 
                 if (networkManager.isConnectedToNetwork()) {
                     ComposerAction.OnSendMessage
@@ -592,15 +587,17 @@ class ComposerViewModel @Inject constructor(
         }
     }
 
-    private suspend fun buildDraftFields() = DraftFields(
-        currentSenderEmail(),
-        currentSubject(),
-        currentDraftBody(),
-        currentValidRecipientsTo(),
-        currentValidRecipientsCc(),
-        currentValidRecipientsBcc(),
-        currentDraftQuotedHtmlBody()
-    )
+    private suspend fun buildDraftFields() = withContext(defaultDispatcher) {
+        DraftFields(
+            currentSenderEmail(),
+            currentSubject(),
+            currentDraftBody(),
+            currentValidRecipientsTo(),
+            currentValidRecipientsCc(),
+            currentValidRecipientsBcc(),
+            currentDraftQuotedHtmlBody()
+        )
+    }
 
     private suspend fun onSubjectChanged(action: ComposerAction.SubjectChanged): ComposerOperation =
         storeDraftWithSubject(primaryUserId.first(), currentMessageId(), currentSenderEmail(), action.subject).fold(
