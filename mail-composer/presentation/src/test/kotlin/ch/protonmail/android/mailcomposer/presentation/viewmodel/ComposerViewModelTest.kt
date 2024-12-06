@@ -274,6 +274,7 @@ class ComposerViewModelTest {
             savedStateHandle,
             observePrimaryUserIdMock,
             provideNewDraftIdMock,
+            testDispatcher,
             isNewBodyTextFieldUsed
         )
     }
@@ -2413,6 +2414,7 @@ class ComposerViewModelTest {
 
             // When
             viewModel.submit(ComposerAction.OnSendMessage)
+            advanceUntilIdle()
 
             // Then
             viewModel.state.test {

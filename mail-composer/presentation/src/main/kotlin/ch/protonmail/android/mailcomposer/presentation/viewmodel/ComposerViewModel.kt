@@ -98,8 +98,10 @@ import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.test.idlingresources.ComposerIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -109,8 +111,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.util.kotlin.deserialize
@@ -171,7 +171,6 @@ class ComposerViewModel @Inject constructor(
     @IsNewBodyTextFieldEnabled val isNewBodyTextFieldEnabled: Boolean
 ) : ViewModel() {
 
-    private val actionMutex = Mutex()
     private val primaryUserId = observePrimaryUserId().filterNotNull()
 
     private val searchContactsJobs = mutableMapOf<ContactSuggestionsField, Job>()
@@ -183,6 +182,8 @@ class ComposerViewModel @Inject constructor(
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
+
+    private val composerActionsChannel = Channel<ComposerAction>(Channel.BUFFERED)
 
     init {
         val inputDraftId = savedStateHandle.get<String>(ComposerScreen.DraftMessageIdKey)
@@ -221,6 +222,10 @@ class ComposerViewModel @Inject constructor(
         observeDeviceContactsSuggestionsPromptEnabled()
 
         emitNewStateFor(ComposerEvent.OnIsDeviceContactsSuggestionsEnabled(isDeviceContactsSuggestionsEnabled()))
+
+        viewModelScope.launch {
+            processActions()
+        }
     }
 
     private fun isCreatingEmptyDraft(inputDraftId: String?, draftAction: DraftAction?): Boolean =
@@ -381,46 +386,51 @@ class ComposerViewModel @Inject constructor(
         composerIdlingResource.clear()
     }
 
-    @Suppress("ComplexMethod")
     internal fun submit(action: ComposerAction) {
         viewModelScope.launch {
-            logViewModelAction(action, "waiting for lock.")
-            actionMutex.withLock {
-                logViewModelAction(action, "acquired lock.")
-                composerIdlingResource.increment()
-                when (action) {
-                    is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
-                    is ComposerAction.DraftBodyChanged -> onDraftBodyChanged(action)
-                    is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
-                    is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
-                    is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
-                    is ComposerAction.RecipientsToChanged -> emitNewStateFor(onToChanged(action))
-                    is ComposerAction.RecipientsCcChanged -> emitNewStateFor(onCcChanged(action))
-                    is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
-                    is ComposerAction.ContactSuggestionTermChanged -> onSearchTermChanged(
-                        action.searchTerm,
-                        action.suggestionsField
-                    )
+            logViewModelAction(action, "Enqueued.")
+            composerActionsChannel.send(action)
+        }
+    }
 
-                    is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
-                    is ComposerAction.DeviceContactsPromptDenied -> onDeviceContactsPromptDenied()
-                    is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
-                    is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
-                    is ComposerAction.OnSendMessage -> emitNewStateFor(handleOnSendMessage(action))
-                    is ComposerAction.ConfirmSendingWithoutSubject -> emitNewStateFor(onSendMessage(action))
-                    is ComposerAction.RejectSendingWithoutSubject -> emitNewStateFor(action)
-                    is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
-                    is ComposerAction.OnSetExpirationTimeRequested -> emitNewStateFor(action)
-                    is ComposerAction.ExpirationTimeSet -> onExpirationTimeSet(action)
-                    is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
-                        onSendMessage(action)
-                    )
+    @Suppress("ComplexMethod")
+    private suspend fun processActions() {
+        composerActionsChannel.consumeEach { action ->
+            logViewModelAction(action, "Executing.")
+            composerIdlingResource.increment()
+            when (action) {
+                is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
+                is ComposerAction.DraftBodyChanged -> onDraftBodyChanged(action)
+                is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
+                is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
+                is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
+                is ComposerAction.RecipientsToChanged -> emitNewStateFor(onToChanged(action))
+                is ComposerAction.RecipientsCcChanged -> emitNewStateFor(onCcChanged(action))
+                is ComposerAction.RecipientsBccChanged -> emitNewStateFor(onBccChanged(action))
+                is ComposerAction.ContactSuggestionTermChanged -> onSearchTermChanged(
+                    action.searchTerm,
+                    action.suggestionsField
+                )
 
-                    is ComposerAction.RespondInlineRequested -> onRespondInline()
-                }
-                composerIdlingResource.decrement()
+                is ComposerAction.ContactSuggestionsDismissed -> emitNewStateFor(action)
+                is ComposerAction.DeviceContactsPromptDenied -> onDeviceContactsPromptDenied()
+                is ComposerAction.OnAddAttachments -> emitNewStateFor(action)
+                is ComposerAction.OnCloseComposer -> emitNewStateFor(onCloseComposer(action))
+                is ComposerAction.OnSendMessage -> emitNewStateFor(handleOnSendMessage(action))
+                is ComposerAction.ConfirmSendingWithoutSubject -> emitNewStateFor(onSendMessage(action))
+                is ComposerAction.RejectSendingWithoutSubject -> emitNewStateFor(action)
+                is ComposerAction.RemoveAttachment -> onAttachmentsRemoved(action)
+                is ComposerAction.OnSetExpirationTimeRequested -> emitNewStateFor(action)
+                is ComposerAction.ExpirationTimeSet -> onExpirationTimeSet(action)
+                is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> emitNewStateFor(
+                    onSendMessage(action)
+                )
+
+                is ComposerAction.RespondInlineRequested -> onRespondInline()
             }
-            logViewModelAction(action, "released lock.")
+            composerIdlingResource.decrement()
+
+            logViewModelAction(action, "Completed.")
         }
     }
 
