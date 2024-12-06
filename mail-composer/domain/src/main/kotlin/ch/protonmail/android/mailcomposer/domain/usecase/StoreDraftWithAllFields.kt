@@ -20,12 +20,10 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
 import ch.protonmail.android.mailcomposer.domain.Transactor
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import kotlinx.coroutines.NonCancellable
-import kotlinx.coroutines.withContext
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
@@ -43,7 +41,7 @@ class StoreDraftWithAllFields @Inject constructor(
         draftMessageId: MessageId,
         fields: DraftFields,
         action: DraftAction = DraftAction.Compose
-    ) = withContext(NonCancellable) {
+    ) {
         transactor.performTransaction {
             storeDraftWithBody(
                 draftMessageId,
