@@ -22,7 +22,6 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
@@ -31,19 +30,24 @@ import ch.protonmail.android.mailcomposer.domain.model.RecipientsCc
 import ch.protonmail.android.mailcomposer.domain.model.RecipientsTo
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
 import ch.protonmail.android.mailcomposer.domain.model.Subject
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
 import ch.protonmail.android.test.utils.FakeTransactor
 import ch.protonmail.android.test.utils.rule.LoggingTestRule
+import io.mockk.called
 import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertTrue
 
 class StoreDraftWithAllFieldsTest {
 
@@ -51,21 +55,19 @@ class StoreDraftWithAllFieldsTest {
     val loggingTestRule = LoggingTestRule()
 
     private val draftStateRepository = mockk<DraftStateRepository>()
-    private val storeDraftWithSubjectMock = mockk<StoreDraftWithSubject>()
-    private val storeDraftWithBodyMock = mockk<StoreDraftWithBody>()
-    private val storeDraftWithRecipientsMock = mockk<StoreDraftWithRecipients>()
+    private val prepareAndEncryptDraftBody = mockk<PrepareAndEncryptDraftBody>()
+    private val saveDraft = mockk<SaveDraft>()
     private val fakeTransactor = FakeTransactor()
 
     private val storeDraftWithAllFields = StoreDraftWithAllFields(
         draftStateRepository,
-        storeDraftWithSubjectMock,
-        storeDraftWithBodyMock,
-        storeDraftWithRecipientsMock,
+        prepareAndEncryptDraftBody,
+        saveDraft,
         fakeTransactor
     )
 
     @Test
-    fun `saves draft with subject body and sender`() = runTest {
+    fun `saves draft with all fields`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
@@ -74,8 +76,9 @@ class StoreDraftWithAllFieldsTest {
         val plaintextDraftBody = DraftBody("I am plaintext")
         val quotedHtmlBody = OriginalHtmlQuote("<div>Input quoted html body</div>")
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.Doe))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.Bob))
+        val expectedAction = DraftAction.Compose
         val draftFields = DraftFields(
             senderEmail,
             subject,
@@ -85,36 +88,32 @@ class StoreDraftWithAllFieldsTest {
             recipientsBcc,
             quotedHtmlBody
         )
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, userId)
-        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
-        expectStoreDraftRecipientsSucceeds(
-            userId,
-            draftMessageId,
-            senderEmail,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
+        val draftBody = expectDraftBodyWithText(userId, draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail)
+        val expectedDraftUpdated = draftBody.copy(
+            message = draftBody.message.copy(
+                subject = draftFields.subject.value,
+                toList = draftFields.recipientsTo.value,
+                ccList = draftFields.recipientsCc.value,
+                bccList = draftFields.recipientsBcc.value
+            )
         )
         expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectSaveDraftSuccess(userId, expectedDraftUpdated)
 
         // When
-        storeDraftWithAllFields(userId, draftMessageId, draftFields)
+        val result = storeDraftWithAllFields(userId, draftMessageId, draftFields)
 
         // Then
-        coVerify { storeDraftWithBodyMock(draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail, userId) }
-        coVerify { storeDraftWithSubjectMock(userId, draftMessageId, senderEmail, subject) }
-        coVerify {
-            storeDraftWithRecipientsMock(
-                userId,
-                draftMessageId,
-                senderEmail,
-                recipientsTo.value,
-                recipientsCc.value,
-                recipientsBcc.value
-            )
+        assertTrue(result.isRight())
+        coVerifySequence {
+            prepareAndEncryptDraftBody(userId, draftMessageId, plaintextDraftBody, quotedHtmlBody, senderEmail)
+            saveDraft(expectedDraftUpdated, userId)
+            draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, expectedAction)
         }
     }
 
     @Test
-    fun `logs error when store draft with body fails`() = runTest {
+    fun `should error when prepare draft body fails`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val draftMessageId = MessageIdSample.build()
@@ -122,8 +121,8 @@ class StoreDraftWithAllFieldsTest {
         val subject = Subject("Subject of this email")
         val plaintextDraftBody = DraftBody("I am plaintext")
         val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
+        val recipientsCc = RecipientsCc(listOf(RecipientSample.Doe))
+        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.Bob))
         val draftFields = buildDraftFields(
             senderEmail,
             subject,
@@ -132,126 +131,19 @@ class StoreDraftWithAllFieldsTest {
             recipientsCc,
             recipientsBcc
         )
-        val expectedError = StoreDraftWithBodyError.DraftReadError
-        expectStoreDraftBodyFails(draftMessageId, plaintextDraftBody, senderEmail, userId) { expectedError }
-        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
-        expectStoreDraftRecipientsSucceeds(
-            userId,
-            draftMessageId,
-            senderEmail,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
-        )
-        expectStoreDraftStateSucceeds(userId, draftMessageId)
+        expectDraftBodyError(userId, draftMessageId, plaintextDraftBody, null, senderEmail)
 
         // When
-        storeDraftWithAllFields(userId, draftMessageId, draftFields)
+        val result = storeDraftWithAllFields(userId, draftMessageId, draftFields)
 
         // Then
-        val expectedLog = "Storing all draft fields failed due to $expectedError. \n Draft MessageId = $draftMessageId"
-        loggingTestRule.assertErrorLogged(expectedLog)
-    }
+        assertTrue(result.isLeft())
 
-    @Test
-    fun `logs error when store draft with subject fails`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
-        val subject = Subject("Subject of this email")
-        val plaintextDraftBody = DraftBody("I am plaintext")
-        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val draftFields = buildDraftFields(
-            senderEmail,
-            subject,
-            plaintextDraftBody,
-            recipientsTo,
-            recipientsCc,
-            recipientsBcc
-        )
-        val expectedError = StoreDraftWithSubject.Error.DraftSaveError
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
-        expectStoreDraftSubjectFails(draftMessageId, senderEmail, userId, subject) { expectedError }
-        expectStoreDraftStateSucceeds(userId, draftMessageId)
-        expectStoreDraftRecipientsSucceeds(
-            userId,
-            draftMessageId,
-            senderEmail,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
-        )
-
-        // When
-        storeDraftWithAllFields(userId, draftMessageId, draftFields)
-
-        // Then
-        val expectedLog = "Storing all draft fields failed due to $expectedError. \n Draft MessageId = $draftMessageId"
-        loggingTestRule.assertErrorLogged(expectedLog)
-    }
-
-    @Test
-    fun `logs error when store draft with recipients fails`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
-        val subject = Subject("Subject of this email")
-        val plaintextDraftBody = DraftBody("I am plaintext")
-        val recipientsTo = RecipientsTo(listOf(RecipientSample.John))
-        val recipientsCc = RecipientsCc(listOf(RecipientSample.John))
-        val recipientsBcc = RecipientsBcc(listOf(RecipientSample.John))
-        val draftFields = buildDraftFields(
-            senderEmail,
-            subject,
-            plaintextDraftBody,
-            recipientsTo,
-            recipientsCc,
-            recipientsBcc
-        )
-        val expectedError = StoreDraftWithRecipients.Error.DraftSaveError
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
-        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
-        expectStoreDraftStateSucceeds(userId, draftMessageId)
-        expectStoreDraftRecipientsFails(
-            draftMessageId,
-            senderEmail,
-            userId,
-            Triple(recipientsTo, recipientsCc, recipientsBcc)
-        ) { expectedError }
-
-        // When
-        storeDraftWithAllFields(userId, draftMessageId, draftFields)
-
-        // Then
-        val expectedLog = "Storing all draft fields failed due to $expectedError. \n Draft MessageId = $draftMessageId"
-        loggingTestRule.assertErrorLogged(expectedLog)
-    }
-
-    @Test
-    fun `store draft state as Local when draft data is saved locally`() = runTest {
-        // Given
-        val userId = UserIdSample.Primary
-        val draftMessageId = MessageIdSample.build()
-        val senderEmail = SenderEmail(UserAddressSample.PrimaryAddress.email)
-        val subject = Subject("Subject of this email")
-        val plaintextDraftBody = DraftBody("I am plaintext")
-        val draftFields = buildDraftFields(senderEmail, subject, plaintextDraftBody)
-        val expectedAction = DraftAction.Compose
-        expectStoreDraftBodySucceeds(draftMessageId, plaintextDraftBody, NoQuotedHtmlBody, senderEmail, userId)
-        expectStoreDraftSubjectSucceeds(userId, draftMessageId, senderEmail, subject)
-        expectStoreDraftStateSucceeds(userId, draftMessageId, expectedAction)
-        expectStoreDraftRecipientsSucceeds(
-            userId,
-            draftMessageId,
-            senderEmail,
-            Triple(RecipientsTo(emptyList()), RecipientsCc(emptyList()), RecipientsBcc(emptyList()))
-        )
-
-        // When
-        storeDraftWithAllFields(userId, draftMessageId, draftFields)
-
-        // Then
-        coVerify { draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, expectedAction) }
+        coVerifySequence {
+            prepareAndEncryptDraftBody(userId, draftMessageId, plaintextDraftBody, null, senderEmail)
+            saveDraft wasNot called
+            draftStateRepository wasNot called
+        }
     }
 
     private fun buildDraftFields(
@@ -281,114 +173,29 @@ class StoreDraftWithAllFieldsTest {
         } returns Unit.right()
     }
 
-    private fun expectStoreDraftBodySucceeds(
-        expectedMessageId: MessageId,
-        expectedDraftBody: DraftBody,
-        expectedQuotedHtmlBody: OriginalHtmlQuote?,
-        expectedSenderEmail: SenderEmail,
-        expectedUserId: UserId
+    private fun expectDraftBodyWithText(
+        userId: UserId,
+        messageId: MessageId,
+        draftBody: DraftBody,
+        originalHtmlQuote: OriginalHtmlQuote?,
+        senderEmail: SenderEmail
+    ) = MessageWithBodySample.EmptyDraft.also {
+        coEvery { prepareAndEncryptDraftBody(userId, messageId, draftBody, originalHtmlQuote, senderEmail) } returns
+            it.right()
+    }
+
+    private fun expectDraftBodyError(
+        userId: UserId,
+        messageId: MessageId,
+        draftBody: DraftBody,
+        originalHtmlQuote: OriginalHtmlQuote?,
+        senderEmail: SenderEmail
     ) {
-        coEvery {
-            storeDraftWithBodyMock(
-                expectedMessageId,
-                expectedDraftBody,
-                expectedQuotedHtmlBody,
-                expectedSenderEmail,
-                expectedUserId
-            )
-        } returns Unit.right()
+        coEvery { prepareAndEncryptDraftBody(userId, messageId, draftBody, originalHtmlQuote, senderEmail) } returns
+            PrepareDraftBodyError.DraftReadError.left()
     }
 
-    private fun expectStoreDraftBodyFails(
-        expectedMessageId: MessageId,
-        expectedDraftBody: DraftBody,
-        expectedSenderEmail: SenderEmail,
-        expectedUserId: UserId,
-        error: () -> StoreDraftWithBodyError
-    ) = error().also {
-        coEvery {
-            storeDraftWithBodyMock(
-                expectedMessageId,
-                expectedDraftBody,
-                NoQuotedHtmlBody,
-                expectedSenderEmail,
-                expectedUserId
-            )
-        } returns it.left()
-    }
-
-    private fun expectStoreDraftSubjectSucceeds(
-        expectedUserId: UserId,
-        expectedMessageId: MessageId,
-        expectedSenderEmail: SenderEmail,
-        expectedSubject: Subject
-    ) {
-        coEvery {
-            storeDraftWithSubjectMock(
-                expectedUserId,
-                expectedMessageId,
-                expectedSenderEmail,
-                expectedSubject
-            )
-        } returns Unit.right()
-    }
-
-    private fun expectStoreDraftSubjectFails(
-        expectedMessageId: MessageId,
-        expectedSenderEmail: SenderEmail,
-        expectedUserId: UserId,
-        expectedSubject: Subject,
-        error: () -> StoreDraftWithSubject.Error
-    ) = error().also {
-        coEvery {
-            storeDraftWithSubjectMock(
-                expectedUserId,
-                expectedMessageId,
-                expectedSenderEmail,
-                expectedSubject
-            )
-        } returns it.left()
-    }
-
-    private fun expectStoreDraftRecipientsSucceeds(
-        expectedUserId: UserId,
-        expectedMessageId: MessageId,
-        expectedSenderEmail: SenderEmail,
-        recipients: Triple<RecipientsTo, RecipientsCc, RecipientsBcc>
-    ) {
-        coEvery {
-            storeDraftWithRecipientsMock(
-                expectedUserId,
-                expectedMessageId,
-                expectedSenderEmail,
-                recipients.first.value,
-                recipients.second.value,
-                recipients.third.value
-            )
-        } returns Unit.right()
-    }
-
-    private fun expectStoreDraftRecipientsFails(
-        expectedMessageId: MessageId,
-        expectedSenderEmail: SenderEmail,
-        expectedUserId: UserId,
-        recipients: Triple<RecipientsTo, RecipientsCc, RecipientsBcc>,
-        error: () -> StoreDraftWithRecipients.Error
-    ) = error().also {
-        coEvery {
-            storeDraftWithRecipientsMock(
-                expectedUserId,
-                expectedMessageId,
-                expectedSenderEmail,
-                recipients.first.value,
-                recipients.second.value,
-                recipients.third.value
-            )
-        } returns it.left()
-    }
-
-
-    companion object {
-        private val NoQuotedHtmlBody = null
+    private fun expectSaveDraftSuccess(userId: UserId, messageWithBody: MessageWithBody) {
+        coEvery { saveDraft(messageWithBody, userId) } returns true
     }
 }

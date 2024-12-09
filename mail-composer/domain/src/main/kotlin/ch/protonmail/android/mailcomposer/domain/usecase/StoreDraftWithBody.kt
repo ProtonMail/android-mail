@@ -37,11 +37,11 @@ class StoreDraftWithBody @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        userId: UserId,
         messageId: MessageId,
         draftBody: DraftBody,
         quotedHtmlBody: OriginalHtmlQuote?,
-        senderEmail: SenderEmail,
-        userId: UserId
+        senderEmail: SenderEmail
     ): Either<StoreDraftWithBodyError, Unit> = either {
         transactor.performTransaction {
             val updatedDraft = prepareAndEncryptDraftBody(userId, messageId, draftBody, quotedHtmlBody, senderEmail)

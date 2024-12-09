@@ -357,11 +357,11 @@ class ComposerViewModelTest {
         // Then
         coVerify {
             storeDraftWithBodyMock(
+                expectedUserId,
                 expectedMessageId,
                 expectedDraftBody,
                 expectedQuotedDraftBody,
-                expectedSenderEmail,
-                expectedUserId
+                expectedSenderEmail
             )
         }
     }
@@ -454,11 +454,11 @@ class ComposerViewModelTest {
         // Then
         coVerify {
             storeDraftWithBodyMock(
+                expectedUserId,
                 expectedMessageId,
                 expectedDraftBody,
                 expectedQuotedDraftBody,
-                expectedSenderEmail,
-                expectedUserId
+                expectedSenderEmail
             )
         }
     }
@@ -1062,10 +1062,9 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNetworkManagerIsConnected()
-        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectSendMessageSucceds(expectedUserId, expectedMessageId, expectedFields)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
@@ -1090,8 +1089,7 @@ class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             draftUploaderMock.stopContinuousUpload()
-            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
-            sendMessageMock(expectedUserId, expectedMessageId)
+            sendMessageMock(expectedUserId, expectedMessageId, expectedFields)
         }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithMessageSending)
     }
@@ -1119,10 +1117,9 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNetworkManagerIsDisconnected()
-        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectSendMessageSucceds(expectedUserId, expectedMessageId, expectedFields)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
@@ -1147,8 +1144,7 @@ class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             draftUploaderMock.stopContinuousUpload()
-            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
-            sendMessageMock(expectedUserId, expectedMessageId)
+            sendMessageMock(expectedUserId, expectedMessageId, expectedFields)
         }
         assertEquals(Effect.of(Unit), viewModel.state.value.closeComposerWithMessageSendingOffline)
     }
@@ -2389,10 +2385,9 @@ class ComposerViewModelTest {
             )
             mockParticipantMapper()
             expectNetworkManagerIsDisconnected()
-            expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
             expectNoInputDraftMessageId()
             expectNoInputDraftAction()
-            expectSendMessageSucceds(expectedUserId, expectedMessageId)
+            expectSendMessageSucceds(expectedUserId, expectedMessageId, expectedFields)
             expectStopContinuousDraftUploadSucceeds()
             expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
             expectObservedMessageAttachments(expectedUserId, expectedMessageId)
@@ -2445,10 +2440,9 @@ class ComposerViewModelTest {
         )
         mockParticipantMapper()
         expectNetworkManagerIsDisconnected()
-        expectStoreAllDraftFieldsSucceeds(expectedUserId, expectedMessageId, expectedFields)
         expectNoInputDraftMessageId()
         expectNoInputDraftAction()
-        expectSendMessageSucceds(expectedUserId, expectedMessageId)
+        expectSendMessageSucceds(expectedUserId, expectedMessageId, expectedFields)
         expectStopContinuousDraftUploadSucceeds()
         expectStartDraftSync(expectedUserId, MessageIdSample.EmptyDraft)
         expectObservedMessageAttachments(expectedUserId, expectedMessageId)
@@ -2474,8 +2468,7 @@ class ComposerViewModelTest {
         // Then
         coVerifyOrder {
             draftUploaderMock.stopContinuousUpload()
-            storeDraftWithAllFields(expectedUserId, expectedMessageId, expectedFields)
-            sendMessageMock(expectedUserId, expectedMessageId)
+            sendMessageMock(expectedUserId, expectedMessageId, expectedFields)
         }
     }
 
@@ -2647,8 +2640,12 @@ class ComposerViewModelTest {
         coEvery { draftUploaderMock.upload(expectedUserId, expectedMessageId) } returns Unit
     }
 
-    private fun expectSendMessageSucceds(expectedUserId: UserId, expectedMessageId: MessageId) {
-        coEvery { sendMessageMock.invoke(expectedUserId, expectedMessageId) } returns Unit
+    private fun expectSendMessageSucceds(
+        expectedUserId: UserId,
+        expectedMessageId: MessageId,
+        expectedFields: DraftFields
+    ) {
+        coEvery { sendMessageMock.invoke(expectedUserId, expectedMessageId, expectedFields) } returns Unit
     }
 
     private fun expectNetworkManagerIsConnected() {
@@ -2765,11 +2762,11 @@ class ComposerViewModelTest {
     ) {
         coEvery {
             storeDraftWithBodyMock(
+                expectedUserId,
                 expectedMessageId,
                 expectedDraftBody,
                 expectedQuotedBody,
-                expectedSenderEmail,
-                expectedUserId
+                expectedSenderEmail
             )
         } returns Unit.right()
     }
@@ -2785,11 +2782,11 @@ class ComposerViewModelTest {
     ) = error().also {
         coEvery {
             storeDraftWithBodyMock(
+                expectedUserId,
                 expectedMessageId,
                 expectedDraftBody,
                 expectedQuotedBody,
-                expectedSenderEmail,
-                expectedUserId
+                expectedSenderEmail
             )
         } returns it.left()
     }
@@ -2879,7 +2876,7 @@ class ComposerViewModelTest {
                 expectedMessageId,
                 expectedFields
             )
-        } returns Unit
+        } returns Unit.right()
     }
 
     private fun expectStoreAttachmentsSucceeds(

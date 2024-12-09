@@ -618,11 +618,11 @@ class ComposerViewModel @Inject constructor(
         )
 
     private suspend fun onSenderChanged(action: ComposerAction.SenderChanged): ComposerOperation = storeDraftWithBody(
+        primaryUserId(),
         currentMessageId(),
         currentDraftBody(),
         currentDraftQuotedHtmlBody(),
-        SenderEmail(action.sender.email),
-        primaryUserId()
+        SenderEmail(action.sender.email)
     )
         .onRight {
             reEncryptAttachments(
@@ -656,11 +656,11 @@ class ComposerViewModel @Inject constructor(
         if (isBodyEmptyOrEqualsToSignatureAndFooter(action.draftBody)) return
 
         storeDraftWithBody(
+            primaryUserId(),
             currentMessageId(),
             action.draftBody,
             currentDraftQuotedHtmlBody(),
-            currentSenderEmail(),
-            primaryUserId()
+            currentSenderEmail()
         ).onLeft { emitNewStateFor(ComposerEvent.ErrorStoringDraftBody) }
     }
 
