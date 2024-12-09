@@ -130,7 +130,7 @@
   <string name="contact_group_form_update_success">Kontaktgruppe aktualisiert</string>
   <string name="contact_group_form_save_error">Fehler beim Speichern der Kontaktgruppe. Bitte versuche es später erneut.</string>
   <string name="contact_group_form_save_error_already_exists">Eine Gruppe mit diesem Namen existiert bereits.</string>
-  <string name="contact_group_form_subscription_error">You need a paid Proton Mail subscription to create contact groups</string>
+  <string name="contact_group_form_subscription_error">Du benötigst ein kostenpflichtiges Proton Mail Abonnement, um Kontaktgruppen zu erstellen</string>
   <string name="members_loading_error">Fehler beim Laden von Mitgliedern. Bitte versuche es später erneut.</string>
   <string name="members_done">Fertig</string>
   <string name="add_members_error">Fehler beim Hinzufügen von Mitgliedern. Bitte versuche es später erneut.</string>

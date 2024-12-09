@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Verwende deine eigene mobile Signatur und genieße weitere Premium-Funktionen mit Mail Plus.</string>
   <string name="upselling_mobile_signature_plus_title">Passe deine Signatur an</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Genieße ein aufgeräumtes Postfach und profitiere von weiteren Premium-Funktionen mit Mail Plus.</string>
+  <string name="upselling_auto_delete_plus_title">Lösche alte Daten im Papierkorb und Spam</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB Speicherplatz</string>
   <string name="upselling_plus_feature_email_addresses">10 E-Mail-Adressen</string>
@@ -118,27 +118,27 @@
   <string name="upselling_onboarding_save_label">Spare %s %%</string>
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Schließen</string>
-  <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_got_it_button">Got it</string>
-  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
-  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
-  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
-  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
-  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
-  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
-  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_continue_button">Fortfahren</string>
+  <string name="post_subscription_got_it_button">Verstanden</string>
+  <string name="post_subscription_welcome_page_title">Willkommen bei Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Danke, dass du uns dabei unterstützt, das Internet sicher und privat für alle zu halten.</string>
+  <string name="post_subscription_welcome_page_unlocked">Du hast freigeschaltet</string>
+  <string name="post_subscription_plus_feature_storage">15 GB Speicher</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 zusätzliche E-Mail-Adressen</string>
+  <string name="post_subscription_plus_feature_email_domains">Unterstützung für 1 benutzerdefinierte E-Mail-Domain</string>
+  <string name="post_subscription_plus_feature_folders_labels">Unbegrenzte Anzahl an Ordnern und Kategorien</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email Aliasse</string>
+  <string name="post_subscription_plus_feature_desktop_app">Neue Proton Mail Desktop-Anwendung</string>
+  <string name="post_subscription_plus_feature_customer_support">Vorrangiger Kundensupport</string>
+  <string name="post_subscription_discover_apps_page_title">Entdecke alle Apps</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Du hast den Kalenderfreigabe und 8x mehr Kalender freigeschaltet.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Dein neues Abonnement hat deinen Speicher auf 15 GB erhöht.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_vpn_message">Das beste VPN für Geschwindigkeit und Sicherheit.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
-  <string name="post_subscription_button_installed">Installed</string>
-  <string name="post_subscription_button_get_the_app">Get the app</string>
+  <string name="post_subscription_proton_pass_message">Sichere Passwortspeicherung und einfacher Anmeldevorgang für deine Konten.</string>
+  <string name="post_subscription_button_installed">Installiert</string>
+  <string name="post_subscription_button_get_the_app">App herunterladen</string>
 </resources>

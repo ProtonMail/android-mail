@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Alle Nachrichten</string>
   <string name="label_title_all_drafts">Alle Entwürfe</string>
   <string name="label_title_all_sent">Alle Gesendete</string>
-  <string name="label_title_all_scheduled">All scheduled</string>
+  <string name="label_title_all_scheduled">Alle geplanten</string>
   <string name="label_title_snoozed">Stumm geschaltet</string>
   <string name="label_title_folders">Ordner</string>
   <string name="label_title_parent_folder">Übergeordnetes Verzeichnis</string>
@@ -55,8 +55,8 @@
   <string name="save_label_error">Fehler beim Speichern der Kategorie. Bitte versuche es später erneut.</string>
   <string name="save_folder_error">Fehler beim Speichern des Ordners. Bitte versuche es erneut.</string>
   <string name="label_already_exists">Eine Kategorie oder Ordner mit diesem Namen existiert bereits.</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Du benötigst ein kostenpflichtiges Proton Mail Abonnement, um mehr Kategorien zu erstellen</string>
+  <string name="folder_limit_reached_error">Du benötigst ein kostenpflichtiges Proton Mail Abonnement, um mehr Ordner zu erstellen</string>
   <string name="delete_label_error">Fehler beim Löschen der Kategorie.</string>
   <string name="input_field_clear_content_description">Text löschen</string>
   <string name="label_list_item_content_description">Eintrag kategorisieren</string>
@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Keiner</string>
   <string name="delete_label">Kategorie löschen?</string>
   <string name="delete_folder">Ordner löschen?</string>
-  <string name="delete_label_message">Diese Aktion kann nicht rückgängig gemacht werden. E-Mails, die mit diesem Label gekennzeichnet sind, werden nicht gelöscht und befinden sich im Ordner „Alle Nachrichten\".</string>
+  <string name="delete_label_message">Diese Aktion kann nicht rückgängig gemacht werden. E-Mails, die mit dieser Kategorie gekennzeichnet sind, werden nicht gelöscht und befinden sich im Ordner „Alle Nachrichten\".</string>
   <string name="delete_folder_message">Diese Aktion kann nicht rückgängig gemacht werden. Die in diesem Ordner enthaltenen E-Mails werden nicht gelöscht und können im Ordner „Alle Nachrichten“ gefunden werden.</string>
 </resources>

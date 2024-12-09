@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Detectar automaticamente</string>
   <string name="mail_settings_app_information">Informações do aplicativo</string>
   <string name="mail_settings_app_version">Versão do aplicativo</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Conta</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Assinatura</string>

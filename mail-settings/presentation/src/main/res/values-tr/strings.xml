@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Otomatik algılama</string>
   <string name="mail_settings_app_information">Uygulama bilgileri</string>
   <string name="mail_settings_app_version">Uygulama sürümü</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Hesap</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonelik</string>

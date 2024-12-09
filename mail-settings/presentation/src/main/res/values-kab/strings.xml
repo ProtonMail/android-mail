@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Tifin tawurmant</string>
   <string name="mail_settings_app_information">Talɣut n usnas</string>
   <string name="mail_settings_app_version">Lqem n usnas</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Amiḍan</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Amultaɣ</string>

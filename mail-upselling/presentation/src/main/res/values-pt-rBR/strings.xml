@@ -119,9 +119,9 @@
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Fechar</string>
   <string name="post_subscription_continue_button">Continuar</string>
-  <string name="post_subscription_got_it_button">Got it</string>
+  <string name="post_subscription_got_it_button">Entendi</string>
   <string name="post_subscription_welcome_page_title">Boas-vindas ao Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Obrigada por nos ajudar a manter a internet segura e privada para todas as pessoas.</string>
+  <string name="post_subscription_welcome_page_message">Obrigado por nos ajudar a manter a Internet segura e privada para todos.</string>
   <string name="post_subscription_welcome_page_unlocked">Você desbloqueou</string>
   <string name="post_subscription_plus_feature_storage">15 GB de armazenamento</string>
   <string name="post_subscription_plus_feature_email_addresses">10 endereços de e-mail extras</string>
@@ -132,13 +132,13 @@
   <string name="post_subscription_plus_feature_customer_support">Suporte prioritário ao cliente</string>
   <string name="post_subscription_discover_apps_page_title">Descubra todos os nossos aplicativos</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Você desbloqueou o compartilhamento de calendário e 8 vezes mais calendários.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
   <string name="post_subscription_proton_drive_message">Sua nova assinatura aumento seu espaço de armazenamento para 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">A melhor VPN para velocidade e segurança.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_proton_pass_message">Armazenamento de senha seguro e início de sessão fácil para as suas contas</string>
   <string name="post_subscription_button_installed">Instalado</string>
-  <string name="post_subscription_button_get_the_app">Get the app</string>
+  <string name="post_subscription_button_get_the_app">Obter aplicativo</string>
 </resources>

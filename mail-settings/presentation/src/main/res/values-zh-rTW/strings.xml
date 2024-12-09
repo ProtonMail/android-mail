@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">自動偵測</string>
   <string name="mail_settings_app_information">應用程式資訊</string>
   <string name="mail_settings_app_version">應用程式版本</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">帳號</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">訂購授權</string>

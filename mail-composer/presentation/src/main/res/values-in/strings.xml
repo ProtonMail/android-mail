@@ -21,21 +21,21 @@
   <string name="to_prefix">Kepada:</string>
   <string name="cc_prefix">Cc:</string>
   <string name="bcc_prefix">Bcc:</string>
-  <string name="subject_placeholder">Subjek</string>
-  <string name="compose_message_placeholder">Tulis email</string>
+  <string name="subject_placeholder">Judul</string>
+  <string name="compose_message_placeholder">Tulis surel</string>
   <string name="close_composer_content_description">Tutup komposer</string>
   <string name="send_message_content_description">Kirim pesan</string>
   <string name="composer_expand_recipients_button">Tampilkan penerima lainnya</string>
-  <string name="composer_error_invalid_email">Alamat email tidak valid</string>
+  <string name="composer_error_invalid_email">Alamat surel tidak valid</string>
   <string name="composer_error_invalid_sender">Alamat pengirim tidak valid</string>
   <string name="change_sender_button_content_description">Ubah pengirim</string>
   <string name="composer_change_sender_paid_feature">Anda memerlukan langganan Proton Mail berbayar untuk mengubah alamat pengirim</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Pengirim tidak dapat diubah karena status langganan pengguna gagal dimuat. Silakan coba lagi.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Penerima duplikat dihapus</string>
+  <string name="composer_error_duplicate_recipient">Penerima yang terduplikasi dihapus</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
-  <string name="composer_error_store_draft_recipients">Penerima draf gagal disimpan</string>
+  <string name="composer_error_store_draft_recipients">Gagal menyimpan draf penerima</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Impor dari…</string>
@@ -59,35 +59,35 @@
   <string name="composer_bottom_bar_expiration_time_custom">Sesuaikan</string>
   <string name="composer_error_setting_expiration_time">Pengaturan waktu kedaluwarsa gagal</string>
   <!-- Send expiring message to external recipients dialog -->
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Pengaturan waktu kedaluwarsa tidak didukung</string>
-  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Sebagai gantinya, kami menyarankan Anda untuk mengatur kata sandi bagi para penerima berikut:</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_title">Pemasangan waktu kedaluwarsa tidak didukung</string>
+  <string name="composer_send_expiring_message_to_external_recipients_dialog_text">Kami merekomendasikan pengaturan kata sandi untuk penerima berikut ini:</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_cancel">Batal</string>
   <string name="composer_send_expiring_message_to_external_recipients_dialog_confirm">Tetap kirim</string>
   <!-- Sender changed dialog -->
-  <string name="composer_sender_changed_dialog_title">Informasi pengiriman</string>
+  <string name="composer_sender_changed_dialog_title">Mengirim pemberitahuan</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pengiriman pesan dari alamat @pm.me merupakan fitur berbayar. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
-  <string name="composer_sender_changed_original_address_disabled">Alamat pengirim yang dipilih tidak aktif. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
+  <string name="composer_sender_changed_original_address_disabled">Alamat pengirim yang dipilih dinonaktifkan. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Tulis</string>
-  <string name="composer_send_without_subject_dialog_text">Kirim pesan tanpa subjek?</string>
+  <string name="composer_send_without_subject_dialog_text">Kirim pesan tanpa judul?</string>
   <string name="composer_send_without_subject_dialog_confirm_button">Ya</string>
   <string name="composer_send_without_subject_dialog_reject_button">Tidak</string>
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Pesan gagal dikirim</string>
   <string name="message_sending_error_dialog_button_dismiss">Tutup</string>
   <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
-  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Kunci Terpercaya tidak ada: %s</string>
+  <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Tidak ada Kunci Terpercaya: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Alamat tidak ada: %s</string>
   <string name="set_message_password_title">Enkripsi pesan</string>
-  <string name="set_message_password_info_message">Tentukan kata sandi untuk mengenkripsi pesan ini bagi para pengguna non-Proton Mail.</string>
+  <string name="set_message_password_info_message">Buat kata sandi untuk mengenkripsi pesan ini bagi pengguna non-Proton Mail.</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">Pelajari lebih lanjut</a></string>
   <string name="set_message_password_label">Kata sandi pesan</string>
   <string name="set_message_password_label_repeat">Ulangi kata sandi</string>
   <string name="set_message_password_label_hint">Petunjuk kata sandi (opsional)</string>
-  <string name="set_message_password_supporting_text">antara 4 hingga 21 karakter</string>
-  <string name="set_message_password_supporting_error_text">Kata sandi harus mengandung antara 4 dan 21 karakter</string>
-  <string name="set_message_password_supporting_text_repeat">Kata sandi harus sesuai</string>
+  <string name="set_message_password_supporting_text">Panjangnya 4 hingga 21 karakter</string>
+  <string name="set_message_password_supporting_error_text">Kata sandi harus terdiri dari 4 hingga 21 karakter</string>
+  <string name="set_message_password_supporting_text_repeat">Kata sandi harus seragam</string>
   <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Tampilkan kata sandi</string>
   <string name="set_message_password_button_hide">Sembunyikan kata sandi</string>

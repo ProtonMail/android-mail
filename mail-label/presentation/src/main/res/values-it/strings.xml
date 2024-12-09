@@ -55,8 +55,8 @@
   <string name="save_label_error">Salvataggio dell\'etichetta non riuscito</string>
   <string name="save_folder_error">Salvataggio della cartella non riuscito</string>
   <string name="label_already_exists">Esiste già un\'etichetta o una cartella con questo nome</string>
-  <string name="label_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare più etichette</string>
-  <string name="folder_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare più cartelle</string>
+  <string name="label_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare altre etichette</string>
+  <string name="folder_limit_reached_error">Passa a un abbonamento Proton Mail a pagamento per creare altre cartelle</string>
   <string name="delete_label_error">Eliminazione dell\'etichetta non riuscita</string>
   <string name="input_field_clear_content_description">Cancella il testo</string>
   <string name="label_list_item_content_description">Elemento della lista di etichette</string>

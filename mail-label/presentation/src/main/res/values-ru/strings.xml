@@ -55,8 +55,8 @@
   <string name="save_label_error">Ошибка сохранения ярлыка, повторите попытку позже</string>
   <string name="save_folder_error">Ошибка сохранения папки, повторите попытку позже</string>
   <string name="label_already_exists">Ярлык или папка с этим названием уже существует</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">Вам нужна платная подписка Proton Mail, чтобы создать больше ярлыков</string>
+  <string name="folder_limit_reached_error">Вам нужна платная подписка Proton Mail, чтобы создать больше папок</string>
   <string name="delete_label_error">Ошибка удаления ярлыка</string>
   <string name="input_field_clear_content_description">Очистить текст</string>
   <string name="label_list_item_content_description">Элемент списка меток</string>

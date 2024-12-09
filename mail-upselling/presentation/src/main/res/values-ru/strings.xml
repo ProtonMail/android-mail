@@ -83,7 +83,7 @@
   <string name="upselling_select_plan_year">1 год</string>
   <string name="upselling_select_plan_month">1 месяц</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text">Автоматически продляется по той же цене, пока не будет отменено.</string>
   <string name="upselling_discount_tag">Сэкономьте %s%%</string>
   <string name="upselling_month">/месяц</string>
   <string name="upselling_year">/год</string>
@@ -121,28 +121,28 @@
   <string name="upselling_onboarding_continue_with_proton_free">Продолжить с Proton Free</string>
   <string name="upselling_onboarding_save_label">Сэкономьте %s%%</string>
   <!-- Post subscription -->
-  <string name="post_subscription_close_button_content_description">Close</string>
-  <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_got_it_button">Got it</string>
-  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
-  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
-  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
-  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
-  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
-  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
-  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_close_button_content_description">Закрыть</string>
+  <string name="post_subscription_continue_button">Продолжить</string>
+  <string name="post_subscription_got_it_button">Понятно</string>
+  <string name="post_subscription_welcome_page_title">Добро пожаловать в Mail Plus</string>
+  <string name="post_subscription_welcome_page_message">Благодарим вас за поддержку в сохранении безопасности и конфиденциальности интернета для всех.</string>
+  <string name="post_subscription_welcome_page_unlocked">Вы разблокировали</string>
+  <string name="post_subscription_plus_feature_storage">15 ГБ хранилища</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 дополнительных адресов эл. почты</string>
+  <string name="post_subscription_plus_feature_email_domains">Поддержку 1 своего домена электронной почты</string>
+  <string name="post_subscription_plus_feature_folders_labels">Неограниченное количество папок и ярлыков</string>
+  <string name="post_subscription_plus_feature_aliases">10 псевдонимов hide-my-email</string>
+  <string name="post_subscription_plus_feature_desktop_app">Новое приложение Proton Mail для настольных компьютеров</string>
+  <string name="post_subscription_plus_feature_customer_support">Приоритетную пользовательскую поддержку</string>
+  <string name="post_subscription_discover_apps_page_title">Обнаружить все приложения</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Вы разблокировали общий доступ к календарям и еще 8x календарей.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Ваша новая подписка увеличила ваше хранилище до 15 ГБ.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_vpn_message">Лучший VPN для скорости и безопасности.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
-  <string name="post_subscription_button_installed">Installed</string>
-  <string name="post_subscription_button_get_the_app">Get the app</string>
+  <string name="post_subscription_proton_pass_message">Безопасное хранение паролей и легкий вход в аккаунты.</string>
+  <string name="post_subscription_button_installed">Установлено</string>
+  <string name="post_subscription_button_get_the_app">Получить приложение</string>
 </resources>

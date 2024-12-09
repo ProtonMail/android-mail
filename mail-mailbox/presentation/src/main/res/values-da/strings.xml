@@ -93,7 +93,7 @@
   <!--    Storage Limit Warning-->
   <string name="storage_limit_warning_dialog_title">Advarsel</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lagerpladsen på din Proton-konto er mere end 80% opbrugt. Frigør plads eller opgrader til mere</string>
-  <string name="storage_second_limit_exceeded_warning_dialog_text">Lagerpladsen på din Proton-konto er mere end 90% opbrugt. Frigør plads eller opgrader til mere</string>
+  <string name="storage_second_limit_exceeded_warning_dialog_text">Lageret på din Proton-konto er mere end 90 % fyldt. Frigør plads, eller opgrader for at få mere lagerplads.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Påmind mig ikke igen</string>
   <string name="storage_limit_warning_dialog_confirm_button">Ok</string>
   <!--    Storage Quota Over Warning-->

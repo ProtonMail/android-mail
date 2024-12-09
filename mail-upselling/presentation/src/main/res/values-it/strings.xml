@@ -120,7 +120,7 @@
   <string name="post_subscription_close_button_content_description">Chiudi</string>
   <string name="post_subscription_continue_button">Continua</string>
   <string name="post_subscription_got_it_button">Ho capito</string>
-  <string name="post_subscription_welcome_page_title">Benvenuti in Mail Plus</string>
+  <string name="post_subscription_welcome_page_title">Benvenuto in Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Grazie per il supporto nel mantenere Internet sicuro e privato per tutti.</string>
   <string name="post_subscription_welcome_page_unlocked">Hai sbloccato</string>
   <string name="post_subscription_plus_feature_storage">15 GB di spazio di archiviazione</string>
@@ -134,11 +134,11 @@
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">Hai sbloccato la condivisione del calendario e altri 8 calendari.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Il tuo nuovo abbonamento ha aumentato il tuo spazio di archiviazione a 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Hai sbloccato uno spazio di archiviazione di 15 GB</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">La migliore VPN per sicurezza e velocità.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Archiviazione sicura delle password e accesso semplice ai tuoi account.</string>
+  <string name="post_subscription_proton_pass_message">Archiviazione sicura delle password e accesso facile agli account.</string>
   <string name="post_subscription_button_installed">Installata</string>
   <string name="post_subscription_button_get_the_app">Scarica l\'app</string>
 </resources>

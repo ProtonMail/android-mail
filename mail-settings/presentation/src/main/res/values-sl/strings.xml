@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Samodejno zaznavanje</string>
   <string name="mail_settings_app_information">Podatki o aplikaciji</string>
   <string name="mail_settings_app_version">Različica aplikacije</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Račun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Naročnina</string>

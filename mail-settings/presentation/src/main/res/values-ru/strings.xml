@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Автоопределение</string>
   <string name="mail_settings_app_information">Информация о приложении</string>
   <string name="mail_settings_app_version">Версия приложения</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Аккаунт</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Подписка</string>

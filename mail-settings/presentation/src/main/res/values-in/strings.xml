@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Deteksi otomatis</string>
   <string name="mail_settings_app_information">Informasi Aplikasi</string>
   <string name="mail_settings_app_version">Versi aplikasi</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Akun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Langganan</string>

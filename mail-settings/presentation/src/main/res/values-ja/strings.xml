@@ -27,7 +27,7 @@
   <string name="mail_settings_auto_lock">自動ロック</string>
   <string name="mail_settings_alternative_routing">代替ルーティング</string>
   <string name="mail_settings_app_language">アプリ言語</string>
-  <string name="mail_settings_combined_contacts">連絡先の相互利用</string>
+  <string name="mail_settings_combined_contacts">複合連絡先</string>
   <string name="mail_settings_local_cache">ローカルキャッシュ</string>
   <string name="mail_settings_local_cache_hint">使用容量: %s</string>
   <string name="mail_settings_local_cache_clear_button">データを消去</string>
@@ -45,8 +45,9 @@
   <string name="mail_settings_allowed">許可</string>
   <string name="mail_settings_denied">拒否</string>
   <string name="mail_settings_auto_detect">自動検出</string>
-  <string name="mail_settings_app_information">情報</string>
+  <string name="mail_settings_app_information">アプリの情報</string>
   <string name="mail_settings_app_version">アプリのバージョン</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">アカウント</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">サブスクリプション</string>
@@ -64,13 +65,13 @@
   <string name="mail_settings_auto_delete">自動削除</string>
   <string name="mail_settings_auto_delete_full_text">不要なメッセージを自動削除</string>
   <string name="mail_settings_auto_delete_hint">ごみ箱や迷惑メールに 30 日以上入っているメッセージは自動的に削除されます。</string>
-  <string name="mail_settings_auto_delete_subscription_needed">この機能を使用するには、有料のProtonMailサービスへアップグレードしてください</string>
+  <string name="mail_settings_auto_delete_subscription_needed">この機能を使用するには、有料のProton Mailサブスクリプションが必要です</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">キャンセル</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">メッセージを削除しますか？</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">ごみ箱や迷惑メールに 30 日以上入っているメッセージは、現在これらのフォルダーに入っているメッセージも含めてすべて削除されます。</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">有効にする</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">自動削除を無効にしますか？</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">削除予定のメールはゴミ箱・迷惑メールに残ります。</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">削除予定のメールはゴミ箱や迷惑メールフォルダに残ります。</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">無効にする</string>
   <string name="mail_settings_not_set">未設定</string>
   <string name="mail_settings_conversation_mode_hint">同じ会話のメールを受信トレイにまとめて表示するか、個別に表示するかを選択できます</string>
@@ -80,7 +81,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">無効なアドレスはありません</string>
   <string name="mail_settings_default_email_address_error_loading">設定の読み込みエラー</string>
   <string name="mail_settings_default_email_address_error_update">設定更新エラー</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">このアドレスをデフォルトとして設定するには、有料のProtonMailサービスを使ってください</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">このアドレスをデフォルトに設定するには、有料のProton Mailサブスクリプションが必要です</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">表示名と署名</string>
   <string name="mail_settings_identity_save_button">保存</string>
@@ -95,7 +96,7 @@
   <string name="mail_settings_identity_error_updating">設定更新エラー</string>
   <string name="mail_settings_identity_error_loading">設定の読み込みエラー</string>
   <!-- Privacy settings -->
-  <string name="mail_settings_privacy_auto_show_remote_content">リモートコンテンツを自動表示</string>
+  <string name="mail_settings_privacy_auto_show_remote_content">外部コンテンツを自動表示</string>
   <string name="mail_settings_privacy_auto_show_embedded_images">埋め込み画像を自動表示</string>
   <string name="mail_settings_privacy_prevent_taking_screenshots">スクリーンショットの撮影を禁止する</string>
   <string name="mail_settings_privacy_request_link_confirmation">リンク確認のリクエスト</string>
@@ -116,12 +117,12 @@
   <string name="mail_settings_swipe_action_archive_description">アーカイブに移動</string>
   <string name="mail_settings_swipe_action_read_description">既読と未読を入れ替える</string>
   <string name="mail_settings_swipe_action_spam_description">迷惑メールに移動</string>
-  <string name="mail_settings_swipe_action_star_description">星印の状態を入れ替える</string>
+  <string name="mail_settings_swipe_action_star_description">スター/スターを外す</string>
   <string name="mail_settings_swipe_action_trash_description">ごみ箱に移動</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">プッシュ通知</string>
   <string name="mail_settings_notifications_extended_notifications_title">拡張通知</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にするとメールの送信者をプッシュ通知します。</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にすると、プッシュ通知でメールの送信者が表示されます。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
   <string name="mail_settings_notifications_notifications_settings_hint">システムの通知設定に移動します</string>
   <string name="mail_settings_notifications_update_error">設定更新エラー</string>
@@ -140,16 +141,16 @@
   <string name="mail_settings_auto_lock_update_error">設定更新エラー</string>
   <string name="mail_settings_pin_insertion_input_title">PIN コードを入力</string>
   <string name="mail_settings_pin_insertion_set_title">PIN コードを設定</string>
-  <string name="mail_settings_pin_insertion_confirm_title">PINコードの確認</string>
+  <string name="mail_settings_pin_insertion_confirm_title">PINコードを確認</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">ロックアイコン</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pinドット</string>
-  <string name="mail_settings_pin_insertion_backspace_description">後退キー</string>
+  <string name="mail_settings_pin_insertion_backspace_description">バックスペース</string>
   <string name="mail_settings_pin_insertion_biometric_description">生体認証</string>
   <string name="mail_settings_pin_insertion_button_create">作成</string>
   <string name="mail_settings_pin_insertion_button_confirm">確認</string>
-  <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません.</string>
+  <string name="mail_settings_pin_insertion_error_no_match">PINコードが一致しません。</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
-    <item quantity="other">残りの試行回数は %s 回です.</item>
+    <item quantity="other">残りの試行回数は %s 回です。</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">完全なデータ抹消まで残り%s回です。</item>
@@ -157,7 +158,7 @@
   <string name="mail_settings_pin_insertion_error_unknown">PIN コードの確認中にエラーが発生しました。</string>
   <string name="mail_settings_pin_insertion_signout_text">サインアウト</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">サインアウト</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">サインアウトしてよろしいでしょうか?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">サインアウトしてよろしいですか？</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">はい</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">いいえ</string>
   <string name="mail_settings_pin_insertion_created_success">PIN コードが正常に作成されました。</string>

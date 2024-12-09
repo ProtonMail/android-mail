@@ -28,11 +28,11 @@
     <item quantity="other">%d個選択済み</item>
   </plurals>
   <plurals name="filter_unread_button_text">
-    <item quantity="other">未読%s</item>
+    <item quantity="other">%s件未読</item>
   </plurals>
   <string name="mailbox_default_recipient">(宛先なし)</string>
   <string name="mailbox_default_sender">(差出人なし)</string>
-  <string name="mailbox_error_message_offline">インターネットに接続できないため、メールを取得できませんでした。</string>
+  <string name="mailbox_error_message_offline">オフラインのため、アイテムを取得できません。</string>
   <string name="mailbox_error_message_generic">メールボックスの読み込みに失敗しました</string>
   <string name="mailbox_error_message_unexpected">予期せぬ問題が発生しました</string>
   <string name="mailbox_is_empty_title">メッセージはありません</string>
@@ -69,9 +69,9 @@
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>
   <string name="mailbox_action_move_messages_failed">移動できませんでした</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">フォルダーを取得できませんでした</string>
-  <string name="mailbox_action_trash_message">メッセージをごみ箱に移動する</string>
+  <string name="mailbox_action_trash_message">メッセージをごみ箱に移動しました</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
-  <string name="mailbox_action_spam_message">件のメッセージが迷惑メールに移動されました</string>
+  <string name="mailbox_action_spam_message">メッセージはスパムに移動されました</string>
   <string name="mailbox_search_placeholder_text">メッセージを検索</string>
   <string name="mailbox_search_no_results_title">該当する項目がありません</string>
   <string name="mailbox_search_no_results_explanation">日付、名前、メールアドレス、件名で検索</string>

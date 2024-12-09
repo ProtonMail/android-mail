@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">ავტო-ძებნა</string>
   <string name="mail_settings_app_information">ინფორმაცია აპის შესახებ</string>
   <string name="mail_settings_app_version">აპის ვერსია</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">ანგარიში</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">გამოწერა</string>

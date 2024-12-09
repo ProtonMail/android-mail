@@ -44,8 +44,8 @@
   <string name="mailbox_is_empty_spam_description">A sua pasta de spam está vazia</string>
   <string name="mailbox_is_empty_trash_description">A lixeira está vazia.</string>
   <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensagem movida para a lixeira</item>
-    <item quantity="other">%d mensagens movidas para a lixeira</item>
+    <item quantity="one">Mensagem movida para o Lixo</item>
+    <item quantity="other">%d mensagens movidas para o Lixo</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar conversa</item>
@@ -76,7 +76,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Erro ao obter definições de cor</string>
   <string name="mailbox_action_move_messages_failed">Erro na operação de mover</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Erro ao obter pastas</string>
-  <string name="mailbox_action_trash_message">Mensagem movida para a lixeira</string>
+  <string name="mailbox_action_trash_message">Mensagem movida para o lixo</string>
   <string name="mailbox_action_archive_message">Mensagem movida para Arquivo</string>
   <string name="mailbox_action_spam_message">Mensagem movida para Spam</string>
   <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
@@ -84,7 +84,7 @@
   <string name="mailbox_search_no_results_explanation">Data de pesquisa, nome, endereço de e-mail ou linha de assunto</string>
   <string name="mailbox_action_button_clear_trash">Esvaziar a lixeira</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar Spam</string>
-  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a lixeira</string>
+  <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta de Lixo</string>
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da lixeira?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Tem a certeza de que pretende eliminar permanentemente todas as mensagens da pasta Spam?</string>

@@ -83,9 +83,9 @@
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
   <string name="auto_delete_banner_text_activate_trash">Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.</string>
-  <string name="auto_delete_banner_text_activate_spam">Ta bort meddelanden som har legat i skräppost i mer än 30 dagar automatiskt.</string>
+  <string name="auto_delete_banner_text_activate_spam">Ta bort meddelanden som har legat i skräpposten i mer än 30 dagar automatiskt.</string>
   <string name="auto_delete_banner_text_upgrade">Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.</string>
-  <string name="auto_delete_banner_text_enabled_info">Meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar kommer att tas bort automatiskt.</string>
+  <string name="auto_delete_banner_text_enabled_info">Meddelanden som har legat i papperskorgen och skräpposten i mer än 30 dagar kommer att tas bort automatiskt.</string>
   <string name="auto_delete_banner_button_activate_confirm">Aktivera</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nej, tack</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Lär dig mer</string>
@@ -94,8 +94,8 @@
   <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>
   <string name="email_notification_channel_name">E-post</string>
   <string name="login_notification_channel_name">Inloggningsvarningar</string>
-  <string name="email_notification_channel_description">Inkommande e-postaviseringar</string>
-  <string name="login_notification_channel_description">Nya inloggningsaviseringar</string>
+  <string name="email_notification_channel_description">Aviseringar för inkommande e-post</string>
+  <string name="login_notification_channel_description">Aviseringar för nya inloggningar</string>
   <string name="auth_badge_official">Officiell</string>
   <string name="intent_failure_no_app_found_to_handle_this_action">Ingen app hittades för att hantera denna åtgärd</string>
   <string name="action_copied_to_clipboard">Kopierat till urklipp</string>
@@ -121,8 +121,8 @@
   <string name="color_fern">Ormbunke</string>
   <string name="color_forest">Skog</string>
   <string name="color_olive">Oliv</string>
-  <string name="color_pickle">Gurka</string>
+  <string name="color_pickle">Saltgurka</string>
   <string name="undo_button_label">Ångra</string>
-  <string name="undo_success_message">Åtgärd återställd</string>
-  <string name="undo_failure_message">Återställning av åtgärd misslyckades</string>
+  <string name="undo_success_message">Åtgärd ångrad</string>
+  <string name="undo_failure_message">Ångring av åtgärd misslyckades</string>
 </resources>

@@ -81,6 +81,6 @@
   <string name="parent_folder_none">無</string>
   <string name="delete_label">刪除標籤?</string>
   <string name="delete_folder">刪除資料夾?</string>
-  <string name="delete_label_message">This action cannot be undone. Emails tagged with this label will not be deleted and can be found in the \'All Mail\' folder.</string>
+  <string name="delete_label_message">此動作無法復原。此標籤的電子郵件不會被刪除，可於 [所有郵件] 資料夾中找到。</string>
   <string name="delete_folder_message">此動作無法復原。儲存於此資料夾中的電子郵件不會刪除，可於 [所有郵件] 資料夾中找到。</string>
 </resources>

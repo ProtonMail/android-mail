@@ -37,10 +37,10 @@
   <string name="bcc">Скрытая копия:</string>
   <string name="date">Дата:</string>
   <plurals name="attachment">
-    <item quantity="one">%d вложение</item>
-    <item quantity="few">%d вложения</item>
-    <item quantity="many">%d вложений</item>
-    <item quantity="other">%d вложений</item>
+    <item quantity="one">%d Вложение</item>
+    <item quantity="few">%d Вложения</item>
+    <item quantity="many">%d Вложений</item>
+    <item quantity="other">%d Вложений</item>
   </plurals>
   <string name="hide_details">Скрыть подробности</string>
   <string name="undisclosed_recipients">Неразглашаемые получатели</string>

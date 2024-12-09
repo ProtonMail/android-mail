@@ -25,16 +25,16 @@
   <string name="mailbox_toolbar_searchview_clear_search_query_content_description">Очистить поисковый запрос</string>
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковый запрос</string>
   <plurals name="mailbox_toolbar_selected_count">
-    <item quantity="one">%d выбран</item>
+    <item quantity="one">Совершен выбор %d</item>
     <item quantity="few">%d выбраны</item>
     <item quantity="many">%d выбрано</item>
     <item quantity="other">%d выбрано</item>
   </plurals>
   <plurals name="filter_unread_button_text">
     <item quantity="one">%s непрочитанное</item>
-    <item quantity="few">%s непрочитанных</item>
-    <item quantity="many">%s непрочитанных</item>
-    <item quantity="other">%s непрочитанных</item>
+    <item quantity="few">Непрочитано %s</item>
+    <item quantity="many">Непрочитано %s</item>
+    <item quantity="other">Не прочитано %s</item>
   </plurals>
   <string name="mailbox_default_recipient">(Нет получателя)</string>
   <string name="mailbox_default_sender">(Нет отправителя)</string>

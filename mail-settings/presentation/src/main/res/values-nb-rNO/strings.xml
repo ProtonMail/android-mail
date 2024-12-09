@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Oppdag automatisk</string>
   <string name="mail_settings_app_information">App-informasjon</string>
   <string name="mail_settings_app_version">App-versjon</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonnement</string>

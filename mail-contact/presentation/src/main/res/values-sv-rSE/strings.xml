@@ -47,7 +47,7 @@
   <string name="contact_type_work">Arbete</string>
   <string name="contact_type_other">Annat</string>
   <string name="contact_type_mobile">Mobil</string>
-  <string name="contact_type_main">Huvud</string>
+  <string name="contact_type_main">Primär</string>
   <string name="contact_type_fax">Fax</string>
   <string name="contact_type_pager">Personsökare</string>
   <string name="contact_type_address">Adress</string>

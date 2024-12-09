@@ -47,6 +47,7 @@
   <string name="mail_settings_auto_detect">Automatikus-észlelés</string>
   <string name="mail_settings_app_information">Alkalmazás információk</string>
   <string name="mail_settings_app_version">Alkalmazás verzió</string>
+  <string name="mail_settings_app_logs">Application logs</string>
   <string name="mail_settings_account">Fiók</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Előfizetés</string>
