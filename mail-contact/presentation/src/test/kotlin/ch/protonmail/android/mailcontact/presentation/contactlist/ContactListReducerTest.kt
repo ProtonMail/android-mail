@@ -352,6 +352,28 @@ internal class ContactListReducerTest(
                     ),
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
                 )
+            ),
+            TestInput(
+                currentState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Menu),
+                event = ContactListEvent.ContactListLoaded(
+                    loadedContactListItemUiModels,
+                    loadedContactGroupItemUiModels,
+                    isContactGroupsCrudEnabled = true,
+                    isContactGroupsUpsellingVisible = true,
+                    isContactSearchEnabled = true
+                ),
+                expectedState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Menu)
+            ),
+            TestInput(
+                currentState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Upselling),
+                event = ContactListEvent.ContactListLoaded(
+                    loadedContactListItemUiModels,
+                    loadedContactGroupItemUiModels,
+                    isContactGroupsCrudEnabled = true,
+                    isContactGroupsUpsellingVisible = true,
+                    isContactSearchEnabled = true
+                ),
+                expectedState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Upselling)
             )
         )
 

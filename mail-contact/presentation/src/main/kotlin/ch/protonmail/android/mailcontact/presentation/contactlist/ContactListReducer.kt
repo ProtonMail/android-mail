@@ -62,6 +62,7 @@ class ContactListReducer @Inject constructor() {
             is ContactListState.Loaded -> {
                 if (event.contactList.isNotEmpty()) {
                     ContactListState.Loaded.Data(
+                        bottomSheetType = currentState.bottomSheetType,
                         bottomSheetVisibilityEffect = currentState.bottomSheetVisibilityEffect,
                         contacts = event.contactList,
                         contactGroups = event.contactGroups,
