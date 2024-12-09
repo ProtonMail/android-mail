@@ -24,6 +24,8 @@ import ch.protonmail.android.mailbugreport.domain.LogcatProvider
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
 import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
 import ch.protonmail.android.mailbugreport.domain.featureflags.IsLogsExportingInternalFeatureEnabled
+import ch.protonmail.android.mailcommon.domain.AppInformation
+import ch.protonmail.android.mailcommon.domain.isDevOrAlphaFlavor
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -39,7 +41,10 @@ object MailReportModule {
     @Provides
     @Singleton
     @LogsExportingFeatureEnabled
-    fun provideIsLogsExportingEnabled(isEnabled: IsLogsExportingInternalFeatureEnabled) = isEnabled()
+    fun provideIsLogsExportingEnabled(
+        isEnabled: IsLogsExportingInternalFeatureEnabled,
+        appInformation: AppInformation
+    ) = appInformation.isDevOrAlphaFlavor() || isEnabled()
 
     @Module
     @InstallIn(SingletonComponent::class)

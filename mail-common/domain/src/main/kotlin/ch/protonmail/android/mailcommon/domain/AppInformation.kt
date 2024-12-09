@@ -26,3 +26,5 @@ data class AppInformation(
     val appBuildFlavor: String = "flavor",
     val appHost: String = "host"
 )
+
+fun AppInformation.isDevOrAlphaFlavor() = appBuildFlavor == "dev" || appBuildFlavor == "alpha"
