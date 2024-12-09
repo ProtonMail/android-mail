@@ -18,7 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import arrow.core.Either
+import arrow.core.raise.either
 import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
@@ -30,9 +30,8 @@ import javax.inject.Inject
 
 class StoreDraftWithAllFields @Inject constructor(
     private val draftStateRepository: DraftStateRepository,
-    private val storeDraftWithSubject: StoreDraftWithSubject,
-    private val storeDraftWithBody: StoreDraftWithBody,
-    private val storeDraftWithRecipients: StoreDraftWithRecipients,
+    private val prepareAndEncryptDraftBody: PrepareAndEncryptDraftBody,
+    private val saveDraft: SaveDraft,
     private val transactor: Transactor
 ) {
 
@@ -41,33 +40,24 @@ class StoreDraftWithAllFields @Inject constructor(
         draftMessageId: MessageId,
         fields: DraftFields,
         action: DraftAction = DraftAction.Compose
-    ) {
+    ) = either {
         transactor.performTransaction {
-            storeDraftWithBody(
-                draftMessageId,
-                fields.body,
-                fields.originalHtmlQuote,
-                fields.sender,
-                userId
-            ).logError(draftMessageId)
-            storeDraftWithSubject(userId, draftMessageId, fields.sender, fields.subject).logError(draftMessageId)
-            storeDraftWithRecipients(
-                userId,
-                draftMessageId,
-                fields.sender,
-                fields.recipientsTo.value,
-                fields.recipientsCc.value,
-                fields.recipientsBcc.value
-            ).logError(draftMessageId)
+            val draftWithBody = prepareAndEncryptDraftBody(
+                userId, draftMessageId, fields.body, fields.originalHtmlQuote, fields.sender
+            ).bind()
+
+            val updatedDraft = draftWithBody.copy(
+                message = draftWithBody.message.copy(
+                    subject = fields.subject.value,
+                    toList = fields.recipientsTo.value,
+                    ccList = fields.recipientsCc.value,
+                    bccList = fields.recipientsBcc.value
+                )
+            )
+            saveDraft(updatedDraft, userId)
 
             draftStateRepository.createOrUpdateLocalState(userId, draftMessageId, action)
-            Timber.d("Draft: finished storing draft locally $draftMessageId")
         }
-    }
-
-    private fun <T> Either<T, Unit>.logError(draftMessageId: MessageId) = this.onLeft { error ->
-        Timber.e(
-            "Storing all draft fields failed due to $error. \n Draft MessageId = $draftMessageId"
-        )
+        Timber.d("Draft: finished storing draft locally $draftMessageId")
     }
 }

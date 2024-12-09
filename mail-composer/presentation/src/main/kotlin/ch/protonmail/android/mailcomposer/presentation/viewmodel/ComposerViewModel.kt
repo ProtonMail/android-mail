@@ -585,8 +585,7 @@ class ComposerViewModel @Inject constructor(
             draftFields.areBlank() -> action
             else -> {
                 draftUploader.stopContinuousUpload()
-                storeDraftWithAllFields(primaryUserId(), currentMessageId(), draftFields)
-                sendMessage(primaryUserId(), currentMessageId())
+                sendMessage(primaryUserId(), currentMessageId(), draftFields)
 
                 if (networkManager.isConnectedToNetwork()) {
                     ComposerAction.OnSendMessage

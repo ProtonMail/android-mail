@@ -18,28 +18,50 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailcomposer.domain.Transactor
+import ch.protonmail.android.mailcomposer.domain.model.DraftFields
 import ch.protonmail.android.mailcomposer.domain.repository.MessageRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
 class SendMessage @Inject constructor(
+    private val storeDraftWithAllFields: StoreDraftWithAllFields,
     private val messageRepository: MessageRepository,
     private val draftStateRepository: DraftStateRepository,
     private val moveToSentOptimistically: MoveToSentOptimistically,
-    private val injectAddressPublicKeyIntoMessage: InjectAddressPublicKeyIntoMessage
+    private val injectAddressPublicKeyIntoMessage: InjectAddressPublicKeyIntoMessage,
+    private val transactor: Transactor
 ) {
 
-    suspend operator fun invoke(userId: UserId, messageId: MessageId) {
-        draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending).onLeft {
-            Timber.e("SendMessage: error updating draft sync state: $it")
-        }
-        moveToSentOptimistically(userId, messageId)
-        injectAddressPublicKeyIntoMessage(userId, messageId).onLeft {
-            Timber.e("SendMessage: error injecting public key: $it")
+    suspend operator fun invoke(
+        userId: UserId,
+        messageId: MessageId,
+        fields: DraftFields,
+        action: DraftAction = DraftAction.Compose
+    ) {
+        transactor.performTransaction {
+            storeDraftWithAllFields(
+                userId,
+                messageId,
+                fields,
+                action
+            ).onLeft {
+                Timber.e("SendMessage: failed to store draft with all fields: $it")
+            }
+
+            draftStateRepository.updateDraftSyncState(userId, messageId, DraftSyncState.Sending).onLeft {
+                Timber.e("SendMessage: error updating draft sync state: $it")
+            }
+
+            moveToSentOptimistically(userId, messageId)
+            injectAddressPublicKeyIntoMessage(userId, messageId).onLeft {
+                Timber.e("SendMessage: error injecting public key: $it")
+            }
         }
         messageRepository.send(userId, messageId)
     }
