@@ -21,10 +21,12 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 import arrow.core.Either
 import arrow.core.raise.either
 import arrow.core.raise.ensureNotNull
-import arrow.core.right
+import ch.protonmail.android.mailcommon.domain.coroutines.IODispatcher
 import ch.protonmail.android.mailcommon.domain.usecase.ResolveUserAddress
 import ch.protonmail.android.mailcomposer.domain.model.AddressPublicKey
 import ch.protonmail.android.mailcomposer.domain.model.SenderEmail
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import me.proton.core.crypto.common.context.CryptoContext
 import me.proton.core.domain.entity.UserId
 import me.proton.core.key.domain.extension.primary
@@ -34,37 +36,41 @@ import javax.inject.Inject
 
 class GetAddressPublicKey @Inject constructor(
     private val resolveUserAddress: ResolveUserAddress,
-    private val cryptoContext: CryptoContext
+    private val cryptoContext: CryptoContext,
+    @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<Error, AddressPublicKey> = either {
+    suspend operator fun invoke(userId: UserId, email: SenderEmail): Either<Error, AddressPublicKey> =
+        withContext(dispatcher) {
+            either {
+                val address = resolveUserAddress(userId, email.value)
+                    .mapLeft { Error.AddressNotFound }
+                    .bind()
 
-        val address = resolveUserAddress(userId, email.value)
-            .mapLeft { Error.AddressNotFound }
-            .bind()
+                val publicKey = ensureNotNull(
+                    runCatching { address.keys.primary()?.privateKey?.publicKey(cryptoContext) }.getOrNull()
+                ) {
+                    Error.PublicKeyNotFound
+                }
+                val fingerprint = ensureNotNull(runCatching { publicKey.fingerprint(cryptoContext) }.getOrNull()) {
+                    Error.PublicKeyFingerprint
+                }
 
-        val publicKey = ensureNotNull(address.keys.primary()?.privateKey?.publicKey(cryptoContext)) {
-            Error.PublicKeyNotFound
+                val fingerprintUppercase8Chars = fingerprint.substring(0, 8).uppercase()
+                val fileName = "publickey - ${address.email} - 0x$fingerprintUppercase8Chars.asc"
+                val mimeType = "application/pgp-keys"
+
+                AddressPublicKey(
+                    fileName,
+                    mimeType,
+                    publicKey.key.toByteArray()
+                )
+            }
         }
-        val fingerprint = ensureNotNull(kotlin.runCatching { publicKey.fingerprint(cryptoContext) }.getOrNull()) {
-            Error.PublicKeyFingerprint
-        }
-
-        val fingerprintUppercase8Chars = fingerprint.substring(0, 8).uppercase()
-        val fileName = "publickey - ${address.email} - 0x$fingerprintUppercase8Chars.asc"
-        val mimeType = "application/pgp-keys"
-
-        return AddressPublicKey(
-            fileName,
-            mimeType,
-            publicKey.key.toByteArray()
-        ).right()
-    }
 
     sealed interface Error {
-        object AddressNotFound : Error
-        object PublicKeyNotFound : Error
-        object PublicKeyFingerprint : Error
+        data object AddressNotFound : Error
+        data object PublicKeyNotFound : Error
+        data object PublicKeyFingerprint : Error
     }
-
 }
