@@ -29,6 +29,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -113,6 +114,9 @@ fun AccountSettingScreen(
         skipHalfExpanded = true
     )
 
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
     DisposableEffect(Unit) {
         onDispose {
             if (bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
@@ -121,9 +125,11 @@ fun AccountSettingScreen(
         }
     }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
+    LaunchedEffect(bottomSheetState.isVisible) {
+        if (!bottomSheetState.isVisible && showBottomSheet) {
+            accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling)
+        }
+    }
 
     BackHandler(bottomSheetState.isVisible) {
         accountSettingsViewModel.submit(AccountSettingsViewAction.DismissUpselling)
