@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.domain.model.telemetry.postsubscription.PostSubscriptionTelemetryEventType
@@ -103,12 +104,14 @@ private fun PostSubscriptionDiscoverAllAppsPage(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing))
+            Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing + ProtonDimens.LargeSpacing))
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = R.string.post_subscription_discover_apps_page_title),
+                textAlign = TextAlign.Center,
                 style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
             )
-            Spacer(modifier = Modifier.size(MailDimens.ExtraLargeSpacing))
+            Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing))
         }
         item {
             Card(
