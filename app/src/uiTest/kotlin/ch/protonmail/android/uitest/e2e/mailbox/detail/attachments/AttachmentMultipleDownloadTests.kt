@@ -98,17 +98,24 @@ internal class AttachmentMultipleDownloadTests : MockedNetworkTest(loginType = L
             attachmentsSection {
                 tapItem()
                 verify { hasLoaderNotDisplayedForItem() }
+            }
 
+            deviceRobot {
+                intents {
+                    verify { actionViewIntentWasLaunched(mimeType = firstExpectedMimeType) }
+                }
+            }
+
+            attachmentsSection {
                 tapItem(position = 1)
                 verify { hasLoaderNotDisplayedForItem(position = 1) }
             }
-        }
 
-        deviceRobot {
-            intents {
-                verify {
-                    actionViewIntentWasLaunched(mimeType = firstExpectedMimeType)
-                    actionViewIntentWasLaunched(mimeType = secondExpectedMimeType)
+            deviceRobot {
+                intents {
+                    verify {
+                        actionViewIntentWasLaunched(mimeType = secondExpectedMimeType)
+                    }
                 }
             }
         }
