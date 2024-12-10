@@ -19,14 +19,16 @@
 package ch.protonmail.android.mailupselling.presentation.ui.postsubscription
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,11 +37,15 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -64,34 +70,29 @@ import me.proton.core.compose.theme.headlineUnspecified
 @Composable
 fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier) {
     val listState = rememberLazyListState()
-    val transition = updateTransition(
-        targetState = remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }.value,
-        label = ""
+    val isScrolled = remember { mutableStateOf(false) }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0 }
+            .collect { isScrolled.value = it }
+    }
+
+    val imageWidth by animateDpAsState(
+        targetValue = if (isScrolled.value) WelcomePageIllustrationSmallWidth else WelcomePageIllustrationBigWidth,
+        animationSpec = tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing), label = ""
     )
-    val imageWidth = transition.animateDp(
-        transitionSpec = { tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing) },
-        label = ""
-    ) { scrollOffset ->
-        if (scrollOffset < SCROLL_OFFSET) WelcomePageIllustrationBigWidth else WelcomePageIllustrationSmallWidth
-    }
-    val imageHeight = transition.animateDp(
-        transitionSpec = { tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing) },
-        label = ""
-    ) { scrollOffset ->
-        if (scrollOffset < SCROLL_OFFSET) WelcomePageIllustrationBigHeight else WelcomePageIllustrationSmallHeight
-    }
-    val entitlementTextColor = transition.animateColor(
-        transitionSpec = { tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing) },
-        label = ""
-    ) { scrollOffset ->
-        if (scrollOffset < SCROLL_OFFSET) FadedContentColor else EntitlementTextColor
-    }
-    val entitlementDividerColor = transition.animateColor(
-        transitionSpec = { tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing) },
-        label = ""
-    ) { scrollOffset ->
-        if (scrollOffset < SCROLL_OFFSET) FadedContentColor else HorizontalDividerColor
-    }
+    val imageHeight by animateDpAsState(
+        targetValue = if (isScrolled.value) WelcomePageIllustrationSmallHeight else WelcomePageIllustrationBigHeight,
+        animationSpec = tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing), label = ""
+    )
+    val entitlementTextColor by animateColorAsState(
+        targetValue = if (isScrolled.value) EntitlementTextColor else FadedContentColor,
+        animationSpec = tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing), label = ""
+    )
+    val entitlementDividerColor by animateColorAsState(
+        targetValue = if (isScrolled.value) HorizontalDividerColor else FadedContentColor,
+        animationSpec = tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing), label = ""
+    )
 
     LazyColumn(
         modifier = modifier
@@ -100,78 +101,114 @@ fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier) {
         state = listState,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item { Spacer(modifier = Modifier.size(WelcomePageVerticalSpacing)) }
+
         item {
-            Spacer(modifier = Modifier.size(WelcomePageVerticalSpacing))
             Image(
-                modifier = Modifier.size(width = imageWidth.value, height = imageHeight.value),
+                modifier = Modifier
+                    .size(width = imageWidth, height = imageHeight)
+                    .graphicsLayer { translationY = if (isScrolled.value) 0f else 0f },
                 painter = painterResource(id = R.drawable.illustration_upselling_mailbox),
                 contentDescription = NO_CONTENT_DESCRIPTION
             )
+        }
+
+        item {
             Spacer(modifier = Modifier.size(ProtonDimens.MediumSpacing))
+        }
+
+        item {
             Text(
                 text = stringResource(id = R.string.post_subscription_welcome_page_title),
                 style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
             )
+        }
+
+        item {
             Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+        }
+
+        item {
             Text(
                 text = stringResource(id = R.string.post_subscription_welcome_page_message),
                 style = ProtonTheme.typography.defaultUnspecified.copy(color = ContentTextColor),
                 textAlign = TextAlign.Center
             )
+        }
+
+        item {
             Spacer(modifier = Modifier.size(MailDimens.ExtraLargeSpacing))
+        }
+
+        item {
             Text(
                 text = stringResource(id = R.string.post_subscription_welcome_page_unlocked),
                 style = ProtonTheme.typography.defaultSmallUnspecified.copy(color = ContentTextColor)
             )
+        }
+
+        item {
+            Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
+        }
+
+        item {
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
                 painter = painterResource(id = R.drawable.ic_proton_arrow_down),
                 contentDescription = NO_CONTENT_DESCRIPTION,
                 tint = ContentTextColor
             )
-            Entitlements(textColor = entitlementTextColor.value, dividerColor = entitlementDividerColor.value)
-            Spacer(modifier = Modifier.size(WelcomePageVerticalSpacing))
+        }
+
+        item {
+            Entitlements(textColor = entitlementTextColor, dividerColor = entitlementDividerColor)
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
         }
     }
 }
 
 @Composable
 private fun Entitlements(textColor: Color, dividerColor: Color) {
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_storage,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_email_addresses,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_email_domains,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_folders_labels,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_aliases,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_desktop_app,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
-    Entitlement(
-        textId = R.string.post_subscription_plus_feature_customer_support,
-        textColor = textColor,
-        dividerColor = dividerColor
-    )
+    Column {
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_storage,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_email_addresses,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_email_domains,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_folders_labels,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_aliases,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_desktop_app,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+        Entitlement(
+            textId = R.string.post_subscription_plus_feature_customer_support,
+            textColor = textColor,
+            dividerColor = dividerColor
+        )
+    }
 }
 
 @Composable
@@ -180,17 +217,19 @@ private fun Entitlement(
     textColor: Color,
     dividerColor: Color
 ) {
-    Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-    HorizontalDivider(color = dividerColor)
-    Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
-    Text(
-        text = stringResource(id = textId),
-        textAlign = TextAlign.Center,
-        style = ProtonTheme.typography.defaultUnspecified.copy(
-            color = textColor
+    Column {
+        Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
+        HorizontalDivider(color = dividerColor)
+        Spacer(modifier = Modifier.size(ProtonDimens.DefaultSpacing))
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = stringResource(id = textId),
+            textAlign = TextAlign.Center,
+            style = ProtonTheme.typography.defaultUnspecified.copy(
+                color = textColor
+            )
         )
-    )
+    }
 }
 
-private const val ANIMATION_DURATION = 1000
-private const val SCROLL_OFFSET = 100
+private const val ANIMATION_DURATION = 250
