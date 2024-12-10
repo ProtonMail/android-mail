@@ -21,8 +21,6 @@ package ch.protonmail.android.mailupselling.presentation.ui.postsubscription
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,23 +33,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ripple
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -64,7 +56,6 @@ import ch.protonmail.android.mailupselling.presentation.model.postsubscription.P
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BackgroundGradientColorStops
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionBackgroundColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.BottomSectionButtonTextColor
-import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.CloseButtonBackground
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.HorizontalDividerColor
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.OtherPageIndicatorColor
 import ch.protonmail.android.mailupselling.presentation.viewmodel.postsubscription.PostSubscriptionViewModel
@@ -122,15 +113,14 @@ private fun PostSubscriptionScreen(
                 state = pagerState
             ) { page ->
                 when (page) {
-                    FIRST_PAGE -> PostSubscriptionWelcomePage()
+                    FIRST_PAGE -> PostSubscriptionWelcomePage(onClose = onClose)
                     SECOND_PAGE -> PostSubscriptionDiscoverAllAppsPage(
                         state = state,
-                        trackTelemetryEvent = trackTelemetryEvent
+                        trackTelemetryEvent = trackTelemetryEvent,
+                        onClose = onClose
                     )
                 }
             }
-
-            CloseButton(onClick = onClose)
         }
 
         HorizontalDivider(color = HorizontalDividerColor)
@@ -144,33 +134,6 @@ private fun PostSubscriptionScreen(
                     onClose()
                 }
             }
-        )
-    }
-}
-
-@Composable
-private fun CloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .padding(ProtonDimens.SmallSpacing)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(
-                    radius = MailDimens.PostSubscriptionCloseButtonRippleRadius,
-                    color = Color.White
-                ),
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(ProtonDimens.SmallSpacing)
-            .background(color = CloseButtonBackground, shape = CircleShape)
-            .padding(ProtonDimens.SmallSpacing)
-    ) {
-        Icon(
-            modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = R.drawable.ic_proton_cross_big),
-            contentDescription = stringResource(id = R.string.post_subscription_close_button_content_description),
-            tint = Color.White
         )
     }
 }

@@ -24,6 +24,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,7 +69,7 @@ import me.proton.core.compose.theme.defaultUnspecified
 import me.proton.core.compose.theme.headlineUnspecified
 
 @Composable
-fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier) {
+fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier, onClose: () -> Unit) {
     val listState = rememberLazyListState()
     val isScrolled = remember { mutableStateOf(false) }
 
@@ -94,78 +95,87 @@ fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier) {
         animationSpec = tween(durationMillis = ANIMATION_DURATION, easing = LinearEasing), label = ""
     )
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = ProtonDimens.MediumSpacing),
-        state = listState,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item { Spacer(modifier = Modifier.size(WelcomePageVerticalSpacing)) }
-
-        item {
-            Image(
-                modifier = Modifier
-                    .size(width = imageWidth, height = imageHeight)
-                    .graphicsLayer { translationY = if (isScrolled.value) 0f else 0f },
-                painter = painterResource(id = R.drawable.illustration_upselling_mailbox),
-                contentDescription = NO_CONTENT_DESCRIPTION
+    Box {
+        if (!isScrolled.value) {
+            PostSubscriptionCloseButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = onClose
             )
         }
 
-        item {
-            Spacer(modifier = Modifier.size(ProtonDimens.MediumSpacing))
-        }
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = ProtonDimens.MediumSpacing),
+            state = listState,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item { Spacer(modifier = Modifier.size(WelcomePageVerticalSpacing)) }
 
-        item {
-            Text(
-                text = stringResource(id = R.string.post_subscription_welcome_page_title),
-                style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
-            )
-        }
+            item {
+                Image(
+                    modifier = Modifier
+                        .size(width = imageWidth, height = imageHeight)
+                        .graphicsLayer { translationY = if (isScrolled.value) 0f else 0f },
+                    painter = painterResource(id = R.drawable.illustration_upselling_mailbox),
+                    contentDescription = NO_CONTENT_DESCRIPTION
+                )
+            }
 
-        item {
-            Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
-        }
+            item {
+                Spacer(modifier = Modifier.size(ProtonDimens.MediumSpacing))
+            }
 
-        item {
-            Text(
-                text = stringResource(id = R.string.post_subscription_welcome_page_message),
-                style = ProtonTheme.typography.defaultUnspecified.copy(color = ContentTextColor),
-                textAlign = TextAlign.Center
-            )
-        }
+            item {
+                Text(
+                    text = stringResource(id = R.string.post_subscription_welcome_page_title),
+                    style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
+                )
+            }
 
-        item {
-            Spacer(modifier = Modifier.size(MailDimens.ExtraLargeSpacing))
-        }
+            item {
+                Spacer(modifier = Modifier.size(ProtonDimens.SmallSpacing))
+            }
 
-        item {
-            Text(
-                text = stringResource(id = R.string.post_subscription_welcome_page_unlocked),
-                style = ProtonTheme.typography.defaultSmallUnspecified.copy(color = ContentTextColor)
-            )
-        }
+            item {
+                Text(
+                    text = stringResource(id = R.string.post_subscription_welcome_page_message),
+                    style = ProtonTheme.typography.defaultUnspecified.copy(color = ContentTextColor),
+                    textAlign = TextAlign.Center
+                )
+            }
 
-        item {
-            Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
-        }
+            item {
+                Spacer(modifier = Modifier.size(MailDimens.ExtraLargeSpacing))
+            }
 
-        item {
-            Icon(
-                modifier = Modifier.size(ProtonDimens.SmallIconSize),
-                painter = painterResource(id = R.drawable.ic_proton_arrow_down),
-                contentDescription = NO_CONTENT_DESCRIPTION,
-                tint = ContentTextColor
-            )
-        }
+            item {
+                Text(
+                    text = stringResource(id = R.string.post_subscription_welcome_page_unlocked),
+                    style = ProtonTheme.typography.defaultSmallUnspecified.copy(color = ContentTextColor)
+                )
+            }
 
-        item {
-            Entitlements(textColor = entitlementTextColor, dividerColor = entitlementDividerColor)
-        }
+            item {
+                Spacer(modifier = Modifier.size(ProtonDimens.ExtraSmallSpacing))
+            }
 
-        item {
-            Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+            item {
+                Icon(
+                    modifier = Modifier.size(ProtonDimens.SmallIconSize),
+                    painter = painterResource(id = R.drawable.ic_proton_arrow_down),
+                    contentDescription = NO_CONTENT_DESCRIPTION,
+                    tint = ContentTextColor
+                )
+            }
+
+            item {
+                Entitlements(textColor = entitlementTextColor, dividerColor = entitlementDividerColor)
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
+            }
         }
     }
 }

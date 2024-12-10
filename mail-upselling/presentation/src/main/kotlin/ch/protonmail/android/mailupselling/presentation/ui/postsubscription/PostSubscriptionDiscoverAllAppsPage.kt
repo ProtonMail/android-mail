@@ -24,6 +24,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.TextButton
 import androidx.compose.material3.Card
@@ -40,6 +42,9 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -73,6 +78,7 @@ import me.proton.core.compose.theme.headlineUnspecified
 fun PostSubscriptionDiscoverAllAppsPage(
     state: PostSubscriptionState,
     trackTelemetryEvent: (PostSubscriptionTelemetryEventType) -> Unit,
+    onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (state) {
@@ -80,6 +86,7 @@ fun PostSubscriptionDiscoverAllAppsPage(
         is PostSubscriptionState.Data -> PostSubscriptionDiscoverAllAppsPage(
             state = state,
             trackTelemetryEvent = trackTelemetryEvent,
+            onClose = onClose,
             modifier = modifier
         )
     }
@@ -89,60 +96,78 @@ fun PostSubscriptionDiscoverAllAppsPage(
 private fun PostSubscriptionDiscoverAllAppsPage(
     state: PostSubscriptionState.Data,
     trackTelemetryEvent: (PostSubscriptionTelemetryEventType) -> Unit,
+    onClose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val currentContext = LocalContext.current
+    val listState = rememberLazyListState()
+    val isScrolled = remember { mutableStateOf(false) }
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0 }
+            .collect { isScrolled.value = it }
+    }
 
     LaunchedEffect(Unit) {
         trackTelemetryEvent(PostSubscriptionTelemetryEventType.LastStepDisplayed)
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = ProtonDimens.MediumSpacing),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing + ProtonDimens.LargeSpacing))
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.post_subscription_discover_apps_page_title),
-                textAlign = TextAlign.Center,
-                style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
+    Box {
+        if (!isScrolled.value) {
+            PostSubscriptionCloseButton(
+                modifier = Modifier.align(Alignment.TopEnd),
+                onClick = onClose
             )
-            Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing))
         }
-        item {
-            Card(
-                shape = ProtonTheme.shapes.large,
-                colors = CardDefaults.cardColors().copy(
-                    containerColor = CardBackground
-                )
-            ) {
-                state.apps.forEachIndexed { index, app ->
-                    AppItem(
-                        logo = app.logo,
-                        appName = app.name,
-                        appMessage = app.message,
-                        isInstalled = app.isInstalled,
-                        onButtonClick = {
-                            trackTelemetryEvent(PostSubscriptionTelemetryEventType.DownloadApp(app.packageName))
 
-                            currentContext.startActivity(
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(PLAY_STORE_APP_DETAILS_BASE_URL + app.packageName)
-                                )
-                            )
-                        }
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = ProtonDimens.MediumSpacing),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = listState
+        ) {
+            item {
+                Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing + ProtonDimens.LargeSpacing))
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.post_subscription_discover_apps_page_title),
+                    textAlign = TextAlign.Center,
+                    style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
+                )
+                Spacer(modifier = Modifier.size(ProtonDimens.LargeSpacing))
+            }
+            item {
+                Card(
+                    shape = ProtonTheme.shapes.large,
+                    colors = CardDefaults.cardColors().copy(
+                        containerColor = CardBackground
                     )
-                    if (index != state.apps.size - 1) {
-                        HorizontalDivider(color = CardDividerColor)
+                ) {
+                    state.apps.forEachIndexed { index, app ->
+                        AppItem(
+                            logo = app.logo,
+                            appName = app.name,
+                            appMessage = app.message,
+                            isInstalled = app.isInstalled,
+                            onButtonClick = {
+                                trackTelemetryEvent(PostSubscriptionTelemetryEventType.DownloadApp(app.packageName))
+
+                                currentContext.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(PLAY_STORE_APP_DETAILS_BASE_URL + app.packageName)
+                                    )
+                                )
+                            }
+                        )
+                        if (index != state.apps.size - 1) {
+                            HorizontalDivider(color = CardDividerColor)
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.size(ProtonDimens.MediumSpacing))
             }
-            Spacer(modifier = Modifier.size(ProtonDimens.MediumSpacing))
         }
     }
 }
