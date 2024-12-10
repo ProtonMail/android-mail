@@ -21,7 +21,11 @@ package ch.protonmail.android.composer.data.remote
 import android.content.Context
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import androidx.work.await
+import ch.protonmail.android.composer.data.extension.awaitCompletion
 import ch.protonmail.android.composer.data.usecase.UploadDraft
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.isMessageAlreadySentDraftError
@@ -37,7 +41,8 @@ import me.proton.core.domain.entity.UserId
 @HiltWorker
 internal class UploadDraftWorker @AssistedInject constructor(
     @Assisted context: Context,
-    @Assisted workerParameters: WorkerParameters,
+    @Assisted private val workerParameters: WorkerParameters,
+    private val workManager: WorkManager,
     private val uploadDraft: UploadDraft,
     private val updateDraftStateForError: UpdateDraftStateForError
 ) : CoroutineWorker(context, workerParameters) {
@@ -45,6 +50,8 @@ internal class UploadDraftWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         val userId = UserId(requireNotBlank(inputData.getString(RawUserIdKey), fieldName = "User id"))
         val messageId = MessageId(requireNotBlank(inputData.getString(RawMessageIdKey), fieldName = "Message ids"))
+
+        if (shouldAwaitPreviousDraftUploadExecution(messageId)) return Result.retry()
 
         return uploadDraft(userId, messageId).fold(
             ifLeft = {
@@ -58,6 +65,33 @@ internal class UploadDraftWorker @AssistedInject constructor(
                 Result.success()
             }
         )
+    }
+
+    // Handles the case where the Draft upload is called as part of the Sending flow, and an existing UploadDraftWork
+    // job triggered from the standard Upload flow is already enqueued, blocked or running.
+    // In case it's enqueued or blocked, the job gets cancelled and the current job re-scheduled (via Retry).
+    // If it's running we wait for the run to complete without cancellation. In any other case the worker runs directly.
+    private suspend fun shouldAwaitPreviousDraftUploadExecution(messageId: MessageId): Boolean {
+        if (!workerParameters.tags.contains(sendId(messageId))) return false
+
+        val uploadDraftUniqueWorkName = id(messageId)
+        val uniqueWorkInfo = workManager.getWorkInfosForUniqueWork(uploadDraftUniqueWorkName)
+            .awaitCompletion()
+            .firstOrNull()
+            ?: return false
+
+        return when (uniqueWorkInfo.state) {
+            WorkInfo.State.ENQUEUED,
+            WorkInfo.State.BLOCKED -> {
+                workManager.cancelUniqueWork(uploadDraftUniqueWorkName).await()
+                return true
+            }
+
+            WorkInfo.State.RUNNING -> true
+            WorkInfo.State.SUCCEEDED,
+            WorkInfo.State.FAILED,
+            WorkInfo.State.CANCELLED -> false
+        }
     }
 
     private fun DataError.toSendingError() = when {
@@ -76,5 +110,6 @@ internal class UploadDraftWorker @AssistedInject constructor(
         )
 
         fun id(messageId: MessageId): String = "SyncDraftWorker-${messageId.id}"
+        fun sendId(messageId: MessageId): String = "SendMessageWorker-${messageId.id}"
     }
 }

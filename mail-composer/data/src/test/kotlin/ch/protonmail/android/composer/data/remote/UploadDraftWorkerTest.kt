@@ -19,6 +19,7 @@
 package ch.protonmail.android.composer.data.remote
 
 import android.content.Context
+import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker.Result
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequest
@@ -32,8 +33,8 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.model.ProtonError
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
-import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailcomposer.domain.usecase.UpdateDraftStateForError
+import ch.protonmail.android.mailmessage.domain.model.DraftSyncState
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.SendingError
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -50,14 +51,16 @@ import me.proton.core.domain.entity.UserId
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-class UploadDraftWorkerTest {
+internal class UploadDraftWorkerTest {
 
     private val workManager: WorkManager = mockk {
-        coEvery { enqueue(any<OneTimeWorkRequest>()) } returns mockk()
+        coEvery { enqueueUniqueWork(any(), any(), any<OneTimeWorkRequest>()) } returns mockk()
     }
-    private val parameters: WorkerParameters = mockk {
-        every { this@mockk.getTaskExecutor() } returns mockk(relaxed = true)
+    private val workerParameters: WorkerParameters = mockk {
+        every { this@mockk.taskExecutor } returns mockk(relaxed = true)
+        every { this@mockk.tags } returns emptySet()
     }
     private val context: Context = mockk()
     private val uploadDraft: UploadDraft = mockk()
@@ -65,7 +68,8 @@ class UploadDraftWorkerTest {
 
     private val uploadDraftWorker = UploadDraftWorker(
         context,
-        parameters,
+        workerParameters,
+        workManager,
         uploadDraft,
         updateDraftStateForError
     )
@@ -75,22 +79,43 @@ class UploadDraftWorkerTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
+        val workerId = "UploadWorker-workerId"
+        val workerPolicy = ExistingWorkPolicy.REPLACE
         givenInputData(userId, messageId)
 
         // When
-        Enqueuer(workManager).enqueue<UploadDraftWorker>(userId, UploadDraftWorker.params(userId, messageId))
+        Enqueuer(workManager).enqueueUniqueWork<UploadDraftWorker>(
+            userId = userId,
+            workerId = workerId,
+            existingWorkPolicy = workerPolicy,
+            params = UploadDraftWorker.params(userId, messageId)
+        )
 
         // Then
+        val workerIdSlot = slot<String>()
+        val existingPolicySlot = slot<ExistingWorkPolicy>()
         val requestSlot = slot<OneTimeWorkRequest>()
-        verify { workManager.enqueue(capture(requestSlot)) }
+        verify {
+            workManager.enqueueUniqueWork(
+                capture(workerIdSlot),
+                capture(existingPolicySlot),
+                capture(requestSlot)
+            )
+        }
+
         val workSpec = requestSlot.captured.workSpec
         val constraints = workSpec.constraints
         val inputData = workSpec.input
+        val capturedPolicy = existingPolicySlot.captured
+        val tags = requestSlot.captured.tags
         val actualUserId = inputData.getString(UploadDraftWorker.RawUserIdKey)
         val actualMessageIds = inputData.getString(UploadDraftWorker.RawMessageIdKey)
+
         assertEquals(userId.id, actualUserId)
         assertEquals(messageId.id, actualMessageIds)
         assertEquals(NetworkType.CONNECTED, constraints.requiredNetworkType)
+        assertEquals(workerPolicy, capturedPolicy)
+        assertTrue(tags.contains(workerId))
     }
 
     @Test
@@ -184,7 +209,6 @@ class UploadDraftWorkerTest {
         coVerify { updateDraftStateForError(userId, messageId, DraftSyncState.ErrorUploadDraft, sendingError) }
     }
 
-
     private fun givenUploadDraftSucceeds(userId: UserId, messageId: MessageId) {
         coEvery { uploadDraft(userId, messageId) } returns Unit.right()
     }
@@ -206,8 +230,8 @@ class UploadDraftWorkerTest {
     }
 
     private fun givenInputData(userId: UserId?, messageId: MessageId?) {
-        every { parameters.inputData.getString(UploadDraftWorker.RawUserIdKey) } returns userId?.id
-        every { parameters.inputData.getString(UploadDraftWorker.RawMessageIdKey) } returns messageId?.id
+        every { workerParameters.inputData.getString(UploadDraftWorker.RawUserIdKey) } returns userId?.id
+        every { workerParameters.inputData.getString(UploadDraftWorker.RawMessageIdKey) } returns messageId?.id
     }
 
     private fun givenUpdateDraftStateForErrorSucceeds(

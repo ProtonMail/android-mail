@@ -44,11 +44,11 @@ class MessageRepositoryImpl @Inject constructor(
 
         enqueuer.enqueueInChain<UploadDraftWorker, UploadAttachmentsWorker, SendMessageWorker>(
             userId = userId,
-            uniqueWorkId = UploadDraftWorker.id(messageId),
+            uniqueWorkId = UploadDraftWorker.sendId(messageId),
             params1 = UploadDraftWorker.params(userId, messageId),
             params2 = UploadAttachmentsWorker.params(userId, messageId),
             params3 = SendMessageWorker.params(userId, messageId),
-            existingWorkPolicy = ExistingWorkPolicy.APPEND_OR_REPLACE
+            existingWorkPolicy = ExistingWorkPolicy.REPLACE
         )
     }
 
@@ -73,5 +73,4 @@ class MessageRepositoryImpl @Inject constructor(
             labelIdsToRemove = setOf(SystemLabelId.Sent.labelId, SystemLabelId.AllSent.labelId)
         )
     }
-
 }
