@@ -849,7 +849,9 @@ class ComposerViewModel @Inject constructor(
         // Ignore DraftBodyChanged for now, it causes too much noise.
         if (action is ComposerAction.DraftBodyChanged) return
 
-        Timber.tag("ComposerViewModel").d("Action ${action::class.java.simpleName} - $message")
+        Timber
+            .tag("ComposerViewModel")
+            .d("Action ${action::class.java.simpleName} ${System.identityHashCode(action)} - $message")
     }
 
     companion object {
