@@ -19,49 +19,42 @@
 package ch.protonmail.android.mailupselling.presentation.ui.postsubscription
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ripple
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.CloseButtonBackground
-import me.proton.core.compose.theme.ProtonDimens
+import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionColors.CloseButtonColor
+import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionDimens.CloseButtonSize
 
 @Composable
 internal fun PostSubscriptionCloseButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Box(
-        modifier = modifier
-            .padding(ProtonDimens.SmallSpacing)
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(
-                    radius = MailDimens.PostSubscriptionCloseButtonRippleRadius,
-                    color = Color.White
-                ),
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(ProtonDimens.SmallSpacing)
-            .background(color = CloseButtonBackground, shape = CircleShape)
-            .padding(ProtonDimens.SmallSpacing)
+    IconButton(
+        modifier = modifier,
+        onClick = onClick
     ) {
-        Icon(
-            modifier = Modifier.size(ProtonDimens.SmallIconSize),
-            painter = painterResource(id = R.drawable.ic_proton_cross_big),
-            contentDescription = stringResource(id = R.string.post_subscription_close_button_content_description),
-            tint = Color.White
-        )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(CloseButtonSize)
+                .background(
+                    color = CloseButtonBackground,
+                    shape = CircleShape
+                )
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Close,
+                tint = CloseButtonColor,
+                contentDescription = stringResource(R.string.post_subscription_close_button_content_description)
+            )
+        }
     }
 }

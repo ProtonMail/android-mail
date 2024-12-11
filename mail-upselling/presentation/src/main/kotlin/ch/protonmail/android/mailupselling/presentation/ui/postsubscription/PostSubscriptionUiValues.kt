@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 
 object PostSubscriptionColors {
     val BackgroundGradientColorStops = arrayOf(0.0f to Color(0xFF0C0233), 1.0f to Color(0xFF522580))
+    val CloseButtonColor = Color.White
     val CloseButtonBackground = Color(0x14FFFFFF)
     val HorizontalDividerColor = Color(0x3DFFFFFF)
     val BottomSectionBackgroundColor = Color(0x14FFFFFF)
@@ -45,6 +46,7 @@ object PostSubscriptionColors {
 }
 
 object PostSubscriptionDimens {
+    val CloseButtonSize = 32.dp
     val WelcomePageVerticalSpacing = 136.dp
     val WelcomePageIllustrationBigWidth = 218.dp
     val WelcomePageIllustrationSmallWidth = 109.dp

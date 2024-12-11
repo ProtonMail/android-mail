@@ -50,6 +50,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.zIndex
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.presentation.R
@@ -98,7 +99,10 @@ fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier, onClose: () -> Un
     Box {
         if (!isScrolled.value) {
             PostSubscriptionCloseButton(
-                modifier = Modifier.align(Alignment.TopEnd),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(ProtonDimens.ExtraSmallSpacing)
+                    .zIndex(1f),
                 onClick = onClose
             )
         }
