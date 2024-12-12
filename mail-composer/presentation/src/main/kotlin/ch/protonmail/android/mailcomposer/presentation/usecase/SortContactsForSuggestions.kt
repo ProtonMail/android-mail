@@ -77,7 +77,8 @@ class SortContactsForSuggestions @Inject constructor(
         val fromContactGroups = contactGroups.asSequence().map { contactGroup ->
             ContactSuggestionUiModel.ContactGroup(
                 name = contactGroup.name,
-                emails = contactGroup.members.map { it.email }.distinct()
+                emails = contactGroup.members.map { it.email }.distinct(),
+                color = contactGroup.color
             )
         }
 

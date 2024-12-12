@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusProperties
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -54,6 +55,7 @@ import ch.protonmail.android.uicomponents.chips.thenIf
 import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import timber.log.Timber
 
 @Composable
 internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
@@ -222,18 +224,26 @@ private fun RecipientUiModel.toChipItem(): ChipItem = when (this) {
 @Composable
 private fun ContactSuggestionUiModel.toSuggestionContactItem(): ContactSuggestionItem = when (this) {
     is ContactSuggestionUiModel.Contact -> ContactSuggestionItem.Contact(
-        this.initial,
-        this.name,
-        this.email,
-        this.email
+        initials = this.initial,
+        header = this.name,
+        subheader = this.email,
+        email = this.email
     )
 
-    is ContactSuggestionUiModel.ContactGroup -> ContactSuggestionItem.Group(
-        this.name,
-        TextUiModel.PluralisedText(
-            value = R.plurals.composer_recipient_suggestion_contacts,
-            count = this.emails.size
-        ).string(),
-        this.emails
-    )
+    is ContactSuggestionUiModel.ContactGroup -> {
+        val backgroundColor = runCatching { Color(android.graphics.Color.parseColor(this.color)) }.getOrElse {
+            Timber.tag("getContactGroupColor").w("Failed to convert raw string color from $color")
+            ProtonTheme.colors.backgroundSecondary
+        }
+
+        ContactSuggestionItem.Group(
+            header = this.name,
+            subheader = TextUiModel.PluralisedText(
+                value = R.plurals.composer_recipient_suggestion_contacts,
+                count = this.emails.size
+            ).string(),
+            emails = this.emails,
+            backgroundColor = backgroundColor
+        )
+    }
 }

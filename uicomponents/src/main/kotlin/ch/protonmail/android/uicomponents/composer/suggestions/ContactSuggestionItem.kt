@@ -19,6 +19,7 @@
 package ch.protonmail.android.uicomponents.composer.suggestions
 
 import androidx.compose.runtime.Stable
+import androidx.compose.ui.graphics.Color
 
 sealed interface ContactSuggestionItem {
 
@@ -34,6 +35,7 @@ sealed interface ContactSuggestionItem {
     data class Group(
         val header: String,
         val subheader: String,
-        val emails: List<String>
+        val emails: List<String>,
+        val backgroundColor: Color
     ) : ContactSuggestionItem
 }

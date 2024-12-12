@@ -38,7 +38,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import ch.protonmail.android.uicomponents.R
-import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionsColor.ContactGroupsBackground
 import ch.protonmail.android.uicomponents.text.HighlightedText
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -123,7 +122,7 @@ private fun ContactSuggestionGroupEntry(currentText: String, item: ContactSugges
             modifier = Modifier
                 .size(ProtonDimens.LargeSpacing)
                 .background(
-                    color = Color(android.graphics.Color.parseColor(ContactGroupsBackground)),
+                    color = item.backgroundColor,
                     shape = ProtonTheme.shapes.medium
                 ),
             contentAlignment = Alignment.Center
@@ -155,9 +154,4 @@ private fun ContactSuggestionGroupEntry(currentText: String, item: ContactSugges
             )
         }
     }
-}
-
-private object ContactSuggestionsColor {
-
-    const val ContactGroupsBackground = "#FF3CBB3A"
 }

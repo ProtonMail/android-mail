@@ -831,7 +831,8 @@ class ComposerViewModelTest {
                     ),
                     ContactSuggestionUiModel.ContactGroup(
                         expectedContactGroups[0].name,
-                        expectedContactGroups[0].members.map { it.email }
+                        expectedContactGroups[0].members.map { it.email },
+                        expectedContactGroups[0].color
                     )
                 )
             ),

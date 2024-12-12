@@ -739,7 +739,7 @@ class ComposerReducerTest(
             operation = ComposerEvent.UpdateContactSuggestions(
                 contactSuggestions = listOf(
                     ContactSuggestionUiModel.Contact("contact name", "IN", "contact email"),
-                    ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
+                    ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"), "#FF0000")
                 ),
                 suggestionsField = ContactSuggestionsField.BCC
             ),
@@ -747,7 +747,11 @@ class ComposerReducerTest(
                 contactSuggestions = mapOf(
                     ContactSuggestionsField.BCC to listOf(
                         ContactSuggestionUiModel.Contact("contact name", "IN", "contact email"),
-                        ContactSuggestionUiModel.ContactGroup("contact group name", listOf("contact@emai.il"))
+                        ContactSuggestionUiModel.ContactGroup(
+                            "contact group name",
+                            listOf("contact@emai.il"),
+                            "#FF0000"
+                        )
                     )
                 ),
                 areContactSuggestionsExpanded = mapOf(ContactSuggestionsField.BCC to true)

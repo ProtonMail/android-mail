@@ -118,7 +118,8 @@ class SortContactsForSuggestionsTest {
             ),
             ContactSuggestionUiModel.ContactGroup(
                 name = contactGroups[2].name,
-                emails = contactGroups[2].members.map { it.email }
+                emails = contactGroups[2].members.map { it.email },
+                color = "#AABBCC"
             ),
             ContactSuggestionUiModel.Contact(
                 name = deviceContacts[1].name,
@@ -132,7 +133,8 @@ class SortContactsForSuggestionsTest {
             ),
             ContactSuggestionUiModel.ContactGroup(
                 contactGroups[1].name,
-                contactGroups[1].members.map { it.email }
+                contactGroups[1].members.map { it.email },
+                color = "#AABBCC"
             )
         )
 
@@ -186,7 +188,8 @@ class SortContactsForSuggestionsTest {
             ),
             ContactSuggestionUiModel.ContactGroup(
                 name = groupsSuggestions[0].name,
-                emails = groupsSuggestions[0].members.map { it.email }
+                emails = groupsSuggestions[0].members.map { it.email },
+                color = "#AABBCC"
             ),
             ContactSuggestionUiModel.Contact(
                 name = deviceContacts[2].name,
@@ -254,7 +257,8 @@ class SortContactsForSuggestionsTest {
                 ),
                 ContactSuggestionUiModel.ContactGroup(
                     groupsSuggestions[0].name,
-                    groupsSuggestions[0].members.map { it.email }
+                    groupsSuggestions[0].members.map { it.email },
+                    color = "#AABBCC"
                 ),
                 ContactSuggestionUiModel.Contact(
                     name = deviceContacts[2].name,
