@@ -132,6 +132,7 @@ fun PostSubscriptionWelcomePage(modifier: Modifier = Modifier, onClose: () -> Un
 
             item {
                 Text(
+                    textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.post_subscription_welcome_page_title),
                     style = ProtonTheme.typography.headlineUnspecified.copy(color = Color.White)
                 )
