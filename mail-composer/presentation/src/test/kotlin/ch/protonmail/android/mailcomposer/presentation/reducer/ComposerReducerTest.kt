@@ -449,6 +449,35 @@ class ComposerReducerTest(
             )
         }
 
+        private val MultilinedSubject = with(Subject("This\n\n is a\r multiline\n subject\n\r")) {
+            arrayOf(
+                TestTransition(
+                    name = "Should strip new line characters from the subject when saving it",
+                    currentState = ComposerDraftState.initial(messageId),
+                    operation = ComposerAction.SubjectChanged(this),
+                    expectedState = aNotSubmittableState(
+                        draftId = messageId,
+                        subject = Subject("This  is a  multiline  subject "),
+                        error = Effect.empty()
+                    )
+                ),
+                TestTransition(
+                    name = "Should strip new line characters from the subject when updating an existing one",
+                    currentState = aNotSubmittableState(
+                        draftId = messageId,
+                        subject = Subject("Some subject"),
+                        error = Effect.empty()
+                    ),
+                    operation = ComposerAction.SubjectChanged(this),
+                    expectedState = aNotSubmittableState(
+                        draftId = messageId,
+                        subject = Subject("This  is a  multiline  subject "),
+                        error = Effect.empty()
+                    )
+                )
+            )
+        }
+
         private val EmptyToCloseComposer = TestTransition(
             name = "Should close the composer",
             currentState = ComposerDraftState.initial(messageId),
@@ -949,7 +978,8 @@ class ComposerReducerTest(
             EmptyToOnIsDeviceContactsSuggestionsEnabled,
             EmptyToDeviceContactsPromptDenied,
             EmptyToOnIsDeviceContactsSuggestionsPromptEnabled,
-            EmptyToConfirmSendExpiringMessage
+            EmptyToConfirmSendExpiringMessage,
+            *MultilinedSubject
         )
 
         private fun aSubmittableState(

@@ -74,12 +74,14 @@ class ComposerReducer @Inject constructor(
             currentState,
             this.suggestionsField
         )
+
         is ComposerAction.ConfirmSendingWithoutSubject -> updateForConfirmSendWithoutSubject(currentState)
         is ComposerAction.RejectSendingWithoutSubject -> updateForRejectSendWithoutSubject(currentState)
         is ComposerAction.OnSetExpirationTimeRequested -> updateStateForSetExpirationTimeRequested(currentState)
         is ComposerAction.ExpirationTimeSet -> updateStateForExpirationTimeSet(currentState)
         is ComposerAction.RespondInlineRequested,
         is ComposerAction.SendExpiringMessageToExternalRecipientsConfirmed -> currentState
+
         is ComposerAction.DeviceContactsPromptDenied -> updateStateForDeviceContactsPromptDenied(currentState, false)
     }
 
@@ -156,22 +158,27 @@ class ComposerReducer @Inject constructor(
             currentState,
             this.enabled
         )
+
         is ComposerEvent.UpdateContactSuggestions -> updateStateForContactSuggestions(
             currentState,
             this.contactSuggestions,
             this.suggestionsField
         )
+
         is ComposerEvent.OnMessagePasswordUpdated -> updateStateForMessagePassword(currentState, this.messagePassword)
         is ComposerEvent.ConfirmEmptySubject -> currentState.copy(
             confirmSendingWithoutSubject = Effect.of(Unit)
         )
+
         is ComposerEvent.ErrorSettingExpirationTime -> currentState.copy(
             error = Effect.of(TextUiModel(R.string.composer_error_setting_expiration_time))
         )
+
         is ComposerEvent.OnMessageExpirationTimeUpdated -> updateStateForMessageExpirationTime(
             currentState,
             this.messageExpirationTime
         )
+
         is ComposerEvent.ConfirmSendExpiringMessageToExternalRecipients -> currentState.copy(
             confirmSendExpiringMessage = Effect.of(this.externalRecipients)
         )
@@ -225,8 +232,10 @@ class ComposerReducer @Inject constructor(
             senderChangedNotice = when {
                 blockedSendingFromPmAddress ->
                     Effect.of(TextUiModel(R.string.composer_sender_changed_pm_address_is_a_paid_feature))
+
                 blockedSendingFromDisabledAddress ->
                     Effect.of(TextUiModel(R.string.composer_sender_changed_original_address_disabled))
+
                 else -> Effect.empty()
             }
         )
@@ -255,8 +264,11 @@ class ComposerReducer @Inject constructor(
     private fun updateDraftBodyTo(currentState: ComposerDraftState, draftBody: DraftBody): ComposerDraftState =
         currentState.copy(fields = currentState.fields.copy(body = draftBody.value))
 
-    private fun updateSubjectTo(currentState: ComposerDraftState, subject: Subject) =
-        currentState.copy(fields = currentState.fields.copy(subject = subject.value))
+    private fun updateSubjectTo(currentState: ComposerDraftState, subject: Subject): ComposerDraftState {
+        // New line chars make the Subject invalid on BE side.
+        val updatedSubject = subject.value.replace(Regex("[\\r\\n]+"), " ")
+        return currentState.copy(fields = currentState.fields.copy(subject = updatedSubject))
+    }
 
     private fun updateStateForOpenWithMessageAction(
         currentState: ComposerDraftState,
@@ -405,7 +417,10 @@ class ComposerReducer @Inject constructor(
         val hasDuplicates = hasDuplicates(capturedToDuplicates, capturedCcDuplicates, capturedBccDuplicates)
 
         val error = when {
-            hasDuplicates -> { Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient)) }
+            hasDuplicates -> {
+                Effect.of(TextUiModel(R.string.composer_error_duplicate_recipient))
+            }
+
             hasInvalidRecipients -> Effect.of(TextUiModel(R.string.composer_error_invalid_email))
             else -> Effect.empty()
         }
