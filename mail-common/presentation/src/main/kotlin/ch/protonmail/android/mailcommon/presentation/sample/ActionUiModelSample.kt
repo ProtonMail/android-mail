@@ -19,9 +19,7 @@
 package ch.protonmail.android.mailcommon.presentation.sample
 
 import ch.protonmail.android.mailcommon.domain.model.Action
-import ch.protonmail.android.mailcommon.presentation.R
 import ch.protonmail.android.mailcommon.presentation.model.ActionUiModel
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
@@ -48,11 +46,6 @@ object ActionUiModelSample {
 
     val ReportPhishing: ActionUiModel =
         build(Action.ReportPhishing)
-
-    fun ReplyTo(recipient: String): ActionUiModel = Reply.copy(
-        description = TextUiModel.TextResWithArgs(R.string.action_reply_to_description, listOf(recipient)),
-        contentDescription = TextUiModel.TextResWithArgs(R.string.action_reply_to_description, listOf(recipient))
-    )
 
     fun build(action: Action) = ActionUiModel(
         action = action,

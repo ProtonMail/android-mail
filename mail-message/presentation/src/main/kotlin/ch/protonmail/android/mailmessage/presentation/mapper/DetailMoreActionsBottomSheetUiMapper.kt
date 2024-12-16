@@ -39,27 +39,9 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
         messageId
     )
 
-    fun mapMoreActionUiModels(senderName: String, recipientsCount: Int): ImmutableList<ActionUiModel> {
+    fun mapMoreActionUiModels(): ImmutableList<ActionUiModel> {
         return mutableListOf<ActionUiModel>().apply {
-            // Show Reply + Reply All only if needed
-            if (recipientsCount > 1) {
-                add(
-                    ActionUiModel(
-                        Action.Reply,
-                        description = TextUiModel.TextResWithArgs(
-                            R.string.action_reply_to_description,
-                            listOf(senderName)
-                        ),
-                        contentDescription = TextUiModel.TextResWithArgs(
-                            R.string.action_reply_to_content_description,
-                            listOf(senderName)
-                        )
-                    )
-                )
-            } else {
-                add(ActionUiModel(Action.Reply))
-            }
-
+            add(ActionUiModel(Action.Reply))
             add(ActionUiModel(Action.ReplyAll))
             add(ActionUiModel(Action.Forward))
             add(ActionUiModel(Action.MarkUnread))

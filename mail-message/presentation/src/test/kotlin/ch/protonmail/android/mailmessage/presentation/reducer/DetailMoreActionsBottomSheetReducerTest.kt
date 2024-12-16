@@ -46,11 +46,11 @@ internal class DetailMoreActionsBottomSheetReducerTest(
     @Before
     fun setup() {
         every {
-            mapper.mapMoreActionUiModels(ExpectedSender, SingleParticipantCount)
+            mapper.mapMoreActionUiModels()
         } returns expectedSingleParticipantAction
 
         every {
-            mapper.mapMoreActionUiModels(ExpectedSender, MultipleParticipantsCount)
+            mapper.mapMoreActionUiModels()
         } returns expectedMultipleParticipantAction
 
         every {

@@ -51,7 +51,7 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
     }
 
     @Test
-    fun `should map the to correct ui model given just one recipient`() {
+    fun `should map the to correct ui model`() {
         // Given
         val expectedList = listOf(
             ActionUiModel(Action.Reply),
@@ -70,43 +70,7 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         ).toImmutableList()
 
         // When
-        val actual = mapper.mapMoreActionUiModels(ExpectedSender, SingleRecipientCount)
-
-        // Then
-        assertEquals(expectedList, actual)
-    }
-
-    @Test
-    fun `should map the to correct ui model given multiple recipients`() {
-        // Given
-        val expectedList = listOf(
-            ActionUiModel(
-                Action.Reply,
-                description = TextUiModel.TextResWithArgs(
-                    R.string.action_reply_to_description,
-                    listOf(ExpectedSender)
-                ),
-                contentDescription = TextUiModel.TextResWithArgs(
-                    R.string.action_reply_to_content_description,
-                    listOf(ExpectedSender)
-                )
-            ),
-            ActionUiModel(Action.ReplyAll),
-            ActionUiModel(Action.Forward),
-            ActionUiModel(Action.MarkUnread),
-            ActionUiModel(Action.Label),
-            ActionUiModel(Action.ViewInLightMode),
-            ActionUiModel(Action.ViewInDarkMode),
-            ActionUiModel(Action.Trash),
-            ActionUiModel(Action.Archive),
-            ActionUiModel(Action.Spam),
-//            ActionUiModel(Action.Move),
-            ActionUiModel(Action.Print),
-            ActionUiModel(Action.ReportPhishing)
-        ).toImmutableList()
-
-        // When
-        val actual = mapper.mapMoreActionUiModels(ExpectedSender, PluralRecipientCount)
+        val actual = mapper.mapMoreActionUiModels()
 
         // Then
         assertEquals(expectedList, actual)
@@ -117,7 +81,5 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         const val ExpectedSender = "Sender"
         const val ExpectedSubject = "A subject"
         const val ExpectedMessageId = "messageId"
-        const val SingleRecipientCount = 1
-        const val PluralRecipientCount = 10
     }
 }
