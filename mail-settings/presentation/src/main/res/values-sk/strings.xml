@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Autom. detekcia</string>
   <string name="mail_settings_app_information">O aplikácii</string>
   <string name="mail_settings_app_version">Verzia aplikácie</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Logy aplikácie</string>
   <string name="mail_settings_account">Účet</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Predplatné</string>

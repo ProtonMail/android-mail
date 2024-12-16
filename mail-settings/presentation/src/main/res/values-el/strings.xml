@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Αυτόματος εντοπισμός</string>
   <string name="mail_settings_app_information">Πληροφορίες Εφαρμογής</string>
   <string name="mail_settings_app_version">Έκδοση εφαρμογής</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Αρχεία καταγραφών εφαρμογής</string>
   <string name="mail_settings_account">Λογαριασμός</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Συνδρομή</string>

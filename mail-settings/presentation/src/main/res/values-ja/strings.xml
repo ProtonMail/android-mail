@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">自動検出</string>
   <string name="mail_settings_app_information">アプリの情報</string>
   <string name="mail_settings_app_version">アプリのバージョン</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">アプリロゴ</string>
   <string name="mail_settings_account">アカウント</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">サブスクリプション</string>
@@ -122,7 +122,7 @@
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">プッシュ通知</string>
   <string name="mail_settings_notifications_extended_notifications_title">拡張通知</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にすると、プッシュ通知でメールの送信者が表示されます。</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">この機能を有効にすると、プッシュ通知にメールの送信者が表示されます。</string>
   <string name="mail_settings_notifications_notifications_settings">通知設定</string>
   <string name="mail_settings_notifications_notifications_settings_hint">システムの通知設定に移動します</string>
   <string name="mail_settings_notifications_update_error">設定更新エラー</string>

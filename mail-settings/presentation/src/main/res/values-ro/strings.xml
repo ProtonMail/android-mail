@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Autodetectare</string>
   <string name="mail_settings_app_information">Informații aplicație</string>
   <string name="mail_settings_app_version">Versiune aplicație</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Jurnale aplicație</string>
   <string name="mail_settings_account">Cont</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abonament</string>

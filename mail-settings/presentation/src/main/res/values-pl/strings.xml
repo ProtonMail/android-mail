@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Automatyczne wykrywanie</string>
   <string name="mail_settings_app_information">Informacje o aplikacji</string>
   <string name="mail_settings_app_version">Wersja aplikacji</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Logi aplikacji</string>
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Subskrypcja</string>

@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">ჩადგმული გამოსახულებების ჩატვირთვა</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">დაშორებული და ჩაშენებული შემცველობის ჩატვირთვა</string>
   <string name="message_report_phishing_dialog_title_offline">ყურადღება</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">ეს თვისება, მხოლოდ, ონლაინაა ხელმისაწვდომი.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">დიახ</string>
   <string name="message_report_phishing_dialog_title">ფიშინგის ანგარიშის დასტური</string>
   <string name="message_report_phishing_dialog_message">შეტყობინების ფიშინგად მონიშვნა გამოიწვევს ამ შეტყობინების ჩვენთვის გადმოგზავნას. ჩვენ გავაანალიზებთ მას და გავაუმჯობესებთ ჩვენს ფილტრებს. ეს ასევე ნიშნავს, რომ ჩვენ წვდომა გვექნება შეტყობინების სრულ შინაარსთან.</string>

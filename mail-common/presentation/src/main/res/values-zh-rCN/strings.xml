@@ -82,13 +82,13 @@
   <string name="action_more_content_description">更多</string>
   <string name="common_error_loading_actions">加载操作失败</string>
   <string name="yesterday">昨天</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
-  <string name="auto_delete_banner_button_activate_confirm">Enable</string>
-  <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
+  <string name="auto_delete_banner_text_activate_trash">自动删除垃圾箱中超过 30 天的邮件。</string>
+  <string name="auto_delete_banner_text_activate_spam">自动删除垃圾邮件中超过 30 天的邮件。</string>
+  <string name="auto_delete_banner_text_upgrade">升级为自动删除已在垃圾邮件或垃圾邮件中超过 30 天的邮件。</string>
+  <string name="auto_delete_banner_text_enabled_info">已在垃圾邮件和垃圾邮件中超过 30 天的邮件将被自动删除。</string>
+  <string name="auto_delete_banner_button_activate_confirm">开启</string>
+  <string name="auto_delete_banner_button_activate_dismiss">不，谢谢</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">了解更多</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">附件</string>
   <string name="attachment_download_notification_channel_description">附件下载通知</string>

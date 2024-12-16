@@ -78,7 +78,7 @@
   <string name="external_link_confirmation_dialog_continue_button">Lanjut</string>
   <!-- Phishing link confirmation dialog -->
   <string name="phishing_link_confirmation_dialog_title">Peringatan: situs web ini terindikasi palsu</string>
-  <string name="phishing_link_confirmation_dialog_content_part_1">Tautan ini tertuju pada situs web yang dapat mencuri informasi pribadi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_1">Tautan ini tertuju pada situs web yang dapat berupaya untuk mencuri informasi Anda, seperti kata sandi dan rincian kartu kredit yang Anda miliki.</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">Demi keamanan Anda, jangan lanjutkan ke situs web ini.</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Kembali (disarankan)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Abaikan peringatan dan lanjut</string>
@@ -97,7 +97,7 @@
   <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
   <string name="message_report_phishing_dialog_title_offline">Perhatian</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Fitur ini hanya tersedia secara online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Konfirmasi laporan phishing</string>
   <string name="message_report_phishing_dialog_message">Dengan melaporkan pesan sebagai upaya phishing, pesan tersebut akan dikirimkan kepada kami agar kami dapat menganalisanya dan meningkatkan filter kami. Hal ini berarti bahwa kami akan dapat melihat isi pesan tersebut secara utuh.</string>

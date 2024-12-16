@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">Φόρτωση ενσωματωμένων εικόνων</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Φόρτωση απομακρυσμένου και ενσωματωμένου περιεχομένου</string>
   <string name="message_report_phishing_dialog_title_offline">Προσοχή</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Αυτή η λειτουργία είναι διαθέσιμη μόνο όταν είστε συνδεδεμένοι στο διαδύκτιο</string>
   <string name="message_report_phishing_dialog_confim_button_offline">ΟΚ</string>
   <string name="message_report_phishing_dialog_title">Επιβεβαίωση αναφοράς ηλεκτρονικού ψαρέματος</string>
   <string name="message_report_phishing_dialog_message">Η αναφορά ενός μηνύματος ως προσπάθεια ηλεκτρονικού \"ψαρέματος\" (phising) θα το αποστείλει σε εμάς, ώστε να το αναλύσουμε και να βελτιώσουμε τα φίλτρα μας. Αυτό σημαίνει ότι θα μπορέσουμε να δούμε το περιεχόμενο ολόκληρου του μηνύματος.</string>

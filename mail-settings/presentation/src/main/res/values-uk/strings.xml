@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Автовизначення</string>
   <string name="mail_settings_app_information">Інформація про програму</string>
   <string name="mail_settings_app_version">Версія програми</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Журнали застосунку</string>
   <string name="mail_settings_account">Обліковий запис</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Передплата</string>

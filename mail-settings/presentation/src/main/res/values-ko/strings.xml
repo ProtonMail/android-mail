@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">자동 감지</string>
   <string name="mail_settings_app_information">앱 정보</string>
   <string name="mail_settings_app_version">앱 버전</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">앱 로그</string>
   <string name="mail_settings_account">계정</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">구독</string>

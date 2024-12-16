@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">自动检测</string>
   <string name="mail_settings_app_information">程序信息</string>
   <string name="mail_settings_app_version">程序版本</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">应用程序日志</string>
   <string name="mail_settings_account">账户</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">账户等级</string>

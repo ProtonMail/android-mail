@@ -74,7 +74,7 @@
   <string name="action_print_content_description">印刷</string>
   <string name="action_view_headers_content_description">ヘッダーを表示</string>
   <string name="action_view_html_content_description">HTMLを表示</string>
-  <string name="action_report_phishing_content_description">フィッシングを報告</string>
+  <string name="action_report_phishing_content_description">フィッシング詐欺を報告</string>
   <string name="action_remind_content_description">後で通知</string>
   <string name="action_save_pdf_content_description">PDFとして保存</string>
   <string name="action_sender_emails_content_description">この送信者からのメールに既定の動作を設定</string>

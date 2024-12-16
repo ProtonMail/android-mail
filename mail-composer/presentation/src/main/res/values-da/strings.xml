@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Skift afsender</string>
   <string name="composer_change_sender_paid_feature">You need a paid Proton Mail subscription to change the sender address</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke ændre afsender, da hentning af brugerens abonnement mislykkedes. Prøv igen.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Lagring af denne kladdes afsenderadresse mislykkedes</string>
+  <string name="composer_error_store_draft_body">Opbevaring af denne kladdes indholdstekst mislykkedes</string>
   <string name="composer_error_duplicate_recipient">Dublet-modtager(e) fjernet</string>
-  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
+  <string name="composer_error_store_draft_subject">Lagring af denne kladdes emne mislykkedes</string>
   <string name="composer_error_store_draft_recipients">Lagring af denne kladdes modtagere mislykkedes</string>
   <string name="composer_error_loading_draft">Indholdet af denne kladde er ikke tilgængeligt på nuværende tidspunkt. Redigering vil overskrive alt allerede eksisterende indhold.</string>
   <string name="composer_add_attachments_content_description">Tilføj vedhæftninger</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4 til 21 tegn lang</string>
   <string name="set_message_password_supporting_error_text">Adgangskoden skal være mellem 4 og 21 tegn lang</string>
   <string name="set_message_password_supporting_text_repeat">Adgangskoder skal være ens</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Adgangskoder matcher ikke</string>
   <string name="set_message_password_button_show">Vis adgangskode</string>
   <string name="set_message_password_button_hide">Skjul adgangskode</string>
   <string name="set_message_password_button_apply">Anvend adgangskode</string>

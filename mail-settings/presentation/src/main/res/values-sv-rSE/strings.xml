@@ -21,12 +21,12 @@
   <string name="mail_settings_toolbar_button_content_description">Tillbaka</string>
   <!-- Settings items -->
   <string name="mail_settings_account_settings">Kontoinställningar</string>
-  <string name="mail_settings_app_settings">App-inställningar</string>
+  <string name="mail_settings_app_settings">Appinställningar</string>
   <string name="mail_settings_theme">Tema</string>
-  <string name="mail_settings_push_notifications">Push-notiser</string>
+  <string name="mail_settings_push_notifications">Pushaviseringar</string>
   <string name="mail_settings_auto_lock">Autolås</string>
   <string name="mail_settings_alternative_routing">Alternativ routing</string>
-  <string name="mail_settings_app_language">App-språk</string>
+  <string name="mail_settings_app_language">Appspråk</string>
   <string name="mail_settings_combined_contacts">Kombinerade kontakter</string>
   <string name="mail_settings_local_cache">Lokal cache</string>
   <string name="mail_settings_local_cache_hint">Använt utrymme: %s</string>
@@ -40,14 +40,14 @@
   <string name="mail_settings_theme_dark">Mörk</string>
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">Ingen information tillgänglig</string>
-  <string name="mail_settings_enabled">Aktiverad</string>
-  <string name="mail_settings_disabled">Inaktiverad</string>
+  <string name="mail_settings_enabled">Aktiverat</string>
+  <string name="mail_settings_disabled">Inaktiverat</string>
   <string name="mail_settings_allowed">Tillåtet</string>
   <string name="mail_settings_denied">Nekad</string>
   <string name="mail_settings_auto_detect">Automatisk upptäckt</string>
-  <string name="mail_settings_app_information">App-information</string>
-  <string name="mail_settings_app_version">App-version</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_information">Appinformation</string>
+  <string name="mail_settings_app_version">Appversion</string>
+  <string name="mail_settings_app_logs">Applikationsloggar</string>
   <string name="mail_settings_account">Konto</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Prenumeration</string>
@@ -55,7 +55,7 @@
   <string name="mail_settings_recovery_email">E-post för återställning</string>
   <string name="mail_settings_mailbox_size">Brevlådestorlek</string>
   <string name="mail_settings_addresses">Adresser</string>
-  <string name="mail_settings_default_email_address">Standard e-postadress</string>
+  <string name="mail_settings_default_email_address">Förvald e-postadress</string>
   <string name="mail_settings_display_name_and_signature">Visningsnamn och signatur</string>
   <string name="mail_settings_mailbox">Brevlåda</string>
   <string name="mail_settings_privacy">Integritet</string>
@@ -101,7 +101,7 @@
   <string name="mail_settings_privacy_prevent_taking_screenshots">Förhindra tagning av skärmdumpar</string>
   <string name="mail_settings_privacy_request_link_confirmation">Begär länkbekräftelse</string>
   <string name="mail_settings_privacy_background_sync">Bakgrundssynkronisering</string>
-  <string name="mail_settings_privacy_background_sync_description">Om detta alternativ är aktiverat kommer appen synkroniseras med servern i bakgrunden. Inaktivering av denna funktion kommer även att inaktivera push-notiser.</string>
+  <string name="mail_settings_privacy_background_sync_description">Om detta alternativ är aktiverat kommer appen synkroniseras med servern i bakgrunden. Inaktivering av denna funktion kommer även att inaktivera pushaviseringar.</string>
   <string name="mail_settings_privacy_error_updating">Fel vid uppdatering av inställningar</string>
   <string name="mail_settings_privacy_error_loading">Fel vid inläsning av inställningar</string>
   <!-- Swipe Actions -->
@@ -120,9 +120,9 @@
   <string name="mail_settings_swipe_action_star_description">Stjärnmärk/ta bort stjärnmärking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytta till papperskorgen</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push-aviseringar</string>
+  <string name="mail_settings_notifications_title">Pushaviseringar</string>
   <string name="mail_settings_notifications_extended_notifications_title">Utökade aviseringar</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Slå på denna funktion för att se e-postens avsändare i push-aviseringarna.</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Slå på denna funktion för att se e-postens avsändare i pushaviseringarna.</string>
   <string name="mail_settings_notifications_notifications_settings">Aviseringsinställningar</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Navigera till systemets aviseringsinställningar</string>
   <string name="mail_settings_notifications_update_error">Fel vid uppdatering av inställningar</string>

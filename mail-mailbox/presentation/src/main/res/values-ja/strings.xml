@@ -71,7 +71,7 @@
   <string name="mailbox_action_move_messages_failed_retrieving_folders">フォルダーを取得できませんでした</string>
   <string name="mailbox_action_trash_message">メッセージをごみ箱に移動しました</string>
   <string name="mailbox_action_archive_message">メッセージをアーカイブに移動しました</string>
-  <string name="mailbox_action_spam_message">メッセージはスパムに移動されました</string>
+  <string name="mailbox_action_spam_message">迷惑メールに移動しました</string>
   <string name="mailbox_search_placeholder_text">メッセージを検索</string>
   <string name="mailbox_search_no_results_title">該当する項目がありません</string>
   <string name="mailbox_search_no_results_explanation">日付、名前、メールアドレス、件名で検索</string>

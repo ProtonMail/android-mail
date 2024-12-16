@@ -64,14 +64,14 @@
   <string name="mail_settings_conversation_mode">Modo Conversação</string>
   <string name="mail_settings_auto_delete">Eliminação automática</string>
   <string name="mail_settings_auto_delete_full_text">Eliminar as mensagens indesejadas automaticamente</string>
-  <string name="mail_settings_auto_delete_hint">As mensagens na lixeira ou no spam com mais de 30 dias serão automaticamente eliminadas.</string>
+  <string name="mail_settings_auto_delete_hint">As mensagens no lixo ou no spam com mais de 30 dias serão automaticamente eliminadas.</string>
   <string name="mail_settings_auto_delete_subscription_needed">É necessária uma subscrição paga do Proton Mail para utilizar esta funcionalidade.</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Eliminar as mensagens?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">Esta ação elimina todas as mensagens que se encontram na lixeira ou no spam há mais de 30 dias, incluindo as mensagens que se encontram atualmente nestas pastas.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Esta ação elimina todas as mensagens que se encontram no lixo ou no spam há mais de 30 dias, incluindo as mensagens que se encontram atualmente nestas pastas.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Ativar</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Desativar a eliminação automática?</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">Os e-mails programados para eliminação permanecerão nas pastas da lixeira e do spam.</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">Os e-mails programados para eliminação permanecerão nas pastas do lixo e do spam.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Desativar</string>
   <string name="mail_settings_not_set">Não definido</string>
   <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa na sua caixa de entrada ou veja-os separadamente</string>
@@ -118,7 +118,7 @@
   <string name="mail_settings_swipe_action_read_description">Marcar como não lido/lido</string>
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
   <string name="mail_settings_swipe_action_star_description">Adicionar/Remover estrela</string>
-  <string name="mail_settings_swipe_action_trash_description">Mover para a lixeira</string>
+  <string name="mail_settings_swipe_action_trash_description">Mover para o lixo</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificações push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificações estendidas</string>

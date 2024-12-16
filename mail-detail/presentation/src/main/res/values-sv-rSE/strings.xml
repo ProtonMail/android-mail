@@ -17,9 +17,9 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="detail_error_loading_contacts">Misslyckades ladda kontakter</string>
-  <string name="detail_error_loading_conversation">Misslyckades ladda konversation</string>
-  <string name="detail_error_loading_messages">Misslyckades att ladda meddelanden</string>
+  <string name="detail_error_loading_contacts">Kunde inte läsa in kontakter</string>
+  <string name="detail_error_loading_conversation">Kunde inte läsa in konversation</string>
+  <string name="detail_error_loading_messages">Kunde inte läsa in meddelanden</string>
   <string name="error_mark_unread_failed">Det gick inte att markera som oläst. Försök igen.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">%d meddelande</item>
@@ -63,13 +63,13 @@
   <string name="reload">Ladda om</string>
   <string name="error_relabel_message_failed">Misslyckades att märka om meddelande. Försök igen</string>
   <string name="error_relabel_conversation_failed">Misslyckades att märka om konversation. Försök igen</string>
-  <string name="please_go_back_online_to_load_messages">Du är offline. Gå tillbaka online för att ladda meddelanden</string>
+  <string name="please_go_back_online_to_load_messages">Du är offline. Koppla upp dig igen för att läsa in meddelanden</string>
   <string name="decryption_error">Dekryptering av meddelande misslyckades.</string>
   <string name="detail_error_retrieving_message_body">Kan inte hämta meddelande</string>
   <string name="message_body_error_no_webview">Du måste ha ett WebView installerat för att se innehållet i detta meddelande.</string>
   <!-- Banners -->
-  <string name="message_body_embedded_images_banner_text">Automatisk laddning av inbäddade bilder är avstängd. Detta kan ändras i inställningarna.</string>
-  <string name="message_body_remote_content_banner_text">Automatisk laddning av fjärrinnehåll är avstängd. Detta kan ändras i inställningarna.</string>
+  <string name="message_body_embedded_images_banner_text">Automatisk inläsning av inbäddade bilder är inaktiverat. Detta kan ändras i inställningarna.</string>
+  <string name="message_body_remote_content_banner_text">Automatisk inläsning av fjärrinnehåll är inaktiverat. Detta kan ändras i inställningarna.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">Automatisk laddning av inbäddade bilder och fjärrinnehåll är avstängt. Dessa kan ändras i inställningarna.</string>
   <string name="message_phishing_banner_text">Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt.</string>
   <string name="message_expiration_banner_text">Detta meddelande kommer löpa ut om %1$s</string>
@@ -95,11 +95,11 @@
   <string name="conversation_delete_dialog_title">Ta bort konversation</string>
   <string name="conversation_delete_dialog_message">Är du säker på att du vill ta bort denna konversation permanent?</string>
   <string name="conversation_deleted">Konversation borttagen</string>
-  <string name="message_body_load_remote_content_button_text">Ladda fjärrinnehåll</string>
-  <string name="message_body_load_embedded_images_button_text">Ladda inbäddade bilder</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Ladda fjärr och inbäddat innehåll</string>
+  <string name="message_body_load_remote_content_button_text">Läs in fjärrinnehåll</string>
+  <string name="message_body_load_embedded_images_button_text">Läs in inbäddade bilder</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Läs in fjärr- och inbäddat innehåll</string>
   <string name="message_report_phishing_dialog_title_offline">Uppmärksamhet</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Denna funktion är endast tillgänglig online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Bekräfta nätfiskerapport</string>
   <string name="message_report_phishing_dialog_message">Att rapportera ett meddelande som ett nätfiskeförsök kommer skicka meddelandet till oss så att vi kan analysera det och förbättra våra filter. Detta innebär att vi kommer kunna se innehållet i meddelandet i sin helhet.</string>

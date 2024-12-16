@@ -69,7 +69,7 @@
   <string name="upselling_onboarding_unlimited_feature_customer_support">Suport al client dedicat</string>
   <string name="upselling_onboarding_unlimited_feature_vpn">VPN ultraràpida i privada</string>
   <string name="upselling_onboarding_unlimited_feature_pass">Gestor de contrasenyes xifrat</string>
-  <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge en el núvol xifrat per a fotos i documents</string>
+  <string name="upselling_onboarding_unlimited_feature_drive">Emmagatzematge xifrat al núvol per a fotos i documents</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Protecció avançada del compte</string>
   <!-- Comparison Table -->
   <string name="upselling_comparison_table_storage">Emmagatzematge</string>
@@ -112,15 +112,15 @@
     <item quantity="other">%d característiques més</item>
   </plurals>
   <string name="upselling_onboarding_billing_monthly">Facturat a %s %s cada mes</string>
-  <string name="upselling_onboarding_billing_annual">Facturat a %s %s cada 12 mesos</string>
+  <string name="upselling_onboarding_billing_annual">Facturat a %s %s cada dotze mesos</string>
   <string name="upselling_onboarding_get_plan">Obtingueu %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Continua amb el Proton Free</string>
   <string name="upselling_onboarding_save_label">Estalvieu el %s%%</string>
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Tanca</string>
   <string name="post_subscription_continue_button">Continua</string>
-  <string name="post_subscription_got_it_button">Entesos</string>
-  <string name="post_subscription_welcome_page_title">Us donem la benvinguda a Mail Plus</string>
+  <string name="post_subscription_got_it_button">D\'acord</string>
+  <string name="post_subscription_welcome_page_title">Us donem la benvinguda al Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Gràcies per ajudar-nos a mantenir internet segur i privat per a tothom.</string>
   <string name="post_subscription_welcome_page_unlocked">Heu desbloquejat</string>
   <string name="post_subscription_plus_feature_storage">15 GB d\'emmagatzematge</string>
@@ -128,15 +128,15 @@
   <string name="post_subscription_plus_feature_email_domains">Suport per a 1 domini de correu electrònic personalitzat</string>
   <string name="post_subscription_plus_feature_folders_labels">Nombre il·limitat de carpetes i etiquetes</string>
   <string name="post_subscription_plus_feature_aliases">10 àlies de hide-my-email</string>
-  <string name="post_subscription_plus_feature_desktop_app">Nova aplicació d\'escriptori de Proton Mail</string>
+  <string name="post_subscription_plus_feature_desktop_app">Nova aplicació d\'escriptori del Proton Mail</string>
   <string name="post_subscription_plus_feature_customer_support">Atenció al client prioritària</string>
   <string name="post_subscription_discover_apps_page_title">Descobriu totes les aplicacions</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">Heu desbloquejat l\'ús compartit de calendaris i 8 vegades més calendaris.</string>
+  <string name="post_subscription_proton_calendar_message">Heu desbloquejat la compartició de calendaris i 8 vegades més calendaris.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">La vostra nova subscripció ha augmentat el vostre emmagatzematge fins a 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">La nova subscripció va augmentar l\'emmagatzematge a 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">La millor VPN per a velocitat i seguretat.</string>
+  <string name="post_subscription_proton_vpn_message">La millor VPN per a la velocitat i seguretat.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
   <string name="post_subscription_proton_pass_message">Emmagatzematge segur de contrasenyes i inici de sessió fàcil als vostres comptes.</string>
   <string name="post_subscription_button_installed">Instal·lat</string>

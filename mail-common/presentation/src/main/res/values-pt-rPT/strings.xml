@@ -40,7 +40,7 @@
   <string name="action_unstar_description">Remover estrela</string>
   <string name="action_label_description">Etiquetar como</string>
   <string name="action_move_description">Mover para</string>
-  <string name="action_trash_description">Mover para a lixeira</string>
+  <string name="action_trash_description">Mover para o lixo</string>
   <string name="action_delete_description">Eliminar</string>
   <string name="action_archive_description">Arquivar</string>
   <string name="action_spam_description">Mover para o spam</string>
@@ -82,10 +82,10 @@
   <string name="action_more_content_description">Mais</string>
   <string name="common_error_loading_actions">Erro ao carregar as acções</string>
   <string name="yesterday">Ontem</string>
-  <string name="auto_delete_banner_text_activate_trash">Apagar automaticamente mensagens que estejam na lixeira há mais de 30 dias.</string>
-  <string name="auto_delete_banner_text_activate_spam">Excluir automaticamente mensagens que estejam em spam por mais de 30 dias.</string>
-  <string name="auto_delete_banner_text_upgrade">Faça o upgrade para poder apagar automaticamente as mensagens que estão na lixeira há mais de 30 dias.</string>
-  <string name="auto_delete_banner_text_enabled_info">As mensagens que estiverem na lixeira e no spam há mais de 30 dias serão automaticamente eliminadas.</string>
+  <string name="auto_delete_banner_text_activate_trash">Apagar automaticamente mensagens que estejam no lixo há mais de 30 dias.</string>
+  <string name="auto_delete_banner_text_activate_spam">Apagar automaticamente mensagens que estejam no spam há mais de 30 dias.</string>
+  <string name="auto_delete_banner_text_upgrade">Atualize para poder apagar automaticamente as mensagens que estão na lixeira há mais de 30 dias.</string>
+  <string name="auto_delete_banner_text_enabled_info">As mensagens que estiverem no lixo e no spam há mais de 30 dias serão automaticamente eliminadas.</string>
   <string name="auto_delete_banner_button_activate_confirm">Ativar</string>
   <string name="auto_delete_banner_button_activate_dismiss">Não, obrigado</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Saiba mais</string>

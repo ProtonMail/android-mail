@@ -31,8 +31,8 @@
   <string name="change_sender_button_content_description">Zmień nadawcę</string>
   <string name="composer_change_sender_paid_feature">Do zmiany adresu nadawcy wymagana jest płatna subskrypcja Proton Mail</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Nie można zmienić nadawcy, ponieważ pobranie informacji o subskrypcji użytkownika nie powiodło się. Spróbuj ponownie.</string>
-  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
-  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
+  <string name="composer_error_store_draft_sender_address">Zapisanie adresu nadawcy szkicu nie powiodło się</string>
+  <string name="composer_error_store_draft_body">Zapisanie treści szkicu nie powiodło się</string>
   <string name="composer_error_duplicate_recipient">Zduplikowani odbiorcy zostali usunięci</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Zapisanie odbiorców szkicu nie powiodło się</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">od 4 do 21 znaków</string>
   <string name="set_message_password_supporting_error_text">Hasło musi zawierać od 4 do 21 znaków</string>
   <string name="set_message_password_supporting_text_repeat">Hasła muszą pasować do siebie</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">Hasła nie pasują do siebie</string>
   <string name="set_message_password_button_show">Pokaż hasło</string>
   <string name="set_message_password_button_hide">Ukryj hasło</string>
   <string name="set_message_password_button_apply">Zastosuj hasło</string>
