@@ -18,4 +18,15 @@
 
 package ch.protonmail.android.uitest.models.snackbar
 
-internal abstract class SnackbarEntry(val value: String, val type: SnackbarType)
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+
+internal abstract class SnackbarEntry(
+    val value: String,
+    val type: SnackbarType,
+    val timeout: Duration = DefaultDuration
+) {
+    companion object {
+        val DefaultDuration = 15.seconds
+    }
+}

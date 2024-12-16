@@ -22,8 +22,14 @@ import ch.protonmail.android.test.R
 import ch.protonmail.android.uitest.models.snackbar.SnackbarEntry
 import ch.protonmail.android.uitest.models.snackbar.SnackbarType
 import ch.protonmail.android.uitest.util.getTestString
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
-internal sealed class ComposerSnackbar(value: String, type: SnackbarType) : SnackbarEntry(value, type) {
+internal sealed class ComposerSnackbar(
+    value: String,
+    type: SnackbarType,
+    duration: Duration = DefaultDuration
+) : SnackbarEntry(value, type, duration) {
 
     data object AttachmentUploadError : ComposerSnackbar(
         getTestString(R.string.test_mailbox_attachment_uploading_error), SnackbarType.Error
@@ -38,11 +44,11 @@ internal sealed class ComposerSnackbar(value: String, type: SnackbarType) : Snac
     )
 
     data object MessageSent : ComposerSnackbar(
-        getTestString(R.string.test_mailbox_message_sending_success), SnackbarType.Success
+        getTestString(R.string.test_mailbox_message_sending_success), SnackbarType.Success, duration = SendingTimeout
     )
 
     data object MessageSentError : ComposerSnackbar(
-        getTestString(R.string.test_mailbox_message_sending_error), SnackbarType.Error
+        getTestString(R.string.test_mailbox_message_sending_error), SnackbarType.Error, duration = SendingTimeout
     )
 
     data object MessageQueued : ComposerSnackbar(
@@ -56,4 +62,9 @@ internal sealed class ComposerSnackbar(value: String, type: SnackbarType) : Snac
     data object UpgradePlanToChangeSender : ComposerSnackbar(
         getTestString(R.string.test_composer_change_sender_paid_feature), SnackbarType.Default
     )
+
+    companion object {
+        // This is required as SendMessageWorker could be delayed by 30s due to pending UploadDraftWorker.
+        private val SendingTimeout = 60.seconds
+    }
 }
