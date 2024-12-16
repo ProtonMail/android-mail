@@ -48,7 +48,7 @@ class MessageRepositoryImpl @Inject constructor(
             params1 = UploadDraftWorker.params(userId, messageId),
             params2 = UploadAttachmentsWorker.params(userId, messageId),
             params3 = SendMessageWorker.params(userId, messageId),
-            existingWorkPolicy = ExistingWorkPolicy.REPLACE
+            existingWorkPolicy = ExistingWorkPolicy.KEEP
         )
     }
 
