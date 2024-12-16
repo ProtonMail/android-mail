@@ -24,7 +24,6 @@ import ch.protonmail.android.mailcomposer.domain.model.OriginalHtmlQuote
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import org.jsoup.Jsoup
-import timber.log.Timber
 import javax.inject.Inject
 
 class SplitMessageBodyHtmlQuote @Inject constructor() {
@@ -34,9 +33,7 @@ class SplitMessageBodyHtmlQuote @Inject constructor() {
             return Pair(DraftBody(decryptedBody.value), null)
         }
 
-        Timber.d("Split message body: original ${decryptedBody.value}")
         val htmlBodyDocument = Jsoup.parse(decryptedBody.value)
-        Timber.d("Split message body: to html $htmlBodyDocument")
         var htmlQuote: String? = null
 
         for (quoteAnchor in QuoteAnchors) {
@@ -53,10 +50,8 @@ class SplitMessageBodyHtmlQuote @Inject constructor() {
             HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV
         ).toString()
 
-        Timber.d("Split body content without html $bodyContent")
         val draftBody = DraftBody(bodyContent)
         val draftQuote = htmlQuote?.let { OriginalHtmlQuote(it) }
-        Timber.d("Split message body $draftBody and quote $draftQuote")
         return Pair(draftBody, draftQuote)
     }
 
