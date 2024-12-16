@@ -30,9 +30,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,10 +54,11 @@ fun ComposerBottomBar(
     isMessageExpirationTimeSet: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
     onSetExpirationTimeClick: () -> Unit,
+    enableInteractions: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
-        Divider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
+        HorizontalDivider(color = ProtonTheme.colors.separatorNorm, thickness = MailDimens.SeparatorHeight)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -66,8 +66,8 @@ fun ComposerBottomBar(
                 .padding(horizontal = ProtonDimens.ExtraSmallSpacing),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, onSetMessagePasswordClick)
-            SetExpirationButton(isMessageExpirationTimeSet, onSetExpirationTimeClick)
+            AddPasswordButton(draftId, senderEmail, isMessagePasswordSet, enableInteractions, onSetMessagePasswordClick)
+            SetExpirationButton(isMessageExpirationTimeSet, enableInteractions, onSetExpirationTimeClick)
         }
     }
 }
@@ -77,23 +77,30 @@ private fun AddPasswordButton(
     draftId: MessageId,
     senderEmail: SenderEmail,
     isMessagePasswordSet: Boolean,
+    isEnabled: Boolean,
     onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit
 ) {
     BottomBarButton(
         iconRes = R.drawable.ic_proton_lock,
         contentDescriptionRes = R.string.composer_button_add_password,
         shouldShowCheckmark = isMessagePasswordSet,
-        onClick = { onSetMessagePasswordClick(draftId, senderEmail) }
+        onClick = { onSetMessagePasswordClick(draftId, senderEmail) },
+        isEnabled = isEnabled
     )
 }
 
 @Composable
-private fun SetExpirationButton(isMessageExpirationTimeSet: Boolean, onSetExpirationTimeClick: () -> Unit) {
+private fun SetExpirationButton(
+    isMessageExpirationTimeSet: Boolean,
+    isEnabled: Boolean,
+    onSetExpirationTimeClick: () -> Unit
+) {
     BottomBarButton(
         iconRes = R.drawable.ic_proton_hourglass,
         contentDescriptionRes = R.string.composer_button_set_expiration,
         shouldShowCheckmark = isMessageExpirationTimeSet,
-        onClick = onSetExpirationTimeClick
+        onClick = onSetExpirationTimeClick,
+        isEnabled = isEnabled
     )
 }
 
@@ -102,18 +109,17 @@ private fun BottomBarButton(
     @DrawableRes iconRes: Int,
     @StringRes contentDescriptionRes: Int,
     shouldShowCheckmark: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isEnabled: Boolean
 ) {
     Box {
-        IconButton(
+        EnabledStateIconButton(
+            icon = painterResource(id = iconRes),
+            isEnabled = isEnabled,
+            contentDescription = stringResource(id = contentDescriptionRes),
             onClick = onClick
-        ) {
-            Icon(
-                painter = painterResource(id = iconRes),
-                contentDescription = stringResource(id = contentDescriptionRes),
-                tint = ProtonTheme.colors.iconNorm
-            )
-        }
+        )
+
         if (shouldShowCheckmark) {
             Box(
                 modifier = Modifier

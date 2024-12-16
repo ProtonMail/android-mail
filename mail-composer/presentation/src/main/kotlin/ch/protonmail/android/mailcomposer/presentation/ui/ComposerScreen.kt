@@ -92,7 +92,10 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     val context = LocalContext.current
     val view = LocalView.current
     val keyboardController = LocalSoftwareKeyboardController.current
+
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val isUpdatingBodyState by viewModel.isBodyUpdating.collectAsStateWithLifecycle()
+
     var recipientsOpen by rememberSaveable { mutableStateOf(false) }
     var focusedField by rememberSaveable {
         mutableStateOf(if (state.fields.to.isEmpty()) FocusedFieldType.TO else FocusedFieldType.BODY)
@@ -186,7 +189,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     onSendMessageComposerClick = {
                         viewModel.submit(ComposerAction.OnSendMessage)
                     },
-                    isSendMessageButtonEnabled = state.isSubmittable
+                    isSendMessageButtonEnabled = state.isSubmittable && !isUpdatingBodyState,
+                    enableSecondaryButtonsInteraction = !isUpdatingBodyState
                 )
             },
             bottomBar = {
@@ -199,7 +203,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     onSetExpirationTimeClick = {
                         bottomSheetType.value = BottomSheetType.SetExpirationTime
                         viewModel.submit(ComposerAction.OnSetExpirationTimeRequested)
-                    }
+                    },
+                    enableInteractions = !isUpdatingBodyState
                 )
             },
             snackbarHost = {

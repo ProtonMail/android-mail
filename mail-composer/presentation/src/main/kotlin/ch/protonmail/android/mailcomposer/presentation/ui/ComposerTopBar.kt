@@ -27,12 +27,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,42 +53,37 @@ internal fun ComposerTopBar(
     onAddAttachmentsClick: () -> Unit,
     onCloseComposerClick: () -> Unit,
     onSendMessageComposerClick: () -> Unit,
-    isSendMessageButtonEnabled: Boolean
+    isSendMessageButtonEnabled: Boolean,
+    enableSecondaryButtonsInteraction: Boolean
 ) {
     ProtonTopAppBar(
         modifier = Modifier.testTag(ComposerTestTags.TopAppBar),
         title = {},
         navigationIcon = {
-            IconButton(
-                modifier = Modifier.testTag(ComposerTestTags.CloseButton),
-                onClick = onCloseComposerClick
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    tint = ProtonTheme.colors.iconNorm,
-                    contentDescription = stringResource(R.string.close_composer_content_description)
-                )
-            }
+            EnabledStateIconButton(
+                icon = rememberVectorPainter(Icons.Filled.Close),
+                isEnabled = enableSecondaryButtonsInteraction,
+                contentDescription = stringResource(R.string.close_composer_content_description),
+                onClick = onCloseComposerClick,
+                modifier = Modifier.testTag(ComposerTestTags.CloseButton)
+            )
         },
         actions = {
-            AttachmentsButton(attachmentsCount = attachmentsCount, onClick = onAddAttachmentsClick)
-            IconButton(
+            AttachmentsButton(
+                attachmentsCount = attachmentsCount,
+                onClick = onAddAttachmentsClick,
+                isEnabled = enableSecondaryButtonsInteraction
+            )
+
+            EnabledStateIconButton(
+                icon = painterResource(id = R.drawable.ic_proton_paper_plane),
+                isEnabled = isSendMessageButtonEnabled,
+                contentDescription = stringResource(R.string.send_message_content_description),
+                onClick = onSendMessageComposerClick,
                 modifier = Modifier
                     .testTag(ComposerTestTags.SendButton)
-                    .thenIf(!isSendMessageButtonEnabled) { semantics { disabled() } },
-                onClick = onSendMessageComposerClick,
-                enabled = isSendMessageButtonEnabled
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_paper_plane),
-                    tint = if (isSendMessageButtonEnabled) {
-                        ProtonTheme.colors.iconNorm
-                    } else {
-                        ProtonTheme.colors.iconDisabled
-                    },
-                    contentDescription = stringResource(R.string.send_message_content_description)
-                )
-            }
+                    .thenIf(!isSendMessageButtonEnabled) { semantics { disabled() } }
+            )
         }
     )
 }
@@ -98,6 +92,7 @@ internal fun ComposerTopBar(
 private fun AttachmentsButton(
     attachmentsCount: Int,
     onClick: () -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -108,16 +103,14 @@ private fun AttachmentsButton(
         if (attachmentsCount > 0) {
             AttachmentsNumber(attachmentsCount)
         }
-        IconButton(
+
+        EnabledStateIconButton(
+            icon = painterResource(id = R.drawable.ic_proton_paper_clip),
+            isEnabled = isEnabled,
+            contentDescription = stringResource(id = R.string.composer_add_attachments_content_description),
             modifier = Modifier.testTag(ComposerTestTags.AttachmentsButton),
             onClick = onClick
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_proton_paper_clip),
-                contentDescription = stringResource(id = R.string.composer_add_attachments_content_description),
-                tint = ProtonTheme.colors.iconNorm
-            )
-        }
+        )
     }
 }
 

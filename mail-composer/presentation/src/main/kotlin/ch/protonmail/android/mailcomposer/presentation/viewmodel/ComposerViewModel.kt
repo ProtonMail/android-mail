@@ -182,6 +182,7 @@ class ComposerViewModel @Inject constructor(
         )
     )
     val state: StateFlow<ComposerDraftState> = mutableState
+    val isBodyUpdating = MutableStateFlow(false)
 
     private val composerActionsChannel = Channel<ComposerAction>(Channel.BUFFERED)
 
@@ -401,6 +402,7 @@ class ComposerViewModel @Inject constructor(
             when (action) {
                 is ComposerAction.AttachmentsAdded -> onAttachmentsAdded(action)
                 is ComposerAction.DraftBodyChanged -> onDraftBodyChanged(action)
+
                 is ComposerAction.SenderChanged -> emitNewStateFor(onSenderChanged(action))
                 is ComposerAction.SubjectChanged -> emitNewStateFor(onSubjectChanged(action))
                 is ComposerAction.ChangeSenderRequested -> emitNewStateFor(onChangeSender())
@@ -650,10 +652,15 @@ class ComposerViewModel @Inject constructor(
         )
 
     private suspend fun onDraftBodyChanged(action: ComposerAction.DraftBodyChanged) {
+        isBodyUpdating.value = true
+
         emitNewStateFor(ComposerAction.DraftBodyChanged(action.draftBody))
 
         // Do not store the draft if the body is exactly the same as signature + footer.
-        if (isBodyEmptyOrEqualsToSignatureAndFooter(action.draftBody)) return
+        if (isBodyEmptyOrEqualsToSignatureAndFooter(action.draftBody)) {
+            isBodyUpdating.value = false
+            return
+        }
 
         storeDraftWithBody(
             primaryUserId(),
@@ -662,6 +669,8 @@ class ComposerViewModel @Inject constructor(
             currentDraftQuotedHtmlBody(),
             currentSenderEmail()
         ).onLeft { emitNewStateFor(ComposerEvent.ErrorStoringDraftBody) }
+
+        isBodyUpdating.value = false
     }
 
     private suspend fun injectAddressSignature(senderEmail: SenderEmail, previousSenderEmail: SenderEmail? = null) {
