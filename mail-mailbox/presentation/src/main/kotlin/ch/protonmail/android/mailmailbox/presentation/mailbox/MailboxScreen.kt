@@ -23,7 +23,6 @@ import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -652,7 +651,7 @@ private fun MailboxSwipeRefresh(
 
 @SuppressLint("FrequentlyChangedStateReadInComposition")
 @Composable
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 private fun MailboxItemsList(
     state: MailboxListState,
     listState: LazyListState,
@@ -735,7 +734,7 @@ private fun MailboxItemsList(
         ) { index ->
             items[index]?.let { item ->
                 SwipeableItem(
-                    modifier = Modifier.animateItemPlacement(),
+                    modifier = Modifier.animateItem(),
                     swipeActionsUiModel = (state as MailboxListState.Data).swipeActions,
                     swipingEnabled = swipingEnabled,
                     swipeActionCallbacks = generateSwipeActions(items, actions, item)

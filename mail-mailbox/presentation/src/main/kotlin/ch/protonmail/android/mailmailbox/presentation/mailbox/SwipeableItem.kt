@@ -19,26 +19,16 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.DismissState
-import androidx.compose.material.DismissValue
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.FractionalThreshold
-import androidx.compose.material.Icon
-import androidx.compose.material.ResistanceConfig
-import androidx.compose.material.SwipeableDefaults
-import androidx.compose.material.ThresholdConfig
-import androidx.compose.material.rememberDismissState
-import androidx.compose.material.swipeable
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,22 +39,17 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.LayoutDirection
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
+import kotlinx.coroutines.flow.filter
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.mailsettings.domain.entity.SwipeAction
-import timber.log.Timber
-import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterialApi::class)
-@Suppress("ComplexMethod")
 @Composable
 fun SwipeableItem(
     modifier: Modifier = Modifier,
@@ -74,96 +59,93 @@ fun SwipeableItem(
     content: @Composable () -> Unit
 ) = BoxWithConstraints(modifier) {
     val width = constraints.maxWidth.toFloat()
+    val haptic = LocalHapticFeedback.current
     val threshold = 0.3f
 
-    var willDismissDirection: DismissDirection? by remember { mutableStateOf(null) }
-    val dismissState = rememberDismissState(
-        confirmStateChange = { dismissValue ->
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { dismissBoxValue ->
             swipeActionsUiModel?.let {
-                if (willDismissDirection == DismissDirection.StartToEnd &&
-                    dismissValue == DismissValue.DismissedToEnd
-                ) {
-                    callbackForSwipeAction(it.start.swipeAction, swipeActionCallbacks)()
-                } else if (willDismissDirection == DismissDirection.EndToStart &&
-                    dismissValue == DismissValue.DismissedToStart
-                ) {
-                    callbackForSwipeAction(it.end.swipeAction, swipeActionCallbacks)()
+                when (dismissBoxValue) {
+                    SwipeToDismissBoxValue.StartToEnd -> {
+                        callbackForSwipeAction(it.start.swipeAction, swipeActionCallbacks)()
+                    }
+
+                    SwipeToDismissBoxValue.EndToStart -> {
+                        callbackForSwipeAction(it.end.swipeAction, swipeActionCallbacks)()
+                    }
+
+                    SwipeToDismissBoxValue.Settled -> Unit
                 }
             }
             false
+        },
+        positionalThreshold = { _ ->
+            width * threshold
         }
     )
 
-    LaunchedEffect(key1 = Unit) {
-        snapshotFlow { dismissState.offset.value }
+    val progressFlow = remember { snapshotFlow { dismissState.progress } }
+    var hapticTriggered by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        progressFlow
+            .filter { it > threshold }
             .collect {
-                willDismissDirection = when {
-                    it > width * threshold -> DismissDirection.StartToEnd
-                    it < -width * threshold -> DismissDirection.EndToStart
-                    else -> null
+                if (it == 1.0f) {
+                    hapticTriggered = false
+                } else if (!hapticTriggered) {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    hapticTriggered = true
                 }
             }
     }
 
-    val haptic = LocalHapticFeedback.current
-    LaunchedEffect(key1 = willDismissDirection) {
-        if (willDismissDirection != null) {
-            Timber.d("Haptic effect: triggered")
-            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-        }
-    }
-
-    SwipeableItemContainer(
+    SwipeToDismissBox(
+        modifier = modifier,
         state = dismissState,
-        dismissThresholds = { FractionalThreshold(threshold) },
-        directions = if (swipingEnabled && swipeActionsUiModel != null) setOf(
-            DismissDirection.StartToEnd,
-            DismissDirection.EndToStart
-        ) else emptySet(),
-        background = {
-            val direction = dismissState.dismissDirection ?: return@SwipeableItemContainer
-            if (swipeActionsUiModel == null) return@SwipeableItemContainer
+        gesturesEnabled = swipingEnabled,
+        backgroundContent = {
+            swipeActionsUiModel ?: return@SwipeToDismissBox
 
-            val color = when (direction) {
-                DismissDirection.StartToEnd -> swipeActionsUiModel.start.getColor()
-                DismissDirection.EndToStart -> swipeActionsUiModel.end.getColor()
-            }
+            val properties = when (dismissState.dismissDirection) {
+                SwipeToDismissBoxValue.StartToEnd -> SwipeActionProperties(
+                    swipeActionsUiModel.start.getColor(),
+                    Alignment.CenterStart,
+                    swipeActionsUiModel.start.icon,
+                    swipeActionsUiModel.start.descriptionRes
+                )
 
-            val alignment = when (direction) {
-                DismissDirection.StartToEnd -> Alignment.CenterStart
-                DismissDirection.EndToStart -> Alignment.CenterEnd
-            }
+                SwipeToDismissBoxValue.EndToStart -> SwipeActionProperties(
+                    swipeActionsUiModel.end.getColor(),
+                    Alignment.CenterEnd,
+                    swipeActionsUiModel.end.icon,
+                    swipeActionsUiModel.end.descriptionRes
+                )
 
-            val icon = when (direction) {
-                DismissDirection.StartToEnd -> swipeActionsUiModel.start.icon
-                DismissDirection.EndToStart -> swipeActionsUiModel.end.icon
-            }
-            val description = when (direction) {
-                DismissDirection.StartToEnd -> swipeActionsUiModel.start.descriptionRes
-                DismissDirection.EndToStart -> swipeActionsUiModel.end.descriptionRes
+                SwipeToDismissBoxValue.Settled -> return@SwipeToDismissBox
             }
 
             val scale by animateFloatAsState(
                 targetValue = when (dismissState.targetValue) {
-                    DismissValue.Default -> 0.75f
-                    DismissValue.DismissedToEnd, DismissValue.DismissedToStart -> 1f
+                    SwipeToDismissBoxValue.Settled -> 0.75f
+                    SwipeToDismissBoxValue.StartToEnd, SwipeToDismissBoxValue.EndToStart -> 1f
                 },
+                animationSpec = tween(durationMillis = 500),
                 label = "swipe_scale"
             )
 
             Box(
-                Modifier
+                modifier = Modifier
                     .fillMaxSize()
-                    .background(color)
+                    .background(properties.color)
                     .padding(horizontal = ProtonDimens.MediumSpacing),
-                contentAlignment = alignment
+                contentAlignment = properties.alignment
             ) {
                 Icon(
                     modifier = Modifier
-                        .align(alignment)
+                        .align(properties.alignment)
                         .scale(scale),
-                    painter = painterResource(id = icon),
-                    contentDescription = stringResource(id = description),
+                    painter = painterResource(id = properties.icon),
+                    contentDescription = stringResource(id = properties.description),
                     tint = ProtonTheme.colors.iconInverted
                 )
             }
@@ -173,58 +155,14 @@ fun SwipeableItem(
     }
 }
 
-@Composable
-@ExperimentalMaterialApi
-fun SwipeableItemContainer(
-    state: DismissState,
-    modifier: Modifier = Modifier,
-    directions: Set<DismissDirection> = setOf(DismissDirection.EndToStart, DismissDirection.StartToEnd),
-    dismissThresholds: (DismissDirection) -> ThresholdConfig,
-    background: @Composable RowScope.() -> Unit,
-    dismissContent: @Composable RowScope.() -> Unit
-) = BoxWithConstraints(modifier) {
-    val width = constraints.maxWidth.toFloat()
-    val isRtl = LocalLayoutDirection.current == LayoutDirection.Rtl
+private data class SwipeActionProperties(
+    val color: Color,
+    val alignment: Alignment,
+    val icon: Int,
+    val description: Int
+)
 
-    val anchors = mutableMapOf(0f to DismissValue.Default)
-    if (DismissDirection.StartToEnd in directions) anchors += width to DismissValue.DismissedToEnd
-    if (DismissDirection.EndToStart in directions) anchors += -width to DismissValue.DismissedToStart
-
-    val thresholds = { from: DismissValue, to: DismissValue ->
-        // reused from the composable in the material library
-        dismissThresholds(getDismissDirection(from, to)!!)
-    }
-
-    val minFactor = if (DismissDirection.EndToStart in directions) SwipeableDefaults.StandardResistanceFactor else 0f
-    val maxFactor = if (DismissDirection.StartToEnd in directions) SwipeableDefaults.StandardResistanceFactor else 0f
-
-    Box(
-        Modifier.swipeable(
-            state = state,
-            anchors = anchors,
-            thresholds = thresholds,
-            orientation = Orientation.Horizontal,
-            enabled = state.currentValue == DismissValue.Default,
-            reverseDirection = isRtl,
-            resistance = ResistanceConfig(
-                basis = width,
-                factorAtMin = minFactor,
-                factorAtMax = maxFactor
-            )
-        )
-    ) {
-        Row(
-            content = background,
-            modifier = Modifier.matchParentSize()
-        )
-        Row(
-            content = dismissContent,
-            modifier = Modifier.offset { IntOffset(state.offset.value.roundToIntOrNull() ?: 0, 0) }
-        )
-    }
-}
-
-fun callbackForSwipeAction(action: SwipeAction, swipeActionCallbacks: SwipeActions.Actions) = when (action) {
+private fun callbackForSwipeAction(action: SwipeAction, swipeActionCallbacks: SwipeActions.Actions) = when (action) {
     SwipeAction.Trash -> swipeActionCallbacks.onTrash
     SwipeAction.Spam -> swipeActionCallbacks.onSpam
     SwipeAction.Star -> swipeActionCallbacks.onStar
@@ -241,26 +179,3 @@ object SwipeActions {
         val onMarkRead: () -> Unit
     )
 }
-
-@Suppress("ComplexMethod")
-private fun getDismissDirection(from: DismissValue, to: DismissValue): DismissDirection? {
-    return when {
-        // settled at the default state
-        from == to && from == DismissValue.Default -> null
-        // has been dismissed to the end
-        from == to && from == DismissValue.DismissedToEnd -> DismissDirection.StartToEnd
-        // has been dismissed to the start
-        from == to && from == DismissValue.DismissedToStart -> DismissDirection.EndToStart
-        // is currently being dismissed to the end
-        from == DismissValue.Default && to == DismissValue.DismissedToEnd -> DismissDirection.StartToEnd
-        // is currently being dismissed to the start
-        from == DismissValue.Default && to == DismissValue.DismissedToStart -> DismissDirection.EndToStart
-        // has been dismissed to the end but is now animated back to default
-        from == DismissValue.DismissedToEnd && to == DismissValue.Default -> DismissDirection.StartToEnd
-        // has been dismissed to the start but is now animated back to default
-        from == DismissValue.DismissedToStart && to == DismissValue.Default -> DismissDirection.EndToStart
-        else -> null
-    }
-}
-
-private fun Float.roundToIntOrNull(): Int? = takeIf { !isNaN() }?.roundToInt()
