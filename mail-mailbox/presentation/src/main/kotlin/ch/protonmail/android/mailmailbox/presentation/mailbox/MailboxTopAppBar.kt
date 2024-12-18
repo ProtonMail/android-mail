@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailmailbox.presentation.R
@@ -201,7 +203,9 @@ private fun NavigationIcon(uiModel: UiModel, onNavigationIconClick: () -> Unit) 
                 if (uiModel.notificationDotVisible) {
                     Badge(
                         containerColor = ProtonTheme.colors.notificationError,
-                        modifier = Modifier.size(MailDimens.NotificationDotSize)
+                        modifier = Modifier
+                            .size(MailDimens.NotificationDotSize)
+                            .offset(BadgeOffsetValues.X.dp, BadgeOffsetValues.Y.dp)
                     )
                 }
             }
@@ -272,6 +276,12 @@ fun LoadingMailboxTopAppBarPreview() {
             onCloseUpsellingPage = {}
         )
     )
+}
+
+private object BadgeOffsetValues {
+
+    const val X = 4
+    const val Y = -5
 }
 
 object MailboxTopAppBarTestTags {
