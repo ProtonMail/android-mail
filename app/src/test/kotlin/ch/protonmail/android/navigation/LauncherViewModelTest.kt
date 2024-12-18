@@ -20,6 +20,7 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.CHECKING
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.DENIED
@@ -80,6 +81,10 @@ class LauncherViewModelTest {
 
     private val context = mockk<AppCompatActivity> {
         every { lifecycle } returns mockk()
+    }
+
+    private val isNewNotificationPermissionFlowEnabled = mockk<IsNewNotificationPermissionFlowEnabled> {
+        every { this@mockk.invoke(null) } returns false
     }
 
     private val user1Username = "username"
@@ -384,9 +389,25 @@ class LauncherViewModelTest {
         verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
     }
 
+    @Test
+    fun `when the FF is ON, should not check for notifications permission`() = runTest {
+        // given
+        every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
+        every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
+        every { isNewNotificationPermissionFlowEnabled(null) } returns true
+
+        // when
+        val viewModel = buildViewModel()
+        viewModel.state.test { awaitItem() }
+
+        // then
+        verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
+    }
+
     private fun buildViewModel() = LauncherViewModel(
         accountManager,
         authOrchestrator,
+        isNewNotificationPermissionFlowEnabled,
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator,

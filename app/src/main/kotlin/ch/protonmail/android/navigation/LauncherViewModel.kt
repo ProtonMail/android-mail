@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.navigation.model.LauncherState
@@ -59,6 +60,7 @@ import javax.inject.Inject
 class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
+    private val isNewNotificationPermissionFlowEnabled: IsNewNotificationPermissionFlowEnabled,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
@@ -70,16 +72,18 @@ class LauncherViewModel @Inject constructor(
     ) { accounts, permissionResult ->
         when {
             accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-            accounts.any { it.isReady() } -> when (permissionResult) {
-                PermissionResult.CHECKING -> {
-                    notificationsPermissionsOrchestrator.requestPermissionIfRequired()
-                    StepNeeded
-                }
+            accounts.any { it.isReady() } -> if (!isNewNotificationPermissionFlowEnabled(null)) {
+                when (permissionResult) {
+                    PermissionResult.CHECKING -> {
+                        notificationsPermissionsOrchestrator.requestPermissionIfRequired()
+                        StepNeeded
+                    }
 
-                PermissionResult.SHOW_RATIONALE,
-                PermissionResult.GRANTED,
-                PermissionResult.DENIED -> PrimaryExist
-            }
+                    PermissionResult.SHOW_RATIONALE,
+                    PermissionResult.GRANTED,
+                    PermissionResult.DENIED -> PrimaryExist
+                }
+            } else PrimaryExist
 
             accounts.any { it.isStepNeeded() } -> StepNeeded
             else -> Processing
