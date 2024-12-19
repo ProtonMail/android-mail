@@ -61,6 +61,7 @@ internal fun BodyTextField2(
 ) {
     val focusRequester = remember { FocusRequester() }
 
+    var shouldFocus by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
     val textFieldState = rememberTextFieldState(initialValue, initialSelection = TextRange.Zero)
 
@@ -77,7 +78,13 @@ internal fun BodyTextField2(
             .fillMaxSize()
             .padding(ProtonDimens.DefaultSpacing)
             .focusRequester(focusRequester)
-            .onFocusChanged { isFocused = it.isFocused },
+            .onFocusChanged { isFocused = it.isFocused }
+            .onGloballyPositioned {
+                if (shouldFocus) {
+                    focusRequester.requestFocus()
+                    shouldFocus = false
+                }
+            },
         keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
         textStyle = ProtonTheme.typography.defaultNorm,
         cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
@@ -91,7 +98,7 @@ internal fun BodyTextField2(
     )
 
     ConsumableLaunchedEffect(shouldRequestFocus) {
-        focusRequester.requestFocus()
+        shouldFocus = true
     }
 
     ConsumableTextEffect(effect = replaceDraftBody) {
