@@ -79,7 +79,9 @@ class PrepareAndEncryptDraftBody @Inject constructor(
         updatedDraft
     }
 
-    private fun DraftBody.convertToHtml() = DraftBody(value = convertPlainTextIntoHtml(this.value))
+    private fun DraftBody.convertToHtml() = DraftBody(
+        value = convertPlainTextIntoHtml(this.value, autoTransformLinks = false)
+    )
 
     private fun DraftBody.appendQuotedHtml(quotedHtmlBody: OriginalHtmlQuote?) =
         quotedHtmlBody?.let { quotedHtml -> DraftBody("${this.value}${quotedHtml.value}") } ?: this

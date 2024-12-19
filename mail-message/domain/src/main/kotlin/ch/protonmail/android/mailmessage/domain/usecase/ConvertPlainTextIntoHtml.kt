@@ -18,17 +18,29 @@
 
 package ch.protonmail.android.mailmessage.domain.usecase
 
+import android.text.util.Linkify
 import androidx.core.text.HtmlCompat
 import androidx.core.text.toSpannable
 import javax.inject.Inject
 
-/**
- * Converts a message body into HTML.
- */
 class ConvertPlainTextIntoHtml @Inject constructor() {
 
-    operator fun invoke(messageBody: String): String {
+    /**
+     * Converts a message body to HTML.
+     *
+     * @param messageBody the message body.
+     * @param autoTransformLinks detect and transform links to become clickable.
+     * Note that the current mask for links detection only applies to web URLs and email addresses.
+     *
+     * @return the HTML [String] representation of the original `messageBody`.
+     */
+    operator fun invoke(messageBody: String, autoTransformLinks: Boolean = false): String {
         val spannable = messageBody.toSpannable()
+
+        if (autoTransformLinks) {
+            Linkify.addLinks(spannable, Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES)
+        }
+
         return HtmlCompat.toHtml(spannable, HtmlCompat.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE)
     }
 }

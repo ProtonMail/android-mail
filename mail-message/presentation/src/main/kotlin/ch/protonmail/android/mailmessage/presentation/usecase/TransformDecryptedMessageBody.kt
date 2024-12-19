@@ -35,7 +35,10 @@ class TransformDecryptedMessageBody @Inject constructor(
 
         val transformedMessageBodyWithType = when (messageBodyWithType.mimeType) {
             MimeTypeUiModel.PlainText ->
-                MessageBodyWithType(convertPlainTextIntoHtml(messageBodyWithType.messageBody), MimeTypeUiModel.Html)
+                MessageBodyWithType(
+                    convertPlainTextIntoHtml(messageBodyWithType.messageBody, autoTransformLinks = true),
+                    mimeType = MimeTypeUiModel.Html
+                )
 
             MimeTypeUiModel.Html -> messageBodyWithType
         }

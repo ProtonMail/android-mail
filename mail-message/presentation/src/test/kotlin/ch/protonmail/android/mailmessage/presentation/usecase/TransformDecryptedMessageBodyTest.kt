@@ -42,7 +42,7 @@ internal class TransformDecryptedMessageBodyTest {
         // Given
         val messageBodyWithType = MessageBodyWithType("message body", MimeTypeUiModel.Html)
         every { injectCssIntoDecryptedMessageBody(messageBodyWithType) } returns ""
-        every { convertPlainTextIntoHtml(messageBodyWithType.messageBody) } returns ""
+        every { convertPlainTextIntoHtml(messageBodyWithType.messageBody, autoTransformLinks = true) } returns ""
 
         // When
         transformDecryptedMessageBody(messageBodyWithType)
@@ -57,7 +57,9 @@ internal class TransformDecryptedMessageBodyTest {
         // Given
         val messageBodyWithType = MessageBodyWithType("message body", MimeTypeUiModel.PlainText)
         val convertedMessageBodyWithType = MessageBodyWithType("converted message body", MimeTypeUiModel.Html)
-        every { convertPlainTextIntoHtml(messageBodyWithType.messageBody) } returns "converted message body"
+        every {
+            convertPlainTextIntoHtml(messageBodyWithType.messageBody, autoTransformLinks = true)
+        } returns "converted message body"
         every { injectCssIntoDecryptedMessageBody(convertedMessageBodyWithType) } returns ""
 
         // When
@@ -65,7 +67,7 @@ internal class TransformDecryptedMessageBodyTest {
 
         // Then
         verifySequence {
-            convertPlainTextIntoHtml(messageBodyWithType.messageBody)
+            convertPlainTextIntoHtml(messageBodyWithType.messageBody, autoTransformLinks = true)
             injectCssIntoDecryptedMessageBody(convertedMessageBodyWithType)
         }
     }
