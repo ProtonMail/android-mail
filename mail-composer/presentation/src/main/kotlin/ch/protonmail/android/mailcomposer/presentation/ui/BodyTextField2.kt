@@ -18,10 +18,12 @@
 
 package ch.protonmail.android.mailcomposer.presentation.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -37,6 +39,8 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -60,16 +64,17 @@ internal fun BodyTextField2(
     modifier: Modifier = Modifier
 ) {
     val focusRequester = remember { FocusRequester() }
+    val orientation = LocalConfiguration.current.orientation
 
     var shouldFocus by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
     val textFieldState = rememberTextFieldState(initialValue, initialSelection = TextRange.Zero)
 
-    LaunchedEffect(Unit) {
-        snapshotFlow { textFieldState.text }
-            .collectLatest {
-                onBodyChange(it.toString())
-            }
+    // No need for derivedStateOf as it's a simple comparison, nothing heavy.
+    val bodyMinLines = if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+        Composer.MessageBodyPortraitMinLines
+    } else {
+        1
     }
 
     BasicTextField(
@@ -88,6 +93,7 @@ internal fun BodyTextField2(
         keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
         textStyle = ProtonTheme.typography.defaultNorm,
         cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
+        lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = bodyMinLines),
         decorator = @Composable { innerTextField ->
             if (textFieldState.text.isEmpty()) {
                 PlaceholderText()
@@ -96,6 +102,13 @@ internal fun BodyTextField2(
             innerTextField()
         }
     )
+
+    LaunchedEffect(Unit) {
+        snapshotFlow { textFieldState.text }
+            .collectLatest {
+                onBodyChange(it.toString())
+            }
+    }
 
     ConsumableLaunchedEffect(shouldRequestFocus) {
         shouldFocus = true
