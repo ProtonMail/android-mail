@@ -120,8 +120,8 @@
   <string name="mail_settings_swipe_action_star_description">Tilføj eller fjern stjerne</string>
   <string name="mail_settings_swipe_action_trash_description">Flyt til papirkurv</string>
   <!-- Notification settings -->
-  <string name="mail_settings_notifications_title">Push-meddelelser</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Udvidede meddelelser</string>
+  <string name="mail_settings_notifications_title">Push-notifikationer</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Udvidede notifikationer</string>
   <string name="mail_settings_notifications_extended_notifications_summary">Slå denne funktion til for at se afsenderen af e-mails i push-meddelelserne.</string>
   <string name="mail_settings_notifications_notifications_settings">Indstillinger for meddelelser</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Gå til indstillinger for systemmeddelelser</string>

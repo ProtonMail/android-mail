@@ -29,11 +29,11 @@
   <string name="composer_error_invalid_email">Az e-mail cím érvénytelen</string>
   <string name="composer_error_invalid_sender">A küldő cím érvénytelen</string>
   <string name="change_sender_button_content_description">Feladó módosítása</string>
-  <string name="composer_change_sender_paid_feature">You need a paid Proton Mail subscription to change the sender address</string>
+  <string name="composer_change_sender_paid_feature">A feladó email címének megváltoztatásához Proton Mail előfizetésre van szükséged.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">A feladó nem változtatható meg, mert az előfizetés betöltése nem sikerült. Próbálja újra.</string>
   <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
   <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
-  <string name="composer_error_duplicate_recipient">Duplicated recipient(s) removed</string>
+  <string name="composer_error_duplicate_recipient">Duplikált címzett(ek) eltávolítva</string>
   <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">A vázlat címzetteinek tárolása nem sikerült</string>
   <string name="composer_error_loading_draft">Ennek a piszkozatnak a tartalma jelenleg nem elérhető. Szerkesztése felülírja az esetlegesen már korábban hozzáadott tartalmat.</string>
@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">4-től 21 karakter hosszúságig</string>
   <string name="set_message_password_supporting_error_text">A jelszónak legalább 4, és legfeljebb 21 karakter hosszúnak kell lennie</string>
   <string name="set_message_password_supporting_text_repeat">A jelszavaknak egyezniük kell</string>
-  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
+  <string name="set_message_password_supporting_error_text_repeat">A jelszavak nem egyeznek</string>
   <string name="set_message_password_button_show">Jelszó megjelenítése</string>
   <string name="set_message_password_button_hide">Jelszó elrejtése</string>
   <string name="set_message_password_button_apply">Jelszó alkalmazása</string>

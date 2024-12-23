@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Afsendelsesfejl</string>
   <string name="message_sending_error_dialog_button_dismiss">Luk</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">Din e-mail kan ikke sendes til den indtastede adresse af følgende grund:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Der er ingen betroede nøgler: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse findes ikke: %s</string>
   <string name="set_message_password_title">Krypter besked</string>

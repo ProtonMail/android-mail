@@ -36,8 +36,8 @@
   <string name="upselling_mobile_signature_plus_description_override">Használja a saját mobil aláírását, és élvezze a Mail Plus egyéb prémium funkcióit.</string>
   <string name="upselling_mobile_signature_plus_title">Aláírás testreszabása</string>
   <!-- Upselling: Mobile Signature -->
-  <string name="upselling_auto_delete_plus_description_override">Enjoy a tidier mailbox and benefit from other premium features with Mail Plus.</string>
-  <string name="upselling_auto_delete_plus_title">Clear out old trash and spam</string>
+  <string name="upselling_auto_delete_plus_description_override">Élvezze a rendezettebb postafiókot és élvezze a Mail Plus prémium funkciók előnyeit.</string>
+  <string name="upselling_auto_delete_plus_title">Ürítse a régi lomtárat és levélszemetet</string>
   <!-- Mail Plus -->
   <string name="upselling_plus_feature_storage">15 GB tárhely</string>
   <string name="upselling_plus_feature_email_addresses">10 e-mail cím</string>
@@ -72,21 +72,21 @@
   <string name="upselling_onboarding_unlimited_feature_drive">Titkosított felhő tárhely fényképekhez és dokumentumokhoz</string>
   <string name="upselling_onboarding_unlimited_feature_sentinel">Fejlett fiók védelmi rendszer</string>
   <!-- Comparison Table -->
-  <string name="upselling_comparison_table_storage">Storage</string>
-  <string name="upselling_comparison_table_email_addresses">Email addresses</string>
-  <string name="upselling_comparison_table_custom_email_domain">Custom email domain</string>
-  <string name="upselling_comparison_table_desktop_app">Access to desktop app</string>
-  <string name="upselling_comparison_table_unlimited_folders_labels">Unlimited folders and labels</string>
-  <string name="upselling_comparison_table_priority_support">Priority customer support</string>
+  <string name="upselling_comparison_table_storage">Tárhely</string>
+  <string name="upselling_comparison_table_email_addresses">E-mail cím</string>
+  <string name="upselling_comparison_table_custom_email_domain">Saját e-mail domén</string>
+  <string name="upselling_comparison_table_desktop_app">Hozzáférés az asztali alkalmazáshoz</string>
+  <string name="upselling_comparison_table_unlimited_folders_labels">Korlátlan mappák és címkék</string>
+  <string name="upselling_comparison_table_priority_support">Elsőbbségi felhasználói támogatás</string>
   <!-- Rectangular plan buttons -->
-  <string name="upselling_select_plan">Select your plan</string>
-  <string name="upselling_select_plan_year">1 year</string>
-  <string name="upselling_select_plan_month">1 month</string>
+  <string name="upselling_select_plan">Válasszon csomagot</string>
+  <string name="upselling_select_plan_year">1 év</string>
+  <string name="upselling_select_plan_month">1 hónap</string>
   <!-- Other UI Items -->
-  <string name="upselling_auto_renew_text">Auto-renews at the same price and terms unless canceled.</string>
+  <string name="upselling_auto_renew_text">Lemondás nélkül automatikusan megújul ugyanazon az áron és feltételek mellett.</string>
   <string name="upselling_discount_tag">TÖBB %s%%</string>
   <string name="upselling_month">/hó</string>
-  <string name="upselling_year">/year</string>
+  <string name="upselling_year">/év</string>
   <string name="upselling_get_button">%s beszerzése</string>
   <plurals name="upselling_month">
     <item quantity="one">%d hónap</item>
@@ -111,34 +111,34 @@
     <item quantity="one">%d további funkció</item>
     <item quantity="other">%d további funkciók</item>
   </plurals>
-  <string name="upselling_onboarding_billing_monthly">Billed at %s %s every month</string>
-  <string name="upselling_onboarding_billing_annual">Billed at %s %s every 12 months</string>
+  <string name="upselling_onboarding_billing_monthly">%s %s havonta kiszámlázva</string>
+  <string name="upselling_onboarding_billing_annual">Számlázás %s %s 12 havonta</string>
   <string name="upselling_onboarding_get_plan">Szerezze be %s</string>
   <string name="upselling_onboarding_continue_with_proton_free">Folytatás Proton Free-el</string>
-  <string name="upselling_onboarding_save_label">Save %s%%</string>
+  <string name="upselling_onboarding_save_label">%s%% kedvezmény</string>
   <!-- Post subscription -->
-  <string name="post_subscription_close_button_content_description">Close</string>
-  <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_got_it_button">Got it</string>
-  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
-  <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
-  <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
-  <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
-  <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliases</string>
-  <string name="post_subscription_plus_feature_desktop_app">New Proton Mail desktop app</string>
-  <string name="post_subscription_plus_feature_customer_support">Priority customer support</string>
-  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_close_button_content_description">Bezárás</string>
+  <string name="post_subscription_continue_button">Folytatás</string>
+  <string name="post_subscription_got_it_button">Rendben</string>
+  <string name="post_subscription_welcome_page_title">Üdvözöljük a Mail Plus-nál</string>
+  <string name="post_subscription_welcome_page_message">Köszönjük, hogy támogat minket abban, hogy az internet mindenki számára biztonságos és privát legyen.</string>
+  <string name="post_subscription_welcome_page_unlocked">Feloldottál</string>
+  <string name="post_subscription_plus_feature_storage">15 GB tárhely</string>
+  <string name="post_subscription_plus_feature_email_addresses">10 extra email címet</string>
+  <string name="post_subscription_plus_feature_email_domains">Egy saját e-mail domain név használata</string>
+  <string name="post_subscription_plus_feature_folders_labels">Korlátlan mappák és címkék</string>
+  <string name="post_subscription_plus_feature_aliases">10 hide-my-email álnevek</string>
+  <string name="post_subscription_plus_feature_desktop_app">Új Proton Mail asztali alkalmazás</string>
+  <string name="post_subscription_plus_feature_customer_support">Elsőbbségi felhasználói támogatás</string>
+  <string name="post_subscription_discover_apps_page_title">Fedezze fel az összes alkalmazást</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">Feloldotta a naptármegosztást és 8x több naptárat.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Az új előfizetésed 15 GB-ra növelte a tárhelyedet.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
-  <string name="post_subscription_proton_vpn_message">The best VPN for speed and security.</string>
+  <string name="post_subscription_proton_vpn_message">A legjobb VPN a sebesség és a biztonság szempontjából.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
-  <string name="post_subscription_button_installed">Installed</string>
-  <string name="post_subscription_button_get_the_app">Get the app</string>
+  <string name="post_subscription_proton_pass_message">Biztonságos jelszótárolás és egyszerű bejelentkezés a fiókjaiba.</string>
+  <string name="post_subscription_button_installed">Telepítve</string>
+  <string name="post_subscription_button_get_the_app">Töltse le az alkalmazást</string>
 </resources>

@@ -121,8 +121,8 @@
   <string name="post_subscription_continue_button">Ga verder</string>
   <string name="post_subscription_got_it_button">Begrepen</string>
   <string name="post_subscription_welcome_page_title">Welkom bij Mail Plus</string>
-  <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
-  <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
+  <string name="post_subscription_welcome_page_message">Bedankt om het internet veilig en privé voor iedereen te houden.</string>
+  <string name="post_subscription_welcome_page_unlocked">U heeft het volgende ontgrendeld</string>
   <string name="post_subscription_plus_feature_storage">15 GB opslagruimte</string>
   <string name="post_subscription_plus_feature_email_addresses">10 extra e-mailadressen</string>
   <string name="post_subscription_plus_feature_email_domains">Ondersteuning voor 1 aangepast e-maildomein</string>
@@ -130,15 +130,15 @@
   <string name="post_subscription_plus_feature_aliases">10 hide-my-email aliassen</string>
   <string name="post_subscription_plus_feature_desktop_app">Nieuwe Proton Mail desktop-app</string>
   <string name="post_subscription_plus_feature_customer_support">Klantondersteuning met hoge prioriteit</string>
-  <string name="post_subscription_discover_apps_page_title">Discover all the apps</string>
+  <string name="post_subscription_discover_apps_page_title">Ontdek alle applicaties</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
-  <string name="post_subscription_proton_calendar_message">You unlocked calendar sharing and 8x more calendars.</string>
+  <string name="post_subscription_proton_calendar_message">U heeft agendadelen en 8x meer agenda\'s ontgrendeld.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Your new subscription boosted your storage to 15 GB.</string>
+  <string name="post_subscription_proton_drive_message">Uw nieuwe abonnement heeft uw opslag verhoogd tot 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">De beste VPN voor snelheid en veiligheid.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>
-  <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
+  <string name="post_subscription_proton_pass_message">Beveilig wachtwoordopslag en eenvoudig aanmelden bij uw accounts.</string>
   <string name="post_subscription_button_installed">Geïnstalleerd</string>
   <string name="post_subscription_button_get_the_app">Verkrijg de app</string>
 </resources>

@@ -21,9 +21,9 @@
   <string name="expiration_days_arg">%d nap</string>
   <string name="expiration_hours_arg">%d óra</string>
   <string name="expiration_minutes_arg">%d perc</string>
-  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
-  <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+  <string name="expiration_auto_delete_hour">Ez az üzenet kevesebb mint egy órán belül automatikusan törlődik.</string>
+  <string name="expiration_auto_delete_day">Ez az üzenet kevesebb mint egy napon belül automatikusan törlődik.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Ez az üzenet automatikusan törlésre kerül, ekkor: %s</string>
   <string name="retry">Újra</string>
   <string name="toolbar_back_content_description">Vissza az előző képernyőre</string>
   <string name="x_error_not_logged_in">Nincs bejelentkezve</string>
@@ -31,7 +31,6 @@
   <string name="action_reply_all">Válasz mindenkinek</string>
   <string name="action_forward">Továbbítás</string>
   <string name="action_reply_description">Válasz</string>
-  <string name="action_reply_to_description">Válasz neki: %s</string>
   <string name="action_reply_all_description">Válasz mindenkinek</string>
   <string name="action_forward_description">Továbbítás</string>
   <string name="action_mark_read_description">Megjelölés olvasottként</string>
@@ -56,7 +55,6 @@
   <string name="action_save_attachments_description">Mellékletek mentése</string>
   <string name="action_more_description">Több</string>
   <string name="action_reply_content_description">Válasz</string>
-  <string name="action_reply_to_content_description">Válasz neki: %s</string>
   <string name="action_reply_all_content_description">Válasz mindenkinek</string>
   <string name="action_forward_content_description">Továbbítás</string>
   <string name="action_mark_read_content_description">Megjelölés olvasottként</string>
@@ -82,13 +80,13 @@
   <string name="action_more_content_description">Továbbiak</string>
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>
-  <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
-  <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_upgrade">Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.</string>
-  <string name="auto_delete_banner_text_enabled_info">Messages that have been in trash and spam more than 30 days will be automatically deleted.</string>
-  <string name="auto_delete_banner_button_activate_confirm">Enable</string>
-  <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
-  <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
+  <string name="auto_delete_banner_text_activate_trash">A 30 napnál régebben a lomtárba helyezett üzenetek automatikusan törlése kerülnek.</string>
+  <string name="auto_delete_banner_text_activate_spam">A 30 napnál régebben Levélszemét mappába került üzenetek automatikus törlése.</string>
+  <string name="auto_delete_banner_text_upgrade">Váltson nagyobb csomagra a 30 napja lomtárban vagy a levélszemét mappában lévő üzenetek automatikus törléséhez.</string>
+  <string name="auto_delete_banner_text_enabled_info">A 30 napnál régebben lomtárba vagy a levélszemét mappába került üzenetek automatikusan törlésre kerülnek.</string>
+  <string name="auto_delete_banner_button_activate_confirm">Engedélyezés</string>
+  <string name="auto_delete_banner_button_activate_dismiss">Nem, köszi</string>
+  <string name="auto_delete_banner_action_upgrade_learn_more">További információk</string>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Mellékletek</string>
   <string name="attachment_download_notification_channel_description">Értesítések a melléklet letöltésekhez</string>

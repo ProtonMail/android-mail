@@ -31,7 +31,6 @@
   <string name="action_reply_all">全員に返信</string>
   <string name="action_forward">転送</string>
   <string name="action_reply_description">返信</string>
-  <string name="action_reply_to_description">%s に返信</string>
   <string name="action_reply_all_description">全員に返信</string>
   <string name="action_forward_description">転送</string>
   <string name="action_mark_read_description">既読にする</string>
@@ -56,7 +55,6 @@
   <string name="action_save_attachments_description">添付ファイルを保存</string>
   <string name="action_more_description">もっと見る</string>
   <string name="action_reply_content_description">返信</string>
-  <string name="action_reply_to_content_description">%s に返信</string>
   <string name="action_reply_all_content_description">全員に返信</string>
   <string name="action_forward_content_description">転送</string>
   <string name="action_mark_read_content_description">既読にする</string>

@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">自動偵測</string>
   <string name="mail_settings_app_information">應用程式資訊</string>
   <string name="mail_settings_app_version">應用程式版本</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">應用程式日誌</string>
   <string name="mail_settings_account">帳號</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">訂購授權</string>
@@ -64,11 +64,11 @@
   <string name="mail_settings_conversation_mode">往來對話群组模式</string>
   <string name="mail_settings_auto_delete">自動刪除</string>
   <string name="mail_settings_auto_delete_full_text">自動刪除垃圾訊息</string>
-  <string name="mail_settings_auto_delete_hint">垃圾桶與垃圾郵件將在30天後自動刪除。</string>
-  <string name="mail_settings_auto_delete_subscription_needed">您需要付費訂閱 Proton Mail 才能使用此功能</string>
+  <string name="mail_settings_auto_delete_hint">垃圾桶或垃圾郵件匣的訊息，期滿 30 天時就會自動刪除。</string>
+  <string name="mail_settings_auto_delete_subscription_needed">您需有付費版的 Proton Mail 訂購授權才可使用此功能</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">取消</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_title">刪除郵件?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">這將會刪除所有位於垃圾桶或垃圾郵件匣中超過30天的郵件，包含現存的郵件。</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_title">刪除訊息？</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">此會刪除全部於垃圾桶及垃圾郵件超過30天的訊息，包含所有現在此資料夾的訊息。</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">啟用</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">停用自動刪除？</string>
   <string name="mail_settings_auto_delete_dialog_disabling_text">已排程刪除的信件會留在垃圾桶和垃圾郵件匣中。</string>

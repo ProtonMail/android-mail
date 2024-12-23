@@ -80,14 +80,14 @@
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">信頼済みのキーがありません:%s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">メールアドレスが存在しません:%s</string>
   <string name="set_message_password_title">メッセージを暗号化</string>
-  <string name="set_message_password_info_message">Proton Mail以外のユーザー宛に小メッセージを暗号化するためのパスワードを設定します。</string>
+  <string name="set_message_password_info_message">Proton Mail以外のユーザー宛にこのメッセージを暗号化するためのパスワードを設定します。</string>
   <string name="set_message_password_info_link"><a href="https://proton.me/support/password-protected-emails">より詳しく</a></string>
   <string name="set_message_password_label">メッセージのパスワード</string>
   <string name="set_message_password_label_repeat">パスワードを再度入力</string>
   <string name="set_message_password_label_hint">パスワードのヒント(任意)</string>
   <string name="set_message_password_supporting_text">4〜21 文字</string>
   <string name="set_message_password_supporting_error_text">パスワードは4文字以上21文字以下で入力してください</string>
-  <string name="set_message_password_supporting_text_repeat">確認のためパスワードを再度入力してください</string>
+  <string name="set_message_password_supporting_text_repeat">パスワードが一致する必要があります</string>
   <string name="set_message_password_supporting_error_text_repeat">パスワードが一致しません</string>
   <string name="set_message_password_button_show">パスワードを表示</string>
   <string name="set_message_password_button_hide">パスワードを非表示</string>

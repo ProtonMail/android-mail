@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Összes levél</string>
   <string name="label_title_all_drafts">Minden piszkozat</string>
   <string name="label_title_all_sent">Minden elküldött</string>
-  <string name="label_title_all_scheduled">All scheduled</string>
+  <string name="label_title_all_scheduled">Összes időzített</string>
   <string name="label_title_snoozed">Elhalasztott</string>
   <string name="label_title_folders">Mappák</string>
   <string name="label_title_parent_folder">Szülő mappa</string>
@@ -55,8 +55,8 @@
   <string name="save_label_error">Hiba a címke mentésekor, próbálja újra később</string>
   <string name="save_folder_error">Hiba a mappa mentésekor, próbálja újra később</string>
   <string name="label_already_exists">Címke vagy mappa név már létezik</string>
-  <string name="label_limit_reached_error">You need a paid Proton Mail subscription to create more labels</string>
-  <string name="folder_limit_reached_error">You need a paid Proton Mail subscription to create more folders</string>
+  <string name="label_limit_reached_error">A további címkék létrehozásához Proton Mail előfizetésre van szükséged.</string>
+  <string name="folder_limit_reached_error">A további mappák létrehozásához Proton Mail előfizetésre van szükséged.</string>
   <string name="delete_label_error">Hiba a címke törlésekor</string>
   <string name="input_field_clear_content_description">Szöveg törlése</string>
   <string name="label_list_item_content_description">Címke listaelem</string>
