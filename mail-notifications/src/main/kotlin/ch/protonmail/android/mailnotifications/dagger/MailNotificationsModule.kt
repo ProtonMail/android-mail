@@ -29,6 +29,8 @@ import ch.protonmail.android.mailnotifications.data.local.NotificationTokenPrefe
 import ch.protonmail.android.mailnotifications.data.local.fcm.FcmTokenPreferencesImpl
 import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSource
 import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSourceImpl
+import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepository
+import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepositoryImpl
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
 import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandler
@@ -128,5 +130,11 @@ object MailNotificationsModule {
         fun bindNotificationPermissionLocalData(
             dataSource: NotificationPermissionLocalDataSourceImpl
         ): NotificationPermissionLocalDataSource
+
+        @Binds
+        @Singleton
+        fun bindNotificationPermissionRepository(
+            repository: NotificationPermissionRepositoryImpl
+        ): NotificationPermissionRepository
     }
 }
