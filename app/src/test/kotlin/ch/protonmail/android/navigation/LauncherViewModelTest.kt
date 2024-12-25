@@ -26,6 +26,7 @@ import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissi
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.DENIED
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.GRANTED
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.SHOW_RATIONALE
+import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.testdata.AccountTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -73,6 +74,9 @@ class LauncherViewModelTest {
         mockk<NotificationsPermissionsOrchestrator>(relaxUnitFun = true) {
             every { permissionResult() } returns MutableStateFlow(GRANTED)
         }
+    private val newNotificationPermissionOrchestrator = mockk<NewNotificationPermissionOrchestrator>(
+        relaxUnitFun = true
+    )
 
     private val accountListFlow = MutableStateFlow<List<Account>>(emptyList())
     private val accountManager = mockk<AccountManager>(relaxUnitFun = true) {
@@ -404,10 +408,20 @@ class LauncherViewModelTest {
         verify(exactly = 0) { notificationsPermissionsOrchestrator.requestPermissionIfRequired() }
     }
 
+    @Test
+    fun `should request notification permission when action is submitted`() {
+        // When
+        viewModel.submit(LauncherViewModel.Action.RequestNotificationPermission)
+
+        // Then
+        verify { newNotificationPermissionOrchestrator.requestPermissionIfRequired() }
+    }
+
     private fun buildViewModel() = LauncherViewModel(
         accountManager,
         authOrchestrator,
         isNewNotificationPermissionFlowEnabled,
+        newNotificationPermissionOrchestrator,
         plansOrchestrator,
         reportOrchestrator,
         userSettingsOrchestrator,

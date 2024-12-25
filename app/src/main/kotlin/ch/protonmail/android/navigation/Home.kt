@@ -346,7 +346,8 @@ fun Home(
                     drawerState = scaffoldState.drawerState,
                     showOfflineSnackbar = { showOfflineSnackbar() },
                     showNormalSnackbar = { showNormalSnackbar(it) },
-                    showErrorSnackbar = { showErrorSnackbar(it) }
+                    showErrorSnackbar = { showErrorSnackbar(it) },
+                    onRequestNotificationPermission = launcherActions.onRequestNotificationPermission
                 )
                 addMessageDetail(
                     actions = MessageDetail.Actions(

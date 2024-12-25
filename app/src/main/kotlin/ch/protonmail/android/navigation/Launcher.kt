@@ -43,7 +43,10 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
                 onReportBug = { viewModel.submit(LauncherViewModel.Action.OpenReport) },
                 onSignIn = { viewModel.submit(LauncherViewModel.Action.SignIn(it)) },
                 onSubscription = { viewModel.submit(LauncherViewModel.Action.OpenSubscription) },
-                onSwitchAccount = { viewModel.submit(LauncherViewModel.Action.Switch(it)) }
+                onSwitchAccount = { viewModel.submit(LauncherViewModel.Action.Switch(it)) },
+                onRequestNotificationPermission = {
+                    viewModel.submit(LauncherViewModel.Action.RequestNotificationPermission)
+                }
             )
         )
         LauncherState.Processing,
@@ -62,6 +65,7 @@ object Launcher {
         val onSubscription: () -> Unit,
         val onReportBug: () -> Unit,
         val onPasswordManagement: () -> Unit,
-        val onRecoveryEmail: () -> Unit
+        val onRecoveryEmail: () -> Unit,
+        val onRequestNotificationPermission: () -> Unit
     )
 }

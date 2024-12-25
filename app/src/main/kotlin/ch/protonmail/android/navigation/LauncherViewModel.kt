@@ -25,6 +25,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
+import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
 import ch.protonmail.android.navigation.model.LauncherState
 import ch.protonmail.android.navigation.model.LauncherState.AccountNeeded
 import ch.protonmail.android.navigation.model.LauncherState.PrimaryExist
@@ -61,6 +62,7 @@ class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
     private val isNewNotificationPermissionFlowEnabled: IsNewNotificationPermissionFlowEnabled,
+    private val newNotificationPermissionOrchestrator: NewNotificationPermissionOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
     private val userSettingsOrchestrator: UserSettingsOrchestrator,
@@ -100,6 +102,7 @@ class LauncherViewModel @Inject constructor(
         reportOrchestrator.register(context)
         userSettingsOrchestrator.register(context)
         notificationsPermissionsOrchestrator.register(context)
+        newNotificationPermissionOrchestrator.register(context)
 
         authOrchestrator.onAddAccountResult { result ->
             viewModelScope.launch {
@@ -126,6 +129,7 @@ class LauncherViewModel @Inject constructor(
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
+                Action.RequestNotificationPermission -> onRequestNotificationPermission()
                 is Action.SignIn -> onSignIn(action.userId)
                 is Action.Switch -> onSwitch(action.userId)
             }
@@ -158,6 +162,10 @@ class LauncherViewModel @Inject constructor(
         }
     }
 
+    private fun onRequestNotificationPermission() {
+        newNotificationPermissionOrchestrator.requestPermissionIfRequired()
+    }
+
     private suspend fun onSignIn(userId: UserId?) {
         val account = userId?.let { getAccountOrNull(it) }
         authOrchestrator.startLoginWorkflow(account?.username)
@@ -181,6 +189,7 @@ class LauncherViewModel @Inject constructor(
         object OpenRecoveryEmail : Action
         object OpenReport : Action
         object OpenSubscription : Action
+        object RequestNotificationPermission : Action
         data class SignIn(val userId: UserId?) : Action
         data class Switch(val userId: UserId) : Action
     }

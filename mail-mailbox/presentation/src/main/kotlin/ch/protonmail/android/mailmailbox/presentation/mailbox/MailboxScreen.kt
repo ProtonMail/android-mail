@@ -274,7 +274,10 @@ fun MailboxScreen(
 
     EnablePushNotificationsDialog(
         state = mailboxState.notificationPermissionDialogState,
-        onEnable = { viewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog) },
+        onEnable = {
+            actions.onRequestNotificationPermission()
+            viewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog)
+        },
         onDismiss = { viewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog) }
     )
 
@@ -1099,7 +1102,8 @@ object MailboxScreen {
         val onAutoDeletePaidDismiss: () -> Unit,
         val onAutoDeleteShowUpselling: () -> Unit,
         val onAutoDeleteDialogShow: () -> Unit,
-        val onAutoDeleteDialogAction: (Boolean) -> Unit
+        val onAutoDeleteDialogAction: (Boolean) -> Unit,
+        val onRequestNotificationPermission: () -> Unit
     ) {
 
         companion object {
@@ -1151,7 +1155,8 @@ object MailboxScreen {
                 onAutoDeletePaidDismiss = {},
                 onAutoDeleteDialogAction = {},
                 onAutoDeleteShowUpselling = {},
-                onAutoDeleteDialogShow = {}
+                onAutoDeleteDialogShow = {},
+                onRequestNotificationPermission = {}
             )
         }
     }
