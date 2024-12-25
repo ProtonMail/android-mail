@@ -21,6 +21,8 @@ package ch.protonmail.android.mailnotifications.dagger
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import ch.protonmail.android.mailnotifications.annotations.MarkAsReadNotificationActionEnabled
+import ch.protonmail.android.mailnotifications.data.local.NotificationPermissionLocalDataSource
+import ch.protonmail.android.mailnotifications.data.local.NotificationPermissionLocalDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenPreferences
@@ -120,5 +122,11 @@ object MailNotificationsModule {
         @Singleton
         @IntoSet
         fun bindSessionAwareNotificationHandler(handlerImpl: SessionAwareNotificationHandler): NotificationHandler
+
+        @Binds
+        @Singleton
+        fun bindNotificationPermissionLocalData(
+            dataSource: NotificationPermissionLocalDataSourceImpl
+        ): NotificationPermissionLocalDataSource
     }
 }
