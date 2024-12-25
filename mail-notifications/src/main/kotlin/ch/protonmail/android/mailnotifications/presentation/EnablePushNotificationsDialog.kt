@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import me.proton.core.compose.theme.ProtonDimens
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmallStrongUnspecified
@@ -57,15 +58,30 @@ import me.proton.core.compose.theme.defaultSmallWeak
 import me.proton.core.compose.theme.defaultStrongNorm
 
 @Composable
-fun EnablePushNotificationsDialog(uiModel: EnablePushNotificationsUiModel) {
+fun EnablePushNotificationsDialog(
+    state: NotificationPermissionDialogState,
+    onEnable: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    when (state) {
+        is NotificationPermissionDialogState.Shown -> EnablePushNotificationsDialog(state, onEnable, onDismiss)
+        is NotificationPermissionDialogState.Hidden -> Unit
+    }
+}
+
+@Composable
+fun EnablePushNotificationsDialog(
+    state: NotificationPermissionDialogState.Shown,
+    onEnable: () -> Unit,
+    onDismiss: () -> Unit
+) {
     Dialog(
-        onDismissRequest = {}
+        onDismissRequest = onDismiss
     ) {
         Card(
             shape = RoundedCornerShape(MailDimens.DialogCardRadius),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(ProtonDimens.DefaultSpacing)
+            backgroundColor = ProtonTheme.colors.backgroundNorm,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -89,7 +105,7 @@ fun EnablePushNotificationsDialog(uiModel: EnablePushNotificationsUiModel) {
 
                 Text(
                     modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
-                    text = uiModel.title.string(),
+                    text = state.uiModel.title.string(),
                     textAlign = TextAlign.Center,
                     style = ProtonTheme.typography.defaultStrongNorm
                 )
@@ -98,7 +114,7 @@ fun EnablePushNotificationsDialog(uiModel: EnablePushNotificationsUiModel) {
 
                 Text(
                     modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
-                    text = uiModel.message.string(),
+                    text = state.uiModel.message.string(),
                     textAlign = TextAlign.Center,
                     style = ProtonTheme.typography.defaultSmallWeak
                 )
@@ -110,7 +126,7 @@ fun EnablePushNotificationsDialog(uiModel: EnablePushNotificationsUiModel) {
                         .fillMaxWidth()
                         .heightIn(min = ProtonDimens.LargerSpacing)
                         .padding(horizontal = ProtonDimens.LargeSpacing),
-                    onClick = {}
+                    onClick = onEnable
                 ) {
                     Text(
                         text = stringResource(id = R.string.notification_permission_dialog_button_enable),
@@ -128,7 +144,7 @@ fun EnablePushNotificationsDialog(uiModel: EnablePushNotificationsUiModel) {
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                             role = Role.Button,
-                            onClick = {}
+                            onClick = onDismiss
                         ),
                     text = stringResource(id = R.string.notification_permission_dialog_button_dismiss),
                     textAlign = TextAlign.Center,
@@ -150,9 +166,13 @@ private val ImageHeight = 94.dp
 @Preview(showBackground = true)
 private fun EnablePushNotificationsDialogPreview() {
     EnablePushNotificationsDialog(
-        uiModel = EnablePushNotificationsUiModel(
-            title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
-            message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
-        )
+        state = NotificationPermissionDialogState.Shown(
+            uiModel = EnablePushNotificationsUiModel(
+                title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
+                message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
+            )
+        ),
+        onEnable = {},
+        onDismiss = {}
     )
 }

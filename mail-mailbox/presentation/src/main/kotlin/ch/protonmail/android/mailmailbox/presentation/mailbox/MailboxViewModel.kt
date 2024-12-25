@@ -101,6 +101,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
+import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
+import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
@@ -187,7 +190,9 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
+    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
+    private val shouldShowNotificationPermissionDialog: ShouldShowNotificationPermissionDialog,
+    private val savePermissionDialogTimestamp: SavePermissionDialogTimestamp
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -286,6 +291,8 @@ class MailboxViewModel @Inject constructor(
                 emitNewStateFrom(MailboxEvent.ShowRatingBooster)
             }
         }.launchIn(viewModelScope)
+
+        showNotificationPermissionDialogIfNeeded()
     }
 
     private fun handleLabelSelectedForAutoDelete(
@@ -378,6 +385,8 @@ class MailboxViewModel @Inject constructor(
 
                 is MailboxViewAction.DismissAutoDelete -> handleDismissAutoDelete(viewAction)
                 is MailboxViewAction.ShowAutoDeleteDialog -> emitNewStateFrom(viewAction)
+
+                is MailboxViewAction.DismissNotificationPermissionDialog -> emitNewStateFrom(viewAction)
             }.exhaustive
         }
     }
@@ -1263,6 +1272,15 @@ class MailboxViewModel @Inject constructor(
         }
     }
 
+    private fun showNotificationPermissionDialogIfNeeded() {
+        viewModelScope.launch {
+            if (shouldShowNotificationPermissionDialog()) {
+                emitNewStateFrom(MailboxEvent.ShowNotificationPermissionDialog)
+                savePermissionDialogTimestamp(System.currentTimeMillis())
+            }
+        }
+    }
+
     companion object {
 
         val initialState = MailboxState(
@@ -1278,7 +1296,8 @@ class MailboxViewModel @Inject constructor(
             bottomSheetState = null,
             actionResult = Effect.empty(),
             error = Effect.empty(),
-            showRatingBooster = Effect.empty()
+            showRatingBooster = Effect.empty(),
+            notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
         )
     }
 }

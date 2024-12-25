@@ -44,6 +44,8 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.Mailbo
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
+import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -210,7 +212,8 @@ internal class MailboxReducerTest(
             storageLimitState = StorageLimitState.None,
             error = Effect.empty(),
             showRatingBooster = Effect.empty(),
-            autoDeleteSettingState = AutoDeleteSettingState.Loading
+            autoDeleteSettingState = AutoDeleteSettingState.Loading,
+            notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
         )
 
         private val actions = listOf(
@@ -466,6 +469,18 @@ internal class MailboxReducerTest(
                 shouldReduceDeleteDialog = false,
                 shouldReduceBottomSheetState = true,
                 shouldReduceStorageLimitState = false
+            ),
+            TestInput(
+                MailboxViewAction.DismissNotificationPermissionDialog,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
             )
         )
 
@@ -837,6 +852,23 @@ internal class MailboxReducerTest(
                     enablingDialogState = DialogState.Hidden,
                     disablingDialogState = DialogState.Hidden
                 )
+            ),
+            TestInput(
+                MailboxEvent.ShowNotificationPermissionDialog,
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false,
+                notificationPermissionDialogState = NotificationPermissionDialogState.Shown(
+                    uiModel = EnablePushNotificationsUiModel(
+                        title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
+                        message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
+                    )
+                )
             )
         )
 
@@ -867,6 +899,8 @@ internal class MailboxReducerTest(
         val shouldReduceStorageLimitState: Boolean,
         val errorBarState: Effect<TextUiModel> = Effect.empty(),
         val showRatingBoosterState: Effect<Unit> = Effect.empty(),
-        val autoDeleteSettingState: AutoDeleteSettingState = AutoDeleteSettingState.Loading
+        val autoDeleteSettingState: AutoDeleteSettingState = AutoDeleteSettingState.Loading,
+        val notificationPermissionDialogState: NotificationPermissionDialogState =
+            NotificationPermissionDialogState.Hidden
     )
 }

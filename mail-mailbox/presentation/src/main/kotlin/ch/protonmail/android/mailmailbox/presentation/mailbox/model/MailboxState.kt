@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 
 @Stable
@@ -39,6 +40,7 @@ data class MailboxState(
     val autoDeleteSettingState: AutoDeleteSettingState,
     val storageLimitState: StorageLimitState,
     val bottomSheetState: BottomSheetState?,
+    val notificationPermissionDialogState: NotificationPermissionDialogState,
     val actionResult: Effect<ActionResult>,
     val error: Effect<TextUiModel>,
     val showRatingBooster: Effect<Unit>

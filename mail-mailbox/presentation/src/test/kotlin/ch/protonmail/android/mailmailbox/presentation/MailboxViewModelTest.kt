@@ -119,6 +119,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxM
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
+import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
+import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
@@ -287,6 +290,10 @@ class MailboxViewModelTest {
     private val recordRatingBoosterTriggered = mockk<RecordRatingBoosterTriggered>(relaxUnitFun = true)
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
+    private val shouldShowNotificationPermissionDialog = mockk<ShouldShowNotificationPermissionDialog> {
+        coEvery { this@mockk.invoke() } returns false
+    }
+    private val savePermissionDialogTimestamp = mockk<SavePermissionDialogTimestamp>(relaxUnitFun = true)
 
     private val mailboxViewModel by lazy {
         MailboxViewModel(
@@ -334,7 +341,9 @@ class MailboxViewModelTest {
             emptyLabelInProgressSignal = emptyLabelInProgressSignal,
             observeAutoDeleteSetting = observeAutoDeleteSetting,
             updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
-            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get()
+            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
+            shouldShowNotificationPermissionDialog = shouldShowNotificationPermissionDialog,
+            savePermissionDialogTimestamp = savePermissionDialogTimestamp
         )
     }
 
@@ -375,7 +384,8 @@ class MailboxViewModelTest {
                 actionResult = Effect.empty(),
                 error = Effect.empty(),
                 showRatingBooster = Effect.empty(),
-                autoDeleteSettingState = AutoDeleteSettingState.Loading
+                autoDeleteSettingState = AutoDeleteSettingState.Loading,
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
             )
 
             assertEquals(expected, actual)
@@ -4161,6 +4171,35 @@ class MailboxViewModelTest {
 
         // Then
         verify { showRatingBooster(context) }
+    }
+
+    @Test
+    fun `should show notification permission dialog when use case returns true`() = runTest {
+        // Given
+        coEvery { shouldShowNotificationPermissionDialog() } returns true
+
+        // When
+        mailboxViewModel.state.test {
+            awaitItem()
+
+            // Then
+            verify(exactly = 1) {
+                mailboxReducer.newStateFrom(any(), MailboxEvent.ShowNotificationPermissionDialog)
+            }
+            coVerify { savePermissionDialogTimestamp(any()) }
+        }
+    }
+
+    @Test
+    fun `should hide notification permission dialog when action is submitted`() = runTest {
+        // Given
+        coEvery { shouldShowNotificationPermissionDialog() } returns true
+
+        // When
+        mailboxViewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog)
+
+        // Then
+        verify { mailboxReducer.newStateFrom(any(), MailboxViewAction.DismissNotificationPermissionDialog) }
     }
 
     private fun returnExpectedStateForBottomBarEvent(
