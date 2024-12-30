@@ -109,7 +109,7 @@
   <string name="mail_settings_swipe_actions_subtitle">Konfigurer sveipebevegelser for å få tilgang til de mest brukte handlingene.</string>
   <string name="mail_settings_swipe_right_name">Venstre til høyre</string>
   <string name="mail_settings_swipe_left_name">Høyre til venstre</string>
-  <string name="mail_settings_swipe_action_archive_title">Arkiver</string>
+  <string name="mail_settings_swipe_action_archive_title">Arkiv</string>
   <string name="mail_settings_swipe_action_read_title">Ulest</string>
   <string name="mail_settings_swipe_action_spam_title">Søppelpost</string>
   <string name="mail_settings_swipe_action_star_title">Stjernemerk</string>

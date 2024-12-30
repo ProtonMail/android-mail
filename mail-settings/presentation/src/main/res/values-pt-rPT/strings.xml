@@ -113,7 +113,7 @@
   <string name="mail_settings_swipe_action_read_title">Não lida</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Estrela</string>
-  <string name="mail_settings_swipe_action_trash_title">Lixeira</string>
+  <string name="mail_settings_swipe_action_trash_title">Lixo</string>
   <string name="mail_settings_swipe_action_archive_description">Mover para o Arquivo</string>
   <string name="mail_settings_swipe_action_read_description">Marcar como não lido/lido</string>
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>

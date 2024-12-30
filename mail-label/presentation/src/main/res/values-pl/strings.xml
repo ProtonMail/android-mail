@@ -55,8 +55,8 @@
   <string name="save_label_error">Wystąpił błąd podczas zapisywania etykiety. Spróbuj ponownie później</string>
   <string name="save_folder_error">Wystąpił błąd podczas zapisywania folderu. Spróbuj ponownie później</string>
   <string name="label_already_exists">Etykieta lub folder o takiej nazwie już istnieje</string>
-  <string name="label_limit_reached_error">Do tworzenia większej liczby etykiet wymagana jest płatna subskrypcja Proton Mail</string>
-  <string name="folder_limit_reached_error">Do tworzenia większej liczby folderów wymagana jest płatna subskrypcja Proton Mail</string>
+  <string name="label_limit_reached_error">Do utworzenia większej liczby etykiet wymagana jest płatna subskrypcja Proton Mail</string>
+  <string name="folder_limit_reached_error">Do utworzenia większej liczby folderów wymagana jest płatna subskrypcja Proton Mail</string>
   <string name="delete_label_error">Wystąpił błąd podczas usuwania etykiety</string>
   <string name="input_field_clear_content_description">Wyczyść tekst</string>
   <string name="label_list_item_content_description">Element listy etykiet</string>

@@ -99,7 +99,7 @@
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Abonnementsoppgradering pågår…</string>
   <string name="upselling_snackbar_upgrade_error_generic">Det oppstod en feil under oppgradering av abonnementet ditt.</string>
-  <string name="upselling_snackbar_upgrade_error_recoverable">En feil oppstod. Vennligst prøv igjen.</string>
+  <string name="upselling_snackbar_upgrade_error_recoverable">En feil oppstod. Prøv igjen.</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">Velg en plan</string>
   <string name="upselling_onboarding_switcher_monthly">Månedlig</string>

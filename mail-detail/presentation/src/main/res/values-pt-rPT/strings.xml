@@ -43,7 +43,7 @@
   <string name="error_mark_as_unread_failed">Erro na operação de marcar como não lido. Tente novamente.</string>
   <string name="error_star_operation_failed">A operação de adicionar estrela falhou. Por favor, tente novamente.</string>
   <string name="error_unstar_operation_failed">A operação de remover estrela falhou. Por favor, tente novamente.</string>
-  <string name="error_move_to_trash_failed">Erro no envio para a lixeira. Tente novamente.</string>
+  <string name="error_move_to_trash_failed">Falha ao mover para o lixo. Por favor, tente novamente.</string>
   <string name="message_moved_to_trash">Mensagem movida para o Lixo</string>
   <string name="message_moved_to_archive">Mensagem movida para a pasta Arquivo</string>
   <string name="error_move_to_archive_failed">Move to archive failed. Please retry.</string>

@@ -46,20 +46,20 @@
   <string name="bottom_sheet_more_header_message_from">Üzenetek tőle: %s</string>
   <!-- Message body link actions -->
   <string name="message_link_long_click_copy">Hivatkozás másolása</string>
-  <string name="message_link_long_click_copy_description">Szöveg Proton Mail-ről másolva</string>
+  <string name="message_link_long_click_copy_description">Szöveg Proton Mailről másolva</string>
   <string name="message_link_long_click_share">Hivatkozás megosztása</string>
-  <string name="message_link_long_click_share_via">Link megosztása</string>
+  <string name="message_link_long_click_share_via">Hivatkozás megosztása:</string>
   <!-- Contact Actions Bottom Sheet -->
   <string name="contact_actions_copy_address">Cím másolása</string>
-  <string name="contact_actions_copy_address_description">Névjegy címének másolása</string>
+  <string name="contact_actions_copy_address_description">Cím másolása</string>
   <string name="contact_actions_copy_address_performed">Cím a vágólapra másolva</string>
   <string name="contact_actions_copy_name">Név másolása</string>
-  <string name="contact_actions_copy_name_description">Névjegy nevének másolása</string>
+  <string name="contact_actions_copy_name_description">Név másolása</string>
   <string name="contact_actions_copy_name_performed">Név a vágólapra másolva</string>
   <string name="contact_actions_new_message">Új üzenet</string>
-  <string name="contact_actions_new_message_description">Új üzenet írása ennek a névjegynek</string>
+  <string name="contact_actions_new_message_description">Új üzenet írása ennek a címzettnek</string>
   <string name="contact_actions_add_contact">Új névjegy</string>
-  <string name="contact_actions_add_contact_description">Mentse ezt a címzettet névjegyként</string>
+  <string name="contact_actions_add_contact_description">Címzett mentése névjegyként</string>
   <string name="contact_actions_view_contact_details">Névjegy részletei</string>
   <string name="contact_actions_view_contact_details_description">Névjegy részleteinek megtekintése</string>
   <!-- Device Contacts permission dialog -->

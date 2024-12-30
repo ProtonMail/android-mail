@@ -45,9 +45,9 @@
   <string name="mail_settings_allowed">Дазволена</string>
   <string name="mail_settings_denied">Забаронена</string>
   <string name="mail_settings_auto_detect">Аўтаматычнае вызначэнне</string>
-  <string name="mail_settings_app_information">Інфармацыя аб праграме</string>
+  <string name="mail_settings_app_information">Звесткі аб праграме</string>
   <string name="mail_settings_app_version">Версія праграмы</string>
-  <string name="mail_settings_app_logs">Журналы праграмы</string>
+  <string name="mail_settings_app_logs">Журнал праграмы</string>
   <string name="mail_settings_account">Уліковы запіс</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Падпіска</string>

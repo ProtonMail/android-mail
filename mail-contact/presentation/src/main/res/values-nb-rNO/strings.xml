@@ -18,7 +18,7 @@
   -->
 <resources>
   <string name="contact_list_title">Kontakter</string>
-  <string name="contact_list_loading_error">Feil ved lasting av kontakter, vennligst prøv igjen senere.</string>
+  <string name="contact_list_loading_error">Feil ved lasting av kontakter, prøv igjen senere.</string>
   <string name="no_contacts">Ingen kontakter funnet</string>
   <string name="no_contact_groups">Ingen kontaktgrupper funnet</string>
   <string name="no_contacts_description">Forbedre e-postopplevelsen ved å opprette en ny kontakt eller importere eksisterende.</string>
@@ -35,7 +35,7 @@
   <string name="import_contact">Last opp enhetskontakter</string>
   <string name="no_contact_email">Ingen e-postadresse</string>
   <string name="multiple_contact_emails">%1$s, +%2$d</string>
-  <string name="contact_details_loading_error">Feil ved lasting av kontakt, vennligst prøv igjen senere.</string>
+  <string name="contact_details_loading_error">Feil ved lasting av kontakt, prøv igjen senere.</string>
   <string name="contact_details_delete_success">Kontakt slettet</string>
   <string name="edit_contact_content_description">Rediger kontakt</string>
   <string name="delete_contact_content_description">Slett kontakt</string>
@@ -65,7 +65,7 @@
   <string name="contact_property_gender">Kjønn</string>
   <string name="contact_property_language">Språk</string>
   <string name="contact_property_time_zone">Tidssone</string>
-  <string name="contact_form_loading_error">Feil ved lasting av kontakt, vennligst prøv igjen senere.</string>
+  <string name="contact_form_loading_error">Feil ved lasting av kontakt, prøv igjen senere.</string>
   <string name="contact_form_save_success">Kontakt lagret</string>
   <string name="contact_form_create_success">Kontakt opprettet</string>
   <string name="contact_form_update_success">Kontakt oppdatert</string>
@@ -96,7 +96,7 @@
   <string name="contact_details_delete_dialog_text">Er du sikker på at du vil slette denne kontakten?</string>
   <string name="contact_details_delete_dialog_cancel_button">Avbryt</string>
   <string name="contact_details_delete_dialog_confirm_button">OK</string>
-  <string name="contact_form_save_error">Feil ved lagring av kontakt, vennligst prøv igjen senere.</string>
+  <string name="contact_form_save_error">Feil ved lagring av kontakt, prøv igjen senere</string>
   <string name="contact_form_save_error_limit_reached">Kontaktgrense er nådd</string>
   <string name="all_contacts_tab">Kontakter</string>
   <string name="contact_groups_tab">Grupper</string>
@@ -131,13 +131,13 @@
   <string name="contact_group_form_save_error">Kunne ikke lagre kontaktgruppe. Prøv på nytt senere</string>
   <string name="contact_group_form_save_error_already_exists">En gruppe med dette navnet eksisterer allerede</string>
   <string name="contact_group_form_subscription_error">Du trenger et betalt Proton Mail-abonnement for å opprette kontaktgrupper</string>
-  <string name="members_loading_error">Feil ved lasting av medlemmer. Vennligst prøv igjen senere.</string>
+  <string name="members_loading_error">Feil ved lasting av medlemmer, prøv igjen senere</string>
   <string name="members_done">Ferdig</string>
   <string name="add_members_error">Feil ved å legge til medlemmer, prøv igjen senere</string>
   <string name="manage_members_title">Administrer medlemmer</string>
   <string name="search_contact">Søk etter kontakt</string>
   <string name="search_contacts_description">Søk i kontakter</string>
-  <string name="member_update_error">Feil ved oppdatering av medlem, vennligst prøv igjen senere</string>
+  <string name="member_update_error">Feil ved oppdatering av medlem, prøv igjen senere</string>
   <string name="contact_group_color">Kontaktgruppefarge</string>
   <plurals name="contact_search_contact_group_counter">
     <item quantity="one">%d medlem</item>

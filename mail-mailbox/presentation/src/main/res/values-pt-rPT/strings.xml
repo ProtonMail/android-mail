@@ -42,7 +42,7 @@
   <string name="mailbox_is_empty_no_unread_messages_title">Nenhuma mensagem por ler</string>
   <string name="mailbox_is_empty_folder_description">Esta pasta está vazia.</string>
   <string name="mailbox_is_empty_spam_description">A sua pasta de spam está vazia</string>
-  <string name="mailbox_is_empty_trash_description">A lixeira está vazia.</string>
+  <string name="mailbox_is_empty_trash_description">O Lixo está vazio</string>
   <plurals name="mailbox_action_trash">
     <item quantity="one">Mensagem movida para o Lixo</item>
     <item quantity="other">%d mensagens movidas para o Lixo</item>
@@ -82,7 +82,7 @@
   <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
   <string name="mailbox_search_no_results_title">Não foram encontrados resultados.</string>
   <string name="mailbox_search_no_results_explanation">Data de pesquisa, nome, endereço de e-mail ou linha de assunto</string>
-  <string name="mailbox_action_button_clear_trash">Esvaziar a lixeira</string>
+  <string name="mailbox_action_button_clear_trash">Esvaziar Lixo</string>
   <string name="mailbox_action_button_clear_spam">Esvaziar Spam</string>
   <string name="mailbox_action_clear_trash_dialog_title">Esvaziar a pasta de Lixo</string>
   <string name="mailbox_action_clear_spam_dialog_title">Esvaziar a pasta Spam</string>

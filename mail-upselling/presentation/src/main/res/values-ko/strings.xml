@@ -58,12 +58,12 @@
   <string name="upselling_onboarding_feature_folders_labels">무제한 폴더 및 라벨</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB 스토리지 및 1개 이메일 주소</string>
   <string name="upselling_onboarding_plus_feature_storage">15GB 저장공간</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">귀하를 위한 10개의 추가 이메일 주소</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">회원님을 위한 10개의 추가 이메일 주소</string>
   <string name="upselling_onboarding_plus_feature_email_domains">1개의 커스텀 이메일 도메인 지원</string>
   <string name="upselling_onboarding_plus_feature_aliases">10개의 hide-my-email 별칭</string>
   <string name="upselling_onboarding_plus_feature_customer_support">우선 고객 지원</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500GB 저장공간</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">귀하를 위한 15개의 추가 이메일 주소</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">회원님을 위한 15개의 추가 이메일 주소</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">3개의 커스텀 이메일 도메인 지원</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">무제한 hide-my-email 별칭</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">전담 고객 지원</string>
