@@ -33,11 +33,15 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -52,6 +56,7 @@ import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.R.string
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.ScreenDimens.ChevronSize
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SettingsDimens
 import ch.protonmail.android.mailsettings.presentation.settings.theme.SwipeActionIllustrationDimens
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -61,7 +66,7 @@ import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.captionHint
-import me.proton.core.compose.theme.default
+import me.proton.core.compose.theme.defaultNorm
 import me.proton.core.compose.theme.defaultWeak
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import ch.protonmail.android.mailcommon.presentation.R.string as commonString
@@ -103,6 +108,7 @@ fun SwipeActionsPreferenceScreen(
                     onChangeSwipeRightClick = actions.onChangeSwipeRightClick,
                     onChangeSwipeLeftClick = actions.onChangeSwipeLeftClick
                 )
+
                 SwipeActionsPreferenceState.Loading -> ProtonCenteredProgress()
                 SwipeActionsPreferenceState.NotLoggedIn ->
                     ProtonErrorMessage(errorMessage = stringResource(commonString.x_error_not_logged_in))
@@ -117,13 +123,18 @@ private fun SwipeActionsPreferenceContent(
     onChangeSwipeRightClick: () -> Unit,
     onChangeSwipeLeftClick: () -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    val scrollState = rememberScrollState()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .verticalScroll(scrollState)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(ProtonDimens.DefaultSpacing),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier.size(ProtonDimens.SmallIconSize),
@@ -176,13 +187,23 @@ private fun SwipeActionItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(ProtonDimens.DefaultSpacing),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = actionName, style = ProtonTheme.typography.default)
-            Row {
-                Text(text = actionDescription, style = ProtonTheme.typography.defaultWeak)
+            Text(text = actionName, style = ProtonTheme.typography.defaultNorm)
+            Row(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = actionDescription,
+                    style = ProtonTheme.typography.defaultWeak
+                )
+
                 Icon(
+                    modifier = Modifier.size(ChevronSize),
                     painter = painterResource(id = R.drawable.ic_proton_chevron_right),
+                    tint = ProtonTheme.colors.iconWeak,
                     contentDescription = NO_CONTENT_DESCRIPTION
                 )
             }
@@ -292,7 +313,7 @@ private fun Toolbar(onBack: () -> Unit) {
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_proton_arrow_left),
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = stringResource(id = string.mail_settings_toolbar_button_content_description)
                 )
             }
@@ -345,4 +366,8 @@ fun SwipeActionsPreferenceScreenPreview() {
             )
         )
     }
+}
+
+private object ScreenDimens {
+    val ChevronSize = 20.dp
 }
