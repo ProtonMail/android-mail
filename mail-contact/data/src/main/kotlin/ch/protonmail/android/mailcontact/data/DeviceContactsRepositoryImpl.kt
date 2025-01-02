@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcontact.data
 
 import android.content.Context
 import android.provider.ContactsContract
+import androidx.core.database.getStringOrNull
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
@@ -39,61 +40,67 @@ class DeviceContactsRepositoryImpl @Inject constructor(
     override suspend fun getDeviceContacts(
         query: String
     ): Either<DeviceContactsRepository.DeviceContactsErrors, List<DeviceContact>> {
-
-        val contentResolver = context.contentResolver
-
-        val selectionArgs = arrayOf("%$query%", "%$query%", "%$query%")
-
-        @Suppress("SwallowedException")
-        val contactEmails = try {
-            withContext(dispatcherProvider.Io) {
-                contentResolver.query(
-                    ContactsContract.CommonDataKinds.Email.CONTENT_URI,
-                    ANDROID_PROJECTION,
-                    ANDROID_SELECTION,
-                    selectionArgs,
-                    ANDROID_ORDER_BY
-                )
-            }
-        } catch (e: SecurityException) {
-            Timber.d("SearchDeviceContacts: contact permission is not granted")
-            null
-        } ?: return DeviceContactsRepository.DeviceContactsErrors.PermissionDenied.left()
-
-        val deviceContacts = mutableListOf<DeviceContact>()
-
-        val displayNameColumnIndex = contactEmails.getColumnIndex(
-            ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY
-        ).takeIf {
-            it >= 0
-        } ?: 0
-
-        val emailColumnIndex = contactEmails.getColumnIndex(ContactsContract.CommonDataKinds.Email.ADDRESS).takeIf {
-            it >= 0
-        } ?: 0
-
-        contactEmails.use { cursor ->
-            for (position in 0 until cursor.count) {
-                cursor.moveToPosition(position)
-                deviceContacts.add(
-                    DeviceContact(
-                        name = contactEmails.getString(displayNameColumnIndex),
-                        email = contactEmails.getString(emailColumnIndex)
-                    )
-                )
+        @Suppress("TooGenericExceptionCaught")
+        return withContext(dispatcherProvider.Io) {
+            try {
+                queryContacts(query).right()
+            } catch (e: SecurityException) {
+                Timber.e(e, "Failed to query contacts due to permission issue")
+                DeviceContactsRepository.DeviceContactsErrors.PermissionDenied.left()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to query contacts")
+                DeviceContactsRepository.DeviceContactsErrors.UnknownError.left()
             }
         }
+    }
 
-        return deviceContacts.right()
+    private fun queryContacts(query: String): List<DeviceContact> {
+        // If the user searches for "_" or "%", they should be treated as literals.
+        val escapedQuery = query
+            .replace("_", "\\_")
+            .replace("%", "\\%")
+
+        val selectionArgs = arrayOf("%$escapedQuery%", "%$escapedQuery%", "%$escapedQuery%")
+
+        return context.contentResolver.query(
+            ContactsContract.CommonDataKinds.Email.CONTENT_URI,
+            ANDROID_PROJECTION,
+            ANDROID_SELECTION,
+            selectionArgs,
+            ANDROID_ORDER_BY
+        )?.use { cursor ->
+            val contacts = mutableListOf<DeviceContact>()
+
+            val displayNameIndex = cursor.getColumnIndex(
+                ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY
+            ).takeIf { it >= 0 }
+
+            val emailIndex = cursor.getColumnIndex(
+                ContactsContract.CommonDataKinds.Email.ADDRESS
+            ).takeIf { it >= 0 }
+
+            for (position in 0 until cursor.count) {
+                if (!cursor.moveToPosition(position)) continue
+                val emailAddress = emailIndex?.let { cursor.getStringOrNull(it) } ?: continue
+
+                // Fallback to email address if for some reason the display name can't be obtained
+                val displayName = displayNameIndex?.let { cursor.getStringOrNull(it) } ?: emailAddress
+                contacts.add(DeviceContact(name = displayName, email = emailAddress))
+            }
+
+            contacts
+        } ?: emptyList()
     }
 
     companion object {
 
         private const val ANDROID_ORDER_BY = ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY + " ASC"
 
-        @Suppress("MaxLineLength")
-        private const val ANDROID_SELECTION =
-            "${ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY} LIKE ? OR ${ContactsContract.CommonDataKinds.Email.ADDRESS} LIKE ? OR ${ContactsContract.CommonDataKinds.Email.DATA} LIKE ?"
+        private val ANDROID_SELECTION = """
+            |${ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY} LIKE ? ESCAPE '\'
+            |OR ${ContactsContract.CommonDataKinds.Email.ADDRESS} LIKE ? ESCAPE '\'
+            |OR ${ContactsContract.CommonDataKinds.Email.DATA} LIKE ? ESCAPE '\'
+        """.trimMargin()
 
         private val ANDROID_PROJECTION = arrayOf(
             ContactsContract.CommonDataKinds.Email.DISPLAY_NAME_PRIMARY,
@@ -101,5 +108,4 @@ class DeviceContactsRepositoryImpl @Inject constructor(
             ContactsContract.CommonDataKinds.Email.DATA
         )
     }
-
 }

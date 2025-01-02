@@ -27,6 +27,6 @@ interface DeviceContactsRepository {
 
     sealed class DeviceContactsErrors {
         data object PermissionDenied : DeviceContactsErrors()
+        data object UnknownError : DeviceContactsErrors()
     }
-
 }
