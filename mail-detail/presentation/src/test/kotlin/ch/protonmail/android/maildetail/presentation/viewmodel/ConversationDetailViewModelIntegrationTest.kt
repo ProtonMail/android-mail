@@ -131,6 +131,8 @@ import ch.protonmail.android.maillabel.domain.usecase.GetRootLabel
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -372,6 +374,9 @@ class ConversationDetailViewModelIntegrationTest {
             } returns ByteArrayInputStream("".toByteArray())
         }
     }
+    private val mapperContext = mockk<Context> {
+        every { this@mockk.getString(any()) } returns ""
+    }
     private val injectCssIntoDecryptedMessageBody = InjectCssIntoDecryptedMessageBody(context)
     private val sanitizeHtmlOfDecryptedMessageBody = SanitizeHtmlOfDecryptedMessageBody()
     private val transformDecryptedMessageBody =
@@ -411,6 +416,7 @@ class ConversationDetailViewModelIntegrationTest {
     )
 
     private val conversationMetadataMapper = ConversationDetailMetadataUiModelMapper()
+    private val mailLabelTextMapper = MailLabelTextMapper(mapperContext)
     // endregion
 
     private val reducer = ConversationDetailReducer(
@@ -429,7 +435,8 @@ class ConversationDetailViewModelIntegrationTest {
         ),
         deleteDialogReducer = ConversationDeleteDialogReducer(),
         reportPhishingDialogReducer = ConversationReportPhishingDialogReducer(),
-        trashedMessagesBannerReducer = TrashedMessagesBannerReducer()
+        trashedMessagesBannerReducer = TrashedMessagesBannerReducer(),
+        mailLabelTextMapper = mailLabelTextMapper
     )
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
@@ -2319,7 +2326,7 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(1)
             viewModel.submit(
                 ConversationDetailViewAction.MoveToDestinationConfirmed(
-                    MailLabelId.System.Spam.toString(),
+                    MailLabelText(MailLabelId.System.Spam.toString()),
                     messageId
                 )
             )
@@ -2405,7 +2412,7 @@ class ConversationDetailViewModelIntegrationTest {
             skipItems(1)
             viewModel.submit(
                 ConversationDetailViewAction.MoveToDestinationConfirmed(
-                    MailLabelId.System.Spam.toString(),
+                    MailLabelText(MailLabelId.System.Spam.toString()),
                     messageId
                 )
             )

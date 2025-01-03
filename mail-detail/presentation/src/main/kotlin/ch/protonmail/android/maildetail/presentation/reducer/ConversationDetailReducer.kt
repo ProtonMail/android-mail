@@ -56,6 +56,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerState
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
@@ -69,7 +70,8 @@ class ConversationDetailReducer @Inject constructor(
     private val bottomSheetReducer: BottomSheetReducer,
     private val deleteDialogReducer: ConversationDeleteDialogReducer,
     private val reportPhishingDialogReducer: ConversationReportPhishingDialogReducer,
-    private val trashedMessagesBannerReducer: TrashedMessagesBannerReducer
+    private val trashedMessagesBannerReducer: TrashedMessagesBannerReducer,
+    private val mailLabelTextMapper: MailLabelTextMapper
 ) {
 
     fun newStateFrom(
@@ -180,9 +182,12 @@ class ConversationDetailReducer @Inject constructor(
     private fun ConversationDetailState.toMessageState(operation: ConversationDetailOperation): Effect<TextUiModel> {
         return if (operation is ConversationDetailOperation.AffectingMessageBar) {
             val textUiModel = when (operation) {
-                is ConversationDetailEvent.MessageMoved -> operation.mailLabelText?.let { label ->
-                    TextUiModel.TextResWithArgs(R.string.message_moved_to, listOf(label))
-                } ?: TextUiModel(R.string.message_moved)
+                is ConversationDetailEvent.MessageMoved -> {
+                    TextUiModel.TextResWithArgs(
+                        R.string.message_moved_to,
+                        listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
+                    )
+                }
             }
 
             Effect.of(textUiModel)
@@ -207,7 +212,10 @@ class ConversationDetailReducer @Inject constructor(
         is ConversationDetailViewAction.MoveToDestinationConfirmed -> when (operation.messageId == null) {
             true -> Effect.of(
                 UndoableActionResult(
-                    TextUiModel(R.string.conversation_moved_to_selected_destination, operation.mailLabelText)
+                    TextUiModel.TextResWithArgs(
+                        R.string.conversation_moved_to_selected_destination,
+                        listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
+                    )
                 )
             )
 
@@ -225,10 +233,10 @@ class ConversationDetailReducer @Inject constructor(
         )
 
         is ConversationDetailEvent.LastMessageMoved -> {
-            val textUiModel = operation.mailLabelText?.let { label ->
-                TextUiModel.TextResWithArgs(R.string.message_moved_to, listOf(label))
-            } ?: TextUiModel(R.string.message_moved)
-
+            val textUiModel = TextUiModel.TextResWithArgs(
+                R.string.message_moved_to,
+                listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
+            )
             Effect.of(DefinitiveActionResult(textUiModel))
         }
 

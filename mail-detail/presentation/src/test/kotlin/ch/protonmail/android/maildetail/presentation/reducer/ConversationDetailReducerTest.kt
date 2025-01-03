@@ -40,6 +40,8 @@ import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMe
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMetadataUiModelSample
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -67,6 +69,7 @@ class ConversationDetailReducerTest(
     private val deleteDialogReducer = mockk<ConversationDeleteDialogReducer>(relaxed = true)
     private val reportPhishingDialogReducer = mockk<ConversationReportPhishingDialogReducer>(relaxed = true)
     private val trashedMessagesBannerReducer = mockk<TrashedMessagesBannerReducer>(relaxed = true)
+    private val mailLabelTextMapper = MailLabelTextMapper(mockk())
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
@@ -74,7 +77,8 @@ class ConversationDetailReducerTest(
         bottomSheetReducer = bottomSheetReducer,
         deleteDialogReducer = deleteDialogReducer,
         reportPhishingDialogReducer = reportPhishingDialogReducer,
-        trashedMessagesBannerReducer = trashedMessagesBannerReducer
+        trashedMessagesBannerReducer = trashedMessagesBannerReducer,
+        mailLabelTextMapper = mailLabelTextMapper
     )
 
     @Test
@@ -189,14 +193,14 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
-            ConversationDetailViewAction.MoveToDestinationConfirmed("spam", null) affects listOf(
+            ConversationDetailViewAction.MoveToDestinationConfirmed(MailLabelText("spam"), null) affects listOf(
                 BottomSheet,
                 ExitWithResult(
                     UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
                 )
             ),
             ConversationDetailViewAction.MoveToDestinationConfirmed(
-                "spam", MessageId(messageId.id)
+                MailLabelText("spam"), MessageId(messageId.id)
             ) affects BottomSheet,
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
             ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
@@ -286,11 +290,13 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar,
             ConversationDetailEvent.ErrorDeletingConversation affects listOf(ErrorBar, DeleteDialog),
             ConversationDetailEvent.ErrorDeletingNoApplicableFolder affects listOf(ErrorBar, DeleteDialog),
-            ConversationDetailEvent.LastMessageMoved() affects listOf(
+            ConversationDetailEvent.LastMessageMoved(MailLabelText("spam")) affects listOf(
                 BottomSheet,
-                ExitWithResult(DefinitiveActionResult(TextUiModel(string.message_moved)))
+                ExitWithResult(
+                    DefinitiveActionResult(TextUiModel.TextResWithArgs(string.message_moved_to, listOf("spam")))
+                )
             ),
-            ConversationDetailEvent.MessageMoved() affects listOf(BottomSheet, MessageBar),
+            ConversationDetailEvent.MessageMoved(MailLabelText("spam")) affects listOf(BottomSheet, MessageBar),
             ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar)
         )
 

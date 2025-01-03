@@ -35,6 +35,8 @@ import ch.protonmail.android.maildetail.presentation.model.MessageMetadataState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
@@ -103,6 +105,8 @@ class MessageDetailReducerTest(
         every { newStateFrom(any()) } returns reducedState.reportPhishingDialogState
     }
 
+    private val mailLabelTextMapper = MailLabelTextMapper(mockk())
+
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
         messageBannersReducer,
@@ -110,7 +114,8 @@ class MessageDetailReducerTest(
         bottomBarReducer,
         bottomSheetReducer,
         deleteDialogReducer,
-        reportPhishingDialogReducer
+        reportPhishingDialogReducer,
+        mailLabelTextMapper
     )
 
     @Test
@@ -342,7 +347,7 @@ class MessageDetailReducerTest(
                 shouldReducePhishingLinkConfirmation = false
             ),
             TestInput(
-                MessageViewAction.MoveToDestinationConfirmed("testLabel"),
+                MessageViewAction.MoveToDestinationConfirmed(MailLabelText("testLabel")),
                 shouldReduceMessageMetadataState = false,
                 shouldReduceMessageBannersState = false,
                 shouldReduceMessageBodyState = false,

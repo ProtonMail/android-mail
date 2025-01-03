@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.AvatarUiModel
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarEvent
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
+import ch.protonmail.android.maildetail.presentation.R
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingBottomSheet
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingConversation
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingDeleteDialog
@@ -34,6 +35,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingTrashedMessagesBanner
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -140,10 +142,10 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
 
     data class MessageMoved(
-        val mailLabelText: String? = null
+        val mailLabelText: MailLabelText
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
 
-    data class LastMessageMoved(val mailLabelText: String? = null) : ConversationDetailEvent, AffectingBottomSheet
+    data class LastMessageMoved(val mailLabelText: MailLabelText) : ConversationDetailEvent, AffectingBottomSheet
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -162,7 +164,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data class MoveToDestinationConfirmed(
-        val mailLabelText: String,
+        val mailLabelText: MailLabelText,
         val messageId: MessageId?
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
@@ -237,12 +239,20 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
     sealed class MoveMessage(
         val messageId: MessageId,
-        val labelId: LabelId
+        val labelId: LabelId,
+        val mailLabelText: MailLabelText
     ) : ConversationDetailViewAction, AffectingBottomSheet {
 
-        class MoveToSpam(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Spam.labelId)
-        class MoveToTrash(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Trash.labelId)
-        class MoveToArchive(messageId: MessageId) : MoveMessage(messageId, SystemLabelId.Archive.labelId)
-        class MoveTo(messageId: MessageId, labelId: LabelId) : MoveMessage(messageId, labelId)
+        class MoveToSpam(messageId: MessageId) :
+            MoveMessage(messageId, SystemLabelId.Spam.labelId, MailLabelText(R.string.label_title_spam))
+
+        class MoveToTrash(messageId: MessageId) :
+            MoveMessage(messageId, SystemLabelId.Trash.labelId, MailLabelText(R.string.label_title_trash))
+
+        class MoveToArchive(messageId: MessageId) :
+            MoveMessage(messageId, SystemLabelId.Archive.labelId, MailLabelText(R.string.label_title_archive))
+
+        class MoveTo(messageId: MessageId, labelId: LabelId, mailLabelText: MailLabelText) :
+            MoveMessage(messageId, labelId, mailLabelText)
     }
 }

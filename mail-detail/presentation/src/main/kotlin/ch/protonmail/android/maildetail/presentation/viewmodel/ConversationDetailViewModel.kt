@@ -104,6 +104,7 @@ import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -900,7 +901,7 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private fun onMoveToDestinationConfirmed(mailLabelText: String, messageId: MessageId?) {
+    private fun onMoveToDestinationConfirmed(mailLabelText: MailLabelText, messageId: MessageId?) {
         if (messageId == null) {
             onConversationMoveToDestinationConfirmed(mailLabelText)
         } else {
@@ -908,7 +909,7 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onConversationMoveToDestinationConfirmed(mailLabelText: String) {
+    private fun onConversationMoveToDestinationConfirmed(mailLabelText: MailLabelText) {
         viewModelScope.launch {
             when (val state = state.value.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState.Data -> {
@@ -928,13 +929,16 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onMessageMoveToDestinationConfirmed(mailLabelText: String, messageId: MessageId) {
+    private fun onMessageMoveToDestinationConfirmed(mailLabelText: MailLabelText, messageId: MessageId) {
         val bottomSheetState = state.value.bottomSheetState?.contentState
         if (bottomSheetState is MoveToBottomSheetState.Data) {
             bottomSheetState.selected?.let { mailLabelUiModel ->
                 handleMoveMessage(
-                    ConversationDetailViewAction.MoveMessage.MoveTo(messageId, mailLabelUiModel.id.labelId),
-                    mailLabelText
+                    ConversationDetailViewAction.MoveMessage.MoveTo(
+                        messageId,
+                        mailLabelUiModel.id.labelId,
+                        mailLabelText
+                    )
                 )
             } ?: throw IllegalStateException("No destination selected")
         } else {
@@ -1186,7 +1190,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     @Suppress("LongMethod")
-    private fun handleMoveMessage(action: ConversationDetailViewAction.MoveMessage, mailLabelText: String? = null) {
+    private fun handleMoveMessage(action: ConversationDetailViewAction.MoveMessage) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val conversationWithMessagesAndLabels = observeConversationMessages(userId, conversationId).first()
@@ -1221,7 +1225,7 @@ class ConversationDetailViewModel @Inject constructor(
                 messagesInCurrentLocation.size == 1 -> {
                     performSafeExitAction(
                         onLeft = ConversationDetailEvent.ErrorMovingMessage,
-                        onRight = ConversationDetailEvent.LastMessageMoved(mailLabelText)
+                        onRight = ConversationDetailEvent.LastMessageMoved(action.mailLabelText)
                     ) {
                         moveRemoteMessageAndLocalConversation(
                             userId,
@@ -1248,7 +1252,7 @@ class ConversationDetailViewModel @Inject constructor(
                         )
                     )
 
-                    emitNewStateFrom(MessageMoved(mailLabelText))
+                    emitNewStateFrom(MessageMoved(action.mailLabelText))
                 }
             }
         }

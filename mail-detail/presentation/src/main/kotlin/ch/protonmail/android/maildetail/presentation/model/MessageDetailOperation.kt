@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperatio
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingPhishingLinkConfirmationDialog
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation.AffectingReportPhishingDialog
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -137,7 +138,7 @@ sealed interface MessageViewAction : MessageDetailOperation {
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) : MessageViewAction, AffectingBottomSheet
     object DismissBottomSheet : MessageViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(val mailLabelId: MailLabelId) : MessageViewAction, AffectingBottomSheet
-    data class MoveToDestinationConfirmed(val mailLabelText: String) : MessageViewAction
+    data class MoveToDestinationConfirmed(val mailLabelText: MailLabelText) : MessageViewAction
     data class LabelAsToggleAction(val labelId: LabelId) : MessageViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(val archiveSelected: Boolean) : MessageViewAction, AffectingBottomSheet
     data class MessageBodyLinkClicked(val uri: Uri) : MessageViewAction

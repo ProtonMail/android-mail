@@ -50,6 +50,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.textRes
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.R
@@ -93,7 +94,7 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
                     .testTag(MoveToBottomSheetTestTags.DoneButton)
                     .clickable {
                         selectedMailLabel?.let {
-                            actions.onDoneClick(it, dataState.messageIdInConversation)
+                            actions.onDoneClick(MailLabelText(it), dataState.messageIdInConversation)
                         } ?: actions.onDismiss()
                     },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
@@ -185,7 +186,7 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onAddFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId) -> Unit,
-        val onDoneClick: (String, MessageId?) -> Unit,
+        val onDoneClick: (MailLabelText, MessageId?) -> Unit,
         val onDismiss: () -> Unit
     )
 }

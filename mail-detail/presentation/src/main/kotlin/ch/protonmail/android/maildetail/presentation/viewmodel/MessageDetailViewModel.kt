@@ -62,6 +62,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.PrintMessage
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -344,7 +345,7 @@ class MessageDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onBottomSheetDestinationConfirmed(mailLabelText: String) {
+    private fun onBottomSheetDestinationConfirmed(mailLabelText: MailLabelText) {
         viewModelScope.launch {
             when (val state = state.value.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState.Data -> {
@@ -371,8 +372,6 @@ class MessageDetailViewModel @Inject constructor(
             observeFolderColor(userId),
             observeAutoDeleteSetting()
         ) { messageWithLabelsEither, folderColor, autoDelete ->
-
-
             messageWithLabelsEither.fold(
                 ifLeft = { MessageDetailEvent.NoCachedMetadata },
                 ifRight = { messageWithLabels ->

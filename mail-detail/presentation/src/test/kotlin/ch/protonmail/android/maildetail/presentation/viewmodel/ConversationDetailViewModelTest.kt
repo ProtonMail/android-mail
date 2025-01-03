@@ -99,6 +99,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.domain.usecase.ObserveMailLabels
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
@@ -1073,7 +1074,10 @@ class ConversationDetailViewModelTest {
         )
 
         coEvery {
-            reducer.newStateFrom(any(), ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel", null))
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailViewAction.MoveToDestinationConfirmed(MailLabelText("selectedLabel"), null)
+            )
         } returns ConversationDetailState.Loading.copy(
             exitScreenWithMessageEffect = Effect.of(
                 ActionResult.UndoableActionResult(
@@ -1087,7 +1091,12 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(selectedLabel.id))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.MoveToDestinationConfirmed("selectedLabel", null))
+            viewModel.submit(
+                ConversationDetailViewAction.MoveToDestinationConfirmed(
+                    MailLabelText("selectedLabel"),
+                    null
+                )
+            )
             advanceUntilIdle()
 
             // Then

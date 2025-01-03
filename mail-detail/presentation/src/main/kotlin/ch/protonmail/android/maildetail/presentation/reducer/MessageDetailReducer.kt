@@ -21,8 +21,8 @@ package ch.protonmail.android.maildetail.presentation.reducer
 import android.net.Uri
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.MessageDetailEvent
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailOperation
 import ch.protonmail.android.maildetail.presentation.model.MessageDetailState
 import ch.protonmail.android.maildetail.presentation.model.MessageViewAction
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
@@ -46,7 +47,8 @@ class MessageDetailReducer @Inject constructor(
     private val bottomBarReducer: BottomBarReducer,
     private val bottomSheetReducer: BottomSheetReducer,
     private val deleteDialogReducer: MessageDeleteDialogReducer,
-    private val requestPhishingDialogReducer: MessageReportPhishingDialogReducer
+    private val requestPhishingDialogReducer: MessageReportPhishingDialogReducer,
+    private val mailLabelTextMapper: MailLabelTextMapper
 ) {
 
     suspend fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
@@ -86,6 +88,7 @@ class MessageDetailReducer @Inject constructor(
                 is MessageDetailEvent.ErrorDeletingMessage -> R.string.error_delete_message_failed
                 is MessageDetailEvent.ErrorDeletingNoApplicableFolder ->
                     R.string.error_delete_message_failed_wrong_folder
+
                 is MessageDetailEvent.ErrorMovingToArchive -> R.string.error_move_to_archive_failed
                 is MessageDetailEvent.ErrorMovingToSpam -> R.string.error_move_to_spam_failed
             }
@@ -99,6 +102,7 @@ class MessageDetailReducer @Inject constructor(
             MessageDetailEvent.NoCachedMetadata,
             MessageViewAction.MarkUnread,
             MessageViewAction.ReportPhishingConfirmed -> Effect.of(Unit)
+
             else -> exitScreenEffect
         }
 
@@ -108,8 +112,14 @@ class MessageDetailReducer @Inject constructor(
         MessageViewAction.Trash -> Effect.of(
             UndoableActionResult(TextUiModel(R.string.message_moved_to_trash))
         )
+
         is MessageViewAction.MoveToDestinationConfirmed -> Effect.of(
-            UndoableActionResult(TextUiModel(R.string.message_moved_to_selected_destination, operation.mailLabelText))
+            UndoableActionResult(
+                TextUiModel(
+                    R.string.message_moved_to_selected_destination,
+                    mailLabelTextMapper.mapToString(operation.mailLabelText)
+                )
+            )
         )
 
         is MessageViewAction.LabelAsConfirmed -> when (operation.archiveSelected) {

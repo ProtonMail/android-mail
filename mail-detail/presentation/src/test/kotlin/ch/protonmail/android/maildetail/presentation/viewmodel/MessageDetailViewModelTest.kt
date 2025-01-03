@@ -90,7 +90,9 @@ import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveExclusiveDestinationMailLabels
 import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.toUiModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
@@ -399,7 +401,8 @@ class MessageDetailViewModelTest {
             UpsellingBottomSheetReducer()
         ),
         MessageDeleteDialogReducer(),
-        MessageReportPhishingDialogReducer()
+        MessageReportPhishingDialogReducer(),
+        MailLabelTextMapper(mockk())
     )
 
     private val viewModel by lazy {
@@ -948,7 +951,7 @@ class MessageDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(MessageViewAction.MoveToDestinationSelected(MailLabelId.System.Spam))
             advanceUntilIdle()
-            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed("spam"))
+            viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(MailLabelText("spam")))
             advanceUntilIdle()
 
             // Then
@@ -963,7 +966,7 @@ class MessageDetailViewModelTest {
         coEvery { moveMessage(userId, messageId, any()) } returns DataError.Local.NoDataCached.left()
 
         // When
-        viewModel.submit(MessageViewAction.MoveToDestinationConfirmed("spam"))
+        viewModel.submit(MessageViewAction.MoveToDestinationConfirmed(MailLabelText("spam")))
         advanceUntilIdle()
 
         // Then
