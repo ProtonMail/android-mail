@@ -139,9 +139,11 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
 
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
 
-    data object MessageMoved : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
+    data class MessageMoved(
+        val mailLabelText: String? = null
+    ) : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
 
-    data object LastMessageMoved : ConversationDetailEvent, AffectingBottomSheet
+    data class LastMessageMoved(val mailLabelText: String? = null) : ConversationDetailEvent, AffectingBottomSheet
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {

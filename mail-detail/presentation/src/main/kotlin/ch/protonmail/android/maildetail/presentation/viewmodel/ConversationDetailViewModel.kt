@@ -49,7 +49,6 @@ import ch.protonmail.android.maildetail.domain.usecase.IsProtonCalendarInstalled
 import ch.protonmail.android.maildetail.domain.usecase.MarkConversationAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MarkMessageAsUnread
 import ch.protonmail.android.maildetail.domain.usecase.MoveConversation
-import ch.protonmail.android.maildetail.domain.usecase.MoveMessage
 import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation
 import ch.protonmail.android.maildetail.domain.usecase.MoveRemoteMessageAndLocalConversation.ConversationLabelingOptions
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
@@ -209,7 +208,6 @@ class ConversationDetailViewModel @Inject constructor(
     private val getMessageIdToExpand: GetMessageIdToExpand,
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
-    private val moveMessage: MoveMessage,
     private val moveRemoteMessageAndLocalConversation: MoveRemoteMessageAndLocalConversation,
     private val observeMailLabels: ObserveMailLabels,
     private val shouldMessageBeHidden: ShouldMessageBeHidden
@@ -931,21 +929,17 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun onMessageMoveToDestinationConfirmed(mailLabelText: String, messageId: MessageId) {
-        primaryUserId.mapLatest { userId ->
-            val bottomSheetState = state.value.bottomSheetState?.contentState
-            if (bottomSheetState is MoveToBottomSheetState.Data) {
-                bottomSheetState.selected?.let { mailLabelUiModel ->
-                    moveMessage(userId, messageId, mailLabelUiModel.id.labelId).fold(
-                        ifLeft = { ConversationDetailEvent.ErrorMovingMessage },
-                        ifRight = { MoveToDestinationConfirmed(mailLabelText, messageId) }
-                    )
-                } ?: throw IllegalStateException("No destination selected")
-            } else {
-                ConversationDetailEvent.ErrorMovingMessage
-            }
-        }.onEach { event ->
-            emitNewStateFrom(event)
-        }.launchIn(viewModelScope)
+        val bottomSheetState = state.value.bottomSheetState?.contentState
+        if (bottomSheetState is MoveToBottomSheetState.Data) {
+            bottomSheetState.selected?.let { mailLabelUiModel ->
+                handleMoveMessage(
+                    ConversationDetailViewAction.MoveMessage.MoveTo(messageId, mailLabelUiModel.id.labelId),
+                    mailLabelText
+                )
+            } ?: throw IllegalStateException("No destination selected")
+        } else {
+            emitNewStateFrom(ConversationDetailEvent.ErrorMovingMessage)
+        }
     }
 
     private fun onExpandMessage(messageId: MessageIdUiModel) {
@@ -1192,7 +1186,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     @Suppress("LongMethod")
-    private fun handleMoveMessage(action: ConversationDetailViewAction.MoveMessage) {
+    private fun handleMoveMessage(action: ConversationDetailViewAction.MoveMessage, mailLabelText: String? = null) {
         viewModelScope.launch {
             val userId = primaryUserId.first()
             val conversationWithMessagesAndLabels = observeConversationMessages(userId, conversationId).first()
@@ -1227,7 +1221,7 @@ class ConversationDetailViewModel @Inject constructor(
                 messagesInCurrentLocation.size == 1 -> {
                     performSafeExitAction(
                         onLeft = ConversationDetailEvent.ErrorMovingMessage,
-                        onRight = ConversationDetailEvent.LastMessageMoved
+                        onRight = ConversationDetailEvent.LastMessageMoved(mailLabelText)
                     ) {
                         moveRemoteMessageAndLocalConversation(
                             userId,
@@ -1254,7 +1248,7 @@ class ConversationDetailViewModel @Inject constructor(
                         )
                     )
 
-                    emitNewStateFrom(MessageMoved)
+                    emitNewStateFrom(MessageMoved(mailLabelText))
                 }
             }
         }

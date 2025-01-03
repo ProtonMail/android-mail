@@ -37,8 +37,8 @@
     <string name="action_mark_unread_description">Mark unread</string>
     <string name="action_star_description">Star</string>
     <string name="action_unstar_description">Unstar</string>
-    <string name="action_label_description">Label as</string>
-    <string name="action_move_description">Move to</string>
+    <string name="action_label_description">Label as…</string>
+    <string name="action_move_description">Move to…</string>
     <string name="action_trash_description">Move to trash</string>
     <string name="action_delete_description">Delete</string>
     <string name="action_archive_description">Archive</string>
@@ -61,8 +61,8 @@
     <string name="action_mark_unread_content_description">Mark unread</string>
     <string name="action_star_content_description">Star</string>
     <string name="action_unstar_content_description">Unstar</string>
-    <string name="action_label_content_description">Label as</string>
-    <string name="action_move_content_description">Move to</string>
+    <string name="action_label_content_description">Label as…</string>
+    <string name="action_move_content_description">Move to…</string>
     <string name="action_trash_content_description">Trash</string>
     <string name="action_delete_content_description">Delete</string>
     <string name="action_archive_content_description">Archive</string>

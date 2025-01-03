@@ -71,8 +71,8 @@
     <string name="test_action_mark_unread_content_description">Mark unread</string>
     <string name="test_action_star_content_description">Star</string>
     <string name="test_action_unstar_content_description">Unstar</string>
-    <string name="test_action_label_content_description">Label as</string>
-    <string name="test_action_move_content_description">Move to</string>
+    <string name="test_action_label_content_description">Label as…</string>
+    <string name="test_action_move_content_description">Move to…</string>
     <string name="test_action_trash_content_description">Trash</string>
     <string name="test_action_delete_content_description">Delete</string>
     <string name="test_action_archive_content_description">Archive</string>

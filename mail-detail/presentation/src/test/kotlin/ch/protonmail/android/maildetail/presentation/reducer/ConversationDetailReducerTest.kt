@@ -286,11 +286,11 @@ class ConversationDetailReducerTest(
             ConversationDetailEvent.ErrorGettingAttachment affects ErrorBar,
             ConversationDetailEvent.ErrorDeletingConversation affects listOf(ErrorBar, DeleteDialog),
             ConversationDetailEvent.ErrorDeletingNoApplicableFolder affects listOf(ErrorBar, DeleteDialog),
-            ConversationDetailEvent.LastMessageMoved affects listOf(
+            ConversationDetailEvent.LastMessageMoved() affects listOf(
                 BottomSheet,
                 ExitWithResult(DefinitiveActionResult(TextUiModel(string.message_moved)))
             ),
-            ConversationDetailEvent.MessageMoved affects listOf(BottomSheet, MessageBar),
+            ConversationDetailEvent.MessageMoved() affects listOf(BottomSheet, MessageBar),
             ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar)
         )
 
@@ -323,18 +323,18 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
 
 private sealed interface Entity
-private object Messages : Entity
-private object Conversation : Entity
-private object BottomBar : Entity
-private object Exit : Entity
+private data object Messages : Entity
+private data object Conversation : Entity
+private data object BottomBar : Entity
+private data object Exit : Entity
 private data class ExitWithResult(val result: ActionResult) : Entity
-private object ErrorBar : Entity
-private object MessageBar : Entity
-private object BottomSheet : Entity
-private object LinkClick : Entity
-private object MessageScroll : Entity
-private object DeleteDialog : Entity
-private object TrashedMessagesBanner : Entity
+private data object ErrorBar : Entity
+private data object MessageBar : Entity
+private data object BottomSheet : Entity
+private data object LinkClick : Entity
+private data object MessageScroll : Entity
+private data object DeleteDialog : Entity
+private data object TrashedMessagesBanner : Entity
 
 private val allMessagesFirstExpanded = listOf(
     ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,

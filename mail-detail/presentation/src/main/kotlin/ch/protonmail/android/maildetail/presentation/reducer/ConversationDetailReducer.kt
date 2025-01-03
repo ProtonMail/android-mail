@@ -143,8 +143,8 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.MarkMessageUnread,
                 is ConversationDetailViewAction.MoveMessage,
                 is ConversationDetailViewAction.MoveToDestinationConfirmed,
-                ConversationDetailEvent.MessageMoved,
-                ConversationDetailEvent.LastMessageMoved -> BottomSheetOperation.Dismiss
+                is ConversationDetailEvent.MessageMoved,
+                is ConversationDetailEvent.LastMessageMoved -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
         } else {
@@ -179,10 +179,13 @@ class ConversationDetailReducer @Inject constructor(
 
     private fun ConversationDetailState.toMessageState(operation: ConversationDetailOperation): Effect<TextUiModel> {
         return if (operation is ConversationDetailOperation.AffectingMessageBar) {
-            val textResource = when (operation) {
-                is ConversationDetailEvent.MessageMoved -> R.string.message_moved
+            val textUiModel = when (operation) {
+                is ConversationDetailEvent.MessageMoved -> operation.mailLabelText?.let { label ->
+                    TextUiModel.TextResWithArgs(R.string.message_moved_to, listOf(label))
+                } ?: TextUiModel(R.string.message_moved)
             }
-            Effect.of(TextUiModel(textResource))
+
+            Effect.of(textUiModel)
         } else {
             message
         }
@@ -221,8 +224,13 @@ class ConversationDetailReducer @Inject constructor(
             DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))
         )
 
-        is ConversationDetailEvent.LastMessageMoved ->
-            Effect.of(DefinitiveActionResult(TextUiModel(R.string.message_moved)))
+        is ConversationDetailEvent.LastMessageMoved -> {
+            val textUiModel = operation.mailLabelText?.let { label ->
+                TextUiModel.TextResWithArgs(R.string.message_moved_to, listOf(label))
+            } ?: TextUiModel(R.string.message_moved)
+
+            Effect.of(DefinitiveActionResult(textUiModel))
+        }
 
         else -> exitScreenWithMessageEffect
     }

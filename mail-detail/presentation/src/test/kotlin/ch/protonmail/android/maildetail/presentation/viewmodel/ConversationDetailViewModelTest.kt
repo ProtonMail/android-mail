@@ -394,7 +394,6 @@ class ConversationDetailViewModelTest {
             getMessageIdToExpand = getMessageIdToExpand,
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
-            moveMessage = moveMessage,
             shouldMessageBeHidden = shouldMessageBeHidden,
             moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
             observeMailLabels = observeMailLabels
