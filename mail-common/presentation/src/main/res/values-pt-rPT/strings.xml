@@ -21,9 +21,9 @@
   <string name="expiration_days_arg">%dd</string>
   <string name="expiration_hours_arg">%dh</string>
   <string name="expiration_minutes_arg">%dmin</string>
-  <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
+  <string name="expiration_auto_delete_hour">Esta mensagem será apagada automaticamente em menos de uma hora.</string>
   <string name="expiration_auto_delete_day">Esta mensagem será apagada automaticamente em ${ shortDateMessage }</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Esta mensagem será apagada automaticamente em %s.</string>
   <string name="retry">Repetir</string>
   <string name="toolbar_back_content_description">Voltar ao ecrã anterior</string>
   <string name="x_error_not_logged_in">Sem sessão iniciada</string>
@@ -82,7 +82,7 @@
   <string name="yesterday">Ontem</string>
   <string name="auto_delete_banner_text_activate_trash">Apagar automaticamente mensagens que estejam no lixo há mais de 30 dias.</string>
   <string name="auto_delete_banner_text_activate_spam">Apagar automaticamente mensagens que estejam no spam há mais de 30 dias.</string>
-  <string name="auto_delete_banner_text_upgrade">Atualize para poder apagar automaticamente as mensagens que estão na lixeira há mais de 30 dias.</string>
+  <string name="auto_delete_banner_text_upgrade">Atualize para poder apagar automaticamente as mensagens que estão no lixo há mais de 30 dias.</string>
   <string name="auto_delete_banner_text_enabled_info">As mensagens que estiverem no lixo e no spam há mais de 30 dias serão automaticamente eliminadas.</string>
   <string name="auto_delete_banner_button_activate_confirm">Ativar</string>
   <string name="auto_delete_banner_button_activate_dismiss">Não, obrigado</string>

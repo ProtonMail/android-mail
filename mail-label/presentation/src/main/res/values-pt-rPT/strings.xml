@@ -28,7 +28,7 @@
   <string name="label_title_all_mail">Todo o correio</string>
   <string name="label_title_all_drafts">Todos o rascunho</string>
   <string name="label_title_all_sent">Todos os enviados</string>
-  <string name="label_title_all_scheduled">All scheduled</string>
+  <string name="label_title_all_scheduled">Toda a programação</string>
   <string name="label_title_snoozed">Adiado</string>
   <string name="label_title_folders">Pastas</string>
   <string name="label_title_parent_folder">Pasta principal</string>
@@ -52,8 +52,8 @@
   <string name="add_a_folder_name_hint">Adicionar um nome à pasta</string>
   <string name="input_field_max_characters_count">%1d/%2d carateres</string>
   <string name="color_picker_title">Cor</string>
-  <string name="save_label_error">Erro ao guardar etiqueta, por favor, tente outra vez mais tarde</string>
-  <string name="save_folder_error">Erro ao guardar a pasta, por favor, tente outra vez mais tarde</string>
+  <string name="save_label_error">Erro ao guardar etiqueta. Tente outra vez mais tarde.</string>
+  <string name="save_folder_error">Erro ao guardar a pasta. Tente outra vez mais tarde.</string>
   <string name="label_already_exists">Já existe uma etiqueta ou pasta com este nome</string>
   <string name="label_limit_reached_error">É necessária uma subscrição paga do Proton Mail para criar mais etiquetas</string>
   <string name="folder_limit_reached_error">É necessária uma subscrição paga do Proton Mail para criar mais pastas</string>
@@ -69,8 +69,8 @@
   <string name="folder_settings_done_button">Terminado</string>
   <string name="folder_settings_folder_colors">Usar cores da pasta</string>
   <string name="folder_settings_parent_color">Aplicar a cor da pasta principal</string>
-  <string name="folder_list_loading_error">Erro ao carregar pastas, por favor, tente outra vez mais tarde</string>
-  <string name="folder_loading_error">Erro ao carregar pasta, por favor, tente outra vez mais tarde</string>
+  <string name="folder_list_loading_error">Erro ao carregar pastas. Tente outra vez mais tarde.</string>
+  <string name="folder_loading_error">Erro ao carregar pasta. Tente outra vez mais tarde.</string>
   <string name="switch_on">Ligado</string>
   <string name="switch_off">Desligado</string>
   <string name="folder_form_parent">Pasta principal</string>

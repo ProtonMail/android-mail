@@ -81,6 +81,6 @@
   <string name="parent_folder_none">なし</string>
   <string name="delete_label">ラベルを削除しますか？</string>
   <string name="delete_folder">フォルダーを削除しますか？</string>
-  <string name="delete_label_message">この操作はキャンセルできません。このラベルの付いたメッセージは削除されず、「すべてのメール」フォルダに残ります。</string>
-  <string name="delete_folder_message">この操作はキャンセルできません。このフォルダ内のメッセージは削除されず、「すべてのメール」フォルダに残ります。</string>
+  <string name="delete_label_message">この操作は取り消しできません。このラベルの付いたメッセージは削除されず、「すべてのメール」フォルダに残ります。</string>
+  <string name="delete_folder_message">この操作は取り消しできません。このフォルダ内のメッセージは削除されず、「すべてのメール」フォルダに残ります。</string>
 </resources>

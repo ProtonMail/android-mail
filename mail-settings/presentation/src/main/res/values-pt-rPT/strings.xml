@@ -47,7 +47,7 @@
   <string name="mail_settings_auto_detect">Auto-detetar</string>
   <string name="mail_settings_app_information">Informação da aplicação</string>
   <string name="mail_settings_app_version">Versão da aplicação</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Registos da aplicação</string>
   <string name="mail_settings_account">Conta</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Subscrição</string>
@@ -160,11 +160,11 @@
   <string name="mail_settings_pin_insertion_error_unknown">Ocorreu um erro ao verificar o seu código PIN.</string>
   <string name="mail_settings_pin_insertion_signout_text">Terminar sessão</string>
   <string name="mail_settings_pin_insertion_signout_dialog_title">Terminar sessão</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_description">Tem certeza de que deseja terminar a sessão?</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_description">Tem a certeza de que deseja terminar a sessão?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
-  <string name="mail_settings_pin_insertion_created_success">Código PIN criado com sucesso.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Código PIN alterado com sucesso.</string>
+  <string name="mail_settings_pin_insertion_created_success">O código PIN foi criado.</string>
+  <string name="mail_settings_pin_insertion_changed_success">O código PIN foi alterado.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">A limpar os dados locais em cache…</string>
   <!-- Error messages -->

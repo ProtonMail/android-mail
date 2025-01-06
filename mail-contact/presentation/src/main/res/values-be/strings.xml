@@ -102,7 +102,7 @@
   <string name="contact_groups_tab">Групы</string>
   <plurals name="contact_group_details_member_count">
     <item quantity="one">%1$d удзельнік</item>
-    <item quantity="few">%1$d удзельнікаў</item>
+    <item quantity="few">%1$d удзельнікі</item>
     <item quantity="many">%1$d удзельнікаў</item>
     <item quantity="other">%1$d удзельнікаў</item>
   </plurals>

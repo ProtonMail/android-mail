@@ -28,5 +28,5 @@
   <string name="notification_permission_dialog_title">Don\'t miss an email</string>
   <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
   <string name="notification_permission_dialog_button_enable">Enable Push Notifications</string>
-  <string name="notification_permission_dialog_button_dismiss">Dismiss</string>
+  <string name="notification_permission_dialog_button_dismiss">Elvetés</string>
 </resources>

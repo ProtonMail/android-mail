@@ -57,14 +57,14 @@
   <string name="contact_actions_copy_name_description">Copiar o nome do contacto</string>
   <string name="contact_actions_copy_name_performed">O nome foi copiado para a área de transferência.</string>
   <string name="contact_actions_new_message">Nova mensagem</string>
-  <string name="contact_actions_new_message_description">Start composing new message for this contact</string>
+  <string name="contact_actions_new_message_description">Comece a escrever uma nova mensagem para este contacto</string>
   <string name="contact_actions_add_contact">Adicionar o contacto</string>
-  <string name="contact_actions_add_contact_description">Save this recipient as a contact</string>
+  <string name="contact_actions_add_contact_description">Guardar este destinatário como um contacto</string>
   <string name="contact_actions_view_contact_details">Ver detalhes do contacto</string>
-  <string name="contact_actions_view_contact_details_description">Ver os detalhes do contato</string>
+  <string name="contact_actions_view_contact_details_description">Ver os detalhes do contacto</string>
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Autorização necessária</string>
-  <string name="device_contacts_permission_dialog_message">Proton Mail needs permission to read your contacts to suggest recipients.</string>
+  <string name="device_contacts_permission_dialog_message">O Proton Mail precisa de permissão para ler os seus contactos para sugerir destinatários.</string>
   <string name="device_contacts_permission_dialog_dismiss_button">Aceitar</string>
   <string name="device_contacts_permission_dialog_action_button">Solicitar a permissão</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Recusar</string>

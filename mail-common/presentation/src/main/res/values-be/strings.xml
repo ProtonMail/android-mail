@@ -19,7 +19,7 @@
 <resources>
   <string name="expiration_expired">Пратэрмінавана</string>
   <string name="expiration_days_arg">%d дз</string>
-  <string name="expiration_hours_arg">%dг</string>
+  <string name="expiration_hours_arg">%d гадз</string>
   <string name="expiration_minutes_arg">%d хв</string>
   <string name="expiration_auto_delete_hour">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз гадзіну</string>
   <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
