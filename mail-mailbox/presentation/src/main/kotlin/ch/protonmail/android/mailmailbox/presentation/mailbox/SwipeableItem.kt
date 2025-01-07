@@ -27,13 +27,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxDefaults
+import androidx.compose.material3.SwipeToDismissBoxState
 import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -41,9 +43,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Density
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import kotlinx.coroutines.flow.filter
 import me.proton.core.compose.theme.ProtonDimens
@@ -81,7 +85,8 @@ fun SwipeableItem(
         },
         positionalThreshold = { _ ->
             width * threshold
-        }
+        },
+        enableFling = false
     )
 
     val progressFlow = remember { snapshotFlow { dismissState.progress } }
@@ -152,6 +157,28 @@ fun SwipeableItem(
         }
     ) {
         content()
+    }
+}
+
+// Same as the one exposed by M3 with the addition of `enableFling`: this is needed as otherwise
+// the default `velocityThreshold` might make users trigger swipe actions by mistake.
+// See https://issuetracker.google.com/issues/252334353
+@Composable
+private fun rememberSwipeToDismissBoxState(
+    initialValue: SwipeToDismissBoxValue = SwipeToDismissBoxValue.Settled,
+    confirmValueChange: (SwipeToDismissBoxValue) -> Boolean = { true },
+    positionalThreshold: (totalDistance: Float) -> Float = SwipeToDismissBoxDefaults.positionalThreshold,
+    enableFling: Boolean = false
+): SwipeToDismissBoxState {
+    val density = if (enableFling) LocalDensity.current else Density(Float.POSITIVE_INFINITY)
+    return rememberSaveable(
+        saver = SwipeToDismissBoxState.Saver(
+            confirmValueChange = confirmValueChange,
+            density = density,
+            positionalThreshold = positionalThreshold
+        )
+    ) {
+        SwipeToDismissBoxState(initialValue, density, confirmValueChange, positionalThreshold)
     }
 }
 
