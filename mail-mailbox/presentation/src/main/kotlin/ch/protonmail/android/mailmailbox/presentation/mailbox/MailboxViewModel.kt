@@ -975,7 +975,7 @@ class MailboxViewModel @Inject constructor(
                 labelId = SystemLabelId.Trash.labelId
             )
         }
-        emitNewStateFrom(MailboxEvent.Trash(selectionModeDataState.selectedMailboxItems.size))
+        emitNewStateFrom(MailboxEvent.Trash(viewMode, selectionModeDataState.selectedMailboxItems.size))
     }
 
     private suspend fun handleDeleteAction() {

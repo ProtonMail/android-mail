@@ -588,7 +588,18 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
-                MailboxEvent.Trash(5),
+                MailboxEvent.Trash(ViewMode.ConversationGrouping, 5),
+                shouldReduceMailboxListState = true,
+                shouldReduceTopAppBarState = true,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = true,
+                shouldReduceActionMessage = true,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = false,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
+                MailboxEvent.Trash(ViewMode.NoConversationGrouping, 5),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,

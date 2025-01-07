@@ -8,6 +8,7 @@ import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import me.proton.core.mailsettings.domain.entity.ViewMode
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
@@ -32,9 +33,15 @@ internal class MailboxActionMessageReducerTest(
 
         private val transitions = listOf(
             TestInput(
-                operation = MailboxEvent.Trash(5),
+                operation = MailboxEvent.Trash(ViewMode.NoConversationGrouping, 5),
                 expectedState = Effect.of(
-                    ActionResult.UndoableActionResult(TextUiModel(R.plurals.mailbox_action_trash, 5))
+                    ActionResult.UndoableActionResult(TextUiModel(R.plurals.mailbox_action_trash_message, 5))
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.Trash(ViewMode.ConversationGrouping, 5),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(TextUiModel(R.plurals.mailbox_action_trash_conversation, 5))
                 )
             ),
             TestInput(

@@ -19,11 +19,11 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
+import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailmailbox.presentation.R
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
-import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
@@ -34,11 +34,16 @@ class MailboxActionMessageReducer @Inject constructor() {
 
     internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<ActionResult> {
         val actionResult = when (operation) {
-            is MailboxEvent.Trash ->
-                UndoableActionResult(
-                    TextUiModel(R.plurals.mailbox_action_trash, operation.numAffectedMessages)
-                )
+            is MailboxEvent.Trash -> {
+                val resource = when (operation.viewMode) {
+                    ViewMode.ConversationGrouping -> R.plurals.mailbox_action_trash_conversation
+                    ViewMode.NoConversationGrouping -> R.plurals.mailbox_action_trash_message
+                }
 
+                UndoableActionResult(
+                    TextUiModel(resource, operation.numAffectedMessages)
+                )
+            }
 
             is MailboxEvent.DeleteConfirmed -> {
                 val resource = when (operation.viewMode) {
@@ -51,9 +56,11 @@ class MailboxActionMessageReducer @Inject constructor() {
             is MailboxViewAction.SwipeArchiveAction -> UndoableActionResult(
                 TextUiModel(R.string.mailbox_action_archive_message)
             )
+
             is MailboxViewAction.SwipeSpamAction -> UndoableActionResult(
                 TextUiModel(R.string.mailbox_action_spam_message)
             )
+
             is MailboxViewAction.SwipeTrashAction -> UndoableActionResult(
                 TextUiModel(R.string.mailbox_action_trash_message)
             )

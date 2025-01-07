@@ -1265,7 +1265,37 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxEvent.Trash(5),
+                operation = MailboxEvent.Trash(ViewMode.ConversationGrouping, 5),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = false,
+                            isStarred = true
+                        )
+                    ),
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.Trash(ViewMode.NoConversationGrouping, 5),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),

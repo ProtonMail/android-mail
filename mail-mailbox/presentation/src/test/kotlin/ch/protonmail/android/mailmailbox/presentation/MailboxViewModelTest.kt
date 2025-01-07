@@ -2000,7 +2000,7 @@ class MailboxViewModelTest {
         expectedSelectedLabelCountStateChange(initialState)
         returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
         returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForTrash(intermediateState, initialState, 2)
+        returnExpectedStateForTrash(intermediateState, initialState, ConversationGrouping, 2)
         expectMoveConversationsSucceeds(userId, listOf(item, secondItem), SystemLabelId.Trash.labelId)
 
         mailboxViewModel.state.test {
@@ -2042,7 +2042,7 @@ class MailboxViewModelTest {
         expectedSelectedLabelCountStateChange(initialState)
         returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
         returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
-        returnExpectedStateForTrash(intermediateState, initialState, 2)
+        returnExpectedStateForTrash(intermediateState, initialState, NoConversationGrouping, 2)
         expectMoveMessagesSucceeds(userId, listOf(item, secondItem), SystemLabelId.Trash.labelId)
 
         mailboxViewModel.state.test {
@@ -4404,10 +4404,11 @@ class MailboxViewModelTest {
     private fun returnExpectedStateForTrash(
         intermediateState: MailboxState,
         expectedState: MailboxState,
+        viewMode: ViewMode,
         expectedItemCount: Int
     ) {
         every {
-            mailboxReducer.newStateFrom(intermediateState, MailboxEvent.Trash(expectedItemCount))
+            mailboxReducer.newStateFrom(intermediateState, MailboxEvent.Trash(viewMode, expectedItemCount))
         } returns expectedState
     }
 
