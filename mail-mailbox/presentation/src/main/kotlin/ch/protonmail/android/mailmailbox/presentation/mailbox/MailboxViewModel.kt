@@ -1139,7 +1139,7 @@ class MailboxViewModel @Inject constructor(
         if (userId == null) {
             flowOf(MailLabels.Initial)
         } else {
-            observeMailLabels(userId)
+            observeMailLabels(userId, true)
         }
     }
 

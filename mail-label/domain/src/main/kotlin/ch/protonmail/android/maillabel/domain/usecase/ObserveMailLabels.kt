@@ -36,16 +36,19 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.mailsettings.domain.entity.ShowMoved
+import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObserveMailLabels @Inject constructor(
     @DefaultDispatcher
     private val dispatcher: CoroutineDispatcher,
-    private val labelRepository: LabelRepository
+    private val labelRepository: LabelRepository,
+    private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke(userId: UserId) = combine(
-        observeSystemLabelIds().map { it.toMailLabelSystem() },
+    operator fun invoke(userId: UserId, useShowMovedSettings: Boolean = false) = combine(
+        observeSystemLabelIds(userId, useShowMovedSettings).map { it.toMailLabelSystem() },
         observeCustomLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
         observeCustomLabels(userId, MessageFolder).map { it.toMailLabelCustom() }
     ) { defaults, labels, folders ->
@@ -56,7 +59,20 @@ class ObserveMailLabels @Inject constructor(
         )
     }.flowOn(dispatcher)
 
-    private fun observeSystemLabelIds() = flowOf(SystemLabelId.displayedList)
+    private fun observeSystemLabelIds(userId: UserId, useShowMovedSettings: Boolean = false) =
+        if (useShowMovedSettings) {
+            mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
+                .mapLatest { mailSettings ->
+                    if (mailSettings?.showMoved?.enum == ShowMoved.Both) {
+                        SystemLabelId.showAllDisplayedList
+                    } else {
+                        SystemLabelId.displayedList
+                    }
+                }
+                .flowOn(dispatcher)
+        } else {
+            flowOf(SystemLabelId.displayedList)
+        }
 
     private fun observeCustomLabels(userId: UserId, type: LabelType) = labelRepository.observeLabels(userId, type)
         .mapSuccessValueOrNull()

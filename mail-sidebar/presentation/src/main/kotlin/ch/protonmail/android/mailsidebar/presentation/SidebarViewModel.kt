@@ -74,7 +74,7 @@ class SidebarViewModel @Inject constructor(
         combine(
             selectedMailLabelId.flow,
             observeFolderColors(user.userId),
-            observeMailLabels(user.userId),
+            observeMailLabels(user.userId, true),
             observeUnreadCounters(user.userId)
         ) { selectedMailLabelId, folderColors, mailLabels, counters ->
             State.Enabled(

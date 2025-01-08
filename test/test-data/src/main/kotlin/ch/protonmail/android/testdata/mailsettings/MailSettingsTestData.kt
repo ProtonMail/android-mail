@@ -39,6 +39,7 @@ object MailSettingsTestData {
 
     fun buildMailSettings(
         showImages: IntEnum<ShowImage>? = null,
+        showMoved: IntEnum<ShowMoved>? = null,
         swipeLeft: SwipeAction? = null,
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
@@ -53,7 +54,7 @@ object MailSettingsTestData {
         composerMode = IntEnum(1, ComposerMode.Maximized),
         messageButtons = IntEnum(1, MessageButtons.UnreadFirst),
         showImages = showImages,
-        showMoved = IntEnum(1, ShowMoved.Drafts),
+        showMoved = showMoved,
         viewMode = IntEnum(1, ViewMode.NoConversationGrouping),
         viewLayout = IntEnum(1, ViewLayout.Row),
         swipeLeft = swipeLeft?.let { IntEnum(it.value, it) },
