@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-    <string name="expiration_expired">Expired</string>
-    <string name="expiration_days_arg">%dd</string>
-    <string name="expiration_hours_arg">%dh</string>
-    <string name="expiration_minutes_arg">%dm</string>
-    <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
-    <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
-    <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
     <string name="retry">Retry</string>
     <string name="toolbar_back_content_description">Back to previous screen</string>
     <string name="x_error_not_logged_in">Not signed in</string>
@@ -89,6 +82,28 @@
     <string name="auto_delete_banner_button_activate_dismiss">No, thanks</string>
     <string name="auto_delete_banner_action_upgrade_learn_more">Learn more</string>
 
+    <!-- message expiration -->
+    <string name="expiration_expired">Expired</string>
+    <string name="expiration_days_arg">%dd</string>
+    <string name="expiration_hours_arg">%dh</string>
+    <string name="expiration_minutes_arg">%dm</string>
+    <string name="expiration_auto_delete_hour">This message will be automatically deleted in less than an hour</string>
+    <string name="expiration_auto_delete_day">This message will be automatically deleted in less than a day</string>
+    <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">This message will be automatically deleted in %s</string>
+
+    <plurals name="expiration_minutes_full_word">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="expiration_hours_full_word">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="expiration_days_full_word">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+
     <!-- notification channels -->
     <string name="attachment_download_notification_channel_name">Attachments</string>
     <string name="attachment_download_notification_channel_description">Notifications for attachment downloads</string>
@@ -96,7 +111,6 @@
     <string name="login_notification_channel_name">Login Alerts</string>
     <string name="email_notification_channel_description">Incoming email notifications</string>
     <string name="login_notification_channel_description">New logins notifications</string>
-
 
     <string name="auth_badge_official">Official</string>
 
