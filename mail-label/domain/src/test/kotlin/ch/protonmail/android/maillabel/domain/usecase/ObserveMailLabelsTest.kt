@@ -226,7 +226,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to false and we ignore the settings`() = runTest {
+    fun `return correct labels when show moved mail setting is set to false and the setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -254,7 +254,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to true and we ignore the settings`() = runTest {
+    fun `return correct labels when show moved mail setting is set to true and the setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -282,7 +282,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to false and we respect the settings`() = runTest {
+    fun `return correct labels when show moved mail setting is set to false and the setting is respected`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -310,7 +310,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to true and we respect the settings`() = runTest {
+    fun `return correct labels when show moved mail setting is set to true and the setting is respected`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
