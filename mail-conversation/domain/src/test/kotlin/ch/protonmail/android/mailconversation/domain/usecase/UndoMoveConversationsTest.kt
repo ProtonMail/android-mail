@@ -152,7 +152,7 @@ class UndoMoveConversationsTest {
     }
 
     private fun expectObserveMailLabelsSucceeds() {
-        every { observeMailLabels(userId) } returns flowOf(
+        every { observeMailLabels(userId, any()) } returns flowOf(
             MailLabels(
                 systemLabels = exclusiveMailLabels,
                 folders = emptyList(),

@@ -206,7 +206,7 @@ class MailboxViewModelTest {
     }
 
     private val observeMailLabels = mockk<ObserveMailLabels> {
-        every { this@mockk.invoke(any()) } returns MutableStateFlow(
+        every { this@mockk.invoke(any(), any()) } returns MutableStateFlow(
             MailLabels(
                 systemLabels = LabelTestData.systemLabels,
                 folders = emptyList(),
@@ -365,7 +365,9 @@ class MailboxViewModelTest {
     fun `emits initial mailbox state when initialized`() = runTest {
         // Given
         coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
-        coEvery { observeMailLabels(userId = any()) } returns emptyFlow()
+        coEvery {
+            observeMailLabels(userId = any(), useShowMovedSettings = any())
+        } returns emptyFlow()
 
         // When
         mailboxViewModel.state.test {
@@ -799,7 +801,7 @@ class MailboxViewModelTest {
             )
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialMailLabel.id)
-        every { observeMailLabels(userId) } returns mailLabelsFlow
+        every { observeMailLabels(userId, any()) } returns mailLabelsFlow
         every { selectedMailLabelId.flow } returns currentLocationFlow
 
         every {
@@ -857,7 +859,7 @@ class MailboxViewModelTest {
             )
         )
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialMailLabel.id)
-        every { observeMailLabels(userId) } returns mailLabelsFlow
+        every { observeMailLabels(userId, any()) } returns mailLabelsFlow
         every { selectedMailLabelId.flow } returns currentLocationFlow
         every {
             mailboxReducer.newStateFrom(

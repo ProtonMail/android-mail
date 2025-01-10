@@ -2006,7 +2006,7 @@ class ConversationDetailViewModelIntegrationTest {
             toLabel = MailLabelId.System.Trash.labelId
         )
 
-        coEvery { observeMailLabels(userId) } returns
+        coEvery { observeMailLabels(userId, any()) } returns
             flowOf(
                 MailLabels(
                     systemLabels = LabelTestData.systemLabels,
@@ -2063,7 +2063,7 @@ class ConversationDetailViewModelIntegrationTest {
             toLabel = MailLabelId.System.Archive.labelId
         )
 
-        coEvery { observeMailLabels(userId) } returns
+        coEvery { observeMailLabels(userId, any()) } returns
             flowOf(
                 MailLabels(
                     systemLabels = LabelTestData.systemLabels,
@@ -2120,7 +2120,7 @@ class ConversationDetailViewModelIntegrationTest {
             toLabel = MailLabelId.System.Spam.labelId
         )
 
-        coEvery { observeMailLabels(userId) } returns
+        coEvery { observeMailLabels(userId, any()) } returns
             flowOf(
                 MailLabels(
                     systemLabels = LabelTestData.systemLabels,
@@ -2173,7 +2173,7 @@ class ConversationDetailViewModelIntegrationTest {
             toLabel = MailLabelId.System.Spam.labelId
         )
 
-        coEvery { observeMailLabels(userId) } returns
+        coEvery { observeMailLabels(userId, any()) } returns
             flowOf(
                 MailLabels(
                     systemLabels = LabelTestData.systemLabels,

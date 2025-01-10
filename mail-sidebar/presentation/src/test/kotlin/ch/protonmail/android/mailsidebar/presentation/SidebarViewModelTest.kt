@@ -76,7 +76,7 @@ class SidebarViewModelTest {
 
     private val mailboxLabels = MutableStateFlow(MailLabels.Initial)
     private val observeMailboxLabels = mockk<ObserveMailLabels> {
-        every { this@mockk(any<UserId>()) } returns mailboxLabels
+        every { this@mockk(any<UserId>(), any()) } returns mailboxLabels
     }
 
     private val updateLabelExpandedState = mockk<UpdateLabelExpandedState>(relaxUnitFun = true)
