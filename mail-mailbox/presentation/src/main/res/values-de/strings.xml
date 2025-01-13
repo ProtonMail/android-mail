@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">Dieser Ordner ist leer</string>
   <string name="mailbox_is_empty_spam_description">Dein Spam-Ordner ist leer</string>
   <string name="mailbox_is_empty_trash_description">Papierkorb ist leer</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Unterhaltung in den Papierkorb verschoben</item>
+    <item quantity="other">%d Unterhaltungen in den Papierkorb verschoben</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Nachricht in den Papierkorb verschoben</item>
     <item quantity="other">%d Nachrichten in den Papierkorb verschoben</item>
   </plurals>

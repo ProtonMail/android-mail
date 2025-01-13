@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">Bu klasör boş</string>
   <string name="mailbox_is_empty_spam_description">İstenmeyen kutunuz boş</string>
   <string name="mailbox_is_empty_trash_description">Çöp kutusu boş</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Yazışma çöpe atıldı</item>
+    <item quantity="other">%d yazışma çöpe atıldı</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">İleti çöpe atıldı</item>
     <item quantity="other">%d ileti çöpe atıldı</item>
   </plurals>

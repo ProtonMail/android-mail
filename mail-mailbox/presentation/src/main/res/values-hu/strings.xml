@@ -43,9 +43,13 @@
   <string name="mailbox_is_empty_folder_description">Ez a mappa üres</string>
   <string name="mailbox_is_empty_spam_description">A kéretlen üzenetek mappája üres</string>
   <string name="mailbox_is_empty_trash_description">A lomtár üres</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Üzenet áthelyezve a Lomtárba</item>
-    <item quantity="other">%d üzenet áthelyezve a Lomtárba</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Conversation moved to Trash</item>
+    <item quantity="other">%d conversations moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Message moved to Trash</item>
+    <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Beszélgetés törlése</item>

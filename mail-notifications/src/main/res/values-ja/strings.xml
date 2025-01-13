@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">ごみ箱</string>
   <string name="notification_actions_reply_description">返信</string>
   <string name="notification_actions_mark_as_read_description">既読としてマーク</string>
+  <string name="notification_permission_dialog_title">メールをお見逃しなく</string>
+  <string name="notification_permission_dialog_message">通知は、アプリを確認せずに受信トレイを管理するのに役立ちます。</string>
+  <string name="notification_permission_dialog_button_enable">プッシュ通知の有効化</string>
+  <string name="notification_permission_dialog_button_dismiss">中止</string>
 </resources>

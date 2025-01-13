@@ -41,7 +41,10 @@
   <string name="mailbox_is_empty_folder_description">此資料夾目前是空的</string>
   <string name="mailbox_is_empty_spam_description">垃圾郵件資料夾是空的</string>
   <string name="mailbox_is_empty_trash_description">垃圾桶是空的</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="other">%d對話內容已移至垃圾桶</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="other">%d 則訊息已移至垃圾桶</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">

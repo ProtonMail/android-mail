@@ -43,9 +43,13 @@
   <string name="mailbox_is_empty_folder_description">Esta pasta está vazia.</string>
   <string name="mailbox_is_empty_spam_description">A sua pasta de spam está vazia</string>
   <string name="mailbox_is_empty_trash_description">O Lixo está vazio</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensagem movida para o Lixo</item>
-    <item quantity="other">%d mensagens movidas para o Lixo</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">A conversa foi movida para o lixo.</item>
+    <item quantity="other">%d conversas foram movidas para o lixo.</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">A mensagem foi movida para o lixo.</item>
+    <item quantity="other">%d mensagens foram movidas para o lixo</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar conversa</item>

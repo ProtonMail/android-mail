@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Смітник</string>
   <string name="notification_actions_reply_description">Відповісти</string>
   <string name="notification_actions_mark_as_read_description">Позначити прочитаним</string>
+  <string name="notification_permission_dialog_title">Не проґавте лист</string>
+  <string name="notification_permission_dialog_message">Сповіщення допомагають вам стежити за своєю скринькою, не відкриваючи застосунок.</string>
+  <string name="notification_permission_dialog_button_enable">Увімкнути push-сповіщення</string>
+  <string name="notification_permission_dialog_button_dismiss">Відхилити</string>
 </resources>

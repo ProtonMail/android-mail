@@ -43,9 +43,13 @@
   <string name="mailbox_is_empty_folder_description">Denna mapp är tom</string>
   <string name="mailbox_is_empty_spam_description">Din skräppostmapp är tom</string>
   <string name="mailbox_is_empty_trash_description">Papperskorg är tom</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Meddelande flyttat till papperskorg</item>
-    <item quantity="other">%d meddelanden flyttades till papperskorg</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Konversation flyttad till Papperskorg</item>
+    <item quantity="other">%d konversationer flyttade till Papperskorg</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Meddelanden flyttade till Papperskorg</item>
+    <item quantity="other">%d meddelanden flyttade till Papperskorg</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Ta bort konversation</item>

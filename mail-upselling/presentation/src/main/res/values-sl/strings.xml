@@ -121,9 +121,9 @@
   <string name="upselling_onboarding_continue_with_proton_free">Nadaljujte s Proton Free</string>
   <string name="upselling_onboarding_save_label">Prihranite %s %%</string>
   <!-- Post subscription -->
-  <string name="post_subscription_close_button_content_description">Close</string>
+  <string name="post_subscription_close_button_content_description">Zapri</string>
   <string name="post_subscription_continue_button">Continue</string>
-  <string name="post_subscription_got_it_button">Got it</string>
+  <string name="post_subscription_got_it_button">Razumem</string>
   <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
   <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>

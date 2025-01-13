@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">საქაღალდე ცარიელია</string>
   <string name="mailbox_is_empty_spam_description">თქვენი სპამის საქაღალდე ცარიელია</string>
   <string name="mailbox_is_empty_trash_description">ნაგვის ყუთი ცარიელია</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">საუბარი გადატანილია ნაგვის ყუთში</item>
+    <item quantity="other">%d საუბარი გადატანილია ნაგვის ყუთში</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">შეტყობინება გადატანილია ნაგვის ყუთში</item>
     <item quantity="other">%d შეტყობინება გადატანილია ნაგვის ყუთში</item>
   </plurals>

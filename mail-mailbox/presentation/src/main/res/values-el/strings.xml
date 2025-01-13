@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">Αυτός ο φάκελος είναι κενός</string>
   <string name="mailbox_is_empty_spam_description">Ο φάκελος Ενοχλητικών είναι κενός</string>
   <string name="mailbox_is_empty_trash_description">Τα Διαγραμμένα είναι άδεια</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</item>
+    <item quantity="other">%d συνομιλίες μετακινήθηκαν στα Διαγραμμένα</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Το μήνυμα μετακινήθηκε στα Διαγραμμένα</item>
     <item quantity="other">%d μηνύματα μετακινήθηκαν στα Διαγραμμένα</item>
   </plurals>

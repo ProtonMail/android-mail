@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">已過期</string>
-  <string name="expiration_days_arg">%d 天</string>
-  <string name="expiration_hours_arg">%d 時</string>
-  <string name="expiration_minutes_arg">%d 分</string>
-  <string name="expiration_auto_delete_hour">此郵件將於一小時內自動刪除</string>
-  <string name="expiration_auto_delete_day">此郵件將於一天內自動刪除</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">此郵件將會自動於%s刪除</string>
   <string name="retry">重試</string>
   <string name="toolbar_back_content_description">回到前一個畫面</string>
   <string name="x_error_not_logged_in">尚未登入</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">標示為未讀取</string>
   <string name="action_star_description">標注星號</string>
   <string name="action_unstar_description">取消星號</string>
-  <string name="action_label_description">套用標籤</string>
-  <string name="action_move_description">移至</string>
+  <string name="action_label_description">加上標籤…</string>
+  <string name="action_move_description">移至…</string>
   <string name="action_trash_description">移至垃圾桶</string>
   <string name="action_delete_description">刪除</string>
   <string name="action_archive_description">封存</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">標記為未讀</string>
   <string name="action_star_content_description">加上星號</string>
   <string name="action_unstar_content_description">移除星號</string>
-  <string name="action_label_content_description">標記為</string>
-  <string name="action_move_content_description">移至</string>
+  <string name="action_label_content_description">標註…</string>
+  <string name="action_move_content_description">移至…</string>
   <string name="action_trash_content_description">丟到垃圾桶</string>
   <string name="action_delete_content_description">刪除</string>
   <string name="action_archive_content_description">封存</string>
@@ -87,6 +80,23 @@
   <string name="auto_delete_banner_button_activate_confirm">啟用</string>
   <string name="auto_delete_banner_button_activate_dismiss">不用了，謝謝</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">了解更多</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">已過期</string>
+  <string name="expiration_days_arg">%d 天</string>
+  <string name="expiration_hours_arg">%d 時</string>
+  <string name="expiration_minutes_arg">%d 分</string>
+  <string name="expiration_auto_delete_hour">此郵件將於一小時內自動刪除</string>
+  <string name="expiration_auto_delete_day">此郵件將於一天內自動刪除</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">此郵件將會自動於%s刪除</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="other">%d 分鐘</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="other">%d 小時</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="other">%d 天</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">附件</string>
   <string name="attachment_download_notification_channel_description">附件下載通知</string>

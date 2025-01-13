@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Lejárt</string>
-  <string name="expiration_days_arg">%d nap</string>
-  <string name="expiration_hours_arg">%d óra</string>
-  <string name="expiration_minutes_arg">%d perc</string>
-  <string name="expiration_auto_delete_hour">Ez az üzenet kevesebb mint egy órán belül automatikusan törlődik.</string>
-  <string name="expiration_auto_delete_day">Ez az üzenet kevesebb mint egy napon belül automatikusan törlődik.</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Ez az üzenet automatikusan törlésre kerül, ekkor: %s</string>
   <string name="retry">Újra</string>
   <string name="toolbar_back_content_description">Vissza az előző képernyőre</string>
   <string name="x_error_not_logged_in">Nincs bejelentkezve</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Megjelölés olvasatlanként</string>
   <string name="action_star_description">Csillagozás</string>
   <string name="action_unstar_description">Csillagozás törlése</string>
-  <string name="action_label_description">Címkézés</string>
-  <string name="action_move_description">Áthelyezés ide</string>
+  <string name="action_label_description">Címkézés, mint…</string>
+  <string name="action_move_description">Áthelyezés ide…</string>
   <string name="action_trash_description">Áthelyezés a lomtárba</string>
   <string name="action_delete_description">Törlés</string>
   <string name="action_archive_description">Archívum</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Megjelölés olvasatlanként</string>
   <string name="action_star_content_description">Csillagozás</string>
   <string name="action_unstar_content_description">Csillagozás törlése</string>
-  <string name="action_label_content_description">Címkézés, mint</string>
-  <string name="action_move_content_description">Mozgatás ide</string>
+  <string name="action_label_content_description">Címkézés, mint…</string>
+  <string name="action_move_content_description">Áthelyezés ide…</string>
   <string name="action_trash_content_description">Lomtár</string>
   <string name="action_delete_content_description">Törlés</string>
   <string name="action_archive_content_description">Archiválás</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Engedélyezés</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nem, köszi</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">További információk</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Lejárt</string>
+  <string name="expiration_days_arg">%d nap</string>
+  <string name="expiration_hours_arg">%d óra</string>
+  <string name="expiration_minutes_arg">%d perc</string>
+  <string name="expiration_auto_delete_hour">Ez az üzenet kevesebb mint egy órán belül automatikusan törlődik.</string>
+  <string name="expiration_auto_delete_day">Ez az üzenet kevesebb mint egy napon belül automatikusan törlődik.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Ez az üzenet automatikusan törlésre kerül, ekkor: %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d perc</item>
+    <item quantity="other">%d perc</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d óra</item>
+    <item quantity="other">%d óra</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d nap</item>
+    <item quantity="other">%d nap</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Mellékletek</string>
   <string name="attachment_download_notification_channel_description">Értesítések a melléklet letöltésekhez</string>

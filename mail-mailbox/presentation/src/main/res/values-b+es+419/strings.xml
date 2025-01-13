@@ -43,9 +43,13 @@
   <string name="mailbox_is_empty_folder_description">Esta carpeta está vacía.</string>
   <string name="mailbox_is_empty_spam_description">La carpeta de spam está vacía.</string>
   <string name="mailbox_is_empty_trash_description">La papelera está vacía.</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Mensaje movido a la papelera</item>
-    <item quantity="other">%d mensajes movidos a la papelera</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Se movió la conversación a la papelera.</item>
+    <item quantity="other">Se movieron %d conversaciones a la papelera.</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Se movió el mensaje a la papelera.</item>
+    <item quantity="other">Se movieron %d mensajes a la papelera.</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Eliminar la conversación</item>

@@ -65,7 +65,7 @@
   <string name="mail_settings_auto_delete">Auto-delete</string>
   <string name="mail_settings_auto_delete_full_text">Samodejno izbriši neželena sporočila</string>
   <string name="mail_settings_auto_delete_hint">Sporočila, ki so v smetnjaku ali v neželeni pošti več kot 30 dni, se samodejno izbrišejo.</string>
-  <string name="mail_settings_auto_delete_subscription_needed">Za uporabo te možnosti potrebujete plačljivo naročnino na Proton Mail</string>
+  <string name="mail_settings_auto_delete_subscription_needed">Za uporabo te možnosti potrebujete plačljivo naročnino na Proton Mail.</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Prekliči</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Želite izbrisati sporočila?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">S tem boste izbrisali vsa sporočila, ki so več kot 30 dni v smetnjaku ali neželeni pošti, vključno s sporočili, ki so trenutno v teh mapah.</string>
@@ -81,7 +81,7 @@
   <string name="mail_settings_default_email_address_no_inactive_addresses">Ni nedejavnih naslovov</string>
   <string name="mail_settings_default_email_address_error_loading">Napaka pri nalaganju nastavitev</string>
   <string name="mail_settings_default_email_address_error_update">Napaka pri shranjevanju novih nastavitev</string>
-  <string name="mail_settings_default_email_address_error_update_subscription">Za nastavitev tega naslova kot privzetega potrebujete plačljivo naročnino na Proton Mail</string>
+  <string name="mail_settings_default_email_address_error_update_subscription">Za nastavitev tega naslova kot privzetega potrebujete plačljivo naročnino na Proton Mail.</string>
   <!-- Display name, signature, mobile footer -->
   <string name="mail_settings_identity_title">Prikazano ime &amp; podpis</string>
   <string name="mail_settings_identity_save_button">Shrani</string>

@@ -45,7 +45,12 @@
   <string name="mailbox_is_empty_folder_description">Acest folder este gol</string>
   <string name="mailbox_is_empty_spam_description">Folderul de mesaje nedorite este gol</string>
   <string name="mailbox_is_empty_trash_description">Folderul gunoi este gol</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Conversația a fost mutată în Gunoi.</item>
+    <item quantity="few">S-au mutat %d conversații în «Gunoi».</item>
+    <item quantity="other">S-au mutat %d de conversații în «Gunoi».</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Mesajul a fost mutat în «Gunoi».</item>
     <item quantity="few">S-au mutat %d mesaje în «Gunoi».</item>
     <item quantity="other">S-au mutat %d de mesaje în «Gunoi».</item>

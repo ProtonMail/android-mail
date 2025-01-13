@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">ვადაგასულია</string>
-  <string name="expiration_days_arg">%d დღე</string>
-  <string name="expiration_hours_arg">%dსთ</string>
-  <string name="expiration_minutes_arg">%d წთ</string>
-  <string name="expiration_auto_delete_hour">ეს შეტყობინება ავტომატურად წიაშლება საათზე ნაკლებ დროში</string>
-  <string name="expiration_auto_delete_day">ეს შეტყობინება ავტომატურად წიაშლება დღეზე ნაკლებ დროში</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">ამ შეტყობინების ავტომატური წაიშლება %s-ში</string>
   <string name="retry">თავიდან</string>
   <string name="toolbar_back_content_description">წინა ეკრანზე გადასვლა</string>
   <string name="x_error_not_logged_in">შესული არ ბრძანდებით</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">წაუკითხავად მონიშვნა</string>
   <string name="action_star_description">ვარსკვლავი</string>
   <string name="action_unstar_description">ვარსკვლავის მოხსნა</string>
-  <string name="action_label_description">ჭდის დადება</string>
-  <string name="action_move_description">გადატანა</string>
+  <string name="action_label_description">ჭდის დადება…</string>
+  <string name="action_move_description">გადატანა…</string>
   <string name="action_trash_description">ნაგვის ყუთში გადატანა</string>
   <string name="action_delete_description">წაშლა</string>
   <string name="action_archive_description">დაარქივება</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">წაუკითხავად მონიშვნა</string>
   <string name="action_star_content_description">ვარსკვლავი</string>
   <string name="action_unstar_content_description">ვარსკვლავის მოხსნა</string>
-  <string name="action_label_content_description">ჭდის დადება</string>
-  <string name="action_move_content_description">გადატანა</string>
+  <string name="action_label_content_description">ჭდის დადება…</string>
+  <string name="action_move_content_description">გადატანა…</string>
   <string name="action_trash_content_description">სანაგვე ყუთი</string>
   <string name="action_delete_content_description">წაშლა</string>
   <string name="action_archive_content_description">არქივი</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">ჩართვა</string>
   <string name="auto_delete_banner_button_activate_dismiss">არა, გმადლობთ</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">გაიგეთ მეტი</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">ვადაგასულია</string>
+  <string name="expiration_days_arg">%d დღე</string>
+  <string name="expiration_hours_arg">%dსთ</string>
+  <string name="expiration_minutes_arg">%d წთ</string>
+  <string name="expiration_auto_delete_hour">ეს შეტყობინება ავტომატურად წიაშლება საათზე ნაკლებ დროში</string>
+  <string name="expiration_auto_delete_day">ეს შეტყობინება ავტომატურად წიაშლება დღეზე ნაკლებ დროში</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">ამ შეტყობინების ავტომატური წაიშლება %s-ში</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d წუთი</item>
+    <item quantity="other">%d წუთი</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d სთ</item>
+    <item quantity="other">%d სთ</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d დღე</item>
+    <item quantity="other">%d დღე</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">მიმაგრებები</string>
   <string name="attachment_download_notification_channel_description">მიმაგრებული ფაილების გადმოწერის გაფრთხილება</string>

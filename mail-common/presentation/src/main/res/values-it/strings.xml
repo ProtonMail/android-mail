@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Scaduto</string>
-  <string name="expiration_days_arg">%d g</string>
-  <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Questo messaggio verrà eliminato automaticamente entro un\'ora</string>
-  <string name="expiration_auto_delete_day">Questo messaggio verrà eliminato automaticamente entro un giorno</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Questo messaggio verrà eliminato automaticamente tra %s</string>
   <string name="retry">Riprova</string>
   <string name="toolbar_back_content_description">Torna alla schermata precedente</string>
   <string name="x_error_not_logged_in">Accesso non effettuato</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Segna come non letto</string>
   <string name="action_star_description">Segna come importante</string>
   <string name="action_unstar_description">Segna come non importante</string>
-  <string name="action_label_description">Etichetta come...</string>
-  <string name="action_move_description">Sposta in...</string>
+  <string name="action_label_description">Etichetta come…</string>
+  <string name="action_move_description">Sposta in…</string>
   <string name="action_trash_description">Sposta nel cestino</string>
   <string name="action_delete_description">Elimina</string>
   <string name="action_archive_description">Sposta nell\'archivio</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Segna come non letto</string>
   <string name="action_star_content_description">Segna come importante</string>
   <string name="action_unstar_content_description">Segna come non importante</string>
-  <string name="action_label_content_description">Etichetta come...</string>
-  <string name="action_move_content_description">Sposta in...</string>
+  <string name="action_label_content_description">Etichetta come…</string>
+  <string name="action_move_content_description">Sposta in…</string>
   <string name="action_trash_content_description">Sposta nel cestino</string>
   <string name="action_delete_content_description">Elimina</string>
   <string name="action_archive_content_description">Sposta nell\'archivio</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Abilita</string>
   <string name="auto_delete_banner_button_activate_dismiss">Annulla</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Scopri di più</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Scaduto</string>
+  <string name="expiration_days_arg">%d g</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Questo messaggio verrà eliminato automaticamente entro un\'ora</string>
+  <string name="expiration_auto_delete_day">Questo messaggio verrà eliminato automaticamente entro un giorno</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Questo messaggio verrà eliminato automaticamente tra %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minuto</item>
+    <item quantity="other">%d minuti</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d ora</item>
+    <item quantity="other">%d ore</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d giorno</item>
+    <item quantity="other">%d giorni</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Allegati</string>
   <string name="attachment_download_notification_channel_description">Stato dello scaricamento degli allegati</string>

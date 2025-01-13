@@ -41,8 +41,11 @@
   <string name="mailbox_is_empty_folder_description">此文件夹为空</string>
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
   <string name="mailbox_is_empty_trash_description">回收站为空</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">%d 封邮件已移至回收站</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="other">%d conversations moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">删除 %d 项会话</item>

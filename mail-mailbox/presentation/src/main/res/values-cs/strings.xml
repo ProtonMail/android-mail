@@ -47,7 +47,13 @@
   <string name="mailbox_is_empty_folder_description">Tato složka je prázdná</string>
   <string name="mailbox_is_empty_spam_description">Vaše složka spamu je prázdná</string>
   <string name="mailbox_is_empty_trash_description">Koš je prázdný</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Konverzace přesunuta do koše</item>
+    <item quantity="few">%d konverzace přesunuty do koše</item>
+    <item quantity="many">%d konverzací přesunuto do koše</item>
+    <item quantity="other">%d konverzací přesunuto do koše</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Zpráva přesunuta do koše</item>
     <item quantity="few">%d zprávy přesunuty do koše</item>
     <item quantity="many">%d zpráv přesunuto do koše</item>

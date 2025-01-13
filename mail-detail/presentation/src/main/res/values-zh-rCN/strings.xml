@@ -86,6 +86,7 @@
   <string name="message_delete_dialog_message">确定要永久删除此邮件吗？</string>
   <string name="message_deleted">邮件已删除</string>
   <string name="message_moved">消息已移动</string>
+  <string name="message_moved_to">Message moved to %s</string>
   <string name="error_delete_message_failed">删除邮件失败</string>
   <string name="error_delete_message_failed_wrong_folder">消息位于不可以删除的位置。</string>
   <string name="error_delete_conversation_failed">删除对话失败</string>

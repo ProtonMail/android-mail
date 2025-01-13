@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Expirată</string>
-  <string name="expiration_days_arg">%d z</string>
-  <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Acest mesaj va fi șters automat peste o oră.</string>
-  <string name="expiration_auto_delete_day">Acest mesaj va fi șters automat în mai puțin de o zi.</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Acest mesaj va fi șters automat la peste %s.</string>
   <string name="retry">Reîncercare</string>
   <string name="toolbar_back_content_description">Înapoi la ecranul anterior</string>
   <string name="x_error_not_logged_in">Neconectat</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Marcare ca necitit</string>
   <string name="action_star_description">Cu stea</string>
   <string name="action_unstar_description">Fără stea</string>
-  <string name="action_label_description">Etichetare ca</string>
-  <string name="action_move_description">Mutare în</string>
+  <string name="action_label_description">Etichetare ca…</string>
+  <string name="action_move_description">Mutare în…</string>
   <string name="action_trash_description">Mutare în gunoi</string>
   <string name="action_delete_description">Ștergere</string>
   <string name="action_archive_description">Arhivare</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Marcare ca necitit</string>
   <string name="action_star_content_description">Stea</string>
   <string name="action_unstar_content_description">Fără stea</string>
-  <string name="action_label_content_description">Etichetare ca</string>
-  <string name="action_move_content_description">Mutare în</string>
+  <string name="action_label_content_description">Etichetare ca…</string>
+  <string name="action_move_content_description">Mutare în…</string>
   <string name="action_trash_content_description">Gunoi</string>
   <string name="action_delete_content_description">Ștergere</string>
   <string name="action_archive_content_description">Arhivare</string>
@@ -87,6 +80,29 @@
   <string name="auto_delete_banner_button_activate_confirm">Activare</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nu, mulțumesc</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Detalii</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Expirată</string>
+  <string name="expiration_days_arg">%d z</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Acest mesaj va fi șters automat peste o oră.</string>
+  <string name="expiration_auto_delete_day">Acest mesaj va fi șters automat în mai puțin de o zi.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Acest mesaj va fi șters automat la peste %s.</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minut</item>
+    <item quantity="few">%d minute</item>
+    <item quantity="other">%d de minute</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d oră</item>
+    <item quantity="few">%d ore</item>
+    <item quantity="other">%d de ore</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d zi</item>
+    <item quantity="few">%d zile</item>
+    <item quantity="other">%d de zile</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Fișiere atașate</string>
   <string name="attachment_download_notification_channel_description">Notificări pentru descărcări atașamente</string>

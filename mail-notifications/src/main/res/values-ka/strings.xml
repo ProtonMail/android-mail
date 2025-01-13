@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">ნაგვის ყუთი</string>
   <string name="notification_actions_reply_description">პასუხი</string>
   <string name="notification_actions_mark_as_read_description">წაკითხულად მონიშვნა</string>
+  <string name="notification_permission_dialog_title">არ გამოტოვოთ ელფოსტა</string>
+  <string name="notification_permission_dialog_message">გაფრთხილებები დაგეხმარებათ, ყოველთვის იცოდეთ რა ხდება თქვენს საფოსტო ყუთში აპლიკაციის შემოწმების გარეშე.</string>
+  <string name="notification_permission_dialog_button_enable">ეკრანზე შეტყობინებების გააქტიურება</string>
+  <string name="notification_permission_dialog_button_dismiss">მოცილება</string>
 </resources>

@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Expirovala</string>
-  <string name="expiration_days_arg">%dd</string>
-  <string name="expiration_hours_arg">%dh</string>
-  <string name="expiration_minutes_arg">%dm</string>
-  <string name="expiration_auto_delete_hour">Tato zpráva bude automaticky smazána za méně než hodinu</string>
-  <string name="expiration_auto_delete_day">Tato zpráva bude automaticky smazána za méně než den</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tato zpráva bude automaticky smazána za %s</string>
   <string name="retry">Obnovit</string>
   <string name="toolbar_back_content_description">Zpět na předchozí obrazovku</string>
   <string name="x_error_not_logged_in">Nejste přihlášeni</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Označit jako nepřečtené</string>
   <string name="action_star_description">Označit hvězdičkou</string>
   <string name="action_unstar_description">Odebrat hvězdičku</string>
-  <string name="action_label_description">Přidat štítek</string>
-  <string name="action_move_description">Přesunout do</string>
+  <string name="action_label_description">Označit jako…</string>
+  <string name="action_move_description">Přesunout do…</string>
   <string name="action_trash_description">Přesunout do koše</string>
   <string name="action_delete_description">Smazat</string>
   <string name="action_archive_description">Archivovat</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Označit jako nepřečtené</string>
   <string name="action_star_content_description">Označit hvězdičkou</string>
   <string name="action_unstar_content_description">Odebrat hvězdičku</string>
-  <string name="action_label_content_description">Označit jako</string>
-  <string name="action_move_content_description">Přesunout do</string>
+  <string name="action_label_content_description">Označit jako…</string>
+  <string name="action_move_content_description">Přesunout do…</string>
   <string name="action_trash_content_description">Koš</string>
   <string name="action_delete_content_description">Odstranit</string>
   <string name="action_archive_content_description">Archivovat</string>
@@ -87,6 +80,32 @@
   <string name="auto_delete_banner_button_activate_confirm">Povolit</string>
   <string name="auto_delete_banner_button_activate_dismiss">Ne, děkuji</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Zjistit více</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Expirovala</string>
+  <string name="expiration_days_arg">%dd</string>
+  <string name="expiration_hours_arg">%dh</string>
+  <string name="expiration_minutes_arg">%dm</string>
+  <string name="expiration_auto_delete_hour">Tato zpráva bude automaticky smazána za méně než hodinu</string>
+  <string name="expiration_auto_delete_day">Tato zpráva bude automaticky smazána za méně než den</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Tato zpráva bude automaticky smazána za %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minuta</item>
+    <item quantity="few">%d minuty</item>
+    <item quantity="many">%d minut</item>
+    <item quantity="other">%d minut</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d hodina</item>
+    <item quantity="few">%d hodiny</item>
+    <item quantity="many">%d hodin</item>
+    <item quantity="other">%d hodin</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d den</item>
+    <item quantity="few">%d dny</item>
+    <item quantity="many">%d dnů</item>
+    <item quantity="other">%d dnů</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Přílohy</string>
   <string name="attachment_download_notification_channel_description">Upozornění na stahování příloh</string>

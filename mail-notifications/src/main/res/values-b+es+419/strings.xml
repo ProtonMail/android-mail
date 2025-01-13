@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Papelera</string>
   <string name="notification_actions_reply_description">Responder</string>
   <string name="notification_actions_mark_as_read_description">Marcar como leído</string>
+  <string name="notification_permission_dialog_title">No se pierda ningún correo electrónico</string>
+  <string name="notification_permission_dialog_message">Las notificaciones le ayudan a estar al tanto de su bandeja de entrada sin tener que consultar la aplicación.</string>
+  <string name="notification_permission_dialog_button_enable">Activar las notificaciones</string>
+  <string name="notification_permission_dialog_button_dismiss">Descartar</string>
 </resources>

@@ -43,8 +43,12 @@
   <string name="mailbox_is_empty_folder_description">Akaram-agi d ilem</string>
   <string name="mailbox_is_empty_spam_description">Akaram i yispamen d ilem</string>
   <string name="mailbox_is_empty_trash_description">Taqecwalt d tilemt</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Izen ittwasenkez ɣer iḍumman</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Conversation moved to Trash</item>
+    <item quantity="other">%d conversations moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Message moved to Trash</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">

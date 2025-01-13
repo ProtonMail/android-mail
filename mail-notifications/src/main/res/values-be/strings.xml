@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Перамясціць у сметніцу</string>
   <string name="notification_actions_reply_description">Адказаць</string>
   <string name="notification_actions_mark_as_read_description">Пазначыць прачытаным</string>
+  <string name="notification_permission_dialog_title">Не прапусціце ліст</string>
+  <string name="notification_permission_dialog_message">Апавяшчэнні дапамагаюць быць у курсе, што адбываецца ў паштовай скрыні без праверкі праграмы.</string>
+  <string name="notification_permission_dialog_button_enable">Уключыць push-апавяшчэнні</string>
+  <string name="notification_permission_dialog_button_dismiss">Закрыць</string>
 </resources>

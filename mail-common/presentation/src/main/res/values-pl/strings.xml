@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Wygasła</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d godz.</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Wiadomość zostanie automatycznie usunięta za mniej niż godzinę</string>
-  <string name="expiration_auto_delete_day">Wiadomość zostanie automatycznie usunięta za mniej niż 24 godziny</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Wiadomość zostanie automatycznie usunięta za %s</string>
   <string name="retry">Spróbuj ponownie</string>
   <string name="toolbar_back_content_description">Powrót do poprzedniego ekranu</string>
   <string name="x_error_not_logged_in">Niezalogowano</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Oznacz jako nieprzeczytane</string>
   <string name="action_star_description">Oznacz gwiazdką</string>
   <string name="action_unstar_description">Usuń gwiazdkę</string>
-  <string name="action_label_description">Oznacz jako</string>
-  <string name="action_move_description">Przenieś do</string>
+  <string name="action_label_description">Oznacz jako…</string>
+  <string name="action_move_description">Przenieś do…</string>
   <string name="action_trash_description">Przenieś do Kosza</string>
   <string name="action_delete_description">Usuń</string>
   <string name="action_archive_description">Archiwizuj</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Oznacz jako nieprzeczytane</string>
   <string name="action_star_content_description">Oznacz gwiazdką</string>
   <string name="action_unstar_content_description">Usuń gwiazdkę</string>
-  <string name="action_label_content_description">Oznacz jako</string>
-  <string name="action_move_content_description">Przenieś do</string>
+  <string name="action_label_content_description">Oznacz jako…</string>
+  <string name="action_move_content_description">Przenieś do…</string>
   <string name="action_trash_content_description">Przenieś do Kosza</string>
   <string name="action_delete_content_description">Usuń</string>
   <string name="action_archive_content_description">Archiwizuj</string>
@@ -87,6 +80,32 @@
   <string name="auto_delete_banner_button_activate_confirm">Włącz</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nie, dziękuję</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Dowiedz się więcej</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Wygasła</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d godz.</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Wiadomość zostanie automatycznie usunięta za mniej niż godzinę</string>
+  <string name="expiration_auto_delete_day">Wiadomość zostanie automatycznie usunięta za mniej niż 24 godziny</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Wiadomość zostanie automatycznie usunięta za %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minutę</item>
+    <item quantity="few">%d minuty</item>
+    <item quantity="many">%d minut</item>
+    <item quantity="other">%d minut</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d godzinę</item>
+    <item quantity="few">%d godzin</item>
+    <item quantity="many">%d godziny</item>
+    <item quantity="other">%d godziny</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d dzień</item>
+    <item quantity="few">%d dnia</item>
+    <item quantity="many">%d dnia</item>
+    <item quantity="other">%d dnia</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Załączniki</string>
   <string name="attachment_download_notification_channel_description">Powiadomienia o pobieraniu załączników</string>

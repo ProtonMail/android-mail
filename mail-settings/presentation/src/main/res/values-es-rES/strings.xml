@@ -62,13 +62,13 @@
   <string name="mail_settings_labels">Etiquetas</string>
   <string name="mail_settings_folders">Carpetas</string>
   <string name="mail_settings_conversation_mode">Modo de conversación</string>
-  <string name="mail_settings_auto_delete">Eliminación automática</string>
+  <string name="mail_settings_auto_delete">Eliminar automáticamente</string>
   <string name="mail_settings_auto_delete_full_text">Eliminar automáticamente los mensajes no deseados</string>
   <string name="mail_settings_auto_delete_hint">Los mensajes en las carpetas Papelera o Spam de más de 30 días se eliminarán automáticamente.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Necesitas una suscripción de pago a Proton Mail para usar esta función.</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">Cancelar</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">¿Eliminar los mensajes?</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">Esto eliminará todos los mensajes que están en la papelera o spam de más de 30 días, incluyendo mensajes actualmente en esas carpetas.</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">Esto eliminará todos los mensajes que estén en la papelera o spam durante más de 30 días, incluyendo los mensajes que actualmente se encuentren en esas carpetas.</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Activar</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">¿Desactivar la eliminación automática?</string>
   <string name="mail_settings_auto_delete_dialog_disabling_text">Los correos programados para eliminarse permanecerán en las carpetas de papelera y spam.</string>

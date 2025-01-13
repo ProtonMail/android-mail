@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Corbeille</string>
   <string name="notification_actions_reply_description">Répondre</string>
   <string name="notification_actions_mark_as_read_description">Marquer comme lu</string>
+  <string name="notification_permission_dialog_title">Ne manquez aucun e-mail</string>
+  <string name="notification_permission_dialog_message">Les notifications vous aident à garder le contrôle de votre boîte de réception sans consulter l\'application.</string>
+  <string name="notification_permission_dialog_button_enable">Autoriser les notifications push</string>
+  <string name="notification_permission_dialog_button_dismiss">Fermer</string>
 </resources>

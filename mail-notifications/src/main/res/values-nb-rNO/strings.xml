@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Papirkurv</string>
   <string name="notification_actions_reply_description">Svar</string>
   <string name="notification_actions_mark_as_read_description">Merk som lest</string>
+  <string name="notification_permission_dialog_title">Ikke gå glipp av en e-post</string>
+  <string name="notification_permission_dialog_message">Varsler hjelper deg med å holde oversikt over innboksen din uten å sjekke appen.</string>
+  <string name="notification_permission_dialog_button_enable">Aktiver push-varslinger</string>
+  <string name="notification_permission_dialog_button_dismiss">Avvis</string>
 </resources>

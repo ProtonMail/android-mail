@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Utløpt</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d t</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Denne meldingen slettes automatisk om mindre enn en time</string>
-  <string name="expiration_auto_delete_day">Denne meldingen slettes automatisk om mindre enn en dag</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Denne meldingen slettes automatisk om %s</string>
   <string name="retry">Prøv på nytt</string>
   <string name="toolbar_back_content_description">Tilbake til forrige skjerm</string>
   <string name="x_error_not_logged_in">Ikke pålogget</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Merk som ulest</string>
   <string name="action_star_description">Stjernemerk</string>
   <string name="action_unstar_description">Fjern stjernemerking</string>
-  <string name="action_label_description">Merk som</string>
-  <string name="action_move_description">Flytt til</string>
+  <string name="action_label_description">Merk som...</string>
+  <string name="action_move_description">Flytt til…</string>
   <string name="action_trash_description">Flytt til papirkurven</string>
   <string name="action_delete_description">Slett</string>
   <string name="action_archive_description">Arkiver</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Merk som ulest</string>
   <string name="action_star_content_description">Stjernemerk</string>
   <string name="action_unstar_content_description">Fjern stjernemerking</string>
-  <string name="action_label_content_description">Merk som</string>
-  <string name="action_move_content_description">Flytt til</string>
+  <string name="action_label_content_description">Merk som...</string>
+  <string name="action_move_content_description">Flytt til…</string>
   <string name="action_trash_content_description">Papirkurv</string>
   <string name="action_delete_content_description">Slett</string>
   <string name="action_archive_content_description">Arkiver</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Aktiver</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nei takk</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Lær mer</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Utløpt</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Denne meldingen slettes automatisk om mindre enn en time</string>
+  <string name="expiration_auto_delete_day">Denne meldingen slettes automatisk om mindre enn en dag</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Denne meldingen slettes automatisk om %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minutt</item>
+    <item quantity="other">%d minutter</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d time</item>
+    <item quantity="other">%d timer</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d dag</item>
+    <item quantity="other">%d dager</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Vedlegg</string>
   <string name="attachment_download_notification_channel_description">Varsler for nedlasting av vedlegg</string>

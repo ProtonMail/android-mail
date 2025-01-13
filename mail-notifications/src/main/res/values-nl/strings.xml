@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Prullenbak</string>
   <string name="notification_actions_reply_description">Beantwoorden</string>
   <string name="notification_actions_mark_as_read_description">Markeer als gelezen</string>
+  <string name="notification_permission_dialog_title">Mis geen enkele e-mail</string>
+  <string name="notification_permission_dialog_message">Meldingen helpen u om op de hoogte van uw inbox te blijven zonder de app te openen.</string>
+  <string name="notification_permission_dialog_button_enable">Pushmeldingen inschakelen</string>
+  <string name="notification_permission_dialog_button_dismiss">Negeren</string>
 </resources>

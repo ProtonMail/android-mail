@@ -88,6 +88,7 @@
   <string name="message_delete_dialog_message">Θέλετε σίγουρα να διαγράψετε οριστικά αυτό το μήνυμα;</string>
   <string name="message_deleted">Το μήνυμα διαγράφηκε</string>
   <string name="message_moved">Το μήνυμα μετακινήθηκε</string>
+  <string name="message_moved_to">Το μήνυμα μετακινήθηκε στον φάκελο %s</string>
   <string name="error_delete_message_failed">Αποτυχία διαγραφής μηνύματος</string>
   <string name="error_delete_message_failed_wrong_folder">Το μήνυμα δε βρίσκεται σε τοποθεσία όπου μπορεί να διαγραφεί</string>
   <string name="error_delete_conversation_failed">Αποτυχία διαγραφής συνομιλίας</string>

@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Geçerlilik süresi dolmuş</string>
-  <string name="expiration_days_arg">%dg</string>
-  <string name="expiration_hours_arg">%ds</string>
-  <string name="expiration_minutes_arg">%da</string>
-  <string name="expiration_auto_delete_hour">Bu ileti bir saat içinde otomatik olarak silinecek</string>
-  <string name="expiration_auto_delete_day">Bu ileti bir gün içinde otomatik olarak silinecek</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Bu ileti %s içinde otomatik olarak silinecek</string>
   <string name="retry">Yeniden dene</string>
   <string name="toolbar_back_content_description">Önceki ekrana dön</string>
   <string name="x_error_not_logged_in">Oturum açılmamış</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Okunmamış olarak işaretle</string>
   <string name="action_star_description">Yıldız koy</string>
   <string name="action_unstar_description">Yıldızı kaldır</string>
-  <string name="action_label_description">Etiketle</string>
-  <string name="action_move_description">Şuraya taşı</string>
+  <string name="action_label_description">Etiketle…</string>
+  <string name="action_move_description">Taşı…</string>
   <string name="action_trash_description">Çöpe at</string>
   <string name="action_delete_description">Sil</string>
   <string name="action_archive_description">Arşivle</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Okunmamış olarak işaretle</string>
   <string name="action_star_content_description">Yıldız koy</string>
   <string name="action_unstar_content_description">Yıldızı kaldır</string>
-  <string name="action_label_content_description">Etiketle</string>
-  <string name="action_move_content_description">Şuraya taşı</string>
+  <string name="action_label_content_description">Etiketle…</string>
+  <string name="action_move_content_description">Taşı…</string>
   <string name="action_trash_content_description">Çöpe at</string>
   <string name="action_delete_content_description">Sil</string>
   <string name="action_archive_content_description">Arşivle</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Kullanıma al</string>
   <string name="auto_delete_banner_button_activate_dismiss">Hayır, teşekkürler</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Ayrıntılı bilgi alın</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Geçerlilik süresi dolmuş</string>
+  <string name="expiration_days_arg">%dg</string>
+  <string name="expiration_hours_arg">%ds</string>
+  <string name="expiration_minutes_arg">%da</string>
+  <string name="expiration_auto_delete_hour">Bu ileti bir saat içinde otomatik olarak silinecek</string>
+  <string name="expiration_auto_delete_day">Bu ileti bir gün içinde otomatik olarak silinecek</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Bu ileti %s içinde otomatik olarak silinecek</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d dakika</item>
+    <item quantity="other">%d dakika</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d saat</item>
+    <item quantity="other">%d saat</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d gün</item>
+    <item quantity="other">%d gün</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Ek dosyalar</string>
   <string name="attachment_download_notification_channel_description">Ek dosya indirmeleri için bildirimler</string>

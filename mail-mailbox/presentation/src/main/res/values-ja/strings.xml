@@ -41,8 +41,11 @@
   <string name="mailbox_is_empty_folder_description">このフォルダーは空です</string>
   <string name="mailbox_is_empty_spam_description">迷惑メールフォルダーは空です</string>
   <string name="mailbox_is_empty_trash_description">ごみ箱は空です</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">%d 個のメッセージをごみ箱に移動しました</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="other">%d件の会話がゴミ箱に移動されました</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="other">%d件のメッセージがごみ箱に移動されました</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">%d 件の会話を削除</item>

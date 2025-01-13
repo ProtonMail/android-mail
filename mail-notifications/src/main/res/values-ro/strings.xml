@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">Gunoi</string>
   <string name="notification_actions_reply_description">Răspuns</string>
   <string name="notification_actions_mark_as_read_description">Marcare ca citit</string>
+  <string name="notification_permission_dialog_title">Nu mai ratați mesajele</string>
+  <string name="notification_permission_dialog_message">Notificările vă ajută să fiți la zi cu mesajele primite fără a consulta aplicația.</string>
+  <string name="notification_permission_dialog_button_enable">Activare notificări</string>
+  <string name="notification_permission_dialog_button_dismiss">Renunțare</string>
 </resources>

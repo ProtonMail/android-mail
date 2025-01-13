@@ -47,11 +47,17 @@
   <string name="mailbox_is_empty_folder_description">Эта папка пуста</string>
   <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Сообщение помещено в Корзину</item>
-    <item quantity="few">%d сообщения перемещены в Корзину</item>
-    <item quantity="many">%d сообщений перемещено в Корзину</item>
-    <item quantity="other">%d сообщений перемещено в Корзину</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Conversation moved to Trash</item>
+    <item quantity="few">%d conversations moved to Trash</item>
+    <item quantity="many">%d conversations moved to Trash</item>
+    <item quantity="other">%d conversations moved to Trash</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Message moved to Trash</item>
+    <item quantity="few">%d messages moved to Trash</item>
+    <item quantity="many">%d messages moved to Trash</item>
+    <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Удалить цепочку писем</item>

@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Löpt ut</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d t</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Detta meddelande kommer att tas bort automatiskt om mindre än en timme</string>
-  <string name="expiration_auto_delete_day">Detta meddelande kommer att tas bort automatiskt om mindre än en dag</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Detta meddelande kommer tas bort automatiskt om %s</string>
   <string name="retry">Försök igen</string>
   <string name="toolbar_back_content_description">Tillbaka till föregående skärm</string>
   <string name="x_error_not_logged_in">Inte inloggad</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Markera som oläst</string>
   <string name="action_star_description">Stjärnmärk</string>
   <string name="action_unstar_description">Ta bort stjärnmärkning</string>
-  <string name="action_label_description">Märk som</string>
-  <string name="action_move_description">Flytta till</string>
+  <string name="action_label_description">Märk som…</string>
+  <string name="action_move_description">Flytta till…</string>
   <string name="action_trash_description">Flytta till papperskorg</string>
   <string name="action_delete_description">Ta bort</string>
   <string name="action_archive_description">Arkivera</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Markera som oläst</string>
   <string name="action_star_content_description">Stjärnmärk</string>
   <string name="action_unstar_content_description">Ta bort stjärnmärkning</string>
-  <string name="action_label_content_description">Märk som</string>
-  <string name="action_move_content_description">Flytta till</string>
+  <string name="action_label_content_description">Märk som…</string>
+  <string name="action_move_content_description">Flytta till…</string>
   <string name="action_trash_content_description">Lägg i papperskorg</string>
   <string name="action_delete_content_description">Ta bort</string>
   <string name="action_archive_content_description">Arkivera</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Aktivera</string>
   <string name="auto_delete_banner_button_activate_dismiss">Nej, tack</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Lär dig mer</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Löpt ut</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d t</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Detta meddelande kommer att tas bort automatiskt om mindre än en timme</string>
+  <string name="expiration_auto_delete_day">Detta meddelande kommer att tas bort automatiskt om mindre än en dag</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Detta meddelande kommer tas bort automatiskt om %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minut</item>
+    <item quantity="other">%d minuter</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d timme</item>
+    <item quantity="other">%d timmar</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d dag</item>
+    <item quantity="other">%d dagar</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Bilagor</string>
   <string name="attachment_download_notification_channel_description">Aviseringar för nedladdning av bilagor</string>

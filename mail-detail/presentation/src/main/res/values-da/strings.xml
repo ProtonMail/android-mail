@@ -89,6 +89,7 @@ igen.</string>
   <string name="message_delete_dialog_message">Er du sikker på, at du vil slette denne besked permanent?</string>
   <string name="message_deleted">Besked slettet</string>
   <string name="message_moved">Besked flyttet</string>
+  <string name="message_moved_to">Message moved to %s</string>
   <string name="error_delete_message_failed">Kunne ikke slette besked</string>
   <string name="error_delete_message_failed_wrong_folder">Beskeden er ikke på en placering, hvor den kan slettes</string>
   <string name="error_delete_conversation_failed">Kunne ikke slette samtale</string>

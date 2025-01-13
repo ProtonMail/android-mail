@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Истёкший</string>
-  <string name="expiration_days_arg">%d д.</string>
-  <string name="expiration_hours_arg">%d ч.</string>
-  <string name="expiration_minutes_arg">%d мин.</string>
-  <string name="expiration_auto_delete_hour">Это сообщение будет автоматически удалено менее чем через час</string>
-  <string name="expiration_auto_delete_day">Это сообщение будет автоматически удалено менее чем через день</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Это сообщение будет автоматически удалено через %s</string>
   <string name="retry">Повторить</string>
   <string name="toolbar_back_content_description">Обратно к предыдущему экрану</string>
   <string name="x_error_not_logged_in">Вход не выполнен</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Отметить как непрочитанное</string>
   <string name="action_star_description">Отметить звёздочкой</string>
   <string name="action_unstar_description">Убрать звёздочку</string>
-  <string name="action_label_description">Отметить как</string>
-  <string name="action_move_description">Переместить в</string>
+  <string name="action_label_description">Label as…</string>
+  <string name="action_move_description">Move to…</string>
   <string name="action_trash_description">Переместить в корзину</string>
   <string name="action_delete_description">Удалить</string>
   <string name="action_archive_description">Архив</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Отметить как непрочитанное</string>
   <string name="action_star_content_description">Важное</string>
   <string name="action_unstar_content_description">Снять звёздочку</string>
-  <string name="action_label_content_description">Пометить как</string>
-  <string name="action_move_content_description">Переместить в</string>
+  <string name="action_label_content_description">Label as…</string>
+  <string name="action_move_content_description">Move to…</string>
   <string name="action_trash_content_description">Корзина</string>
   <string name="action_delete_content_description">Удалить</string>
   <string name="action_archive_content_description">Архивировать</string>
@@ -87,6 +80,32 @@
   <string name="auto_delete_banner_button_activate_confirm">Включить</string>
   <string name="auto_delete_banner_button_activate_dismiss">Нет, спасибо</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Узнать больше</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Истёкший</string>
+  <string name="expiration_days_arg">%d д.</string>
+  <string name="expiration_hours_arg">%d ч.</string>
+  <string name="expiration_minutes_arg">%d мин.</string>
+  <string name="expiration_auto_delete_hour">Это сообщение будет автоматически удалено менее чем через час</string>
+  <string name="expiration_auto_delete_day">Это сообщение будет автоматически удалено менее чем через день</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Это сообщение будет автоматически удалено через %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d минута</item>
+    <item quantity="few">%d минуты</item>
+    <item quantity="many">%d минуты</item>
+    <item quantity="other">%d минуты</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d час</item>
+    <item quantity="few">%d часов</item>
+    <item quantity="many">%d часа</item>
+    <item quantity="other">%d часа</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d день</item>
+    <item quantity="few">%d дней</item>
+    <item quantity="many">%d дня</item>
+    <item quantity="other">%d дня</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вложения</string>
   <string name="attachment_download_notification_channel_description">Уведомления о скачивании вложений</string>

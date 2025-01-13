@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">Deze map is leeg</string>
   <string name="mailbox_is_empty_spam_description">Uw spam map is leeg</string>
   <string name="mailbox_is_empty_trash_description">Uw prullenbak is leeg</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Gesprek verplaatst naar de Prullenbak</item>
+    <item quantity="other">%d gesprekken verplaatst naar prullenbak</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Bericht verplaatst naar de prullenbak</item>
     <item quantity="other">%d berichten verplaatst naar de prullenbak</item>
   </plurals>

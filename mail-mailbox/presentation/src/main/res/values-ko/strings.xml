@@ -41,8 +41,11 @@
   <string name="mailbox_is_empty_folder_description">폴더가 비어있음</string>
   <string name="mailbox_is_empty_spam_description">스팸 폴더가 비어있음</string>
   <string name="mailbox_is_empty_trash_description">휴지통이 깨끗합니다</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="other">메시지 %d개를 휴지통으로 옮겼습니다</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="other">%d개 대화가 휴지통으로 이동됨</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="other">%d개 메시지가 휴지통으로 이동됨</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">%d개의 대화 삭제</item>

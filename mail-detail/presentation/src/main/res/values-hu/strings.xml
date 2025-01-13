@@ -88,6 +88,7 @@
   <string name="message_delete_dialog_message">Biztos, hogy véglegesen törli ezt az üzenetet?</string>
   <string name="message_deleted">Üzenet törölve</string>
   <string name="message_moved">Levél áthelyezve</string>
+  <string name="message_moved_to">Message moved to %s</string>
   <string name="error_delete_message_failed">Hiba az üzenet törlésekor</string>
   <string name="error_delete_message_failed_wrong_folder">Az üzenet nem olyan helyen van, ahonnan törölhető</string>
   <string name="error_delete_conversation_failed">Beszélgetés törlése nem sikerült</string>

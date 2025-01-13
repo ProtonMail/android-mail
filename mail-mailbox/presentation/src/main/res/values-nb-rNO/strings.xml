@@ -43,8 +43,12 @@
   <string name="mailbox_is_empty_folder_description">Denne mappen er tom</string>
   <string name="mailbox_is_empty_spam_description">Søppelpostmappen din er tom</string>
   <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Meldingen flyttet til papirkurven</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Samtale flyttet til papirkurven</item>
+    <item quantity="other">%d samtaler flyttet til papirkurven</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Melding flyttet til papirkurven</item>
     <item quantity="other">%d meldinger flyttet til papirkurven</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">

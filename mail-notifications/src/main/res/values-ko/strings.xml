@@ -25,4 +25,8 @@
   <string name="notification_actions_trash_description">휴지통</string>
   <string name="notification_actions_reply_description">회신</string>
   <string name="notification_actions_mark_as_read_description">읽음으로 표시</string>
+  <string name="notification_permission_dialog_title">이메일을 놓치지 마세요</string>
+  <string name="notification_permission_dialog_message">알림 기능으로 앱을 확인하지 않고 편지함을 계속 확인하세요.</string>
+  <string name="notification_permission_dialog_button_enable">푸시 알림 활성화</string>
+  <string name="notification_permission_dialog_button_dismiss">닫기</string>
 </resources>

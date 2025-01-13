@@ -43,7 +43,11 @@
   <string name="mailbox_is_empty_folder_description">Ce dossier est vide.</string>
   <string name="mailbox_is_empty_spam_description">Votre dossier Indésirables/spam est vide.</string>
   <string name="mailbox_is_empty_trash_description">Le dossier Corbeille est vide.</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">La conversation a été déplacée dans le dossier Corbeille.</item>
+    <item quantity="other">%d conversations ont été déplacées dans le dossier Corbeille.</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Le message a été déplacé dans le dossier Corbeille.</item>
     <item quantity="other">%d messages ont été déplacés dans le dossier Corbeille.</item>
   </plurals>

@@ -47,7 +47,13 @@
   <string name="mailbox_is_empty_folder_description">Гэта папка пустая</string>
   <string name="mailbox_is_empty_spam_description">Ваша папка са спамам пустая</string>
   <string name="mailbox_is_empty_trash_description">Сметніца пустая</string>
-  <plurals name="mailbox_action_trash">
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Размова перамешчана ў Сметніцу</item>
+    <item quantity="few">%d размовы перамешчаны ў Сметніцу</item>
+    <item quantity="many">%d размоў перамешчаны ў Сметніцу</item>
+    <item quantity="other">%d размоў перамешчаны ў Сметніцу</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
     <item quantity="one">Паведамленне перамешчана ў Сметніцу</item>
     <item quantity="few">%d паведамленні перамешчаны ў Сметніцу</item>
     <item quantity="many">%d паведамленняў перамешчаны ў Сметніцу</item>

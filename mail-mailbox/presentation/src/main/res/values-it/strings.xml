@@ -43,9 +43,13 @@
   <string name="mailbox_is_empty_folder_description">Questa cartella è vuota</string>
   <string name="mailbox_is_empty_spam_description">La cartella spam è vuota</string>
   <string name="mailbox_is_empty_trash_description">Il cestino è vuoto</string>
-  <plurals name="mailbox_action_trash">
-    <item quantity="one">Messaggio spostato nel cestino</item>
-    <item quantity="other">%d messaggi spostati nel cestino</item>
+  <plurals name="mailbox_action_trash_conversation">
+    <item quantity="one">Conversazione spostata nel Cestino</item>
+    <item quantity="other">%d conversazioni spostate nel Cestino</item>
+  </plurals>
+  <plurals name="mailbox_action_trash_message">
+    <item quantity="one">Messaggio spostato nel Cestino</item>
+    <item quantity="other">%d messaggi spostati nel Cestino</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Elimina 1 conversazione</item>

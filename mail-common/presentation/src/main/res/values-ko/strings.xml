@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">만료됨</string>
-  <string name="expiration_days_arg">%d일</string>
-  <string name="expiration_hours_arg">%d시</string>
-  <string name="expiration_minutes_arg">%d분</string>
-  <string name="expiration_auto_delete_hour">이 메시지가 한 시간 이내로 자동 삭제됩니다.</string>
-  <string name="expiration_auto_delete_day">이 메시지가 하루 내로 자동 삭제됩니다.</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">메시지가 %s에 자동으로 삭제됨</string>
   <string name="retry">재시도</string>
   <string name="toolbar_back_content_description">이전 화면으로 돌아가기</string>
   <string name="x_error_not_logged_in">로그인하지 않음</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">읽지 않음으로 표시</string>
   <string name="action_star_description">별표</string>
   <string name="action_unstar_description">별표 제거</string>
-  <string name="action_label_description">라벨 추가</string>
-  <string name="action_move_description">다음으로 이동</string>
+  <string name="action_label_description">라벨…</string>
+  <string name="action_move_description">이동…</string>
   <string name="action_trash_description">휴지통으로 이동합니다</string>
   <string name="action_delete_description">삭제</string>
   <string name="action_archive_description">보관 편지함</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">읽지 않음으로 표시</string>
   <string name="action_star_content_description">별표 표시</string>
   <string name="action_unstar_content_description">별표 삭제</string>
-  <string name="action_label_content_description">라벨 추가</string>
-  <string name="action_move_content_description">이동</string>
+  <string name="action_label_content_description">라벨…</string>
+  <string name="action_move_content_description">이동…</string>
   <string name="action_trash_content_description">휴지통</string>
   <string name="action_delete_content_description">삭제</string>
   <string name="action_archive_content_description">보관함</string>
@@ -87,6 +80,23 @@
   <string name="auto_delete_banner_button_activate_confirm">활성화</string>
   <string name="auto_delete_banner_button_activate_dismiss">아니요, 괜찮아요</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">더 알아보기</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">만료됨</string>
+  <string name="expiration_days_arg">%d일</string>
+  <string name="expiration_hours_arg">%d시</string>
+  <string name="expiration_minutes_arg">%d분</string>
+  <string name="expiration_auto_delete_hour">이 메시지가 한 시간 이내로 자동 삭제됩니다.</string>
+  <string name="expiration_auto_delete_day">이 메시지가 하루 내로 자동 삭제됩니다.</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">메시지가 %s에 자동으로 삭제됨</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="other">%d분</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="other">%d시간</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="other">%d일</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">첨부파일</string>
   <string name="attachment_download_notification_channel_description">첨부파일 다운로드 알림</string>

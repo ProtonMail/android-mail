@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Пратэрмінавана</string>
-  <string name="expiration_days_arg">%d дз</string>
-  <string name="expiration_hours_arg">%d гадз</string>
-  <string name="expiration_minutes_arg">%d хв</string>
-  <string name="expiration_auto_delete_hour">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз гадзіну</string>
-  <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Гэта паведамленне будзе аўтаматычна выдалена за %s</string>
   <string name="retry">Паўтарыць</string>
   <string name="toolbar_back_content_description">Вярнуцца на папярэдні экран</string>
   <string name="x_error_not_logged_in">Уваход не выкананы</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Пазначыць непрачытаным</string>
   <string name="action_star_description">Пазначыць зорачкай</string>
   <string name="action_unstar_description">Прыбраць зорачку</string>
-  <string name="action_label_description">Пазначыць як</string>
-  <string name="action_move_description">Перамясціць у</string>
+  <string name="action_label_description">Пазначыць як…</string>
+  <string name="action_move_description">Перамясціць у…</string>
   <string name="action_trash_description">Перамясціць у сметніцу</string>
   <string name="action_delete_description">Выдаліць</string>
   <string name="action_archive_description">Архіваваць</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Пазначыць непрачытаным</string>
   <string name="action_star_content_description">Пазначыць зорачкай</string>
   <string name="action_unstar_content_description">Прыбраць зорачку</string>
-  <string name="action_label_content_description">Пазначыць як</string>
-  <string name="action_move_content_description">Перамясціць у</string>
+  <string name="action_label_content_description">Пазначыць як…</string>
+  <string name="action_move_content_description">Перамясціць у…</string>
   <string name="action_trash_content_description">Сметніца</string>
   <string name="action_delete_content_description">Выдаліць</string>
   <string name="action_archive_content_description">Архіваваць</string>
@@ -87,6 +80,32 @@
   <string name="auto_delete_banner_button_activate_confirm">Уключыць</string>
   <string name="auto_delete_banner_button_activate_dismiss">Не, дзякуй</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Даведацца больш</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Пратэрмінавана</string>
+  <string name="expiration_days_arg">%d дз</string>
+  <string name="expiration_hours_arg">%d гадз</string>
+  <string name="expiration_minutes_arg">%d хв</string>
+  <string name="expiration_auto_delete_hour">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз гадзіну</string>
+  <string name="expiration_auto_delete_day">Гэта паведамленне будзе аўтаматычна выдалена менш чым праз дзень</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Гэта паведамленне будзе аўтаматычна выдалена за %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d хвіліна</item>
+    <item quantity="few">%d хвіліны</item>
+    <item quantity="many">%d хвілін</item>
+    <item quantity="other">%d хвілін</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d гадзіна</item>
+    <item quantity="few">%d гадзіны</item>
+    <item quantity="many">%d гадзін</item>
+    <item quantity="other">%d гадзін</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d дзень</item>
+    <item quantity="few">%d дні</item>
+    <item quantity="many">%d дзён</item>
+    <item quantity="other">%d дзён</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Далучэнні</string>
   <string name="attachment_download_notification_channel_description">Апавяшчэнні аб спампоўванні далучэнняў</string>

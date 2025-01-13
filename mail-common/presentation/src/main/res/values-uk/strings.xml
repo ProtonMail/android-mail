@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Термін дії закінчився</string>
-  <string name="expiration_days_arg">%d д</string>
-  <string name="expiration_hours_arg">%d год</string>
-  <string name="expiration_minutes_arg">%d хв</string>
-  <string name="expiration_auto_delete_hour">Це повідомлення буде автоматично видалено менш ніж за годину</string>
-  <string name="expiration_auto_delete_day">Це повідомлення буде автоматично видалено менш ніж за день</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення буде автоматично видалиться через %s</string>
   <string name="retry">Повторити</string>
   <string name="toolbar_back_content_description">Повернутися на попередній екран</string>
   <string name="x_error_not_logged_in">Ви не увійшли</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Позначити непрочитаним</string>
   <string name="action_star_description">Позначити зірочкою</string>
   <string name="action_unstar_description">Прибрати зірочку</string>
-  <string name="action_label_description">Позначити міткою</string>
-  <string name="action_move_description">Перемістити</string>
+  <string name="action_label_description">Label as…</string>
+  <string name="action_move_description">Move to…</string>
   <string name="action_trash_description">Перемістити до смітника</string>
   <string name="action_delete_description">Видалити</string>
   <string name="action_archive_description">Архівувати</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Позначити непрочитаним</string>
   <string name="action_star_content_description">Позначити зірочкою</string>
   <string name="action_unstar_content_description">Прибрати зірочку</string>
-  <string name="action_label_content_description">Позначити міткою</string>
-  <string name="action_move_content_description">Перемістити у</string>
+  <string name="action_label_content_description">Label as…</string>
+  <string name="action_move_content_description">Move to…</string>
   <string name="action_trash_content_description">Смітник</string>
   <string name="action_delete_content_description">Видалити</string>
   <string name="action_archive_content_description">Архівувати</string>
@@ -87,6 +80,32 @@
   <string name="auto_delete_banner_button_activate_confirm">Увімкнути</string>
   <string name="auto_delete_banner_button_activate_dismiss">Ні, дякую</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Докладніше</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Термін дії закінчився</string>
+  <string name="expiration_days_arg">%d д</string>
+  <string name="expiration_hours_arg">%d год</string>
+  <string name="expiration_minutes_arg">%d хв</string>
+  <string name="expiration_auto_delete_hour">Це повідомлення буде автоматично видалено менш ніж за годину</string>
+  <string name="expiration_auto_delete_day">Це повідомлення буде автоматично видалено менш ніж за день</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Це повідомлення буде автоматично видалиться через %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d хвилина</item>
+    <item quantity="few">%d хвилини</item>
+    <item quantity="many">%d хвилин</item>
+    <item quantity="other">%d хвилин</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d година</item>
+    <item quantity="few">%d годин</item>
+    <item quantity="many">%d години</item>
+    <item quantity="other">%d години</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d день</item>
+    <item quantity="few">%d днів</item>
+    <item quantity="many">%d дні</item>
+    <item quantity="other">%d дні</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Вкладення</string>
   <string name="attachment_download_notification_channel_description">Сповіщення про завантаження вкладень</string>

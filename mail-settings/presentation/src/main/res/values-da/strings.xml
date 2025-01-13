@@ -69,7 +69,7 @@
   <string name="mail_settings_auto_delete_dialog_button_cancel">Annuller</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">Slet beskeder?</string>
   <string name="mail_settings_auto_delete_dialog_enabling_text">Dette sletter alle beskeder, der har ligget i papirkurven eller spam i mere end 30 dage, inklusive beskeder, der i øjeblikket ligger i disse mapper.</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktiver</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">Aktivér</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">Deaktivér automatisk sletning?</string>
   <string name="mail_settings_auto_delete_dialog_disabling_text">E-mails, der er planlagt til sletning, forbliver i papirkurven og spam-mapperne.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Deaktiver</string>

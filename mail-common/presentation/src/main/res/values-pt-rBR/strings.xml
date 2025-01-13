@@ -17,13 +17,6 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="expiration_expired">Expirado</string>
-  <string name="expiration_days_arg">%d d</string>
-  <string name="expiration_hours_arg">%d h</string>
-  <string name="expiration_minutes_arg">%d min</string>
-  <string name="expiration_auto_delete_hour">Esta mensagem será automaticamente excluída em menos de uma hora</string>
-  <string name="expiration_auto_delete_day">Esta mensagem será automaticamente excluída em menos de um dia</string>
-  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Esta mensagem será automaticamente excluída em %s</string>
   <string name="retry">Tentar novamente</string>
   <string name="toolbar_back_content_description">Voltar para a tela anterior</string>
   <string name="x_error_not_logged_in">Sessão não iniciada</string>
@@ -37,8 +30,8 @@
   <string name="action_mark_unread_description">Marcar como não lida</string>
   <string name="action_star_description">Favorito</string>
   <string name="action_unstar_description">Remover favorito</string>
-  <string name="action_label_description">Rotular como</string>
-  <string name="action_move_description">Mover para</string>
+  <string name="action_label_description">Marcar como…</string>
+  <string name="action_move_description">Mover para…</string>
   <string name="action_trash_description">Mover para a lixeira</string>
   <string name="action_delete_description">Excluir</string>
   <string name="action_archive_description">Arquivo</string>
@@ -61,8 +54,8 @@
   <string name="action_mark_unread_content_description">Marcar como não lida</string>
   <string name="action_star_content_description">Favoritar</string>
   <string name="action_unstar_content_description">Remover dos favoritos</string>
-  <string name="action_label_content_description">Marcar como</string>
-  <string name="action_move_content_description">Mover para</string>
+  <string name="action_label_content_description">Marcar como…</string>
+  <string name="action_move_content_description">Mover para…</string>
   <string name="action_trash_content_description">Lixeira</string>
   <string name="action_delete_content_description">Excluir</string>
   <string name="action_archive_content_description">Arquivo</string>
@@ -87,6 +80,26 @@
   <string name="auto_delete_banner_button_activate_confirm">Ativar</string>
   <string name="auto_delete_banner_button_activate_dismiss">Não, obrigado</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">Saiba mais</string>
+  <!-- message expiration -->
+  <string name="expiration_expired">Expirado</string>
+  <string name="expiration_days_arg">%d d</string>
+  <string name="expiration_hours_arg">%d h</string>
+  <string name="expiration_minutes_arg">%d min</string>
+  <string name="expiration_auto_delete_hour">Esta mensagem será automaticamente excluída em menos de uma hora</string>
+  <string name="expiration_auto_delete_day">Esta mensagem será automaticamente excluída em menos de um dia</string>
+  <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Esta mensagem será automaticamente excluída em %s</string>
+  <plurals name="expiration_minutes_full_word">
+    <item quantity="one">%d minuto</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="expiration_hours_full_word">
+    <item quantity="one">%d hora</item>
+    <item quantity="other">%d horas</item>
+  </plurals>
+  <plurals name="expiration_days_full_word">
+    <item quantity="one">%d dia</item>
+    <item quantity="other">%d dias</item>
+  </plurals>
   <!-- notification channels -->
   <string name="attachment_download_notification_channel_name">Anexos</string>
   <string name="attachment_download_notification_channel_description">Notificação para downloads de anexos</string>
