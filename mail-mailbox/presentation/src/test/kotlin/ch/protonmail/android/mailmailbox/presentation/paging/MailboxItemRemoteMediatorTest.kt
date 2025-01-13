@@ -55,6 +55,7 @@ import io.mockk.runs
 import io.mockk.verifySequence
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import javax.inject.Provider
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
@@ -74,6 +75,9 @@ class MailboxItemRemoteMediatorTest {
     private val conversationRepository = mockk<ConversationRepository>(relaxUnitFun = true)
     private val getAdjacentPageKeys = mockk<GetAdjacentPageKeys>()
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
+    private val skipInitialMediatorRefresh = mockk<Provider<Boolean>> {
+        every { this@mockk.get() } returns false
+    }
 
     private val mailboxItemRemoteMediator by lazy {
         MailboxItemRemoteMediator(
@@ -82,7 +86,8 @@ class MailboxItemRemoteMediatorTest {
             getAdjacentPageKeys = getAdjacentPageKeys,
             mailboxPageKey = mailboxPageKey,
             type = mailboxItemType,
-            emptyLabelInProgressSignal = emptyLabelInProgressSignal
+            emptyLabelInProgressSignal = emptyLabelInProgressSignal,
+            skipInitialMediatorRefresh = skipInitialMediatorRefresh.get()
         )
     }
 

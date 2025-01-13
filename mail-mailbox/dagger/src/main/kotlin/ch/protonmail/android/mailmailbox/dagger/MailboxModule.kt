@@ -20,10 +20,13 @@ package ch.protonmail.android.mailmailbox.dagger
 
 import ch.protonmail.android.mailmailbox.data.repository.InMemoryMailboxRepositoryImpl
 import ch.protonmail.android.mailmailbox.data.repository.UnreadCountersRepositoryImpl
+import ch.protonmail.android.mailmailbox.domain.annotations.IsSkipInitialMediatorRefreshEnabled
 import ch.protonmail.android.mailmailbox.domain.repository.InMemoryMailboxRepository
 import ch.protonmail.android.mailmailbox.domain.repository.UnreadCountersRepository
+import ch.protonmail.android.mailmailbox.domain.usecase.featureflags.SkipInitialMediatorRefresh
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -32,6 +35,10 @@ import javax.inject.Singleton
 @Module(includes = [MailboxModule.BindsModule::class])
 @InstallIn(SingletonComponent::class)
 object MailboxModule {
+
+    @Provides
+    @IsSkipInitialMediatorRefreshEnabled
+    fun provideSkipInitialMediatorRefresh(isEnabled: SkipInitialMediatorRefresh) = isEnabled()
 
     @Module
     @InstallIn(SingletonComponent::class)

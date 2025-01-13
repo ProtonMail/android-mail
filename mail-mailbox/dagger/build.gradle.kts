@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":mail-mailbox:domain"))
     implementation(project(":mail-mailbox:presentation"))
 
+    implementation(libs.proton.core.domain)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.dagger.hilt.android)
 }

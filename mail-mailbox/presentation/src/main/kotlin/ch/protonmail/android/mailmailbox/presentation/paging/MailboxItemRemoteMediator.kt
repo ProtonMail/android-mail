@@ -23,6 +23,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import ch.protonmail.android.mailconversation.domain.repository.ConversationRepository
+import ch.protonmail.android.mailmailbox.domain.annotations.IsSkipInitialMediatorRefreshEnabled
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItem
 import ch.protonmail.android.mailmailbox.domain.model.MailboxItemType
 import ch.protonmail.android.mailmailbox.domain.model.MailboxPageKey
@@ -53,12 +54,17 @@ class MailboxItemRemoteMediator @AssistedInject constructor(
     private val messageRepository: MessageRepository,
     private val conversationRepository: ConversationRepository,
     private val getAdjacentPageKeys: GetAdjacentPageKeys,
+    @IsSkipInitialMediatorRefreshEnabled private val skipInitialMediatorRefresh: Boolean,
     @Assisted private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
     @Assisted private val mailboxPageKey: MailboxPageKey,
     @Assisted private val type: MailboxItemType
 ) : RemoteMediator<MailboxPageKey, MailboxItem>() {
 
-    override suspend fun initialize() = InitializeAction.LAUNCH_INITIAL_REFRESH
+    override suspend fun initialize() = if (skipInitialMediatorRefresh) {
+        InitializeAction.SKIP_INITIAL_REFRESH
+    } else {
+        InitializeAction.LAUNCH_INITIAL_REFRESH
+    }
 
     override suspend fun load(loadType: LoadType, state: PagingState<MailboxPageKey, MailboxItem>): MediatorResult {
         val userId = mailboxPageKey.userIds.first()
