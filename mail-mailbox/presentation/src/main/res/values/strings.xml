@@ -81,9 +81,8 @@
     <string name="mailbox_action_move_messages_failed">Move operation failed</string>
     <string name="mailbox_action_move_messages_failed_retrieving_folders">Failed to get folders</string>
 
-    <string name="mailbox_action_trash_message">Message moved to trash</string>
-    <string name="mailbox_action_archive_message">Message moved to archive</string>
-    <string name="mailbox_action_spam_message">Message moved to spam</string>
+    <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+    <string name="mailbox_action_move_message">Message moved to %s</string>
     <string name="mailbox_search_placeholder_text">Search messages</string>
     <string name="mailbox_search_no_results_title">No results found</string>
     <string name="mailbox_search_no_results_explanation">Search date, name, email address, or subject line</string>

@@ -652,7 +652,7 @@ class MailboxViewModel @Inject constructor(
             swipeArchiveAction.let {
                 moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Archive.labelId, viewMode)
             }
-            emitNewStateFrom(swipeArchiveAction)
+            emitNewStateFrom(MailboxEvent.SwipeActionMoveCompleted.Archive(viewMode))
         }
     }
 
@@ -662,7 +662,7 @@ class MailboxViewModel @Inject constructor(
             swipeSpamAction.let {
                 moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Spam.labelId, viewMode)
             }
-            emitNewStateFrom(swipeSpamAction)
+            emitNewStateFrom(MailboxEvent.SwipeActionMoveCompleted.Spam(viewMode))
         }
     }
 
@@ -672,7 +672,7 @@ class MailboxViewModel @Inject constructor(
             swipeTrashAction.let {
                 moveSingleItemToDestination(it.userId, it.itemId, SystemLabelId.Trash.labelId, viewMode)
             }
-            emitNewStateFrom(swipeTrashAction)
+            emitNewStateFrom(MailboxEvent.SwipeActionMoveCompleted.Trash(viewMode))
         }
     }
 

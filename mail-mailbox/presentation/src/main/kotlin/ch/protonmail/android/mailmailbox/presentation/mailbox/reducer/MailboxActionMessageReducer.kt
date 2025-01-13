@@ -23,14 +23,16 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import javax.inject.Inject
 
-class MailboxActionMessageReducer @Inject constructor() {
+class MailboxActionMessageReducer @Inject constructor(
+    private val mailLabelTextMapper: MailLabelTextMapper
+) {
 
     internal fun newStateFrom(operation: MailboxOperation.AffectingActionMessage): Effect<ActionResult> {
         val actionResult = when (operation) {
@@ -53,17 +55,15 @@ class MailboxActionMessageReducer @Inject constructor() {
                 DefinitiveActionResult(TextUiModel(resource, operation.numAffectedMessages))
             }
 
-            is MailboxViewAction.SwipeArchiveAction -> UndoableActionResult(
-                TextUiModel(R.string.mailbox_action_archive_message)
-            )
+            is MailboxEvent.SwipeActionMoveCompleted -> {
+                val resource = when (operation.viewMode) {
+                    ViewMode.ConversationGrouping -> R.string.mailbox_action_move_conversation
+                    ViewMode.NoConversationGrouping -> R.string.mailbox_action_move_message
+                }
 
-            is MailboxViewAction.SwipeSpamAction -> UndoableActionResult(
-                TextUiModel(R.string.mailbox_action_spam_message)
-            )
-
-            is MailboxViewAction.SwipeTrashAction -> UndoableActionResult(
-                TextUiModel(R.string.mailbox_action_trash_message)
-            )
+                val destinationFolder = mailLabelTextMapper.mapToString(operation.destinationFolder)
+                UndoableActionResult(TextUiModel.TextResWithArgs(resource, listOf(destinationFolder)))
+            }
         }
         return Effect.of(actionResult)
     }

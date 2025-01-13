@@ -1,18 +1,21 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
-import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
+import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmailbox.presentation.R
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
-import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import io.mockk.every
+import io.mockk.mockk
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import ch.protonmail.android.maillabel.presentation.R as labelR
 
 @RunWith(Parameterized::class)
 internal class MailboxActionMessageReducerTest(
@@ -20,7 +23,12 @@ internal class MailboxActionMessageReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val actionMessageReducer = MailboxActionMessageReducer()
+    private val mailLabelTextMapper = mockk<MailLabelTextMapper> {
+        every { this@mockk.mapToString(MailLabelText.TextRes(labelR.string.label_title_archive)) } returns "Archive"
+        every { this@mockk.mapToString(MailLabelText.TextRes(labelR.string.label_title_spam)) } returns "Spam"
+        every { this@mockk.mapToString(MailLabelText.TextRes(labelR.string.label_title_trash)) } returns "Trash"
+    }
+    private val actionMessageReducer = MailboxActionMessageReducer(mailLabelTextMapper)
 
     @Test
     fun `should produce the expected new state`() = with(testInput) {
@@ -45,24 +53,63 @@ internal class MailboxActionMessageReducerTest(
                 )
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeTrashAction(UserIdSample.Primary, "itemId"),
-                expectedState = Effect.of(
-                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_trash_message))
-                )
-            ),
-            TestInput(
-                operation = MailboxViewAction.SwipeArchiveAction(
-                    UserIdSample.Primary,
-                    "itemId"
+                operation = MailboxEvent.SwipeActionMoveCompleted.Archive(
+                    viewMode = ViewMode.ConversationGrouping
                 ),
                 expectedState = Effect.of(
-                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_archive_message))
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_conversation, listOf("Archive"))
+                    )
                 )
             ),
             TestInput(
-                operation = MailboxViewAction.SwipeSpamAction(UserIdSample.Primary, "itemId"),
+                operation = MailboxEvent.SwipeActionMoveCompleted.Archive(
+                    viewMode = ViewMode.NoConversationGrouping
+                ),
                 expectedState = Effect.of(
-                    ActionResult.UndoableActionResult(TextUiModel(R.string.mailbox_action_spam_message))
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_message, listOf("Archive"))
+                    )
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.SwipeActionMoveCompleted.Spam(
+                    viewMode = ViewMode.ConversationGrouping
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_conversation, listOf("Spam"))
+                    )
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.SwipeActionMoveCompleted.Spam(
+                    viewMode = ViewMode.NoConversationGrouping
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_message, listOf("Spam"))
+                    )
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.SwipeActionMoveCompleted.Trash(
+                    viewMode = ViewMode.ConversationGrouping
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_conversation, listOf("Trash"))
+                    )
+                )
+            ),
+            TestInput(
+                operation = MailboxEvent.SwipeActionMoveCompleted.Trash(
+                    viewMode = ViewMode.NoConversationGrouping
+                ),
+                expectedState = Effect.of(
+                    ActionResult.UndoableActionResult(
+                        TextUiModel.TextResWithArgs(R.string.mailbox_action_move_message, listOf("Trash"))
+                    )
                 )
             )
         )
@@ -86,5 +133,4 @@ internal class MailboxActionMessageReducerTest(
         val operation: MailboxOperation.AffectingActionMessage,
         val expectedState: Effect<ActionResult>
     )
-
 }
