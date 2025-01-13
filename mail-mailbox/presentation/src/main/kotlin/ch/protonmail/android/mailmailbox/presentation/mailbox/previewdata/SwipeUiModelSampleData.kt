@@ -25,6 +25,14 @@ import me.proton.core.mailsettings.domain.entity.SwipeAction
 
 object SwipeUiModelSampleData {
 
+    val None = SwipeUiModel(
+        swipeAction = SwipeAction.None,
+        icon = R.drawable.ic_proton_cross_circle,
+        descriptionRes = R.string.mail_settings_swipe_action_none_description,
+        getColor = { Color.Gray },
+        staysDismissed = false
+    )
+
     val Trash = SwipeUiModel(
         swipeAction = SwipeAction.Trash,
         icon = R.drawable.ic_proton_trash,

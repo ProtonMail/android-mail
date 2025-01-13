@@ -676,8 +676,6 @@ private fun MailboxItemsList(
         onAvatarClicked = actions.onAvatarClicked
     )
 
-    val swipingEnabled = state is MailboxListState.Data.ViewMode && !state.searchState.isInSearch()
-
     // Detect if user manually scrolled the list
     var mailboxScrolled by rememberSaveable { mutableStateOf(false) }
     var userTapped by remember { mutableStateOf(false) }
@@ -746,7 +744,7 @@ private fun MailboxItemsList(
                 SwipeableItem(
                     modifier = Modifier.animateItem(),
                     swipeActionsUiModel = (state as MailboxListState.Data).swipeActions,
-                    swipingEnabled = swipingEnabled,
+                    swipingEnabled = state.swipingEnabled,
                     swipeActionCallbacks = generateSwipeActions(items, actions, item)
                 ) {
                     MailboxItem(
@@ -860,6 +858,7 @@ private fun generateSwipeActions(
     item: MailboxItemUiModel
 ): SwipeActions.Actions {
     return SwipeActions.Actions(
+        onNone = {},
         onTrash = { actions.onSwipeTrash(item.userId, item.id) },
         onSpam = { actions.onSwipeSpam(item.userId, item.id) },
         onStar = {
@@ -872,7 +871,9 @@ private fun generateSwipeActions(
             items.itemSnapshotList.items.firstOrNull { it.id == item.id }?.let {
                 actions.onSwipeRead(it.userId, it.id, it.isRead)
             }
-        }
+        },
+        onLabelAs = {},
+        onMoveTo = {}
     )
 }
 

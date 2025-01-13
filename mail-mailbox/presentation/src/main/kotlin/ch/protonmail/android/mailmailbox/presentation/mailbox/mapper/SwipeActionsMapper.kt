@@ -41,8 +41,17 @@ class SwipeActionsMapper @Inject constructor() {
     )
 
 
+    @Suppress("LongMethod")
     private fun toUiModel(currentMailLabel: LabelId, swipeAction: SwipeAction): SwipeUiModel {
         return when (swipeAction) {
+            SwipeAction.None -> SwipeUiModel(
+                swipeAction = swipeAction,
+                icon = R.drawable.ic_proton_cross_circle,
+                descriptionRes = R.string.mail_settings_swipe_action_none_description,
+                getColor = getColorForSwipeAction(swipeAction),
+                staysDismissed = dismissible(swipeAction, currentMailLabel)
+            )
+
             SwipeAction.Trash -> SwipeUiModel(
                 swipeAction = swipeAction,
                 icon = R.drawable.ic_proton_trash,
@@ -83,35 +92,47 @@ class SwipeActionsMapper @Inject constructor() {
                 staysDismissed = dismissible(swipeAction, currentMailLabel)
             )
 
-            SwipeAction.None -> TODO()
-            SwipeAction.LabelAs -> TODO()
-            SwipeAction.MoveTo -> TODO()
+            SwipeAction.LabelAs -> SwipeUiModel(
+                swipeAction = swipeAction,
+                icon = R.drawable.ic_proton_tag,
+                descriptionRes = R.string.mail_settings_swipe_action_label_as_description,
+                getColor = getColorForSwipeAction(swipeAction),
+                staysDismissed = dismissible(swipeAction, currentMailLabel)
+            )
+
+            SwipeAction.MoveTo -> SwipeUiModel(
+                swipeAction = swipeAction,
+                icon = R.drawable.ic_proton_folder_arrow_in,
+                descriptionRes = R.string.mail_settings_swipe_action_move_to_description,
+                getColor = getColorForSwipeAction(swipeAction),
+                staysDismissed = dismissible(swipeAction, currentMailLabel)
+            )
         }
     }
 
     private fun getColorForSwipeAction(swipeAction: SwipeAction): @Composable () -> Color = {
         when (swipeAction) {
+            SwipeAction.None -> ProtonTheme.colors.notificationNorm
             SwipeAction.Trash -> ProtonTheme.colors.notificationError
             SwipeAction.Spam -> ProtonTheme.colors.notificationNorm
             SwipeAction.Star -> ProtonTheme.colors.notificationWarning
             SwipeAction.Archive -> ProtonTheme.colors.notificationNorm
             SwipeAction.MarkRead -> ProtonTheme.colors.brandNorm
-            SwipeAction.None -> TODO()
-            SwipeAction.LabelAs -> TODO()
-            SwipeAction.MoveTo -> TODO()
+            SwipeAction.LabelAs -> ProtonTheme.colors.notificationNorm
+            SwipeAction.MoveTo -> ProtonTheme.colors.notificationNorm
         }
     }
 
     private fun dismissible(swipeAction: SwipeAction, labelId: LabelId): Boolean {
         return when (swipeAction) {
+            SwipeAction.None -> false
             SwipeAction.Trash -> labelId != SystemLabelId.Trash.labelId
             SwipeAction.Spam -> labelId != SystemLabelId.Spam.labelId
             SwipeAction.Star -> false
             SwipeAction.Archive -> labelId != SystemLabelId.Archive.labelId
             SwipeAction.MarkRead -> false
-            SwipeAction.None -> TODO()
-            SwipeAction.LabelAs -> TODO()
-            SwipeAction.MoveTo -> TODO()
+            SwipeAction.LabelAs -> false
+            SwipeAction.MoveTo -> false
         }
     }
 }

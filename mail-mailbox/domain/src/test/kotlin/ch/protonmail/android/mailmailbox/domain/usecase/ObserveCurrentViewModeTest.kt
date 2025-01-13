@@ -98,7 +98,9 @@ internal class ObserveCurrentViewModeTest(
             promptPin = null,
             stickyLabels = null,
             confirmLink = null,
-            autoDeleteSpamAndTrashDays = null
+            autoDeleteSpamAndTrashDays = null,
+            mobileSettings = null,
+            almostAllMail = null
         )
 
         private fun buildViewModeEnum(isConversationSettingEnabled: Boolean): IntEnum<ViewMode> {

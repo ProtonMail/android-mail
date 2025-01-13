@@ -69,6 +69,7 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
+            swipingEnabled = true,
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
@@ -107,6 +108,7 @@ object MailboxStateSampleData {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
+            swipingEnabled = true,
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive
@@ -149,6 +151,7 @@ object MailboxStateSampleData {
             selectedMailboxItems = selectedMailboxItemUiModels.map {
                 SelectedMailboxItem(it.userId, it.id, it.isRead, it.showStar)
             }.toSet(),
+            swipingEnabled = true,
             swipeActions = SwipeActionsUiModel(
                 start = SwipeUiModelSampleData.Trash,
                 end = SwipeUiModelSampleData.Archive

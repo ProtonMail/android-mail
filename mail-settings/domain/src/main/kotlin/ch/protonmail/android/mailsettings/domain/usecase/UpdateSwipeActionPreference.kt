@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
+import ch.protonmail.android.mailsettings.domain.model.shouldSyncWithRemote
 import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.SwipeAction
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
@@ -35,8 +36,10 @@ class UpdateSwipeActionPreference @Inject constructor(
         swipeAction: SwipeAction
     ) {
         when (swipeActionDirection) {
-            SwipeActionDirection.RIGHT -> mailSettingsRepository.updateSwipeRight(userId, swipeAction, false)
-            SwipeActionDirection.LEFT -> mailSettingsRepository.updateSwipeLeft(userId, swipeAction, false)
+            SwipeActionDirection.RIGHT ->
+                mailSettingsRepository.updateSwipeRight(userId, swipeAction, swipeAction.shouldSyncWithRemote())
+            SwipeActionDirection.LEFT ->
+                mailSettingsRepository.updateSwipeLeft(userId, swipeAction, swipeAction.shouldSyncWithRemote())
         }.exhaustive
     }
 }

@@ -89,6 +89,7 @@ class MailboxListReducer @Inject constructor() {
     private fun reduceEnterSearchMode(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
+                swipingEnabled = false,
                 searchState = MailboxSearchState(
                     searchMode = MailboxSearchMode.NewSearch,
                     searchQuery = ""
@@ -139,6 +140,7 @@ class MailboxListReducer @Inject constructor() {
     private fun reduceExitSearchMode(currentState: MailboxListState): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
+                swipingEnabled = currentState.swipeActions?.actionsNotSet() ?: false,
                 searchState = MailboxSearchState.NotSearching
             )
 
@@ -185,6 +187,7 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
+                swipingEnabled = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden,
@@ -216,6 +219,7 @@ class MailboxListReducer @Inject constructor() {
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
+                swipingEnabled = false,
                 swipeActions = null,
                 searchState = MailboxSearchState.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden,
@@ -240,6 +244,7 @@ class MailboxListReducer @Inject constructor() {
     ): MailboxListState {
         return when (currentState) {
             is MailboxListState.Data.ViewMode -> currentState.copy(
+                swipingEnabled = operation.swipeActionsPreference.actionsNotSet(),
                 swipeActions = operation.swipeActionsPreference
             )
 
@@ -352,6 +357,7 @@ class MailboxListReducer @Inject constructor() {
             is MailboxListState.Data.ViewMode -> MailboxListState.Data.SelectionMode(
                 currentMailLabel = currentState.currentMailLabel,
                 selectedMailboxItems = setOf(SelectedMailboxItem(item.userId, item.id, item.isRead, item.showStar)),
+                swipingEnabled = false,
                 swipeActions = currentState.swipeActions,
                 clearState = currentState.clearState,
                 searchState = currentState.searchState,
@@ -369,6 +375,7 @@ class MailboxListReducer @Inject constructor() {
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
+            swipingEnabled = currentState.swipeActions?.actionsNotSet() ?: false,
             swipeActions = currentState.swipeActions,
             searchState = currentState.searchState,
             clearState = currentState.clearState,

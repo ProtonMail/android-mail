@@ -108,6 +108,8 @@ fun SwipeableItem(
         modifier = modifier,
         state = dismissState,
         gesturesEnabled = swipingEnabled,
+        enableDismissFromStartToEnd = swipeActionsUiModel?.start?.swipeAction != SwipeAction.None,
+        enableDismissFromEndToStart = swipeActionsUiModel?.end?.swipeAction != SwipeAction.None,
         backgroundContent = {
             swipeActionsUiModel ?: return@SwipeToDismissBox
 
@@ -190,22 +192,25 @@ private data class SwipeActionProperties(
 )
 
 private fun callbackForSwipeAction(action: SwipeAction, swipeActionCallbacks: SwipeActions.Actions) = when (action) {
+    SwipeAction.None -> swipeActionCallbacks.onNone
     SwipeAction.Trash -> swipeActionCallbacks.onTrash
     SwipeAction.Spam -> swipeActionCallbacks.onSpam
     SwipeAction.Star -> swipeActionCallbacks.onStar
     SwipeAction.Archive -> swipeActionCallbacks.onArchive
     SwipeAction.MarkRead -> swipeActionCallbacks.onMarkRead
-    SwipeAction.None -> TODO()
-    SwipeAction.LabelAs -> TODO()
-    SwipeAction.MoveTo -> TODO()
+    SwipeAction.MoveTo -> swipeActionCallbacks.onMoveTo
+    SwipeAction.LabelAs -> swipeActionCallbacks.onLabelAs
 }
 
 object SwipeActions {
     data class Actions(
+        val onNone: () -> Unit,
         val onTrash: () -> Unit,
         val onSpam: () -> Unit,
         val onStar: () -> Unit,
         val onArchive: () -> Unit,
-        val onMarkRead: () -> Unit
+        val onMarkRead: () -> Unit,
+        val onMoveTo: () -> Unit,
+        val onLabelAs: () -> Unit
     )
 }

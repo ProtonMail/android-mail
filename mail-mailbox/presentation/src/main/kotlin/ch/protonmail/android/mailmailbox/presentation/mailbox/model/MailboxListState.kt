@@ -46,6 +46,7 @@ sealed interface MailboxListState {
         }
 
         val currentMailLabel: MailLabel
+        val swipingEnabled: Boolean
         val swipeActions: SwipeActionsUiModel?
         val clearState: ClearState
         val autoDeleteBannerState: AutoDeleteBannerState
@@ -53,6 +54,7 @@ sealed interface MailboxListState {
 
         data class ViewMode(
             override val currentMailLabel: MailLabel,
+            override val swipingEnabled: Boolean,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
             override val autoDeleteBannerState: AutoDeleteBannerState,
@@ -63,12 +65,12 @@ sealed interface MailboxListState {
             val refreshErrorEffect: Effect<Unit>,
             val refreshRequested: Boolean
         ) : Data {
-
             fun isInInboxLabel() = currentMailLabel.id == MailLabelId.System.Inbox
         }
 
         data class SelectionMode(
             override val currentMailLabel: MailLabel,
+            override val swipingEnabled: Boolean,
             override val swipeActions: SwipeActionsUiModel?,
             override val clearState: ClearState,
             override val autoDeleteBannerState: AutoDeleteBannerState,
