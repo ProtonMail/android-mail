@@ -127,6 +127,7 @@ class LauncherViewModel @Inject constructor(
                 Action.AddAccount -> onAddAccount()
                 Action.OpenPasswordManagement -> onOpenPasswordManagement()
                 Action.OpenRecoveryEmail -> onOpenRecoveryEmail()
+                Action.OpenSecurityKeys -> onOpenSecurityKeys()
                 Action.OpenReport -> onOpenReport()
                 Action.OpenSubscription -> onOpenSubscription()
                 Action.RequestNotificationPermission -> onRequestNotificationPermission()
@@ -149,6 +150,12 @@ class LauncherViewModel @Inject constructor(
     private suspend fun onOpenRecoveryEmail() {
         getPrimaryUserIdOrNull()?.let {
             userSettingsOrchestrator.startUpdateRecoveryEmailWorkflow(it)
+        }
+    }
+
+    private suspend fun onOpenSecurityKeys() {
+        getPrimaryUserIdOrNull()?.let {
+            userSettingsOrchestrator.startSecurityKeysWorkflow(it)
         }
     }
 
@@ -187,6 +194,7 @@ class LauncherViewModel @Inject constructor(
         object AddAccount : Action
         object OpenPasswordManagement : Action
         object OpenRecoveryEmail : Action
+        object OpenSecurityKeys : Action
         object OpenReport : Action
         object OpenSubscription : Action
         object RequestNotificationPermission : Action

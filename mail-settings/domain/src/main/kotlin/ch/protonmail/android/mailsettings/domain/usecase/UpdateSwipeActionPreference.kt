@@ -35,8 +35,8 @@ class UpdateSwipeActionPreference @Inject constructor(
         swipeAction: SwipeAction
     ) {
         when (swipeActionDirection) {
-            SwipeActionDirection.RIGHT -> mailSettingsRepository.updateSwipeRight(userId, swipeAction)
-            SwipeActionDirection.LEFT -> mailSettingsRepository.updateSwipeLeft(userId, swipeAction)
+            SwipeActionDirection.RIGHT -> mailSettingsRepository.updateSwipeRight(userId, swipeAction, false)
+            SwipeActionDirection.LEFT -> mailSettingsRepository.updateSwipeLeft(userId, swipeAction, false)
         }.exhaustive
     }
 }

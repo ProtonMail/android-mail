@@ -195,6 +195,9 @@ private fun callbackForSwipeAction(action: SwipeAction, swipeActionCallbacks: Sw
     SwipeAction.Star -> swipeActionCallbacks.onStar
     SwipeAction.Archive -> swipeActionCallbacks.onArchive
     SwipeAction.MarkRead -> swipeActionCallbacks.onMarkRead
+    SwipeAction.None -> TODO()
+    SwipeAction.LabelAs -> TODO()
+    SwipeAction.MoveTo -> TODO()
 }
 
 object SwipeActions {

@@ -28,6 +28,9 @@ internal val SwipeAction.imageRes
         SwipeAction.Star -> R.drawable.ic_proton_star
         SwipeAction.Archive -> R.drawable.ic_proton_archive_box
         SwipeAction.MarkRead -> R.drawable.ic_proton_envelope_dot
+        SwipeAction.None -> TODO()
+        SwipeAction.LabelAs -> TODO()
+        SwipeAction.MoveTo -> TODO()
     }
 
 internal val SwipeAction.titleRes
@@ -37,6 +40,9 @@ internal val SwipeAction.titleRes
         SwipeAction.Star -> R.string.mail_settings_swipe_action_star_title
         SwipeAction.Archive -> R.string.mail_settings_swipe_action_archive_title
         SwipeAction.MarkRead -> R.string.mail_settings_swipe_action_read_title
+        SwipeAction.None -> TODO()
+        SwipeAction.LabelAs -> TODO()
+        SwipeAction.MoveTo -> TODO()
     }
 
 internal val SwipeAction.descriptionRes
@@ -46,4 +52,7 @@ internal val SwipeAction.descriptionRes
         SwipeAction.Star -> R.string.mail_settings_swipe_action_star_description
         SwipeAction.Archive -> R.string.mail_settings_swipe_action_archive_description
         SwipeAction.MarkRead -> R.string.mail_settings_swipe_action_read_description
+        SwipeAction.None -> TODO()
+        SwipeAction.LabelAs -> TODO()
+        SwipeAction.MoveTo -> TODO()
     }

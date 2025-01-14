@@ -33,6 +33,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import me.proton.core.account.domain.entity.AccountType
+import me.proton.core.compose.theme.AppTheme
+import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.configuration.EnvironmentConfiguration
 import me.proton.core.domain.entity.AppStore
 import me.proton.core.domain.entity.Product
@@ -54,6 +56,11 @@ object ApplicationModule {
     @Provides
     @Singleton
     fun provideAppStore() = AppStore.GooglePlay
+
+    @Provides
+    fun provideAppTheme() = AppTheme { content ->
+        ProtonTheme { content() }
+    }
 
     @Provides
     @Singleton

@@ -48,6 +48,9 @@ class SwipeActionPreferenceUiModelMapper @Inject constructor() :
             SwipeAction.Star -> ProtonTheme.colors.notificationWarning
             SwipeAction.Archive -> ProtonTheme.colors.iconHint
             SwipeAction.MarkRead -> ProtonTheme.colors.interactionNorm
+            SwipeAction.None -> TODO()
+            SwipeAction.LabelAs -> TODO()
+            SwipeAction.MoveTo -> TODO()
         }
     }
 }

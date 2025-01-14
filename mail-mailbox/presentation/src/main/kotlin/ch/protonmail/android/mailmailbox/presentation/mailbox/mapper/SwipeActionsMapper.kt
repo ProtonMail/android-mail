@@ -82,6 +82,10 @@ class SwipeActionsMapper @Inject constructor() {
                 getColor = getColorForSwipeAction(swipeAction),
                 staysDismissed = dismissible(swipeAction, currentMailLabel)
             )
+
+            SwipeAction.None -> TODO()
+            SwipeAction.LabelAs -> TODO()
+            SwipeAction.MoveTo -> TODO()
         }
     }
 
@@ -92,6 +96,9 @@ class SwipeActionsMapper @Inject constructor() {
             SwipeAction.Star -> ProtonTheme.colors.notificationWarning
             SwipeAction.Archive -> ProtonTheme.colors.notificationNorm
             SwipeAction.MarkRead -> ProtonTheme.colors.brandNorm
+            SwipeAction.None -> TODO()
+            SwipeAction.LabelAs -> TODO()
+            SwipeAction.MoveTo -> TODO()
         }
     }
 
@@ -102,6 +109,9 @@ class SwipeActionsMapper @Inject constructor() {
             SwipeAction.Star -> false
             SwipeAction.Archive -> labelId != SystemLabelId.Archive.labelId
             SwipeAction.MarkRead -> false
+            SwipeAction.None -> TODO()
+            SwipeAction.LabelAs -> TODO()
+            SwipeAction.MoveTo -> TODO()
         }
     }
 }
