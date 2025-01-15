@@ -71,6 +71,7 @@ internal class MailboxListReducerTest(
             offlineEffect = Effect.empty(),
             refreshErrorEffect = Effect.empty(),
             refreshRequested = false,
+            swipingEnabled = false,
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.NotSearching,
             clearState = MailboxListState.Data.ClearState.Hidden,
@@ -96,6 +97,7 @@ internal class MailboxListReducerTest(
                     isStarred = false
                 )
             ),
+            swipingEnabled = false,
             swipeActions = null,
             searchState = MailboxSearchStateSampleData.SearchData,
             clearState = MailboxListState.Data.ClearState.Hidden,
@@ -123,8 +125,8 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
-
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
@@ -140,6 +142,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -158,6 +161,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -176,6 +180,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -192,6 +197,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -208,6 +214,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -276,6 +283,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -289,6 +297,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -303,6 +312,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -316,6 +326,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Visible.Button(
@@ -332,6 +343,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -345,6 +357,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Visible.Banner,
@@ -359,6 +372,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -372,6 +386,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Visible.Button(
@@ -388,6 +403,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -401,6 +417,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Visible.Banner,
@@ -415,6 +432,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -434,6 +452,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -448,6 +467,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -467,6 +487,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -481,6 +502,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -500,6 +522,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -514,6 +537,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -533,6 +557,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -549,6 +574,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -566,6 +592,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -582,6 +609,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -599,6 +627,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -615,6 +644,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -632,6 +662,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -648,6 +679,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -665,6 +697,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -681,6 +714,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -694,6 +728,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -708,6 +743,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -731,6 +767,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -745,6 +782,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -769,6 +807,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -783,6 +822,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -807,6 +847,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -821,6 +862,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -843,6 +885,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -857,6 +900,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -878,6 +922,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -892,6 +937,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -913,6 +959,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -927,6 +974,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -940,6 +988,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.of(Unit),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -954,6 +1003,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -967,6 +1017,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -981,6 +1032,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -994,6 +1046,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.of(Unit),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1008,6 +1061,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1021,6 +1075,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1035,6 +1090,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1048,6 +1104,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = true,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1062,6 +1119,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1078,6 +1136,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1095,6 +1154,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1108,6 +1168,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1125,6 +1186,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1149,6 +1211,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1166,6 +1229,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1177,6 +1241,7 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = setOf(),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1194,6 +1259,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1210,6 +1276,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1227,6 +1294,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1243,6 +1311,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1260,6 +1329,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1273,6 +1343,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1290,6 +1361,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1303,6 +1375,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1320,6 +1393,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1333,6 +1407,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1350,6 +1425,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1363,6 +1439,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1380,6 +1457,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1391,6 +1469,7 @@ internal class MailboxListReducerTest(
                 expectedState = MailboxListState.Data.SelectionMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     selectedMailboxItems = emptySet(),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1408,6 +1487,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1421,6 +1501,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1438,6 +1519,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1454,6 +1536,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1471,6 +1554,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1487,6 +1571,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1504,6 +1589,7 @@ internal class MailboxListReducerTest(
                             isStarred = true
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1520,6 +1606,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1537,6 +1624,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1550,6 +1638,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1567,6 +1656,7 @@ internal class MailboxListReducerTest(
                             isStarred = false
                         )
                     ),
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1580,6 +1670,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1594,6 +1685,7 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = false,
                     swipeActions = null,
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1612,9 +1704,407 @@ internal class MailboxListReducerTest(
                     offlineEffect = Effect.empty(),
                     refreshErrorEffect = Effect.empty(),
                     refreshRequested = false,
+                    swipingEnabled = true,
                     swipeActions = SwipeActionsUiModel(
                         start = SwipeUiModelSampleData.Trash,
                         end = SwipeUiModelSampleData.Archive
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.SwipeActionsChanged(
+                    SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.Archive
+                    )
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.Archive
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.SwipeActionsChanged(
+                    SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.SwipeActionsChanged(
+                    SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NewSearch,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.EnterSearchMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NewSearch,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.ExitSearchMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = true,
+                            isStarred = false
+                        )
+                    ),
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = MailboxListState.Data.SelectionMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    selectedMailboxItems = setOf(
+                        SelectedMailboxItem(
+                            userId = UserIdTestData.userId,
+                            id = MailboxItemUiModelTestData.readMailboxItemUiModel.id,
+                            isRead = true,
+                            isStarred = false
+                        )
+                    ),
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    ),
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
                     ),
                     searchState = MailboxSearchStateSampleData.NotSearching,
                     clearState = MailboxListState.Data.ClearState.Hidden,
@@ -1667,9 +2157,77 @@ internal class MailboxListReducerTest(
                 expectedState = listStateWithSearchSelectionMode
             ),
             TestInput(
+                currentState = listStateWithSearchModeSearchData.copy(
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = listStateWithSearchSelectionMode.copy(
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    )
+                )
+            ),
+            TestInput(
+                currentState = listStateWithSearchModeSearchData.copy(
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                operation = MailboxEvent.EnterSelectionMode(MailboxItemUiModelTestData.readMailboxItemUiModel),
+                expectedState = listStateWithSearchSelectionMode.copy(
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    )
+                )
+            ),
+            TestInput(
                 currentState = listStateWithSearchSelectionMode,
                 operation = MailboxViewAction.ExitSelectionMode,
                 expectedState = listStateWithSearchModeSearchData
+            ),
+            TestInput(
+                currentState = listStateWithSearchSelectionMode.copy(
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = listStateWithSearchModeSearchData.copy(
+                    swipingEnabled = true,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.Archive,
+                        end = SwipeUiModelSampleData.None
+                    )
+                )
+            ),
+            TestInput(
+                currentState = listStateWithSearchSelectionMode.copy(
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    )
+                ),
+                operation = MailboxViewAction.ExitSelectionMode,
+                expectedState = listStateWithSearchModeSearchData.copy(
+                    swipingEnabled = false,
+                    swipeActions = SwipeActionsUiModel(
+                        start = SwipeUiModelSampleData.None,
+                        end = SwipeUiModelSampleData.None
+                    )
+                )
             ),
             TestInput(
                 currentState = listStateSearchSelectionInCustomFolder,

@@ -29,7 +29,8 @@ object SwipeActionsTestData {
     object Edit {
 
         fun buildAllItems(selected: SwipeAction?): List<EditSwipeActionPreferenceItemUiModel> =
-            SwipeAction.values().map { buildItem(it, isSelected = it == selected) }
+            SwipeAction.entries.filter { it != SwipeAction.LabelAs && it != SwipeAction.MoveTo }
+                .map { buildItem(it, isSelected = it == selected) }
 
         fun buildItem(swipeAction: SwipeAction, isSelected: Boolean) = EditSwipeActionPreferenceItemUiModel(
             swipeAction = swipeAction,

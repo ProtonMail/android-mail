@@ -74,6 +74,8 @@ object MailSettingsTestData {
         promptPin = true,
         stickyLabels = true,
         confirmLink = confirmLink,
-        autoDeleteSpamAndTrashDays = autoDeleteSpamAndTrashDays
+        autoDeleteSpamAndTrashDays = autoDeleteSpamAndTrashDays,
+        mobileSettings = null,
+        almostAllMail = null
     )
 }

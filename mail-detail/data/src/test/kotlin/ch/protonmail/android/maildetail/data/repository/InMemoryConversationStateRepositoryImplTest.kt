@@ -136,6 +136,7 @@ class InMemoryConversationStateRepositoryImplTest {
     }
 
     @Test
+    @Suppress("ForEachOnRange")
     fun `Should emit all the messages put in the cache`() = runTest {
         // Given
         val repo = buildRepository()

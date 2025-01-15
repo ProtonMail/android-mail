@@ -32,13 +32,49 @@ import kotlin.test.Test
 internal class UpdateSwipeActionPreferenceTest {
 
     private val mailSettingsRepository: MailSettingsRepository = mockk {
-        coEvery { updateSwipeLeft(any(), any()) } returns MailSettingsTestData.mailSettings
-        coEvery { updateSwipeRight(any(), any()) } returns MailSettingsTestData.mailSettings
+        coEvery { updateSwipeLeft(any(), any(), any()) } returns MailSettingsTestData.mailSettings
+        coEvery { updateSwipeRight(any(), any(), any()) } returns MailSettingsTestData.mailSettings
     }
     private val updateSwipeActionPreference = UpdateSwipeActionPreference(mailSettingsRepository)
 
     @Test
-    fun `correctly calls repository for update left`() = runTest {
+    fun `correctly calls repository for update left with none action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.None
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with none action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.None
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with trash action`() = runTest {
         // given
         val swipeAction = SwipeAction.Trash
 
@@ -50,11 +86,157 @@ internal class UpdateSwipeActionPreferenceTest {
         )
 
         // then
-        coVerify { mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction) }
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
     }
 
     @Test
-    fun `correctly calls repository for update right`() = runTest {
+    fun `correctly calls repository for update right with trash action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Trash
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with spam action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Spam
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with spam action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Spam
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with star action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Star
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with start action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Star
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with archive action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Archive
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with archive action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.Archive
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with mark read action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.MarkRead
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with mark read action`() = runTest {
         // given
         val swipeAction = SwipeAction.MarkRead
 
@@ -66,6 +248,80 @@ internal class UpdateSwipeActionPreferenceTest {
         )
 
         // then
-        coVerify { mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction) }
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with label as action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.LabelAs
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with label as action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.LabelAs
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update left with move to action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.MoveTo
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.LEFT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
+    }
+
+    @Test
+    fun `correctly calls repository for update right with move to action`() = runTest {
+        // given
+        val swipeAction = SwipeAction.MoveTo
+
+        // when
+        updateSwipeActionPreference(
+            userId = userId,
+            swipeActionDirection = SwipeActionDirection.RIGHT,
+            swipeAction = swipeAction
+        )
+
+        // then
+        coVerify {
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+        }
     }
 }

@@ -157,6 +157,72 @@ class SwipeActionsMapperTest(
                         staysDismissed = true
                     )
                 )
+            ),
+            TestInput(
+                input = SystemLabelId.Starred.labelId to SwipeActionsPreference(
+                    swipeLeft = SwipeAction.None,
+                    swipeRight = SwipeAction.MarkRead
+                ),
+                expected = SwipeActionsUiModel(
+                    end = SwipeUiModel(
+                        swipeAction = SwipeAction.None,
+                        icon = R.drawable.ic_proton_cross_circle,
+                        descriptionRes = R.string.mail_settings_swipe_action_none_description,
+                        getColor = { ProtonTheme.colors.notificationNorm },
+                        staysDismissed = false
+                    ),
+                    start = SwipeUiModel(
+                        swipeAction = SwipeAction.MarkRead,
+                        icon = R.drawable.ic_proton_envelope_dot,
+                        descriptionRes = R.string.mail_settings_swipe_action_read_description,
+                        getColor = { ProtonTheme.colors.brandNorm },
+                        staysDismissed = false
+                    )
+                )
+            ),
+            TestInput(
+                input = SystemLabelId.Drafts.labelId to SwipeActionsPreference(
+                    swipeLeft = SwipeAction.LabelAs,
+                    swipeRight = SwipeAction.None
+                ),
+                expected = SwipeActionsUiModel(
+                    end = SwipeUiModel(
+                        swipeAction = SwipeAction.LabelAs,
+                        icon = R.drawable.ic_proton_tag,
+                        descriptionRes = R.string.mail_settings_swipe_action_label_as_description,
+                        getColor = { ProtonTheme.colors.notificationNorm },
+                        staysDismissed = false
+                    ),
+                    start = SwipeUiModel(
+                        swipeAction = SwipeAction.None,
+                        icon = R.drawable.ic_proton_cross_circle,
+                        descriptionRes = R.string.mail_settings_swipe_action_none_description,
+                        getColor = { ProtonTheme.colors.notificationNorm },
+                        staysDismissed = false
+                    )
+                )
+            ),
+            TestInput(
+                input = SystemLabelId.AllMail.labelId to SwipeActionsPreference(
+                    swipeLeft = SwipeAction.MoveTo,
+                    swipeRight = SwipeAction.Star
+                ),
+                expected = SwipeActionsUiModel(
+                    end = SwipeUiModel(
+                        swipeAction = SwipeAction.MoveTo,
+                        icon = R.drawable.ic_proton_folder_arrow_in,
+                        descriptionRes = R.string.mail_settings_swipe_action_move_to_description,
+                        getColor = { ProtonTheme.colors.notificationNorm },
+                        staysDismissed = false
+                    ),
+                    start = SwipeUiModel(
+                        swipeAction = SwipeAction.Star,
+                        icon = R.drawable.ic_proton_star,
+                        descriptionRes = R.string.mail_settings_swipe_action_star_description,
+                        getColor = { ProtonTheme.colors.notificationWarning },
+                        staysDismissed = false
+                    )
+                )
             )
         )
 

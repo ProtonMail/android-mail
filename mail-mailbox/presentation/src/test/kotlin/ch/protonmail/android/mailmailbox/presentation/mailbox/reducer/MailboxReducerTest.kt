@@ -191,6 +191,7 @@ internal class MailboxReducerTest(
                 offlineEffect = Effect.empty(),
                 refreshErrorEffect = Effect.empty(),
                 refreshRequested = false,
+                swipingEnabled = false,
                 swipeActions = null,
                 searchState = MailboxSearchStateSampleData.NotSearching,
                 clearState = MailboxListState.Data.ClearState.Hidden,
