@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.data.repository.AutoLockRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.BackgroundSyncSettingRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.BiometricsSystemStateRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.InMemoryToolbarPreferenceRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.LocalStorageDataRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.MobileFooterRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.NotificationsSettingsRepositoryImpl
@@ -51,6 +52,7 @@ import ch.protonmail.android.mailsettings.domain.repository.AutoLockRepository
 import ch.protonmail.android.mailsettings.domain.repository.BackgroundSyncSettingRepository
 import ch.protonmail.android.mailsettings.domain.repository.BiometricsSystemStateRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
+import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPreferenceRepository
 import ch.protonmail.android.mailsettings.domain.repository.LocalStorageDataRepository
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import ch.protonmail.android.mailsettings.domain.repository.NotificationsSettingsRepository
@@ -63,6 +65,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineScope
@@ -175,4 +178,14 @@ object SettingsModule {
             impl: BiometricsSystemStateRepositoryImpl
         ): BiometricsSystemStateRepository
     }
+}
+
+@Module
+@InstallIn(ViewModelComponent::class)
+internal interface ViewModelBindings {
+
+    @Binds
+    fun bindInMemoryToolbarPreferenceRepository(
+        implementation: InMemoryToolbarPreferenceRepositoryImpl
+    ): InMemoryToolbarPreferenceRepository
 }
