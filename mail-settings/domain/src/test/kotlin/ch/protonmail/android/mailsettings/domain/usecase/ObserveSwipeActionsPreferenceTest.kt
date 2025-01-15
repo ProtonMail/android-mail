@@ -73,7 +73,7 @@ internal class ObserveSwipeActionsPreferenceTest {
     }
 
     @Test
-    fun `throws exception when Swipe Left is null`() = runTest {
+    fun `defaults to action none when Swipe Left is null`() = runTest {
         // given
         val mailSettings = buildMailSettings(
             swipeLeft = null,
@@ -85,10 +85,12 @@ internal class ObserveSwipeActionsPreferenceTest {
         observeSwipeActionsPreference(userId).test {
 
             // then
-            val expectedMessage = "Swipe Left is null"
-            val actual = awaitError()
-            assert(actual is IllegalStateException)
-            assertEquals(expectedMessage, actual.message)
+            val expected = SwipeActionsPreference(
+                swipeLeft = SwipeAction.None,
+                swipeRight = SwipeAction.Archive
+            )
+            assertEquals(expected, awaitItem())
+            awaitComplete()
         }
     }
 
@@ -117,7 +119,7 @@ internal class ObserveSwipeActionsPreferenceTest {
     }
 
     @Test
-    fun `throws exception when Swipe Right is null`() = runTest {
+    fun `defaults to action none when Swipe Right is null`() = runTest {
         // given
         val mailSettings = buildMailSettings(
             swipeLeft = SwipeAction.MarkRead,
@@ -129,10 +131,12 @@ internal class ObserveSwipeActionsPreferenceTest {
         observeSwipeActionsPreference(userId).test {
 
             // then
-            val expectedMessage = "Swipe Right is null"
-            val actual = awaitError()
-            assert(actual is IllegalStateException)
-            assertEquals(expectedMessage, actual.message)
+            val expected = SwipeActionsPreference(
+                swipeLeft = SwipeAction.MarkRead,
+                swipeRight = SwipeAction.None
+            )
+            assertEquals(expected, awaitItem())
+            awaitComplete()
         }
     }
 }
