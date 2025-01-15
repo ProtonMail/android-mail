@@ -24,5 +24,5 @@ data class SwipeActionsUiModel(
     val start: SwipeUiModel,
     val end: SwipeUiModel
 ) {
-    fun actionsNotSet() = start.swipeAction != SwipeAction.None || end.swipeAction != SwipeAction.None
+    fun atLastOneActionSet() = start.swipeAction != SwipeAction.None || end.swipeAction != SwipeAction.None
 }

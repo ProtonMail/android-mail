@@ -43,14 +43,14 @@ class SwipeActionPreferenceUiModelMapper @Inject constructor() :
 
     private fun getColorGetter(swipeAction: SwipeAction): @Composable () -> Color = {
         when (swipeAction) {
-            SwipeAction.None -> ProtonTheme.colors.notificationNorm
+            SwipeAction.None -> ProtonTheme.colors.iconHint
             SwipeAction.Trash -> ProtonTheme.colors.notificationError
             SwipeAction.Spam -> ProtonTheme.colors.iconHint
             SwipeAction.Star -> ProtonTheme.colors.notificationWarning
             SwipeAction.Archive -> ProtonTheme.colors.iconHint
             SwipeAction.MarkRead -> ProtonTheme.colors.interactionNorm
-            SwipeAction.LabelAs -> ProtonTheme.colors.notificationNorm
-            SwipeAction.MoveTo -> ProtonTheme.colors.notificationNorm
+            SwipeAction.LabelAs -> ProtonTheme.colors.iconHint
+            SwipeAction.MoveTo -> ProtonTheme.colors.iconHint
         }
     }
 }

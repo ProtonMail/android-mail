@@ -25,6 +25,7 @@ data class SwipeActionsPreference(
     val swipeRight: SwipeAction
 )
 
-fun SwipeAction.shouldSyncWithRemote() =
-    this == SwipeAction.Trash || this == SwipeAction.Spam || this == SwipeAction.Star ||
-        this == SwipeAction.Archive || this == SwipeAction.MarkRead
+fun SwipeAction.shouldSyncWithRemote() = when (this) {
+    SwipeAction.None, SwipeAction.LabelAs, SwipeAction.MoveTo -> false
+    else -> true
+}

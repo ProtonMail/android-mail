@@ -46,8 +46,7 @@ fun Launcher(activityActions: MainActivity.Actions, viewModel: LauncherViewModel
                 onSwitchAccount = { viewModel.submit(LauncherViewModel.Action.Switch(it)) },
                 onRequestNotificationPermission = {
                     viewModel.submit(LauncherViewModel.Action.RequestNotificationPermission)
-                },
-                onOpenSecurityKey = { viewModel.submit(LauncherViewModel.Action.OpenSecurityKeys) }
+                }
             )
         )
         LauncherState.Processing,
@@ -67,7 +66,6 @@ object Launcher {
         val onReportBug: () -> Unit,
         val onPasswordManagement: () -> Unit,
         val onRecoveryEmail: () -> Unit,
-        val onRequestNotificationPermission: () -> Unit,
-        val onOpenSecurityKey: () -> Unit
+        val onRequestNotificationPermission: () -> Unit
     )
 }

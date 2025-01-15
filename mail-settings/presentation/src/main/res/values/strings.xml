@@ -110,7 +110,7 @@
     <string name="mail_settings_swipe_actions_subtitle">Set up swipe gestures to access most used actions.</string>
     <string name="mail_settings_swipe_right_name">Left to right</string>
     <string name="mail_settings_swipe_left_name">Right to left</string>
-    <string name="mail_settings_swipe_action_none_title">None</string>
+    <string name="mail_settings_swipe_action_none_title">Not set</string>
     <string name="mail_settings_swipe_action_archive_title">Archive</string>
     <string name="mail_settings_swipe_action_read_title">Unread</string>
     <string name="mail_settings_swipe_action_spam_title">Spam</string>
@@ -118,7 +118,7 @@
     <string name="mail_settings_swipe_action_trash_title">Trash</string>
     <string name="mail_settings_swipe_action_label_as_title">Label as…</string>
     <string name="mail_settings_swipe_action_move_to_title">Move to…</string>
-    <string name="mail_settings_swipe_action_none_description">Not set</string>
+    <string name="mail_settings_swipe_action_none_description">None</string>
     <string name="mail_settings_swipe_action_archive_description">Move to archive</string>
     <string name="mail_settings_swipe_action_read_description">Mark as unread/read</string>
     <string name="mail_settings_swipe_action_spam_description">Move to spam</string>
