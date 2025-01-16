@@ -281,7 +281,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.enumOf(ToolbarAction.Print.value),
                     ToolbarAction.enumOf(ToolbarAction.ReportPhishing.value),
                     ToolbarAction.enumOf(ToolbarAction.MoveToSpam.value),
-                    ToolbarAction.enumOf("unknown2"),
+                    ToolbarAction.enumOf("unknown2")
                 )
             )
             assertEquals(expected, awaitItem())
