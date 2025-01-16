@@ -21,12 +21,10 @@ package ch.protonmail.android.mailsettings.domain.usecase.toolbaractions
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
 import kotlinx.coroutines.flow.firstOrNull
 import me.proton.core.accountmanager.domain.AccountManager
-import me.proton.core.mailsettings.domain.entity.ToolbarAction
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class SaveSettingsActions @Inject constructor(
-
     private val accountManager: AccountManager,
     private val mailSettingsRepository: MailSettingsRepository
 ) {
@@ -41,7 +39,5 @@ class SaveSettingsActions @Inject constructor(
         )
     }
 
-    private fun ToolbarActionsPreference.ToolbarActions.selection() = current.selected.map {
-        ToolbarAction.enumOf(it.value)
-    }
+    private fun ToolbarActionsPreference.ToolbarActions.selection() = current.selected
 }

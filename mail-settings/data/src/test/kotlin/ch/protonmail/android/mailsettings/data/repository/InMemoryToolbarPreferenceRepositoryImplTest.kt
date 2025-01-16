@@ -34,6 +34,7 @@ import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.entity.UserId
+import me.proton.core.domain.type.StringEnum
 import me.proton.core.mailsettings.domain.entity.ActionsToolbarSetting
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.MobileSettings
@@ -127,17 +128,17 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveTo,
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam
-                ),
+                ).stringEnums(),
                 messageActions = listOf(
                     ToolbarAction.ReportPhishing,
                     ToolbarAction.ReplyOrReplyAll,
                     ToolbarAction.MarkAsReadOrUnread
-                ),
+                ).stringEnums(),
                 conversationActions = listOf(
                     ToolbarAction.MoveToSpam,
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.MoveTo
-                )
+                ).stringEnums()
             )
             val item = awaitItem()
             assertEquals(expected, item)
@@ -147,15 +148,17 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     @Test
     fun `returns correctly partitioned actions when user has a preference`() = runTest {
         // Given
+        val remoteActions = listOf(
+            "unknown1",
+            "move",
+            "print",
+            "spam",
+            "unknown2"
+        )
         val mobileSettings = MobileSettings(
             listToolbar = ActionsToolbarSetting(
                 isCustom = false,
-                actions = listOf(
-                    ToolbarAction.MoveTo,
-                    ToolbarAction.Print,
-                    ToolbarAction.MoveToSpam
-                )
-                    .map { ToolbarAction.enumOf(it.value) }
+                actions = remoteActions.map { ToolbarAction.enumOf(it) }
             ),
             messageToolbar = null,
             conversationToolbar = null
@@ -172,11 +175,11 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
             // Then
             val expected = expectedDefaultPreference(
                 convMode = true,
-                inboxActions = listOf(
+                inboxActions = listOf(ToolbarAction.enumOf("unknown1")) + listOf(
                     ToolbarAction.MoveTo,
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam
-                )
+                ).stringEnums() + listOf(ToolbarAction.enumOf("unknown2"))
             )
             assertEquals(expected, awaitItem())
         }
@@ -185,7 +188,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     @Test
     fun `removes an action from the selection when deselected`() = runTest {
         // Given
-        val mobileSettingsMock = MobileSettings(
+        val mobileSettings = MobileSettings(
             listToolbar = null,
             messageToolbar = null,
             conversationToolbar = ActionsToolbarSetting(
@@ -195,13 +198,12 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveTo,
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam
-                )
-                    .map { ToolbarAction.enumOf(it.value) }
+                ).stringEnums()
             )
         )
         val settingsMock = mockk<MailSettings> {
             every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
-            every { this@mockk.mobileSettings } returns mobileSettingsMock
+            every { this@mockk.mobileSettings } returns mobileSettings
         }
         val resp = DataResult.Success(ResponseSource.Remote, settingsMock)
         coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(resp)
@@ -218,7 +220,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.ReportPhishing,
                     ToolbarAction.MoveTo,
                     ToolbarAction.MoveToSpam
-                )
+                ).stringEnums()
             )
             assertEquals(expected, awaitItem())
         }
@@ -227,23 +229,25 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     @Test
     fun `reorders an action when requested`() = runTest {
         // Given
-        val mobileSettingsMock = MobileSettings(
+        val remoteActions = listOf(
+            "report_phishing",
+            "unknown1",
+            "move",
+            "print",
+            "spam",
+            "unknown2"
+        )
+        val mobileSettings = MobileSettings(
             listToolbar = null,
-            messageToolbar = null,
             conversationToolbar = ActionsToolbarSetting(
                 isCustom = false,
-                actions = listOf(
-                    ToolbarAction.ReportPhishing,
-                    ToolbarAction.MoveTo,
-                    ToolbarAction.Print,
-                    ToolbarAction.MoveToSpam
-                )
-                    .map { ToolbarAction.enumOf(it.value) }
-            )
+                actions = remoteActions.map { ToolbarAction.enumOf(it) }
+            ),
+            messageToolbar = null
         )
         val settingsMock = mockk<MailSettings> {
             every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
-            every { this@mockk.mobileSettings } returns mobileSettingsMock
+            every { this@mockk.mobileSettings } returns mobileSettings
         }
         val resp = DataResult.Success(ResponseSource.Remote, settingsMock)
         coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(resp)
@@ -251,16 +255,33 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
         // When
         repo.inMemoryPreferences().test {
             awaitItem()
-            repo.reorder(fromIndex = 1, toIndex = 3, tab = SettingsToolbarType.Message)
+            repo.reorder(fromIndex = 0, toIndex = 2, tab = SettingsToolbarType.Message)
+            /**
+             *    "report_phishing",  | from idx 0
+             *    "unknown1",
+             *    "move"
+             *    "print",
+             *    "spam",
+             *    "unknown2",
+             ->>
+             *    "move",
+             *    "unknown1",
+             *    "print",
+             *    "report_phishing", // now at index 2 (not counting unknown)
+             *    "spam",
+             *    "unknown2",
+             */
 
             // Then
             val expected = expectedDefaultPreference(
                 convMode = true,
                 conversationActions = listOf(
-                    ToolbarAction.ReportPhishing,
-                    ToolbarAction.Print,
-                    ToolbarAction.MoveToSpam,
-                    ToolbarAction.MoveTo
+                    ToolbarAction.enumOf(ToolbarAction.MoveTo.value),
+                    ToolbarAction.enumOf("unknown1"),
+                    ToolbarAction.enumOf(ToolbarAction.Print.value),
+                    ToolbarAction.enumOf(ToolbarAction.ReportPhishing.value),
+                    ToolbarAction.enumOf(ToolbarAction.MoveToSpam.value),
+                    ToolbarAction.enumOf("unknown2"),
                 )
             )
             assertEquals(expected, awaitItem())
@@ -305,7 +326,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam,
                     ToolbarAction.MoveToArchive
-                )
+                ).stringEnums()
             )
             assertEquals(expected, awaitItem())
         }
@@ -345,11 +366,13 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
         }
     }
 
+    private fun List<ToolbarAction>.stringEnums() = map { ToolbarAction.enumOf(it.value) }
+
     private fun expectedDefaultPreference(
         convMode: Boolean,
-        messageActions: List<ToolbarAction>? = null,
-        conversationActions: List<ToolbarAction>? = null,
-        inboxActions: List<ToolbarAction>? = null
+        messageActions: List<StringEnum<ToolbarAction>>? = null,
+        conversationActions: List<StringEnum<ToolbarAction>>? = null,
+        inboxActions: List<StringEnum<ToolbarAction>>? = null
     ) = ToolbarActionsPreference(
         messageToolbar = expectedActions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
         conversationToolbar = expectedActions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
@@ -358,12 +381,12 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     )
 
     private fun expectedActions(
-        custom: List<ToolbarAction>?,
+        custom: List<StringEnum<ToolbarAction>>?,
         defaults: List<ToolbarAction>,
         all: List<ToolbarAction>
     ) = ToolbarActions(
         current = ActionSelection(
-            selected = custom ?: defaults,
+            selected = custom ?: defaults.map { ToolbarAction.enumOf(it.value) },
             all = all
         ),
         default = defaults

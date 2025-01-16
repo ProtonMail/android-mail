@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailsettings.domain.model
 
+import me.proton.core.domain.type.StringEnum
 import me.proton.core.mailsettings.domain.entity.ActionsToolbarSetting
 import me.proton.core.mailsettings.domain.entity.MobileSettings
 import me.proton.core.mailsettings.domain.entity.ToolbarAction
@@ -30,7 +31,7 @@ data class ToolbarActionsPreference(
 ) {
 
     data class ActionSelection(
-        val selected: List<ToolbarAction>,
+        val selected: List<StringEnum<ToolbarAction>>,
         val all: List<ToolbarAction>
     ) {
 
@@ -41,16 +42,32 @@ data class ToolbarActionsPreference(
             val action = all.firstOrNull { it.identifier == actionId } ?: return this
             return if (toggled) {
                 copy(
-                    selected = selected + action
+                    selected = selected + ToolbarAction.enumOf(action.value)
                 )
             } else {
-                copy(selected = selected.filterNot { it == action })
+                copy(selected = selected.filterNot { it.value == action.value })
             }
         }
 
-        fun reorder(fromIndex: Int, toIndex: Int): ActionSelection = copy(
-            selected = selected.toMutableList().apply { add(toIndex, removeAt(fromIndex)) }.toList()
-        )
+        fun reorder(fromIndex: Int, toIndex: Int): ActionSelection {
+            val reorderedRecognized = selected.mapNotNull { it.enum }
+                .toMutableList()
+                .apply { add(toIndex, removeAt(fromIndex)) }
+
+            var recognizedActionsIdx = 0
+            val reordered = selected.map { stringEnum ->
+                if (stringEnum.enum == null) {
+                    stringEnum
+                } else {
+                    ToolbarAction.enumOf(reorderedRecognized[recognizedActionsIdx].value).also {
+                        recognizedActionsIdx++
+                    }
+                }
+            }
+            return copy(
+                selected = reordered
+            )
+        }
     }
 
     fun update(toolbarType: SettingsToolbarType, block: (ToolbarActions) -> ToolbarActions) = when (toolbarType) {
@@ -67,7 +84,7 @@ data class ToolbarActionsPreference(
         val default: List<ToolbarAction>
     ) {
 
-        fun resetToDefault() = copy(current = current.copy(selected = default))
+        fun resetToDefault() = copy(current = current.copy(selected = default.map { ToolbarAction.enumOf(it.value) }))
 
         fun reorder(fromIndex: Int, toIndex: Int) = copy(
             current = current.reorder(fromIndex = fromIndex, toIndex = toIndex)
@@ -94,7 +111,7 @@ data class ToolbarActionsPreference(
         private fun ActionsToolbarSetting?.createActions(default: List<ToolbarAction>, all: List<ToolbarAction>) =
             ToolbarActions(
                 current = ActionSelection(
-                    selected = this?.actions?.mapNotNull { it.enum } ?: default,
+                    selected = this?.actions ?: default.map { ToolbarAction.enumOf(it.value) },
                     all = all
                 ),
                 default = default
