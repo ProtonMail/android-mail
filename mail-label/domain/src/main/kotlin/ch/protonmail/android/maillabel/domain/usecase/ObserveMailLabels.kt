@@ -21,6 +21,9 @@ package ch.protonmail.android.maillabel.domain.usecase
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Companion.defaultDisplayedList
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Companion.showAllDefaultDisplayedList
+import ch.protonmail.android.maillabel.domain.model.SystemLabelId.Companion.showAllDisplayedList
 import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
@@ -37,6 +40,8 @@ import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
 import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.mailsettings.domain.entity.ShowMoved
+import me.proton.core.mailsettings.domain.entity.AlmostAllMail
+import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
@@ -47,8 +52,9 @@ class ObserveMailLabels @Inject constructor(
     private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke(userId: UserId, useShowMovedSettings: Boolean = false) = combine(
-        observeSystemLabelIds(userId, useShowMovedSettings).map { it.toMailLabelSystem() },
+    operator fun invoke(userId: UserId, respectSettings: Boolean = false) = combine(
+        observeSystemLabelIds(userId, respectSettings)
+            .map { it.toMailLabelSystem() },
         observeCustomLabels(userId, MessageLabel).map { it.toMailLabelCustom() },
         observeCustomLabels(userId, MessageFolder).map { it.toMailLabelCustom() }
     ) { defaults, labels, folders ->
@@ -59,20 +65,33 @@ class ObserveMailLabels @Inject constructor(
         )
     }.flowOn(dispatcher)
 
-    private fun observeSystemLabelIds(userId: UserId, useShowMovedSettings: Boolean = false) =
-        if (useShowMovedSettings) {
-            mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
-                .mapLatest { mailSettings ->
-                    if (mailSettings?.showMoved?.enum == ShowMoved.Both) {
-                        SystemLabelId.showAllDisplayedList
-                    } else {
-                        SystemLabelId.displayedList
-                    }
-                }
-                .flowOn(dispatcher)
+    private fun observeSystemLabelIds(userId: UserId, respectSettings: Boolean = false) = if (respectSettings) {
+        mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull()
+            .mapLatest { generateSystemLabelsBasedOnSettings(it) }
+            .flowOn(dispatcher)
+    } else {
+        flowOf(SystemLabelId.displayedList)
+    }
+
+    private fun generateSystemLabelsBasedOnSettings(mailSettings: MailSettings?): MutableList<SystemLabelId> {
+        val displayedList = mutableListOf(SystemLabelId.Inbox)
+
+        displayedList += if (mailSettings?.showMoved?.enum == ShowMoved.Both) {
+            showAllDisplayedList
         } else {
-            flowOf(SystemLabelId.displayedList)
+            showAllDefaultDisplayedList
         }
+
+        displayedList += defaultDisplayedList
+
+        displayedList += if (mailSettings?.almostAllMail?.enum == AlmostAllMail.Enabled) {
+            SystemLabelId.AlmostAllMail
+        } else {
+            SystemLabelId.AllMail
+        }
+
+        return displayedList
+    }
 
     private fun observeCustomLabels(userId: UserId, type: LabelType) = labelRepository.observeLabels(userId, type)
         .mapSuccessValueOrNull()

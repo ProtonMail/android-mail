@@ -109,6 +109,7 @@ import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProg
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.annotations.AutodeleteFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAlmostAllMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
@@ -158,6 +159,7 @@ class MailboxViewModel @Inject constructor(
     private val selectedMailLabelId: SelectedMailLabelId,
     private val observeUnreadCounters: ObserveUnreadCounters,
     private val observeFolderColorSettings: ObserveFolderColorSettings,
+    private val observeAlmostAllMailSettings: ObserveAlmostAllMailSettings,
     observeAutoDeleteSetting: ObserveAutoDeleteSetting,
     private val updateAutoDeleteSpamAndTrashDays: UpdateAutoDeleteSpamAndTrashDays,
     @AutodeleteFeatureEnabled private val isAutodeleteFeatureEnabled: Boolean,
@@ -518,11 +520,14 @@ class MailboxViewModel @Inject constructor(
                 state.observeMailLabelChanges(),
                 state.observeUnreadFilterState(),
                 observeViewModeByLocation(),
-                state.observeSearchQuery()
-            ) { selectedMailLabel, unreadFilterEnabled, viewMode, query ->
+                state.observeSearchQuery(),
+                observeAlmostAllMailSettings.invoke(userId)
+            ) { selectedMailLabel, unreadFilterEnabled, viewMode, query, almostAllMailSetting ->
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
-                    selectedMailLabelId = if (query.isEmpty()) selectedMailLabel.id else MailLabelId.System.AllMail,
+                    selectedMailLabelId = if (query.isEmpty()) selectedMailLabel.id
+                    else if (almostAllMailSetting) MailLabelId.System.AlmostAllMail
+                    else MailLabelId.System.AllMail,
                     filterUnread = unreadFilterEnabled,
                     type = if (query.isEmpty()) viewMode.toMailboxItemType() else MailboxItemType.Message,
                     searchQuery = query,
@@ -1146,7 +1151,7 @@ class MailboxViewModel @Inject constructor(
         if (userId == null) {
             flowOf(MailLabels.Initial)
         } else {
-            observeMailLabels(userId, true)
+            observeMailLabels(userId, respectSettings = true)
         }
     }
 

@@ -90,11 +90,13 @@ enum class SystemLabelId(val labelId: LabelId) {
 
         private val map = entries.associateBy { stringOf(it) }
 
-        private val defaultDisplayedList = listOf(Starred, Archive, Spam, Trash, AllMail)
+        val defaultDisplayedList = listOf(Starred, Archive, Spam, Trash)
 
         val displayedList = listOf(Inbox, Drafts, Sent, Starred, Archive, Spam, Trash, AllMail)
 
-        val showAllDisplayedList = listOf(Inbox, AllDrafts, AllSent) + defaultDisplayedList
+        val showAllDefaultDisplayedList = listOf(Drafts, Sent)
+
+        val showAllDisplayedList = listOf(AllDrafts, AllSent)
 
         val exclusiveDestinationList = listOf(Inbox, Archive, Spam, Trash)
 

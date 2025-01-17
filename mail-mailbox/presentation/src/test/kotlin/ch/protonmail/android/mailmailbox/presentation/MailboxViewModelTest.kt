@@ -128,6 +128,7 @@ import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTr
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionsPreference
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveAlmostAllMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveSwipeActionsPreference
@@ -239,6 +240,9 @@ class MailboxViewModelTest {
     private val observeFolderColorSettings = mockk<ObserveFolderColorSettings> {
         every { this@mockk.invoke(userId) } returns flowOf(defaultFolderColorSettings)
     }
+    private val observeAlmostAllMailSettings = mockk<ObserveAlmostAllMailSettings> {
+        every { this@mockk(userId) } returns flowOf(false)
+    }
 
     private val getContacts = mockk<GetContacts> {
         coEvery { this@mockk.invoke(userId) } returns Either.Right(ContactTestData.contacts)
@@ -309,6 +313,7 @@ class MailboxViewModelTest {
             selectedMailLabelId = selectedMailLabelId,
             observeUnreadCounters = observeUnreadCounters,
             observeFolderColorSettings = observeFolderColorSettings,
+            observeAlmostAllMailSettings = observeAlmostAllMailSettings,
             getMessagesWithLabels = getMessagesWithLabels,
             getConversationsWithLabels = getConversationsWithLabels,
             getMailboxActions = observeMailboxActions,
@@ -366,7 +371,7 @@ class MailboxViewModelTest {
         // Given
         coEvery { observeUnreadCounters(userId = any()) } returns emptyFlow()
         coEvery {
-            observeMailLabels(userId = any(), useShowMovedSettings = any())
+            observeMailLabels(userId = any(), respectSettings = any())
         } returns emptyFlow()
 
         // When
@@ -3578,7 +3583,7 @@ class MailboxViewModelTest {
     @Test
     fun `when swipe archive is called when current label is archive, no action is performed`() = runTest {
         // Given
-        val initialState = createMailboxDataState(selectedMailLabelId = MailLabelId.System.Archive)
+        val initialState = createMailboxDataState(selectedMailLabelId = Archive)
         val expectedItemId = "itemId"
         val expectedViewAction = MailboxViewAction.SwipeArchiveAction(userId, expectedItemId)
 
@@ -3991,7 +3996,7 @@ class MailboxViewModelTest {
     }
 
     @Test
-    fun `search will be performed in AllMail label independent from current label`() = runTest {
+    fun `search will be performed in AllMail label independent from current label and setting is off`() = runTest {
         // Given
         val queryText = MailboxSearchStateSampleData.QueryString
         val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
@@ -4025,6 +4030,8 @@ class MailboxViewModelTest {
         } returns mailboxSearchQueryState
         coEvery { deleteSearchResults.invoke(any(), any()) } just runs
 
+        every { observeAlmostAllMailSettings.invoke(any()) } returns flowOf(false)
+
         mailboxViewModel.items.test {
             // Then
             verify {
@@ -4047,6 +4054,92 @@ class MailboxViewModelTest {
                 pagerFactory.create(
                     userIds,
                     MailLabelId.System.AllMail,
+                    false,
+                    any(),
+                    queryText,
+                    emptyLabelInProgressSignal
+                )
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.ExitSearchMode)
+
+            // Then
+            awaitItem()
+            verify {
+                pagerFactory.create(
+                    userIds,
+                    initialLocationMailLabelId,
+                    false,
+                    any(),
+                    any(),
+                    emptyLabelInProgressSignal
+                )
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `search will be performed in AlmostAllMail label independent from current label and setting is on`() = runTest {
+        // Given
+        val queryText = MailboxSearchStateSampleData.QueryString
+        val currentLocationFlow = MutableStateFlow<MailLabelId>(initialLocationMailLabelId)
+        val initialMailboxState = createMailboxDataState()
+        val mailboxSearchQueryState = initialMailboxState.copy(
+            mailboxListState = (initialMailboxState.mailboxListState as Data.ViewMode).copy(
+                searchState = MailboxSearchStateSampleData.SearchLoading
+            )
+        )
+        val userIds = listOf(userId)
+        every { selectedMailLabelId.flow } returns currentLocationFlow
+        every {
+            pagerFactory.create(
+                userIds,
+                any(),
+                false,
+                any(),
+                any(),
+                emptyLabelInProgressSignal
+            )
+        } returns mockk mockPager@{
+            every { this@mockPager.flow } returns flowOf(PagingData.from(listOf(unreadMailboxItem)))
+        }
+        every { selectedMailLabelId.set(any()) } returns Unit
+        every { mailboxReducer.newStateFrom(any(), any()) } returns initialMailboxState
+        every {
+            mailboxReducer.newStateFrom(
+                any(),
+                MailboxViewAction.SearchQuery(queryText)
+            )
+        } returns mailboxSearchQueryState
+        coEvery { deleteSearchResults.invoke(any(), any()) } just runs
+
+        every { observeAlmostAllMailSettings.invoke(any()) } returns flowOf(true)
+
+        mailboxViewModel.items.test {
+            // Then
+            verify {
+                pagerFactory.create(
+                    userIds,
+                    initialLocationMailLabelId,
+                    false,
+                    any(),
+                    any(),
+                    emptyLabelInProgressSignal
+                )
+            }
+
+            // When
+            mailboxViewModel.submit(MailboxViewAction.SearchQuery(queryText))
+
+            // Then
+            awaitItem()
+            verify {
+                pagerFactory.create(
+                    userIds,
+                    MailLabelId.System.AlmostAllMail,
                     false,
                     any(),
                     queryText,

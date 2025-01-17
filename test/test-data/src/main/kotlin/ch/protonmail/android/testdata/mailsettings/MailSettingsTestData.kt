@@ -21,6 +21,7 @@ package ch.protonmail.android.testdata.mailsettings
 import ch.protonmail.android.testdata.user.UserIdTestData
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.domain.type.StringEnum
+import me.proton.core.mailsettings.domain.entity.AlmostAllMail
 import me.proton.core.mailsettings.domain.entity.ComposerMode
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.MessageButtons
@@ -40,6 +41,7 @@ object MailSettingsTestData {
     fun buildMailSettings(
         showImages: IntEnum<ShowImage>? = null,
         showMoved: IntEnum<ShowMoved>? = null,
+        almostAllMail: IntEnum<AlmostAllMail>? = null,
         swipeLeft: SwipeAction? = null,
         swipeRight: SwipeAction? = null,
         enableFolderColor: Boolean = true,
@@ -75,7 +77,7 @@ object MailSettingsTestData {
         stickyLabels = true,
         confirmLink = confirmLink,
         autoDeleteSpamAndTrashDays = autoDeleteSpamAndTrashDays,
-        mobileSettings = null,
-        almostAllMail = null
+        almostAllMail = almostAllMail,
+        mobileSettings = null
     )
 }

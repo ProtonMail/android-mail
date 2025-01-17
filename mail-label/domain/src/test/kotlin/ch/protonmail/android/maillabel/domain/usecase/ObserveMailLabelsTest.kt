@@ -45,6 +45,7 @@ import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
+import me.proton.core.mailsettings.domain.entity.AlmostAllMail
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ShowMoved
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
@@ -226,7 +227,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to false and the setting is ignored`() = runTest {
+    fun `return labels when show moved false and almost all mail false and setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -234,13 +235,14 @@ class ObserveMailLabelsTest {
                 value = buildMailSettings(
                     enableFolderColor = true,
                     inheritParentFolderColor = true,
-                    showMoved = IntEnum(0, ShowMoved.None)
+                    showMoved = IntEnum(0, ShowMoved.None),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Disabled)
                 )
             )
         )
 
         // When
-        observeMailLabels.invoke(userId, false).test {
+        observeMailLabels.invoke(userId, respectSettings = false).test {
             // Then
             val item = awaitItem()
             assertEquals(true, item.systemLabels.isNotEmpty())
@@ -254,7 +256,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to true and the setting is ignored`() = runTest {
+    fun `return labels when show moved is true and almost all mail is false and the setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -262,13 +264,14 @@ class ObserveMailLabelsTest {
                 value = buildMailSettings(
                     enableFolderColor = true,
                     inheritParentFolderColor = true,
-                    showMoved = IntEnum(3, ShowMoved.Both)
+                    showMoved = IntEnum(3, ShowMoved.Both),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Disabled)
                 )
             )
         )
 
         // When
-        observeMailLabels.invoke(userId, false).test {
+        observeMailLabels.invoke(userId, respectSettings = false).test {
             // Then
             val item = awaitItem()
             assertEquals(true, item.systemLabels.isNotEmpty())
@@ -282,7 +285,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to false and the setting is respected`() = runTest {
+    fun `return labels when show moved is false and almost all mail is true and the setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -290,13 +293,14 @@ class ObserveMailLabelsTest {
                 value = buildMailSettings(
                     enableFolderColor = true,
                     inheritParentFolderColor = true,
-                    showMoved = IntEnum(0, ShowMoved.None)
+                    showMoved = IntEnum(0, ShowMoved.None),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Enabled)
                 )
             )
         )
 
         // When
-        observeMailLabels.invoke(userId, true).test {
+        observeMailLabels.invoke(userId, respectSettings = false).test {
             // Then
             val item = awaitItem()
             assertEquals(true, item.systemLabels.isNotEmpty())
@@ -310,7 +314,7 @@ class ObserveMailLabelsTest {
     }
 
     @Test
-    fun `return correct labels when show moved mail setting is set to true and the setting is respected`() = runTest {
+    fun `return labels when show moved is true and almost all mail is true and the setting is ignored`() = runTest {
         // Given
         mutableMailSettings.emit(
             DataResult.Success(
@@ -318,19 +322,145 @@ class ObserveMailLabelsTest {
                 value = buildMailSettings(
                     enableFolderColor = true,
                     inheritParentFolderColor = true,
-                    showMoved = IntEnum(3, ShowMoved.Both)
+                    showMoved = IntEnum(0, ShowMoved.Both),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Enabled)
                 )
             )
         )
 
         // When
-        observeMailLabels.invoke(userId, true).test {
+        observeMailLabels.invoke(userId, respectSettings = false).test {
             // Then
             val item = awaitItem()
             assertEquals(true, item.systemLabels.isNotEmpty())
             assertEquals(8, item.systemLabels.size)
             assertEquals(
-                expected = SystemLabelId.showAllDisplayedList.map { it.toMailLabelSystem() },
+                expected = SystemLabelId.displayedList.map { it.toMailLabelSystem() },
+                actual = item.systemLabels
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `return labels when show moved is false and almost all mail is false and the setting is respected`() = runTest {
+        // Given
+        mutableMailSettings.emit(
+            DataResult.Success(
+                source = ResponseSource.Local,
+                value = buildMailSettings(
+                    enableFolderColor = true,
+                    inheritParentFolderColor = true,
+                    showMoved = IntEnum(0, ShowMoved.None),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Disabled)
+                )
+            )
+        )
+
+        // When
+        observeMailLabels.invoke(userId, respectSettings = true).test {
+            // Then
+            val item = awaitItem()
+            assertEquals(true, item.systemLabels.isNotEmpty())
+            assertEquals(8, item.systemLabels.size)
+            assertEquals(
+                expected = SystemLabelId.displayedList.map { it.toMailLabelSystem() },
+                actual = item.systemLabels
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `return labels when show moved is true and almost all mail is false and the setting is respected`() = runTest {
+        // Given
+        mutableMailSettings.emit(
+            DataResult.Success(
+                source = ResponseSource.Local,
+                value = buildMailSettings(
+                    enableFolderColor = true,
+                    inheritParentFolderColor = true,
+                    showMoved = IntEnum(3, ShowMoved.Both),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Disabled)
+                )
+            )
+        )
+
+        val expected = mutableListOf(SystemLabelId.Inbox) + SystemLabelId.showAllDisplayedList +
+            SystemLabelId.defaultDisplayedList + SystemLabelId.AllMail
+
+        // When
+        observeMailLabels.invoke(userId, respectSettings = true).test {
+            // Then
+            val item = awaitItem()
+            assertEquals(true, item.systemLabels.isNotEmpty())
+            assertEquals(8, item.systemLabels.size)
+            assertEquals(
+                expected = expected.map { it.toMailLabelSystem() },
+                actual = item.systemLabels
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `return labels when show moved is false and almost all mail is true and the setting is respected`() = runTest {
+        // Given
+        mutableMailSettings.emit(
+            DataResult.Success(
+                source = ResponseSource.Local,
+                value = buildMailSettings(
+                    enableFolderColor = true,
+                    inheritParentFolderColor = true,
+                    showMoved = IntEnum(0, ShowMoved.None),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Enabled)
+                )
+            )
+        )
+
+        val expected = mutableListOf(SystemLabelId.Inbox) + SystemLabelId.showAllDefaultDisplayedList +
+            SystemLabelId.defaultDisplayedList + SystemLabelId.AlmostAllMail
+
+        // When
+        observeMailLabels.invoke(userId, respectSettings = true).test {
+            // Then
+            val item = awaitItem()
+            assertEquals(true, item.systemLabels.isNotEmpty())
+            assertEquals(8, item.systemLabels.size)
+            assertEquals(
+                expected = expected.map { it.toMailLabelSystem() },
+                actual = item.systemLabels
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `return labels when show moved is true and almost all mail is true and the setting is respected`() = runTest {
+        // Given
+        mutableMailSettings.emit(
+            DataResult.Success(
+                source = ResponseSource.Local,
+                value = buildMailSettings(
+                    enableFolderColor = true,
+                    inheritParentFolderColor = true,
+                    showMoved = IntEnum(3, ShowMoved.Both),
+                    almostAllMail = IntEnum(0, AlmostAllMail.Enabled)
+                )
+            )
+        )
+
+        val expected = mutableListOf(SystemLabelId.Inbox) + SystemLabelId.showAllDisplayedList +
+            SystemLabelId.defaultDisplayedList + SystemLabelId.AlmostAllMail
+
+        // When
+        observeMailLabels.invoke(userId, respectSettings = true).test {
+            // Then
+            val item = awaitItem()
+            assertEquals(true, item.systemLabels.isNotEmpty())
+            assertEquals(8, item.systemLabels.size)
+            assertEquals(
+                expected = expected.map { it.toMailLabelSystem() },
                 actual = item.systemLabels
             )
             cancelAndIgnoreRemainingEvents()
