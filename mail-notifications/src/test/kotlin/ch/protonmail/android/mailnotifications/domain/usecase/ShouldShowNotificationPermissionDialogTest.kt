@@ -36,7 +36,10 @@ class ShouldShowNotificationPermissionDialogTest {
         } returns DataError.Local.NoDataCached.left()
 
         // When
-        val actual = shouldShowNotificationPermissionDialog()
+        val actual = shouldShowNotificationPermissionDialog(
+            currentTimeMillis = 0,
+            isMessageSent = false
+        )
 
         // Then
         assertTrue(actual)
@@ -52,7 +55,10 @@ class ShouldShowNotificationPermissionDialogTest {
         } returns DataError.Local.NoDataCached.left()
 
         // When
-        val actual = shouldShowNotificationPermissionDialog()
+        val actual = shouldShowNotificationPermissionDialog(
+            currentTimeMillis = 0,
+            isMessageSent = false
+        )
 
         // Then
         assertFalse(actual)
@@ -68,21 +74,72 @@ class ShouldShowNotificationPermissionDialogTest {
         } returns DataError.Local.NoDataCached.left()
 
         // When
-        val actual = shouldShowNotificationPermissionDialog()
+        val actual = shouldShowNotificationPermissionDialog(
+            currentTimeMillis = 0,
+            isMessageSent = false
+        )
 
         // Then
         assertFalse(actual)
     }
 
     @Test
-    fun `should return false when the FF is ON, notifications are not enabled, timestamp is saved`() = runTest {
+    fun `should return true when timestamp is saved, 20 days passed since first show and a message was sent`() =
+        runTest {
+            // Given
+            every { isNewNotificationPermissionFlowEnabled(null) } returns true
+            every { notificationManager.areNotificationsEnabled() } returns false
+            coEvery {
+                notificationPermissionRepository.getNotificationPermissionTimestamp()
+            } returns 1_737_123_238_000L.right()
+            coEvery { notificationPermissionRepository.getShouldStopShowingPermissionDialog() } returns false.right()
+
+            // When
+            val actual = shouldShowNotificationPermissionDialog(
+                currentTimeMillis = 1_739_801_638_000,
+                isMessageSent = true
+            )
+
+            // Then
+            assertTrue(actual)
+        }
+
+    @Test
+    fun `should return false when 20 days passed since first show, a message was sent, stop showing value is true`() =
+        runTest {
+            // Given
+            every { isNewNotificationPermissionFlowEnabled(null) } returns true
+            every { notificationManager.areNotificationsEnabled() } returns false
+            coEvery {
+                notificationPermissionRepository.getNotificationPermissionTimestamp()
+            } returns 1_737_123_238_000L.right()
+            coEvery { notificationPermissionRepository.getShouldStopShowingPermissionDialog() } returns true.right()
+
+            // When
+            val actual = shouldShowNotificationPermissionDialog(
+                currentTimeMillis = 1_739_801_638_000,
+                isMessageSent = true
+            )
+
+            // Then
+            assertFalse(actual)
+        }
+
+    @Test
+    fun `should return false when 20 days passed since first show and a message was not sent`() = runTest {
         // Given
         every { isNewNotificationPermissionFlowEnabled(null) } returns true
         every { notificationManager.areNotificationsEnabled() } returns false
-        coEvery { notificationPermissionRepository.getNotificationPermissionTimestamp() } returns 123L.right()
+        coEvery {
+            notificationPermissionRepository.getNotificationPermissionTimestamp()
+        } returns 1_737_123_238_000L.right()
+        coEvery { notificationPermissionRepository.getShouldStopShowingPermissionDialog() } returns false.right()
 
         // When
-        val actual = shouldShowNotificationPermissionDialog()
+        val actual = shouldShowNotificationPermissionDialog(
+            currentTimeMillis = 1_739_801_638_000,
+            isMessageSent = false
+        )
 
         // Then
         assertFalse(actual)
