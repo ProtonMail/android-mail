@@ -22,8 +22,9 @@ import android.content.Context
 import androidx.startup.Initializer
 import ch.protonmail.android.BuildConfig
 import ch.protonmail.android.mailbugreport.data.FileLoggingTree
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
-import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
+import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -48,8 +49,8 @@ class LoggerInitializer : Initializer<Unit> {
             LoggerInitializerEntryPoint::class.java
         )
 
-        val isLoggingEnabled = accessors.isLogExportingEnabled()
-        if (isLoggingEnabled.get().not()) return
+        val isLoggingEnabled = accessors.logsExportFeatureSetting().get().isEnabled
+        if (isLoggingEnabled.not()) return
 
         val logsFileHandler = accessors.logsFileHandlerProvider()
         Timber.plant(FileLoggingTree(logsFileHandler))
@@ -63,7 +64,7 @@ class LoggerInitializer : Initializer<Unit> {
 
         fun logsFileHandlerProvider(): LogsFileHandler
 
-        @LogsExportingFeatureEnabled
-        fun isLogExportingEnabled(): Provider<Boolean>
+        @LogsExportFeatureSettingValue
+        fun logsExportFeatureSetting(): Provider<LogsExportFeatureSetting>
     }
 }

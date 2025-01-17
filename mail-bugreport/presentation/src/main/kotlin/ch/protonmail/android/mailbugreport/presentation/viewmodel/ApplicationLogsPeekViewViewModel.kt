@@ -22,8 +22,8 @@ import java.io.File
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailbugreport.domain.LogcatProvider
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
+import ch.protonmail.android.mailbugreport.domain.provider.LogcatProvider
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsFileUiModel
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsPeekViewOperation
 import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsPeekViewState

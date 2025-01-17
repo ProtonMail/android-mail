@@ -18,12 +18,15 @@
 
 package ch.protonmail.android.mailbugreport
 
-import ch.protonmail.android.mailbugreport.data.LogcatProviderImpl
 import ch.protonmail.android.mailbugreport.data.LogsFileHandlerImpl
-import ch.protonmail.android.mailbugreport.domain.LogcatProvider
+import ch.protonmail.android.mailbugreport.data.provider.BugReportLogProviderImpl
+import ch.protonmail.android.mailbugreport.data.provider.LogcatProviderImpl
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
-import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
+import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
+import ch.protonmail.android.mailbugreport.domain.featureflags.IsLogsExportingFeatureEnabled
 import ch.protonmail.android.mailbugreport.domain.featureflags.IsLogsExportingInternalFeatureEnabled
+import ch.protonmail.android.mailbugreport.domain.provider.LogcatProvider
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.isDevOrAlphaFlavor
 import dagger.Binds
@@ -32,6 +35,7 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import me.proton.core.report.domain.provider.BugReportLogProvider
 import javax.inject.Singleton
 
 @Module
@@ -40,11 +44,17 @@ object MailReportModule {
 
     @Provides
     @Singleton
-    @LogsExportingFeatureEnabled
-    fun provideIsLogsExportingEnabled(
-        isEnabled: IsLogsExportingInternalFeatureEnabled,
+    @LogsExportFeatureSettingValue
+    fun provideLogsExporting(
+        isEnabled: IsLogsExportingFeatureEnabled,
+        isInternalEnabled: IsLogsExportingInternalFeatureEnabled,
         appInformation: AppInformation
-    ) = appInformation.isDevOrAlphaFlavor() || isEnabled()
+    ): LogsExportFeatureSetting {
+        return if (appInformation.isDevOrAlphaFlavor()) {
+            LogsExportFeatureSetting(enabled = true, internalEnabled = true)
+        } else
+            LogsExportFeatureSetting(enabled = isEnabled(), internalEnabled = isInternalEnabled())
+    }
 
     @Module
     @InstallIn(SingletonComponent::class)
@@ -58,4 +68,12 @@ object MailReportModule {
         @Singleton
         fun provideLogsFileHandler(impl: LogsFileHandlerImpl): LogsFileHandler
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface CoreLogModule {
+
+    @Binds
+    fun provideBugReportLogProvider(impl: BugReportLogProviderImpl): BugReportLogProvider
 }

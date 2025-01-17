@@ -24,8 +24,10 @@ import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import android.content.Context
-import ch.protonmail.android.mailbugreport.domain.LogcatProvider
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailbugreport.domain.LogsFileHandler
+import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
+import ch.protonmail.android.mailbugreport.domain.provider.LogcatProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,15 +36,13 @@ import javax.inject.Inject
 class GetAggregatedEventsZipFile @Inject constructor(
     @ApplicationContext private val applicationContext: Context,
     private val logcatProvider: LogcatProvider,
-    private val logsFileHandler: LogsFileHandler
+    private val logsFileHandler: LogsFileHandler,
+    @LogsExportFeatureSettingValue private val logsExportFeatureSetting: LogsExportFeatureSetting
 ) {
 
     suspend operator fun invoke() = withContext(Dispatchers.IO) {
         runCatching {
-            logcatProvider.getLogcatFile() // Force dump the logcat to ensure it's up to date.
-
-            val logcatDir = logcatProvider.getParentPath()
-            val logFilesDir = logsFileHandler.getParentPath()
+            val directoriesList = buildDirectoriesList(logsExportFeatureSetting)
             val outputFile = File(applicationContext.cacheDir, FilePath).also {
                 it.mkdirs()
                 if (it.exists()) it.delete()
@@ -50,7 +50,7 @@ class GetAggregatedEventsZipFile @Inject constructor(
 
             FileOutputStream(outputFile).use { fos ->
                 ZipOutputStream(fos).use { zos ->
-                    listOf(logcatDir, logFilesDir).forEach { file ->
+                    directoriesList.forEach { file ->
                         zipFileOrDirectory(file, zos)
                     }
                 }
@@ -74,6 +74,17 @@ class GetAggregatedEventsZipFile @Inject constructor(
                 zos.putNextEntry(ZipEntry(entryName))
                 fis.copyTo(zos, bufferSize = 1024)
             }
+        }
+    }
+
+    private suspend fun buildDirectoriesList(logsExportFeatureSetting: LogsExportFeatureSetting): List<File> {
+        return buildList {
+            // Attaching logcat is only for internal QA, this is not enabled for end users.
+            if (logsExportFeatureSetting.isInternalFeatureEnabled) {
+                logcatProvider.getLogcatFile()
+                add(logcatProvider.getParentPath())
+            }
+            add(logsFileHandler.getParentPath())
         }
     }
 

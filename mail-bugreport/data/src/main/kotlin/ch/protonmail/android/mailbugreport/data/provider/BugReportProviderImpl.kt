@@ -16,17 +16,18 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailbugreport.domain
+package ch.protonmail.android.mailbugreport.data.provider
 
 import java.io.File
-import arrow.core.Either
+import ch.protonmail.android.mailbugreport.domain.usecase.GetAggregatedEventsZipFile
+import me.proton.core.report.domain.provider.BugReportLogProvider
+import javax.inject.Inject
 
-interface LogcatProvider {
+class BugReportLogProviderImpl @Inject constructor(
+    private val getAggregatedEventsZipFile: GetAggregatedEventsZipFile
+) : BugReportLogProvider {
 
-    suspend fun getLogcatFile(): Either<LogcatProviderError, File>
-    fun getParentPath(): File
-}
+    override suspend fun getLog(): File? = getAggregatedEventsZipFile().getOrNull()
 
-interface LogcatProviderError {
-    data object Error : LogcatProviderError
+    override suspend fun releaseLog(log: File) = Unit
 }

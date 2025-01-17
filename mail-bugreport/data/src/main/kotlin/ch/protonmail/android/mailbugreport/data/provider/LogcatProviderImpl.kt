@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailbugreport.data
+package ch.protonmail.android.mailbugreport.data.provider
 
 import java.io.File
 import java.time.Instant
@@ -26,8 +26,8 @@ import android.content.Context
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailbugreport.domain.LogcatProvider
-import ch.protonmail.android.mailbugreport.domain.LogcatProviderError
+import ch.protonmail.android.mailbugreport.domain.provider.LogcatProvider
+import ch.protonmail.android.mailbugreport.domain.provider.LogcatProviderError
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

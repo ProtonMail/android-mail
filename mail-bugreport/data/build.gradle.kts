@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.bundles.module.data)
 
     implementation(libs.timber)
+    implementation(libs.proton.core.report)
 
     implementation(project(":mail-common:domain"))
     implementation(project(":mail-bugreport:domain"))
