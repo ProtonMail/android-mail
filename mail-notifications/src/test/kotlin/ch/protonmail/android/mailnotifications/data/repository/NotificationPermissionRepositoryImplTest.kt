@@ -34,4 +34,26 @@ class NotificationPermissionRepositoryImplTest {
         // Then
         coVerify { notificationPermissionLocalDataSource.saveNotificationPermissionTimestamp(timestamp) }
     }
+
+    @Test
+    fun `should call the local data source method when getting stop showing permission dialog`() = runTest {
+        // When
+        notificationPermissionRepository.getShouldStopShowingPermissionDialog()
+
+        // Then
+        coVerify { notificationPermissionLocalDataSource.getShouldStopShowingPermissionDialog() }
+    }
+
+    @Test
+    fun `should call the local data source method when saving stop showing permission dialog`() = runTest {
+        // When
+        notificationPermissionRepository.saveShouldStopShowingPermissionDialog(shouldStopShowingPermissionDialog = true)
+
+        // Then
+        coVerify {
+            notificationPermissionLocalDataSource.saveShouldStopShowingPermissionDialog(
+                shouldStopShowingPermissionDialog = true
+            )
+        }
+    }
 }

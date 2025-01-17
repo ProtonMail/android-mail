@@ -20,6 +20,7 @@ package ch.protonmail.android.mailnotifications.data.local
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import arrow.core.left
 import arrow.core.right
@@ -77,6 +78,41 @@ class NotificationPermissionLocalDataSourceImplTest {
 
         // When
         notificationPermissionLocalDataSource.saveNotificationPermissionTimestamp(timestamp)
+
+        // Then
+        coVerify { notificationPermissionStoreSpy.updateData(any()) }
+    }
+
+    @Test
+    fun `should get stop showing permission dialog`() = runTest {
+        // Given
+        every { preferences[booleanPreferencesKey(SHOULD_STOP_SHOWING_PERMISSION_DIALOG)] } returns true
+
+        // When
+        val actual = notificationPermissionLocalDataSource.getShouldStopShowingPermissionDialog()
+
+        // Then
+        assertEquals(true.right(), actual)
+    }
+
+    @Test
+    fun `should return error when stop showing permission dialog is not saved`() = runTest {
+        // Given
+        every { preferences[booleanPreferencesKey(SHOULD_STOP_SHOWING_PERMISSION_DIALOG)] } returns null
+
+        // When
+        val actual = notificationPermissionLocalDataSource.getShouldStopShowingPermissionDialog()
+
+        // Then
+        assertEquals(DataError.Local.NoDataCached.left(), actual)
+    }
+
+    @Test
+    fun `should save stop showing permission dialog`() = runTest {
+        // When
+        notificationPermissionLocalDataSource.saveShouldStopShowingPermissionDialog(
+            shouldStopShowingPermissionDialog = true
+        )
 
         // Then
         coVerify { notificationPermissionStoreSpy.updateData(any()) }

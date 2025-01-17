@@ -26,4 +26,8 @@ interface NotificationPermissionLocalDataSource {
     suspend fun getNotificationPermissionTimestamp(): Either<DataError.Local, Long>
 
     suspend fun saveNotificationPermissionTimestamp(timestamp: Long)
+
+    suspend fun getShouldStopShowingPermissionDialog(): Either<DataError.Local, Boolean>
+
+    suspend fun saveShouldStopShowingPermissionDialog(shouldStopShowingPermissionDialog: Boolean)
 }

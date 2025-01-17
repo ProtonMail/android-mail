@@ -32,4 +32,12 @@ class NotificationPermissionRepositoryImpl @Inject constructor(
 
     override suspend fun saveNotificationPermissionTimestamp(timestamp: Long) =
         notificationPermissionLocalDataSource.saveNotificationPermissionTimestamp(timestamp)
+
+    override suspend fun getShouldStopShowingPermissionDialog(): Either<DataError.Local, Boolean> =
+        notificationPermissionLocalDataSource.getShouldStopShowingPermissionDialog()
+
+    override suspend fun saveShouldStopShowingPermissionDialog(shouldStopShowingPermissionDialog: Boolean) =
+        notificationPermissionLocalDataSource.saveShouldStopShowingPermissionDialog(
+            shouldStopShowingPermissionDialog
+        )
 }

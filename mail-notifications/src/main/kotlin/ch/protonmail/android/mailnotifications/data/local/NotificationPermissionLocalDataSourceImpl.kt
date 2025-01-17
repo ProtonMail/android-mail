@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailnotifications.data.local
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import arrow.core.Either
@@ -45,6 +46,21 @@ class NotificationPermissionLocalDataSourceImpl @Inject constructor(
             prefs[longPreferencesKey(NOTIFICATION_PERMISSION_TIMESTAMP_KEY)] = timestamp
         }
     }
+
+    override suspend fun getShouldStopShowingPermissionDialog(): Either<DataError.Local, Boolean> {
+        val shouldStopShowingPermissionDialog = dataStoreProvider.notificationPermissionStore.data.map { prefs ->
+            prefs[booleanPreferencesKey(SHOULD_STOP_SHOWING_PERMISSION_DIALOG)]
+        }.firstOrNull()
+
+        return shouldStopShowingPermissionDialog?.right() ?: DataError.Local.NoDataCached.left()
+    }
+
+    override suspend fun saveShouldStopShowingPermissionDialog(shouldStopShowingPermissionDialog: Boolean) {
+        dataStoreProvider.notificationPermissionStore.edit { prefs ->
+            prefs[booleanPreferencesKey(SHOULD_STOP_SHOWING_PERMISSION_DIALOG)] = shouldStopShowingPermissionDialog
+        }
+    }
 }
 
 internal const val NOTIFICATION_PERMISSION_TIMESTAMP_KEY = "NotificationPermissionTimestampKey"
+internal const val SHOULD_STOP_SHOWING_PERMISSION_DIALOG = "ShouldStopShowingPermissionDialog"
