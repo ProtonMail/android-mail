@@ -16,7 +16,10 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 
-<!-- For now, do not translate these as the feature is not open to the public and under development -->
+<!--
+    These strings refer to a screen that is accessible only on dev/alpha builds to QAs. No need to translate.
+    See LogsExportFeatureSetting.kt for more details.
+-->
 <resources>
     <string name="application_events_title" translatable="false">Application logs</string>
 

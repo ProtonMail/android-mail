@@ -20,7 +20,8 @@ package ch.protonmail.android.mailsettings.presentation.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
+import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportFeatureSettingValue
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
@@ -47,7 +48,7 @@ class SettingsViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     observeOverallLocalDataUsage: ObserveOverallLocalStorageUsage,
     private val clearLocalStorage: ClearLocalStorage,
-    @LogsExportingFeatureEnabled val isLogsExportingEnabled: Boolean,
+    @LogsExportFeatureSettingValue val logsExportFeatureSetting: LogsExportFeatureSetting,
     @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
 ) : ViewModel() {
 

@@ -27,6 +27,7 @@ import androidx.navigation.compose.dialog
 import ch.protonmail.android.MainActivity
 import ch.protonmail.android.feature.account.RemoveAccountDialog
 import ch.protonmail.android.feature.account.SignOutAccountDialog
+import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsViewItemMode
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
@@ -210,8 +211,14 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                     navController.navigate(Destination.Screen.SwipeActionsSettings.route)
                 },
                 onClearCacheClick = {},
-                onExportLogsClick = {
-                    navController.navigate(Destination.Screen.ApplicationLogs.route)
+                onExportLogsClick = { isInternalFeatureEnabled ->
+                    if (isInternalFeatureEnabled) {
+                        navController.navigate(Destination.Screen.ApplicationLogs.route)
+                    } else {
+                        navController.navigate(
+                            Destination.Screen.ApplicationLogsView(ApplicationLogsViewItemMode.Events)
+                        )
+                    }
                 },
                 onBackClick = {
                     navController.navigateBack()

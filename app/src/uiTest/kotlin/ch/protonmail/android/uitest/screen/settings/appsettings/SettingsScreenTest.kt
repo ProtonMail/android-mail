@@ -25,6 +25,7 @@ import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollToNode
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
@@ -80,7 +81,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
                         onExportLogsClick = {},
                         onCustomizeToolbarClick = {},
                     ),
-                    shouldShowExportLogs = false
+                    LogsExportFeatureSetting(enabled = false, internalEnabled = false)
                 )
             }
         }
@@ -151,5 +152,10 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             .onNodeWithText("6.0.0-alpha-adf8373a (9026)")
             .assertHasNoClickAction()
             .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
+            .onChild()
+            .performScrollToNode(hasText(string.mail_settings_app_version))
     }
 }

@@ -37,6 +37,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailsettings.domain.model.AppSettings
 import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
 import ch.protonmail.android.mailsettings.presentation.R
@@ -48,7 +50,6 @@ import me.proton.core.compose.component.ProtonSettingsHeader
 import me.proton.core.compose.component.ProtonSettingsItem
 import me.proton.core.compose.component.ProtonSettingsList
 import me.proton.core.compose.component.ProtonSettingsTopBar
-import me.proton.core.compose.flow.rememberAsState
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.presentation.utils.formatByteToHumanReadable
@@ -72,12 +73,15 @@ fun MainSettingsScreen(
         }
     )
 
-    when (val settingsState = rememberAsState(flow = settingsViewModel.state, Loading).value) {
+    val state = settingsViewModel.state.collectAsStateWithLifecycle().value
+    val logsExportFeatureSetting = settingsViewModel.logsExportFeatureSetting
+
+    when (state) {
         is Data -> MainSettingsScreen(
             modifier = modifier,
-            state = settingsState,
+            state = state,
             actions = dataActions,
-            shouldShowExportLogs = settingsViewModel.isLogsExportingEnabled
+            logsExportFeatureSetting = logsExportFeatureSetting
         )
 
         is Loading -> ProtonCenteredProgress(modifier = Modifier.fillMaxSize())
@@ -89,7 +93,7 @@ fun MainSettingsScreen(
 fun MainSettingsScreen(
     state: Data,
     actions: MainSettingsScreen.Actions,
-    shouldShowExportLogs: Boolean,
+    logsExportFeatureSetting: LogsExportFeatureSetting,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -187,11 +191,11 @@ fun MainSettingsScreen(
                 Divider()
             }
 
-            if (shouldShowExportLogs) {
+            if (logsExportFeatureSetting.isEnabled) {
                 item {
                     ProtonSettingsItem(
                         name = stringResource(string.mail_settings_app_logs),
-                        onClick = actions.onExportLogsClick
+                        onClick = { actions.onExportLogsClick(logsExportFeatureSetting.isInternalFeatureEnabled) }
                     )
                 }
             }
@@ -340,7 +344,7 @@ object MainSettingsScreen {
         val onCombinedContactsClick: () -> Unit,
         val onSwipeActionsClick: () -> Unit,
         val onClearCacheClick: () -> Unit,
-        val onExportLogsClick: () -> Unit,
+        val onExportLogsClick: (isInternalFeatureEnabled: Boolean) -> Unit,
         val onBackClick: () -> Unit
     )
 }
@@ -361,7 +365,7 @@ fun PreviewMainSettingsScreen() {
         MainSettingsScreen(
             state = SettingsScreenPreviewData.Data,
             actions = SettingsScreenPreviewData.Actions,
-            shouldShowExportLogs = false
+            logsExportFeatureSetting = LogsExportFeatureSetting(enabled = false, internalEnabled = false)
         )
     }
 }

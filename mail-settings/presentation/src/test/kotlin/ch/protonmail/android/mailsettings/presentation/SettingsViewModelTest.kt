@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.presentation
 
 import app.cash.turbine.ReceiveTurbine
 import app.cash.turbine.test
+import ch.protonmail.android.mailbugreport.domain.LogsExportFeatureSetting
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
@@ -70,7 +71,7 @@ class SettingsViewModelTest {
     private val clearLocalStorage = mockk<ClearLocalStorage>()
 
     private val appInformation = AppInformation(appVersionName = "6.0.0-alpha")
-    private val isLogsExportingEnabled = false
+    private val logsExportFeatureSetting = LogsExportFeatureSetting(enabled = false, internalEnabled = false)
     private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
 
     private val viewModel by lazy {
@@ -80,11 +81,10 @@ class SettingsViewModelTest {
             observePrimaryUser,
             observeOverallLocalStorageUsage,
             clearLocalStorage,
-            isLogsExportingEnabled,
+            logsExportFeatureSetting,
             provideIsCustomizeToolbarEnabled.get()
         )
     }
-
 
     @BeforeTest
     fun setUp() {
