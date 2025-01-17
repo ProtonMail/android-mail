@@ -18,6 +18,8 @@
 
 package ch.protonmail.android.mailcommon.data.worker
 
+import java.util.concurrent.TimeUnit
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
@@ -189,6 +191,11 @@ class Enqueuer @Inject constructor(private val workManager: WorkManager) {
             addTag(userId.id)
             if (workId != null) addTag(workId)
             if (constraints != null) setConstraints(constraints)
+            setBackoffCriteria(
+                backoffPolicy = BackoffPolicy.LINEAR,
+                backoffDelay = 20,
+                timeUnit = TimeUnit.SECONDS
+            )
             build()
         }
     }

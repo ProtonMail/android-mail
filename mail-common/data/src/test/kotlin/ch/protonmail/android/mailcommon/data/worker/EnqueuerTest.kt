@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailcommon.data.worker
 
 import java.util.UUID
+import androidx.work.BackoffPolicy
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.ListenableWorker
@@ -83,6 +84,29 @@ class EnqueuerTest {
         val workPolicySlot = slot<ExistingWorkPolicy>()
         coVerify { workManager.enqueueUniqueWork(workId, capture(workPolicySlot), any<OneTimeWorkRequest>()) }
         assertEquals(existingWorkPolicy, workPolicySlot.captured)
+    }
+
+    @Test
+    fun `expects linear backoff policy and duration when enqueuing some work`() = runTest {
+        // Given
+        val workId = "SyncDraftWork-test-message-id"
+        val params = mapOf("messageId" to "test-message-id")
+        val existingWorkPolicy = ExistingWorkPolicy.KEEP
+        givenEnqueueUniqueWorkSucceeds(workId, existingWorkPolicy)
+
+        // When
+        enqueuer.enqueueUniqueWork<ListenableWorker>(
+            TestData.UserId,
+            workId,
+            params,
+            existingWorkPolicy = existingWorkPolicy
+        )
+
+        // Then
+        val workRequest = slot<OneTimeWorkRequest>()
+        coVerify { workManager.enqueueUniqueWork(workId, existingWorkPolicy, capture(workRequest)) }
+        assertEquals(workRequest.captured.workSpec.backoffPolicy, BackoffPolicy.LINEAR)
+        assertEquals(workRequest.captured.workSpec.backoffDelayDuration, 20_000L)
     }
 
     @Test
