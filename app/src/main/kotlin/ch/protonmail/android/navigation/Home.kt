@@ -54,6 +54,7 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
@@ -261,6 +262,15 @@ fun Home(
             is MessageSendingStatus.None -> {}
         }
     }
+
+    EnablePushNotificationsDialog(
+        state = state.notificationPermissionDialogState,
+        onEnable = {
+            launcherActions.onRequestNotificationPermission()
+            viewModel.closeNotificationPermissionDialog()
+        },
+        onDismiss = { viewModel.closeNotificationPermissionDialog() }
+    )
 
     Scaffold(
         scaffoldState = scaffoldState,

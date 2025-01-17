@@ -30,7 +30,7 @@ class ShouldShowNotificationPermissionDialog @Inject constructor(
     private val notificationPermissionRepository: NotificationPermissionRepository
 ) {
 
-    suspend operator fun invoke(currentTimeMillis: Long = 0, isMessageSent: Boolean = false): Boolean {
+    suspend operator fun invoke(currentTimeMillis: Long, isMessageSent: Boolean): Boolean {
         return isNewNotificationPermissionFlowEnabled(null) &&
             notificationManagerCompat.areNotificationsEnabled().not() &&
             (

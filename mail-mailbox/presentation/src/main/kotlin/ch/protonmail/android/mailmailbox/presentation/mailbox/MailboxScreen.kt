@@ -125,7 +125,6 @@ import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxMore
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MailboxUpsellingBottomSheet
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoreActionBottomSheetContent
 import ch.protonmail.android.mailmessage.presentation.ui.bottomsheet.MoveToBottomSheetContent
-import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.upselling.AutoDeleteUpsellingBottomSheet
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
@@ -271,15 +270,6 @@ fun MailboxScreen(
             dismiss = { viewModel.submit(MailboxViewAction.AutoDeleteDialogActionSubmitted(false)) }
         )
     }
-
-    EnablePushNotificationsDialog(
-        state = mailboxState.notificationPermissionDialogState,
-        onEnable = {
-            actions.onRequestNotificationPermission()
-            viewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog)
-        },
-        onDismiss = { viewModel.submit(MailboxViewAction.DismissNotificationPermissionDialog) }
-    )
 
     ProtonModalBottomSheetLayout(
         sheetState = bottomSheetState,

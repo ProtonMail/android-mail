@@ -42,8 +42,6 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState.MoveToBottomSheetAction.MoveToDestinationSelected
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
-import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import javax.inject.Inject
@@ -74,8 +72,7 @@ class MailboxReducer @Inject constructor(
             actionResult = currentState.toNewActionMessageStateFrom(operation),
             error = currentState.toNewErrorBarState(operation),
             showRatingBooster = currentState.toNewShowRatingBoosterState(operation),
-            autoDeleteSettingState = currentState.toNewAutoDeleteSettingState(operation),
-            notificationPermissionDialogState = currentState.toNewNotificationPermissionDialogState(operation)
+            autoDeleteSettingState = currentState.toNewAutoDeleteSettingState(operation)
         )
 
     private fun MailboxState.toNewMailboxListStateFrom(operation: MailboxOperation): MailboxListState {
@@ -263,21 +260,6 @@ class MailboxReducer @Inject constructor(
             }
         } else {
             autoDeleteSettingState
-        }
-    }
-
-    private fun MailboxState.toNewNotificationPermissionDialogState(
-        operation: MailboxOperation
-    ): NotificationPermissionDialogState {
-        return when (operation) {
-            is MailboxEvent.ShowNotificationPermissionDialog -> NotificationPermissionDialogState.Shown(
-                EnablePushNotificationsUiModel(
-                    title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
-                    message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
-                )
-            )
-            is MailboxViewAction.DismissNotificationPermissionDialog -> NotificationPermissionDialogState.Hidden
-            else -> notificationPermissionDialogState
         }
     }
 }

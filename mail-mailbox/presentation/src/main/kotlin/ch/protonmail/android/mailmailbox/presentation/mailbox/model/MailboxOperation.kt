@@ -155,7 +155,6 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DismissAutoDelete : MailboxViewAction, AffectingAutoDelete
     object ShowAutoDeleteDialog : MailboxViewAction, AffectingAutoDelete
     data class AutoDeleteDialogActionSubmitted(val enable: Boolean) : MailboxViewAction, AffectingAutoDelete
-    data object DismissNotificationPermissionDialog : MailboxViewAction
 }
 
 internal sealed interface MailboxEvent : MailboxOperation {
@@ -255,7 +254,6 @@ internal sealed interface MailboxEvent : MailboxOperation {
     object ErrorMoving : MailboxEvent, AffectingErrorBar
     object ErrorRetrievingDestinationMailFolders : MailboxEvent, AffectingErrorBar, AffectingBottomSheet
     data object ShowRatingBooster : MailboxEvent, AffectingRatingBooster
-    data object ShowNotificationPermissionDialog : MailboxEvent
 
     sealed class SwipeActionMoveCompleted(
         val viewMode: ViewMode,

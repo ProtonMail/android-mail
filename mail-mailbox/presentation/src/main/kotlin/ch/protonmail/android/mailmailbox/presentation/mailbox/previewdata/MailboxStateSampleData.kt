@@ -38,7 +38,6 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActions
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilterState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.presentation.accountsettings.autodelete.AutoDeleteSettingState
 import kotlinx.collections.immutable.toImmutableList
 
@@ -57,8 +56,7 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading,
-        notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+        autoDeleteSettingState = AutoDeleteSettingState.Loading
     )
 
     val Inbox = MailboxState(
@@ -96,8 +94,7 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading,
-        notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+        autoDeleteSettingState = AutoDeleteSettingState.Loading
     )
 
     val AllMail = MailboxState(
@@ -135,8 +132,7 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = Effect.empty(),
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading,
-        notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+        autoDeleteSettingState = AutoDeleteSettingState.Loading
     )
 
     fun createSelectionMode(
@@ -179,7 +175,6 @@ object MailboxStateSampleData {
         storageLimitState = StorageLimitState.HasEnoughSpace,
         error = error,
         showRatingBooster = Effect.empty(),
-        autoDeleteSettingState = AutoDeleteSettingState.Loading,
-        notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+        autoDeleteSettingState = AutoDeleteSettingState.Loading
     )
 }

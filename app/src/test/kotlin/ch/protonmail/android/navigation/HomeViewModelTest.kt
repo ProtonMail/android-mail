@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -33,9 +34,16 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesSta
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
+import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
+import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
+import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
+import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -91,6 +99,14 @@ class HomeViewModelTest {
 
     private val discardDraft = mockk<DiscardDraft>(relaxUnitFun = true)
 
+    private val shouldShowNotificationPermissionDialog = mockk<ShouldShowNotificationPermissionDialog> {
+        coEvery { this@mockk(currentTimeMillis = any(), isMessageSent = false) } returns false
+    }
+    private val savePermissionDialogTimestamp = mockk<SavePermissionDialogTimestamp>(relaxUnitFun = true)
+    private val saveShouldStopShowingPermissionDialog = mockk<SaveShouldStopShowingPermissionDialog>(
+        relaxUnitFun = true
+    )
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
@@ -99,6 +115,9 @@ class HomeViewModelTest {
             resetSendingMessageStatus,
             selectedMailLabelId,
             discardDraft,
+            shouldShowNotificationPermissionDialog,
+            savePermissionDialogTimestamp,
+            saveShouldStopShowingPermissionDialog,
             observePrimaryUserMock,
             shareIntentObserver
         )
@@ -166,6 +185,7 @@ class HomeViewModelTest {
                 advanceUntilIdle()
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
+                    notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                     networkStatusEffect = Effect.of(NetworkStatus.Disconnected),
                     messageSendingStatusEffect = Effect.empty(),
                     navigateToEffect = Effect.empty(),
@@ -189,6 +209,7 @@ class HomeViewModelTest {
             advanceUntilIdle()
             val actualItem = awaitItem()
             val expectedItem = HomeState(
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
                 navigateToEffect = Effect.empty(),
@@ -209,6 +230,7 @@ class HomeViewModelTest {
         homeViewModel.state.test {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.empty(),
                 navigateToEffect = Effect.empty(),
@@ -226,11 +248,13 @@ class HomeViewModelTest {
         every { networkManager.observe() } returns flowOf(NetworkStatus.Metered)
         val sendingMessageStatusFlow = MutableStateFlow<MessageSendingStatus>(MessageSendingStatus.MessageSent)
         every { observeSendingMessagesStatus(user.userId) } returns sendingMessageStatusFlow
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = true) } returns false
 
         // When
         homeViewModel.state.test {
             val actualItem = awaitItem()
             val expectedItem = HomeState(
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                 networkStatusEffect = Effect.of(NetworkStatus.Metered),
                 messageSendingStatusEffect = Effect.of(MessageSendingStatus.MessageSent),
                 navigateToEffect = Effect.empty(),
@@ -256,6 +280,7 @@ class HomeViewModelTest {
             homeViewModel.state.test {
                 val actualItem = awaitItem()
                 val expectedItem = HomeState(
+                    notificationPermissionDialogState = NotificationPermissionDialogState.Hidden,
                     networkStatusEffect = Effect.of(NetworkStatus.Metered),
                     messageSendingStatusEffect = Effect.of(MessageSendingStatus.SendMessageError),
                     navigateToEffect = Effect.empty(),
@@ -389,6 +414,86 @@ class HomeViewModelTest {
 
         // Then
         verify { recordMailboxScreenView() }
+    }
+
+    @Test
+    fun `should show notification permission dialog when initializing if use case return true`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = false) } returns true
+
+        // When
+        homeViewModel.state.test {
+            val item = awaitItem()
+
+            // Then
+            val expected = NotificationPermissionDialogState.Shown(
+                uiModel = EnablePushNotificationsUiModel(
+                    title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
+                    message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
+                )
+            )
+            assertEquals(expected, item.notificationPermissionDialogState)
+            coVerify { savePermissionDialogTimestamp(any()) }
+        }
+    }
+
+    @Test
+    fun `should not show notification permission dialog when initializing if use case return false`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = false) } returns false
+
+        // When
+        homeViewModel.state.test {
+            val item = awaitItem()
+
+            // Then
+            val expected = NotificationPermissionDialogState.Hidden
+            assertEquals(expected, item.notificationPermissionDialogState)
+        }
+    }
+
+    @Test
+    fun `should show notification permission dialog when message was sent if use case returns true`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = false) } returns false
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = true) } returns true
+        every { observeSendingMessagesStatus(user.userId) } returns flowOf(MessageSendingStatus.MessageSent)
+
+        // When
+        homeViewModel.state.test {
+            val item = awaitItem()
+
+            // Then
+            val expected = NotificationPermissionDialogState.Shown(
+                uiModel = EnablePushNotificationsUiModel(
+                    title = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_title),
+                    message = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_message)
+                )
+            )
+            assertEquals(expected, item.notificationPermissionDialogState)
+            coVerify { saveShouldStopShowingPermissionDialog() }
+        }
+    }
+
+    @Test
+    fun `should hide notification permission dialog when close method is called`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = false) } returns true
+
+        // When
+        homeViewModel.state.test {
+            skipItems(1)
+            homeViewModel.closeNotificationPermissionDialog()
+            val item = awaitItem()
+
+            // Then
+            val expected = NotificationPermissionDialogState.Hidden
+            assertEquals(expected, item.notificationPermissionDialogState)
+        }
     }
 
     private fun mockIntent(action: String, data: Uri?): Intent {

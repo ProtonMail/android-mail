@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -39,6 +40,12 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
+import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
+import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
@@ -67,6 +74,9 @@ class HomeViewModel @Inject constructor(
     private val resetSendingMessageStatus: ResetSendingMessagesStatus,
     private val selectedMailLabelId: SelectedMailLabelId,
     private val discardDraft: DiscardDraft,
+    private val shouldShowNotificationPermissionDialog: ShouldShowNotificationPermissionDialog,
+    private val savePermissionDialogTimestamp: SavePermissionDialogTimestamp,
+    private val saveShouldStopShowingPermissionDialog: SaveShouldStopShowingPermissionDialog,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
@@ -99,6 +109,8 @@ class HomeViewModel @Inject constructor(
                 emitNewStateForIntent(intent)
             }
             .launchIn(viewModelScope)
+
+        showNotificationPermissionDialogIfNeeded(isMessageSent = false)
     }
 
     fun navigateTo(navController: NavController, route: String) {
@@ -132,13 +144,27 @@ class HomeViewModel @Inject constructor(
 
     fun recordViewOfMailboxScreen() = recordMailboxScreenView()
 
+    fun closeNotificationPermissionDialog() {
+        val currentState = state.value
+        mutableState.value = currentState.copy(
+            notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+        )
+    }
+
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {
         if (messageSendingStatus == MessageSendingStatus.None) {
             // Emitting a None status to UI would override the previously emitted effect and cause snack not to show
             return
         }
+
+        if (messageSendingStatus == MessageSendingStatus.MessageSent) {
+            showNotificationPermissionDialogIfNeeded(isMessageSent = true)
+        }
+
         val currentState = state.value
-        mutableState.value = currentState.copy(messageSendingStatusEffect = Effect.of(messageSendingStatus))
+        mutableState.value = currentState.copy(
+            messageSendingStatusEffect = Effect.of(messageSendingStatus)
+        )
     }
 
     private fun emitNewStateForIntent(intent: Intent) {
@@ -171,6 +197,34 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()
+
+    private fun showNotificationPermissionDialogIfNeeded(isMessageSent: Boolean) {
+        viewModelScope.launch {
+            if (shouldShowNotificationPermissionDialog(System.currentTimeMillis(), isMessageSent)) {
+                val currentState = state.value
+                mutableState.value = currentState.copy(
+                    notificationPermissionDialogState = NotificationPermissionDialogState.Shown(
+                        uiModel = if (isMessageSent) {
+                            EnablePushNotificationsUiModel(
+                                title = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_title),
+                                message = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_message)
+                            )
+                        } else {
+                            EnablePushNotificationsUiModel(
+                                title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
+                                message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
+                            )
+                        }
+                    )
+                )
+                if (isMessageSent) {
+                    saveShouldStopShowingPermissionDialog()
+                } else {
+                    savePermissionDialogTimestamp(System.currentTimeMillis())
+                }
+            }
+        }
+    }
 
     companion object {
 
