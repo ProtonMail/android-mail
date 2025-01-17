@@ -16,12 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailbugreport.domain.annotations
+package ch.protonmail.android.mailbugreport.domain.featureflags
 
-import javax.inject.Qualifier
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-/**
- * Provider for the "Application logs" related feature flags.
- */
-@Qualifier
-annotation class LogsExportFeatureSettingValue
+class IsLogsExportingFeatureEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
+
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke() = featureFlagManager.getValue(null, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidLogsExportingFeature"
+    }
+}
