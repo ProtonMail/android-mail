@@ -47,8 +47,8 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
-import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 internal fun CustomizeToolbarContent(
@@ -80,7 +80,7 @@ internal fun CustomizeToolbarContent(
                 topBar = {
                     Column {
                         ProtonTopAppBar(
-                            modifier = modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxWidth(),
                             title = {
                                 androidx.compose.material.Text(
                                     stringResource(id = R.string.mail_settings_customize_toolbar)
@@ -99,7 +99,11 @@ internal fun CustomizeToolbarContent(
                                     onAction(CustomizeToolbarOperation.SaveClicked)
                                     onBackClick()
                                 }) {
-                                    Text(stringResource(R.string.customize_toolbar_done_action))
+                                    Text(
+                                        stringResource(R.string.customize_toolbar_done_action),
+                                        color = ProtonTheme.colors.textAccent,
+                                        style = ProtonTheme.typography.defaultNorm
+                                    )
                                 }
                             }
                         )
@@ -118,18 +122,10 @@ internal fun CustomizeToolbarContent(
                         state = pagerState
                     ) { index ->
                         val page = state.pages[index]
-                        Column {
-                            ToolbarDisclaimer(
-                                textRes = when (index) {
-                                    0 -> R.string.customize_toolbar_disclaimer_message
-                                    else -> R.string.customize_toolbar_disclaimer_inbox
-                                },
-                                modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing)
-                                    .fillMaxWidth()
-                                    .padding(horizontal = ProtonDimens.DefaultSpacing)
-                            )
+                        Column(modifier = Modifier.fillMaxSize()) {
                             ToolbarActions(
                                 items = page.selectedActions,
+                                pageIndex = index,
                                 onAction = onAction,
                                 remainingItems = page.remainingActions,
                                 modifier = Modifier.padding(paddingValues)

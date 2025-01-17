@@ -160,6 +160,15 @@ fun MainSettingsScreen(
                 )
                 Divider()
             }
+            if (state.showCustomizeToolbar) {
+                item {
+                    ProtonSettingsItem(
+                        name = stringResource(id = string.mail_settings_customize_toolbar),
+                        onClick = actions.onCustomizeToolbarClick
+                    )
+                    Divider()
+                }
+            }
             item {
                 ClearLocalCacheItem(
                     totalSize = state.totalSizeInformation,
@@ -327,6 +336,7 @@ object MainSettingsScreen {
         val onAutoLockClick: () -> Unit,
         val onAlternativeRoutingClick: () -> Unit,
         val onAppLanguageClick: () -> Unit,
+        val onCustomizeToolbarClick: () -> Unit,
         val onCombinedContactsClick: () -> Unit,
         val onSwipeActionsClick: () -> Unit,
         val onClearCacheClick: () -> Unit,

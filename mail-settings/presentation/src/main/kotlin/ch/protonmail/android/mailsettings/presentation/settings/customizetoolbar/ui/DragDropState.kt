@@ -195,7 +195,7 @@ fun rememberDragDropState(
 ): DragDropState {
     val scope = rememberCoroutineScope()
     val state =
-        remember(lazyListState) {
+        remember(lazyListState, count) {
             DragDropState(state = lazyListState, onMove = { start, end ->
                 val from = (start - startIndex).coerceIn(0, count - 1)
                 val to = (end - startIndex).coerceIn(0, count - 1)

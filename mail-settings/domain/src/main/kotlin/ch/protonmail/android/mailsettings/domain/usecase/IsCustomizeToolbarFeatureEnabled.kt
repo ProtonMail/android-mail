@@ -16,28 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.repository
+package ch.protonmail.android.mailsettings.domain.usecase
 
-import arrow.core.Either
-import ch.protonmail.android.mailsettings.domain.model.SettingsToolbarType
-import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
-import kotlinx.coroutines.flow.Flow
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-interface InMemoryToolbarPreferenceRepository {
-    fun inMemoryPreferences(): Flow<Either<Error.UserNotLoggedIn, ToolbarActionsPreference>>
-    fun toggleSelection(
-        actionId: String,
-        tab: SettingsToolbarType,
-        toggled: Boolean
-    )
-    fun resetToDefault(tab: SettingsToolbarType)
-    fun reorder(
-        fromIndex: Int,
-        toIndex: Int,
-        tab: SettingsToolbarType
-    )
+class IsCustomizeToolbarFeatureEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
 
-    sealed interface Error {
-        data object UserNotLoggedIn : Error
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId? = null) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidCustomizableToolbar"
     }
 }

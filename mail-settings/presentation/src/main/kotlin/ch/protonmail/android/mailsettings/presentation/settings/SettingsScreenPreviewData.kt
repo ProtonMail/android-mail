@@ -35,7 +35,8 @@ object SettingsScreenPreviewData {
             hasCombinedContacts = true
         ),
         AppInformation(appVersionName = "6.0.0-alpha"),
-        totalSizeInformation = sizeInformation
+        totalSizeInformation = sizeInformation,
+        showCustomizeToolbar = true
     )
 
     val Actions = MainSettingsScreen.Actions(
@@ -49,6 +50,7 @@ object SettingsScreenPreviewData {
         onSwipeActionsClick = {},
         onClearCacheClick = {},
         onExportLogsClick = {},
-        onBackClick = {}
+        onBackClick = {},
+        onCustomizeToolbarClick = {}
     )
 }

@@ -74,6 +74,7 @@ import ch.protonmail.android.navigation.route.addContactSearch
 import ch.protonmail.android.navigation.route.addContacts
 import ch.protonmail.android.navigation.route.addConversationDetail
 import ch.protonmail.android.navigation.route.addConversationModeSettings
+import ch.protonmail.android.navigation.route.addCustomizeToolbar
 import ch.protonmail.android.navigation.route.addDeepLinkHandler
 import ch.protonmail.android.navigation.route.addDefaultEmailSettings
 import ch.protonmail.android.navigation.route.addDisplayNameSettings
@@ -589,6 +590,7 @@ fun Home(
                 addDisplayNameSettings(navController)
                 addEditSwipeActionsSettings(navController)
                 addLanguageSettings(navController)
+                addCustomizeToolbar(navController)
                 addPrivacySettings(navController)
                 addAutoLockSettings(navController)
                 addAutoLockPinScreen(

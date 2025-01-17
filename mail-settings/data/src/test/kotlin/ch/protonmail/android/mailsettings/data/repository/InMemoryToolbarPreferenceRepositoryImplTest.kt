@@ -19,12 +19,15 @@
 package ch.protonmail.android.mailsettings.data.repository
 
 import app.cash.turbine.test
+import arrow.core.left
 import ch.protonmail.android.mailsettings.domain.model.SettingsToolbarType
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference.ActionSelection
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference.Defaults
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference.ToolbarActions
+import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPreferenceRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -62,6 +65,21 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     }
 
     @Test
+    fun `returns error if user is not logged in`() = runTest {
+        // Given
+        coEvery { accountManager.getPrimaryUserId() } returns flowOf(null)
+
+        // When
+        repo.inMemoryPreferences().test {
+            // Then
+            val item = awaitItem()
+            assertEquals(InMemoryToolbarPreferenceRepository.Error.UserNotLoggedIn.left(), item)
+            coVerify(exactly = 0) { mailSettingsRepository.getMailSettingsFlow(any()) }
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `returns default actions if user has no preference set`() = runTest {
         // Given
         val settingsMock = mockk<MailSettings> {
@@ -75,7 +93,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
         repo.inMemoryPreferences().test {
             // Then
             val expected = expectedDefaultPreference(convMode = false)
-            val item = awaitItem()
+            val item = awaitItem().getOrNull()
             assertEquals(expected, item)
         }
     }
@@ -140,7 +158,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveTo
                 ).stringEnums()
             )
-            val item = awaitItem()
+            val item = awaitItem().getOrNull()
             assertEquals(expected, item)
         }
     }
@@ -181,7 +199,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveToSpam
                 ).stringEnums() + listOf(ToolbarAction.enumOf("unknown2"))
             )
-            assertEquals(expected, awaitItem())
+            assertEquals(expected, awaitItem().getOrNull())
         }
     }
 
@@ -222,7 +240,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveToSpam
                 ).stringEnums()
             )
-            assertEquals(expected, awaitItem())
+            assertEquals(expected, awaitItem().getOrNull())
         }
     }
 
@@ -284,7 +302,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.enumOf("unknown2")
                 )
             )
-            assertEquals(expected, awaitItem())
+            assertEquals(expected, awaitItem().getOrNull())
         }
     }
 
@@ -328,7 +346,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
                     ToolbarAction.MoveToArchive
                 ).stringEnums()
             )
-            assertEquals(expected, awaitItem())
+            assertEquals(expected, awaitItem().getOrNull())
         }
     }
 
@@ -362,7 +380,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
 
             // Then
             val expected = expectedDefaultPreference(convMode = true)
-            assertEquals(expected, awaitItem())
+            assertEquals(expected, awaitItem().getOrNull())
         }
     }
 

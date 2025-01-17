@@ -30,6 +30,8 @@ data class ToolbarActionsPreference(
     val isConversationMode: Boolean
 ) {
 
+    val messageOrConvToolbar get() = if (isConversationMode) conversationToolbar else messageToolbar
+
     data class ActionSelection(
         val selected: List<StringEnum<ToolbarAction>>,
         val all: List<ToolbarAction>
@@ -39,7 +41,7 @@ data class ToolbarActionsPreference(
         fun canRemove(): Boolean = selected.size > Defaults.MIN_ACTIONS
 
         fun toggleSelection(actionId: String, toggled: Boolean): ActionSelection {
-            val action = all.firstOrNull { it.identifier == actionId } ?: return this
+            val action = Defaults.AllActions.firstOrNull { it.identifier == actionId } ?: return this
             return if (toggled) {
                 copy(
                     selected = selected + ToolbarAction.enumOf(action.value)
@@ -158,6 +160,8 @@ data class ToolbarActionsPreference(
             ToolbarAction.StarOrUnstar,
             ToolbarAction.MoveToArchive
         )
+
+        val AllActions = ToolbarAction.entries
     }
 }
 

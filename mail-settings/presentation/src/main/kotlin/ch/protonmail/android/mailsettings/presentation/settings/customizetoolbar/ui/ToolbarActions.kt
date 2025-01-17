@@ -42,12 +42,13 @@ import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
-internal const val DRAGGABLE_ACTIONS_START_IDX = 1
+internal const val DRAGGABLE_ACTIONS_START_IDX = 2
 
 @Composable
 internal fun ToolbarActions(
     items: List<ToolbarActionUiModel>,
     remainingItems: List<ToolbarActionUiModel>,
+    pageIndex: Int,
     onAction: (CustomizeToolbarOperation) -> Unit,
     modifier: Modifier
 ) {
@@ -68,6 +69,18 @@ internal fun ToolbarActions(
             lazyColumnPosY = coords.localToWindow(Offset.Zero).y
         }
     ) {
+        item {
+            ToolbarDisclaimer(
+                textRes = when (pageIndex) {
+                    0 -> R.string.customize_toolbar_disclaimer_message
+                    else -> R.string.customize_toolbar_disclaimer_inbox
+                },
+                modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing)
+                    .fillMaxWidth()
+                    .padding(horizontal = ProtonDimens.DefaultSpacing)
+            )
+        }
+
         item {
             Text(
                 text = stringResource(R.string.customize_toolbar_actions_section),

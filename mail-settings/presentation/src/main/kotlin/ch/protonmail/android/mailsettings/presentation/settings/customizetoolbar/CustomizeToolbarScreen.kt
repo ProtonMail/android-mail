@@ -16,28 +16,20 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.repository
+package ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar
 
-import arrow.core.Either
-import ch.protonmail.android.mailsettings.domain.model.SettingsToolbarType
-import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
-import kotlinx.coroutines.flow.Flow
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.ui.CustomizeToolbarContent
 
-interface InMemoryToolbarPreferenceRepository {
-    fun inMemoryPreferences(): Flow<Either<Error.UserNotLoggedIn, ToolbarActionsPreference>>
-    fun toggleSelection(
-        actionId: String,
-        tab: SettingsToolbarType,
-        toggled: Boolean
-    )
-    fun resetToDefault(tab: SettingsToolbarType)
-    fun reorder(
-        fromIndex: Int,
-        toIndex: Int,
-        tab: SettingsToolbarType
-    )
-
-    sealed interface Error {
-        data object UserNotLoggedIn : Error
-    }
+@Composable
+fun CustomizeToolbarScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit,
+    viewModel: CustomizeToolbarViewModel = hiltViewModel()
+) {
+    val state = viewModel.state.collectAsStateWithLifecycle(CustomizeToolbarState.Loading).value
+    CustomizeToolbarContent(state, onAction = viewModel::submit, onBackClick = onBackClick, modifier = modifier)
 }

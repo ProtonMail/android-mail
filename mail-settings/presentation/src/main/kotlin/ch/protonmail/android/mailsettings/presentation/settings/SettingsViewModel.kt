@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailbugreport.domain.annotations.LogsExportingFeatureEnabled
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
+import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.ClearDataAction
 import ch.protonmail.android.mailsettings.domain.usecase.ClearLocalStorage
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAppSettings
@@ -46,7 +47,8 @@ class SettingsViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     observeOverallLocalDataUsage: ObserveOverallLocalStorageUsage,
     private val clearLocalStorage: ClearLocalStorage,
-    @LogsExportingFeatureEnabled val isLogsExportingEnabled: Boolean
+    @LogsExportingFeatureEnabled val isLogsExportingEnabled: Boolean,
+    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
 ) : ViewModel() {
 
     val state = combine(
@@ -58,7 +60,8 @@ class SettingsViewModel @Inject constructor(
             buildAccountData(user),
             appSettings,
             appInformation,
-            totalDataSize
+            totalDataSize,
+            showCustomizeToolbar = isCustomizeToolbarEnabled
         )
     }.stateIn(
         viewModelScope,

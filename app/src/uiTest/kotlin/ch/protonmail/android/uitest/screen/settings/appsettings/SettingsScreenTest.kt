@@ -56,7 +56,8 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             hasCombinedContacts = true
         ),
         AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026),
-        LocalStorageUsageInformation(123L)
+        LocalStorageUsageInformation(123L),
+        showCustomizeToolbar = true,
     )
 
     @Before
@@ -76,7 +77,8 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
                         onSwipeActionsClick = {},
                         onClearCacheClick = {},
                         onBackClick = {},
-                        onExportLogsClick = {}
+                        onExportLogsClick = {},
+                        onCustomizeToolbarClick = {},
                     ),
                     shouldShowExportLogs = false
                 )

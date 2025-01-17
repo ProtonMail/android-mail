@@ -18,14 +18,20 @@
 
 package ch.protonmail.android.mailsettings.data.repository
 
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import ch.protonmail.android.mailsettings.domain.model.SettingsToolbarType
 import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
 import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPreferenceRepository
+import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPreferenceRepository.Error
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import me.proton.core.accountmanager.domain.AccountManager
 import me.proton.core.domain.arch.mapSuccessValueOrNull
@@ -41,18 +47,22 @@ class InMemoryToolbarPreferenceRepositoryImpl @Inject constructor(
 
     private val proposedPreferences = MutableStateFlow<ToolbarActionsPreference?>(null)
 
-    override fun inMemoryPreferences(): Flow<ToolbarActionsPreference?> =
-        accountManager.getPrimaryUserId().filterNotNull().flatMapLatest { userId ->
-            mailSettingsRepository.getMailSettingsFlow(userId)
-                .mapSuccessValueOrNull()
-                .filterNotNull()
-        }.flatMapLatest { settings ->
-            val isConversationMode = settings.viewMode?.enum?.let { it == ViewMode.ConversationGrouping }
-            val preference = ToolbarActionsPreference
-                .create(settings.mobileSettings, isConversationMode ?: false)
-            proposedPreferences.update { preference }
-            proposedPreferences
+    override fun inMemoryPreferences(): Flow<Either<Error.UserNotLoggedIn, ToolbarActionsPreference>> {
+        return accountManager.getPrimaryUserId().flatMapLatest { userId ->
+            userId?.let {
+                mailSettingsRepository.getMailSettingsFlow(userId)
+                    .mapSuccessValueOrNull()
+                    .filterNotNull()
+                    .flatMapLatest { settings ->
+                        val isConversationMode = settings.viewMode?.enum?.let { it == ViewMode.ConversationGrouping }
+                        val preference = ToolbarActionsPreference
+                            .create(settings.mobileSettings, isConversationMode ?: false)
+                        proposedPreferences.update { preference }
+                        proposedPreferences.filterNotNull().map { it.right() }
+                    }
+            } ?: flowOf(Error.UserNotLoggedIn.left())
         }
+    }
 
     override fun toggleSelection(
         actionId: String,

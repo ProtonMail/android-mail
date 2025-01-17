@@ -203,6 +203,9 @@ internal fun NavGraphBuilder.addSettings(navController: NavHostController) {
                 onCombinedContactsClick = {
                     navController.navigate(Destination.Screen.CombinedContactsSettings.route)
                 },
+                onCustomizeToolbarClick = {
+                    navController.navigate(Destination.Screen.CustomizeToolbar.route)
+                },
                 onSwipeActionsClick = {
                     navController.navigate(Destination.Screen.SwipeActionsSettings.route)
                 },

@@ -16,25 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.presentation.settings
+package ch.protonmail.android.mailsettings.domain.annotations
 
-import ch.protonmail.android.mailcommon.domain.AppInformation
-import ch.protonmail.android.mailsettings.domain.model.AppSettings
-import ch.protonmail.android.mailsettings.domain.model.LocalStorageUsageInformation
+import javax.inject.Qualifier
 
-sealed class SettingsState {
-    data class Data(
-        val account: AccountInfo?,
-        val appSettings: AppSettings,
-        val appInformation: AppInformation,
-        val totalSizeInformation: LocalStorageUsageInformation,
-        val showCustomizeToolbar: Boolean
-    ) : SettingsState()
-
-    object Loading : SettingsState()
-}
-
-data class AccountInfo(
-    val name: String,
-    val email: String
-)
+/**
+ * Indicates whether the Customize Toolbar feature is visible.
+ */
+@Qualifier
+annotation class CustomizeToolbarFeatureEnabled

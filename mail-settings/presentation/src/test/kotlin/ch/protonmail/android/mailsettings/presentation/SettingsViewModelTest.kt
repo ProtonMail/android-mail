@@ -35,6 +35,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Lo
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsViewModel
 import ch.protonmail.android.mailsettings.presentation.testdata.AppSettingsTestData
 import ch.protonmail.android.testdata.user.UserTestData
+import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -46,8 +47,9 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
+import javax.inject.Provider
+import kotlin.test.BeforeTest
 
 class SettingsViewModelTest {
 
@@ -69,21 +71,27 @@ class SettingsViewModelTest {
 
     private val appInformation = AppInformation(appVersionName = "6.0.0-alpha")
     private val isLogsExportingEnabled = false
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
 
-    private lateinit var viewModel: SettingsViewModel
-
-    @Before
-    fun setUp() {
-        Dispatchers.setMain(UnconfinedTestDispatcher())
-
-        viewModel = SettingsViewModel(
+    private val viewModel by lazy {
+        SettingsViewModel(
             appInformation,
             observeAppSettings,
             observePrimaryUser,
             observeOverallLocalStorageUsage,
             clearLocalStorage,
-            isLogsExportingEnabled
+            isLogsExportingEnabled,
+            provideIsCustomizeToolbarEnabled.get()
         )
+    }
+
+
+    @BeforeTest
+    fun setUp() {
+        Dispatchers.setMain(UnconfinedTestDispatcher())
+        MockKAnnotations.init(this)
+
+        customizeToolbarFeatureEnabled(false)
     }
 
     @Test
@@ -186,6 +194,46 @@ class SettingsViewModelTest {
             val actual = awaitItem() as Data
             assertEquals(BaseLocalStorageUsageInformation, actual.totalSizeInformation)
         }
+    }
+
+    @Test
+    fun `state has customize toolbar hidden when feature flag is false`() = runTest {
+        customizeToolbarFeatureEnabled(false)
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userFlow.emit(UserTestData.Primary)
+
+            // When
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(false, actual.showCustomizeToolbar)
+        }
+    }
+
+    @Test
+    fun `state has customize toolbar shown when feature flag is true`() = runTest {
+        customizeToolbarFeatureEnabled(true)
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userFlow.emit(UserTestData.Primary)
+
+            // When
+            appSettingsFlow.emit(AppSettingsTestData.appSettings)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(true, actual.showCustomizeToolbar)
+        }
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
     }
 
     private suspend fun ReceiveTurbine<SettingsState>.initialStateEmitted() {

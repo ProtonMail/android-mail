@@ -123,6 +123,7 @@ sealed class Destination(val route: String) {
         object DisplayNameSettings : Destination("settings/account/displayName")
         object PrivacySettings : Destination("settings/account/privacy")
         object LanguageSettings : Destination("settings/appLanguage")
+        object CustomizeToolbar : Destination("settings/customizeToolbar")
         object SwipeActionsSettings : Destination("settings/swipeActions")
         object EditSwipeActionSettings : Destination("settings/swipeActions/edit/${SWIPE_DIRECTION_KEY.wrap()}") {
 

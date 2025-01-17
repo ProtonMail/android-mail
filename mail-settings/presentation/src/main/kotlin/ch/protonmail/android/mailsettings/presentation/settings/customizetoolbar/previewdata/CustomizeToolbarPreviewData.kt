@@ -81,6 +81,8 @@ internal data class ToolbarActionPreview(
 internal class CustomizeToolbarPreviewProvider : PreviewParameterProvider<CustomizeToolbarPreview> {
 
     override val values = sequenceOf(
+        CustomizeToolbarPreview(CustomizeToolbarState.NotLoggedIn),
+        CustomizeToolbarPreview(CustomizeToolbarState.Loading),
         CustomizeToolbarPreview(CustomizeToolbarPreviewData.Normal),
         CustomizeToolbarPreview(CustomizeToolbarPreviewData.DisabledAdd),
         CustomizeToolbarPreview(CustomizeToolbarPreviewData.DisabledARemove)
