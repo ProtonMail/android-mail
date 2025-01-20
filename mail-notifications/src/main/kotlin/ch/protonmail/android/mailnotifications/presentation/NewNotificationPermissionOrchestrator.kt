@@ -18,28 +18,43 @@
 
 package ch.protonmail.android.mailnotifications.presentation
 
+import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class NewNotificationPermissionOrchestrator @Inject constructor() {
+class NewNotificationPermissionOrchestrator @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
-    private var permissionRequester: ActivityResultLauncher<String>? = null
+    private var rationalePermissionRequester: ActivityResultLauncher<String>? = null
+    private var intentPermissionRequester: ActivityResultLauncher<Intent>? = null
 
     fun requestPermissionIfRequired() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rationalePermissionRequester?.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
         }
 
-        permissionRequester?.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        intentPermissionRequester?.launch(intent)
     }
 
     fun register(caller: AppCompatActivity) {
-        permissionRequester = caller.registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) {}
+        if (caller.shouldShowRequestPermissionRationale(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)) {
+            rationalePermissionRequester = caller.registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) {}
+        } else {
+            intentPermissionRequester = caller.registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult()
+            ) {}
+        }
     }
 }
