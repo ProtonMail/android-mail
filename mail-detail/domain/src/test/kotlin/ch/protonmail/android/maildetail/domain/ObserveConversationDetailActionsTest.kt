@@ -46,7 +46,7 @@ internal class ObserveConversationDetailActionsTest {
 
     private val observeToolbarActions = mockk<ObserveMailMessageToolbarSettings> {
         every {
-            this@mockk.invoke(userId)
+            this@mockk.invoke(userId, false)
         } returns flowOf(null)
     }
 
@@ -77,7 +77,7 @@ internal class ObserveConversationDetailActionsTest {
     fun `returns settings actions list for conversation`() = runTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
-        every { observeToolbarActions.invoke(userId) } returns flowOf(
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
             listOf(
                 Action.Label,
                 Action.ReportPhishing,
@@ -123,7 +123,7 @@ internal class ObserveConversationDetailActionsTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.trashAndSpamConversation
         every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
-        every { observeToolbarActions.invoke(userId) } returns flowOf(
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
             listOf(
                 Action.Spam,
                 Action.Trash
@@ -147,7 +147,7 @@ internal class ObserveConversationDetailActionsTest {
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.conversation
         every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
-        every { observeToolbarActions.invoke(userId) } returns flowOf(
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
             listOf(
                 Action.Spam,
                 Action.Delete

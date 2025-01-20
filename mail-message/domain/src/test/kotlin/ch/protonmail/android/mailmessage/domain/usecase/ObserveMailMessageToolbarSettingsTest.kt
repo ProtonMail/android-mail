@@ -65,7 +65,7 @@ class ObserveMailMessageToolbarSettingsTest {
         every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
 
         // When
-        useCase.invoke(userId).test {
+        useCase.invoke(userId, isMailBox = false).test {
             // Then
             assertEquals(null, awaitItem())
             awaitComplete()
@@ -94,7 +94,7 @@ class ObserveMailMessageToolbarSettingsTest {
         every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
 
         // When
-        useCase.invoke(userId).test {
+        useCase.invoke(userId, isMailBox = false).test {
             // Then
             assertEquals(
                 listOf(
@@ -130,13 +130,49 @@ class ObserveMailMessageToolbarSettingsTest {
         every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
 
         // When
-        useCase.invoke(userId).test {
+        useCase.invoke(userId, isMailBox = false).test {
             // Then
             assertEquals(
                 listOf(
                     Action.ReportPhishing,
                     Action.Star,
                     Action.Archive
+                ),
+                awaitItem()
+            )
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `mailbox actions are returned when isMailbox is true`() = runTest {
+        val settings = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns MobileSettings(
+                listToolbar = ActionsToolbarSetting(
+                    isCustom = true,
+                    actions = listOf(
+                        ToolbarAction.LabelAs,
+                        ToolbarAction.Forward,
+                        ToolbarAction.ViewMessageInLightMode
+                    ).map { ToolbarAction.enumOf(it.value) }
+                ),
+                messageToolbar = null,
+                conversationToolbar = null
+            )
+        }
+
+        // Given
+        every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
+
+        // When
+        useCase.invoke(userId, isMailBox = true).test {
+            // Then
+            assertEquals(
+                listOf(
+                    Action.Label,
+                    Action.Forward,
+                    Action.ViewInLightMode
                 ),
                 awaitItem()
             )

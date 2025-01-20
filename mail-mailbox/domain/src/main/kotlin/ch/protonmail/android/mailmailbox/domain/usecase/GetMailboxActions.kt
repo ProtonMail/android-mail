@@ -25,27 +25,35 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxBottomBarDefaults
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
-class GetMailboxActions @Inject constructor() {
+class GetMailboxActions @Inject constructor(
+    private val observeToolbarActions: ObserveMailMessageToolbarSettings
+) {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         currentMailLabel: MailLabel,
-        areAllItemsUnread: Boolean
-    ): Either<DataError, List<Action>> {
-        return either {
-            val actions = MailboxBottomBarDefaults.actions.toMutableList()
+        areAllItemsUnread: Boolean,
+        userId: UserId
+    ): Flow<Either<DataError, List<Action>>> = observeToolbarActions.invoke(userId, isMailBox = true)
+        .map { preferences ->
+            either {
+                val actions = (preferences ?: MailboxBottomBarDefaults.actions).toMutableList()
 
-            if (areAllItemsUnread) {
-                actions[actions.indexOf(Action.MarkUnread)] = Action.MarkRead
-            }
+                if (areAllItemsUnread) {
+                    actions[actions.indexOf(Action.MarkUnread)] = Action.MarkRead
+                }
 
-            if (currentMailLabel.isTrashOrSpam()) {
-                actions[actions.indexOf(Action.Trash)] = Action.Delete
+                if (currentMailLabel.isTrashOrSpam()) {
+                    actions[actions.indexOf(Action.Trash)] = Action.Delete
+                }
+                actions
             }
-            actions
         }
-    }
 
     private fun MailLabel.isTrashOrSpam() =
         id.labelId == SystemLabelId.Trash.labelId || id.labelId == SystemLabelId.Spam.labelId

@@ -239,9 +239,15 @@ class MailboxViewModel @Inject constructor(
             handleLabelSelectedForAutoDelete(currentMailLabel, autoDeleteSetting, isAutodeleteFeatureEnabled)
         }.launchIn(viewModelScope)
 
-        selectedMailLabelId.flow.mapToExistingLabel()
-            .combine(state.observeSelectedMailboxItems()) { selectedMailLabelId, selectedMailboxItems ->
-                getMailboxActions(selectedMailLabelId, selectedMailboxItems.none { it.isRead }).fold(
+        combine(
+            selectedMailLabelId.flow.mapToExistingLabel(),
+            state.observeSelectedMailboxItems(),
+            primaryUserId.filterNotNull()
+        ) { selectedMailLabelId, selectedMailboxItems, userId ->
+            Triple(selectedMailLabelId, selectedMailboxItems, userId)
+        }.flatMapLatest { (selectedMailLabelId, selectedMailboxItems, userId) ->
+            getMailboxActions(selectedMailLabelId, selectedMailboxItems.none { it.isRead }, userId).map {
+                it.fold(
                     ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
                         MailboxEvent.MessageBottomBarEvent(
@@ -253,6 +259,7 @@ class MailboxViewModel @Inject constructor(
                     }
                 )
             }
+        }
             .distinctUntilChanged()
             .onEach { emitNewStateFrom(it) }
             .launchIn(viewModelScope)

@@ -32,14 +32,15 @@ class ObserveMailMessageToolbarSettings @Inject constructor(
     private val mailSettingsRepository: MailSettingsRepository
 ) {
 
-    operator fun invoke(userId: UserId): Flow<List<Action>?> =
+    operator fun invoke(userId: UserId, isMailBox: Boolean): Flow<List<Action>?> =
         mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull().map { settings ->
             val isConvMode = settings?.viewMode?.enum == ViewMode.ConversationGrouping
-            if (isConvMode) {
-                settings?.mobileSettings?.conversationToolbar
-            } else {
-                settings?.mobileSettings?.messageToolbar
-            }?.actions?.mapNotNull { it.enum }?.map { toolbarAction ->
+            val toolbar = when {
+                isMailBox -> settings?.mobileSettings?.listToolbar
+                isConvMode -> settings?.mobileSettings?.conversationToolbar
+                else -> settings?.mobileSettings?.messageToolbar
+            }
+            toolbar?.actions?.mapNotNull { it.enum }?.map { toolbarAction ->
                 when (toolbarAction) {
                     ToolbarAction.ReplyOrReplyAll -> Action.Reply
                     ToolbarAction.Forward -> Action.Forward

@@ -253,7 +253,7 @@ class MailboxViewModelTest {
     }
 
     private val observeMailboxActions = mockk<GetMailboxActions> {
-        coEvery { this@mockk(any(), any()) } returns listOf(Action.Archive, Action.Trash).right()
+        coEvery { this@mockk(any(), any(), userId) } returns flowOf(listOf(Action.Archive, Action.Trash).right())
     }
 
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()

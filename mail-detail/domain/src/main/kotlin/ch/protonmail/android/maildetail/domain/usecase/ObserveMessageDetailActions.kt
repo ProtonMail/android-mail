@@ -39,7 +39,7 @@ class ObserveMessageDetailActions @Inject constructor(
 
     operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, List<Action>>> = combine(
         observeMessage(userId, messageId),
-        observeToolbarActions.invoke(userId)
+        observeToolbarActions.invoke(userId, isMailBox = false)
     ) { either, toolbarActions ->
         either.map { message ->
             val actions = (toolbarActions ?: BottomBarDefaults.Message.actions).toMutableList()

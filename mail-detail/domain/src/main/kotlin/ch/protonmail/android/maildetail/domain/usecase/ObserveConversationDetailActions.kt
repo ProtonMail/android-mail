@@ -44,7 +44,7 @@ class ObserveConversationDetailActions @Inject constructor(
         refreshConversations: Boolean
     ): Flow<Either<DataError, List<Action>>> = combine(
         observeConversation(userId, conversationId, refreshConversations),
-        observeToolbarActions(userId)
+        observeToolbarActions(userId, isMailBox = false)
     ) { either, toolbarActions ->
         either.map { conversation ->
             val actions = (toolbarActions ?: BottomBarDefaults.Conversation.actions).toMutableList()

@@ -18,17 +18,28 @@
 
 package ch.protonmail.android.mailmailbox.domain.usecase
 
+import app.cash.turbine.test
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
+import io.mockk.every
+import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ObserveMailboxActionsTest {
 
-    private val observeMailboxActions = GetMailboxActions()
+    private val userId = UserIdSample.Primary
+    private val observeToolbarActions = mockk<ObserveMailMessageToolbarSettings> {
+        every { this@mockk.invoke(userId, true) } returns flowOf(null)
+    }
+    private val observeMailboxActions = GetMailboxActions(observeToolbarActions)
 
     @Test
     fun `returns default actions for non-trash or non-spam labels`() = runTest {
@@ -37,10 +48,50 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Trash, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false)
+        val actions = observeMailboxActions(currentMailLabel, false, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
+    }
+
+    @Test
+    fun `returns preferences when available`() = runTest {
+        // Given
+        val currentMailLabel = MailLabel.System(MailLabelId.System.Inbox)
+        every { observeToolbarActions.invoke(userId, true) } returns flowOf(
+            listOf(
+                Action.Move, Action.Trash, Action.Forward
+            )
+        )
+        val expected = listOf(Action.Move, Action.Trash, Action.Forward)
+
+        // When
+        val actions = observeMailboxActions(currentMailLabel, false, userId)
+
+        // Then
+        assertEquals(expected.right(), actions.first())
+    }
+
+    @Test
+    fun `returns a flow of preferences as they change`() = runTest {
+        // Given
+        val currentMailLabel = MailLabel.System(MailLabelId.System.Inbox)
+        every { observeToolbarActions.invoke(userId, true) } returns flowOf(
+            listOf(
+                Action.Move, Action.Trash, Action.Forward
+            ),
+            listOf(
+                Action.Label, Action.Star
+            )
+        )
+
+        // When
+        observeMailboxActions(currentMailLabel, false, userId).test {
+            // Then
+            assertEquals(listOf(Action.Move, Action.Trash, Action.Forward).right(), awaitItem())
+            assertEquals(listOf(Action.Label, Action.Star).right(), awaitItem())
+            awaitComplete()
+        }
     }
 
     @Test
@@ -50,10 +101,10 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false)
+        val actions = observeMailboxActions(currentMailLabel, false, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
     }
 
     @Test
@@ -63,10 +114,10 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false)
+        val actions = observeMailboxActions(currentMailLabel, false, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
     }
 
     @Test
@@ -76,10 +127,10 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Trash, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true)
+        val actions = observeMailboxActions(currentMailLabel, true, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
     }
 
     @Test
@@ -89,10 +140,10 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true)
+        val actions = observeMailboxActions(currentMailLabel, true, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
     }
 
     @Test
@@ -102,9 +153,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true)
+        val actions = observeMailboxActions(currentMailLabel, true, userId)
 
         // Then
-        assertEquals(expected.right(), actions)
+        assertEquals(expected.right(), actions.first())
     }
 }
