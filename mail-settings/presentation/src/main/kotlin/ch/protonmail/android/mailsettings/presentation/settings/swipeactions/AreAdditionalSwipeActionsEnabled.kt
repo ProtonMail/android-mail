@@ -16,11 +16,23 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailsettings.domain.model
+package ch.protonmail.android.mailsettings.presentation.settings.swipeactions
 
-import me.proton.core.mailsettings.domain.entity.SwipeAction
+import me.proton.core.domain.entity.UserId
+import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
+import me.proton.core.featureflag.domain.FeatureFlagManager
+import me.proton.core.featureflag.domain.entity.FeatureId
+import javax.inject.Inject
 
-data class SwipeActionsPreference(
-    val swipeLeft: SwipeAction,
-    val swipeRight: SwipeAction
-)
+class AreAdditionalSwipeActionsEnabled @Inject constructor(
+    private val featureFlagManager: FeatureFlagManager
+) {
+
+    @OptIn(ExperimentalProtonFeatureFlag::class)
+    operator fun invoke(userId: UserId?) = featureFlagManager.getValue(userId, FeatureId(FeatureFlagId))
+
+    private companion object {
+
+        const val FeatureFlagId = "MailAndroidAdditionalSwipeActions"
+    }
+}

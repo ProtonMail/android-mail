@@ -51,7 +51,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 
@@ -69,7 +69,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 
@@ -267,7 +267,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 
@@ -285,7 +285,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 
@@ -303,7 +303,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeLeft(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 
@@ -321,7 +321,7 @@ internal class UpdateSwipeActionPreferenceTest {
 
         // then
         coVerify {
-            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = false)
+            mailSettingsRepository.updateSwipeRight(userId = userId, swipeAction = swipeAction, syncWithRemote = true)
         }
     }
 }

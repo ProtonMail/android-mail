@@ -57,6 +57,8 @@ internal class EditSwipeActionPreferenceViewModelTest {
         every { get<String>(SWIPE_DIRECTION_KEY) } returns SwipeActionDirection.LEFT.name
     }
     private val updateSwipeActionPreference: UpdateSwipeActionPreference = mockk(relaxUnitFun = true)
+    private val areAdditionalSwipeActionsEnabled = mockk<AreAdditionalSwipeActionsEnabled>()
+
 
     private val viewModel by lazy {
         EditSwipeActionPreferenceViewModel(
@@ -64,7 +66,8 @@ internal class EditSwipeActionPreferenceViewModelTest {
             observePrimaryUserId = observePrimaryUserId,
             observeSwipeActionsPreference = observeSwipeActionsPreference,
             savedStateHandle = savedStateHandle,
-            updateSwipeActionPreference = updateSwipeActionPreference
+            updateSwipeActionPreference = updateSwipeActionPreference,
+            areAdditionalSwipeActionsEnabled = areAdditionalSwipeActionsEnabled
         )
     }
 
@@ -79,10 +82,11 @@ internal class EditSwipeActionPreferenceViewModelTest {
     }
 
     @Test
-    fun `state emits swipe actions with current preference selected for swipe right`() = runTest {
+    fun `state emits swipe actions with current preference selected for swipe right when ff is disabled`() = runTest {
         // given
         val direction = SwipeActionDirection.RIGHT
         every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns false
 
         // when
         viewModel.state.test {
@@ -90,7 +94,7 @@ internal class EditSwipeActionPreferenceViewModelTest {
 
             // then
             val expected = run {
-                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction)
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction, false)
                 EditSwipeActionPreferenceState.Data(items)
             }
             assertEquals(expected, awaitItem())
@@ -98,10 +102,11 @@ internal class EditSwipeActionPreferenceViewModelTest {
     }
 
     @Test
-    fun `state emits swipe actions with current preference selected for swipe left`() = runTest {
+    fun `state emits swipe actions with current preference selected for swipe left when ff is disabled`() = runTest {
         // given
         val direction = SwipeActionDirection.LEFT
         every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns false
 
         // when
         viewModel.state.test {
@@ -109,7 +114,131 @@ internal class EditSwipeActionPreferenceViewModelTest {
 
             // then
             val expected = run {
-                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction)
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction, false)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with current preference selected for swipe right when ff is enabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.RIGHT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns true
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction, true)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with current preference selected for swipe left when ff is enabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.LEFT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns true
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(Preferences, direction, true)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with none preference selected for swipe right when ff is disabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.RIGHT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns false
+        every { observeSwipeActionsPreference(userId) } returns flowOf(NonePreferences)
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(NonePreferences, direction, false)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with none preference selected for swipe left when ff is disabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.LEFT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns false
+        every { observeSwipeActionsPreference(userId) } returns flowOf(NonePreferences)
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(NonePreferences, direction, false)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with none preference selected for swipe right when ff is enabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.RIGHT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns true
+        every { observeSwipeActionsPreference(userId) } returns flowOf(NonePreferences)
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(NonePreferences, direction, true)
+                EditSwipeActionPreferenceState.Data(items)
+            }
+            assertEquals(expected, awaitItem())
+        }
+    }
+
+    @Test
+    fun `state emits swipe actions with none preference selected for swipe left when ff is enabled`() = runTest {
+        // given
+        val direction = SwipeActionDirection.LEFT
+        every { savedStateHandle.get<String>(SWIPE_DIRECTION_KEY) } returns direction.name
+        every { areAdditionalSwipeActionsEnabled(null) } returns true
+        every { observeSwipeActionsPreference(userId) } returns flowOf(NonePreferences)
+
+        // when
+        viewModel.state.test {
+            awaitInitialState()
+
+            // then
+            val expected = run {
+                val items = editSwipeActionPreferenceUiModelMapper.toUiModels(NonePreferences, direction, true)
                 EditSwipeActionPreferenceState.Data(items)
             }
             assertEquals(expected, awaitItem())
@@ -167,6 +296,11 @@ internal class EditSwipeActionPreferenceViewModelTest {
         val Preferences = SwipeActionsPreference(
             swipeLeft = SwipeAction.Archive,
             swipeRight = SwipeAction.MarkRead
+        )
+
+        val NonePreferences = SwipeActionsPreference(
+            swipeLeft = SwipeAction.None,
+            swipeRight = SwipeAction.None
         )
     }
 }

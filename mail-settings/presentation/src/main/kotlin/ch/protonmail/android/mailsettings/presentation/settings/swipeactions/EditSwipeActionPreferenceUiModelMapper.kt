@@ -33,9 +33,11 @@ class EditSwipeActionPreferenceUiModelMapper @Inject constructor() :
      */
     fun toUiModels(
         swipeActionsPreference: SwipeActionsPreference?,
-        swipeActionDirection: SwipeActionDirection
+        swipeActionDirection: SwipeActionDirection,
+        areAdditionalSwipeActionsEnabled: Boolean
     ): List<EditSwipeActionPreferenceItemUiModel> = SwipeAction.entries
         .filter { it != SwipeAction.LabelAs && it != SwipeAction.MoveTo }
+        .filter { areAdditionalSwipeActionsEnabled || it != SwipeAction.None }
         .map { swipeAction ->
             toUiModel(
                 swipeAction = swipeAction,

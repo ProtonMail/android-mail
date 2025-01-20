@@ -46,7 +46,8 @@ class EditSwipeActionPreferenceViewModel @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
     private val observeSwipeActionsPreference: ObserveSwipeActionsPreference,
     savedStateHandle: SavedStateHandle,
-    private val updateSwipeActionPreference: UpdateSwipeActionPreference
+    private val updateSwipeActionPreference: UpdateSwipeActionPreference,
+    private val areAdditionalSwipeActionsEnabled: AreAdditionalSwipeActionsEnabled
 ) : ViewModel() {
 
     private val swipeActionDirection = run {
@@ -86,7 +87,8 @@ class EditSwipeActionPreferenceViewModel @Inject constructor(
         observeSwipeActionsPreference(userId).map { preferences ->
             val uiModels = editSwipeActionPreferenceUiModelMapper.toUiModels(
                 swipeActionsPreference = preferences,
-                swipeActionDirection = swipeActionDirection
+                swipeActionDirection = swipeActionDirection,
+                areAdditionalSwipeActionsEnabled = areAdditionalSwipeActionsEnabled(null)
             )
             EditSwipeActionPreferenceState.Data(uiModels)
         }

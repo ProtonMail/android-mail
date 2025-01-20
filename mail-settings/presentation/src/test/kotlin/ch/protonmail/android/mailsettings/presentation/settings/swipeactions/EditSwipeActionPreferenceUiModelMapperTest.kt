@@ -30,21 +30,21 @@ internal class EditSwipeActionPreferenceUiModelMapperTest {
     private val mapper = EditSwipeActionPreferenceUiModelMapper()
 
     @Test
-    fun `all items are unselected without swipe preferences`() {
+    fun `all items are unselected without swipe preferences and ff is disabled`() {
         // given
         val preferences: SwipeActionsPreference? = null
         val direction = SwipeActionDirection.RIGHT
 
         // when
-        val result = mapper.toUiModels(preferences, direction)
+        val result = mapper.toUiModels(preferences, direction, false)
 
         // then
-        val expected = buildAllItems(selected = null)
+        val expected = buildAllItems(selected = null, false)
         assertEquals(expected, result)
     }
 
     @Test
-    fun `correct item is selected for swipe right preferences`() {
+    fun `correct item trash is selected for swipe right preferences when ff is disabled`() {
         // given
         val preferences = SwipeActionsPreference(
             swipeLeft = SwipeAction.Trash,
@@ -53,15 +53,15 @@ internal class EditSwipeActionPreferenceUiModelMapperTest {
         val direction = SwipeActionDirection.RIGHT
 
         // when
-        val result = mapper.toUiModels(preferences, direction)
+        val result = mapper.toUiModels(preferences, direction, false)
 
         // then
-        val expected = buildAllItems(selected = SwipeAction.Spam)
+        val expected = buildAllItems(selected = SwipeAction.Spam, false)
         assertEquals(expected, result)
     }
 
     @Test
-    fun `correct item is selected for swipe left preferences`() {
+    fun `correct item spam is selected for swipe left preferences when ff is disabled`() {
         // given
         val preferences = SwipeActionsPreference(
             swipeLeft = SwipeAction.Trash,
@@ -70,10 +70,92 @@ internal class EditSwipeActionPreferenceUiModelMapperTest {
         val direction = SwipeActionDirection.LEFT
 
         // when
-        val result = mapper.toUiModels(preferences, direction)
+        val result = mapper.toUiModels(preferences, direction, false)
 
         // then
-        val expected = buildAllItems(selected = SwipeAction.Trash)
+        val expected = buildAllItems(selected = SwipeAction.Trash, false)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `correct item none is selected for swipe right preferences when ff is disabled`() {
+        // given
+        val preferences = SwipeActionsPreference(
+            swipeLeft = SwipeAction.None,
+            swipeRight = SwipeAction.None
+        )
+        val direction = SwipeActionDirection.RIGHT
+
+        // when
+        val result = mapper.toUiModels(preferences, direction, false)
+
+        // then
+        val expected = buildAllItems(selected = SwipeAction.None, false)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `correct item none is selected for swipe left preferences when ff is disabled`() {
+        // given
+        val preferences = SwipeActionsPreference(
+            swipeLeft = SwipeAction.None,
+            swipeRight = SwipeAction.None
+        )
+        val direction = SwipeActionDirection.LEFT
+
+        // when
+        val result = mapper.toUiModels(preferences, direction, false)
+
+        // then
+        val expected = buildAllItems(selected = SwipeAction.None, false)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `all items are unselected without swipe preferences and ff is enabled`() {
+        // given
+        val preferences: SwipeActionsPreference? = null
+        val direction = SwipeActionDirection.RIGHT
+
+        // when
+        val result = mapper.toUiModels(preferences, direction, true)
+
+        // then
+        val expected = buildAllItems(selected = null, true)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `correct item is selected for swipe right preferences and ff is enabled`() {
+        // given
+        val preferences = SwipeActionsPreference(
+            swipeLeft = SwipeAction.None,
+            swipeRight = SwipeAction.None
+        )
+        val direction = SwipeActionDirection.RIGHT
+
+        // when
+        val result = mapper.toUiModels(preferences, direction, true)
+
+        // then
+        val expected = buildAllItems(selected = SwipeAction.None, true)
+        assertEquals(expected, result)
+    }
+
+    @Test
+    fun `correct item is selected for swipe left preferences and ff is enabled`() {
+        // given
+        val preferences = SwipeActionsPreference(
+            swipeLeft = SwipeAction.None,
+            swipeRight = SwipeAction.None
+        )
+        val direction = SwipeActionDirection.LEFT
+
+        // when
+        val result = mapper.toUiModels(preferences, direction, true)
+
+        // then
+        val expected = buildAllItems(selected = SwipeAction.None, true)
         assertEquals(expected, result)
     }
 }
