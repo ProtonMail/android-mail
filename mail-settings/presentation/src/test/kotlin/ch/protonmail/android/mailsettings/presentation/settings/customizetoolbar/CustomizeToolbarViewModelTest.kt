@@ -192,6 +192,8 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.ReportPhishing
                 ),
                 messageActionsUnselected = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
                     ToolbarAction.LabelAs,
                     ToolbarAction.ReplyOrReplyAll,
                     ToolbarAction.Forward,

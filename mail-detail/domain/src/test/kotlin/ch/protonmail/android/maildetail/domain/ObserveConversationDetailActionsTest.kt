@@ -26,6 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every
@@ -43,8 +44,15 @@ internal class ObserveConversationDetailActionsTest {
         } returns flowOf(ConversationTestData.conversation.right())
     }
 
+    private val observeToolbarActions = mockk<ObserveMailMessageToolbarSettings> {
+        every {
+            this@mockk.invoke(userId)
+        } returns flowOf(null)
+    }
+
     private val observeDetailActions = ObserveConversationDetailActions(
-        observeConversation = observeConversation
+        observeConversation = observeConversation,
+        observeToolbarActions = observeToolbarActions
     )
 
     @Test
@@ -66,6 +74,30 @@ internal class ObserveConversationDetailActionsTest {
     }
 
     @Test
+    fun `returns settings actions list for conversation`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Label,
+                Action.ReportPhishing,
+                Action.Star
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
+            // Then
+            val expected = listOf(
+                Action.Label,
+                Action.ReportPhishing,
+                Action.Star
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `returns delete action when all messages in conversation are trash or spam`() = runTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -79,6 +111,54 @@ internal class ObserveConversationDetailActionsTest {
                 Action.Move,
                 Action.Delete,
                 Action.Label
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns move to inbox and delete action when all messages in conversation are trash or spam`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.trashAndSpamConversation
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Trash
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Move,
+                Action.Delete
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns trash action when preference returns delete and all messages are not trash nor spam`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.conversation
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Delete
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Trash
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

@@ -24,6 +24,7 @@ import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.testdata.message.MessageTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -42,8 +43,15 @@ internal class ObserveMessageDetailActionsTest {
         } returns flowOf(MessageTestData.message.right())
     }
 
+    private val observeToolbarActions = mockk<ObserveMailMessageToolbarSettings> {
+        every {
+            this@mockk.invoke(userId)
+        } returns flowOf(null)
+    }
+
     private val observeDetailActions = ObserveMessageDetailActions(
-        observeMessage = observeMessage
+        observeMessage = observeMessage,
+        observeToolbarActions = observeToolbarActions
     )
 
     @Test
@@ -58,6 +66,30 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Trash,
                 Action.Label,
                 Action.Move
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns preferences actions list for message`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Label,
+                Action.ReportPhishing,
+                Action.Star
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, messageId).test {
+            // Then
+            val expected = listOf(
+                Action.Label,
+                Action.ReportPhishing,
+                Action.Star
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -118,6 +150,54 @@ internal class ObserveMessageDetailActionsTest {
                 Action.Delete,
                 Action.Label,
                 Action.Move
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns move to inbox and delete action when the message is in trash or spam`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val message = MessageTestData.trashedMessageWithCustomLabels
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Trash
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, messageId).test {
+            // Then
+            val expected = listOf(
+                Action.Move,
+                Action.Delete
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns trash action when preference returns delete the messages is not in trash nor spam`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val message = MessageTestData.message
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
+        every { observeToolbarActions.invoke(userId) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Delete
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, messageId).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Trash
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

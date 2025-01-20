@@ -27,30 +27,42 @@ import ch.protonmail.android.mailconversation.domain.entity.ConversationLabel
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.model.BottomBarDefaults
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
+import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class ObserveConversationDetailActions @Inject constructor(
-    private val observeConversation: ObserveConversation
+    private val observeConversation: ObserveConversation,
+    private val observeToolbarActions: ObserveMailMessageToolbarSettings
 ) {
 
     operator fun invoke(
         userId: UserId,
         conversationId: ConversationId,
         refreshConversations: Boolean
-    ): Flow<Either<DataError, List<Action>>> =
-        observeConversation(userId, conversationId, refreshConversations).mapLatest { either ->
-            either.map { conversation ->
-                val actions = BottomBarDefaults.Conversation.actions.toMutableList()
+    ): Flow<Either<DataError, List<Action>>> = combine(
+        observeConversation(userId, conversationId, refreshConversations),
+        observeToolbarActions(userId)
+    ) { either, toolbarActions ->
+        either.map { conversation ->
+            val actions = (toolbarActions ?: BottomBarDefaults.Conversation.actions).toMutableList()
 
-                if (conversation.allMessagesAreSpamOrTrash()) {
-                    actions[actions.indexOf(Action.Trash)] = Action.Delete
-                }
-                actions
+            if (conversation.allMessagesAreSpamOrTrash()) {
+                actions.replace(Action.Trash, with = Action.Delete) // permanently delete for spam/trash
+                actions.replace(Action.Spam, with = Action.Move) // move to inbox (not spam) for spam/trash
+            } else {
+                actions.replace(Action.Delete, with = Action.Trash) // delete (not permanent) for non-spam/non-trash
             }
+            actions
         }
+    }
+
+    private fun MutableList<Action>.replace(action: Action, with: Action) {
+        val index = indexOf(action).takeIf { it >= 0 } ?: return
+        set(index, with)
+    }
 
     private fun Conversation.allMessagesAreSpamOrTrash() = labels
         .ignoringAllMail()

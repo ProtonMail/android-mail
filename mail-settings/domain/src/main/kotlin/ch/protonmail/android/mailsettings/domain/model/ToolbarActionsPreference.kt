@@ -141,6 +141,8 @@ data class ToolbarActionsPreference(
         )
 
         val AllMessageActions: List<ToolbarAction> = listOf(
+            ToolbarAction.MarkAsReadOrUnread,
+            ToolbarAction.MoveToTrash,
             ToolbarAction.MoveTo,
             ToolbarAction.LabelAs,
             ToolbarAction.ReplyOrReplyAll,
