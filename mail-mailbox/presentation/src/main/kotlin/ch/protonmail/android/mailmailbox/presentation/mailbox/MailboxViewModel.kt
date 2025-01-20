@@ -525,9 +525,11 @@ class MailboxViewModel @Inject constructor(
             ) { selectedMailLabel, unreadFilterEnabled, viewMode, query, almostAllMailSetting ->
                 mailboxPagerFactory.create(
                     userIds = listOf(userId),
-                    selectedMailLabelId = if (query.isEmpty()) selectedMailLabel.id
-                    else if (almostAllMailSetting) MailLabelId.System.AlmostAllMail
-                    else MailLabelId.System.AllMail,
+                    selectedMailLabelId = when {
+                        query.isEmpty() -> selectedMailLabel.id
+                        almostAllMailSetting -> MailLabelId.System.AlmostAllMail
+                        else -> MailLabelId.System.AllMail
+                    },
                     filterUnread = unreadFilterEnabled,
                     type = if (query.isEmpty()) viewMode.toMailboxItemType() else MailboxItemType.Message,
                     searchQuery = query,
