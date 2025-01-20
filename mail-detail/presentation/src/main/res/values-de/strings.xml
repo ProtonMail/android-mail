@@ -88,7 +88,7 @@
   <string name="message_delete_dialog_message">Möchtest du diese Nachricht wirklich dauerhaft löschen?</string>
   <string name="message_deleted">Nachricht gelöscht</string>
   <string name="message_moved">Nachricht verschoben</string>
-  <string name="message_moved_to">Message moved to %s</string>
+  <string name="message_moved_to">Nachricht verschoben nach %s</string>
   <string name="error_delete_message_failed">Fehler beim Löschen der Nachricht.</string>
   <string name="error_delete_message_failed_wrong_folder">Die Nachricht befindet sich an einem Ort, an dem sie nicht gelöscht werden kann.</string>
   <string name="error_delete_conversation_failed">Löschen der Unterhaltung fehlgeschlagen.</string>

@@ -45,6 +45,7 @@
   <string name="mail_settings_allowed">Permitido</string>
   <string name="mail_settings_denied">Denegado</string>
   <string name="mail_settings_auto_detect">Detectar automáticamente</string>
+  <string name="mail_settings_customize_toolbar">Personalizar la barra de herramientas</string>
   <string name="mail_settings_app_information">Información de la aplicación</string>
   <string name="mail_settings_app_version">Versión de la aplicación</string>
   <string name="mail_settings_app_logs">Registros de la aplicación</string>
@@ -109,16 +110,22 @@
   <string name="mail_settings_swipe_actions_subtitle">Definir gestos de deslizamiento para acceder a las acciones más usadas.</string>
   <string name="mail_settings_swipe_right_name">Izquierda a derecha</string>
   <string name="mail_settings_swipe_left_name">Derecha a izquierda</string>
+  <string name="mail_settings_swipe_action_none_title">Sin configuración</string>
   <string name="mail_settings_swipe_action_archive_title">Archivar</string>
   <string name="mail_settings_swipe_action_read_title">No leídos</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Destacar</string>
   <string name="mail_settings_swipe_action_trash_title">Papelera</string>
+  <string name="mail_settings_swipe_action_label_as_title">Etiquetar como…</string>
+  <string name="mail_settings_swipe_action_move_to_title">Mover a…</string>
+  <string name="mail_settings_swipe_action_none_description">Ninguno</string>
   <string name="mail_settings_swipe_action_archive_description">Mover al archivo</string>
   <string name="mail_settings_swipe_action_read_description">Marcar como no leído/leído</string>
   <string name="mail_settings_swipe_action_spam_description">Mover a spam</string>
   <string name="mail_settings_swipe_action_star_description">Destacar/no destacar</string>
   <string name="mail_settings_swipe_action_trash_description">Mover a la papelera</string>
+  <string name="mail_settings_swipe_action_label_as_description">Etiquetar como…</string>
+  <string name="mail_settings_swipe_action_move_to_description">Mover a…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificaciones push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificaciones extendidas</string>
@@ -174,4 +181,14 @@
   <string name="log_in_using_biometric_credential">Desbloquear usando las credenciales biométricas</string>
   <string name="unlock_using_biometrics">Desbloquear usando los datos biométricos</string>
   <string name="biometric_error_hw_not_available">El sensor biométrico no está disponible.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">Esta barra de herramientas es visible cuando se lee un mensaje.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Esta barra de herramientas aparece al seleccionar múltiples mensajes en su buzón.</string>
+  <string name="customize_toolbar_message">Mensaje</string>
+  <string name="customize_toolbar_conversation">Conversación</string>
+  <string name="customize_toolbar_inbox">Bandeja de entrada</string>
+  <string name="customize_toolbar_done_action">Terminado</string>
+  <string name="customize_toolbar_reset_to_default">Restablecer los valores por defecto</string>
+  <string name="customize_toolbar_actions_section">Acciones de la barra de herramientas (seleccionar hasta 5)</string>
+  <string name="customize_toolbar_available_actions_section">Acciones disponibles</string>
 </resources>

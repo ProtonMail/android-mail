@@ -90,9 +90,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Dohvaćanje postavki boja nije uspjelo</string>
   <string name="mailbox_action_move_messages_failed">Radnja premještanja nije uspjela</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Dohvaćanje mapa nije uspjelo</string>
-  <string name="mailbox_action_trash_message">Poruka premještena u otpad</string>
-  <string name="mailbox_action_archive_message">Poruka je premještena u arhivu</string>
-  <string name="mailbox_action_spam_message">Poruka je premještena u neželjenu poštu</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Pretraži poruke</string>
   <string name="mailbox_search_no_results_title">Nema rezultata</string>
   <string name="mailbox_search_no_results_explanation">Traži datum, ime, adresu e-pošte ili predmet</string>

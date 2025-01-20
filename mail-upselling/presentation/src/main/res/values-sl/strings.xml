@@ -122,12 +122,12 @@
   <string name="upselling_onboarding_save_label">Prihranite %s %%</string>
   <!-- Post subscription -->
   <string name="post_subscription_close_button_content_description">Zapri</string>
-  <string name="post_subscription_continue_button">Continue</string>
+  <string name="post_subscription_continue_button">Nadaljuj</string>
   <string name="post_subscription_got_it_button">Razumem</string>
-  <string name="post_subscription_welcome_page_title">Welcome to Mail Plus</string>
+  <string name="post_subscription_welcome_page_title">Dobrodošli pri Mail Plus</string>
   <string name="post_subscription_welcome_page_message">Thank you for supporting us in keeping the internet safe and private for everyone.</string>
   <string name="post_subscription_welcome_page_unlocked">You\'ve unlocked</string>
-  <string name="post_subscription_plus_feature_storage">15 GB storage</string>
+  <string name="post_subscription_plus_feature_storage">15 GB prostora za shranjevanje</string>
   <string name="post_subscription_plus_feature_email_addresses">10 extra email addresses</string>
   <string name="post_subscription_plus_feature_email_domains">Support for 1 custom email domain</string>
   <string name="post_subscription_plus_feature_folders_labels">Unlimited folders and labels</string>
@@ -144,5 +144,5 @@
   <string name="post_subscription_proton_pass">Proton Pass</string>
   <string name="post_subscription_proton_pass_message">Secure password storage and easy sign-in to your accounts.</string>
   <string name="post_subscription_button_installed">Installed</string>
-  <string name="post_subscription_button_get_the_app">Get the app</string>
+  <string name="post_subscription_button_get_the_app">Pridobi aplikacijo</string>
 </resources>

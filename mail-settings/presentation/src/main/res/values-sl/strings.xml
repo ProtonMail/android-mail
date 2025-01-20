@@ -45,9 +45,10 @@
   <string name="mail_settings_allowed">Dovoljeno</string>
   <string name="mail_settings_denied">Zavrnjeno</string>
   <string name="mail_settings_auto_detect">Samodejno zaznavanje</string>
+  <string name="mail_settings_customize_toolbar">Prilagajanje orodne vrstice</string>
   <string name="mail_settings_app_information">Podatki o aplikaciji</string>
   <string name="mail_settings_app_version">Različica aplikacije</string>
-  <string name="mail_settings_app_logs">Application logs</string>
+  <string name="mail_settings_app_logs">Dnevniki aplikacij</string>
   <string name="mail_settings_account">Račun</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Naročnina</string>
@@ -62,7 +63,7 @@
   <string name="mail_settings_labels">Oznake</string>
   <string name="mail_settings_folders">Mape</string>
   <string name="mail_settings_conversation_mode">Način pogovora</string>
-  <string name="mail_settings_auto_delete">Auto-delete</string>
+  <string name="mail_settings_auto_delete">Samodejno brisanje</string>
   <string name="mail_settings_auto_delete_full_text">Samodejno izbriši neželena sporočila</string>
   <string name="mail_settings_auto_delete_hint">Sporočila, ki so v smetnjaku ali v neželeni pošti več kot 30 dni, se samodejno izbrišejo.</string>
   <string name="mail_settings_auto_delete_subscription_needed">Za uporabo te možnosti potrebujete plačljivo naročnino na Proton Mail.</string>
@@ -109,16 +110,22 @@
   <string name="mail_settings_swipe_actions_subtitle">Nastavite dejanja s potegom prsta za dostop do najbolj uporabljenih dejanj.</string>
   <string name="mail_settings_swipe_right_name">Z leve proti desni</string>
   <string name="mail_settings_swipe_left_name">Z desne proti levi</string>
+  <string name="mail_settings_swipe_action_none_title">Ni nastavljeno</string>
   <string name="mail_settings_swipe_action_archive_title">Arhiviraj</string>
   <string name="mail_settings_swipe_action_read_title">Neprebrano</string>
   <string name="mail_settings_swipe_action_spam_title">Neželena pošta</string>
   <string name="mail_settings_swipe_action_star_title">Zvezdica</string>
   <string name="mail_settings_swipe_action_trash_title">Smetnjak</string>
+  <string name="mail_settings_swipe_action_label_as_title">Označi kot ...</string>
+  <string name="mail_settings_swipe_action_move_to_title">Premakni v …</string>
+  <string name="mail_settings_swipe_action_none_description">Brez</string>
   <string name="mail_settings_swipe_action_archive_description">Premakni v arhiv</string>
   <string name="mail_settings_swipe_action_read_description">Označi kot neprebrano/prebrano</string>
   <string name="mail_settings_swipe_action_spam_description">Premakni v neželeno pošto</string>
   <string name="mail_settings_swipe_action_star_description">Dodaj/odstrani zvezdico</string>
   <string name="mail_settings_swipe_action_trash_description">Premakni v smetnjak</string>
+  <string name="mail_settings_swipe_action_label_as_description">Označi kot ...</string>
+  <string name="mail_settings_swipe_action_move_to_description">Premakni v …</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Potisna obvestila</string>
   <string name="mail_settings_notifications_extended_notifications_title">Razširjena obvestila</string>
@@ -178,4 +185,14 @@
   <string name="log_in_using_biometric_credential">Odklepanje z biometričnimi poverilnicami</string>
   <string name="unlock_using_biometrics">Odklepanje z uporabo biometrije</string>
   <string name="biometric_error_hw_not_available">Strojna oprema za biometrične podatke ni na voljo.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Ta orodna vrstica se prikaže, ko izberete več sporočil v svojem poštnem predalu.</string>
+  <string name="customize_toolbar_message">Sporočilo</string>
+  <string name="customize_toolbar_conversation">Pogovor</string>
+  <string name="customize_toolbar_inbox">Prejeto</string>
+  <string name="customize_toolbar_done_action">Končano</string>
+  <string name="customize_toolbar_reset_to_default">Reset to Default</string>
+  <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
+  <string name="customize_toolbar_available_actions_section">Razpoložljiva dejanja</string>
 </resources>

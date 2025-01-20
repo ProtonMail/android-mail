@@ -43,7 +43,7 @@
   <string name="error_mark_as_unread_failed">Erro na operação de marcar como não lido. Tente novamente.</string>
   <string name="error_star_operation_failed">A operação de adicionar estrela falhou. Tente novamente.</string>
   <string name="error_unstar_operation_failed">A operação de remover estrela falhou. Tente novamente.</string>
-  <string name="error_move_to_trash_failed">Falha ao mover para o lixo. Tente novamente.</string>
+  <string name="error_move_to_trash_failed">Erro ao mover para o lixo. Tente novamente.</string>
   <string name="message_moved_to_trash">Mensagem movida para o Lixo</string>
   <string name="message_moved_to_archive">Mensagem movida para a pasta Arquivo</string>
   <string name="error_move_to_archive_failed">Erro ao mover para o arquivo. Tente novamente.</string>
@@ -71,7 +71,7 @@
   <string name="message_body_embedded_images_banner_text">O carregamento automático de imagens incorporadas está desativado. Isto pode ser alterado nas definições.</string>
   <string name="message_body_remote_content_banner_text">O carregamento automático de conteúdo remoto está desativado. Isto pode ser alterado nas definições.</string>
   <string name="message_body_embedded_and_remote_content_banner_text">O carregamento automático de imagens incorporadas e conteúdo remoto está desativado. Estas propriedades podem ser alteradas nas definições.</string>
-  <string name="message_phishing_banner_text">O nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Por favor, verifique se é legítima.</string>
+  <string name="message_phishing_banner_text">O nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se é legítima.</string>
   <string name="message_expiration_banner_text">Esta mensagem expirará em %1$s</string>
   <!-- External link confirmation dialog -->
   <string name="external_link_confirmation_dialog_text">Está prestes a sair da aplicação e navegar para:</string>

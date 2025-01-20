@@ -44,9 +44,9 @@
   <string name="upselling_plus_feature_custom_domain">カスタムメールドメインのサポート</string>
   <string name="upselling_plus_feature_desktop_app">新しい Proton Mail デスクトップアプリ</string>
   <string name="upselling_plus_feature_folders_labels">無制限のフォルダー、ラベル、フィルター</string>
-  <string name="upselling_plus_feature_plus_7_features">+7 プレミアム機能</string>
+  <string name="upselling_plus_feature_plus_7_features">+7個のプレミアム機能</string>
   <!-- Unlimited -->
-  <string name="upselling_unlimited_description_override">あなたのオールインワン プレミアム サブスクリプション</string>
+  <string name="upselling_unlimited_description_override">オールインワンプレミアムサブスクリプション</string>
   <string name="upselling_unlimited_feature_storage">500 GB のストレージと写真バックアップ</string>
   <string name="upselling_unlimited_feature_mail_calendar">有料の Mail と Calendar の全機能</string>
   <string name="upselling_unlimited_feature_vpn">VPN (90ヶ国以上)</string>
@@ -58,12 +58,12 @@
   <string name="upselling_onboarding_feature_folders_labels">無制限のフォルダーとラベル</string>
   <string name="upselling_onboarding_free_feature_storage">1 GB のストレージと 1 つのメールアドレス</string>
   <string name="upselling_onboarding_plus_feature_storage">15 GB のストレージ</string>
-  <string name="upselling_onboarding_plus_feature_email_addresses">追加で 10 個のメールアドレス</string>
+  <string name="upselling_onboarding_plus_feature_email_addresses">10 個の追加のメールアドレス</string>
   <string name="upselling_onboarding_plus_feature_email_domains">1 つのカスタムメールドメインをサポート</string>
   <string name="upselling_onboarding_plus_feature_aliases">10 個の hide-my-email エイリアス</string>
   <string name="upselling_onboarding_plus_feature_customer_support">優先カスタマーサポート</string>
   <string name="upselling_onboarding_unlimited_feature_storage">500 GB のストレージ</string>
-  <string name="upselling_onboarding_unlimited_feature_email_addresses">追加で 15 個のメールアドレス</string>
+  <string name="upselling_onboarding_unlimited_feature_email_addresses">15 個の追加のメールアドレス</string>
   <string name="upselling_onboarding_unlimited_feature_email_domains">3 つのカスタムメールドメインをサポート</string>
   <string name="upselling_onboarding_unlimited_feature_aliases">無制限の hide-my-email エイリアス</string>
   <string name="upselling_onboarding_unlimited_feature_customer_support">専用カスタマーサポート</string>
@@ -84,7 +84,7 @@
   <string name="upselling_select_plan_month">1 ヶ月</string>
   <!-- Other UI Items -->
   <string name="upselling_auto_renew_text">キャンセルするまで同じ金額、同じ期間で自動更新</string>
-  <string name="upselling_discount_tag">SAVE %s%%</string>
+  <string name="upselling_discount_tag">%s%%節約</string>
   <string name="upselling_month">/月</string>
   <string name="upselling_year">/ 年間</string>
   <string name="upselling_get_button">%sを入手</string>

@@ -54,7 +54,7 @@
     <item quantity="other">%d conversations moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Message moved to Trash</item>
+    <item quantity="one">Sporočilo premaknjeno v smetnjak</item>
     <item quantity="two">%d messages moved to Trash</item>
     <item quantity="few">%d messages moved to Trash</item>
     <item quantity="other">%d messages moved to Trash</item>
@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nastavitev barv ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
-  <string name="mailbox_action_trash_message">Sporočilo premaknjeno v smetnjak</string>
-  <string name="mailbox_action_archive_message">Sporočilo je premaknjeno v arhiv</string>
-  <string name="mailbox_action_spam_message">Sporočilo premaknjeno v neželeno pošto.</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Išči sporočila</string>
   <string name="mailbox_search_no_results_title">Ni najdenih rezultatov</string>
   <string name="mailbox_search_no_results_explanation">Iskanje datuma, imena, e-poštnega naslova ali zadeve sporočila</string>

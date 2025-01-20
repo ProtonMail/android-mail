@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
-  <string name="mailbox_action_trash_message">Meddelande flyttat till papperskorg</string>
-  <string name="mailbox_action_archive_message">Meddelande flyttat till arkiv</string>
-  <string name="mailbox_action_spam_message">Meddelande flyttat till skräppost</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
   <string name="mailbox_search_no_results_title">Inga resultat hittades</string>
   <string name="mailbox_search_no_results_explanation">Sök datum, namn, e-postadress eller ämnesrad</string>

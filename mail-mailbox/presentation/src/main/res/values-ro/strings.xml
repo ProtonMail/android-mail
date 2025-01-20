@@ -90,9 +90,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Eșuare obținere setări culori.</string>
   <string name="mailbox_action_move_messages_failed">Mutarea nu a reușit.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Preluarea folderelor a eșuat.</string>
-  <string name="mailbox_action_trash_message">Mesaj mutat în «Gunoi».</string>
-  <string name="mailbox_action_archive_message">Mesaj mutat în «Arhivă».</string>
-  <string name="mailbox_action_spam_message">Mesaj mutat în «Nedorite».</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Căutare mesaje</string>
   <string name="mailbox_search_no_results_title">Nu s-au găsit rezultate.</string>
   <string name="mailbox_search_no_results_explanation">Căutare dată, nume, adresă de e-mail sau subiect</string>

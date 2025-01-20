@@ -26,7 +26,7 @@
   <string name="notification_actions_reply_description">Balas</string>
   <string name="notification_actions_mark_as_read_description">Tandai dibaca</string>
   <string name="notification_permission_dialog_title">Jangan lewatkan email apa pun</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_button_enable">Enable Push Notifications</string>
+  <string name="notification_permission_dialog_message">Notifikasi membantu Anda untuk tetap terkini dengan kotak masuk Anda tanpa perlu membuka aplikasi.</string>
+  <string name="notification_permission_dialog_button_enable">Aktifkan Notifikasi Push</string>
   <string name="notification_permission_dialog_button_dismiss">Tutup</string>
 </resources>

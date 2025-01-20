@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de traslado</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_trash_message">Se ha movido el mensaje a la papelera.</string>
-  <string name="mailbox_action_archive_message">Se ha archivado el mensaje.</string>
-  <string name="mailbox_action_spam_message">Se ha movido el mensaje a la carpeta Spam.</string>
+  <string name="mailbox_action_move_conversation">Se ha movido la conversación a %s..</string>
+  <string name="mailbox_action_move_message">Se ha movido el mensaje a %s.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se han encontrado resultados.</string>
   <string name="mailbox_search_no_results_explanation">Búsqueda por fecha, nombre, dirección de correo electrónico o asunto</string>

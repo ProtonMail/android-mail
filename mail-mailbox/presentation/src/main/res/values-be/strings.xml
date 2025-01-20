@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Не ўдалося атрымаць налады колеру</string>
   <string name="mailbox_action_move_messages_failed">Збой аперацыі пераносу</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не ўдалося атрымаць папкі</string>
-  <string name="mailbox_action_trash_message">Паведамленне перамешчана ў сметніцу</string>
-  <string name="mailbox_action_archive_message">Паведамленне перамешчана ў архіў</string>
-  <string name="mailbox_action_spam_message">Паведамленне перамешчана ў спам</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Пошук паведамленняў</string>
   <string name="mailbox_search_no_results_title">Вынікі не знойдзены</string>
   <string name="mailbox_search_no_results_explanation">Пошук па даце, імені, адрасе электроннай пошце або радку тэмы</string>

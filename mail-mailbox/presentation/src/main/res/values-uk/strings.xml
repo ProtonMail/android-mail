@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Тека зі спамом порожня</string>
   <string name="mailbox_is_empty_trash_description">Смітник порожній</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversation moved to Trash</item>
-    <item quantity="few">%d conversations moved to Trash</item>
-    <item quantity="many">%d conversations moved to Trash</item>
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="one">Розмову переміщено в смітник</item>
+    <item quantity="few">%d розмови переміщено в смітник</item>
+    <item quantity="many">%d розмов переміщено в смітник</item>
+    <item quantity="other">%d розмов переміщено в смітник</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Message moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="many">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Повідомлення переміщено в смітник</item>
+    <item quantity="few">%d повідомлення переміщено в смітник</item>
+    <item quantity="many">%d повідомлень переміщено в смітник</item>
+    <item quantity="other">%d повідомлень переміщено в смітник</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Видалити розмову</item>
@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Не вдалося отримати налаштування кольору</string>
   <string name="mailbox_action_move_messages_failed">Помилка операції переміщення</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не вдалося отримати теки</string>
-  <string name="mailbox_action_trash_message">Повідомлення переміщено до смітника</string>
-  <string name="mailbox_action_archive_message">Повідомлення переміщено до архіву</string>
-  <string name="mailbox_action_spam_message">Повідомлення переміщено до спаму</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Пошук повідомлень</string>
   <string name="mailbox_search_no_results_title">Нічого не знайдено</string>
   <string name="mailbox_search_no_results_explanation">Пошук за датою, ім\'ям, електронною адресою або темою листа</string>

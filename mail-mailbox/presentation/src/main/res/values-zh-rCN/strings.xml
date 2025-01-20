@@ -42,10 +42,10 @@
   <string name="mailbox_is_empty_spam_description">没有垃圾邮件</string>
   <string name="mailbox_is_empty_trash_description">回收站为空</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="other">%d 会话已移动到回收站</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="other">%d 消息已移动到回收站</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="other">删除 %d 项会话</item>
@@ -70,9 +70,8 @@
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <string name="mailbox_action_trash_message">邮件已移动到垃圾箱</string>
-  <string name="mailbox_action_archive_message">邮件已存档</string>
-  <string name="mailbox_action_spam_message">封邮件已移至垃圾邮件箱</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">搜索邮件</string>
   <string name="mailbox_search_no_results_title">未找到结果</string>
   <string name="mailbox_search_no_results_explanation">搜索日期、姓名、邮箱地址或邮件主题</string>

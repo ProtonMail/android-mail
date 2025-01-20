@@ -39,12 +39,13 @@
   <string name="mail_settings_theme_light">Claro</string>
   <string name="mail_settings_theme_dark">Escuro</string>
   <!-- Settings item states -->
-  <string name="mail_settings_no_information_available">Não há informação disponível</string>
+  <string name="mail_settings_no_information_available">Não há informação disponível.</string>
   <string name="mail_settings_enabled">Ativado</string>
   <string name="mail_settings_disabled">Desativado</string>
   <string name="mail_settings_allowed">Permitido</string>
   <string name="mail_settings_denied">Recusado</string>
-  <string name="mail_settings_auto_detect">Auto-detetar</string>
+  <string name="mail_settings_auto_detect">Detetar automaticamente</string>
+  <string name="mail_settings_customize_toolbar">Personalizar a barra de ferramentas</string>
   <string name="mail_settings_app_information">Informação da aplicação</string>
   <string name="mail_settings_app_version">Versão da aplicação</string>
   <string name="mail_settings_app_logs">Registos da aplicação</string>
@@ -55,7 +56,7 @@
   <string name="mail_settings_recovery_email">Endereço de recuperação</string>
   <string name="mail_settings_mailbox_size">Tamanho da caixa de correio</string>
   <string name="mail_settings_addresses">Endereços</string>
-  <string name="mail_settings_default_email_address">Endereço de e-mail padrão</string>
+  <string name="mail_settings_default_email_address">Endereço de email predefinido</string>
   <string name="mail_settings_display_name_and_signature">Nome a mostrar e assinatura</string>
   <string name="mail_settings_mailbox">Caixa de correio</string>
   <string name="mail_settings_privacy">Privacidade</string>
@@ -74,7 +75,7 @@
   <string name="mail_settings_auto_delete_dialog_disabling_text">Os e-mails programados para eliminação permanecerão nas pastas do lixo e do spam.</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">Desativar</string>
   <string name="mail_settings_not_set">Não definido</string>
-  <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa na sua caixa de entrada ou veja-os separadamente</string>
+  <string name="mail_settings_conversation_mode_hint">Agrupe e-mails na mesma conversa na sua caixa de entrada ou consulte-os separadamente</string>
   <!-- Default email address settings -->
   <string name="mail_settings_default_email_address_title">Endereço de e-mail padrão</string>
   <string name="mail_settings_default_email_address_inactive_addresses">Endereços inativos</string>
@@ -106,19 +107,25 @@
   <string name="mail_settings_privacy_error_loading">Erro ao carregar as definições</string>
   <!-- Swipe Actions -->
   <string name="mail_settings_swipe_actions_title">Ações de deslizar</string>
-  <string name="mail_settings_swipe_actions_subtitle">Defina gestos de deslize para aceder às acções mais utilizadas.</string>
+  <string name="mail_settings_swipe_actions_subtitle">Defina gestos de deslize para aceder às ações mais utilizadas.</string>
   <string name="mail_settings_swipe_right_name">Da esquerda para a direita</string>
   <string name="mail_settings_swipe_left_name">Da direita para a esquerda</string>
+  <string name="mail_settings_swipe_action_none_title">Não definido</string>
   <string name="mail_settings_swipe_action_archive_title">Arquivo</string>
   <string name="mail_settings_swipe_action_read_title">Não lida</string>
   <string name="mail_settings_swipe_action_spam_title">Spam</string>
   <string name="mail_settings_swipe_action_star_title">Estrela</string>
   <string name="mail_settings_swipe_action_trash_title">Lixo</string>
+  <string name="mail_settings_swipe_action_label_as_title">Etiquetar como…</string>
+  <string name="mail_settings_swipe_action_move_to_title">Mover para…</string>
+  <string name="mail_settings_swipe_action_none_description">Nenhum</string>
   <string name="mail_settings_swipe_action_archive_description">Mover para o Arquivo</string>
   <string name="mail_settings_swipe_action_read_description">Marcar como não lido/lido</string>
   <string name="mail_settings_swipe_action_spam_description">Mover para spam</string>
   <string name="mail_settings_swipe_action_star_description">Adicionar/Remover estrela</string>
   <string name="mail_settings_swipe_action_trash_description">Mover para o lixo</string>
+  <string name="mail_settings_swipe_action_label_as_description">Etiquetar como…</string>
+  <string name="mail_settings_swipe_action_move_to_description">Mover para…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificações push</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificações estendidas</string>
@@ -130,7 +137,7 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">Bloqueio automático</string>
   <string name="mail_settings_auto_lock_item_title">Bloqueio automático da aplicação</string>
-  <string name="mail_settings_auto_lock_item_description">Ative esta funcionalidade para bloquear automaticamente a sua aplicação e use o código PIN para a desbloquear.</string>
+  <string name="mail_settings_auto_lock_item_description">Ative esta funcionalidade para bloquear automaticamente a sua aplicação e utilize o código PIN para a desbloquear.</string>
   <string name="mail_settings_auto_lock_change_pin_description">Alterar o código PIN</string>
   <string name="mail_settings_auto_lock_item_timer_title">Temporizador do bloqueio automático</string>
   <string name="mail_settings_auto_lock_immediately">Imediatamente</string>
@@ -174,4 +181,14 @@
   <string name="log_in_using_biometric_credential">Desbloqueie usando as suas credenciais biométricas</string>
   <string name="unlock_using_biometrics">Desbloquear usando biométrica</string>
   <string name="biometric_error_hw_not_available">Equipamento biométrico indisponível.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">Esta barra de ferramentas é visível quando se lê uma mensagem.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_message">Mensagem</string>
+  <string name="customize_toolbar_conversation">Conversa</string>
+  <string name="customize_toolbar_inbox">Caixa de entrada</string>
+  <string name="customize_toolbar_done_action">Terminado</string>
+  <string name="customize_toolbar_reset_to_default">Reposição predefinida</string>
+  <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (selecione até 5)</string>
+  <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
 </resources>

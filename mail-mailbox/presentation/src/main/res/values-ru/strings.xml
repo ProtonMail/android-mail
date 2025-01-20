@@ -26,7 +26,7 @@
   <string name="mailbox_toolbar_searchview_query_text_field_content_description">Введите поисковый запрос</string>
   <plurals name="mailbox_toolbar_selected_count">
     <item quantity="one">Совершен выбор %d</item>
-    <item quantity="few">%d выбраны</item>
+    <item quantity="few">%d Selected</item>
     <item quantity="many">%d выбрано</item>
     <item quantity="other">%d выбрано</item>
   </plurals>
@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Папка Спам пуста</string>
   <string name="mailbox_is_empty_trash_description">Корзина пуста</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversation moved to Trash</item>
-    <item quantity="few">%d conversations moved to Trash</item>
-    <item quantity="many">%d conversations moved to Trash</item>
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="one">Цепочка писем перемещена в Корзину</item>
+    <item quantity="few">%d цепочки писем перемещены в Корзину</item>
+    <item quantity="many">%d цепочек писем перемещены в Корзину</item>
+    <item quantity="other">%d цепочек писем перемещены в Корзину</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Message moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="many">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Сообщение перемещено в Корзину</item>
+    <item quantity="few">%d сообщения перемещены в Корзину</item>
+    <item quantity="many">%d сообщений перемещены в Корзину</item>
+    <item quantity="other">%d сообщений перемещены в Корзину</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Удалить цепочку писем</item>
@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <string name="mailbox_action_trash_message">Сообщение перемещено в Корзину</string>
-  <string name="mailbox_action_archive_message">Сообщение перемещено в Архив</string>
-  <string name="mailbox_action_spam_message">Сообщение перемещено в Спам</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
   <string name="mailbox_search_no_results_title">Результатов не найдено</string>
   <string name="mailbox_search_no_results_explanation">Поиск по дате, имени, адресу электронной почты или теме письма</string>

@@ -30,8 +30,8 @@
   <string name="action_mark_unread_description">Označiť ako neprečítané</string>
   <string name="action_star_description">Označiť hviezdičkou</string>
   <string name="action_unstar_description">Odstrániť hviezdičku</string>
-  <string name="action_label_description">Label as…</string>
-  <string name="action_move_description">Move to…</string>
+  <string name="action_label_description">Označiť ako…</string>
+  <string name="action_move_description">Presunúť do…</string>
   <string name="action_trash_description">Presunúť do koša</string>
   <string name="action_delete_description">Odstrániť</string>
   <string name="action_archive_description">Archivovať</string>
@@ -54,8 +54,8 @@
   <string name="action_mark_unread_content_description">Označiť ako neprečítané</string>
   <string name="action_star_content_description">Označiť hviezdičkou</string>
   <string name="action_unstar_content_description">Odstrániť hviezdičku</string>
-  <string name="action_label_content_description">Label as…</string>
-  <string name="action_move_content_description">Move to…</string>
+  <string name="action_label_content_description">Označiť ako…</string>
+  <string name="action_move_content_description">Presunúť do…</string>
   <string name="action_trash_content_description">Kôš</string>
   <string name="action_delete_content_description">Zmazať</string>
   <string name="action_archive_content_description">Archivovať</string>

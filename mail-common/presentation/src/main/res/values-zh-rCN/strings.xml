@@ -30,8 +30,8 @@
   <string name="action_mark_unread_description">标为未读</string>
   <string name="action_star_description">星标</string>
   <string name="action_unstar_description">取消星标</string>
-  <string name="action_label_description">Label as…</string>
-  <string name="action_move_description">Move to…</string>
+  <string name="action_label_description">标记为…</string>
+  <string name="action_move_description">移至…</string>
   <string name="action_trash_description">移至回收站</string>
   <string name="action_delete_description">刪除</string>
   <string name="action_archive_description">归档</string>
@@ -54,8 +54,8 @@
   <string name="action_mark_unread_content_description">标为未读</string>
   <string name="action_star_content_description">星标</string>
   <string name="action_unstar_content_description">取消星标</string>
-  <string name="action_label_content_description">Label as…</string>
-  <string name="action_move_content_description">Move to…</string>
+  <string name="action_label_content_description">标记为…</string>
+  <string name="action_move_content_description">移至…</string>
   <string name="action_trash_content_description">移至废件箱</string>
   <string name="action_delete_content_description">删除</string>
   <string name="action_archive_content_description">存档</string>

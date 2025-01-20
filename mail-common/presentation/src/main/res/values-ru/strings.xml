@@ -30,8 +30,8 @@
   <string name="action_mark_unread_description">Отметить как непрочитанное</string>
   <string name="action_star_description">Отметить звёздочкой</string>
   <string name="action_unstar_description">Убрать звёздочку</string>
-  <string name="action_label_description">Label as…</string>
-  <string name="action_move_description">Move to…</string>
+  <string name="action_label_description">Присвоить ярлык...</string>
+  <string name="action_move_description">Переместить в...</string>
   <string name="action_trash_description">Переместить в корзину</string>
   <string name="action_delete_description">Удалить</string>
   <string name="action_archive_description">Архив</string>
@@ -54,8 +54,8 @@
   <string name="action_mark_unread_content_description">Отметить как непрочитанное</string>
   <string name="action_star_content_description">Важное</string>
   <string name="action_unstar_content_description">Снять звёздочку</string>
-  <string name="action_label_content_description">Label as…</string>
-  <string name="action_move_content_description">Move to…</string>
+  <string name="action_label_content_description">Присвоить ярлык...</string>
+  <string name="action_move_content_description">Переместить в...</string>
   <string name="action_trash_content_description">Корзина</string>
   <string name="action_delete_content_description">Удалить</string>
   <string name="action_archive_content_description">Архивировать</string>

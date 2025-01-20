@@ -67,7 +67,7 @@
   <string name="folder_settings_content_description">Definições de pastas</string>
   <string name="folder_settings_title">Definições</string>
   <string name="folder_settings_done_button">Terminado</string>
-  <string name="folder_settings_folder_colors">Usar cores da pasta</string>
+  <string name="folder_settings_folder_colors">Utilizar cores da pasta</string>
   <string name="folder_settings_parent_color">Aplicar a cor da pasta principal</string>
   <string name="folder_list_loading_error">Erro ao carregar pastas. Tente outra vez mais tarde.</string>
   <string name="folder_loading_error">Erro ao carregar pasta. Tente outra vez mais tarde.</string>

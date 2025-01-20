@@ -25,8 +25,8 @@
   <string name="notification_actions_trash_description">Lomtár</string>
   <string name="notification_actions_reply_description">Válasz</string>
   <string name="notification_actions_mark_as_read_description">Megjelölés olvasottként</string>
-  <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_button_enable">Enable Push Notifications</string>
+  <string name="notification_permission_dialog_title">Ne maradjon le egy e-mailről sem</string>
+  <string name="notification_permission_dialog_message">Az értesítések segítenek nyomon követni a beérkezett üzeneteket anélkül, hogy az alkalmazást ellenőrizné.</string>
+  <string name="notification_permission_dialog_button_enable">Push-értesítések engedélyezése</string>
   <string name="notification_permission_dialog_button_dismiss">Elvetés</string>
 </resources>

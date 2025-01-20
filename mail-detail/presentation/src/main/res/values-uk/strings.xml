@@ -92,7 +92,7 @@
   <string name="message_delete_dialog_message">Ви дійсно хочете остаточно видалити це повідомлення?</string>
   <string name="message_deleted">Повідомлення видалено</string>
   <string name="message_moved">Повідомлення переміщено</string>
-  <string name="message_moved_to">Message moved to %s</string>
+  <string name="message_moved_to">Повідомлення переміщено до %s</string>
   <string name="error_delete_message_failed">Не вдалося видалити повідомлення</string>
   <string name="error_delete_message_failed_wrong_folder">Повідомлення знаходиться не в тому місці, де його можна видалити</string>
   <string name="error_delete_conversation_failed">Не вдалося видалити розмову</string>

@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Kunne ikke hente fargeinnstillinger</string>
   <string name="mailbox_action_move_messages_failed">Flytteoperasjonen mislyktes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kunne ikke hente mapper</string>
-  <string name="mailbox_action_trash_message">Melding flyttet til papirkurven</string>
-  <string name="mailbox_action_archive_message">Melding flyttet til arkiv</string>
-  <string name="mailbox_action_spam_message">Melding flyttet til søppelpost</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Søk i meldinger</string>
   <string name="mailbox_search_no_results_title">Ingen resultater funnet</string>
   <string name="mailbox_search_no_results_explanation">Søk dato, navn, e-postadresse eller emnelinje</string>

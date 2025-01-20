@@ -63,7 +63,7 @@
   <string name="contact_property_member">メンバー</string>
   <string name="contact_property_url">URL</string>
   <string name="contact_property_gender">性別</string>
-  <string name="contact_property_language">言語 / Language</string>
+  <string name="contact_property_language">言語</string>
   <string name="contact_property_time_zone">タイムゾーン</string>
   <string name="contact_form_loading_error">連絡先の読み込み中にエラーが発生しました。後でもう一度お試しください。</string>
   <string name="contact_form_save_success">連絡先が保存されました</string>
@@ -85,7 +85,7 @@
   <string name="phone_number">電話番号</string>
   <string name="additional_info">追加情報</string>
   <string name="remove_contact_property">連絡先の詳細を削除</string>
-  <string name="property_type">物件のタイプ</string>
+  <string name="property_type">プロパティの種類</string>
   <string name="property_label">ラベル</string>
   <string name="address_street">番地</string>
   <string name="address_postal_code">郵便番号</string>

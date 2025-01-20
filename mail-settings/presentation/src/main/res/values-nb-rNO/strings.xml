@@ -45,6 +45,7 @@
   <string name="mail_settings_allowed">Tillatt</string>
   <string name="mail_settings_denied">Nektet</string>
   <string name="mail_settings_auto_detect">Oppdag automatisk</string>
+  <string name="mail_settings_customize_toolbar">Customize Toolbar</string>
   <string name="mail_settings_app_information">App-informasjon</string>
   <string name="mail_settings_app_version">App-versjon</string>
   <string name="mail_settings_app_logs">Applikasjonslogger</string>
@@ -109,16 +110,22 @@
   <string name="mail_settings_swipe_actions_subtitle">Konfigurer sveipebevegelser for å få tilgang til de mest brukte handlingene.</string>
   <string name="mail_settings_swipe_right_name">Venstre til høyre</string>
   <string name="mail_settings_swipe_left_name">Høyre til venstre</string>
+  <string name="mail_settings_swipe_action_none_title">Not set</string>
   <string name="mail_settings_swipe_action_archive_title">Arkiv</string>
   <string name="mail_settings_swipe_action_read_title">Ulest</string>
   <string name="mail_settings_swipe_action_spam_title">Søppelpost</string>
   <string name="mail_settings_swipe_action_star_title">Stjernemerk</string>
   <string name="mail_settings_swipe_action_trash_title">Papirkurv</string>
+  <string name="mail_settings_swipe_action_label_as_title">Label as…</string>
+  <string name="mail_settings_swipe_action_move_to_title">Move to…</string>
+  <string name="mail_settings_swipe_action_none_description">None</string>
   <string name="mail_settings_swipe_action_archive_description">Flytt til arkiv</string>
   <string name="mail_settings_swipe_action_read_description">Marker som ulest/lest</string>
   <string name="mail_settings_swipe_action_spam_description">Flytt til søppelpost</string>
   <string name="mail_settings_swipe_action_star_description">Stjernemerk/fjern stjernemerking</string>
   <string name="mail_settings_swipe_action_trash_description">Flytt til papirkurven</string>
+  <string name="mail_settings_swipe_action_label_as_description">Label as…</string>
+  <string name="mail_settings_swipe_action_move_to_description">Move to…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Push-varsler</string>
   <string name="mail_settings_notifications_extended_notifications_title">Utvidede varsler</string>
@@ -174,4 +181,14 @@
   <string name="log_in_using_biometric_credential">Lås opp med din biometriske legitimasjon.</string>
   <string name="unlock_using_biometrics">Lås opp ved hjelp av biometri</string>
   <string name="biometric_error_hw_not_available">Biometrisk maskinvare er ikke tilgjengelig.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
+  <string name="customize_toolbar_disclaimer_inbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
+  <string name="customize_toolbar_message">Message</string>
+  <string name="customize_toolbar_conversation">Conversation</string>
+  <string name="customize_toolbar_inbox">Inbox</string>
+  <string name="customize_toolbar_done_action">Done</string>
+  <string name="customize_toolbar_reset_to_default">Reset to Default</string>
+  <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
+  <string name="customize_toolbar_available_actions_section">Available actions</string>
 </resources>

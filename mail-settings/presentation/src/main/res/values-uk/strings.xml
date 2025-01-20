@@ -45,6 +45,7 @@
   <string name="mail_settings_allowed">Дозволено</string>
   <string name="mail_settings_denied">Заборонено</string>
   <string name="mail_settings_auto_detect">Автовизначення</string>
+  <string name="mail_settings_customize_toolbar">Customize Toolbar</string>
   <string name="mail_settings_app_information">Інформація про програму</string>
   <string name="mail_settings_app_version">Версія програми</string>
   <string name="mail_settings_app_logs">Журнали застосунку</string>
@@ -109,16 +110,22 @@
   <string name="mail_settings_swipe_actions_subtitle">Налаштуйте жести посування для найуживаніших швидких дій.</string>
   <string name="mail_settings_swipe_right_name">Зліва направо</string>
   <string name="mail_settings_swipe_left_name">Справа наліво</string>
+  <string name="mail_settings_swipe_action_none_title">Not set</string>
   <string name="mail_settings_swipe_action_archive_title">Архів</string>
   <string name="mail_settings_swipe_action_read_title">Непрочитані</string>
   <string name="mail_settings_swipe_action_spam_title">Спам</string>
   <string name="mail_settings_swipe_action_star_title">Зірочка</string>
   <string name="mail_settings_swipe_action_trash_title">Смітник</string>
+  <string name="mail_settings_swipe_action_label_as_title">Label as…</string>
+  <string name="mail_settings_swipe_action_move_to_title">Move to…</string>
+  <string name="mail_settings_swipe_action_none_description">None</string>
   <string name="mail_settings_swipe_action_archive_description">Перемістити до архіву</string>
   <string name="mail_settings_swipe_action_read_description">Позначити прочитаним/непрочитаним</string>
   <string name="mail_settings_swipe_action_spam_description">Перемістити до спаму</string>
   <string name="mail_settings_swipe_action_star_description">Позначити/Прибрати зірочку</string>
   <string name="mail_settings_swipe_action_trash_description">Перемістити до смітника</string>
+  <string name="mail_settings_swipe_action_label_as_description">Label as…</string>
+  <string name="mail_settings_swipe_action_move_to_description">Move to…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Push-сповіщення</string>
   <string name="mail_settings_notifications_extended_notifications_title">Розширені сповіщення</string>
@@ -178,4 +185,14 @@
   <string name="log_in_using_biometric_credential">Розблокувати за допомогою біометричних даних</string>
   <string name="unlock_using_biometrics">Розблокувати за допомогою біометрики</string>
   <string name="biometric_error_hw_not_available">Біометричне обладнання недоступне.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
+  <string name="customize_toolbar_disclaimer_inbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
+  <string name="customize_toolbar_message">Message</string>
+  <string name="customize_toolbar_conversation">Conversation</string>
+  <string name="customize_toolbar_inbox">Inbox</string>
+  <string name="customize_toolbar_done_action">Done</string>
+  <string name="customize_toolbar_reset_to_default">Reset to Default</string>
+  <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
+  <string name="customize_toolbar_available_actions_section">Available actions</string>
 </resources>

@@ -44,12 +44,12 @@
   <string name="mailbox_is_empty_spam_description">Sua pasta de spam está vazia</string>
   <string name="mailbox_is_empty_trash_description">A lixeira está vazia</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversa movida para o Lixo</item>
-    <item quantity="other">%d conversas movidas para o Lixo</item>
+    <item quantity="one">Conversa movida para a Lixeira</item>
+    <item quantity="other">%d conversas movidas para a Lixeira</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Mensagem movida para a lixeira</item>
-    <item quantity="other">%d mensagens movidas para lixeira</item>
+    <item quantity="one">Mensagem movida para a Lixeira</item>
+    <item quantity="other">%d mensagens movidas para Lixeira</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Excluir conversa</item>
@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Falha ao obter configurações de cores</string>
   <string name="mailbox_action_move_messages_failed">Falha ao mover</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Falha ao obter pastas</string>
-  <string name="mailbox_action_trash_message">Mensagem movida para a lixeira</string>
-  <string name="mailbox_action_archive_message">Mensagem movida para o arquivo</string>
-  <string name="mailbox_action_spam_message">Mensagem movida para spam</string>
+  <string name="mailbox_action_move_conversation">Conversa movida para %s</string>
+  <string name="mailbox_action_move_message">Mensagem movida para %s</string>
   <string name="mailbox_search_placeholder_text">Pesquisar mensagens</string>
   <string name="mailbox_search_no_results_title">Nenhum resultado encontrado</string>
   <string name="mailbox_search_no_results_explanation">Pesquise data, nome, endereço de e-mail ou assunto</string>

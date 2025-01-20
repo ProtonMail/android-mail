@@ -44,11 +44,11 @@
   <string name="mailbox_is_empty_spam_description">Din spam-mappe er tom</string>
   <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversation moved to Trash</item>
+    <item quantity="one">Samtale flyttet til Papirkurv</item>
     <item quantity="other">%d conversations moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Message moved to Trash</item>
+    <item quantity="one">Besked flyttet til papirkurv</item>
     <item quantity="other">%d messages moved to Trash</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Farveindstillinger kunne ikke hentes</string>
   <string name="mailbox_action_move_messages_failed">Flytning mislykkedes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Mapper kunne ikke hentes</string>
-  <string name="mailbox_action_trash_message">Besked flyttet til papirkurv</string>
-  <string name="mailbox_action_archive_message">Besked flyttet til arkiv</string>
-  <string name="mailbox_action_spam_message">Besked flyttet til spam</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Søg i beskeder</string>
   <string name="mailbox_search_no_results_title">Ingen resultater fundet</string>
   <string name="mailbox_search_no_results_explanation">Søg dato, navn, e-mailadresse eller emnelinje</string>

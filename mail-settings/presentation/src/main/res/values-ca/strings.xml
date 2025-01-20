@@ -45,6 +45,7 @@
   <string name="mail_settings_allowed">Permès</string>
   <string name="mail_settings_denied">Denegat</string>
   <string name="mail_settings_auto_detect">Detectar automàticament</string>
+  <string name="mail_settings_customize_toolbar">Personalitza la barra d\'eines</string>
   <string name="mail_settings_app_information">Informació de l\'app</string>
   <string name="mail_settings_app_version">Versió de l\'aplicació</string>
   <string name="mail_settings_app_logs">Registres de l\'aplicació</string>
@@ -109,16 +110,22 @@
   <string name="mail_settings_swipe_actions_subtitle">Establiu gestos de lliscament per accedir a les accions més utilitzades.</string>
   <string name="mail_settings_swipe_right_name">Esquerra a dreta</string>
   <string name="mail_settings_swipe_left_name">Dreta a esquerra</string>
+  <string name="mail_settings_swipe_action_none_title">No configurat</string>
   <string name="mail_settings_swipe_action_archive_title">Arxiva</string>
   <string name="mail_settings_swipe_action_read_title">No llegit</string>
   <string name="mail_settings_swipe_action_spam_title">Correu brossa</string>
   <string name="mail_settings_swipe_action_star_title">Destaca</string>
   <string name="mail_settings_swipe_action_trash_title">Paperera</string>
+  <string name="mail_settings_swipe_action_label_as_title">Etiqueta com a…</string>
+  <string name="mail_settings_swipe_action_move_to_title">Mou a…</string>
+  <string name="mail_settings_swipe_action_none_description">Cap</string>
   <string name="mail_settings_swipe_action_archive_description">Mou a l\'arxiu</string>
   <string name="mail_settings_swipe_action_read_description">Marca com a llegit / no llegit</string>
   <string name="mail_settings_swipe_action_spam_description">Mou al correu brossa</string>
   <string name="mail_settings_swipe_action_star_description">Destaca/no destaquis</string>
   <string name="mail_settings_swipe_action_trash_description">Mou a la paperera</string>
+  <string name="mail_settings_swipe_action_label_as_description">Etiqueta com a…</string>
+  <string name="mail_settings_swipe_action_move_to_description">Mou a…</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Notificacions automàtiques</string>
   <string name="mail_settings_notifications_extended_notifications_title">Notificacions ampliades</string>
@@ -174,4 +181,14 @@
   <string name="log_in_using_biometric_credential">Desbloquejar amb les vostres credencials biomètriques</string>
   <string name="unlock_using_biometrics">Desbloquejar usant biomètrica</string>
   <string name="biometric_error_hw_not_available">El sensor biomètric no està disponible.</string>
+  <!-- customize toolbar-->
+  <string name="customize_toolbar_disclaimer_message">Aquesta barra d\'eines és visible quan s\'està llegint un missatge.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la vostra bústia de correu.</string>
+  <string name="customize_toolbar_message">Missatge</string>
+  <string name="customize_toolbar_conversation">Conversa</string>
+  <string name="customize_toolbar_inbox">Safata d\'entrada</string>
+  <string name="customize_toolbar_done_action">Fet</string>
+  <string name="customize_toolbar_reset_to_default">Restableix els valors per defecte</string>
+  <string name="customize_toolbar_actions_section">Accions de la barra d\'eines (seleccioneu-ne fins a 5)</string>
+  <string name="customize_toolbar_available_actions_section">Accions disponibles</string>
 </resources>

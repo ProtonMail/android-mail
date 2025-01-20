@@ -80,9 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">No s\'han pogut obtenir les preferències de color.</string>
   <string name="mailbox_action_move_messages_failed">No s\'ha pogut moure.</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">No s\'han pogut obtenir les carpetes.</string>
-  <string name="mailbox_action_trash_message">S\'ha mogut el missatge a la paperera.</string>
-  <string name="mailbox_action_archive_message">S\'ha mogut el missatge a l\'arxiu.</string>
-  <string name="mailbox_action_spam_message">S\'ha mogut el missatge al correu brossa.</string>
+  <string name="mailbox_action_move_conversation">S\'ha mogut la conversa a %s.</string>
+  <string name="mailbox_action_move_message">S\'ha mogut el missatge a %s.</string>
   <string name="mailbox_search_placeholder_text">Cerca missatges</string>
   <string name="mailbox_search_no_results_title">No s\'ha trobat cap resultat.</string>
   <string name="mailbox_search_no_results_explanation">Cerca data, nom, adreça de correu electrònic o línia de l\'assumpte</string>

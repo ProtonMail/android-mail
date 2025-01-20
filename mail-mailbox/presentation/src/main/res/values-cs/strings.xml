@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodařilo se získat nastavení barev</string>
   <string name="mailbox_action_move_messages_failed">Operace přesunu se nezdařila</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodařilo se získat složky</string>
-  <string name="mailbox_action_trash_message">Zpráva přesunuta do koše</string>
-  <string name="mailbox_action_archive_message">Zpráva přesunuta do archivu</string>
-  <string name="mailbox_action_spam_message">Zpráva přesunuta do spamu</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Prohledat zprávy</string>
   <string name="mailbox_search_no_results_title">Nebyly nalezeny žádné výsledky</string>
   <string name="mailbox_search_no_results_explanation">Vyhledávání podle data, jména, e-mailové adresy nebo předmětu zprávy</string>

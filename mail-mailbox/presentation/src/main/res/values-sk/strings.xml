@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Váš priečinok so spamom je prázdny</string>
   <string name="mailbox_is_empty_trash_description">Kôš je prázdny</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversation moved to Trash</item>
-    <item quantity="few">%d conversations moved to Trash</item>
-    <item quantity="many">%d conversations moved to Trash</item>
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="one">Konverzácia bola presunutá do koša</item>
+    <item quantity="few">%d konverzácie presunuté do koša</item>
+    <item quantity="many">%d konverzácií presunutých do koša</item>
+    <item quantity="other">%d konverzácií presunutých do koša</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Message moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="many">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="one">Správa bola presunutá do koša</item>
+    <item quantity="few">%d správy boli presunuté do koša</item>
+    <item quantity="many">%d správ bolo presunutých do koša</item>
+    <item quantity="other">%d správ bolo presunutých do koša</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Vymazať konverzáciu</item>
@@ -100,9 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
   <string name="mailbox_action_move_messages_failed">Presunutie zlyhalo</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
-  <string name="mailbox_action_trash_message">Správa bola presunutá do koša</string>
-  <string name="mailbox_action_archive_message">Správa bola presunutá do archívu</string>
-  <string name="mailbox_action_spam_message">Správa bola presunutá do spamu</string>
+  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
+  <string name="mailbox_action_move_message">Message moved to %s</string>
   <string name="mailbox_search_placeholder_text">Vyhľadať správy</string>
   <string name="mailbox_search_no_results_title">Neboli nájdené žiadne výsledky</string>
   <string name="mailbox_search_no_results_explanation">Vyhľadávanie podľa dátumu, mena, emailovej adresy alebo predmetu správy</string>
