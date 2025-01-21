@@ -26,10 +26,12 @@ import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.testTag
@@ -117,6 +119,7 @@ fun Home(
     val navController = rememberNavController()
         .withSentryObservableEffect()
         .withDestinationChangedObservableEffect()
+    var isNavHostReady by remember { mutableStateOf(false) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestinationRoute = navBackStackEntry?.destination?.route
 
@@ -142,8 +145,13 @@ fun Home(
         }
     }
 
-    ConsumableLaunchedEffect(state.navigateToEffect) {
-        viewModel.navigateTo(navController, it)
+    // Ensure that the navigation graph is defined and the composable routes attached to it.
+    LaunchedEffect(state.navigateToEffect, isNavHostReady) {
+        if (!isNavHostReady) return@LaunchedEffect
+
+        state.navigateToEffect.consume()?.let {
+            viewModel.navigateTo(navController, it)
+        }
     }
 
     val featureMissingSnackbarMessage = stringResource(id = R.string.feature_coming_soon)
@@ -624,6 +632,8 @@ fun Home(
                         onError = { message -> scope.launch { showErrorSnackbar(message) } }
                     )
                 )
+
+                isNavHostReady = true
             }
         }
     }
