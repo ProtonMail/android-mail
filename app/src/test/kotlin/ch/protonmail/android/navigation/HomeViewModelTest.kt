@@ -26,7 +26,6 @@ import ch.protonmail.android.mailcommon.domain.model.IntentShareInfo
 import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -34,11 +33,10 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesSta
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
-import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
 import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
-import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
@@ -428,10 +426,7 @@ class HomeViewModelTest {
 
             // Then
             val expected = NotificationPermissionDialogState.Shown(
-                uiModel = EnablePushNotificationsUiModel(
-                    title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
-                    message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
-                )
+                type = NotificationPermissionDialogType.PostOnboarding
             )
             assertEquals(expected, item.notificationPermissionDialogState)
             coVerify { savePermissionDialogTimestamp(any()) }
@@ -468,10 +463,7 @@ class HomeViewModelTest {
 
             // Then
             val expected = NotificationPermissionDialogState.Shown(
-                uiModel = EnablePushNotificationsUiModel(
-                    title = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_title),
-                    message = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_message)
-                )
+                type = NotificationPermissionDialogType.PostSending
             )
             assertEquals(expected, item.notificationPermissionDialogState)
             coVerify { saveShouldStopShowingPermissionDialog() }

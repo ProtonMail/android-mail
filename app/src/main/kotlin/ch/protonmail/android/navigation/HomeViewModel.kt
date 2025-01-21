@@ -30,7 +30,6 @@ import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -41,8 +40,7 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
-import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
-import ch.protonmail.android.mailnotifications.R
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
@@ -60,6 +58,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
@@ -145,10 +144,11 @@ class HomeViewModel @Inject constructor(
     fun recordViewOfMailboxScreen() = recordMailboxScreenView()
 
     fun closeNotificationPermissionDialog() {
-        val currentState = state.value
-        mutableState.value = currentState.copy(
-            notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
-        )
+        mutableState.update { currentState ->
+            currentState.copy(
+                notificationPermissionDialogState = NotificationPermissionDialogState.Hidden
+            )
+        }
     }
 
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {
@@ -161,18 +161,19 @@ class HomeViewModel @Inject constructor(
             showNotificationPermissionDialogIfNeeded(isMessageSent = true)
         }
 
-        val currentState = state.value
-        mutableState.value = currentState.copy(
-            messageSendingStatusEffect = Effect.of(messageSendingStatus)
-        )
+        mutableState.update { currentState ->
+            currentState.copy(
+                messageSendingStatusEffect = Effect.of(messageSendingStatus)
+            )
+        }
     }
 
     private fun emitNewStateForIntent(intent: Intent) {
-        val currentState = state.value
         if (intent.isStartedFromLauncher()) {
-
-            mutableState.value = currentState.copy(startedFromLauncher = true)
-        } else if (!currentState.startedFromLauncher) {
+            mutableState.update { currentState ->
+                currentState.copy(startedFromLauncher = true)
+            }
+        } else if (!mutableState.value.startedFromLauncher) {
             val intentShareInfo = intent.getShareInfo()
             if (intentShareInfo.isNotEmpty()) {
                 emitNewStateForShareVia(intentShareInfo)
@@ -183,45 +184,42 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun emitNewStateForShareVia(intentShareInfo: IntentShareInfo) {
-        val currentState = state.value
-        mutableState.value = currentState.copy(
-            navigateToEffect = Effect.of(
-                Destination.Screen.ShareFileComposer(DraftAction.PrefillForShare(intentShareInfo.encode()))
+        mutableState.update { currentState ->
+            currentState.copy(
+                navigateToEffect = Effect.of(
+                    Destination.Screen.ShareFileComposer(DraftAction.PrefillForShare(intentShareInfo.encode()))
+                )
             )
-        )
+        }
     }
 
     private fun emitNewStateFor(networkStatus: NetworkStatus) {
-        val currentState = state.value
-        mutableState.value = currentState.copy(networkStatusEffect = Effect.of(networkStatus))
+        mutableState.update { currentState ->
+            currentState.copy(networkStatusEffect = Effect.of(networkStatus))
+        }
     }
 
     private fun observeNetworkStatus() = networkManager.observe().distinctUntilChanged()
 
     private fun showNotificationPermissionDialogIfNeeded(isMessageSent: Boolean) {
         viewModelScope.launch {
-            if (shouldShowNotificationPermissionDialog(System.currentTimeMillis(), isMessageSent)) {
-                val currentState = state.value
-                mutableState.value = currentState.copy(
+            if (!shouldShowNotificationPermissionDialog(System.currentTimeMillis(), isMessageSent)) return@launch
+
+            mutableState.update { currentState ->
+                currentState.copy(
                     notificationPermissionDialogState = NotificationPermissionDialogState.Shown(
-                        uiModel = if (isMessageSent) {
-                            EnablePushNotificationsUiModel(
-                                title = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_title),
-                                message = TextUiModel.TextRes(R.string.notification_permission_dialog_post_send_message)
-                            )
+                        type = if (isMessageSent) {
+                            NotificationPermissionDialogType.PostSending
                         } else {
-                            EnablePushNotificationsUiModel(
-                                title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
-                                message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
-                            )
+                            NotificationPermissionDialogType.PostOnboarding
                         }
                     )
                 )
-                if (isMessageSent) {
-                    saveShouldStopShowingPermissionDialog()
-                } else {
-                    savePermissionDialogTimestamp(System.currentTimeMillis())
-                }
+            }
+            if (isMessageSent) {
+                saveShouldStopShowingPermissionDialog()
+            } else {
+                savePermissionDialogTimestamp(System.currentTimeMillis())
             }
         }
     }

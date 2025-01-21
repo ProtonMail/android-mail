@@ -18,9 +18,8 @@
 
 package ch.protonmail.android.mailnotifications.presentation.model
 
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+sealed interface NotificationPermissionDialogType {
 
-data class EnablePushNotificationsUiModel(
-    val title: TextUiModel,
-    val message: TextUiModel
-)
+    data object PostOnboarding : NotificationPermissionDialogType
+    data object PostSending : NotificationPermissionDialogType
+}

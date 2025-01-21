@@ -45,11 +45,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailcommon.presentation.model.string
 import me.proton.core.compose.theme.ProtonDimens
 import ch.protonmail.android.mailnotifications.R
-import ch.protonmail.android.mailnotifications.presentation.model.EnablePushNotificationsUiModel
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import me.proton.core.compose.component.ProtonSolidButton
 import me.proton.core.compose.theme.ProtonTheme
@@ -83,6 +81,19 @@ fun EnablePushNotificationsDialog(
             backgroundColor = ProtonTheme.colors.backgroundNorm,
             modifier = Modifier.fillMaxWidth()
         ) {
+            val (title, message) = when (state.type) {
+                is NotificationPermissionDialogType.PostOnboarding ->
+                    Pair(
+                        R.string.notification_permission_dialog_title,
+                        R.string.notification_permission_dialog_message
+                    )
+                is NotificationPermissionDialogType.PostSending ->
+                    Pair(
+                        R.string.notification_permission_dialog_post_send_title,
+                        R.string.notification_permission_dialog_post_send_message
+                    )
+            }
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -105,7 +116,7 @@ fun EnablePushNotificationsDialog(
 
                 Text(
                     modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
-                    text = state.uiModel.title.string(),
+                    text = stringResource(id = title),
                     textAlign = TextAlign.Center,
                     style = ProtonTheme.typography.defaultStrongNorm
                 )
@@ -114,7 +125,7 @@ fun EnablePushNotificationsDialog(
 
                 Text(
                     modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
-                    text = state.uiModel.message.string(),
+                    text = stringResource(id = message),
                     textAlign = TextAlign.Center,
                     style = ProtonTheme.typography.defaultSmallWeak
                 )
@@ -167,10 +178,7 @@ private val ImageHeight = 94.dp
 private fun EnablePushNotificationsDialogPreview() {
     EnablePushNotificationsDialog(
         state = NotificationPermissionDialogState.Shown(
-            uiModel = EnablePushNotificationsUiModel(
-                title = TextUiModel.TextRes(R.string.notification_permission_dialog_title),
-                message = TextUiModel.TextRes(R.string.notification_permission_dialog_message)
-            )
+            type = NotificationPermissionDialogType.PostOnboarding
         ),
         onEnable = {},
         onDismiss = {}

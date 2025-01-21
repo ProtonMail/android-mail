@@ -21,7 +21,7 @@ package ch.protonmail.android.mailnotifications.presentation.model
 sealed interface NotificationPermissionDialogState {
 
     data class Shown(
-        val uiModel: EnablePushNotificationsUiModel
+        val type: NotificationPermissionDialogType
     ) : NotificationPermissionDialogState
 
     data object Hidden : NotificationPermissionDialogState
