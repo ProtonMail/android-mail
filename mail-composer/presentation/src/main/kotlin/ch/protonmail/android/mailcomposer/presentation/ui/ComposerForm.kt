@@ -56,7 +56,6 @@ internal fun ComposerForm(
     actions: ComposerFormActions,
     contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>>,
     areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>,
-    isNewBodyTextFieldEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     val isKeyboardVisible by keyboardVisibilityAsState()
@@ -125,27 +124,15 @@ internal fun ComposerForm(
                 )
                 MailDivider()
 
-                if (isNewBodyTextFieldEnabled) {
-                    BodyTextField2(
-                        initialValue = fields.body,
-                        shouldRequestFocus = shouldForceBodyTextFocus,
-                        replaceDraftBody = replaceDraftBody,
-                        onBodyChange = actions.onBodyChanged,
-                        modifier = maxWidthModifier
-                            .testTag(ComposerTestTags.MessageBody)
-                            .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
-                    )
-                } else {
-                    BodyTextField(
-                        initialValue = fields.body,
-                        shouldRequestFocus = shouldForceBodyTextFocus,
-                        replaceDraftBody = replaceDraftBody,
-                        onBodyChange = actions.onBodyChanged,
-                        modifier = maxWidthModifier
-                            .testTag(ComposerTestTags.MessageBody)
-                            .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
-                    )
-                }
+                BodyTextField2(
+                    initialValue = fields.body,
+                    shouldRequestFocus = shouldForceBodyTextFocus,
+                    replaceDraftBody = replaceDraftBody,
+                    onBodyChange = actions.onBodyChanged,
+                    modifier = maxWidthModifier
+                        .testTag(ComposerTestTags.MessageBody)
+                        .retainFieldFocusOnConfigurationChange(FocusedFieldType.BODY)
+                )
 
                 if (fields.quotedBody != null) {
                     RespondInlineButton(actions.onRespondInline)

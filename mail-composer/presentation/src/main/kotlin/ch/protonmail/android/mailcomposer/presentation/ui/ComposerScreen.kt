@@ -247,8 +247,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             { bottomSheetType.value = it }
                         ),
                         contactSuggestions = state.contactSuggestions,
-                        areContactSuggestionsExpanded = state.areContactSuggestionsExpanded,
-                        isNewBodyTextFieldEnabled = viewModel.isNewBodyTextFieldEnabled
+                        areContactSuggestionsExpanded = state.areContactSuggestionsExpanded
                     )
                     if (state.attachments.attachments.isNotEmpty()) {
                         AttachmentFooter(
