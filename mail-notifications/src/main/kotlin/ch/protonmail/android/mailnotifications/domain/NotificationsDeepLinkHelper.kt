@@ -31,8 +31,6 @@ interface NotificationsDeepLinkHelper {
 
     fun buildMessageGroupDeepLinkIntent(notificationId: String, userId: String): Intent
 
-    fun buildReplyToDeepLinkIntent(messageId: String, userId: String): Intent
-
     fun NotificationsDeepLinkHelper.buildMessageDeepLinkUri(
         notificationId: String,
         messageId: String,
@@ -51,23 +49,13 @@ interface NotificationsDeepLinkHelper {
                 .replace("{userId}", userId)
         )
 
-    fun NotificationsDeepLinkHelper.buildReplyDeepLinkUri(messageId: String, userId: String): Uri = Uri.parse(
-        DeepLinkNotificationActionTemplate
-            .replace("{messageId}", messageId)
-            .replace("{userId}", userId)
-            .replace("{action}", ReplyActionValue)
-    )
-
     companion object {
 
-        private const val ReplyActionValue = "reply"
         const val NotificationHost = "notification"
         private const val DeepLinkBaseUri = "proton://$NotificationHost/"
         private const val DeepLinkMessageBase = "${DeepLinkBaseUri}mailbox/message/"
         const val DeepLinkMessageTemplate = "$DeepLinkMessageBase{messageId}/{userId}/{notificationId}"
         private const val DeepLinkMessageGroupBase = "${DeepLinkBaseUri}mailbox/"
         const val DeepLinkMessageGroupTemplate = "$DeepLinkMessageGroupBase{notificationId}/{userId}"
-        private const val DeepLinkNotificationActionBase = "${DeepLinkBaseUri}composer/action/"
-        const val DeepLinkNotificationActionTemplate = "$DeepLinkNotificationActionBase{messageId}/{userId}/{action}"
     }
 }

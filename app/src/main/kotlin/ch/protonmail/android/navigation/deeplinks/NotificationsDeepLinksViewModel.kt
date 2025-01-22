@@ -72,32 +72,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
         }
     }
 
-    fun navigateToComposer(messageId: String, userId: String) {
-        navigateJob?.cancel()
-
-        navigateJob = viewModelScope.launch {
-            when (val switchAccountResult = switchActiveUserIfRequiredTo(userId)) {
-                AccountSwitchResult.AccountSwitchError -> navigateToInbox(userId)
-                is AccountSwitchResult.AccountSwitched -> navigateToComposer(
-                    coroutineContext,
-                    messageId,
-                    switchAccountResult.newEmail
-                )
-
-                AccountSwitchResult.NotRequired -> navigateToComposer(coroutineContext, messageId)
-            }
-        }
-    }
-
-    private fun navigateToComposer(
-        coroutineContext: CoroutineContext,
-        messageId: String,
-        switchedAccountEmail: String? = null
-    ) {
-        _state.value = State.NavigateToComposerForReply(MessageId(messageId), switchedAccountEmail)
-        coroutineContext.cancel()
-    }
-
     fun navigateToInbox(userId: String) {
         viewModelScope.launch {
             val activeUserId = accountManager.getPrimaryUserId().firstOrNull()
@@ -212,10 +186,10 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     private fun isOffline() = networkManager.networkStatus == NetworkStatus.Disconnected
 
     sealed interface State {
-        object Launched : State
+        data object Launched : State
 
         sealed interface NavigateToInbox : State {
-            object ActiveUser : NavigateToInbox
+            data object ActiveUser : NavigateToInbox
             data class ActiveUserSwitched(val email: String) : NavigateToInbox
         }
 
@@ -229,17 +203,12 @@ class NotificationsDeepLinksViewModel @Inject constructor(
             val scrollToMessageId: MessageId? = null,
             val userSwitchedEmail: String? = null
         ) : State
-
-        data class NavigateToComposerForReply(
-            val messageId: MessageId,
-            val userSwitchedEmail: String? = null
-        ) : State
     }
 
     private sealed interface AccountSwitchResult {
-        object NotRequired : AccountSwitchResult
+        data object NotRequired : AccountSwitchResult
         data class AccountSwitched(val newUserId: UserId, val newEmail: String) : AccountSwitchResult
 
-        object AccountSwitchError : AccountSwitchResult
+        data object AccountSwitchError : AccountSwitchResult
     }
 }

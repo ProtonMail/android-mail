@@ -37,6 +37,4 @@ internal sealed class LocalNotificationAction {
 
     @Serializable
     data object MarkAsRead : LocalNotificationAction()
-
-    data object Reply : LocalNotificationAction()
 }

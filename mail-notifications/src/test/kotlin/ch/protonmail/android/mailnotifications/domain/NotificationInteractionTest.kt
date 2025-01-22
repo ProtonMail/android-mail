@@ -39,7 +39,6 @@ internal class NotificationInteractionTest(
 
         private const val DummyId = "userId"
         private const val DummyMessageId = "messageId"
-        private const val DummyAction = "action"
 
         private val inputs = listOf(
             TestInput(
@@ -59,12 +58,6 @@ internal class NotificationInteractionTest(
                 messageId = DummyMessageId,
                 action = null,
                 expectedInteraction = NotificationInteraction.SingleTap(DummyId, DummyMessageId)
-            ),
-            TestInput(
-                userId = DummyId,
-                messageId = DummyMessageId,
-                action = DummyAction,
-                expectedInteraction = NotificationInteraction.ReplyActionTap(DummyId, DummyMessageId)
             )
         )
 

@@ -29,12 +29,7 @@ sealed class NotificationInteraction {
         val userId: String
     ) : NotificationInteraction()
 
-    data class ReplyActionTap(
-        val userId: String,
-        val messageId: String
-    ) : NotificationInteraction()
-
-    object NoAction : NotificationInteraction()
+    data object NoAction : NotificationInteraction()
 }
 
 fun resolveNotificationInteraction(
@@ -43,10 +38,6 @@ fun resolveNotificationInteraction(
     action: String?
 ): NotificationInteraction {
     return when {
-        messageId != null && userId != null && action != null -> {
-            NotificationInteraction.ReplyActionTap(userId, messageId)
-        }
-
         messageId != null && userId != null && action == null -> {
             NotificationInteraction.SingleTap(userId, messageId)
         }

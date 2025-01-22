@@ -26,7 +26,6 @@ import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.ListenableWorker
 import ch.protonmail.android.mailcommon.presentation.system.NotificationProvider
-import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
@@ -67,7 +66,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import javax.inject.Provider
 
 @SmokeTest
 internal class ProcessNewMessagePushNotificationTest {
@@ -77,9 +75,8 @@ internal class ProcessNewMessagePushNotificationTest {
 
     private val notificationProvider = getNotificationProvider()
     private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>(relaxUnitFun = true)
-    private val messageRepository = mockk<MessageRepository>(relaxUnitFun = true)
     private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val createNotificationAction = spyk(CreateNotificationAction(context, notificationsDeepLinkHelper))
+    private val createNotificationAction = spyk(CreateNotificationAction(context))
     private val createNewMessageNavigationIntent = spyk(
         CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper)
     )
@@ -87,7 +84,6 @@ internal class ProcessNewMessagePushNotificationTest {
     private val testDispatcher = StandardTestDispatcher()
     private val scope = CoroutineScope(testDispatcher)
 
-    private val isMarkAsReadEnabled = mockk<Provider<Boolean>>()
     private val eventManager = mockk<EventManager>(relaxUnitFun = true)
     private val eventManagerProvider = mockk<EventManagerProvider> {
         coEvery { this@mockk.get(any()) } returns eventManager
@@ -96,13 +92,11 @@ internal class ProcessNewMessagePushNotificationTest {
     private val processNewMessagePushNotification: ProcessNewMessagePushNotification
         get() = ProcessNewMessagePushNotification(
             context,
-            messageRepository,
             notificationProvider,
             notificationManagerCompatProxy,
             createNewMessageNavigationIntent,
             createNotificationAction,
             eventManagerProvider,
-            isMarkAsReadEnabled.get(),
             scope
         )
 
@@ -125,9 +119,6 @@ internal class ProcessNewMessagePushNotificationTest {
 
     @Test
     fun processNewMessageNotificationFlowDoesNotFailWorkerIfFails() = runTest {
-        // Given
-        coEvery { messageRepository.getRefreshedMessageWithBody(any(), any()) } returns null
-
         // When
         val result = processNewMessagePushNotification(newMessageData)
 
@@ -138,36 +129,6 @@ internal class ProcessNewMessagePushNotificationTest {
     @Test
     fun processNewMessageNotificationCreatesIntentsWithCorrectActions() = runTest {
         // Given
-        coEvery { messageRepository.getRefreshedMessageWithBody(any(), any()) } returns null
-        val expectedArchivePayload = PushNotificationPendingIntentPayloadData(
-            pushData.messageId.hashCode(),
-            userData.userId,
-            userData.userId,
-            pushData.messageId,
-            LocalNotificationAction.MoveTo.Archive
-        )
-        val expectedTrashPayload = expectedArchivePayload.copy(action = LocalNotificationAction.MoveTo.Trash)
-        val expectedReplyPayload = expectedArchivePayload.copy(action = LocalNotificationAction.Reply)
-
-        // When
-        val result = processNewMessagePushNotification(newMessageData)
-
-        // Then
-        assertEquals(ListenableWorker.Result.success(), result)
-        verify(exactly = 1) {
-            createNotificationAction(expectedArchivePayload)
-            createNotificationAction(expectedTrashPayload)
-            createNotificationAction(expectedReplyPayload)
-        }
-
-        confirmVerified(createNotificationAction)
-    }
-
-    @Test
-    fun processNewMessageNotificationCreatesIntentsWithMarkAsReadActionWhenFeatureEnabled() = runTest {
-        // Given
-        coEvery { messageRepository.getRefreshedMessageWithBody(any(), any()) } returns null
-        every { isMarkAsReadEnabled.get() } returns true
         val expectedArchivePayload = PushNotificationPendingIntentPayloadData(
             pushData.messageId.hashCode(),
             userData.userId,
@@ -200,11 +161,9 @@ internal class ProcessNewMessagePushNotificationTest {
         confirmVerified(eventManagerProvider)
     }
 
-
     @Test
     fun processNewMessageNotificationShowsNotificationWithActions() = runTest {
         // Given
-        coEvery { messageRepository.getRefreshedMessageWithBody(any(), any()) } returns null
         val expectedNotificationId = pushData.messageId.hashCode()
         val expectedGroupNotificationId = userData.userId.hashCode()
 
@@ -236,7 +195,7 @@ internal class ProcessNewMessagePushNotificationTest {
             assertTrue(actions.isNotEmpty())
             assertEquals("Archive", actions[0].title)
             assertEquals("Trash", actions[1].title)
-            assertEquals("Reply", actions[2].title)
+            assertEquals("Mark read", actions[2].title)
         }
     }
 
@@ -256,8 +215,6 @@ internal class ProcessNewMessagePushNotificationTest {
         val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
         every { notificationsDeepLinkHelper.buildMessageDeepLinkIntent(any(), any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(any(), any()) } returns mockedIntent
-        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
-        every { isMarkAsReadEnabled.get() } returns false
     }
 
     private companion object {

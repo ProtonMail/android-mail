@@ -30,7 +30,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import ch.protonmail.android.R
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailnotifications.domain.NotificationInteraction
 import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.resolveNotificationInteraction
@@ -43,8 +42,7 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
         route = Destination.Screen.DeepLinksHandler.route,
         deepLinks = listOf(
             navDeepLink { uriPattern = NotificationsDeepLinkHelper.DeepLinkMessageTemplate },
-            navDeepLink { uriPattern = NotificationsDeepLinkHelper.DeepLinkMessageGroupTemplate },
-            navDeepLink { uriPattern = NotificationsDeepLinkHelper.DeepLinkNotificationActionTemplate }
+            navDeepLink { uriPattern = NotificationsDeepLinkHelper.DeepLinkMessageGroupTemplate }
         )
     ) {
         val context = LocalContext.current
@@ -67,10 +65,6 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
 
                         is NotificationInteraction.GroupTap -> {
                             viewModel.navigateToInbox(interaction.userId)
-                        }
-
-                        is NotificationInteraction.ReplyActionTap -> {
-                            viewModel.navigateToComposer(messageId = interaction.messageId, userId = interaction.userId)
                         }
 
                         NotificationInteraction.NoAction -> Unit
@@ -99,14 +93,6 @@ internal fun NavGraphBuilder.addDeepLinkHandler(navController: NavHostController
 
                 is NotificationsDeepLinksViewModel.State.NavigateToConversation -> {
                     navController.navigate(Destination.Screen.Conversation(conversationId = state.conversationId)) {
-                        popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
-                    }
-                    showUserSwitchedEmailIfRequired(context, state.userSwitchedEmail)
-                }
-
-                is NotificationsDeepLinksViewModel.State.NavigateToComposerForReply -> {
-                    val action = DraftAction.Reply(state.messageId)
-                    navController.navigate(Destination.Screen.MessageActionComposer(action)) {
                         popUpTo(Destination.Screen.Mailbox.route) { inclusive = false }
                     }
                     showUserSwitchedEmailIfRequired(context, state.userSwitchedEmail)

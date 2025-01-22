@@ -24,7 +24,6 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat.Action
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.data.local.PushNotificationActionsBroadcastReceiver
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,14 +31,12 @@ import me.proton.core.util.kotlin.serialize
 import javax.inject.Inject
 
 internal class CreateNotificationAction @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val notificationsDeepLinkHelper: NotificationsDeepLinkHelper
+    @ApplicationContext private val context: Context
 ) {
 
     operator fun invoke(payload: PushNotificationPendingIntentPayloadData): Action {
         val pendingIntent = when (payload.action) {
             is LocalNotificationAction.MoveTo -> createMoveToPendingIntent(payload)
-            is LocalNotificationAction.Reply -> createReplyPendingIntent(payload)
             is LocalNotificationAction.MarkAsRead -> createMarkAsReadPendingIntent(payload)
         }
 
@@ -73,21 +70,6 @@ internal class CreateNotificationAction @Inject constructor(
         )
     }
 
-    private fun createReplyPendingIntent(payload: PushNotificationPendingIntentPayloadData): PendingIntent {
-        val intent = notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(
-            payload.messageId,
-            payload.userId
-        )
-
-        // Do not use BroadcastReceiver to handle this Intent.
-        return PendingIntent.getActivities(
-            context,
-            payload.hashCode(),
-            arrayOf(intent),
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-    }
-
     @Suppress("ClassOrdering")
     private val LocalNotificationAction.title: String
         get() {
@@ -97,9 +79,6 @@ internal class CreateNotificationAction @Inject constructor(
 
                 LocalNotificationAction.MoveTo.Trash ->
                     context.getString(R.string.notification_actions_trash_description)
-
-                LocalNotificationAction.Reply ->
-                    context.getString(R.string.notification_actions_reply_description)
 
                 LocalNotificationAction.MarkAsRead ->
                     context.getString(R.string.notification_actions_mark_as_read_description)

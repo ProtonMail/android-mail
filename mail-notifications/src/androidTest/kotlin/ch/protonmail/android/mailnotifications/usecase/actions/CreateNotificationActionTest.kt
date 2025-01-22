@@ -19,17 +19,11 @@
 package ch.protonmail.android.mailnotifications.usecase.actions
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.test.platform.app.InstrumentationRegistry
-import ch.protonmail.android.mailnotifications.domain.NotificationsDeepLinkHelper
 import ch.protonmail.android.mailnotifications.domain.model.LocalNotificationAction
 import ch.protonmail.android.mailnotifications.domain.model.PushNotificationPendingIntentPayloadData
 import ch.protonmail.android.mailnotifications.domain.usecase.actions.CreateNotificationAction
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 internal class CreateNotificationActionTest {
@@ -37,41 +31,33 @@ internal class CreateNotificationActionTest {
     private val context: Context
         get() = InstrumentationRegistry.getInstrumentation().context
 
-    private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val createNotificationAction = CreateNotificationAction(context, notificationsDeepLinkHelper)
+    private val createNotificationAction = CreateNotificationAction(context)
 
     @Test
-    fun moveToArchiveNotificationActionRequiresAuthentication() {
+    fun moveToArchiveActionHasCorrectTitle() {
         // When
         val result = createNotificationAction(archivePayloadData)
 
         // Then
         assertEquals("Archive", result.title)
-        assertTrue(result.isAuthenticationRequired)
     }
 
     @Test
-    fun moveToTrashNotificationActionRequiresAuthentication() {
+    fun moveToTrashActionHasCorrectTitle() {
         // When
         val result = createNotificationAction(trashPayloadData)
 
         // Then
         assertEquals("Trash", result.title)
-        assertTrue(result.isAuthenticationRequired)
     }
 
     @Test
-    fun replyNotificationActionRequiresAuthentication() {
-        // Given
-        val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
-        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
-
+    fun markReadActionHasCorrectTitle() {
         // When
-        val result = createNotificationAction(replyPayloadData)
+        val result = createNotificationAction(markReadPayloadData)
 
         // Then
-        assertEquals("Reply", result.title)
-        assertTrue(result.isAuthenticationRequired)
+        assertEquals("Mark read", result.title)
     }
 
     private companion object {
@@ -84,6 +70,6 @@ internal class CreateNotificationActionTest {
             action = LocalNotificationAction.MoveTo.Archive
         )
         val trashPayloadData = archivePayloadData.copy(action = LocalNotificationAction.MoveTo.Trash)
-        val replyPayloadData = archivePayloadData.copy(action = LocalNotificationAction.Reply)
+        val markReadPayloadData = archivePayloadData.copy(action = LocalNotificationAction.MarkAsRead)
     }
 }
