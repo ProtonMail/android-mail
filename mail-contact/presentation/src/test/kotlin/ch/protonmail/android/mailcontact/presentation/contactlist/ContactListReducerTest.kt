@@ -88,7 +88,6 @@ internal class ContactListReducerTest(
         private val dataLoadedState = ContactListState.Loaded.Data(
             contacts = loadedContactListItemUiModels,
             contactGroups = loadedContactGroupItemUiModels,
-            isContactGroupsCrudEnabled = true,
             isContactGroupsUpsellingVisible = true,
             isContactSearchEnabled = true
         )
@@ -99,7 +98,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true,
                     isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
@@ -110,7 +108,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false,
                     isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
@@ -159,7 +156,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true,
                     isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
@@ -172,7 +168,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false,
                     isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
@@ -267,7 +262,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true,
                     isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
@@ -278,7 +272,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsCrudEnabled = false,
                     isContactGroupsUpsellingVisible = false,
                     isContactSearchEnabled = false
                 ),
@@ -358,7 +351,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true,
                     isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),
@@ -369,7 +361,6 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsCrudEnabled = true,
                     isContactGroupsUpsellingVisible = true,
                     isContactSearchEnabled = true
                 ),

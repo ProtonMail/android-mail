@@ -56,7 +56,6 @@ import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ConsumableTextEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
-import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
 import ch.protonmail.android.mailcontact.presentation.R
@@ -64,6 +63,7 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactGroupDetailsM
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData.contactGroupDetailsSampleData
 import ch.protonmail.android.mailcontact.presentation.ui.DeleteContactGroupDialog
 import ch.protonmail.android.mailcontact.presentation.ui.IconContactAvatar
+import ch.protonmail.android.uicomponents.dismissKeyboard
 import ch.protonmail.android.uicomponents.snackbar.DismissableSnackbarHost
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonSnackbarHostState
@@ -199,13 +199,11 @@ fun ContactGroupDetailsContent(
                     ),
                     textAlign = TextAlign.Center
                 )
-                if (state.isContactGroupsCrudEnabled) {
-                    ContactGroupDetailsSendTextButton(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        isEnabled = state.isSendEnabled,
-                        onClick = onSendClick
-                    )
-                }
+                ContactGroupDetailsSendTextButton(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    isEnabled = state.isSendEnabled,
+                    onClick = onSendClick
+                )
             }
         }
         items(state.contactGroup.members) { member ->
@@ -327,23 +325,19 @@ fun ContactGroupDetailsTopBar(
         },
         actions = {
             if (state is ContactGroupDetailsState.Data) {
-                if (state.isContactGroupsCrudEnabled) {
-                    IconButton(onClick = { actions.onEditClick(state.contactGroup.id) }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_pen),
-                            tint = ProtonTheme.colors.iconNorm,
-                            contentDescription = stringResource(R.string.edit_contact_group_content_description)
-                        )
-                    }
+                IconButton(onClick = { actions.onEditClick(state.contactGroup.id) }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_pen),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.edit_contact_group_content_description)
+                    )
                 }
-                if (state.isContactGroupsCrudEnabled) {
-                    IconButton(onClick = onDeleteClick) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_proton_trash),
-                            tint = ProtonTheme.colors.iconNorm,
-                            contentDescription = stringResource(R.string.delete_contact_group_content_description)
-                        )
-                    }
+                IconButton(onClick = onDeleteClick) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_proton_trash),
+                        tint = ProtonTheme.colors.iconNorm,
+                        contentDescription = stringResource(R.string.delete_contact_group_content_description)
+                    )
                 }
             }
         }
@@ -383,7 +377,6 @@ private fun ContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData,
             deleteDialogState = DeleteDialogState.Hidden
         ),
@@ -397,7 +390,6 @@ private fun EmptyContactGroupDetailsContentPreview() {
     ContactGroupDetailsContent(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData.copy(
                 memberCount = 0,
                 members = emptyList()
@@ -414,7 +406,6 @@ private fun ContactDetailsTopBarPreview() {
     ContactGroupDetailsTopBar(
         state = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            isContactGroupsCrudEnabled = true,
             contactGroup = contactGroupDetailsSampleData,
             deleteDialogState = DeleteDialogState.Hidden
         ),

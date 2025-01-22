@@ -58,7 +58,7 @@ internal fun ContactGroupsScreenContent(
             title = stringResource(R.string.no_contact_groups),
             description = stringResource(R.string.no_contact_groups_description),
             buttonText = stringResource(R.string.add_contact_group),
-            showAddButton = state.isContactGroupsCrudEnabled,
+            showAddButton = true,
             onAddClick = onNewGroupClick
         )
     }

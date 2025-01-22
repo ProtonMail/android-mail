@@ -36,7 +36,6 @@ internal sealed interface ContactListEvent : ContactListOperation {
     data class ContactListLoaded(
         val contactList: List<ContactListItemUiModel>,
         val contactGroups: List<ContactGroupItemUiModel>,
-        val isContactGroupsCrudEnabled: Boolean,
         val isContactGroupsUpsellingVisible: Boolean,
         val isContactSearchEnabled: Boolean
     ) : ContactListEvent

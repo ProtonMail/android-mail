@@ -25,7 +25,6 @@ import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactSearchEnabled
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
@@ -56,7 +55,6 @@ class ContactListViewModel @Inject constructor(
     private val reducer: ContactListReducer,
     private val contactListItemUiModelMapper: ContactListItemUiModelMapper,
     private val contactGroupItemUiModelMapper: ContactGroupItemUiModelMapper,
-    private val isContactGroupsCrudEnabled: IsContactGroupsCrudEnabled,
     private val observeUpsellingVisibility: ObserveUpsellingVisibility,
     private val userUpgradeState: UserUpgradeState,
     private val isContactSearchEnabled: IsContactSearchEnabled,
@@ -113,7 +111,6 @@ class ContactListViewModel @Inject constructor(
             observeContactGroupLabels(userId),
             observeUpsellingVisibility(UpsellingEntryPoint.Feature.ContactGroups)
         ) { contacts, contactGroups, isContactGroupsUpsellingVisible ->
-            val isContactGroupsCrudEnabled = isContactGroupsCrudEnabled()
             val isContactSearchEnabled = isContactSearchEnabled()
             val contactList = contacts.getOrElse {
                 Timber.e("Error while observing contacts")
@@ -130,7 +127,6 @@ class ContactListViewModel @Inject constructor(
                         return@combine ContactListEvent.ErrorLoadingContactList
                     }
                 ),
-                isContactGroupsCrudEnabled = isContactGroupsCrudEnabled,
                 isContactGroupsUpsellingVisible = isContactGroupsUpsellingVisible,
                 isContactSearchEnabled = isContactSearchEnabled
             )

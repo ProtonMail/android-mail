@@ -41,7 +41,6 @@ internal fun ContactListTopBar(
     modifier: Modifier = Modifier,
     actions: ContactListTopBar.Actions,
     isAddButtonVisible: Boolean,
-    isContactGroupsCrudEnabled: Boolean,
     isContactSearchEnabled: Boolean
 ) {
     ProtonTopAppBar(
@@ -69,7 +68,7 @@ internal fun ContactListTopBar(
                 }
             }
             // hasOneCreateOption can be deleted once we get rid of ContactFeatureFlags
-            val hasOneCreateOption = ContactCreate.value || isContactGroupsCrudEnabled || ContactImport.value
+            val hasOneCreateOption = ContactCreate.value || ContactImport.value
             if (isAddButtonVisible && hasOneCreateOption) {
                 IconButton(onClick = actions.onAddClick) {
                     Icon(
@@ -108,7 +107,6 @@ private fun ContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
         isAddButtonVisible = true,
-        isContactGroupsCrudEnabled = true,
         isContactSearchEnabled = true
     )
 }
@@ -119,7 +117,6 @@ private fun EmptyContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
         isAddButtonVisible = false,
-        isContactGroupsCrudEnabled = true,
         isContactSearchEnabled = true
     )
 }

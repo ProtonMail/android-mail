@@ -35,10 +35,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactCreate
 import ch.protonmail.android.mailcontact.presentation.utils.ContactFeatureFlags.ContactImport
+import ch.protonmail.android.mailupselling.presentation.ui.UpsellingIcon
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
@@ -46,7 +46,6 @@ import me.proton.core.compose.theme.defaultNorm
 @Composable
 internal fun ContactBottomSheetContent(
     modifier: Modifier = Modifier,
-    isContactGroupsCrudEnabled: Boolean,
     isContactGroupsUpsellingVisible: Boolean,
     actions: ContactBottomSheet.Actions
 ) {
@@ -63,15 +62,13 @@ internal fun ContactBottomSheetContent(
                 onClick = actions.onNewContactClick
             )
         }
-        if (isContactGroupsCrudEnabled) {
-            ContactBottomSheetItem(
-                modifier = Modifier,
-                titleResId = R.string.new_group,
-                iconResId = R.drawable.ic_proton_users_plus,
-                isUpsellingVisible = isContactGroupsUpsellingVisible,
-                onClick = actions.onNewContactGroupClick
-            )
-        }
+        ContactBottomSheetItem(
+            modifier = Modifier,
+            titleResId = R.string.new_group,
+            iconResId = R.drawable.ic_proton_users_plus,
+            isUpsellingVisible = isContactGroupsUpsellingVisible,
+            onClick = actions.onNewContactGroupClick
+        )
         if (ContactImport.value) {
             ContactBottomSheetItem(
                 modifier = Modifier,
@@ -140,7 +137,6 @@ object ContactBottomSheet {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 private fun ContactBottomSheetScreenPreview() {
     ContactBottomSheetContent(
-        isContactGroupsCrudEnabled = true,
         isContactGroupsUpsellingVisible = true,
         actions = ContactBottomSheet.Actions.Empty
     )

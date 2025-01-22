@@ -26,13 +26,11 @@ import ch.protonmail.android.mailupselling.presentation.model.BottomSheetVisibil
 
 sealed interface ContactListState {
 
-    val isContactGroupsCrudEnabled: Boolean
     val isContactGroupsUpsellingVisible: Boolean
     val isContactSearchEnabled: Boolean
 
     data class Loading(
         val errorLoading: Effect<TextUiModel> = Effect.empty(),
-        override val isContactGroupsCrudEnabled: Boolean = false,
         override val isContactGroupsUpsellingVisible: Boolean = false,
         override val isContactSearchEnabled: Boolean = false
     ) : ContactListState
@@ -56,7 +54,6 @@ sealed interface ContactListState {
             override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
             override val upsellingInProgress: Effect<TextUiModel> = Effect.empty(),
-            override val isContactGroupsCrudEnabled: Boolean = false,
             override val isContactGroupsUpsellingVisible: Boolean = false,
             override val isContactSearchEnabled: Boolean = false,
             override val bottomSheetType: BottomSheetType = BottomSheetType.Menu,
@@ -72,7 +69,6 @@ sealed interface ContactListState {
             override val openContactSearch: Effect<Boolean> = Effect.empty(),
             override val subscriptionError: Effect<TextUiModel> = Effect.empty(),
             override val upsellingInProgress: Effect<TextUiModel> = Effect.empty(),
-            override val isContactGroupsCrudEnabled: Boolean = false,
             override val isContactGroupsUpsellingVisible: Boolean = false,
             override val isContactSearchEnabled: Boolean = false,
             override val bottomSheetType: BottomSheetType = BottomSheetType.Menu

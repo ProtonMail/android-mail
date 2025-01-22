@@ -35,7 +35,6 @@ sealed class ContactGroupDetailsState(
     data class Data(
         override val close: Effect<Unit> = Effect.empty(),
         val isSendEnabled: Boolean,
-        val isContactGroupsCrudEnabled: Boolean,
         val contactGroup: ContactGroupDetailsUiModel,
         val openComposer: Effect<List<String>> = Effect.empty(),
         val deleteDialogState: DeleteDialogState,

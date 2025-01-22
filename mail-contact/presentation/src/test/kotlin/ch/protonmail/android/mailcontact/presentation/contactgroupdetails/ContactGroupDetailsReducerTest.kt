@@ -21,11 +21,8 @@ package ch.protonmail.android.mailcontact.presentation.contactgroupdetails
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactGroupsCrudEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactGroupDetailsPreviewData
-import io.mockk.every
-import io.mockk.mockk
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -37,11 +34,7 @@ class ContactGroupDetailsReducerTest(
     private val testInput: TestInput
 ) {
 
-    private val isContactGroupsCrudEnabledMock = mockk<IsContactGroupsCrudEnabled> {
-        every { this@mockk() } returns true
-    }
-
-    private val reducer = ContactGroupDetailsReducer(isContactGroupsCrudEnabledMock)
+    private val reducer = ContactGroupDetailsReducer()
 
     @Test
     fun `should produce the expected state`() = with(testInput) {
@@ -60,7 +53,6 @@ class ContactGroupDetailsReducerTest(
         private val emptyLoadingState = ContactGroupDetailsState.Loading()
         private val loadedContactGroupState = ContactGroupDetailsState.Data(
             isSendEnabled = true,
-            isContactGroupsCrudEnabled = true,
             contactGroup = loadedContactGroupDetailsUiModel,
             deleteDialogState = DeleteDialogState.Hidden
         )
@@ -176,5 +168,4 @@ class ContactGroupDetailsReducerTest(
         val event: ContactGroupDetailsEvent,
         val expectedState: ContactGroupDetailsState
     )
-
 }
