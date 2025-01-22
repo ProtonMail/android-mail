@@ -254,7 +254,7 @@ class MailboxViewModelTest {
     }
 
     private val observeMailboxActions = mockk<GetMailboxActions> {
-        coEvery { this@mockk(any(), any(), userId) } returns flowOf(listOf(Action.Archive, Action.Trash).right())
+        coEvery { this@mockk(any(), any(), any(), userId) } returns flowOf(listOf(Action.Archive, Action.Trash).right())
     }
 
     private val markConversationsAsRead = mockk<MarkConversationsAsRead>()
@@ -2877,9 +2877,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
             ActionUiModelSample.build(Action.Star),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -2917,9 +2923,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
             ActionUiModelSample.build(Action.Unstar),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -2957,9 +2969,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
             ActionUiModelSample.build(Action.Star),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -3049,9 +3067,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
             ActionUiModelSample.build(Action.Unstar),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -3140,9 +3164,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
             ActionUiModelSample.build(Action.Unstar),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -3186,8 +3216,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -3237,9 +3274,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
             ActionUiModelSample.build(Action.Unstar),
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()
@@ -3283,8 +3326,15 @@ class MailboxViewModelTest {
 
         val initialState = createMailboxDataState()
         val expectedActionItems = listOf(
-            ActionUiModelSample.build(Action.Archive),
-            ActionUiModelSample.build(Action.Spam)
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive)
         )
         val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
             actionUiModels = expectedActionItems.toImmutableList()

@@ -89,8 +89,8 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object EnableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
     object DisableUnreadFilter : MailboxViewAction, AffectingUnreadFilter
 
-    object MarkAsRead : MailboxViewAction, AffectingMailboxList
-    object MarkAsUnread : MailboxViewAction, AffectingMailboxList
+    object MarkAsRead : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
+    object MarkAsUnread : MailboxViewAction, AffectingMailboxList, AffectingBottomSheet
     object Trash : MailboxViewAction
     object Delete : MailboxViewAction
     object DeleteConfirmed : MailboxViewAction
@@ -199,7 +199,8 @@ internal sealed interface MailboxEvent : MailboxOperation {
         AffectingMailboxList,
         AffectingTopAppBar,
         AffectingBottomAppBar,
-        AffectingActionMessage
+        AffectingActionMessage,
+        AffectingBottomSheet
 
     data class Delete(val viewMode: ViewMode, val numAffectedMessages: Int) : MailboxEvent, AffectingDeleteDialog
     data class DeleteConfirmed(val viewMode: ViewMode, val numAffectedMessages: Int) :

@@ -51,7 +51,6 @@ import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.ProtonTypography
 import me.proton.core.compose.theme.default
-import timber.log.Timber
 
 @Composable
 fun BottomActionBar(
@@ -133,11 +132,9 @@ fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actio
     Action.SenderEmails -> viewActionCallbacks.onSenderEmail
     Action.SaveAttachments -> viewActionCallbacks.onSaveAttachments
     Action.More -> viewActionCallbacks.onMore
-    Action.Reply,
-    Action.ReplyAll,
-    Action.Forward -> {
-        { Timber.d("Action not handled for BottomActionBar - $action.") }
-    }
+    Action.Reply -> viewActionCallbacks.onReply
+    Action.ReplyAll -> viewActionCallbacks.onReplyAll
+    Action.Forward -> viewActionCallbacks.onForward
 }
 
 @Composable
@@ -177,6 +174,9 @@ object BottomActionBar {
         val onTrash: () -> Unit,
         val onDelete: () -> Unit,
         val onArchive: () -> Unit,
+        val onReply: () -> Unit,
+        val onReplyAll: () -> Unit,
+        val onForward: () -> Unit,
         val onSpam: () -> Unit,
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
@@ -203,7 +203,10 @@ object BottomActionBar {
                 onTrash = {},
                 onDelete = {},
                 onArchive = {},
+                onForward = {},
                 onSpam = {},
+                onReply = {},
+                onReplyAll = {},
                 onViewInLightMode = {},
                 onViewInDarkMode = {},
                 onPrint = {},

@@ -48,7 +48,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Trash, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -63,10 +65,12 @@ class ObserveMailboxActionsTest {
                 Action.Move, Action.Trash, Action.Forward
             )
         )
-        val expected = listOf(Action.Move, Action.Trash, Action.Forward)
+        val expected = listOf(Action.Move, Action.Trash, Action.Forward, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -86,10 +90,10 @@ class ObserveMailboxActionsTest {
         )
 
         // When
-        observeMailboxActions(currentMailLabel, false, userId).test {
+        observeMailboxActions(currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = false, userId).test {
             // Then
-            assertEquals(listOf(Action.Move, Action.Trash, Action.Forward).right(), awaitItem())
-            assertEquals(listOf(Action.Label, Action.Star).right(), awaitItem())
+            assertEquals(listOf(Action.Move, Action.Trash, Action.Forward, Action.More).right(), awaitItem())
+            assertEquals(listOf(Action.Label, Action.Star, Action.More).right(), awaitItem())
             awaitComplete()
         }
     }
@@ -101,7 +105,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -114,7 +120,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkUnread, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, false, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -127,7 +135,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Trash, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = true, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -140,7 +150,9 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = true, areAllItemsStarred = false, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())
@@ -153,7 +165,29 @@ class ObserveMailboxActionsTest {
         val expected = listOf(Action.MarkRead, Action.Delete, Action.Move, Action.Label, Action.More)
 
         // When
-        val actions = observeMailboxActions(currentMailLabel, true, userId)
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = true, areAllItemsStarred = false, userId
+        )
+
+        // Then
+        assertEquals(expected.right(), actions.first())
+    }
+
+    @Test
+    fun `returns unstar when all items are starred`() = runTest {
+        // Given
+        val currentMailLabel = MailLabel.System(MailLabelId.System.Inbox)
+        every { observeToolbarActions.invoke(userId, true) } returns flowOf(
+            listOf(
+                Action.Star, Action.Trash, Action.Forward
+            )
+        )
+        val expected = listOf(Action.Unstar, Action.Trash, Action.Forward, Action.More)
+
+        // When
+        val actions = observeMailboxActions(
+            currentMailLabel, areAllItemsUnread = false, areAllItemsStarred = true, userId
+        )
 
         // Then
         assertEquals(expected.right(), actions.first())

@@ -38,22 +38,34 @@ class GetMailboxActions @Inject constructor(
     operator fun invoke(
         currentMailLabel: MailLabel,
         areAllItemsUnread: Boolean,
+        areAllItemsStarred: Boolean,
         userId: UserId
     ): Flow<Either<DataError, List<Action>>> = observeToolbarActions.invoke(userId, isMailBox = true)
         .map { preferences ->
             either {
-                val actions = (preferences ?: MailboxBottomBarDefaults.actions).toMutableList()
+                val prefsWithMore = preferences?.let { if (it.contains(Action.More)) it else it + Action.More }
+                val actions = (prefsWithMore ?: MailboxBottomBarDefaults.actions).toMutableList()
 
                 if (areAllItemsUnread) {
-                    actions[actions.indexOf(Action.MarkUnread)] = Action.MarkRead
+                    actions.replace(Action.MarkUnread, with = Action.MarkRead)
+                }
+
+                if (areAllItemsStarred) {
+                    actions.replace(Action.Star, with = Action.Unstar)
                 }
 
                 if (currentMailLabel.isTrashOrSpam()) {
-                    actions[actions.indexOf(Action.Trash)] = Action.Delete
+                    actions.replace(Action.Trash, with = Action.Delete)
+                    actions.replace(Action.Spam, with = Action.Move)
                 }
                 actions
             }
         }
+
+    private fun MutableList<Action>.replace(action: Action, with: Action) {
+        val index = indexOf(action).takeIf { it >= 0 } ?: return
+        set(index, with)
+    }
 
     private fun MailLabel.isTrashOrSpam() =
         id.labelId == SystemLabelId.Trash.labelId || id.labelId == SystemLabelId.Spam.labelId

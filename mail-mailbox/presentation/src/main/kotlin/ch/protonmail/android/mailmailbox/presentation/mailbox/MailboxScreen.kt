@@ -196,6 +196,10 @@ fun MailboxScreen(
         onRefreshListCompleted = { viewModel.submit(MailboxViewAction.RefreshCompleted) },
         markAsRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
         markAsUnread = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+        star = { viewModel.submit(MailboxViewAction.Star) },
+        unstar = { viewModel.submit(MailboxViewAction.UnStar) },
+        archive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
+        spam = { viewModel.submit(MailboxViewAction.MoveToSpam) },
         trash = { viewModel.submit(MailboxViewAction.Trash) },
         delete = { viewModel.submit(MailboxViewAction.Delete) },
         deleteConfirmed = { viewModel.submit(MailboxViewAction.DeleteConfirmed) },
@@ -302,7 +306,12 @@ fun MailboxScreen(
                         onStar = { viewModel.submit(MailboxViewAction.Star) },
                         onUnStar = { viewModel.submit(MailboxViewAction.UnStar) },
                         onArchive = { viewModel.submit(MailboxViewAction.MoveToArchive) },
-                        onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) }
+                        onSpam = { viewModel.submit(MailboxViewAction.MoveToSpam) },
+                        onTrash = { viewModel.submit(MailboxViewAction.Trash) },
+                        onLabel = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
+                        onRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
+                        onUnRead = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
+                        onMove = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) }
                     )
                 )
 
@@ -418,8 +427,8 @@ fun MailboxScreen(
                     onLabel = actions.onLabelAsClicked,
                     onTrash = actions.trash,
                     onDelete = actions.delete,
-                    onArchive = { Timber.d("mailbox onArchive clicked") },
-                    onSpam = { Timber.d("mailbox onSpam clicked") },
+                    onArchive = actions.archive,
+                    onSpam = actions.spam,
                     onViewInLightMode = { Timber.d("mailbox onViewInLightMode clicked") },
                     onViewInDarkMode = { Timber.d("mailbox onViewInDarkMode clicked") },
                     onPrint = { Timber.d("mailbox onPrint clicked") },
@@ -433,8 +442,11 @@ fun MailboxScreen(
                     onMore = actions.onMoreClicked,
                     onMarkRead = actions.markAsRead,
                     onMarkUnread = actions.markAsUnread,
-                    onStar = { Timber.d("mailbox onStar clicked") },
-                    onUnstar = { Timber.d("mailbox onUnstar clicked") }
+                    onStar = actions.star,
+                    onUnstar = actions.unstar,
+                    onReply = { Timber.e("mailbox onReply clicked - unhandled") },
+                    onReplyAll = { Timber.e("mailbox onReplyAll clicked - unhandled") },
+                    onForward = { Timber.e("mailbox onForward clicked - unhandled") }
                 )
             )
         },
@@ -1067,6 +1079,10 @@ object MailboxScreen {
         val markAsUnread: () -> Unit,
         val trash: () -> Unit,
         val delete: () -> Unit,
+        val star: () -> Unit,
+        val unstar: () -> Unit,
+        val archive: () -> Unit,
+        val spam: () -> Unit,
         val deleteConfirmed: () -> Unit,
         val deleteDialogDismissed: () -> Unit,
         val deleteAll: () -> Unit,
@@ -1130,6 +1146,10 @@ object MailboxScreen {
                 onMoreClicked = {},
                 onAddLabel = {},
                 onAddFolder = {},
+                star = {},
+                unstar = {},
+                archive = {},
+                spam = {},
                 onSwipeRead = { _, _, _ -> },
                 onSwipeArchive = { _, _ -> },
                 onSwipeSpam = { _, _ -> },

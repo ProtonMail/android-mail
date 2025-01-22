@@ -91,7 +91,7 @@ class ActionUiModelMapperTest(
                     action = Action.Unstar,
                     expected = ActionUiModel(
                         Action.Unstar,
-                        R.drawable.ic_proton_star_filled,
+                        R.drawable.ic_proton_star_slash,
                         TextUiModel(commonRes.string.action_unstar_description),
                         TextUiModel(commonRes.string.action_unstar_content_description)
                     )

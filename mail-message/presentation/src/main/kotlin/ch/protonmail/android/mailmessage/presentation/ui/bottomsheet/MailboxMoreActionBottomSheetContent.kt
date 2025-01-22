@@ -95,7 +95,26 @@ private fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomS
         Action.Unstar -> actionCallbacks.onUnStar
         Action.Archive -> actionCallbacks.onArchive
         Action.Spam -> actionCallbacks.onSpam
-        else -> {
+        Action.MarkRead -> actionCallbacks.onRead
+        Action.MarkUnread -> actionCallbacks.onUnRead
+        Action.Label -> actionCallbacks.onLabel
+        Action.Move -> actionCallbacks.onMove
+        Action.Trash -> actionCallbacks.onTrash
+        Action.Delete -> actionCallbacks.onTrash
+        Action.Reply,
+        Action.ReplyAll,
+        Action.Forward,
+        Action.ViewInLightMode,
+        Action.ViewInDarkMode,
+        Action.Print,
+        Action.ViewHeaders,
+        Action.ViewHtml,
+        Action.ReportPhishing,
+        Action.Remind,
+        Action.SavePdf,
+        Action.SenderEmails,
+        Action.SaveAttachments,
+        Action.More -> {
             {}
         }
     }
@@ -106,7 +125,12 @@ object MoreActionBottomSheetContent {
         val onStar: () -> Unit,
         val onUnStar: () -> Unit,
         val onArchive: () -> Unit,
-        val onSpam: () -> Unit
+        val onSpam: () -> Unit,
+        val onRead: () -> Unit,
+        val onUnRead: () -> Unit,
+        val onTrash: () -> Unit,
+        val onMove: () -> Unit,
+        val onLabel: () -> Unit
     ) {
 
         companion object {
@@ -115,7 +139,12 @@ object MoreActionBottomSheetContent {
                 onStar = {},
                 onUnStar = {},
                 onArchive = {},
-                onSpam = {}
+                onSpam = {},
+                onMove = {},
+                onRead = {},
+                onUnRead = {},
+                onLabel = {},
+                onTrash = {}
             )
         }
     }

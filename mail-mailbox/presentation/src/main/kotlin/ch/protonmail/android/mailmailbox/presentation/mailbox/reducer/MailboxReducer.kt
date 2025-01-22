@@ -189,12 +189,15 @@ class MailboxReducer @Inject constructor(
                 is MailboxEvent.ErrorRetrievingCustomMailLabels,
                 is MailboxEvent.ErrorRetrievingFolderColorSettings,
                 is MailboxEvent.ErrorRetrievingDestinationMailFolders,
+                is MailboxEvent.Trash,
                 is MailboxViewAction.MoveToConfirmed,
                 is MailboxViewAction.LabelAsConfirmed,
                 is MailboxViewAction.Star,
                 is MailboxViewAction.UnStar,
                 is MailboxViewAction.MoveToArchive,
                 is MailboxViewAction.MoveToSpam,
+                is MailboxViewAction.MarkAsRead,
+                is MailboxViewAction.MarkAsUnread,
                 is MailboxViewAction.DismissBottomSheet -> BottomSheetOperation.Dismiss
 
                 is MailboxViewAction.MoveToDestinationSelected -> MoveToDestinationSelected(operation.mailLabelId)

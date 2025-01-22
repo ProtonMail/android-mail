@@ -243,7 +243,12 @@ class MailboxViewModel @Inject constructor(
         ) { selectedMailLabelId, selectedMailboxItems, userId ->
             Triple(selectedMailLabelId, selectedMailboxItems, userId)
         }.flatMapLatest { (selectedMailLabelId, selectedMailboxItems, userId) ->
-            getMailboxActions(selectedMailLabelId, selectedMailboxItems.none { it.isRead }, userId).map {
+            getMailboxActions(
+                selectedMailLabelId,
+                areAllItemsUnread = selectedMailboxItems.none { it.isRead },
+                areAllItemsStarred = selectedMailboxItems.all { it.isStarred },
+                userId = userId
+            ).map {
                 it.fold(
                     ifLeft = { MailboxEvent.MessageBottomBarEvent(BottomBarEvent.ErrorLoadingActions) },
                     ifRight = { actions ->
@@ -891,7 +896,7 @@ class MailboxViewModel @Inject constructor(
         ).let { emitNewStateFrom(it) }
     }
 
-    private suspend fun showMoreBottomSheet(operation: MailboxViewAction) {
+    private fun showMoreBottomSheet(operation: MailboxViewAction) {
         val selectionState = state.value.mailboxListState as? MailboxListState.Data.SelectionMode
         if (selectionState == null) {
             Timber.d("MailboxListState is not in SelectionMode")
@@ -899,17 +904,20 @@ class MailboxViewModel @Inject constructor(
         }
         emitNewStateFrom(operation)
 
-        val usedStarAction = if (getPreferredViewMode() == ViewMode.NoConversationGrouping) {
-            when (selectionState.selectedMailboxItems.all { it.isStarred }) {
-                true -> Action.Unstar
-                false -> Action.Star
-            }
-        } else null
-
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
                 MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
-                    listOfNotNull(usedStarAction, Action.Archive, Action.Spam)
+                    listOf(
+                        Action.MarkRead,
+                        Action.MarkUnread,
+                        Action.Trash,
+                        Action.Move,
+                        Action.Label,
+                        Action.Spam,
+                        Action.Star,
+                        Action.Unstar,
+                        Action.Archive
+                    )
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()
                 )

@@ -39,7 +39,7 @@ fun Action.iconDrawable() = when (this) {
     Action.MarkRead -> R.drawable.ic_proton_envelope
     Action.MarkUnread -> R.drawable.ic_proton_envelope_dot
     Action.Star -> R.drawable.ic_proton_star
-    Action.Unstar -> R.drawable.ic_proton_star_filled
+    Action.Unstar -> R.drawable.ic_proton_star_slash
     Action.Label -> R.drawable.ic_proton_tag
     Action.Move -> R.drawable.ic_proton_folder_arrow_in
     Action.Trash -> R.drawable.ic_proton_trash
