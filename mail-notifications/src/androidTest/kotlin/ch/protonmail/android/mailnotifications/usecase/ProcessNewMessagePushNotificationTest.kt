@@ -76,7 +76,7 @@ internal class ProcessNewMessagePushNotificationTest {
     private val notificationProvider = getNotificationProvider()
     private val notificationManagerCompatProxy = mockk<NotificationManagerCompatProxy>(relaxUnitFun = true)
     private val notificationsDeepLinkHelper = mockk<NotificationsDeepLinkHelper>()
-    private val createNotificationAction = spyk(CreateNotificationAction(context))
+    private val createNotificationAction = spyk(CreateNotificationAction(context, notificationsDeepLinkHelper))
     private val createNewMessageNavigationIntent = spyk(
         CreateNewMessageNavigationIntent(context, notificationsDeepLinkHelper)
     )
@@ -161,6 +161,7 @@ internal class ProcessNewMessagePushNotificationTest {
         confirmVerified(eventManagerProvider)
     }
 
+
     @Test
     fun processNewMessageNotificationShowsNotificationWithActions() = runTest {
         // Given
@@ -215,6 +216,7 @@ internal class ProcessNewMessagePushNotificationTest {
         val mockedIntent = Intent(Intent.ACTION_VIEW, Uri.EMPTY, context, this::class.java)
         every { notificationsDeepLinkHelper.buildMessageDeepLinkIntent(any(), any(), any()) } returns mockedIntent
         every { notificationsDeepLinkHelper.buildMessageGroupDeepLinkIntent(any(), any()) } returns mockedIntent
+        every { notificationsDeepLinkHelper.buildReplyToDeepLinkIntent(any(), any()) } returns mockedIntent
     }
 
     private companion object {

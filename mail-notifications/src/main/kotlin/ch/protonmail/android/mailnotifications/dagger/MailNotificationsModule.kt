@@ -20,7 +20,6 @@ package ch.protonmail.android.mailnotifications.dagger
 
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
-import ch.protonmail.android.mailnotifications.annotations.MarkAsReadNotificationActionEnabled
 import ch.protonmail.android.mailnotifications.data.local.NotificationPermissionLocalDataSource
 import ch.protonmail.android.mailnotifications.data.local.NotificationPermissionLocalDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.local.NotificationTokenLocalDataSource
@@ -38,7 +37,6 @@ import ch.protonmail.android.mailnotifications.domain.handler.NotificationHandle
 import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotificationHandler
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxyImpl
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsMarkAsReadNotificationActionEnabled
 import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
@@ -67,10 +65,6 @@ object MailNotificationsModule {
     @Reusable
     fun provideNotificationManagerCompat(@ApplicationContext context: Context): NotificationManagerCompat =
         NotificationManagerCompat.from(context)
-
-    @Provides
-    @MarkAsReadNotificationActionEnabled
-    fun provideMarkAsReadActionEnabled(isDisabled: IsMarkAsReadNotificationActionEnabled) = isDisabled(null)
 
     @Provides
     @Singleton
