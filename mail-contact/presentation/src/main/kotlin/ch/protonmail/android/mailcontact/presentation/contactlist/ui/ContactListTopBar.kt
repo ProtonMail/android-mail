@@ -40,8 +40,7 @@ import me.proton.core.compose.theme.ProtonTheme
 internal fun ContactListTopBar(
     modifier: Modifier = Modifier,
     actions: ContactListTopBar.Actions,
-    isAddButtonVisible: Boolean,
-    isContactSearchEnabled: Boolean
+    isAddButtonVisible: Boolean
 ) {
     ProtonTopAppBar(
         modifier = modifier.fillMaxWidth(),
@@ -58,15 +57,14 @@ internal fun ContactListTopBar(
             }
         },
         actions = {
-            if (isContactSearchEnabled) {
-                IconButton(onClick = actions.onSearchClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_proton_magnifier),
-                        tint = ProtonTheme.colors.iconNorm,
-                        contentDescription = stringResource(R.string.search_contacts_description)
-                    )
-                }
+            IconButton(onClick = actions.onSearchClick) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_proton_magnifier),
+                    tint = ProtonTheme.colors.iconNorm,
+                    contentDescription = stringResource(R.string.search_contacts_description)
+                )
             }
+
             // hasOneCreateOption can be deleted once we get rid of ContactFeatureFlags
             val hasOneCreateOption = ContactCreate.value || ContactImport.value
             if (isAddButtonVisible && hasOneCreateOption) {
@@ -106,8 +104,7 @@ internal object ContactListTopBar {
 private fun ContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
-        isAddButtonVisible = true,
-        isContactSearchEnabled = true
+        isAddButtonVisible = true
     )
 }
 
@@ -116,7 +113,6 @@ private fun ContactListTopBarPreview() {
 private fun EmptyContactListTopBarPreview() {
     ContactListTopBar(
         actions = ContactListTopBar.Actions.Empty,
-        isAddButtonVisible = false,
-        isContactSearchEnabled = true
+        isAddButtonVisible = false
     )
 }

@@ -77,8 +77,7 @@ private fun ContactListScreenPreview() {
                 contactGroupSampleData,
                 contactGroupSampleData,
                 contactGroupSampleData
-            ),
-            isContactSearchEnabled = true
+            )
         ),
         actions = ContactListScreen.Actions.Empty
     )

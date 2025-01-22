@@ -88,8 +88,7 @@ internal class ContactListReducerTest(
         private val dataLoadedState = ContactListState.Loaded.Data(
             contacts = loadedContactListItemUiModels,
             contactGroups = loadedContactGroupItemUiModels,
-            isContactGroupsUpsellingVisible = true,
-            isContactSearchEnabled = true
+            isContactGroupsUpsellingVisible = true
         )
 
         private val transitionsFromLoadingState = listOf(
@@ -98,8 +97,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsUpsellingVisible = true,
-                    isContactSearchEnabled = true
+                    isContactGroupsUpsellingVisible = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -108,8 +106,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsUpsellingVisible = false,
-                    isContactSearchEnabled = false
+                    isContactGroupsUpsellingVisible = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),
@@ -156,8 +153,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsUpsellingVisible = true,
-                    isContactSearchEnabled = true
+                    isContactGroupsUpsellingVisible = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -168,8 +164,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsUpsellingVisible = false,
-                    isContactSearchEnabled = false
+                    isContactGroupsUpsellingVisible = false
                 ),
                 expectedState = ContactListState.Loaded.Empty().copy(
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
@@ -262,8 +257,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsUpsellingVisible = true,
-                    isContactSearchEnabled = true
+                    isContactGroupsUpsellingVisible = true
                 ),
                 expectedState = dataLoadedState
             ),
@@ -272,8 +266,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     emptyList(),
                     emptyList(),
-                    isContactGroupsUpsellingVisible = false,
-                    isContactSearchEnabled = false
+                    isContactGroupsUpsellingVisible = false
                 ),
                 expectedState = ContactListState.Loaded.Empty()
             ),
@@ -351,8 +344,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsUpsellingVisible = true,
-                    isContactSearchEnabled = true
+                    isContactGroupsUpsellingVisible = true
                 ),
                 expectedState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Menu)
             ),
@@ -361,8 +353,7 @@ internal class ContactListReducerTest(
                 event = ContactListEvent.ContactListLoaded(
                     loadedContactListItemUiModels,
                     loadedContactGroupItemUiModels,
-                    isContactGroupsUpsellingVisible = true,
-                    isContactSearchEnabled = true
+                    isContactGroupsUpsellingVisible = true
                 ),
                 expectedState = dataLoadedState.copy(bottomSheetType = ContactListState.BottomSheetType.Upselling)
             )

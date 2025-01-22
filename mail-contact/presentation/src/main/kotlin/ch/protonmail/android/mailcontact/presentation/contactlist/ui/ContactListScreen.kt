@@ -114,8 +114,7 @@ fun ContactListScreen(listActions: ContactListScreen.Actions, viewModel: Contact
                             viewModel.submit(ContactListViewAction.OnOpenContactSearch)
                         }
                     ),
-                    isAddButtonVisible = state is ContactListState.Loaded.Data,
-                    isContactSearchEnabled = state.isContactSearchEnabled
+                    isAddButtonVisible = state is ContactListState.Loaded.Data
                 )
             },
             content = { paddingValues ->

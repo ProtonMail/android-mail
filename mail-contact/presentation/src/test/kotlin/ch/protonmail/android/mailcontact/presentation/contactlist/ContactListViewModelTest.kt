@@ -32,7 +32,6 @@ import ch.protonmail.android.mailcontact.domain.model.GetContactError
 import ch.protonmail.android.mailcontact.domain.usecase.GetContactGroupLabelsError
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContactGroupLabels
 import ch.protonmail.android.mailcontact.domain.usecase.ObserveContacts
-import ch.protonmail.android.mailcontact.domain.usecase.featureflags.IsContactSearchEnabled
 import ch.protonmail.android.mailcontact.presentation.R
 import ch.protonmail.android.mailcontact.presentation.model.ContactGroupItemUiModelMapper
 import ch.protonmail.android.mailcontact.presentation.model.ContactListItemUiModelMapper
@@ -102,9 +101,6 @@ class ContactListViewModelTest {
     }
     private val observeContacts = mockk<ObserveContacts>()
     private val observeContactGroupLabels = mockk<ObserveContactGroupLabels>()
-    private val isContactSearchEnabledMock = mockk<IsContactSearchEnabled> {
-        every { this@mockk() } returns true
-    }
     private val observeUpsellingVisibilityMock = mockk<ObserveUpsellingVisibility> {
         every { this@mockk(any()) } returns flowOf(false)
     }
@@ -131,7 +127,6 @@ class ContactListViewModelTest {
             contactGroupItemUiModelMapper,
             observeUpsellingVisibilityMock,
             userUpgradeState,
-            isContactSearchEnabledMock,
             observePrimaryUserId
         )
     }
@@ -171,8 +166,7 @@ class ContactListViewModelTest {
                 ),
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
-                ),
-                isContactSearchEnabled = true
+                )
             )
 
             assertEquals(expected, actual)
@@ -224,30 +218,6 @@ class ContactListViewModelTest {
     }
 
     @Test
-    fun `when feature flag IsContactSearchEnabled is false then emit appropriate event`() = runTest {
-        // Given
-        expectContactsData()
-        every { isContactSearchEnabledMock.invoke() } returns false
-
-        // When
-        contactListViewModel.state.test {
-            // Then
-            val actual = awaitItem()
-            val expected = ContactListState.Loaded.Data(
-                contacts = contactListItemUiModelMapper.toContactListItemUiModel(
-                    listOf(defaultTestContact)
-                ),
-                contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
-                    listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
-                ),
-                isContactSearchEnabled = false
-            )
-
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
     fun `when ObserveUpsellingVisibility is true then emit appropriate event`() = runTest {
         // Given
         expectContactsData()
@@ -264,8 +234,7 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                isContactGroupsUpsellingVisible = true,
-                isContactSearchEnabled = true
+                isContactGroupsUpsellingVisible = true
             )
 
             assertEquals(expected, actual)
@@ -295,7 +264,6 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 isContactGroupsUpsellingVisible = false,
-                isContactSearchEnabled = true,
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
                 upsellingInProgress = Effect.of(TextUiModel(R.string.upselling_snackbar_upgrade_in_progress))
             )
@@ -324,8 +292,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
-                bottomSheetType = ContactListState.BottomSheetType.Menu,
-                isContactSearchEnabled = true
+                bottomSheetType = ContactListState.BottomSheetType.Menu
             )
 
             assertEquals(expected, actual)
@@ -351,8 +318,7 @@ class ContactListViewModelTest {
                 contactGroups = contactGroupItemUiModelMapper.toContactGroupItemUiModel(
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
-                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                isContactSearchEnabled = true
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide)
             )
 
             assertEquals(expected, actual)
@@ -379,8 +345,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openContactForm = Effect.of(Unit),
-                isContactSearchEnabled = true
+                openContactForm = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
@@ -408,8 +373,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openContactGroupForm = Effect.of(Unit),
-                isContactSearchEnabled = true
+                openContactGroupForm = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
@@ -437,8 +401,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error)),
-                isContactSearchEnabled = true
+                subscriptionError = Effect.of(TextUiModel.TextRes(R.string.contact_group_form_subscription_error))
             )
 
             assertEquals(expected, actual)
@@ -471,7 +434,6 @@ class ContactListViewModelTest {
                     bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show),
                     bottomSheetType = ContactListState.BottomSheetType.Upselling,
                     subscriptionError = Effect.empty(),
-                    isContactSearchEnabled = true,
                     isContactGroupsUpsellingVisible = true
                 )
 
@@ -499,8 +461,7 @@ class ContactListViewModelTest {
                     listOf(defaultTestContact), listOf(defaultTestContactGroupLabel)
                 ),
                 bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Hide),
-                openImportContact = Effect.of(Unit),
-                isContactSearchEnabled = true
+                openImportContact = Effect.of(Unit)
             )
 
             assertEquals(expected, actual)
