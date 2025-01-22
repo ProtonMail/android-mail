@@ -56,7 +56,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
-internal fun BodyTextField2(
+internal fun BodyTextField(
     initialValue: String,
     replaceDraftBody: Effect<TextUiModel>,
     shouldRequestFocus: Effect<Unit>,

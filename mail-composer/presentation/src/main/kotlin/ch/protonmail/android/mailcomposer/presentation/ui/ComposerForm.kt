@@ -124,7 +124,7 @@ internal fun ComposerForm(
                 )
                 MailDivider()
 
-                BodyTextField2(
+                BodyTextField(
                     initialValue = fields.body,
                     shouldRequestFocus = shouldForceBodyTextFocus,
                     replaceDraftBody = replaceDraftBody,
