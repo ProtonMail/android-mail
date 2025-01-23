@@ -32,6 +32,8 @@ interface NotificationsPermissionsOrchestrator {
 
     fun register(caller: AppCompatActivity)
 
+    fun unregister()
+
     companion object {
         enum class PermissionResult {
             CHECKING,

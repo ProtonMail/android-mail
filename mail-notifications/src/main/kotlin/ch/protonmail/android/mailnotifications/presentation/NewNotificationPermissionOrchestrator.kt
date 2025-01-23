@@ -33,12 +33,12 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    private lateinit var rationalePermissionRequester: ActivityResultLauncher<String>
-    private lateinit var intentPermissionRequester: ActivityResultLauncher<Intent>
+    private var rationalePermissionRequester: ActivityResultLauncher<String>? = null
+    private var intentPermissionRequester: ActivityResultLauncher<Intent>? = null
 
     fun requestPermissionIfRequired() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rationalePermissionRequester.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
+            rationalePermissionRequester?.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
         } else {
             navigateToNotificationSettings()
         }
@@ -65,9 +65,17 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
         ) {}
     }
 
+    fun unregister() {
+        rationalePermissionRequester?.unregister()
+        intentPermissionRequester?.unregister()
+
+        rationalePermissionRequester = null
+        intentPermissionRequester = null
+    }
+
     private fun navigateToNotificationSettings() {
         val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
         intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-        intentPermissionRequester.launch(intent)
+        intentPermissionRequester?.launch(intent)
     }
 }

@@ -102,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        launcherViewModel.unregister()
+        super.onDestroy()
+    }
+
     private fun disableRecentAppsScreenshotPreview() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             setRecentsScreenshotEnabled(BuildConfig.DEBUG)

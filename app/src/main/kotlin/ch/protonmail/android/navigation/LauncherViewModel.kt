@@ -122,6 +122,15 @@ class LauncherViewModel @Inject constructor(
             .onAccountDeviceSecretNeeded { authOrchestrator.startDeviceSecretWorkflow(it) }
     }
 
+    fun unregister() {
+        authOrchestrator.unregister()
+        plansOrchestrator.unregister()
+        reportOrchestrator.unregister()
+        userSettingsOrchestrator.unregister()
+        notificationsPermissionsOrchestrator.unregister()
+        newNotificationPermissionOrchestrator.unregister()
+    }
+
     fun submit(action: Action) {
         viewModelScope.launch {
             when (action) {
@@ -192,13 +201,13 @@ class LauncherViewModel @Inject constructor(
 
     sealed interface Action {
 
-        object AddAccount : Action
-        object OpenPasswordManagement : Action
-        object OpenRecoveryEmail : Action
-        object OpenSecurityKeys : Action
-        object OpenReport : Action
-        object OpenSubscription : Action
-        object RequestNotificationPermission : Action
+        data object AddAccount : Action
+        data object OpenPasswordManagement : Action
+        data object OpenRecoveryEmail : Action
+        data object OpenSecurityKeys : Action
+        data object OpenReport : Action
+        data object OpenSubscription : Action
+        data object RequestNotificationPermission : Action
         data class SignIn(val userId: UserId?) : Action
         data class Switch(val userId: UserId) : Action
     }

@@ -69,4 +69,9 @@ internal class NotificationsPermissionsOrchestratorImpl @Inject constructor(
             }
         }
     }
+
+    override fun unregister() {
+        permissionRequester?.unregister()
+        permissionRequester = null
+    }
 }
