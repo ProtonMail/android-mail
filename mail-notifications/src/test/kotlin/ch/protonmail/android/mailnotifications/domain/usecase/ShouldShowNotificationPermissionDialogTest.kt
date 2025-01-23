@@ -5,18 +5,18 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepository
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import javax.inject.Provider
 import kotlin.test.Test
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ShouldShowNotificationPermissionDialogTest {
 
-    private val isNewNotificationPermissionFlowEnabled = mockk<IsNewNotificationPermissionFlowEnabled>()
+    private val isNewNotificationPermissionFlowEnabled = mockk<Provider<Boolean>>()
     private val notificationManager = mockk<NotificationManagerCompat>()
     private val notificationPermissionRepository = mockk<NotificationPermissionRepository>()
 
@@ -29,7 +29,7 @@ class ShouldShowNotificationPermissionDialogTest {
     @Test
     fun `should return true when the FF is ON, notifications are not enabled, timestamp is not saved`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled(null) } returns true
+        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns false
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -48,7 +48,7 @@ class ShouldShowNotificationPermissionDialogTest {
     @Test
     fun `should return false when the FF is OFF, notifications are not enabled, timestamp is not saved`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled(null) } returns false
+        every { isNewNotificationPermissionFlowEnabled.get() } returns false
         every { notificationManager.areNotificationsEnabled() } returns false
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -67,7 +67,7 @@ class ShouldShowNotificationPermissionDialogTest {
     @Test
     fun `should return false when the FF is ON, notifications are enabled, timestamp is not saved`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled(null) } returns true
+        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns true
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -87,7 +87,7 @@ class ShouldShowNotificationPermissionDialogTest {
     fun `should return true when timestamp is saved, 20 days passed since first show and a message was sent`() =
         runTest {
             // Given
-            every { isNewNotificationPermissionFlowEnabled(null) } returns true
+            every { isNewNotificationPermissionFlowEnabled.get() } returns true
             every { notificationManager.areNotificationsEnabled() } returns false
             coEvery {
                 notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -108,7 +108,7 @@ class ShouldShowNotificationPermissionDialogTest {
     fun `should return false when 20 days passed since first show, a message was sent, stop showing value is true`() =
         runTest {
             // Given
-            every { isNewNotificationPermissionFlowEnabled(null) } returns true
+            every { isNewNotificationPermissionFlowEnabled.get() } returns true
             every { notificationManager.areNotificationsEnabled() } returns false
             coEvery {
                 notificationPermissionRepository.getNotificationPermissionTimestamp()
@@ -128,7 +128,7 @@ class ShouldShowNotificationPermissionDialogTest {
     @Test
     fun `should return false when 20 days passed since first show and a message was not sent`() = runTest {
         // Given
-        every { isNewNotificationPermissionFlowEnabled(null) } returns true
+        every { isNewNotificationPermissionFlowEnabled.get() } returns true
         every { notificationManager.areNotificationsEnabled() } returns false
         coEvery {
             notificationPermissionRepository.getNotificationPermissionTimestamp()

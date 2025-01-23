@@ -23,6 +23,7 @@ import me.proton.core.featureflag.domain.ExperimentalProtonFeatureFlag
 import me.proton.core.featureflag.domain.FeatureFlagManager
 import me.proton.core.featureflag.domain.entity.FeatureId
 import javax.inject.Inject
+import javax.inject.Qualifier
 
 class IsNewNotificationPermissionFlowEnabled @Inject constructor(
     private val featureFlagManager: FeatureFlagManager
@@ -36,3 +37,6 @@ class IsNewNotificationPermissionFlowEnabled @Inject constructor(
         const val FeatureFlagId = "MailAndroidNotificationPermissionFlow"
     }
 }
+
+@Qualifier
+annotation class NewNotificationPermissionFlowEnabled

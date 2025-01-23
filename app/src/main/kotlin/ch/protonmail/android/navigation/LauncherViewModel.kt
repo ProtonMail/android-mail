@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult
 import ch.protonmail.android.mailnotifications.presentation.NewNotificationPermissionOrchestrator
@@ -56,12 +56,13 @@ import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
 import javax.inject.Inject
+import javax.inject.Provider
 
 @HiltViewModel
 class LauncherViewModel @Inject constructor(
     private val accountManager: AccountManager,
     private val authOrchestrator: AuthOrchestrator,
-    private val isNewNotificationPermissionFlowEnabled: IsNewNotificationPermissionFlowEnabled,
+    @NewNotificationPermissionFlowEnabled private val isNewNotificationPermissionFlowEnabled: Provider<Boolean>,
     private val newNotificationPermissionOrchestrator: NewNotificationPermissionOrchestrator,
     private val plansOrchestrator: PlansOrchestrator,
     private val reportOrchestrator: ReportOrchestrator,
@@ -74,7 +75,7 @@ class LauncherViewModel @Inject constructor(
     ) { accounts, permissionResult ->
         when {
             accounts.isEmpty() || accounts.all { it.isDisabled() } -> AccountNeeded
-            accounts.any { it.isReady() } -> if (!isNewNotificationPermissionFlowEnabled(null)) {
+            accounts.any { it.isReady() } -> if (!isNewNotificationPermissionFlowEnabled.get()) {
                 when (permissionResult) {
                     PermissionResult.CHECKING -> {
                         notificationsPermissionsOrchestrator.requestPermissionIfRequired()

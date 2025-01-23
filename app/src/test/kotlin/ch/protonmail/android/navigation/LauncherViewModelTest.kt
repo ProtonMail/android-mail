@@ -20,7 +20,6 @@ package ch.protonmail.android.navigation
 
 import androidx.appcompat.app.AppCompatActivity
 import app.cash.turbine.test
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.CHECKING
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator.Companion.PermissionResult.DENIED
@@ -59,6 +58,7 @@ import me.proton.core.humanverification.presentation.HumanVerificationManagerObs
 import me.proton.core.plan.presentation.PlansOrchestrator
 import me.proton.core.report.presentation.ReportOrchestrator
 import me.proton.core.usersettings.presentation.UserSettingsOrchestrator
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -87,8 +87,8 @@ class LauncherViewModelTest {
         every { lifecycle } returns mockk()
     }
 
-    private val isNewNotificationPermissionFlowEnabled = mockk<IsNewNotificationPermissionFlowEnabled> {
-        every { this@mockk.invoke(null) } returns false
+    private val isNewNotificationPermissionFlowEnabled = mockk<Provider<Boolean>> {
+        every { this@mockk.get() } returns false
     }
 
     private val user1Username = "username"
@@ -398,7 +398,7 @@ class LauncherViewModelTest {
         // given
         every { accountManager.getAccounts() } returns flowOf(listOf(AccountTestData.readyAccount))
         every { notificationsPermissionsOrchestrator.permissionResult() } returns flowOf(CHECKING)
-        every { isNewNotificationPermissionFlowEnabled(null) } returns true
+        every { isNewNotificationPermissionFlowEnabled.get() } returns true
 
         // when
         val viewModel = buildViewModel()

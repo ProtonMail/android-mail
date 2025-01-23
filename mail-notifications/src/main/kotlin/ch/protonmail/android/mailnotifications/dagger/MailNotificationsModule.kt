@@ -39,6 +39,8 @@ import ch.protonmail.android.mailnotifications.domain.handler.SessionAwareNotifi
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxy
 import ch.protonmail.android.mailnotifications.domain.proxy.NotificationManagerCompatProxyImpl
 import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsMarkAsReadNotificationActionEnabled
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestrator
 import ch.protonmail.android.mailnotifications.permissions.NotificationsPermissionsOrchestratorImpl
 import com.google.firebase.messaging.FirebaseMessaging
@@ -69,6 +71,11 @@ object MailNotificationsModule {
     @Provides
     @MarkAsReadNotificationActionEnabled
     fun provideMarkAsReadActionEnabled(isDisabled: IsMarkAsReadNotificationActionEnabled) = isDisabled(null)
+
+    @Provides
+    @Singleton
+    @NewNotificationPermissionFlowEnabled
+    fun provideNewPermissionFlowEnabled(isEnabled: IsNewNotificationPermissionFlowEnabled) = isEnabled(null)
 
     @EntryPoint
     @InstallIn(SingletonComponent::class)

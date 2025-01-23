@@ -20,18 +20,19 @@ package ch.protonmail.android.mailnotifications.domain.usecase
 
 import androidx.core.app.NotificationManagerCompat
 import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepository
-import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.IsNewNotificationPermissionFlowEnabled
+import ch.protonmail.android.mailnotifications.domain.usecase.featureflag.NewNotificationPermissionFlowEnabled
 import javax.inject.Inject
+import javax.inject.Provider
 import kotlin.time.Duration.Companion.days
 
 class ShouldShowNotificationPermissionDialog @Inject constructor(
-    private val isNewNotificationPermissionFlowEnabled: IsNewNotificationPermissionFlowEnabled,
+    @NewNotificationPermissionFlowEnabled private val isNewNotificationPermissionFlowEnabled: Provider<Boolean>,
     private val notificationManagerCompat: NotificationManagerCompat,
     private val notificationPermissionRepository: NotificationPermissionRepository
 ) {
 
     suspend operator fun invoke(currentTimeMillis: Long, isMessageSent: Boolean): Boolean {
-        return isNewNotificationPermissionFlowEnabled(null) &&
+        return isNewNotificationPermissionFlowEnabled.get() &&
             notificationManagerCompat.areNotificationsEnabled().not() &&
             (
                 wasDialogNeverShown() ||
