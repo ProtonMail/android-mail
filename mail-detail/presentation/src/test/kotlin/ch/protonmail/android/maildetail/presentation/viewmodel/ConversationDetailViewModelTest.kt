@@ -81,6 +81,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMe
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyLink
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample
 import ch.protonmail.android.maildetail.presentation.sample.ConversationDetailMessageUiModelSample.InvoiceWithLabelExpanded
@@ -135,7 +136,9 @@ import io.mockk.Called
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.just
 import io.mockk.mockk
+import io.mockk.runs
 import io.mockk.verify
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
@@ -150,6 +153,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
+import me.proton.core.network.domain.NetworkStatus
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -1371,6 +1375,300 @@ class ConversationDetailViewModelTest {
                 assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
             }
         }
+
+    @Test
+    fun `verify print is called when printing last message`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        val expectedTargetMessage = messages[0] as ConversationDetailMessageUiModel.Expanded
+
+        every {
+            printMessage(
+                context = any(),
+                subject = any(),
+                messageHeaderUiModel = expectedTargetMessage.messageDetailHeaderUiModel,
+                messageBodyUiModel = expectedTargetMessage.messageBodyUiModel,
+                messageBodyExpandCollapseMode = any(),
+                loadEmbeddedImage = any()
+            )
+        } just runs
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.PrintLastMessage(mockk()))
+
+            advanceUntilIdle()
+
+            verify {
+                printMessage(
+                    context = any(),
+                    subject = any(),
+                    messageHeaderUiModel = expectedTargetMessage.messageDetailHeaderUiModel,
+                    messageBodyUiModel = expectedTargetMessage.messageBodyUiModel,
+                    messageBodyExpandCollapseMode = any(),
+                    loadEmbeddedImage = any()
+                )
+            }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify reply effect is triggered when replying to last message`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        val expectedTargetMessage = messages[0] as ConversationDetailMessageUiModel.Expanded
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ConversationDetailEvent.ReplyToMessageRequested(expectedTargetMessage.messageId)
+            )
+        } returns expectedConvState.copy(
+            openReply = Effect.of(expectedTargetMessage.messageId)
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = false))
+            advanceUntilIdle()
+
+            assertEquals(
+                initialState.copy(
+                    messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+                    conversationState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    openReply = Effect.of(expectedTargetMessage.messageId)
+                ),
+                awaitItem()
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify forward effect is triggered when forwarding last message`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        val expectedTargetMessage = messages[0] as ConversationDetailMessageUiModel.Expanded
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ConversationDetailEvent.ForwardMessageRequested(expectedTargetMessage.messageId)
+            )
+        } returns expectedConvState.copy(
+            openForward = Effect.of(expectedTargetMessage.messageId)
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
+            advanceUntilIdle()
+
+            assertEquals(
+                initialState.copy(
+                    messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+                    conversationState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    openForward = Effect.of(expectedTargetMessage.messageId)
+                ),
+                awaitItem()
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify report phishing effect is triggered when reporting last message`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationData>()
+            )
+        } returns expectedConvState
+
+        val expectedTargetMessage = messages[0] as ConversationDetailMessageUiModel.Expanded
+
+        every { networkManager.networkStatus } returns NetworkStatus.Unmetered
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ConversationDetailEvent.ReportPhishingRequested(
+                    messageId = MessageId(expectedTargetMessage.messageId.id),
+                    isOffline = false
+                )
+            )
+        } returns expectedConvState.copy(
+            reportPhishingDialogState = ReportPhishingDialogState.Shown.ShowConfirmation(
+                MessageId(expectedTargetMessage.messageId.id)
+            )
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.ReportPhishingLastMessage)
+            advanceUntilIdle()
+
+            assertEquals(
+                initialState.copy(
+                    messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+                    conversationState = ConversationDetailMetadataState.Data(conversationUiModel),
+                    reportPhishingDialogState = ReportPhishingDialogState.Shown.ShowConfirmation(
+                        MessageId(expectedTargetMessage.messageId.id)
+                    )
+                ),
+                awaitItem()
+            )
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify move is called and exit is set when archived`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded)
+        coEvery {
+            conversationMessageMapper.toUiModel(
+                messageWithLabels = any(),
+                contacts = any(),
+                decryptedMessageBody = any(),
+                folderColorSettings = defaultFolderColorSettings,
+                autoDeleteSetting = defaultAutoDeleteSetting,
+                userAddress = UserAddressSample.PrimaryAddress
+            )
+        } returns messages.first()
+
+        coEvery {
+            move(
+                userId = userId,
+                conversationId = conversationId,
+                labelId = SystemLabelId.Archive.labelId
+            )
+        } returns Unit.right()
+
+        coEvery { observeConversationMessagesWithLabels(userId, conversationId) } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithoutLabels,
+                MessageWithLabelsSample.AnotherInvoiceWithoutLabels
+            ).right()
+        )
+
+        coEvery {
+            reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true, null))
+        } returns ConversationDetailState.Loading.copy(
+            exitScreenWithMessageEffect = Effect.of(
+                ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_archive))
+            )
+        )
+
+        // When
+        viewModel.state.test {
+            advanceUntilIdle()
+            viewModel.submit(ConversationDetailViewAction.Archive)
+            advanceUntilIdle()
+
+            // Then
+            coVerify { move(userId, conversationId, SystemLabelId.Archive.labelId) }
+            assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
 
     @Test
     fun `verify relabel adds previously partially selected label`() = runTest {

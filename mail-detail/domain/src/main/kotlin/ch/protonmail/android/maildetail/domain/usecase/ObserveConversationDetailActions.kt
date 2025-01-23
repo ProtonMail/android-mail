@@ -55,7 +55,13 @@ class ObserveConversationDetailActions @Inject constructor(
             } else {
                 actions.replace(Action.Delete, with = Action.Trash) // delete (not permanent) for non-spam/non-trash
             }
-            actions
+            if (conversation.anyMessageStarred()) {
+                actions.replace(Action.Star, with = Action.Unstar)
+            }
+            if (conversation.areAllMessageArchived()) {
+                actions.replace(Action.Archive, with = Action.Move)
+            }
+            actions.distinct()
         }
     }
 
@@ -70,12 +76,38 @@ class ObserveConversationDetailActions @Inject constructor(
         .ignoringAllDrafts()
         .areAllTrashOrSpam()
 
+    private fun Conversation.areAllMessageArchived() = labels
+        .ignoringAllMail()
+        .ignoringAlmostAllMail()
+        .ignoringAllSent()
+        .ignoringAllDrafts()
+        .areAllArchive()
+
+
+    private fun Conversation.anyMessageStarred() = labels
+        .ignoringAllMail()
+        .ignoringAllSent()
+        .ignoringAllDrafts()
+        .isAnyStarred()
+
     private fun List<ConversationLabel>.areAllTrashOrSpam() = this.all {
         it.labelId == SystemLabelId.Spam.labelId || it.labelId == SystemLabelId.Trash.labelId
     }
 
+    private fun List<ConversationLabel>.areAllArchive() = this.all {
+        it.labelId == SystemLabelId.Archive.labelId
+    }
+
+    private fun List<ConversationLabel>.isAnyStarred() = this.any {
+        it.labelId == SystemLabelId.Starred.labelId
+    }
+
     private fun List<ConversationLabel>.ignoringAllMail() = this.filterNot {
         it.labelId == SystemLabelId.AllMail.labelId
+    }
+
+    private fun List<ConversationLabel>.ignoringAlmostAllMail() = this.filterNot {
+        it.labelId == SystemLabelId.AlmostAllMail.labelId
     }
 
     private fun List<ConversationLabel>.ignoringAllSent() = this.filterNot {
@@ -83,6 +115,7 @@ class ObserveConversationDetailActions @Inject constructor(
     }
 
     private fun List<ConversationLabel>.ignoringAllDrafts() = this.filterNot {
-        it.labelId == SystemLabelId.AllDrafts.labelId
+        it.labelId == SystemLabelId.AllDrafts.labelId || SystemLabelId.displayedList
+            .none { systemLabelId -> systemLabelId.labelId == it.labelId }
     }
 }

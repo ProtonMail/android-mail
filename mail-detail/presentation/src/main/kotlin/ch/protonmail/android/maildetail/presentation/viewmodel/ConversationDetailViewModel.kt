@@ -309,6 +309,12 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishingDismissed,
             is ConversationDetailViewAction.SwitchViewMode,
             is ConversationDetailViewAction.PrintRequested -> directlyHandleViewAction(action)
+
+            is ConversationDetailViewAction.ReplyToLastMessage -> replyToLastMessage(action)
+            is ConversationDetailViewAction.ForwardLastMessage -> forwardLastMessage()
+            is ConversationDetailViewAction.Archive -> archiveConversation()
+            is ConversationDetailViewAction.ReportPhishingLastMessage -> reportPhishingLastMessage()
+            is ConversationDetailViewAction.PrintLastMessage -> printLastMessage(action.context)
         }
     }
 
@@ -731,6 +737,24 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
+    private fun archiveConversation() {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            performSafeExitAction(
+                onLeft = ConversationDetailEvent.ErrorLabelingConversation,
+                onRight = LabelAsConfirmed(true, null)
+            ) {
+                moveConversation(
+                    userId = userId,
+                    conversationId = conversationId,
+                    labelId = SystemLabelId.Archive.labelId
+                ).onLeft {
+                    Timber.e("Error while archiving conversation: $it")
+                }
+            }
+        }
+    }
+
     private fun List<MailLabel.Custom>.getLabelSelectionState(messages: List<MessageWithLabels>): LabelSelectionList {
         val previousSelectedLabels = mutableListOf<LabelId>()
         val previousPartiallySelectedLabels = mutableListOf<LabelId>()
@@ -983,6 +1007,43 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch {
             setMessageViewState.switchTrashedMessagesFilter()
         }
+    }
+
+    private fun replyToLastMessage(action: ConversationDetailViewAction.ReplyToLastMessage) {
+        val lastMessageId = retrieveLastMessageId() ?: return
+        if (action.replyToAll) {
+            emitNewStateFrom(ConversationDetailEvent.ReplyAllToMessageRequested(lastMessageId))
+        } else {
+            emitNewStateFrom(ConversationDetailEvent.ReplyToMessageRequested(lastMessageId))
+        }
+    }
+
+    private fun forwardLastMessage() {
+        val lastMessageId = retrieveLastMessageId() ?: return
+        emitNewStateFrom(ConversationDetailEvent.ForwardMessageRequested(lastMessageId))
+    }
+
+    private fun reportPhishingLastMessage() {
+        val lastMessageId = retrieveLastMessageId() ?: return
+        handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.id)))
+    }
+
+    private fun printLastMessage(context: Context) {
+        val lastMessageId = retrieveLastMessageId() ?: return
+        handlePrint(context, MessageId(lastMessageId.id))
+    }
+
+    private fun retrieveLastMessageId(): MessageIdUiModel? {
+        val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
+        if (dataState == null) {
+            Timber.e("Messages state is not data to perform this operation")
+            return null
+        }
+        val lastMessage = dataState.messages
+            .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
+            .lastOrNull()
+            ?: dataState.messages.last()
+        return lastMessage.messageId
     }
 
     private fun onDoNotAskLinkConfirmationChecked() {

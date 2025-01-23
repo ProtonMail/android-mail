@@ -38,10 +38,19 @@ import kotlin.test.assertEquals
 
 internal class ObserveConversationDetailActionsTest {
 
+    private val archivedConversationId = "archived-id"
+
     private val observeConversation = mockk<ObserveConversation> {
         every {
             this@mockk.invoke(userId, ConversationId(ConversationTestData.RAW_CONVERSATION_ID), true)
         } returns flowOf(ConversationTestData.conversation.right())
+        every {
+            this@mockk.invoke(userId, ConversationId(archivedConversationId), true)
+        } returns flowOf(
+            ConversationTestData.conversationWithArchiveLabel
+                .copy(conversationId = ConversationId(archivedConversationId))
+                .right()
+        )
     }
 
     private val observeToolbarActions = mockk<ObserveMailMessageToolbarSettings> {
@@ -98,6 +107,29 @@ internal class ObserveConversationDetailActionsTest {
     }
 
     @Test
+    fun `returns settings actions list for conversation and de-duplicates`() = runTest {
+        // Given
+        val conversationId = ConversationId(archivedConversationId)
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Move,
+                Action.Archive,
+                Action.Star
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
+            // Then
+            val expected = listOf(
+                Action.Move,
+                Action.Star
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `returns delete action when all messages in conversation are trash or spam`() = runTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
@@ -118,7 +150,7 @@ internal class ObserveConversationDetailActionsTest {
     }
 
     @Test
-    fun `returns move to inbox and delete action when all messages in conversation are trash or spam`() = runTest {
+    fun `returns move to mailbox and delete action when all messages in conversation are trash or spam`() = runTest {
         // Given
         val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
         val conversation = ConversationTestData.trashAndSpamConversation
@@ -159,6 +191,32 @@ internal class ObserveConversationDetailActionsTest {
             val expected = listOf(
                 Action.Spam,
                 Action.Trash
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns move to action when preference returns archive and all messages are in archive`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.conversationWithArchiveLabel
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Delete,
+                Action.Archive
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Trash,
+                Action.Move
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

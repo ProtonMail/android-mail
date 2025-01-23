@@ -90,6 +90,9 @@ class ConversationDetailReducer @Inject constructor(
             openMessageBodyLinkEffect = currentState.toOpenMessageBodyLinkState(operation),
             openAttachmentEffect = currentState.toNewOpenAttachmentStateFrom(operation),
             openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
+            openReply = currentState.toOpenReplyFrom(operation),
+            openReplyAll = currentState.toOpenReplyAllFrom(operation),
+            openForward = currentState.toOpenForwardFrom(operation),
             scrollToMessage = currentState.toScrollToMessageState(operation),
             deleteDialogState = currentState.toNewDeleteDialogState(operation),
             reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation),
@@ -283,6 +286,27 @@ class ConversationDetailReducer @Inject constructor(
     ): Effect<OpenProtonCalendarIntentValues> = when (operation) {
         is ConversationDetailEvent.HandleOpenProtonCalendarRequest -> Effect.of(operation.intent)
         else -> openProtonCalendarIntent
+    }
+
+    private fun ConversationDetailState.toOpenReplyFrom(
+        operation: ConversationDetailOperation
+    ): Effect<MessageIdUiModel> = when (operation) {
+        is ConversationDetailEvent.ReplyToMessageRequested -> Effect.of(operation.messageId)
+        else -> openReply
+    }
+
+    private fun ConversationDetailState.toOpenReplyAllFrom(
+        operation: ConversationDetailOperation
+    ): Effect<MessageIdUiModel> = when (operation) {
+        is ConversationDetailEvent.ReplyAllToMessageRequested -> Effect.of(operation.messageId)
+        else -> openReplyAll
+    }
+
+    private fun ConversationDetailState.toOpenForwardFrom(
+        operation: ConversationDetailOperation
+    ): Effect<MessageIdUiModel> = when (operation) {
+        is ConversationDetailEvent.ForwardMessageRequested -> Effect.of(operation.messageId)
+        else -> openForward
     }
 
     private fun ConversationDetailState.toNewDeleteDialogState(

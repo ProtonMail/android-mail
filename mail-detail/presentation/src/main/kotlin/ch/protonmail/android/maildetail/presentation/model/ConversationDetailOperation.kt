@@ -146,6 +146,18 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
 
     data class LastMessageMoved(val mailLabelText: MailLabelText) : ConversationDetailEvent, AffectingBottomSheet
+
+    data class ReplyToMessageRequested(
+        val messageId: MessageIdUiModel
+    ) : ConversationDetailEvent
+
+    data class ReplyAllToMessageRequested(
+        val messageId: MessageIdUiModel
+    ) : ConversationDetailEvent
+
+    data class ForwardMessageRequested(
+        val messageId: MessageIdUiModel
+    ) : ConversationDetailEvent
 }
 
 sealed interface ConversationDetailViewAction : ConversationDetailOperation {
@@ -154,6 +166,11 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     object UnStar : ConversationDetailViewAction, AffectingConversation
     object MarkUnread : ConversationDetailViewAction
     object Trash : ConversationDetailViewAction
+    data class ReplyToLastMessage(val replyToAll: Boolean) : ConversationDetailViewAction
+    data object ForwardLastMessage : ConversationDetailViewAction
+    data class PrintLastMessage(val context: Context) : ConversationDetailViewAction
+    data object ReportPhishingLastMessage : ConversationDetailViewAction
+    data object Archive : ConversationDetailViewAction
     object DeleteRequested : ConversationDetailViewAction, AffectingDeleteDialog
     object DeleteDialogDismissed : ConversationDetailViewAction, AffectingDeleteDialog
     object DeleteConfirmed : ConversationDetailViewAction, AffectingDeleteDialog

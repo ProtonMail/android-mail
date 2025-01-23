@@ -312,9 +312,30 @@ fun ConversationDetailScreen(
                 handleProtonCalendarRequest = actions.handleProtonCalendarRequest,
                 showFeatureMissingSnackbar = actions.showFeatureMissingSnackbar,
                 loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) },
+                onReplyLastMessage = {
+                    viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = false))
+                },
+                onReplyAllLastMessage = {
+                    viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = true))
+                },
+                onForwardLastMessage = {
+                    viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
+                },
+                onPrintLastMessage = {
+                    viewModel.submit(ConversationDetailViewAction.PrintLastMessage(context))
+                },
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward,
+                onReadClick = {
+                    Timber.i("Read click not handled for conversation detail")
+                },
+                onArchiveClick = {
+                    viewModel.submit(ConversationDetailViewAction.Archive)
+                },
+                onReportPhishingClick = {
+                    viewModel.submit(ConversationDetailViewAction.ReportPhishingLastMessage)
+                },
                 onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) },
                 onDoNotAskLinkConfirmationAgain = {
                     viewModel.submit(ConversationDetailViewAction.DoNotAskLinkConfirmationAgain)
@@ -418,6 +439,18 @@ fun ConversationDetailScreen(
         actions.handleProtonCalendarRequest(it)
     }
 
+    ConsumableLaunchedEffect(effect = state.openReply) {
+        actions.onReply(MessageId(it.id))
+    }
+
+    ConsumableLaunchedEffect(effect = state.openReplyAll) {
+        actions.onReplyAll(MessageId(it.id))
+    }
+
+    ConsumableLaunchedEffect(effect = state.openForward) {
+        actions.onForward(MessageId(it.id))
+    }
+
     if (linkConfirmationDialogState.value != null) {
         ExternalLinkConfirmationDialog(
             onCancelClicked = {
@@ -494,25 +527,25 @@ fun ConversationDetailScreen(
             BottomActionBar(
                 state = state.bottomBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
-                    onMarkRead = { Timber.d("conversation onMarkRead clicked") },
+                    onMarkRead = actions.onReadClick,
                     onMarkUnread = actions.onUnreadClick,
-                    onStar = { Timber.d("conversation onStar clicked") },
-                    onUnstar = { Timber.d("conversation onUnstar clicked") },
+                    onStar = actions.onStarClick,
+                    onUnstar = actions.onUnStarClick,
                     onMove = actions.onMoveToClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
                     onDelete = actions.onDeleteClick,
-                    onReply = { Timber.d("conversation onReply clicked") },
-                    onReplyAll = { Timber.d("conversation onReplyAll clicked") },
-                    onForward = { Timber.d("conversation onForward clicked") },
-                    onArchive = { Timber.d("conversation onArchive clicked") },
+                    onArchive = actions.onArchiveClick,
+                    onReply = actions.onReplyLastMessage,
+                    onReplyAll = actions.onReplyAllLastMessage,
+                    onForward = actions.onForwardLastMessage,
                     onSpam = { Timber.d("conversation onSpam clicked") },
                     onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
                     onViewInDarkMode = { Timber.d("conversation onViewInDarkMode clicked") },
-                    onPrint = { Timber.d("conversation onPrint clicked") },
+                    onPrint = actions.onPrintLastMessage,
                     onViewHeaders = { Timber.d("conversation onViewHeaders clicked") },
                     onViewHtml = { Timber.d("conversation onViewHtml clicked") },
-                    onReportPhishing = { Timber.d("conversation onReportPhishing clicked") },
+                    onReportPhishing = actions.onReportPhishingClick,
                     onRemind = { Timber.d("conversation onRemind clicked") },
                     onSavePdf = { Timber.d("conversation onSavePdf clicked") },
                     onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
@@ -791,9 +824,12 @@ object ConversationDetailScreen {
         val onTrashClick: () -> Unit,
         val onDeleteClick: () -> Unit,
         val onUnStarClick: () -> Unit,
+        val onReadClick: () -> Unit,
         val onUnreadClick: () -> Unit,
         val onMoveToClick: () -> Unit,
+        val onArchiveClick: () -> Unit,
         val onLabelAsClick: () -> Unit,
+        val onReportPhishingClick: () -> Unit,
         val onExpandMessage: (MessageIdUiModel) -> Unit,
         val onCollapseMessage: (MessageIdUiModel) -> Unit,
         val onMessageBodyLinkClicked: (messageId: MessageIdUiModel, uri: Uri) -> Unit,
@@ -810,6 +846,10 @@ object ConversationDetailScreen {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
+        val onReplyLastMessage: () -> Unit,
+        val onForwardLastMessage: () -> Unit,
+        val onPrintLastMessage: () -> Unit,
+        val onReplyAllLastMessage: () -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
@@ -831,9 +871,12 @@ object ConversationDetailScreen {
                 onTrashClick = {},
                 onDeleteClick = {},
                 onUnStarClick = {},
+                onReadClick = {},
                 onUnreadClick = {},
                 onMoveToClick = {},
                 onLabelAsClick = {},
+                onReportPhishingClick = {},
+                onArchiveClick = {},
                 onExpandMessage = {},
                 onCollapseMessage = {},
                 onMessageBodyLinkClicked = { _, _ -> },
@@ -849,6 +892,10 @@ object ConversationDetailScreen {
                 loadEmbeddedImage = { _, _ -> null },
                 onReply = {},
                 onReplyAll = {},
+                onReplyLastMessage = {},
+                onReplyAllLastMessage = {},
+                onForwardLastMessage = {},
+                onPrintLastMessage = {},
                 onForward = {},
                 onBodyExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
