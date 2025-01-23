@@ -33,28 +33,41 @@ class NewNotificationPermissionOrchestrator @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
-    private var rationalePermissionRequester: ActivityResultLauncher<String>? = null
-    private var intentPermissionRequester: ActivityResultLauncher<Intent>? = null
+    private lateinit var rationalePermissionRequester: ActivityResultLauncher<String>
+    private lateinit var intentPermissionRequester: ActivityResultLauncher<Intent>
 
     fun requestPermissionIfRequired() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            rationalePermissionRequester?.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
+            rationalePermissionRequester.launch(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)
+        } else {
+            navigateToNotificationSettings()
         }
-
-        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-        intentPermissionRequester?.launch(intent)
     }
 
     fun register(caller: AppCompatActivity) {
-        if (caller.shouldShowRequestPermissionRationale(NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION)) {
-            rationalePermissionRequester = caller.registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) {}
-        } else {
-            intentPermissionRequester = caller.registerForActivityResult(
-                ActivityResultContracts.StartActivityForResult()
-            ) {}
+        rationalePermissionRequester = caller.registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { granted ->
+            // As we can't reliably determine the "don't show again" scenario, we navigate to Settings to make sure
+            // the requester is not a no-op.
+            if (
+                !granted &&
+                !caller.shouldShowRequestPermissionRationale(
+                    NotificationsPermissionsOrchestrator.NOTIFICATION_PERMISSION
+                )
+            ) {
+                navigateToNotificationSettings()
+            }
         }
+
+        intentPermissionRequester = caller.registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) {}
+    }
+
+    private fun navigateToNotificationSettings() {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+        intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        intentPermissionRequester.launch(intent)
     }
 }
