@@ -114,11 +114,12 @@ class GetMailboxItemLocationIcons @Inject constructor(
 
         return currentLocation is MailLabelId.System.Starred ||
             currentLocation is MailLabelId.System.AllMail ||
+            currentLocation is MailLabelId.System.AlmostAllMail ||
             currentLocation is MailLabelId.Custom.Label
     }
 
     sealed interface Result {
-        object None : Result
+        data object None : Result
         data class Icons(
             val first: MailboxItemLocationUiModel,
             val second: MailboxItemLocationUiModel? = null,

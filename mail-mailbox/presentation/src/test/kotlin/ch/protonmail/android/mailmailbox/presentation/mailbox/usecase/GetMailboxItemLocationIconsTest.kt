@@ -70,6 +70,21 @@ class GetMailboxItemLocationIconsTest {
     }
 
     @Test
+    fun `location icons are displayed when current location is 'almost all mail'`() = runTest {
+        givenCurrentLocationIs(MailLabelId.System.AlmostAllMail)
+        val itemLabels = listOf(MailLabelId.System.Archive.labelId, MailLabelId.System.Inbox.labelId)
+        val mailboxItem = buildMailboxItem(labelIds = itemLabels)
+
+        val actual = getMailboxItemLocationIcons(mailboxItem, defaultFolderColorSettings, false)
+
+        val expected = Result.Icons(
+            MailboxItemLocationUiModel(R.drawable.ic_proton_inbox),
+            MailboxItemLocationUiModel(R.drawable.ic_proton_archive_box)
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `location icons are displayed when showing search results independent from current location`() = runTest {
         givenCurrentLocationIs(MailLabelId.System.Sent)
         val itemLabels = listOf(MailLabelId.System.Drafts.labelId, MailLabelId.System.Sent.labelId)
