@@ -18,47 +18,79 @@
 
 package ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.ui
 
-import androidx.annotation.StringRes
+import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
+import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailsettings.presentation.R
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultSmallWeak
 
 @Composable
-internal fun ToolbarDisclaimer(@StringRes textRes: Int, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.background(
-            ProtonTheme.colors.shadowRaised,
-            RoundedCornerShape(size = ProtonDimens.ExtraSmallSpacing)
-        ).padding(12.dp),
-        verticalAlignment = Alignment.CenterVertically
+internal fun ToolbarDisclaimer(text: TextUiModel, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .border(
+                width = MailDimens.DefaultBorder,
+                color = ProtonTheme.colors.separatorNorm,
+                shape = ProtonTheme.shapes.medium
+            )
+            .background(color = ProtonTheme.colors.backgroundSecondary, shape = ProtonTheme.shapes.medium)
+            .padding(ProtonDimens.ListItemTextStartPadding)
     ) {
-        Icon(
-            modifier = Modifier.size(ProtonDimens.DefaultIconSize),
-            painter = painterResource(id = R.drawable.ic_info_circle),
-            contentDescription = NO_CONTENT_DESCRIPTION,
-            tint = ProtonTheme.colors.iconNorm
+        Row {
+            Icon(
+                modifier = Modifier,
+                painter = painterResource(id = R.drawable.ic_info_circle),
+                contentDescription = NO_CONTENT_DESCRIPTION,
+                tint = ProtonTheme.colors.iconNorm
+            )
+            Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
+            Text(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = text.string(),
+                style = ProtonTheme.typography.defaultSmallWeak
+            )
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun ToolbarDisclaimerPreview_Short() {
+    ProtonTheme {
+        ToolbarDisclaimer(
+            text = TextUiModel.Text("Short"),
+            modifier = Modifier
         )
-        Spacer(modifier = Modifier.width(ProtonDimens.SmallSpacing))
-        Text(
-            text = stringResource(textRes),
-            color = ProtonTheme.colors.textNorm,
-            style = ProtonTheme.typography.body1Regular
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+private fun ToolbarDisclaimerPreview_Tall() {
+    ProtonTheme {
+        ToolbarDisclaimer(
+            text = TextUiModel.Text("Longer disclaimer value to make it go into several lines and wrap"),
+            modifier = Modifier
         )
     }
 }

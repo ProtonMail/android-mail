@@ -21,7 +21,7 @@ package ch.protonmail.android.mailsettings.domain.annotations
 import javax.inject.Qualifier
 
 /**
- * Indicates whether the Customize Toolbar feature is visible.
+ * Indicates whether the Customize toolbar feature is visible.
  */
 @Qualifier
 annotation class CustomizeToolbarFeatureEnabled

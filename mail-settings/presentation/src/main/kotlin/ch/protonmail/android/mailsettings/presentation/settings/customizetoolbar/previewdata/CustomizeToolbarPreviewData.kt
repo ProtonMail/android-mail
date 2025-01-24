@@ -32,19 +32,24 @@ internal object CustomizeToolbarPreviewData {
     private val SelectedActions = (0..3).map { action(it) }
     private val UnselectedActions = (10..13).map { action(it) }
 
-    private val Page = CustomizeToolbarState.Data.Page(SelectedActions, UnselectedActions)
+    private val Page = CustomizeToolbarState.Data.Page(
+        TextUiModel.Text("This toolbar is visible when reading a message."),
+        SelectedActions, UnselectedActions
+    )
     private val PageDisabledAdd = CustomizeToolbarState.Data.Page(
+        TextUiModel.Text("This toolbar is visible when reading a message."),
         SelectedActions,
         UnselectedActions.map {
             it.copy(enabled = false)
         }
     )
     private val PageDisabledRemove = CustomizeToolbarState.Data.Page(
+        TextUiModel.Text("This toolbar is visible when reading a message."),
         SelectedActions.map { it.copy(enabled = false) },
         UnselectedActions
     )
 
-    private val TabTitles = listOf(TextUiModel.Text("Message"), TextUiModel.Text("Inbox"))
+    private val TabTitles = listOf(TextUiModel.Text("Message"), TextUiModel.Text("Mailbox"))
 
     val Normal = CustomizeToolbarState.Data(
         pages = listOf(Page, Page),

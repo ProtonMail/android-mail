@@ -36,6 +36,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailsettings.presentation.R
 import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.ToolbarActionUiModel
 import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.model.CustomizeToolbarOperation
@@ -48,7 +49,7 @@ internal const val DRAGGABLE_ACTIONS_START_IDX = 2
 internal fun ToolbarActions(
     items: List<ToolbarActionUiModel>,
     remainingItems: List<ToolbarActionUiModel>,
-    pageIndex: Int,
+    disclaimer: TextUiModel,
     onAction: (CustomizeToolbarOperation) -> Unit,
     modifier: Modifier
 ) {
@@ -71,10 +72,7 @@ internal fun ToolbarActions(
     ) {
         item {
             ToolbarDisclaimer(
-                textRes = when (pageIndex) {
-                    0 -> R.string.customize_toolbar_disclaimer_message
-                    else -> R.string.customize_toolbar_disclaimer_inbox
-                },
+                text = disclaimer,
                 modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing)
                     .fillMaxWidth()
                     .padding(horizontal = ProtonDimens.DefaultSpacing)

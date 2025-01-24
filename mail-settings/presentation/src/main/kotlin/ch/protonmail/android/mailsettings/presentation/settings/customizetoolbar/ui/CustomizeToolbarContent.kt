@@ -47,6 +47,7 @@ import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.ProtonErrorMessage
 import me.proton.core.compose.component.ProtonSettingsTopBar
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
+import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
@@ -125,7 +126,7 @@ internal fun CustomizeToolbarContent(
                         Column(modifier = Modifier.fillMaxSize()) {
                             ToolbarActions(
                                 items = page.selectedActions,
-                                pageIndex = index,
+                                disclaimer = page.disclaimer,
                                 onAction = onAction,
                                 remainingItems = page.remainingActions,
                                 modifier = Modifier.padding(paddingValues)
@@ -162,6 +163,7 @@ internal fun CustomizeToolbarContent(
                 ProtonErrorMessage(
                     errorMessage = stringResource(id = R.string.x_error_not_logged_in),
                     modifier = Modifier.padding(paddingValues)
+                        .padding(ProtonDimens.DefaultSpacing)
                 )
             }
         )

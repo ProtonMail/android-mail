@@ -25,20 +25,34 @@ import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar
 import ch.protonmail.android.mailsettings.presentation.settings.customizetoolbar.ToolbarActionUiModel
 import me.proton.core.mailsettings.domain.entity.ToolbarAction
 import javax.inject.Inject
+import ch.protonmail.android.mailsettings.presentation.R as presentationR
 
 class ToolbarActionMapper @Inject constructor() {
 
-    fun mapToUI(selection: ToolbarActionsPreference.ActionSelection): CustomizeToolbarState.Data.Page =
-        with(selection) {
-            val selectedEnabled = canRemove()
-            val remainingEnabled = canAddMore()
-            val recognizedSelected = selected.mapNotNull { it.enum }
-            val remaining = all.filterNot { recognizedSelected.contains(it) }
-            CustomizeToolbarState.Data.Page(
-                selectedActions = recognizedSelected.map { toUiModel(it, enabled = selectedEnabled) },
-                remainingActions = remaining.map { toUiModel(it, enabled = remainingEnabled) }
-            )
-        }
+    fun mapToUI(
+        isMailbox: Boolean,
+        isInConversationMode: Boolean,
+        selection: ToolbarActionsPreference.ActionSelection
+    ): CustomizeToolbarState.Data.Page = with(selection) {
+        val selectedEnabled = canRemove()
+        val remainingEnabled = canAddMore()
+        val recognizedSelected = selected.mapNotNull { it.enum }
+        val remaining = all.filterNot { recognizedSelected.contains(it) }
+        CustomizeToolbarState.Data.Page(
+            disclaimer = TextUiModel.TextRes(
+                when (isMailbox) {
+                    false -> if (isInConversationMode) {
+                        presentationR.string.customize_toolbar_disclaimer_conversation
+                    } else {
+                        presentationR.string.customize_toolbar_disclaimer_message
+                    }
+                    true -> presentationR.string.customize_toolbar_disclaimer_mailbox
+                }
+            ),
+            selectedActions = recognizedSelected.map { toUiModel(it, enabled = selectedEnabled) },
+            remainingActions = remaining.map { toUiModel(it, enabled = remainingEnabled) }
+        )
+    }
 
     private fun toUiModel(toolbarAction: ToolbarAction, enabled: Boolean): ToolbarActionUiModel = with(toolbarAction) {
         val (desc, icon) = when (this) {

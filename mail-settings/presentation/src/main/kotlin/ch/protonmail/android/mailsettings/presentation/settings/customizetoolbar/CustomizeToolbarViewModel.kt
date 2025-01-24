@@ -69,8 +69,14 @@ class CustomizeToolbarViewModel @Inject constructor(
                     CustomizeToolbarState.Data(
                         selectedTabIdx = tab.ordinal,
                         pages = listOf(
-                            mapper.mapToUI(prefs.messageOrConvToolbar.current),
-                            mapper.mapToUI(prefs.listToolbar.current)
+                            mapper.mapToUI(
+                                isMailbox = false,
+                                prefs.isConversationMode, prefs.messageOrConvToolbar.current
+                            ),
+                            mapper.mapToUI(
+                                isMailbox = true,
+                                prefs.isConversationMode, prefs.listToolbar.current
+                            )
                         ),
                         tabs = listOf(
                             TextUiModel.TextRes(
@@ -80,7 +86,7 @@ class CustomizeToolbarViewModel @Inject constructor(
                                     R.string.customize_toolbar_message
                                 }
                             ),
-                            TextUiModel.TextRes(R.string.customize_toolbar_inbox)
+                            TextUiModel.TextRes(R.string.customize_toolbar_mailbox)
                         )
                     )
                 }

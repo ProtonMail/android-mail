@@ -56,6 +56,6 @@ internal fun ResetToDefaultButton(onClick: () -> Unit) {
         ),
         contentPadding = ButtonDefaults.ContentPadding
     ) {
-        androidx.compose.material.Text(text = stringResource(R.string.customize_toolbar_reset_to_default))
+        androidx.compose.material.Text(text = stringResource(R.string.customize_toolbar_reset_to_default_btn))
     }
 }

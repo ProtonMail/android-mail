@@ -30,6 +30,7 @@ sealed class CustomizeToolbarState {
     ) : CustomizeToolbarState() {
 
         data class Page(
+            val disclaimer: TextUiModel,
             val selectedActions: List<ToolbarActionUiModel>,
             val remainingActions: List<ToolbarActionUiModel>
         )
