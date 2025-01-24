@@ -18,18 +18,19 @@
 
 package ch.protonmail.android.mailcomposer.domain.usecase
 
+import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithBody
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.usecase.DeleteMessages
 import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.coVerifySequence
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -40,11 +41,12 @@ class DiscardDraftTest {
     private val findLocalDraft = mockk<FindLocalDraft>()
     private val deleteMessages = mockk<DeleteMessages>()
     private val draftRepository = mockk<DraftRepository>()
+    private val draftStateRepository = mockk<DraftStateRepository>()
 
-    private val discardDraft = DiscardDraft(findLocalDraft, deleteMessages, draftRepository)
+    private val discardDraft = DiscardDraft(findLocalDraft, deleteMessages, draftRepository, draftStateRepository)
 
     @Test
-    fun `invoke cancels upload draft and deletes message`() = runTest {
+    fun `invoke cancels upload draft, draft state and deletes message`() = runTest {
         // Given
         val userId = UserIdSample.Primary
         val messageId = MessageIdSample.LocalDraft
@@ -52,6 +54,7 @@ class DiscardDraftTest {
         val draftMessageId = draft.message.messageId
 
         givenFindLocalDraftReturnsDraft(userId, messageId, draft)
+        givenDeleteDraftStateSucceeds(userId, draftMessageId)
         givenDeleteMessagesSucceeds(userId, draftMessageId, SystemLabelId.Drafts.labelId)
         givenCancelUploadDraftSucceeds()
 
@@ -59,8 +62,11 @@ class DiscardDraftTest {
         discardDraft(userId, messageId)
 
         // Then
-        verify { draftRepository.cancelUploadDraft(draftMessageId) }
-        coVerify { deleteMessages(userId, listOf(draftMessageId), SystemLabelId.Drafts.labelId) }
+        coVerifySequence {
+            draftRepository.cancelUploadDraft(draftMessageId)
+            draftStateRepository.deleteDraftState(userId, draftMessageId)
+            deleteMessages(userId, listOf(draftMessageId), SystemLabelId.Drafts.labelId)
+        }
     }
 
     private fun givenFindLocalDraftReturnsDraft(
@@ -83,4 +89,7 @@ class DiscardDraftTest {
         coEvery { deleteMessages(userId, listOf(messageId), labelId) } returns Unit
     }
 
+    private fun givenDeleteDraftStateSucceeds(userId: UserId, messageId: MessageId) {
+        coEvery { draftStateRepository.deleteDraftState(userId, messageId) } returns Unit.right()
+    }
 }
