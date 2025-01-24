@@ -50,7 +50,12 @@ class ObserveMessageDetailActions @Inject constructor(
             } else {
                 actions.replace(Action.Delete, with = Action.Trash) // delete (not permanent) for non-spam/non-trash
             }
-            actions
+            if (message.isStarred()) {
+                actions.replace(Action.Star, with = Action.Unstar)
+            } else {
+                actions.replace(Action.Unstar, with = Action.Star)
+            }
+            actions.distinct()
         }
     }
 
@@ -61,5 +66,9 @@ class ObserveMessageDetailActions @Inject constructor(
 
     private fun Message.messageIsSpamOrTrash() = labelIds.any {
         it == SystemLabelId.Spam.labelId || it == SystemLabelId.Trash.labelId
+    }
+
+    private fun Message.isStarred() = labelIds.any {
+        it == SystemLabelId.Starred.labelId
     }
 }

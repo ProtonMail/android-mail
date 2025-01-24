@@ -273,6 +273,8 @@ fun MessageDetailScreen(
                 onReplyClick = { actions.onReply(it) },
                 onReplyAllClick = { actions.onReplyAll(it) },
                 onForwardClick = { actions.onForward(it) },
+                onArchiveClick = { viewModel.submit(MessageViewAction.Archive) },
+                onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) },
                 onDeleteClick = { viewModel.submit(MessageViewAction.DeleteRequested) },
                 onShowAllAttachmentsClicked = { viewModel.submit(MessageViewAction.ShowAllAttachments) },
                 onAttachmentClicked = { viewModel.submit(MessageViewAction.OnAttachmentClicked(it)) },
@@ -411,28 +413,31 @@ fun MessageDetailScreen(
             )
         },
         bottomBar = {
+            val messageId = remember(state.messageMetadataState) {
+                (state.messageMetadataState as? MessageMetadataState.Data)?.messageDetailHeader?.messageIdUiModel?.id
+            }
             BottomActionBar(
                 state = state.bottomBarState,
                 viewActionCallbacks = BottomActionBar.Actions(
                     onMarkRead = { Timber.d("message onMarkRead clicked") },
                     onMarkUnread = actions.onUnreadClick,
-                    onStar = { Timber.d("message onStar clicked") },
-                    onUnstar = { Timber.d("message onUnstar clicked") },
+                    onStar = actions.onStarClick,
+                    onUnstar = actions.onUnStarClick,
                     onMove = actions.onMoveClick,
                     onLabel = actions.onLabelAsClick,
                     onTrash = actions.onTrashClick,
                     onDelete = actions.onDeleteClick,
-                    onReply = { Timber.d("message onReply clicked") },
-                    onReplyAll = { Timber.d("message onReplyAll clicked") },
-                    onForward = { Timber.d("message onForward clicked") },
-                    onArchive = { Timber.d("message onArchive clicked") },
+                    onReply = { messageId?.let { actions.onReplyClick(MessageId(it)) } },
+                    onReplyAll = { messageId?.let { actions.onReplyAllClick(MessageId(it)) } },
+                    onForward = { messageId?.let { actions.onForwardClick(MessageId(it)) } },
+                    onArchive = actions.onArchiveClick,
                     onSpam = { Timber.d("message onSpam clicked") },
                     onViewInLightMode = actions.onViewInLightMode,
                     onViewInDarkMode = actions.onViewInDarkMode,
-                    onPrint = { Timber.d("message onPrint clicked") },
+                    onPrint = { messageId?.let { actions.onPrint(MessageId(it)) } },
                     onViewHeaders = { Timber.d("message onViewHeaders clicked") },
                     onViewHtml = { Timber.d("message onViewHtml clicked") },
-                    onReportPhishing = { Timber.d("message onReportPhishing clicked") },
+                    onReportPhishing = { messageId?.let { actions.onReportPhishing(MessageId(it)) } },
                     onRemind = { Timber.d("message onRemind clicked") },
                     onSavePdf = { Timber.d("message onSavePdf clicked") },
                     onSenderEmail = { Timber.d("message onSenderEmail clicked") },
@@ -632,6 +637,7 @@ object MessageDetailScreen {
         val onReplyAllClick: (MessageId) -> Unit,
         val onForwardClick: (MessageId) -> Unit,
         val onDeleteClick: () -> Unit,
+        val onArchiveClick: () -> Unit,
         val onShowAllAttachmentsClicked: () -> Unit,
         val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val openAttachment: (values: OpenAttachmentIntentValues) -> Unit,
@@ -647,6 +653,7 @@ object MessageDetailScreen {
         val onViewInLightMode: () -> Unit,
         val onViewInDarkMode: () -> Unit,
         val onPrint: (MessageId) -> Unit,
+        val onReportPhishing: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
     ) {
@@ -669,6 +676,8 @@ object MessageDetailScreen {
                 onReplyAllClick = {},
                 onForwardClick = {},
                 onDeleteClick = {},
+                onArchiveClick = {},
+                onReportPhishing = {},
                 onShowAllAttachmentsClicked = {},
                 onAttachmentClicked = {},
                 openAttachment = {},

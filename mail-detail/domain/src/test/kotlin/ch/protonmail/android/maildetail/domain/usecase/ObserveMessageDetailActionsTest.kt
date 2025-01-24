@@ -181,7 +181,7 @@ internal class ObserveMessageDetailActionsTest {
     }
 
     @Test
-    fun `returns trash action when preference returns delete the messages is not in trash nor spam`() = runTest {
+    fun `returns trash action when preference returns delete and the messages is not in trash nor spam`() = runTest {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
         val message = MessageTestData.message
@@ -197,6 +197,30 @@ internal class ObserveMessageDetailActionsTest {
             // Then
             val expected = listOf(
                 Action.Spam,
+                Action.Trash
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns unstar action when preference returns star and the message is starred`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val message = MessageTestData.starredMessage
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Star,
+                Action.Delete
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, messageId).test {
+            // Then
+            val expected = listOf(
+                Action.Unstar,
                 Action.Trash
             )
             assertEquals(expected.right(), awaitItem())

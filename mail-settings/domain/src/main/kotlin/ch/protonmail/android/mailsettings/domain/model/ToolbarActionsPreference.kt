@@ -37,8 +37,10 @@ data class ToolbarActionsPreference(
         val all: List<ToolbarAction>
     ) {
 
-        fun canAddMore(): Boolean = selected.size < Defaults.MAX_ACTIONS
-        fun canRemove(): Boolean = selected.size > Defaults.MIN_ACTIONS
+        fun canAddMore(): Boolean = recognizedSelectedSize() < Defaults.MAX_ACTIONS
+        fun canRemove(): Boolean = recognizedSelectedSize() > Defaults.MIN_ACTIONS
+
+        private fun recognizedSelectedSize() = selected.mapNotNull { it.enum }.size
 
         fun toggleSelection(actionId: String, toggled: Boolean): ActionSelection {
             val action = Defaults.AllActions.firstOrNull { it.identifier == actionId } ?: return this
@@ -105,7 +107,7 @@ data class ToolbarActionsPreference(
                 conversationToolbar = from?.conversationToolbar
                     .createActions(Defaults.MessageActions, Defaults.AllMessageActions),
                 listToolbar = from?.listToolbar
-                    .createActions(Defaults.InboxActions, Defaults.AllInboxActions),
+                    .createActions(Defaults.MailboxActions, Defaults.AllMailboxActions),
                 isConversationMode = isConversationMode
             )
         }
@@ -132,7 +134,7 @@ data class ToolbarActionsPreference(
             ToolbarAction.LabelAs
         )
 
-        val InboxActions = listOf(
+        val MailboxActions = listOf(
             ToolbarAction.MarkAsReadOrUnread,
             ToolbarAction.MoveToTrash,
             ToolbarAction.MoveTo,
@@ -153,7 +155,7 @@ data class ToolbarActionsPreference(
             ToolbarAction.ReportPhishing
         )
 
-        val AllInboxActions: List<ToolbarAction> = listOf(
+        val AllMailboxActions: List<ToolbarAction> = listOf(
             ToolbarAction.MarkAsReadOrUnread,
             ToolbarAction.MoveToTrash,
             ToolbarAction.MoveTo,

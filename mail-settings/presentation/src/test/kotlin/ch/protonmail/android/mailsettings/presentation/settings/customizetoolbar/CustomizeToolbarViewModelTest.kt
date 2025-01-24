@@ -137,16 +137,22 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.Print,
                     ToolbarAction.ReportPhishing
                 ),
-                inboxActionsSelected = listOf(
+                mailboxActionsSelected = listOf(
                     ToolbarAction.MarkAsReadOrUnread,
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.MoveTo,
                     ToolbarAction.LabelAs,
                     ToolbarAction.MoveToSpam
                 ),
-                inboxActionsUnelected = listOf(
+                mailboxActionsUnselected = listOf(
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive
+                ),
+                ActionEnabledStates(
+                    canAddMessage = true,
+                    canRemoveMessage = true,
+                    canAddMailbox = false,
+                    canRemoveMailbox = true
                 )
             )
         }
@@ -167,7 +173,9 @@ class CustomizeToolbarViewModelTest {
                         "move",
                         "print",
                         "report_phishing",
-                        "unknown2"
+                        "unknown2",
+                        "unknown3",
+                        "unknown4"
                     ).map { ToolbarAction.enumOf(it) },
                     inboxActions = listOf(
                         "unknown1",
@@ -200,16 +208,97 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive
                 ),
-                inboxActionsSelected = listOf(
+                mailboxActionsSelected = listOf(
                     ToolbarAction.LabelAs,
                     ToolbarAction.MoveToArchive,
                     ToolbarAction.StarOrUnstar
                 ),
-                inboxActionsUnelected = listOf(
+                mailboxActionsUnselected = listOf(
                     ToolbarAction.MarkAsReadOrUnread,
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.MoveTo,
                     ToolbarAction.MoveToSpam
+                ),
+                ActionEnabledStates(
+                    canAddMessage = true,
+                    canRemoveMessage = true,
+                    canAddMailbox = true,
+                    canRemoveMailbox = true
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `more actions cannot be added once 5 recognized are already selected`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+
+            // When
+            prefsFlow.emit(
+                defaultPreference(
+                    convMode = true,
+                    conversationActions = listOf(
+                        "unknown1",
+                        "move",
+                        "print",
+                        "report_phishing",
+                        "label",
+                        "toggle_star",
+                        "unknown2"
+                    ).map { ToolbarAction.enumOf(it) },
+                    inboxActions = listOf(
+                        "unknown1",
+                        "label",
+                        "unknown2",
+                        "archive",
+                        "reply",
+                        "print",
+                        "toggle_star"
+                    ).map { ToolbarAction.enumOf(it) }
+                ).right()
+            )
+
+            // Then
+            val actual = awaitItem()
+            actual.assertTabsEqual(
+                tabIndex = 0,
+                firstTabTitleRes = R.string.customize_toolbar_conversation
+            )
+            actual.assertActionsEqual(
+                messageActionsSelected = listOf(
+                    ToolbarAction.MoveTo,
+                    ToolbarAction.Print,
+                    ToolbarAction.ReportPhishing,
+                    ToolbarAction.LabelAs,
+                    ToolbarAction.StarOrUnstar
+                ),
+                messageActionsUnselected = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
+                    ToolbarAction.ReplyOrReplyAll,
+                    ToolbarAction.Forward,
+                    ToolbarAction.MoveToArchive
+                ),
+                mailboxActionsSelected = listOf(
+                    ToolbarAction.LabelAs,
+                    ToolbarAction.MoveToArchive,
+                    ToolbarAction.ReplyOrReplyAll,
+                    ToolbarAction.Print,
+                    ToolbarAction.StarOrUnstar
+                ),
+                mailboxActionsUnselected = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
+                    ToolbarAction.MoveTo,
+                    ToolbarAction.MoveToSpam
+                ),
+                ActionEnabledStates(
+                    canAddMessage = false,
+                    canRemoveMessage = true,
+                    canAddMailbox = false,
+                    canRemoveMailbox = true
                 )
             )
         }
@@ -321,17 +410,25 @@ class CustomizeToolbarViewModelTest {
         assertEquals(firstTabTitleRes, (tabs.first() as TextUiModel.TextRes).value)
     }
 
+    private data class ActionEnabledStates(
+        val canAddMailbox: Boolean,
+        val canRemoveMailbox: Boolean,
+        val canAddMessage: Boolean,
+        val canRemoveMessage: Boolean
+    )
+
     private fun CustomizeToolbarState.assertActionsEqual(
         messageActionsSelected: List<ToolbarAction>,
         messageActionsUnselected: List<ToolbarAction>,
-        inboxActionsSelected: List<ToolbarAction>,
-        inboxActionsUnelected: List<ToolbarAction>
+        mailboxActionsSelected: List<ToolbarAction>,
+        mailboxActionsUnselected: List<ToolbarAction>,
+        enabledStates: ActionEnabledStates
     ) {
         assertTrue(this is Data)
         val messageItemsSelected = pages.first().selectedActions
         val messageItemsUnselected = pages.first().remainingActions
-        val inboxItemsSelected = pages[1].selectedActions
-        val inboxItemsUnselected = pages[1].remainingActions
+        val mailboxItemsSelected = pages[1].selectedActions
+        val mailboxItemsUnselected = pages[1].remainingActions
 
         assertContentEquals(
             expected = messageActionsSelected.map { it.value },
@@ -342,13 +439,17 @@ class CustomizeToolbarViewModelTest {
             actual = messageItemsUnselected.map { it.id }
         )
         assertContentEquals(
-            expected = inboxActionsSelected.map { it.value },
-            actual = inboxItemsSelected.map { it.id }
+            expected = mailboxActionsSelected.map { it.value },
+            actual = mailboxItemsSelected.map { it.id }
         )
         assertContentEquals(
-            expected = inboxActionsUnelected.map { it.value },
-            actual = inboxItemsUnselected.map { it.id }
+            expected = mailboxActionsUnselected.map { it.value },
+            actual = mailboxItemsUnselected.map { it.id }
         )
+        messageItemsSelected.forEach { assertEquals(enabledStates.canRemoveMessage, it.enabled) }
+        messageItemsUnselected.forEach { assertEquals(enabledStates.canAddMessage, it.enabled) }
+        mailboxItemsSelected.forEach { assertEquals(enabledStates.canRemoveMailbox, it.enabled) }
+        mailboxItemsUnselected.forEach { assertEquals(enabledStates.canAddMailbox, it.enabled) }
     }
 
     private fun defaultPreference(
@@ -359,7 +460,7 @@ class CustomizeToolbarViewModelTest {
     ) = ToolbarActionsPreference(
         messageToolbar = actions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
         conversationToolbar = actions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
-        listToolbar = actions(inboxActions, Defaults.InboxActions, Defaults.AllInboxActions),
+        listToolbar = actions(inboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
         isConversationMode = convMode
     )
 
