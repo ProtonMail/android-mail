@@ -34,7 +34,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.AccountInfo
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsScreenTestTags
 import ch.protonmail.android.mailsettings.presentation.settings.SettingsState.Data
-import ch.protonmail.android.test.annotations.suite.RegressionTest
+import ch.protonmail.android.test.annotations.suite.SmokeTest
 import ch.protonmail.android.uitest.util.HiltInstrumentedTest
 import ch.protonmail.android.uitest.util.assertions.assertTextContains
 import ch.protonmail.android.uitest.util.hasText
@@ -44,7 +44,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import org.junit.Before
 import org.junit.Test
 
-@RegressionTest
+@SmokeTest
 @HiltAndroidTest
 internal class SettingsScreenTest : HiltInstrumentedTest() {
 
@@ -58,7 +58,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
         ),
         AppInformation(appVersionName = "6.0.0-alpha-adf8373a", appVersionCode = 9026),
         LocalStorageUsageInformation(123L),
-        showCustomizeToolbar = true,
+        showCustomizeToolbar = true
     )
 
     @Before
@@ -79,7 +79,7 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
                         onClearCacheClick = {},
                         onBackClick = {},
                         onExportLogsClick = {},
-                        onCustomizeToolbarClick = {},
+                        onCustomizeToolbarClick = {}
                     ),
                     LogsExportFeatureSetting(enabled = false, internalEnabled = false)
                 )
@@ -134,7 +134,15 @@ internal class SettingsScreenTest : HiltInstrumentedTest() {
             .assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText(string.mail_settings_local_cache)
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
+            .onChild()
+            .performScrollToNode(hasText(string.mail_settings_local_cache))
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithTag(SettingsScreenTestTags.SettingsList)
+            .onChild()
+            .performScrollToNode(hasText(string.mail_settings_customize_toolbar))
             .assertIsDisplayed()
 
         composeTestRule
