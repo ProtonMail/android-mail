@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Marcar como lida</string>
   <string name="notification_permission_dialog_title">Não perca um e-mail</string>
   <string name="notification_permission_dialog_message">As notificações ajudam-no a manter o controlo da sua caixa de entrada sem verificar a aplicação.</string>
-  <string name="notification_permission_dialog_button_enable">Ativar as notificações</string>
+  <string name="notification_permission_dialog_post_send_title">Quer manter-se atualizado?</string>
+  <string name="notification_permission_dialog_post_send_message">Ative as notificações para saber quando recebe uma resposta ao seu e-mail.</string>
+  <string name="notification_permission_dialog_button_enable">Ativar as notificações push</string>
   <string name="notification_permission_dialog_button_dismiss">Descartar</string>
 </resources>

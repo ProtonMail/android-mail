@@ -73,10 +73,10 @@
   <string name="action_more_content_description">更多詳情</string>
   <string name="common_error_loading_actions">無法載入動作</string>
   <string name="yesterday">昨天</string>
-  <string name="auto_delete_banner_text_activate_trash">將會把於垃圾桶超過30天的訊息刪除</string>
-  <string name="auto_delete_banner_text_activate_spam">自動刪除在垃圾郵件中超過30天的訊息。</string>
-  <string name="auto_delete_banner_text_upgrade">升級以自動刪除在垃圾桶和垃圾郵件中超過30天的訊息。</string>
-  <string name="auto_delete_banner_text_enabled_info">垃圾桶與垃圾郵件中超過30天的訊息將會被自動刪除。</string>
+  <string name="auto_delete_banner_text_activate_trash">於垃圾桶中超過 30 天的訊息將自動被刪除。</string>
+  <string name="auto_delete_banner_text_activate_spam">於垃圾郵件中超過 30 天的訊息將自動被刪除。</string>
+  <string name="auto_delete_banner_text_upgrade">升級以自動刪除在垃圾桶和垃圾郵件中超過 30 天的訊息。</string>
+  <string name="auto_delete_banner_text_enabled_info">在垃圾桶與垃圾郵件中超過 30 天的訊息將會被自動刪除。</string>
   <string name="auto_delete_banner_button_activate_confirm">啟用</string>
   <string name="auto_delete_banner_button_activate_dismiss">不用了，謝謝</string>
   <string name="auto_delete_banner_action_upgrade_learn_more">了解更多</string>

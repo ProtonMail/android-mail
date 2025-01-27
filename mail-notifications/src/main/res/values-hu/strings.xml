@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Megjelölés olvasottként</string>
   <string name="notification_permission_dialog_title">Ne maradjon le egy e-mailről sem</string>
   <string name="notification_permission_dialog_message">Az értesítések segítenek nyomon követni a beérkezett üzeneteket anélkül, hogy az alkalmazást ellenőrizné.</string>
-  <string name="notification_permission_dialog_button_enable">Push-értesítések engedélyezése</string>
+  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
+  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
   <string name="notification_permission_dialog_button_dismiss">Elvetés</string>
 </resources>

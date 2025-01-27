@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Farveindstillinger kunne ikke hentes</string>
   <string name="mailbox_action_move_messages_failed">Flytning mislykkedes</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Mapper kunne ikke hentes</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Samtale flyttet til %s</string>
+  <string name="mailbox_action_move_message">Besked flyttet til %s</string>
   <string name="mailbox_search_placeholder_text">Søg i beskeder</string>
   <string name="mailbox_search_no_results_title">Ingen resultater fundet</string>
   <string name="mailbox_search_no_results_explanation">Søg dato, navn, e-mailadresse eller emnelinje</string>

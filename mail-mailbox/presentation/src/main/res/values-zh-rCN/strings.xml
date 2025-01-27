@@ -70,8 +70,8 @@
   <string name="mailbox_action_failed_retrieving_colors">无法获取颜色设置</string>
   <string name="mailbox_action_move_messages_failed">移动操作失败</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">无法列出文件夹</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">对话已移动到 %s</string>
+  <string name="mailbox_action_move_message">消息已移动到 %s</string>
   <string name="mailbox_search_placeholder_text">搜索邮件</string>
   <string name="mailbox_search_no_results_title">未找到结果</string>
   <string name="mailbox_search_no_results_explanation">搜索日期、姓名、邮箱地址或邮件主题</string>

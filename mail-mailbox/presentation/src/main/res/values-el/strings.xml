@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Αποτυχία λήψης ρυθμίσεων χρωμάτων</string>
   <string name="mailbox_action_move_messages_failed">Η μετακίνηση απέτυχε</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Αποτυχία λήψης φακέλων</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Η συνομιλία μετακινήθηκε στον %s</string>
+  <string name="mailbox_action_move_message">Το μήνυμα μετακινήθηκε στο %s</string>
   <string name="mailbox_search_placeholder_text">Αναζήτηση μηνυμάτων</string>
   <string name="mailbox_search_no_results_title">Δεν βρέθηκαν αποτελέσματα</string>
   <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλ. ταχυδρομείου ή θέμα</string>

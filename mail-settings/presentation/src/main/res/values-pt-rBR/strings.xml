@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Permitido</string>
   <string name="mail_settings_denied">Negado</string>
   <string name="mail_settings_auto_detect">Detectar automaticamente</string>
-  <string name="mail_settings_customize_toolbar">Personalizar barra de ferramentas</string>
+  <string name="mail_settings_customize_toolbar">Personalizar a barra de ferramentas</string>
   <string name="mail_settings_app_information">Informações do aplicativo</string>
   <string name="mail_settings_app_version">Versão do aplicativo</string>
   <string name="mail_settings_app_logs">Registros do aplicativo</string>
@@ -170,8 +170,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_description">Você tem certeza que deseja encerrar a sessão?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sim</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">Não</string>
-  <string name="mail_settings_pin_insertion_created_success">Código PIN foi criado com sucesso.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Código PIN foi alterado com sucesso.</string>
+  <string name="mail_settings_pin_insertion_created_success">O código PIN foi criado.</string>
+  <string name="mail_settings_pin_insertion_changed_success">O código PIN foi alterado.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Limpando dados locais em cache…</string>
   <!-- Error messages -->
@@ -183,12 +183,16 @@
   <string name="biometric_error_hw_not_available">O sensor biométrico não está disponível.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Essa barra de ferramentas é visível ao ler as mensagens.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Essa barra de ferramentas é visível ao ler as conversas.</string>
   <string name="customize_toolbar_disclaimer_inbox">Essa barra de ferramentas aparece quando é selecionado múltiplas mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Essa barra de ferramentas aparece quando é selecionado múltiplas mensagens na sua caixa de correio.</string>
   <string name="customize_toolbar_message">Mensagem</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Caixa de entrada</string>
+  <string name="customize_toolbar_mailbox">Caixa de correio</string>
   <string name="customize_toolbar_done_action">Concluído</string>
   <string name="customize_toolbar_reset_to_default">Restaurar para padrão</string>
-  <string name="customize_toolbar_actions_section">Acções da barra de ferramentas (até 5)</string>
+  <string name="customize_toolbar_reset_to_default_btn">Restaurar para padrão</string>
+  <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (até 5)</string>
   <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
 </resources>

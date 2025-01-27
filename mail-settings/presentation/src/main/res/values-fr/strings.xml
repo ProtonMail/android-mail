@@ -183,12 +183,16 @@
   <string name="biometric_error_hw_not_available">Le capteur biométrique n\'est pas disponible.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Cette barre d\'outils est visible pendant la lecture d\'un message.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Cette barre d\'outils est visible pendant la lecture d\'une conversation.</string>
   <string name="customize_toolbar_disclaimer_inbox">Cette barre d\'outils apparaît quand vous sélectionnez plusieurs messages dans votre messagerie.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Cette barre d\'outils apparaît quand vous sélectionnez plusieurs messages dans votre messagerie.</string>
   <string name="customize_toolbar_message">Message</string>
   <string name="customize_toolbar_conversation">Conversation</string>
   <string name="customize_toolbar_inbox">Boite de réception</string>
+  <string name="customize_toolbar_mailbox">Messagerie</string>
   <string name="customize_toolbar_done_action">Terminé</string>
   <string name="customize_toolbar_reset_to_default">Rétablir les valeurs par défaut</string>
+  <string name="customize_toolbar_reset_to_default_btn">Rétablir les valeurs par défaut</string>
   <string name="customize_toolbar_actions_section">Actions de la barre d\'outils (sélectionnez-en jusqu\'à 5)</string>
   <string name="customize_toolbar_available_actions_section">Actions disponibles</string>
 </resources>

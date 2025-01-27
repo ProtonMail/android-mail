@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Misslyckades att hämta färginställningar</string>
   <string name="mailbox_action_move_messages_failed">Flyttåtgärd misslyckades</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Misslyckades att hämta mappar</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Konversation flyttad till %s</string>
+  <string name="mailbox_action_move_message">Meddelande flyttat till %s</string>
   <string name="mailbox_search_placeholder_text">Sök meddelanden</string>
   <string name="mailbox_search_no_results_title">Inga resultat hittades</string>
   <string name="mailbox_search_no_results_explanation">Sök datum, namn, e-postadress eller ämnesrad</string>
@@ -89,7 +89,7 @@
   <string name="mailbox_action_button_clear_spam">Töm skräppost</string>
   <string name="mailbox_action_clear_trash_dialog_title">Töm papperskorgsmapp</string>
   <string name="mailbox_action_clear_spam_dialog_title">Töm skräppostmapp</string>
-  <string name="mailbox_action_clear_trash_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din papperskorg?</string>
+  <string name="mailbox_action_clear_trash_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_spam_dialog_body_message">Är du säker på att du vill ta bort alla meddelanden permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Är du säker på att du vill ta bort alla konversationer permanent i din skräppostmapp?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Rensningsåtgärd är schemalagd"</string>

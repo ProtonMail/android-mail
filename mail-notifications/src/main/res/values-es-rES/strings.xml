@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Marcar como leído</string>
   <string name="notification_permission_dialog_title">No te pierdas ningún correo electrónico</string>
   <string name="notification_permission_dialog_message">Las notificaciones te ayudan a estar al tanto de tu bandeja de entrada sin tener que consultar la aplicación.</string>
-  <string name="notification_permission_dialog_button_enable">Activar las notificaciones</string>
+  <string name="notification_permission_dialog_post_send_title">¿Quieres mantenerte actualizado?</string>
+  <string name="notification_permission_dialog_post_send_message">Activa las notificaciones para saber cuándo recibes una respuesta a tu correo electrónico.</string>
+  <string name="notification_permission_dialog_button_enable">Activar las notificaciones push</string>
   <string name="notification_permission_dialog_button_dismiss">Descartar</string>
 </resources>

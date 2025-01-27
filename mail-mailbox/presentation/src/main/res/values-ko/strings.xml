@@ -70,8 +70,8 @@
   <string name="mailbox_action_failed_retrieving_colors">색상 설정 불러오기를 실패했습니다.</string>
   <string name="mailbox_action_move_messages_failed">이동 작업에 실패했습니다</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">폴더 불러오기에 실패했습니다</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">대화가 %s로 이동됨</string>
+  <string name="mailbox_action_move_message">메시지가 %s로 이동됨</string>
   <string name="mailbox_search_placeholder_text">메시지 검색</string>
   <string name="mailbox_search_no_results_title">검색 결과가 없습니다.</string>
   <string name="mailbox_search_no_results_explanation">날짜, 이름, 이메일 주소 및 제목 제목을 입력하세요</string>

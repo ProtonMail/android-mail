@@ -81,6 +81,6 @@
   <string name="parent_folder_none">Ingen</string>
   <string name="delete_label">Ta bort etikett?</string>
   <string name="delete_folder">Ta bort mapp?</string>
-  <string name="delete_label_message">Denna åtgärd kan inte ångras. E-postmeddelanden som är taggade med denna etikett raderas inte och kan hittas i mappen All e-post.</string>
-  <string name="delete_folder_message">Denna åtgärd kan inte ångras. E-postmeddelanden som finns i den här mappen kommer inte att tas bort och kan hittas i mappen All e-post.</string>
+  <string name="delete_label_message">Denna åtgärd kan inte ångras. E-post märkta med denna etikett kommer inte att tas bort och kan hittas i mappen \'All e-post\'.</string>
+  <string name="delete_folder_message">Denna åtgärd kan inte ångras. E-post som finns i denna mapp kommer inte att tas bort och kan hittas i mappen \'All e-post\'.</string>
 </resources>

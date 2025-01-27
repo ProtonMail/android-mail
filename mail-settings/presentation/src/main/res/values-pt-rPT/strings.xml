@@ -183,12 +183,16 @@
   <string name="biometric_error_hw_not_available">Equipamento biométrico indisponível.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Esta barra de ferramentas é visível quando se lê uma mensagem.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Esta barra de ferramentas é visível quando se lê uma conversa.</string>
   <string name="customize_toolbar_disclaimer_inbox">Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de correio.</string>
   <string name="customize_toolbar_message">Mensagem</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Caixa de entrada</string>
+  <string name="customize_toolbar_mailbox">Caixa de correio</string>
   <string name="customize_toolbar_done_action">Terminado</string>
   <string name="customize_toolbar_reset_to_default">Reposição predefinida</string>
+  <string name="customize_toolbar_reset_to_default_btn">Reposição predefinida</string>
   <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (selecione até 5)</string>
   <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
 </resources>

@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">既読としてマーク</string>
   <string name="notification_permission_dialog_title">メールをお見逃しなく</string>
   <string name="notification_permission_dialog_message">通知は、アプリを確認せずに受信トレイを管理するのに役立ちます。</string>
-  <string name="notification_permission_dialog_button_enable">プッシュ通知の有効化</string>
+  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
+  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
   <string name="notification_permission_dialog_button_dismiss">中止</string>
 </resources>

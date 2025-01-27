@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Označit jako přečtené</string>
   <string name="notification_permission_dialog_title">Nepropásněte žádný e-mail</string>
   <string name="notification_permission_dialog_message">Upozornění vám pomohou mít přehled o doručené poště, aniž byste museli kontrolovat aplikaci.</string>
-  <string name="notification_permission_dialog_button_enable">Povolit vyskakovací oznámení</string>
+  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
+  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
+  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
   <string name="notification_permission_dialog_button_dismiss">Zavřít</string>
 </resources>

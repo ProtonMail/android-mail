@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Folder Spam jest pusty</string>
   <string name="mailbox_is_empty_trash_description">Kosz jest pusty</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Wątek przeniesiony do Kosza</item>
-    <item quantity="few">%d wątki przeniesione do Kosza</item>
-    <item quantity="many">%d wątków przeniesiono do Kosza</item>
-    <item quantity="other">%d wątków przeniesiono do Kosza</item>
+    <item quantity="one">Wątek został przeniesiony do Kosza</item>
+    <item quantity="few">Przeniesiono %d wątki do Kosza</item>
+    <item quantity="many">Przeniesiono %d wątków do Kosza</item>
+    <item quantity="other">Przeniesiono %d wątków do Kosza</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Wiadomość przeniesiona do Kosza</item>
-    <item quantity="few">%d wiadomości przeniesionych do Kosza</item>
-    <item quantity="many">%d wiadomości przeniesionych do Kosza</item>
-    <item quantity="other">%d wiadomości przeniesionych do Kosza</item>
+    <item quantity="one">Wiadomość została przeniesiona do Kosza</item>
+    <item quantity="few">Przeniesiono %d wiadomości do Kosza</item>
+    <item quantity="many">Przeniesiono %d wiadomości do Kosza</item>
+    <item quantity="other">Przeniesiono %d wiadomości do Kosza</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Usuń wątek</item>
@@ -100,8 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nie udało się pobrać ustawień kolorów</string>
   <string name="mailbox_action_move_messages_failed">Przeniesienie nie powiodło się</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nie udało się pobrać folderów</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Wątek został przeniesiony do folderu %s</string>
+  <string name="mailbox_action_move_message">Wiadomość została przeniesiona do folderu %s</string>
   <string name="mailbox_search_placeholder_text">Szukaj wiadomości</string>
   <string name="mailbox_search_no_results_title">Nie znaleziono żadnych wyników</string>
   <string name="mailbox_search_no_results_explanation">Szukaj daty, nazwy, adresu e-mail lub tematu</string>

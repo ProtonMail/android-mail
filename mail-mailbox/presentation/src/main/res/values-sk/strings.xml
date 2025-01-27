@@ -100,8 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Nepodarilo sa získať nastavenia farieb</string>
   <string name="mailbox_action_move_messages_failed">Presunutie zlyhalo</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Nepodarilo sa získať priečinky</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Konverzácia presunutá do %s</string>
+  <string name="mailbox_action_move_message">Správa presunutá do %s</string>
   <string name="mailbox_search_placeholder_text">Vyhľadať správy</string>
   <string name="mailbox_search_no_results_title">Neboli nájdené žiadne výsledky</string>
   <string name="mailbox_search_no_results_explanation">Vyhľadávanie podľa dátumu, mena, emailovej adresy alebo predmetu správy</string>

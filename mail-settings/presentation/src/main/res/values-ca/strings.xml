@@ -183,12 +183,16 @@
   <string name="biometric_error_hw_not_available">El sensor biomètric no està disponible.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Aquesta barra d\'eines és visible quan s\'està llegint un missatge.</string>
-  <string name="customize_toolbar_disclaimer_inbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la vostra bústia de correu.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Aquesta barra d\'eines és visible quan s\'està llegint una conversa.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la bústia de correu.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la bústia de correu.</string>
   <string name="customize_toolbar_message">Missatge</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Safata d\'entrada</string>
+  <string name="customize_toolbar_mailbox">Bústia de correu</string>
   <string name="customize_toolbar_done_action">Fet</string>
   <string name="customize_toolbar_reset_to_default">Restableix els valors per defecte</string>
+  <string name="customize_toolbar_reset_to_default_btn">Restableix als valors per defecte</string>
   <string name="customize_toolbar_actions_section">Accions de la barra d\'eines (seleccioneu-ne fins a 5)</string>
   <string name="customize_toolbar_available_actions_section">Accions disponibles</string>
 </resources>

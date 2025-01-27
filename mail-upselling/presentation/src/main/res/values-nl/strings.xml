@@ -98,7 +98,7 @@
   <string name="upselling_snackbar_error_no_subscriptions">Abonnementen kunnen niet worden opgehaald.</string>
   <!-- Snackbar texts -->
   <string name="upselling_snackbar_upgrade_in_progress">Abonnement upgrade is bezig…</string>
-  <string name="upselling_snackbar_upgrade_error_generic">Er is een fout opgetreden tijdens het updaten van uw abonnement.</string>
+  <string name="upselling_snackbar_upgrade_error_generic">Er is een fout opgetreden tijdens het bijwerken van uw abonnement.</string>
   <string name="upselling_snackbar_upgrade_error_recoverable">Er is een fout opgetreden. Probeer het nog eens.</string>
   <!-- Upselling: Onboarding -->
   <string name="upselling_onboarding_title">Kies een abonnement</string>

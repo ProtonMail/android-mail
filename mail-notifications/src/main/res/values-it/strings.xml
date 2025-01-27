@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Segna come letto</string>
   <string name="notification_permission_dialog_title">Non perdere un\'email</string>
   <string name="notification_permission_dialog_message">Le notifiche ti aiutano a tenere sotto controllo la tua casella di posta senza controllare l\'app.</string>
-  <string name="notification_permission_dialog_button_enable">Abilita le notifiche push</string>
+  <string name="notification_permission_dialog_post_send_title">Vuoi rimanere aggiornato?</string>
+  <string name="notification_permission_dialog_post_send_message">Attiva le notifiche per sapere quando ricevi una risposta alla tua email.</string>
+  <string name="notification_permission_dialog_button_enable">Attiva le notifiche push</string>
   <string name="notification_permission_dialog_button_dismiss">Ignora</string>
 </resources>

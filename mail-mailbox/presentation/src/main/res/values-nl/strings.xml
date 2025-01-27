@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Kan geen kleurinstellingen ophalen</string>
   <string name="mailbox_action_move_messages_failed">Verplaatsactie mislukt</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Kan geen mappen ophalen</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Gesprek verplaatst naar %s</string>
+  <string name="mailbox_action_move_message">Bericht verplaatst naar %s</string>
   <string name="mailbox_search_placeholder_text">Doorzoek berichten</string>
   <string name="mailbox_search_no_results_title">Geen resultaten</string>
   <string name="mailbox_search_no_results_explanation">Zoek datum, naam, e-mailadres, of onderwerp</string>

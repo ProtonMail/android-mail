@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">ფერის პარამეტრების მიღება ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed">გადატანის ოპერაცია ჩავარდა</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">საქაღალდეების მიღება ჩავარდა</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">საუბარი გადატანილია %s-ში</string>
+  <string name="mailbox_action_move_message">შეტყობინება გადატანილია %s-ში</string>
   <string name="mailbox_search_placeholder_text">შეტყობინებების ძებნა</string>
   <string name="mailbox_search_no_results_title">შედეგების გარეშე</string>
   <string name="mailbox_search_no_results_explanation">მოძებნეთ თარიღით, სახელით, ელფოსტის მისამართით ან თემის ხაზით</string>

@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Caricamento dei colori non riuscito</string>
   <string name="mailbox_action_move_messages_failed">Spostamento non riuscito</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Caricamento delle cartelle non riuscito</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Conversazione spostata in %s</string>
+  <string name="mailbox_action_move_message">Messaggio spostato in %s</string>
   <string name="mailbox_search_placeholder_text">Cerca nei messaggi</string>
   <string name="mailbox_search_no_results_title">Nessun risultato trovato</string>
   <string name="mailbox_search_no_results_explanation">Cerca per data, nome, indirizzo email o oggetto del messaggio</string>

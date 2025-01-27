@@ -27,6 +27,8 @@
   <string name="notification_actions_mark_as_read_description">Marca com a llegit</string>
   <string name="notification_permission_dialog_title">No us perdeu cap correu electrònic</string>
   <string name="notification_permission_dialog_message">Les notificacions us ajuden a mantenir-vos al capdavant de la vostra safata d\'entrada sense comprovar l\'aplicació.</string>
-  <string name="notification_permission_dialog_button_enable">Activa les notificacions</string>
+  <string name="notification_permission_dialog_post_send_title">Voleu mantenir-vos actualitzats?</string>
+  <string name="notification_permission_dialog_post_send_message">Activeu les notificacions per saber quan rebeu una resposta al correu electrònic.</string>
+  <string name="notification_permission_dialog_button_enable">Activa les notificacions push</string>
   <string name="notification_permission_dialog_button_dismiss">Descarta</string>
 </resources>

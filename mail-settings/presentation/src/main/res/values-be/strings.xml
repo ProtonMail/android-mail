@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Дазволена</string>
   <string name="mail_settings_denied">Забаронена</string>
   <string name="mail_settings_auto_detect">Аўтаматычнае вызначэнне</string>
-  <string name="mail_settings_customize_toolbar">Customize Toolbar</string>
+  <string name="mail_settings_customize_toolbar">Customize toolbar</string>
   <string name="mail_settings_app_information">Звесткі аб праграме</string>
   <string name="mail_settings_app_version">Версія праграмы</string>
   <string name="mail_settings_app_logs">Журнал праграмы</string>
@@ -110,7 +110,7 @@
   <string name="mail_settings_swipe_actions_subtitle">Наладзьце жэсты правядзення для доступу да дзеянняў, якія вы часта выкарыстоўваеце.</string>
   <string name="mail_settings_swipe_right_name">Злева направа</string>
   <string name="mail_settings_swipe_left_name">Справа налева</string>
-  <string name="mail_settings_swipe_action_none_title">Not set</string>
+  <string name="mail_settings_swipe_action_none_title">Не зададзена</string>
   <string name="mail_settings_swipe_action_archive_title">Архіў</string>
   <string name="mail_settings_swipe_action_read_title">Непрачытаныя</string>
   <string name="mail_settings_swipe_action_spam_title">Спам</string>
@@ -187,12 +187,16 @@
   <string name="biometric_error_hw_not_available">Адсутнічае біяметрычнае абсталяванне.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">This toolbar is visible when reading a message.</string>
+  <string name="customize_toolbar_disclaimer_conversation">This toolbar is visible when reading a conversation.</string>
   <string name="customize_toolbar_disclaimer_inbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
   <string name="customize_toolbar_message">Message</string>
   <string name="customize_toolbar_conversation">Conversation</string>
   <string name="customize_toolbar_inbox">Inbox</string>
+  <string name="customize_toolbar_mailbox">Mailbox</string>
   <string name="customize_toolbar_done_action">Done</string>
   <string name="customize_toolbar_reset_to_default">Reset to Default</string>
+  <string name="customize_toolbar_reset_to_default_btn">Reset to default</string>
   <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
   <string name="customize_toolbar_available_actions_section">Available actions</string>
 </resources>

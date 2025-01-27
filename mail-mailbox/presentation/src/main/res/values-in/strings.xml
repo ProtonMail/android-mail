@@ -70,8 +70,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Pengaturan warna gagal diperoleh</string>
   <string name="mailbox_action_move_messages_failed">Pemindahan gagal dilangsungkan</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Folder gagal diperoleh</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Percakapan dipindahkan ke %s</string>
+  <string name="mailbox_action_move_message">Pesan dipindahkan ke %s</string>
   <string name="mailbox_search_placeholder_text">Cari pesan</string>
   <string name="mailbox_search_no_results_title">Tidak ada hasil yang ditemukan</string>
   <string name="mailbox_search_no_results_explanation">Cari tanggal, nama, alamat email, atau baris subjek</string>

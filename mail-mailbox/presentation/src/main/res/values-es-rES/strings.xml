@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="mailbox_toolbar_compose_button_content_description">Escribir un mensaje nuevo</string>
+  <string name="mailbox_toolbar_compose_button_content_description">Escribir un mensaje</string>
   <string name="mailbox_toolbar_exit_selection_mode_button_content_description">Salir del modo de selección</string>
   <string name="mailbox_toolbar_menu_button_content_description">Menú</string>
   <string name="mailbox_toolbar_search_button_content_description">Buscar</string>
@@ -80,7 +80,7 @@
   <string name="mailbox_action_failed_retrieving_colors">Error al obtener los ajustes de color</string>
   <string name="mailbox_action_move_messages_failed">Error en la operación de traslado</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Error al obtener las carpetas</string>
-  <string name="mailbox_action_move_conversation">Se ha movido la conversación a %s..</string>
+  <string name="mailbox_action_move_conversation">Se ha movido la conversación a %s.</string>
   <string name="mailbox_action_move_message">Se ha movido el mensaje a %s.</string>
   <string name="mailbox_search_placeholder_text">Buscar mensajes</string>
   <string name="mailbox_search_no_results_title">No se han encontrado resultados.</string>

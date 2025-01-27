@@ -70,8 +70,8 @@
   <string name="mailbox_action_failed_retrieving_colors">無法取得顏色設定值</string>
   <string name="mailbox_action_move_messages_failed">無法進行移動操作</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">無法擷取資料夾</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">對話已移至 %s</string>
+  <string name="mailbox_action_move_message">訊息已移至 %s</string>
   <string name="mailbox_search_placeholder_text">搜尋訊息</string>
   <string name="mailbox_search_no_results_title">未找到任何結果</string>
   <string name="mailbox_search_no_results_explanation">搜尋日期、名稱、電子郵件位址或主旨</string>

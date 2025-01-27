@@ -80,8 +80,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Renk ayarları alınamadı</string>
   <string name="mailbox_action_move_messages_failed">Taşıma işlemi tamamlanamadı</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Klasörler alınamadı</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Yazışma %s klasörüne taşındı</string>
+  <string name="mailbox_action_move_message">İleti %s klasörüne taşındı</string>
   <string name="mailbox_search_placeholder_text">İleti arama</string>
   <string name="mailbox_search_no_results_title">Herhangi bir sonuç bulunamadı</string>
   <string name="mailbox_search_no_results_explanation">Tarihe, ada, e-posta adresine veya konu satırına göre arama yapın</string>
