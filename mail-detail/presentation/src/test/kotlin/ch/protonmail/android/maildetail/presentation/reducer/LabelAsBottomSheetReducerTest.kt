@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.LabelAsBottomSheetReducer
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.label.domain.entity.LabelId
@@ -60,10 +61,11 @@ class LabelAsBottomSheetReducerTest(
                 currentState = BottomSheetState(LabelAsBottomSheetState.Loading),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
                     customLabelList = labelListWithoutSelection.map { it.labelUiModel }.toImmutableList(),
-                    selectedLabels = emptyList<LabelId>().toImmutableList()
+                    selectedLabels = emptyList<LabelId>().toImmutableList(),
+                    entryPoint = LabelAsBottomSheetEntryPoint.SelectionMode
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithoutSelection, null)
+                    LabelAsBottomSheetState.Data(labelListWithoutSelection, LabelAsBottomSheetEntryPoint.SelectionMode)
                 )
             ),
             TestInput(
@@ -73,10 +75,11 @@ class LabelAsBottomSheetReducerTest(
                     selectedLabels = labelListWithSelection
                         .filter { it.selectedState == LabelSelectedState.Selected }
                         .map { it.labelUiModel.id.labelId }
-                        .toImmutableList()
+                        .toImmutableList(),
+                    entryPoint = LabelAsBottomSheetEntryPoint.SelectionMode
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithSelection, null)
+                    LabelAsBottomSheetState.Data(labelListWithSelection, LabelAsBottomSheetEntryPoint.SelectionMode)
                 )
             ),
             TestInput(
@@ -95,37 +98,62 @@ class LabelAsBottomSheetReducerTest(
                     partiallySelectedLabels = labelListWithPartialSelection
                         .filter { it.selectedState == LabelSelectedState.PartiallySelected }
                         .map { it.labelUiModel.id.labelId }
-                        .toImmutableList()
+                        .toImmutableList(),
+                    entryPoint = LabelAsBottomSheetEntryPoint.SelectionMode
                 ),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(labelListWithPartialSelection, null)
+                    LabelAsBottomSheetState.Data(
+                        labelListWithPartialSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
                 )
             )
         )
 
         private val transitionFromDataState = listOf(
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithoutSelection, null)),
-                operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
-                expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection, null)
-                )
-            ),
-            TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithSelection, null)),
+                currentState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        labelListWithoutSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
+                ),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
-                        LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
-                        null
+                        LabelUiModelWithSelectedStateSample.customLabelListWithSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
                     )
                 )
             ),
             TestInput(
-                currentState = BottomSheetState(LabelAsBottomSheetState.Data(labelListWithPartialSelection, null)),
+                currentState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        labelListWithSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
+                ),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
                 expectedState = BottomSheetState(
-                    LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithSelection, null)
+                    LabelAsBottomSheetState.Data(
+                        LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
+                )
+            ),
+            TestInput(
+                currentState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        labelListWithPartialSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
+                ),
+                operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(labelOperation),
+                expectedState = BottomSheetState(
+                    LabelAsBottomSheetState.Data(
+                        LabelUiModelWithSelectedStateSample.customLabelListWithSelection,
+                        LabelAsBottomSheetEntryPoint.SelectionMode
+                    )
                 )
             )
         )

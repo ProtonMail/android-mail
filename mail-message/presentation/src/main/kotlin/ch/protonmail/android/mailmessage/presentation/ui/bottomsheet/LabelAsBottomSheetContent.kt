@@ -51,8 +51,8 @@ import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.extension.tintColor
 import ch.protonmail.android.maillabel.presentation.model.LabelSelectedState
 import ch.protonmail.android.maillabel.presentation.sample.LabelUiModelWithSelectedStateSample
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.uicomponents.settings.SettingsToggleItem
 import kotlinx.collections.immutable.toImmutableList
@@ -99,7 +99,7 @@ fun LabelAsBottomSheetContent(
             Text(
                 modifier = Modifier
                     .testTag(LabelAsBottomSheetTestTags.DoneButton)
-                    .clickable { actions.onDoneClick(archiveSelectedState, labelAsDataState.messageIdInConversation) },
+                    .clickable { actions.onDoneClick(archiveSelectedState, labelAsDataState.entryPoint) },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
                 style = ProtonTheme.typography.default,
                 color = ProtonTheme.colors.interactionNorm()
@@ -193,7 +193,7 @@ object LabelAsBottomSheetContent {
     data class Actions(
         val onAddLabelClick: () -> Unit,
         val onLabelAsSelected: (LabelId) -> Unit,
-        val onDoneClick: (archiveSelected: Boolean, messageIdInConversation: MessageId?) -> Unit
+        val onDoneClick: (archiveSelected: Boolean, entryPoint: LabelAsBottomSheetEntryPoint) -> Unit
     )
 }
 
@@ -205,7 +205,7 @@ fun LabelAsBottomSheetContentPreview() {
             labelAsDataState = LabelAsBottomSheetState.Data(
                 labelUiModelsWithSelectedState = LabelUiModelWithSelectedStateSample.customLabelListWithSelection
                     .toImmutableList(),
-                messageIdInConversation = null
+                entryPoint = LabelAsBottomSheetEntryPoint.Conversation
             ),
             actions = LabelAsBottomSheetContent.Actions(
                 onAddLabelClick = {},

@@ -44,7 +44,9 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
@@ -245,7 +247,7 @@ class MessageDetailReducerTest(
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolder,
                     null,
-                    null
+                    MoveToBottomSheetEntryPoint.Message(messageBodyUiModel.messageId)
                 )
             ),
             exitScreenEffect = Effect.empty(),
@@ -655,7 +657,8 @@ class MessageDetailReducerTest(
             TestInput(
                 MessageDetailEvent.MessageBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
-                        MailLabelUiModelTestData.spamAndCustomFolder
+                        MailLabelUiModelTestData.spamAndCustomFolder,
+                        entryPoint = MoveToBottomSheetEntryPoint.Message(messageBodyUiModel.messageId)
                     )
                 ),
                 shouldReduceMessageMetadataState = false,
@@ -672,7 +675,8 @@ class MessageDetailReducerTest(
                 MessageDetailEvent.MessageBottomSheetEvent(
                     LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
                         customLabelList = MailLabelUiModelTestData.customLabelList,
-                        selectedLabels = listOf<LabelId>().toImmutableList()
+                        selectedLabels = listOf<LabelId>().toImmutableList(),
+                        entryPoint = LabelAsBottomSheetEntryPoint.Message(messageBodyUiModel.messageId)
                     )
                 ),
                 shouldReduceMessageMetadataState = false,

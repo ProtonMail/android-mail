@@ -192,11 +192,11 @@ fun ConversationDetailScreen(
                         onFolderSelected = {
                             viewModel.submit(ConversationDetailViewAction.MoveToDestinationSelected(it))
                         },
-                        onDoneClick = { mailLabelText, messageIdInConversation ->
+                        onDoneClick = { mailLabelText, entryPoint ->
                             viewModel.submit(
                                 ConversationDetailViewAction.MoveToDestinationConfirmed(
                                     mailLabelText,
-                                    messageIdInConversation
+                                    entryPoint
                                 )
                             )
                         },
@@ -209,9 +209,9 @@ fun ConversationDetailScreen(
                     actions = LabelAsBottomSheetContent.Actions(
                         onAddLabelClick = actions.onAddLabel,
                         onLabelAsSelected = { viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(it)) },
-                        onDoneClick = { archiveSelected, messageIdInConversation ->
+                        onDoneClick = { archiveSelected, entryPoint ->
                             viewModel.submit(
-                                ConversationDetailViewAction.LabelAsConfirmed(archiveSelected, messageIdInConversation)
+                                ConversationDetailViewAction.LabelAsConfirmed(archiveSelected, entryPoint)
                             )
                         }
                     )

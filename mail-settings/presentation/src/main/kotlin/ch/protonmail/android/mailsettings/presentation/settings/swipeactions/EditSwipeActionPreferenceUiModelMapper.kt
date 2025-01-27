@@ -36,8 +36,7 @@ class EditSwipeActionPreferenceUiModelMapper @Inject constructor() :
         swipeActionDirection: SwipeActionDirection,
         areAdditionalSwipeActionsEnabled: Boolean
     ): List<EditSwipeActionPreferenceItemUiModel> = SwipeAction.entries
-        .filter { it != SwipeAction.LabelAs && it != SwipeAction.MoveTo }
-        .filter { areAdditionalSwipeActionsEnabled || it != SwipeAction.None }
+        .filter { it.isSwipeActionAllowed(areAdditionalSwipeActionsEnabled) }
         .map { swipeAction ->
             toUiModel(
                 swipeAction = swipeAction,
@@ -75,3 +74,7 @@ class EditSwipeActionPreferenceUiModelMapper @Inject constructor() :
         isSelected = isSelected
     )
 }
+
+fun SwipeAction.isSwipeActionAllowed(areAdditionalSwipeActionsEnabled: Boolean) =
+    areAdditionalSwipeActionsEnabled || this != SwipeAction.LabelAs &&
+        this != SwipeAction.MoveTo && this != SwipeAction.None

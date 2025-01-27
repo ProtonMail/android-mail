@@ -221,6 +221,8 @@ fun MailboxScreen(
         onSwipeStar = { userId, itemId, isStarred ->
             viewModel.submit(MailboxViewAction.SwipeStarAction(userId, itemId, isStarred))
         },
+        onSwipeLabelAs = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeLabelAsAction(userId, itemId)) },
+        onSwipeMoveTo = { userId, itemId -> viewModel.submit(MailboxViewAction.SwipeMoveToAction(userId, itemId)) },
         onEnterSearchMode = { viewModel.submit(MailboxViewAction.EnterSearchMode) },
         onSearchQuery = { query -> viewModel.submit(MailboxViewAction.SearchQuery(query)) },
         onSearchResult = { viewModel.submit(MailboxViewAction.SearchResult) },
@@ -284,7 +286,9 @@ fun MailboxScreen(
                     actions = MoveToBottomSheetContent.Actions(
                         onAddFolderClick = actions.onAddFolder,
                         onFolderSelected = { viewModel.submit(MailboxViewAction.MoveToDestinationSelected(it)) },
-                        onDoneClick = { _, _ -> viewModel.submit(MailboxViewAction.MoveToConfirmed) },
+                        onDoneClick = { _, entryPoint ->
+                            viewModel.submit(MailboxViewAction.MoveToConfirmed(entryPoint))
+                        },
                         onDismiss = { viewModel.submit(MailboxViewAction.DismissBottomSheet) }
                     )
                 )
@@ -294,8 +298,8 @@ fun MailboxScreen(
                     actions = LabelAsBottomSheetContent.Actions(
                         onAddLabelClick = actions.onAddLabel,
                         onLabelAsSelected = { viewModel.submit(MailboxViewAction.LabelAsToggleAction(it)) },
-                        onDoneClick = { archiveSelected, _ ->
-                            viewModel.submit(MailboxViewAction.LabelAsConfirmed(archiveSelected))
+                        onDoneClick = { archiveSelected, entryPoint ->
+                            viewModel.submit(MailboxViewAction.LabelAsConfirmed(archiveSelected, entryPoint))
                         }
                     )
                 )
@@ -874,8 +878,8 @@ private fun generateSwipeActions(
                 actions.onSwipeRead(it.userId, it.id, it.isRead)
             }
         },
-        onLabelAs = {},
-        onMoveTo = {}
+        onLabelAs = { actions.onSwipeLabelAs(item.userId, item.id) },
+        onMoveTo = { actions.onSwipeMoveTo(item.userId, item.id) }
     )
 }
 
@@ -1098,6 +1102,8 @@ object MailboxScreen {
         val onSwipeSpam: (UserId, String) -> Unit,
         val onSwipeTrash: (UserId, String) -> Unit,
         val onSwipeStar: (UserId, String, Boolean) -> Unit,
+        val onSwipeLabelAs: (UserId, String) -> Unit,
+        val onSwipeMoveTo: (UserId, String) -> Unit,
         val onEnterSearchMode: () -> Unit,
         val onSearchQuery: (String) -> Unit,
         val onSearchResult: () -> Unit,
@@ -1155,6 +1161,8 @@ object MailboxScreen {
                 onSwipeSpam = { _, _ -> },
                 onSwipeTrash = { _, _ -> },
                 onSwipeStar = { _, _, _ -> },
+                onSwipeLabelAs = { _, _ -> },
+                onSwipeMoveTo = { _, _ -> },
                 onExitSearchMode = {},
                 onEnterSearchMode = {},
                 onSearchQuery = {},

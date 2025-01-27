@@ -37,7 +37,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOpera
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingTopAppBar
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation.AffectingUnreadFilter
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
@@ -97,20 +99,25 @@ internal sealed interface MailboxViewAction : MailboxOperation {
     object DeleteDialogDismissed : MailboxViewAction, AffectingDeleteDialog
     object RequestLabelAsBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val label: LabelId) : MailboxViewAction, AffectingBottomSheet
-    data class LabelAsConfirmed(val archiveSelected: Boolean) : MailboxViewAction, AffectingBottomSheet
+    data class LabelAsConfirmed(
+        val archiveSelected: Boolean,
+        val entryPoint: LabelAsBottomSheetEntryPoint
+    ) : MailboxViewAction, AffectingBottomSheet
 
     data class SwipeReadAction(val userId: UserId, val itemId: String, val isRead: Boolean) : MailboxViewAction
     data class SwipeArchiveAction(val userId: UserId, val itemId: String) : MailboxViewAction
     data class SwipeSpamAction(val userId: UserId, val itemId: String) : MailboxViewAction
     data class SwipeTrashAction(val userId: UserId, val itemId: String) : MailboxViewAction
     data class SwipeStarAction(val userId: UserId, val itemId: String, val isStarred: Boolean) : MailboxViewAction
+    data class SwipeLabelAsAction(val userId: UserId, val itemId: String) : MailboxViewAction, AffectingBottomSheet
+    data class SwipeMoveToAction(val userId: UserId, val itemId: String) : MailboxViewAction, AffectingBottomSheet
 
     object RequestMoveToBottomSheet : MailboxViewAction, AffectingBottomSheet
     data class MoveToDestinationSelected(
         val mailLabelId: MailLabelId
     ) : MailboxViewAction, AffectingBottomSheet
 
-    object MoveToConfirmed :
+    data class MoveToConfirmed(val entryPoint: MoveToBottomSheetEntryPoint) :
         MailboxViewAction,
         AffectingTopAppBar,
         AffectingBottomAppBar,

@@ -10,6 +10,7 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.toUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -73,7 +74,7 @@ class LoadDataForMessageLabelAsBottomSheetTest {
                 ) as MailLabelUiModel.Custom
             }.toImmutableList(),
             selectedLabels = listOf(MailLabelTestData.customLabelOne.id.labelId).toImmutableList(),
-            messageIdInConversation = messageId
+            entryPoint = LabelAsBottomSheetEntryPoint.Message(messageId)
         )
         assertEquals(expected, actual)
     }
@@ -90,7 +91,7 @@ class LoadDataForMessageLabelAsBottomSheetTest {
         val expected = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = emptyList<MailLabelUiModel.Custom>().toImmutableList(),
             selectedLabels = listOf(MailLabelTestData.customLabelOne.id.labelId).toImmutableList(),
-            messageIdInConversation = messageId
+            entryPoint = LabelAsBottomSheetEntryPoint.Message(messageId)
         )
         assertEquals(expected, actual)
     }
@@ -113,7 +114,7 @@ class LoadDataForMessageLabelAsBottomSheetTest {
                 ) as MailLabelUiModel.Custom
             }.toImmutableList(),
             selectedLabels = emptyList<LabelId>().toImmutableList(),
-            messageIdInConversation = messageId
+            entryPoint = LabelAsBottomSheetEntryPoint.Message(messageId)
         )
         assertEquals(expected, actual)
     }

@@ -41,6 +41,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MimeTypeUiModel
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -93,7 +94,7 @@ object MessageDetailsPreviewData {
             MoveToBottomSheetState.Data(
                 moveToDestinations = emptyList<MailLabelUiModel>().toImmutableList(),
                 selected = null,
-                messageIdInConversation = null
+                entryPoint = MoveToBottomSheetEntryPoint.Conversation
             )
         ),
         exitScreenEffect = Effect.empty(),

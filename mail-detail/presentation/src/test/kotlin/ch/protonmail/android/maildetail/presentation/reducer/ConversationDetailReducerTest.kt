@@ -44,6 +44,8 @@ import ch.protonmail.android.maillabel.presentation.mapper.MailLabelTextMapper
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import io.mockk.Called
 import io.mockk.mockk
@@ -193,14 +195,17 @@ class ConversationDetailReducerTest(
 
         val actions = listOf(
             ConversationDetailViewAction.MarkUnread affects Exit,
-            ConversationDetailViewAction.MoveToDestinationConfirmed(MailLabelText("spam"), null) affects listOf(
+            ConversationDetailViewAction.MoveToDestinationConfirmed(
+                MailLabelText("spam"),
+                MoveToBottomSheetEntryPoint.Conversation
+            ) affects listOf(
                 BottomSheet,
                 ExitWithResult(
                     UndoableActionResult(TextUiModel(string.conversation_moved_to_selected_destination, "spam"))
                 )
             ),
             ConversationDetailViewAction.MoveToDestinationConfirmed(
-                MailLabelText("spam"), MessageId(messageId.id)
+                MailLabelText("spam"), MoveToBottomSheetEntryPoint.Message(MessageId(messageId.id))
             ) affects BottomSheet,
             ConversationDetailViewAction.RequestMoveToBottomSheet affects BottomSheet,
             ConversationDetailViewAction.DismissBottomSheet affects BottomSheet,
@@ -215,13 +220,19 @@ class ConversationDetailReducerTest(
             ConversationDetailViewAction.RequestConversationLabelAsBottomSheet affects BottomSheet,
             ConversationDetailViewAction.RequestContactActionsBottomSheet(participant, avatar) affects BottomSheet,
             ConversationDetailViewAction.LabelAsToggleAction(LabelIdSample.Label2022) affects BottomSheet,
-            ConversationDetailViewAction.LabelAsConfirmed(false, null) affects BottomSheet,
-            ConversationDetailViewAction.LabelAsConfirmed(true, null) affects listOf(
+            ConversationDetailViewAction.LabelAsConfirmed(
+                false,
+                LabelAsBottomSheetEntryPoint.Conversation
+            ) affects BottomSheet,
+            ConversationDetailViewAction.LabelAsConfirmed(
+                true,
+                LabelAsBottomSheetEntryPoint.Conversation
+            ) affects listOf(
                 BottomSheet,
                 ExitWithResult(DefinitiveActionResult(TextUiModel(string.conversation_moved_to_archive)))
             ),
             ConversationDetailViewAction.LabelAsConfirmed(
-                true, MessageId(messageId.id)
+                true, LabelAsBottomSheetEntryPoint.Message(MessageId(messageId.id))
             ) affects BottomSheet,
             ConversationDetailViewAction.MessageBodyLinkClicked(messageId, mockk()) affects LinkClick,
             ConversationDetailViewAction.RequestScrollTo(messageId) affects MessageScroll,

@@ -52,8 +52,8 @@ import ch.protonmail.android.maillabel.presentation.MailLabelUiModel
 import ch.protonmail.android.maillabel.presentation.iconRes
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
 import ch.protonmail.android.maillabel.presentation.textRes
-import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.R
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import kotlinx.collections.immutable.toImmutableList
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -94,7 +94,7 @@ fun MoveToBottomSheetContent(dataState: MoveToBottomSheetState.Data, actions: Mo
                     .testTag(MoveToBottomSheetTestTags.DoneButton)
                     .clickable {
                         selectedMailLabel?.let {
-                            actions.onDoneClick(MailLabelText(it), dataState.messageIdInConversation)
+                            actions.onDoneClick(MailLabelText(it), dataState.entryPoint)
                         } ?: actions.onDismiss()
                     },
                 text = stringResource(id = R.string.bottom_sheet_done_action),
@@ -186,7 +186,7 @@ object MoveToBottomSheetContent {
     data class Actions(
         val onAddFolderClick: () -> Unit,
         val onFolderSelected: (MailLabelId) -> Unit,
-        val onDoneClick: (MailLabelText, MessageId?) -> Unit,
+        val onDoneClick: (MailLabelText, MoveToBottomSheetEntryPoint) -> Unit,
         val onDismiss: () -> Unit
     )
 }
@@ -251,7 +251,7 @@ fun MoveToBottomSheetContentPreview() {
                     iconPaddingStart = 0.dp
                 )
             ).toImmutableList(),
-            messageIdInConversation = null
+            entryPoint = MoveToBottomSheetEntryPoint.Conversation
         ),
         actions = MoveToBottomSheetContent.Actions(
             onAddFolderClick = {},

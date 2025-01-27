@@ -156,7 +156,9 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCol
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailmessage.presentation.reducer.ContactActionsBottomSheetReducer
@@ -1910,7 +1912,7 @@ class ConversationDetailViewModelIntegrationTest {
             assertEquals(
                 LabelAsBottomSheetState.Data(
                     LabelUiModelWithSelectedStateSample.customLabelListWithFirstTwoSelected,
-                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                    LabelAsBottomSheetEntryPoint.Message(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
                 ),
                 bottomSheetContentState
             )
@@ -1973,7 +1975,7 @@ class ConversationDetailViewModelIntegrationTest {
             viewModel.submit(
                 ConversationDetailViewAction.LabelAsConfirmed(
                     true,
-                    MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+                    LabelAsBottomSheetEntryPoint.Message(MessageWithLabelsSample.InvoiceWithLabel.message.messageId)
                 )
             )
             skipItems(1)
@@ -2261,7 +2263,7 @@ class ConversationDetailViewModelIntegrationTest {
                         labels = listOf()
                     ).toUiModels(defaultFolderColorSettings).let { it.folders + it.systems }.toImmutableList(),
                     null,
-                    messageId
+                    MoveToBottomSheetEntryPoint.Message(messageId)
                 ),
                 bottomSheetContentState
             )
@@ -2327,7 +2329,7 @@ class ConversationDetailViewModelIntegrationTest {
             viewModel.submit(
                 ConversationDetailViewAction.MoveToDestinationConfirmed(
                     MailLabelText(MailLabelId.System.Spam.toString()),
-                    messageId
+                    MoveToBottomSheetEntryPoint.Message(messageId)
                 )
             )
 
@@ -2413,7 +2415,7 @@ class ConversationDetailViewModelIntegrationTest {
             viewModel.submit(
                 ConversationDetailViewAction.MoveToDestinationConfirmed(
                     MailLabelText(MailLabelId.System.Spam.toString()),
-                    messageId
+                    MoveToBottomSheetEntryPoint.Message(messageId)
                 )
             )
 

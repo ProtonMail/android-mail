@@ -19,6 +19,7 @@
 package ch.protonmail.android.mailmailbox.presentation.mailbox.reducer
 
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
+import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.DialogState
@@ -42,7 +43,9 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UnreadFilter
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.UpgradeStorageState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxStateSampleData
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
@@ -305,6 +308,17 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
+                MailboxViewAction.SwipeLabelAsAction(userId = UserSample.Primary.userId, itemId = "Item1"),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
                 MailboxViewAction.DismissBottomSheet,
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
@@ -327,7 +341,10 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
-                MailboxViewAction.LabelAsConfirmed(archiveSelected = true),
+                MailboxViewAction.LabelAsConfirmed(
+                    archiveSelected = true,
+                    entryPoint = LabelAsBottomSheetEntryPoint.SelectionMode
+                ),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
                 shouldReduceUnreadFilterState = false,
@@ -349,6 +366,17 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
+                MailboxViewAction.SwipeMoveToAction(userId = UserSample.Primary.userId, itemId = "Item1"),
+                shouldReduceMailboxListState = false,
+                shouldReduceTopAppBarState = false,
+                shouldReduceUnreadFilterState = false,
+                shouldReduceBottomAppBarState = false,
+                shouldReduceActionMessage = false,
+                shouldReduceDeleteDialog = false,
+                shouldReduceBottomSheetState = true,
+                shouldReduceStorageLimitState = false
+            ),
+            TestInput(
                 MailboxViewAction.MoveToDestinationSelected(MailLabelId.System.Archive),
                 shouldReduceMailboxListState = false,
                 shouldReduceTopAppBarState = false,
@@ -360,7 +388,7 @@ internal class MailboxReducerTest(
                 shouldReduceStorageLimitState = false
             ),
             TestInput(
-                MailboxViewAction.MoveToConfirmed,
+                MailboxViewAction.MoveToConfirmed(entryPoint = MoveToBottomSheetEntryPoint.SelectionMode),
                 shouldReduceMailboxListState = true,
                 shouldReduceTopAppBarState = true,
                 shouldReduceUnreadFilterState = false,

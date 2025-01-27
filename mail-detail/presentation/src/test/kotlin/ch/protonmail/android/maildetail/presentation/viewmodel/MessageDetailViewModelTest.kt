@@ -119,6 +119,7 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -378,7 +379,8 @@ class MessageDetailViewModelTest {
                     FolderColorSettings(), emptyMap(), MailLabelTestData.customLabelOne.id
                 ) as MailLabelUiModel.Custom
             }.toImmutableList(),
-            selectedLabels = emptyList<LabelId>().toImmutableList()
+            selectedLabels = emptyList<LabelId>().toImmutableList(),
+            entryPoint = LabelAsBottomSheetEntryPoint.Message(messageId)
         )
     }
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()

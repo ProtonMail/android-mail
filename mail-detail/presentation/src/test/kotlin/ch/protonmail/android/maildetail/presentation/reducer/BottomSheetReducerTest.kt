@@ -27,9 +27,11 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSh
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MailboxUpsellingEntryPoint
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.UpsellingBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.reducer.BottomSheetReducer
@@ -154,7 +156,7 @@ internal class BottomSheetReducerTest(
                     MoveToBottomSheetState.Data(
                         listOf<MailLabelUiModel>().toImmutableList(),
                         null,
-                        null
+                        MoveToBottomSheetEntryPoint.SelectionMode
                     )
                 ),
                 operation = BottomSheetOperation.Dismiss,
@@ -173,14 +175,15 @@ internal class BottomSheetReducerTest(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
                     listOf<MailLabelUiModel>()
-                        .toImmutableList()
+                        .toImmutableList(),
+                    entryPoint = MoveToBottomSheetEntryPoint.SelectionMode
                 ),
                 expectedState = BottomSheetState(
                     MoveToBottomSheetState.Data(
                         listOf<MailLabelUiModel>()
                             .toImmutableList(),
                         null,
-                        null
+                        MoveToBottomSheetEntryPoint.SelectionMode
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,
@@ -196,15 +199,16 @@ internal class BottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
-                    listOf<MailLabelUiModel.Custom>()
+                    customLabelList = listOf<MailLabelUiModel.Custom>()
                         .toImmutableList(),
-                    listOf<LabelId>().toImmutableList()
+                    selectedLabels = listOf<LabelId>().toImmutableList(),
+                    entryPoint = LabelAsBottomSheetEntryPoint.SelectionMode
                 ),
                 expectedState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
                             .toImmutableList(),
-                        null
+                        LabelAsBottomSheetEntryPoint.SelectionMode
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,
@@ -219,7 +223,7 @@ internal class BottomSheetReducerTest(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
                             .toImmutableList(),
-                        null
+                        LabelAsBottomSheetEntryPoint.SelectionMode
                     )
                 ),
                 operation = LabelAsBottomSheetState.LabelAsBottomSheetAction.LabelToggled(LabelId("labelId")),
@@ -227,7 +231,7 @@ internal class BottomSheetReducerTest(
                     LabelAsBottomSheetState.Data(
                         listOf<LabelUiModelWithSelectedState>()
                             .toImmutableList(),
-                        null
+                        LabelAsBottomSheetEntryPoint.SelectionMode
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,

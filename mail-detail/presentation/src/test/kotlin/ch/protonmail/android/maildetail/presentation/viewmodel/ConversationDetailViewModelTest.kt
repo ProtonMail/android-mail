@@ -117,7 +117,9 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameRe
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -1057,7 +1059,7 @@ class ConversationDetailViewModelTest {
                 MoveToBottomSheetState.Data(
                     moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
                     selected = null,
-                    null
+                    entryPoint = MoveToBottomSheetEntryPoint.Conversation
                 )
             )
         )
@@ -1072,7 +1074,7 @@ class ConversationDetailViewModelTest {
                 MoveToBottomSheetState.Data(
                     MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected,
                     MailLabelUiModelTestData.spamAndCustomFolderWithSpamSelected.first(),
-                    null
+                    entryPoint = MoveToBottomSheetEntryPoint.Conversation
                 )
             )
         )
@@ -1080,7 +1082,10 @@ class ConversationDetailViewModelTest {
         coEvery {
             reducer.newStateFrom(
                 any(),
-                ConversationDetailViewAction.MoveToDestinationConfirmed(MailLabelText("selectedLabel"), null)
+                ConversationDetailViewAction.MoveToDestinationConfirmed(
+                    MailLabelText("selectedLabel"),
+                    MoveToBottomSheetEntryPoint.Conversation
+                )
             )
         } returns ConversationDetailState.Loading.copy(
             exitScreenWithMessageEffect = Effect.of(
@@ -1098,7 +1103,7 @@ class ConversationDetailViewModelTest {
             viewModel.submit(
                 ConversationDetailViewAction.MoveToDestinationConfirmed(
                     MailLabelText("selectedLabel"),
-                    null
+                    MoveToBottomSheetEntryPoint.Conversation
                 )
             )
             advanceUntilIdle()
@@ -1125,14 +1130,15 @@ class ConversationDetailViewModelTest {
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
             selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId).toImmutableList(),
-            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList()
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList(),
+            entryPoint = LabelAsBottomSheetEntryPoint.Conversation
         )
 
         val expectedResult = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
                     LabelUiModelWithSelectedStateSample.customLabelListWithPartialSelection.toImmutableList(),
-                    null
+                    LabelAsBottomSheetEntryPoint.Conversation
                 )
             )
         )
@@ -1181,12 +1187,16 @@ class ConversationDetailViewModelTest {
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
             selectedLabels = listOf<LabelId>().toImmutableList(),
-            partiallySelectedLabels = listOf<LabelId>().toImmutableList()
+            partiallySelectedLabels = listOf<LabelId>().toImmutableList(),
+            entryPoint = LabelAsBottomSheetEntryPoint.Conversation
         )
 
         val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection, null)
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
+                    LabelAsBottomSheetEntryPoint.Conversation
+                )
             )
         )
 
@@ -1227,7 +1237,7 @@ class ConversationDetailViewModelTest {
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
                     LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected,
-                    null
+                    LabelAsBottomSheetEntryPoint.Conversation
                 )
             )
         )
@@ -1237,7 +1247,12 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false, null))
+            viewModel.submit(
+                ConversationDetailViewAction.LabelAsConfirmed(
+                    false,
+                    LabelAsBottomSheetEntryPoint.Conversation
+                )
+            )
             advanceUntilIdle()
 
             // Then
@@ -1278,14 +1293,15 @@ class ConversationDetailViewModelTest {
             val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
                 customLabelList = MailLabelUiModelTestData.customLabelList,
                 selectedLabels = listOf<LabelId>().toImmutableList(),
-                partiallySelectedLabels = listOf<LabelId>().toImmutableList()
+                partiallySelectedLabels = listOf<LabelId>().toImmutableList(),
+                entryPoint = LabelAsBottomSheetEntryPoint.Conversation
             )
 
             val dataState = ConversationDetailState.Loading.copy(
                 bottomSheetState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         LabelUiModelWithSelectedStateSample.customLabelListWithoutSelection,
-                        null
+                        LabelAsBottomSheetEntryPoint.Conversation
                     )
                 )
             )
@@ -1335,13 +1351,16 @@ class ConversationDetailViewModelTest {
                 bottomSheetState = BottomSheetState(
                     LabelAsBottomSheetState.Data(
                         LabelUiModelWithSelectedStateSample.customLabelListWithDocumentSelected,
-                        null
+                        LabelAsBottomSheetEntryPoint.Conversation
                     )
                 )
             )
 
             coEvery {
-                reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true, null))
+                reducer.newStateFrom(
+                    any(),
+                    ConversationDetailViewAction.LabelAsConfirmed(true, LabelAsBottomSheetEntryPoint.Conversation)
+                )
             } returns ConversationDetailState.Loading.copy(
                 exitScreenWithMessageEffect = Effect.of(
                     ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_archive))
@@ -1353,7 +1372,12 @@ class ConversationDetailViewModelTest {
                 advanceUntilIdle()
                 viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Document.labelId))
                 advanceUntilIdle()
-                viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(true, null))
+                viewModel.submit(
+                    ConversationDetailViewAction.LabelAsConfirmed(
+                        true,
+                        LabelAsBottomSheetEntryPoint.Conversation
+                    )
+                )
                 advanceUntilIdle()
 
                 // Then
@@ -1651,7 +1675,10 @@ class ConversationDetailViewModelTest {
         )
 
         coEvery {
-            reducer.newStateFrom(any(), ConversationDetailViewAction.LabelAsConfirmed(true, null))
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailViewAction.LabelAsConfirmed(true, LabelAsBottomSheetEntryPoint.Conversation)
+            )
         } returns ConversationDetailState.Loading.copy(
             exitScreenWithMessageEffect = Effect.of(
                 ActionResult.UndoableActionResult(TextUiModel(string.conversation_moved_to_archive))
@@ -1687,14 +1714,15 @@ class ConversationDetailViewModelTest {
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
             customLabelList = MailLabelUiModelTestData.customLabelList,
             selectedLabels = listOf(LabelSample.Document.labelId, LabelSample.Label2021.labelId).toImmutableList(),
-            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList()
+            partiallySelectedLabels = listOf(LabelSample.Label2022.labelId).toImmutableList(),
+            entryPoint = LabelAsBottomSheetEntryPoint.Conversation
         )
 
         val dataState = ConversationDetailState.Loading.copy(
             bottomSheetState = BottomSheetState(
                 LabelAsBottomSheetState.Data(
                     LabelUiModelWithSelectedStateSample.customLabelListWithVariousStates,
-                    null
+                    LabelAsBottomSheetEntryPoint.Conversation
                 )
             )
         )
@@ -1738,7 +1766,10 @@ class ConversationDetailViewModelTest {
             )
         } returns dataState.copy(
             bottomSheetState = BottomSheetState(
-                LabelAsBottomSheetState.Data(LabelUiModelWithSelectedStateSample.customLabelListAllSelected, null)
+                LabelAsBottomSheetState.Data(
+                    LabelUiModelWithSelectedStateSample.customLabelListAllSelected,
+                    LabelAsBottomSheetEntryPoint.Conversation
+                )
             )
         )
 
@@ -1747,7 +1778,12 @@ class ConversationDetailViewModelTest {
             advanceUntilIdle()
             viewModel.submit(ConversationDetailViewAction.LabelAsToggleAction(LabelSample.Label2022.labelId))
             advanceUntilIdle()
-            viewModel.submit(ConversationDetailViewAction.LabelAsConfirmed(false, null))
+            viewModel.submit(
+                ConversationDetailViewAction.LabelAsConfirmed(
+                    false,
+                    LabelAsBottomSheetEntryPoint.Conversation
+                )
+            )
             advanceUntilIdle()
 
             // Then
@@ -2475,7 +2511,7 @@ class ConversationDetailViewModelTest {
                 MoveToBottomSheetState.Data(
                     moveToDestinations = MailLabelUiModelTestData.spamAndCustomFolder,
                     selected = null,
-                    null
+                    entryPoint = MoveToBottomSheetEntryPoint.Conversation
                 )
             )
         )

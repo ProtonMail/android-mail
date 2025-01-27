@@ -24,6 +24,7 @@ import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
 import ch.protonmail.android.maillabel.domain.usecase.ObserveCustomMailLabels
 import ch.protonmail.android.maillabel.presentation.toCustomUiModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
 import kotlinx.collections.immutable.toImmutableList
@@ -64,7 +65,7 @@ class LoadDataForMessageLabelAsBottomSheet @Inject constructor(
             customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
                 .toImmutableList(),
             selectedLabels = selectedLabels.toImmutableList(),
-            messageIdInConversation = messageId
+            entryPoint = LabelAsBottomSheetEntryPoint.Message(messageId)
         )
     }
 }

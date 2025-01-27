@@ -37,6 +37,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewA
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.SwipeActionsUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.MailboxSearchStateSampleData
 import ch.protonmail.android.mailmailbox.presentation.mailbox.previewdata.SwipeUiModelSampleData
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData
 import ch.protonmail.android.testdata.maillabel.MailLabelTestData
@@ -1493,7 +1494,38 @@ internal class MailboxListReducerTest(
                     clearState = MailboxListState.Data.ClearState.Hidden,
                     autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
                 ),
-                operation = MailboxViewAction.MoveToConfirmed,
+                operation = MailboxViewAction.MoveToConfirmed(entryPoint = MoveToBottomSheetEntryPoint.SelectionMode),
+                expectedState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                )
+            ),
+            TestInput(
+                currentState = MailboxListState.Data.ViewMode(
+                    currentMailLabel = MailLabelTestData.customLabelOne,
+                    openItemEffect = Effect.empty(),
+                    scrollToMailboxTop = Effect.empty(),
+                    offlineEffect = Effect.empty(),
+                    refreshErrorEffect = Effect.empty(),
+                    refreshRequested = false,
+                    swipingEnabled = false,
+                    swipeActions = null,
+                    searchState = MailboxSearchStateSampleData.NotSearching,
+                    clearState = MailboxListState.Data.ClearState.Hidden,
+                    autoDeleteBannerState = MailboxListState.Data.AutoDeleteBannerState.Hidden
+                ),
+                operation = MailboxViewAction.MoveToConfirmed(
+                    entryPoint = MoveToBottomSheetEntryPoint.MoveToSwipeAction("message1")
+                ),
                 expectedState = MailboxListState.Data.ViewMode(
                     currentMailLabel = MailLabelTestData.customLabelOne,
                     openItemEffect = Effect.empty(),

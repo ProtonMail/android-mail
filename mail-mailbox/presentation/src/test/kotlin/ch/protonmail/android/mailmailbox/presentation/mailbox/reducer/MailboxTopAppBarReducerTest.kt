@@ -25,6 +25,7 @@ import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxEvent
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxOperation
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxTopAppBarState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxViewAction
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.testdata.mailbox.MailboxItemUiModelTestData.readMailboxItemUiModel
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.util.kotlin.EMPTY_STRING
@@ -187,7 +188,7 @@ internal class MailboxTopAppBarReducerTest(
             ),
             TestInput(
                 currentState = MailboxTopAppBarState.Data.SelectionMode(inboxLabel.text(), selectedCount = 42),
-                operation = MailboxViewAction.MoveToConfirmed,
+                operation = MailboxViewAction.MoveToConfirmed(MoveToBottomSheetEntryPoint.SelectionMode),
                 expectedState = MailboxTopAppBarState.Data.DefaultMode(inboxLabel.text())
             ),
             TestInput(

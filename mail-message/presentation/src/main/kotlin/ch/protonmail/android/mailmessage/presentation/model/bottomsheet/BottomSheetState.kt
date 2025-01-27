@@ -52,6 +52,20 @@ sealed interface BottomSheetOperation {
     object Dismiss : BottomSheetOperation
 }
 
+sealed interface LabelAsBottomSheetEntryPoint {
+    data object Conversation : LabelAsBottomSheetEntryPoint
+    data class Message(val messageId: MessageId) : LabelAsBottomSheetEntryPoint
+    data class LabelAsSwipeAction(val itemId: String) : LabelAsBottomSheetEntryPoint
+    data object SelectionMode : LabelAsBottomSheetEntryPoint
+}
+
+sealed interface MoveToBottomSheetEntryPoint {
+    data object Conversation : MoveToBottomSheetEntryPoint
+    data class Message(val messageId: MessageId) : MoveToBottomSheetEntryPoint
+    data class MoveToSwipeAction(val itemId: String) : MoveToBottomSheetEntryPoint
+    data object SelectionMode : MoveToBottomSheetEntryPoint
+}
+
 sealed interface MailboxUpsellingEntryPoint {
     object Mailbox : MailboxUpsellingEntryPoint
     object AutoDelete : MailboxUpsellingEntryPoint
@@ -62,17 +76,17 @@ sealed interface MoveToBottomSheetState : BottomSheetContentState {
     data class Data(
         val moveToDestinations: ImmutableList<MailLabelUiModel>,
         val selected: MailLabelUiModel?,
-        val messageIdInConversation: MessageId?
+        val entryPoint: MoveToBottomSheetEntryPoint
     ) : MoveToBottomSheetState
 
-    object Loading : MoveToBottomSheetState
+    data object Loading : MoveToBottomSheetState
 
     sealed interface MoveToBottomSheetOperation : BottomSheetOperation
 
     sealed interface MoveToBottomSheetEvent : MoveToBottomSheetOperation {
         data class ActionData(
             val moveToDestinations: ImmutableList<MailLabelUiModel>,
-            val messageIdInConversation: MessageId? = null
+            val entryPoint: MoveToBottomSheetEntryPoint
         ) : MoveToBottomSheetEvent
     }
 
@@ -85,10 +99,10 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
     data class Data(
         val labelUiModelsWithSelectedState: ImmutableList<LabelUiModelWithSelectedState>,
-        val messageIdInConversation: MessageId?
+        val entryPoint: LabelAsBottomSheetEntryPoint
     ) : LabelAsBottomSheetState
 
-    object Loading : LabelAsBottomSheetState
+    data object Loading : LabelAsBottomSheetState
 
     sealed interface LabelAsBottomSheetOperation : BottomSheetOperation
 
@@ -97,7 +111,7 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
             val customLabelList: ImmutableList<MailLabelUiModel.Custom>,
             val selectedLabels: ImmutableList<LabelId>,
             val partiallySelectedLabels: ImmutableList<LabelId> = emptyList<LabelId>().toImmutableList(),
-            val messageIdInConversation: MessageId? = null
+            val entryPoint: LabelAsBottomSheetEntryPoint
         ) : LabelAsBottomSheetEvent
     }
 

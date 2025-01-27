@@ -81,6 +81,7 @@ import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
@@ -516,7 +517,8 @@ class MessageDetailViewModel @Inject constructor(
             ) { folders, color ->
                 MessageDetailEvent.MessageBottomSheetEvent(
                     MoveToBottomSheetState.MoveToBottomSheetEvent.ActionData(
-                        folders.toUiModels(color).let { it.folders + it.systems }.toImmutableList()
+                        folders.toUiModels(color).let { it.folders + it.systems }.toImmutableList(),
+                        entryPoint = MoveToBottomSheetEntryPoint.Message(messageId)
                     )
                 )
             }

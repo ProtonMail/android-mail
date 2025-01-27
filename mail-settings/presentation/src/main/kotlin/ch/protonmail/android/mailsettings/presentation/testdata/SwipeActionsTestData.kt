@@ -23,6 +23,7 @@ import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.des
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.imageRes
 import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.titleRes
 import me.proton.core.mailsettings.domain.entity.SwipeAction
+import ch.protonmail.android.mailsettings.presentation.settings.swipeactions.isSwipeActionAllowed
 
 object SwipeActionsTestData {
 
@@ -32,8 +33,7 @@ object SwipeActionsTestData {
             selected: SwipeAction?,
             additionalSwipeActions: Boolean = false
         ): List<EditSwipeActionPreferenceItemUiModel> =
-            SwipeAction.entries.filter { it != SwipeAction.LabelAs && it != SwipeAction.MoveTo }
-                .filter { additionalSwipeActions || it != SwipeAction.None }
+            SwipeAction.entries.filter { it.isSwipeActionAllowed(additionalSwipeActions) }
                 .map { buildItem(it, isSelected = it == selected) }
 
         fun buildItem(swipeAction: SwipeAction, isSelected: Boolean) = EditSwipeActionPreferenceItemUiModel(

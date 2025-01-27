@@ -41,6 +41,8 @@ import ch.protonmail.android.mailmessage.domain.model.AttachmentWorkerStatus
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetOperation
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.label.domain.entity.LabelId
 
@@ -182,14 +184,14 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
 
     data class MoveToDestinationConfirmed(
         val mailLabelText: MailLabelText,
-        val messageId: MessageId?
+        val entryPoint: MoveToBottomSheetEntryPoint
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     object RequestConversationLabelAsBottomSheet : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsToggleAction(val labelId: LabelId) : ConversationDetailViewAction, AffectingBottomSheet
     data class LabelAsConfirmed(
         val archiveSelected: Boolean,
-        val messageId: MessageId?
+        val entryPoint: LabelAsBottomSheetEntryPoint
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :

@@ -120,7 +120,9 @@ import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
@@ -268,7 +270,7 @@ class ConversationDetailViewModel @Inject constructor(
             is Trash -> moveConversationToTrash()
             is ConversationDetailViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
             is RequestMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
-            is MoveToDestinationConfirmed -> onMoveToDestinationConfirmed(action.mailLabelText, action.messageId)
+            is MoveToDestinationConfirmed -> onMoveToDestinationConfirmed(action.mailLabelText, action.entryPoint)
             is RequestConversationLabelAsBottomSheet -> showConversationLabelAsBottomSheet(action)
             is RequestContactActionsBottomSheet -> showContactActionsBottomSheetAndLoadData(action)
             is LabelAsConfirmed -> onLabelAsConfirmed(action)
@@ -572,9 +574,10 @@ class ConversationDetailViewModel @Inject constructor(
                         moveToDestinations = folders.toUiModels(color).let {
                             it.folders + it.systems
                         }.toImmutableList(),
-                        messageIdInConversation = when (initialEvent) {
-                            is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> initialEvent.messageId
-                            else -> null
+                        entryPoint = when (initialEvent) {
+                            is ConversationDetailViewAction.RequestMessageMoveToBottomSheet ->
+                                MoveToBottomSheetEntryPoint.Message(initialEvent.messageId)
+                            else -> MoveToBottomSheetEntryPoint.Conversation
                         }
                     )
                 )
@@ -631,7 +634,8 @@ class ConversationDetailViewModel @Inject constructor(
                     customLabelList = mappedLabels.map { it.toCustomUiModel(color, emptyMap(), null) }
                         .toImmutableList(),
                     selectedLabels = selectedLabels.toImmutableList(),
-                    partiallySelectedLabels = partiallySelectedLabels.toImmutableList()
+                    partiallySelectedLabels = partiallySelectedLabels.toImmutableList(),
+                    entryPoint = LabelAsBottomSheetEntryPoint.Conversation
                 )
             )
             emitNewStateFrom(event)
@@ -653,10 +657,11 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun onLabelAsConfirmed(operation: LabelAsConfirmed) {
-        if (operation.messageId != null) {
-            onMessageLabelAsConfirmed(operation.archiveSelected, operation.messageId)
-        } else {
-            onConversationLabelAsConfirmed(operation.archiveSelected)
+        when (operation.entryPoint) {
+            LabelAsBottomSheetEntryPoint.Conversation -> onConversationLabelAsConfirmed(operation.archiveSelected)
+            is LabelAsBottomSheetEntryPoint.Message ->
+                onMessageLabelAsConfirmed(operation.archiveSelected, operation.entryPoint.messageId)
+            else -> throw IllegalStateException("Invalid entry point for label as confirmed")
         }
     }
 
@@ -679,7 +684,7 @@ class ConversationDetailViewModel @Inject constructor(
                         Timber.e("Relabel message failed: $it")
                         ConversationDetailEvent.ErrorLabelingConversation
                     },
-                    ifRight = { LabelAsConfirmed(archiveSelected, messageId) }
+                    ifRight = { LabelAsConfirmed(archiveSelected, LabelAsBottomSheetEntryPoint.Message(messageId)) }
                 )
             emitNewStateFrom(operation)
         }
@@ -723,14 +728,14 @@ class ConversationDetailViewModel @Inject constructor(
 
                 performSafeExitAction(
                     onLeft = ConversationDetailEvent.ErrorLabelingConversation,
-                    onRight = LabelAsConfirmed(true, null)
+                    onRight = LabelAsConfirmed(true, LabelAsBottomSheetEntryPoint.Conversation)
                 ) {
                     relabelAction()
                 }
             } else {
                 val operation = relabelAction().fold(
                     ifLeft = { ConversationDetailEvent.ErrorLabelingConversation },
-                    ifRight = { LabelAsConfirmed(false, null) }
+                    ifRight = { LabelAsConfirmed(false, LabelAsBottomSheetEntryPoint.Conversation) }
                 )
                 emitNewStateFrom(operation)
             }
@@ -742,7 +747,7 @@ class ConversationDetailViewModel @Inject constructor(
             val userId = primaryUserId.first()
             performSafeExitAction(
                 onLeft = ConversationDetailEvent.ErrorLabelingConversation,
-                onRight = LabelAsConfirmed(true, null)
+                onRight = LabelAsConfirmed(true, LabelAsBottomSheetEntryPoint.Conversation)
             ) {
                 moveConversation(
                     userId = userId,
@@ -925,22 +930,32 @@ class ConversationDetailViewModel @Inject constructor(
         viewModelScope.launch { emitNewStateFrom(action) }
     }
 
-    private fun onMoveToDestinationConfirmed(mailLabelText: MailLabelText, messageId: MessageId?) {
-        if (messageId == null) {
-            onConversationMoveToDestinationConfirmed(mailLabelText)
-        } else {
-            onMessageMoveToDestinationConfirmed(mailLabelText, messageId)
+    private fun onMoveToDestinationConfirmed(mailLabelText: MailLabelText, entryPoint: MoveToBottomSheetEntryPoint) {
+        when (entryPoint) {
+            is MoveToBottomSheetEntryPoint.Conversation -> onConversationMoveToDestinationConfirmed(
+                mailLabelText, entryPoint
+            )
+
+            is MoveToBottomSheetEntryPoint.Message -> onMessageMoveToDestinationConfirmed(
+                mailLabelText,
+                entryPoint.messageId
+            )
+
+            else -> throw IllegalStateException("Invalid entry point for move to destination confirmed")
         }
     }
 
-    private fun onConversationMoveToDestinationConfirmed(mailLabelText: MailLabelText) {
+    private fun onConversationMoveToDestinationConfirmed(
+        mailLabelText: MailLabelText,
+        entryPoint: MoveToBottomSheetEntryPoint.Conversation
+    ) {
         viewModelScope.launch {
             when (val state = state.value.bottomSheetState?.contentState) {
                 is MoveToBottomSheetState.Data -> {
                     state.selected?.let { mailLabelUiModel ->
                         performSafeExitAction(
                             onLeft = ConversationDetailEvent.ErrorMovingConversation,
-                            onRight = MoveToDestinationConfirmed(mailLabelText, null)
+                            onRight = MoveToDestinationConfirmed(mailLabelText, entryPoint)
                         ) { userId ->
                             moveConversation(userId, conversationId, mailLabelUiModel.id.labelId)
                         }
