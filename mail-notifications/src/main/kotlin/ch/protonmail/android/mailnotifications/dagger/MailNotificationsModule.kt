@@ -30,6 +30,8 @@ import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemo
 import ch.protonmail.android.mailnotifications.data.remote.NotificationTokenRemoteDataSourceImpl
 import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepository
 import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionRepositoryImpl
+import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionTelemetryRepository
+import ch.protonmail.android.mailnotifications.data.repository.NotificationPermissionTelemetryRepositoryImpl
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepository
 import ch.protonmail.android.mailnotifications.data.repository.NotificationTokenRepositoryImpl
 import ch.protonmail.android.mailnotifications.domain.handler.AccountStateAwareNotificationHandler
@@ -137,5 +139,11 @@ object MailNotificationsModule {
         fun bindNotificationPermissionRepository(
             repository: NotificationPermissionRepositoryImpl
         ): NotificationPermissionRepository
+
+        @Binds
+        @Singleton
+        fun bindNotificationPermissionTelemetryRepo(
+            repository: NotificationPermissionTelemetryRepositoryImpl
+        ): NotificationPermissionTelemetryRepository
     }
 }
