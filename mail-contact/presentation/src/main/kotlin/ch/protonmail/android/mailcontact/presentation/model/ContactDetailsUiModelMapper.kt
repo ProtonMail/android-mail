@@ -305,26 +305,21 @@ class ContactDetailsUiModelMapper @Inject constructor(
     }
 
     private fun formattedAddress(address: ContactProperty.Address): String {
-        var formattedAddress = ""
-        if (address.streetAddress.isNotBlank()) {
-            formattedAddress = formattedAddress.plus(address.streetAddress)
-        }
-        if (address.postalCode.isNotBlank()) {
-            val prefix = if (formattedAddress.isNotBlank()) "\n" else ""
-            formattedAddress = formattedAddress.plus("$prefix${address.postalCode}")
-        }
-        if (address.locality.isNotBlank()) {
-            val prefix = if (address.postalCode.isNotBlank()) ", " else ""
-            formattedAddress = formattedAddress.plus("$prefix${address.locality}")
-        }
-        if (address.region.isNotBlank()) {
-            val prefix = if (formattedAddress.isNotBlank()) "\n" else ""
-            formattedAddress = formattedAddress.plus("$prefix${address.region}")
-        }
-        if (address.country.isNotBlank()) {
-            val prefix = if (address.region.isNotBlank()) ", " else ""
-            formattedAddress = formattedAddress.plus("$prefix${address.country}")
-        }
-        return formattedAddress
+        val street = address.streetAddress.takeIfNotBlank()
+        val postalAndLocality = listOfNotNull(
+            address.postalCode.takeIfNotBlank(),
+            address.locality.takeIfNotBlank()
+        ).joinToString(separator = ", ").takeIfNotBlank()
+
+        val regionAndCountry = listOfNotNull(
+            address.region.takeIfNotBlank(),
+            address.country.takeIfNotBlank()
+        ).joinToString(separator = ", ").takeIfNotBlank()
+
+        return listOfNotNull(
+            street,
+            postalAndLocality,
+            regionAndCountry
+        ).joinToString(separator = "\n")
     }
 }

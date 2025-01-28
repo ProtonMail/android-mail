@@ -27,7 +27,6 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.usecase.DecodeByteArray
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatLocalDate
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitials
-import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.ContactProperty
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
 import ch.protonmail.android.mailcontact.presentation.model.Avatar
@@ -36,7 +35,6 @@ import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsGroups
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsItem
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModel
 import ch.protonmail.android.mailcontact.presentation.model.ContactDetailsUiModelMapper
-import ch.protonmail.android.maillabel.presentation.getHexStringFromColor
 import ch.protonmail.android.testdata.contact.ContactSample
 import io.mockk.every
 import io.mockk.mockk
@@ -67,124 +65,7 @@ class ContactDetailsUiModelMapperTest {
 
     @Test
     fun `maps DecryptedContact to ContactDetailsUiModel`() {
-        val photoByteArray = ContactImagesSample.Photo
-        val logoByteArray = ContactImagesSample.Logo
-        val decryptedContact = DecryptedContact(
-            id = ContactSample.Mario.id,
-            contactGroupLabels = listOf(
-                ContactGroupLabel(
-                    "Group 1",
-                    Color.Red.getHexStringFromColor()
-                )
-            ),
-            structuredName = ContactProperty.StructuredName(
-                family = "Last", given = "First"
-            ),
-            formattedName = ContactProperty.FormattedName(value = "Mario@protonmail.com"),
-            emails = listOf(
-                ContactProperty.Email(type = ContactProperty.Email.Type.Email, value = "Mario@protonmail.com"),
-                ContactProperty.Email(
-                    type = ContactProperty.Email.Type.Home,
-                    value = "home_email@Mario.protonmail.com"
-                ),
-                ContactProperty.Email(
-                    type = ContactProperty.Email.Type.Work,
-                    value = "work_email@Mario.protonmail.com"
-                ),
-                ContactProperty.Email(
-                    type = ContactProperty.Email.Type.Other,
-                    value = "other_email@Mario.protonmail.com"
-                )
-            ),
-            telephones = listOf(
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Telephone, text = "1231231235"),
-                ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.Home,
-                    text = "23233232323"
-                ),
-                ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.Work,
-                    text = "45454545"
-                ),
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Other, text = "565656"),
-                ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.Mobile,
-                    text = "676767"
-                ),
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Main, text = "787887"),
-                ContactProperty.Telephone(
-                    type = ContactProperty.Telephone.Type.Fax,
-                    text = "898989"
-                ),
-                ContactProperty.Telephone(type = ContactProperty.Telephone.Type.Pager, text = "90909090")
-            ),
-            addresses = listOf(
-                ContactProperty.Address(
-                    type = ContactProperty.Address.Type.Address,
-                    streetAddress = "Address Street1",
-                    locality = "City",
-                    region = "Region",
-                    postalCode = "123",
-                    country = "Country"
-                ),
-                ContactProperty.Address(
-                    type = ContactProperty.Address.Type.Other,
-                    streetAddress = "Address Other1",
-                    locality = "City",
-                    region = "Region",
-                    postalCode = "234",
-                    country = "Country"
-                ),
-                ContactProperty.Address(
-                    type = ContactProperty.Address.Type.Home,
-                    streetAddress = "Home address the rest is empty",
-                    locality = "",
-                    region = "",
-                    postalCode = "",
-                    country = ""
-                ),
-                ContactProperty.Address(
-                    type = ContactProperty.Address.Type.Work,
-                    streetAddress = "City the rest is empty",
-                    locality = "",
-                    region = "",
-                    postalCode = "",
-                    country = ""
-                )
-            ),
-            birthday = ContactProperty.Birthday(date = LocalDate.of(2023, 12, 14)),
-            notes = listOf(ContactProperty.Note(value = "Note1"), ContactProperty.Note(value = "Note2")),
-            photos = listOf(
-                ContactProperty.Photo(
-                    data = photoByteArray,
-                    contentType = "jpeg",
-                    mediaType = null,
-                    extension = null
-                )
-            ),
-            organizations = listOf(
-                ContactProperty.Organization(value = "Organization1"),
-                ContactProperty.Organization(value = "Organization2")
-            ),
-            titles = listOf(ContactProperty.Title(value = "Title")),
-            roles = listOf(ContactProperty.Role(value = "Role")),
-            timezones = listOf(ContactProperty.Timezone(text = "Europe/Paris")),
-            logos = listOf(
-                ContactProperty.Logo(
-                    data = logoByteArray,
-                    contentType = "jpeg",
-                    mediaType = null,
-                    extension = null
-                )
-            ),
-            members = listOf(ContactProperty.Member(value = "Member")),
-            languages = listOf(ContactProperty.Language(value = "English")),
-            urls = listOf(ContactProperty.Url(value = "http://proton.me")),
-            gender = ContactProperty.Gender(gender = "Gender"),
-            anniversary = ContactProperty.Anniversary(date = LocalDate.of(2023, 12, 6))
-        )
-
-        val actual = contactDetailsUiModelMapper.toContactDetailsUiModel(decryptedContact)
+        val actual = contactDetailsUiModelMapper.toContactDetailsUiModel(ContactDetailsTestData.regularContact)
 
         val expected = ContactDetailsUiModel(
             id = ContactSample.Mario.id,
@@ -192,7 +73,7 @@ class ContactDetailsUiModelMapperTest {
             defaultEmail = "Mario@protonmail.com",
             nameHeader = "Mario@protonmail.com",
             nameSubText = "First Last",
-            avatar = Avatar.Photo(bitmap = decodeByteArray(photoByteArray)!!),
+            avatar = Avatar.Photo(bitmap = decodeByteArray(ContactDetailsTestData.photoByteArray)!!),
             contactMainDetailsItemList = listOf(
                 /* Emails */
                 ContactDetailsItem.Text(
@@ -375,7 +256,7 @@ class ContactDetailsUiModelMapperTest {
                     displayIcon = false,
                     iconResId = R.drawable.ic_proton_text_align_left,
                     header = TextUiModel(R.string.contact_property_logo),
-                    value = decodeByteArray(logoByteArray)!!
+                    value = decodeByteArray(ContactDetailsTestData.logoByteArray)!!
                 ),
                 /* Members */
                 ContactDetailsItem.Text(
@@ -426,6 +307,151 @@ class ContactDetailsUiModelMapperTest {
         )
 
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `maps filled address into formatted rows`() {
+        val contact = ContactDetailsTestData.regularContact.copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "Street",
+                    locality = "Locality",
+                    region = "Region",
+                    postalCode = "Postal",
+                    country = "Country"
+                )
+            )
+        )
+
+        val expectedAddress = ContactDetailsItem.Text(
+            displayIcon = true,
+            iconResId = R.drawable.ic_proton_map_pin,
+            header = TextUiModel(R.string.contact_type_address),
+            value = TextUiModel(
+                "Street\nPostal, Locality\nRegion, Country"
+            )
+        )
+
+        val actualAddresses = contactDetailsUiModelMapper.toContactDetailsUiModel(contact).contactMainDetailsItemList
+        val addressIdx = actualAddresses.indexOfFirst { it.header == TextUiModel(R.string.contact_type_address) }
+        val actualAddress = actualAddresses[addressIdx]
+
+        assertEquals(expectedAddress, actualAddress)
+    }
+
+    @Test
+    fun `maps address with missing fields into formatted rows`() {
+        val contact = ContactDetailsTestData.regularContact.copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "Street",
+                    locality = "Locality",
+                    region = "Region",
+                    postalCode = "",
+                    country = ""
+                )
+            )
+        )
+
+        val expectedAddress = ContactDetailsItem.Text(
+            displayIcon = true,
+            iconResId = R.drawable.ic_proton_map_pin,
+            header = TextUiModel(R.string.contact_type_address),
+            value = TextUiModel(
+                "Street\nLocality\nRegion"
+            )
+        )
+
+        val actualAddresses = contactDetailsUiModelMapper.toContactDetailsUiModel(contact).contactMainDetailsItemList
+        val addressIdx = actualAddresses.indexOfFirst { it.header == TextUiModel(R.string.contact_type_address) }
+        val actualAddress = actualAddresses[addressIdx]
+
+        assertEquals(expectedAddress, actualAddress)
+    }
+
+    @Test
+    fun `maps address with more missing fields into formatted rows`() {
+        val contact = ContactDetailsTestData.regularContact.copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "Street",
+                    locality = "Locality",
+                    region = " ",
+                    postalCode = "",
+                    country = ""
+                )
+            )
+        )
+
+        val expectedAddress = ContactDetailsItem.Text(
+            displayIcon = true,
+            iconResId = R.drawable.ic_proton_map_pin,
+            header = TextUiModel(R.string.contact_type_address),
+            value = TextUiModel(
+                "Street\nLocality"
+            )
+        )
+
+        val actualAddresses = contactDetailsUiModelMapper.toContactDetailsUiModel(contact).contactMainDetailsItemList
+        val addressIdx = actualAddresses.indexOfFirst { it.header == TextUiModel(R.string.contact_type_address) }
+        val actualAddress = actualAddresses[addressIdx]
+
+        assertEquals(expectedAddress, actualAddress)
+    }
+
+    @Test
+    fun `maps address with only locality missing fields into a single row`() {
+        val contact = ContactDetailsTestData.regularContact.copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "   ",
+                    locality = "Locality",
+                    region = "",
+                    postalCode = "  ",
+                    country = ""
+                )
+            )
+        )
+
+        val expectedAddress = ContactDetailsItem.Text(
+            displayIcon = true,
+            iconResId = R.drawable.ic_proton_map_pin,
+            header = TextUiModel(R.string.contact_type_address),
+            value = TextUiModel(
+                "Locality"
+            )
+        )
+
+        val actualAddresses = contactDetailsUiModelMapper.toContactDetailsUiModel(contact).contactMainDetailsItemList
+        val addressIdx = actualAddresses.indexOfFirst { it.header == TextUiModel(R.string.contact_type_address) }
+        val actualAddress = actualAddresses[addressIdx]
+
+        assertEquals(expectedAddress, actualAddress)
+    }
+
+    @Test
+    fun `ensure an empty address is not included in the displayed items`() {
+        val contact = ContactDetailsTestData.regularContact.copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "",
+                    locality = "    ",
+                    region = "",
+                    postalCode = "  ",
+                    country = " "
+                )
+            )
+        )
+
+        val actualAddresses = contactDetailsUiModelMapper.toContactDetailsUiModel(contact).contactMainDetailsItemList
+        val addressIdx = actualAddresses.indexOfFirst { it.header == TextUiModel(R.string.contact_type_address) }
+
+        assertEquals(-1, addressIdx)
     }
 
     @Test
