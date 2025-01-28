@@ -39,10 +39,12 @@ import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
 import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
+import ch.protonmail.android.mailnotifications.domain.usecase.TrackNotificationPermissionTelemetryEvent
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
@@ -76,6 +78,7 @@ class HomeViewModel @Inject constructor(
     private val shouldShowNotificationPermissionDialog: ShouldShowNotificationPermissionDialog,
     private val savePermissionDialogTimestamp: SavePermissionDialogTimestamp,
     private val saveShouldStopShowingPermissionDialog: SaveShouldStopShowingPermissionDialog,
+    private val trackNotificationPermissionTelemetryEvent: TrackNotificationPermissionTelemetryEvent,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
@@ -151,6 +154,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun trackTelemetryEvent(eventType: NotificationPermissionTelemetryEventType) =
+        trackNotificationPermissionTelemetryEvent(eventType)
+
     private fun emitNewStateFor(messageSendingStatus: MessageSendingStatus) {
         if (messageSendingStatus == MessageSendingStatus.None) {
             // Emitting a None status to UI would override the previously emitted effect and cause snack not to show
@@ -205,17 +211,26 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             if (!shouldShowNotificationPermissionDialog(System.currentTimeMillis(), isMessageSent)) return@launch
 
+            val notificationPermissionDialogType = if (isMessageSent) {
+                NotificationPermissionDialogType.PostSending
+            } else {
+                NotificationPermissionDialogType.PostOnboarding
+            }
+
             mutableState.update { currentState ->
                 currentState.copy(
                     notificationPermissionDialogState = NotificationPermissionDialogState.Shown(
-                        type = if (isMessageSent) {
-                            NotificationPermissionDialogType.PostSending
-                        } else {
-                            NotificationPermissionDialogType.PostOnboarding
-                        }
+                        type = notificationPermissionDialogType
                     )
                 )
             }
+
+            trackTelemetryEvent(
+                NotificationPermissionTelemetryEventType.NotificationPermissionDialogDisplayed(
+                    notificationPermissionDialogType
+                )
+            )
+
             if (isMessageSent) {
                 saveShouldStopShowingPermissionDialog()
             } else {

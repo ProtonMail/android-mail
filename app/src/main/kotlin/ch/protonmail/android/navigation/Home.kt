@@ -56,7 +56,9 @@ import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
 import ch.protonmail.android.mailnotifications.presentation.EnablePushNotificationsDialog
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsidebar.presentation.Sidebar
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
 import ch.protonmail.android.navigation.listener.withDestinationChangedObservableEffect
@@ -271,14 +273,31 @@ fun Home(
         }
     }
 
-    EnablePushNotificationsDialog(
-        state = state.notificationPermissionDialogState,
-        onEnable = {
-            launcherActions.onRequestNotificationPermission()
-            viewModel.closeNotificationPermissionDialog()
-        },
-        onDismiss = { viewModel.closeNotificationPermissionDialog() }
-    )
+    when (val notificationPermissionDialogState = state.notificationPermissionDialogState) {
+        is NotificationPermissionDialogState.Hidden -> Unit
+        is NotificationPermissionDialogState.Shown -> {
+            EnablePushNotificationsDialog(
+                state = notificationPermissionDialogState,
+                onEnable = {
+                    launcherActions.onRequestNotificationPermission()
+                    viewModel.closeNotificationPermissionDialog()
+                    viewModel.trackTelemetryEvent(
+                        NotificationPermissionTelemetryEventType.NotificationPermissionDialogEnable(
+                            notificationPermissionDialogState.type
+                        )
+                    )
+                },
+                onDismiss = {
+                    viewModel.closeNotificationPermissionDialog()
+                    viewModel.trackTelemetryEvent(
+                        NotificationPermissionTelemetryEventType.NotificationPermissionDialogDismiss(
+                            notificationPermissionDialogState.type
+                        )
+                    )
+                }
+            )
+        }
+    }
 
     Scaffold(
         scaffoldState = scaffoldState,

@@ -59,18 +59,6 @@ import me.proton.core.compose.theme.defaultStrongNorm
 
 @Composable
 fun EnablePushNotificationsDialog(
-    state: NotificationPermissionDialogState,
-    onEnable: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    when (state) {
-        is NotificationPermissionDialogState.Shown -> EnablePushNotificationsDialog(state, onEnable, onDismiss)
-        is NotificationPermissionDialogState.Hidden -> Unit
-    }
-}
-
-@Composable
-fun EnablePushNotificationsDialog(
     state: NotificationPermissionDialogState.Shown,
     onEnable: () -> Unit,
     onDismiss: () -> Unit

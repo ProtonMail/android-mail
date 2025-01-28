@@ -33,9 +33,11 @@ import ch.protonmail.android.mailcomposer.domain.usecase.ResetSendingMessagesSta
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
 import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
 import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
+import ch.protonmail.android.mailnotifications.domain.usecase.TrackNotificationPermissionTelemetryEvent
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
@@ -104,6 +106,9 @@ class HomeViewModelTest {
     private val saveShouldStopShowingPermissionDialog = mockk<SaveShouldStopShowingPermissionDialog>(
         relaxUnitFun = true
     )
+    private val trackNotificationPermissionTelemetry = mockk<TrackNotificationPermissionTelemetryEvent>(
+        relaxUnitFun = true
+    )
 
     private val homeViewModel by lazy {
         HomeViewModel(
@@ -116,6 +121,7 @@ class HomeViewModelTest {
             shouldShowNotificationPermissionDialog,
             savePermissionDialogTimestamp,
             saveShouldStopShowingPermissionDialog,
+            trackNotificationPermissionTelemetry,
             observePrimaryUserMock,
             shareIntentObserver
         )
@@ -430,6 +436,13 @@ class HomeViewModelTest {
             )
             assertEquals(expected, item.notificationPermissionDialogState)
             coVerify { savePermissionDialogTimestamp(any()) }
+            verify {
+                trackNotificationPermissionTelemetry(
+                    NotificationPermissionTelemetryEventType.NotificationPermissionDialogDisplayed(
+                        NotificationPermissionDialogType.PostOnboarding
+                    )
+                )
+            }
         }
     }
 
@@ -446,6 +459,7 @@ class HomeViewModelTest {
             // Then
             val expected = NotificationPermissionDialogState.Hidden
             assertEquals(expected, item.notificationPermissionDialogState)
+            verify(exactly = 0) { trackNotificationPermissionTelemetry(any()) }
         }
     }
 
@@ -467,6 +481,13 @@ class HomeViewModelTest {
             )
             assertEquals(expected, item.notificationPermissionDialogState)
             coVerify { saveShouldStopShowingPermissionDialog() }
+            verify {
+                trackNotificationPermissionTelemetry(
+                    NotificationPermissionTelemetryEventType.NotificationPermissionDialogDisplayed(
+                        NotificationPermissionDialogType.PostSending
+                    )
+                )
+            }
         }
     }
 
@@ -485,6 +506,29 @@ class HomeViewModelTest {
             // Then
             val expected = NotificationPermissionDialogState.Hidden
             assertEquals(expected, item.notificationPermissionDialogState)
+        }
+    }
+
+    @Test
+    fun `should track telemetry event when the method is called`() = runTest {
+        // Given
+        every { networkManager.observe() } returns flowOf()
+        coEvery { shouldShowNotificationPermissionDialog(any(), isMessageSent = false) } returns true
+
+        // When
+        homeViewModel.trackTelemetryEvent(
+            NotificationPermissionTelemetryEventType.NotificationPermissionDialogDisplayed(
+                NotificationPermissionDialogType.PostOnboarding
+            )
+        )
+
+        // Then
+        verify {
+            trackNotificationPermissionTelemetry(
+                NotificationPermissionTelemetryEventType.NotificationPermissionDialogDisplayed(
+                    NotificationPermissionDialogType.PostOnboarding
+                )
+            )
         }
     }
 
