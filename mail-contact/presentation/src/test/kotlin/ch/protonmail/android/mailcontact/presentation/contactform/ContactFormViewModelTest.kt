@@ -46,6 +46,7 @@ import ch.protonmail.android.mailcontact.presentation.model.emptyTelephoneField
 import ch.protonmail.android.mailcontact.presentation.previewdata.ContactFormPreviewData.contactFormSampleData
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkObject
@@ -250,6 +251,97 @@ class ContactFormViewModelTest {
                 displaySaveLoader = true,
                 isSaveEnabled = true
             )
+
+            assertEquals(expected, actual)
+        }
+    }
+
+    @Test
+    fun `given create mode, when updating the address, the form updates accordingly and save is called`() = runTest {
+        // Given
+        expectNoSavedState()
+
+        every {
+            contactFormUiModelMapperMock.toDecryptedContact(any(), any(), any(), any())
+        } returns DecryptedContact(ContactId(""))
+        coEvery {
+            createContactMock(testUserId, any())
+        } returns Unit.right()
+
+        // When
+        contactFormViewModel.state.test {
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnUpdateDisplayName("Display"))
+
+            awaitItem()
+
+            contactFormViewModel.submit(ContactFormViewAction.OnAddItemClick(Section.Addresses))
+
+            awaitItem()
+
+            val fieldId = "2"
+            val newValue = InputField.Address(
+                fieldId = fieldId,
+                streetAddress = "Street",
+                postalCode = "Postal",
+                city = "City",
+                region = "Region",
+                country = "Country",
+                selectedType = FieldType.AddressType.Address
+            )
+            contactFormViewModel.submit(
+                ContactFormViewAction.OnUpdateItem(
+                    section = Section.Addresses,
+                    fieldId = fieldId,
+                    newValue = newValue
+                )
+            )
+
+            awaitItem()
+
+            val expectedFormAddress = InputField.Address(
+                fieldId = "2",
+                postalCode = "Postal",
+                city = "City",
+                country = "Country",
+                streetAddress = "Street",
+                region = "Region",
+                selectedType = FieldType.AddressType.Address
+            )
+
+            every {
+                contactFormUiModelMapperMock.toDecryptedContact(
+                    match {
+                        it.addresses == listOf(expectedFormAddress)
+                    },
+                    any(), any(), any()
+                )
+            } returns DecryptedContact(ContactId(""), addresses = listOf(mockk()))
+
+            contactFormViewModel.submit(ContactFormViewAction.OnSaveClick)
+
+            val actual = awaitItem()
+            val expected = ContactFormState.Data(
+                contact = emptyContactFormUiModelWithInitialFields().copy(
+                    displayName = "Display",
+                    addresses = listOf(expectedFormAddress),
+                    incrementalUniqueFieldId = 3
+                ),
+                closeWithSuccess = Effect.of(TextUiModel(R.string.contact_form_create_success)),
+                displaySaveLoader = true,
+                isSaveEnabled = true
+            )
+
+            // Then
+            coVerify(exactly = 1) {
+                createContactMock(
+                    testUserId,
+                    match { contact ->
+                        contact.addresses.isNotEmpty()
+                    }
+                )
+            }
 
             assertEquals(expected, actual)
         }

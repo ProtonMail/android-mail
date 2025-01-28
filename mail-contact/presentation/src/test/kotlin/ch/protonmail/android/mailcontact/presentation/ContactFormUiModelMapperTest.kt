@@ -148,6 +148,45 @@ class ContactFormUiModelMapperTest {
     }
 
     @Test
+    fun `maps form address to domain address correctly`() {
+        val expected = getDecryptedContact().copy(
+            addresses = listOf(
+                ContactProperty.Address(
+                    type = ContactProperty.Address.Type.Address,
+                    streetAddress = "Address Street1",
+                    locality = "City",
+                    region = "Region",
+                    postalCode = "123",
+                    country = "Country"
+                )
+            )
+        )
+        val contactFormUiModel = getContactFormUiModel()
+        val contactFormUiModelWithBlankValues = contactFormUiModel.copy(
+            addresses = listOf(
+                InputField.Address(
+                    fieldId = "0",
+                    streetAddress = "Address Street1",
+                    city = "City",
+                    region = "Region",
+                    postalCode = "123",
+                    country = "Country",
+                    selectedType = FieldType.AddressType.Address
+                )
+            )
+        )
+
+        val actual = contactFormUiModelMapper.toDecryptedContact(
+            contactFormUiModelWithBlankValues,
+            expected.contactGroupLabels,
+            expected.photos,
+            expected.logos
+        )
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun `given empty display name when mapping ContactFormUiModel to DecryptedContact use first and last name`() {
         val contactFormUiModel = getContactFormUiModel().copy(
             displayName = ""
