@@ -241,6 +241,10 @@ class ConversationDetailReducer @Inject constructor(
             DefinitiveActionResult(TextUiModel(R.string.conversation_deleted))
         )
 
+        is ConversationDetailEvent.MovedToSpam -> Effect.of(
+            DefinitiveActionResult(TextUiModel(R.string.conversation_moved_to_spam))
+        )
+
         is ConversationDetailEvent.LastMessageMoved -> {
             val textUiModel = TextUiModel.TextResWithArgs(
                 R.string.message_moved_to,

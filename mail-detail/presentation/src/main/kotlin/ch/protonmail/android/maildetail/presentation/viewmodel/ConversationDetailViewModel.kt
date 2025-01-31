@@ -316,6 +316,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ForwardLastMessage -> forwardLastMessage()
             is ConversationDetailViewAction.Archive -> archiveConversation()
             is ConversationDetailViewAction.ReportPhishingLastMessage -> reportPhishingLastMessage()
+            is ConversationDetailViewAction.MoveToSpam -> moveToSpam()
             is ConversationDetailViewAction.PrintLastMessage -> printLastMessage(action.context)
         }
     }
@@ -1041,6 +1042,24 @@ class ConversationDetailViewModel @Inject constructor(
     private fun reportPhishingLastMessage() {
         val lastMessageId = retrieveLastMessageId() ?: return
         handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.id)))
+    }
+
+    private fun moveToSpam() {
+        viewModelScope.launch {
+            val userId = primaryUserId.first()
+            performSafeExitAction(
+                onLeft = ConversationDetailEvent.ErrorMovingConversation,
+                onRight = ConversationDetailEvent.MovedToSpam
+            ) {
+                moveConversation(
+                    userId = userId,
+                    conversationId = conversationId,
+                    labelId = SystemLabelId.Spam.labelId
+                ).onLeft {
+                    Timber.e("Error while moving conversation to spam: $it")
+                }
+            }
+        }
     }
 
     private fun printLastMessage(context: Context) {

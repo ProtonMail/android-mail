@@ -115,7 +115,9 @@ data class ToolbarActionsPreference(
         private fun ActionsToolbarSetting?.createActions(default: List<ToolbarAction>, all: List<ToolbarAction>) =
             ToolbarActions(
                 current = ActionSelection(
-                    selected = this?.actions ?: default.map { ToolbarAction.enumOf(it.value) },
+                    selected = this?.actions?.takeIf {
+                        isCustom == true || it.isNotEmpty()
+                    } ?: default.map { ToolbarAction.enumOf(it.value) },
                     all = all
                 ),
                 default = default
@@ -138,28 +140,20 @@ data class ToolbarActionsPreference(
             ToolbarAction.MarkAsReadOrUnread,
             ToolbarAction.MoveToTrash,
             ToolbarAction.MoveTo,
-            ToolbarAction.LabelAs,
-            ToolbarAction.MoveToSpam
+            ToolbarAction.LabelAs
         )
 
-        val AllMessageActions: List<ToolbarAction> = listOf(
-            ToolbarAction.MarkAsReadOrUnread,
-            ToolbarAction.MoveToTrash,
-            ToolbarAction.MoveTo,
-            ToolbarAction.LabelAs,
+        val AllMessageActions: List<ToolbarAction> = MessageActions + listOf(
             ToolbarAction.ReplyOrReplyAll,
             ToolbarAction.Forward,
             ToolbarAction.StarOrUnstar,
             ToolbarAction.MoveToArchive,
+            ToolbarAction.MoveToSpam,
             ToolbarAction.Print,
             ToolbarAction.ReportPhishing
         )
 
-        val AllMailboxActions: List<ToolbarAction> = listOf(
-            ToolbarAction.MarkAsReadOrUnread,
-            ToolbarAction.MoveToTrash,
-            ToolbarAction.MoveTo,
-            ToolbarAction.LabelAs,
+        val AllMailboxActions: List<ToolbarAction> = MailboxActions + listOf(
             ToolbarAction.MoveToSpam,
             ToolbarAction.StarOrUnstar,
             ToolbarAction.MoveToArchive

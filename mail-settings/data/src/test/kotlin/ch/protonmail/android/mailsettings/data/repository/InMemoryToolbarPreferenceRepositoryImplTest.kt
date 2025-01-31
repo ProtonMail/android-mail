@@ -142,7 +142,7 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
             // Then
             val expected = expectedDefaultPreference(
                 convMode = false,
-                inboxActions = listOf(
+                mailboxActions = listOf(
                     ToolbarAction.MoveTo,
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam
@@ -193,11 +193,74 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
             // Then
             val expected = expectedDefaultPreference(
                 convMode = true,
-                inboxActions = listOf(ToolbarAction.enumOf("unknown1")) + listOf(
+                mailboxActions = listOf(ToolbarAction.enumOf("unknown1")) + listOf(
                     ToolbarAction.MoveTo,
                     ToolbarAction.Print,
                     ToolbarAction.MoveToSpam
                 ).stringEnums() + listOf(ToolbarAction.enumOf("unknown2"))
+            )
+            assertEquals(expected, awaitItem().getOrNull())
+        }
+    }
+
+    @Test
+    fun `returns default actions when user preference is empty`() = runTest {
+        // Given
+        val mobileSettings = MobileSettings(
+            listToolbar = ActionsToolbarSetting(
+                isCustom = false,
+                actions = emptyList()
+            ),
+            messageToolbar = null,
+            conversationToolbar = null
+        )
+        val settingsMock = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns mobileSettings
+        }
+        val resp = DataResult.Success(ResponseSource.Remote, settingsMock)
+        coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(resp)
+
+        // When
+        repo.inMemoryPreferences().test {
+            // Then
+            val expected = expectedDefaultPreference(
+                convMode = true,
+                mailboxActions = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
+                    ToolbarAction.MoveTo,
+                    ToolbarAction.LabelAs
+                ).stringEnums()
+            )
+            assertEquals(expected, awaitItem().getOrNull())
+        }
+    }
+
+    @Test
+    fun `returns empty actions when user preference is empty and is custom is true`() = runTest {
+        // Given
+        val mobileSettings = MobileSettings(
+            listToolbar = ActionsToolbarSetting(
+                isCustom = true,
+                actions = emptyList()
+            ),
+            messageToolbar = null,
+            conversationToolbar = null
+        )
+        val settingsMock = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns mobileSettings
+        }
+        val resp = DataResult.Success(ResponseSource.Remote, settingsMock)
+        coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(resp)
+
+        // When
+        repo.inMemoryPreferences().test {
+            // Then
+            val expected = expectedDefaultPreference(
+                convMode = true,
+                mailboxActions = emptyList()
             )
             assertEquals(expected, awaitItem().getOrNull())
         }
@@ -390,11 +453,11 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
         convMode: Boolean,
         messageActions: List<StringEnum<ToolbarAction>>? = null,
         conversationActions: List<StringEnum<ToolbarAction>>? = null,
-        inboxActions: List<StringEnum<ToolbarAction>>? = null
+        mailboxActions: List<StringEnum<ToolbarAction>>? = null
     ) = ToolbarActionsPreference(
         messageToolbar = expectedActions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
         conversationToolbar = expectedActions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
-        listToolbar = expectedActions(inboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
+        listToolbar = expectedActions(mailboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
         isConversationMode = convMode
     )
 

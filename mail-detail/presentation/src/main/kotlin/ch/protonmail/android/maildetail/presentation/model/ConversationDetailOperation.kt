@@ -147,6 +147,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val mailLabelText: MailLabelText
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
 
+    data object MovedToSpam : ConversationDetailEvent
+
     data class LastMessageMoved(val mailLabelText: MailLabelText) : ConversationDetailEvent, AffectingBottomSheet
 
     data class ReplyToMessageRequested(
@@ -172,6 +174,7 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data object ForwardLastMessage : ConversationDetailViewAction
     data class PrintLastMessage(val context: Context) : ConversationDetailViewAction
     data object ReportPhishingLastMessage : ConversationDetailViewAction
+    data object MoveToSpam : ConversationDetailViewAction
     data object Archive : ConversationDetailViewAction
     object DeleteRequested : ConversationDetailViewAction, AffectingDeleteDialog
     object DeleteDialogDismissed : ConversationDetailViewAction, AffectingDeleteDialog

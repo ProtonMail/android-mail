@@ -134,6 +134,7 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.Forward,
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive,
+                    ToolbarAction.MoveToSpam,
                     ToolbarAction.Print,
                     ToolbarAction.ReportPhishing
                 ),
@@ -141,17 +142,17 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.MarkAsReadOrUnread,
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.MoveTo,
-                    ToolbarAction.LabelAs,
-                    ToolbarAction.MoveToSpam
+                    ToolbarAction.LabelAs
                 ),
                 mailboxActionsUnselected = listOf(
+                    ToolbarAction.MoveToSpam,
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive
                 ),
                 ActionEnabledStates(
                     canAddMessage = true,
                     canRemoveMessage = true,
-                    canAddMailbox = false,
+                    canAddMailbox = true,
                     canRemoveMailbox = true
                 )
             )
@@ -177,7 +178,7 @@ class CustomizeToolbarViewModelTest {
                         "unknown3",
                         "unknown4"
                     ).map { ToolbarAction.enumOf(it) },
-                    inboxActions = listOf(
+                    mailboxActions = listOf(
                         "unknown1",
                         "label",
                         "unknown2",
@@ -206,7 +207,8 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.ReplyOrReplyAll,
                     ToolbarAction.Forward,
                     ToolbarAction.StarOrUnstar,
-                    ToolbarAction.MoveToArchive
+                    ToolbarAction.MoveToArchive,
+                    ToolbarAction.MoveToSpam
                 ),
                 mailboxActionsSelected = listOf(
                     ToolbarAction.LabelAs,
@@ -248,7 +250,7 @@ class CustomizeToolbarViewModelTest {
                         "toggle_star",
                         "unknown2"
                     ).map { ToolbarAction.enumOf(it) },
-                    inboxActions = listOf(
+                    mailboxActions = listOf(
                         "unknown1",
                         "label",
                         "unknown2",
@@ -279,7 +281,8 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.ReplyOrReplyAll,
                     ToolbarAction.Forward,
-                    ToolbarAction.MoveToArchive
+                    ToolbarAction.MoveToArchive,
+                    ToolbarAction.MoveToSpam
                 ),
                 mailboxActionsSelected = listOf(
                     ToolbarAction.LabelAs,
@@ -360,7 +363,7 @@ class CustomizeToolbarViewModelTest {
                     "report_phishing",
                     "unknown2"
                 ).map { ToolbarAction.enumOf(it) },
-                inboxActions = listOf(
+                mailboxActions = listOf(
                     "unknown1",
                     "label",
                     "unknown2",
@@ -456,11 +459,11 @@ class CustomizeToolbarViewModelTest {
         convMode: Boolean,
         messageActions: List<StringEnum<ToolbarAction>>? = null,
         conversationActions: List<StringEnum<ToolbarAction>>? = null,
-        inboxActions: List<StringEnum<ToolbarAction>>? = null
+        mailboxActions: List<StringEnum<ToolbarAction>>? = null
     ) = ToolbarActionsPreference(
         messageToolbar = actions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
         conversationToolbar = actions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
-        listToolbar = actions(inboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
+        listToolbar = actions(mailboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
         isConversationMode = convMode
     )
 

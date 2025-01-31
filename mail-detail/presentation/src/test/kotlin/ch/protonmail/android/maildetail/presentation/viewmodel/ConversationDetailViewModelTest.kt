@@ -1698,6 +1698,68 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
+    fun `verify exit is set when marked as spam`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        coEvery {
+            move(
+                userId = userId,
+                conversationId = conversationId,
+                labelId = SystemLabelId.Spam.labelId
+            )
+        } returns Unit.right()
+
+        coEvery {
+            reducer.newStateFrom(
+                any(),
+                ConversationDetailEvent.MovedToSpam
+            )
+        } returns expectedConvState.copy(
+            exitScreenWithMessageEffect = Effect.of(
+                ActionResult.UndoableActionResult(TextUiModel.Text("Test"))
+            )
+        )
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.MoveToSpam)
+
+            advanceUntilIdle()
+
+            // then
+            coVerify {
+                move(
+                    userId = userId,
+                    conversationId = conversationId,
+                    labelId = SystemLabelId.Spam.labelId
+                )
+            }
+            assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
     fun `verify relabel adds previously partially selected label`() = runTest {
         // Given
         val messages = nonEmptyListOf(ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded)

@@ -336,6 +336,9 @@ fun ConversationDetailScreen(
                 onReportPhishingClick = {
                     viewModel.submit(ConversationDetailViewAction.ReportPhishingLastMessage)
                 },
+                onMoveToSpam = {
+                    viewModel.submit(ConversationDetailViewAction.MoveToSpam)
+                },
                 onScrollRequestCompleted = { viewModel.submit(ConversationDetailViewAction.ScrollRequestCompleted) },
                 onDoNotAskLinkConfirmationAgain = {
                     viewModel.submit(ConversationDetailViewAction.DoNotAskLinkConfirmationAgain)
@@ -539,7 +542,7 @@ fun ConversationDetailScreen(
                     onReply = actions.onReplyLastMessage,
                     onReplyAll = actions.onReplyAllLastMessage,
                     onForward = actions.onForwardLastMessage,
-                    onSpam = { Timber.d("conversation onSpam clicked") },
+                    onSpam = actions.onMoveToSpam,
                     onViewInLightMode = { Timber.d("conversation onViewInLightMode clicked") },
                     onViewInDarkMode = { Timber.d("conversation onViewInDarkMode clicked") },
                     onPrint = actions.onPrintLastMessage,
@@ -848,6 +851,7 @@ object ConversationDetailScreen {
         val onForward: (MessageId) -> Unit,
         val onReplyLastMessage: () -> Unit,
         val onForwardLastMessage: () -> Unit,
+        val onMoveToSpam: () -> Unit,
         val onPrintLastMessage: () -> Unit,
         val onReplyAllLastMessage: () -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
@@ -896,6 +900,7 @@ object ConversationDetailScreen {
                 onReplyAllLastMessage = {},
                 onForwardLastMessage = {},
                 onPrintLastMessage = {},
+                onMoveToSpam = {},
                 onForward = {},
                 onBodyExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
