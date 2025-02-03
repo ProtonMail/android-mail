@@ -392,6 +392,8 @@ class ConversationDetailViewModel @Inject constructor(
                     currentViewState = conversationViewState
                 ).toImmutableList()
 
+                Timber.i("Retrieved ${messagesUiModels.size} messages")
+
                 val initialScrollTo = initialScrollToMessageId
                     ?: getMessageIdToExpand(
                         messages, filterByLocation, conversationViewState.shouldHideMessagesBasedOnTrashFilter

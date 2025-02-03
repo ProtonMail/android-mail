@@ -101,7 +101,7 @@ class CustomizeToolbarViewModel @Inject constructor(
         when (action) {
             is CustomizeToolbarOperation.ActionRemoved -> select(action.actionId, selected = false, tab)
             is CustomizeToolbarOperation.ActionSelected -> select(action.actionId, selected = true, tab)
-            CustomizeToolbarOperation.ResetToDefaultClicked -> resetToDefault(tab)
+            CustomizeToolbarOperation.ResetToDefaultConfirmed -> resetToDefault(tab)
             is CustomizeToolbarOperation.TabSelected -> selectTab(action.tabIdx)
             is CustomizeToolbarOperation.ActionMoved -> reorder(
                 fromIndex = action.fromIndex,

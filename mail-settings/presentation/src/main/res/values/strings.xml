@@ -195,4 +195,6 @@
     <string name="customize_toolbar_reset_to_default_btn">Reset to default</string>
     <string name="customize_toolbar_actions_section">Toolbar actions (select up to 5)</string>
     <string name="customize_toolbar_available_actions_section">Available actions</string>
+    <string name="customize_toolbar_reset_default_confirmation_title">Reset to default?</string>
+    <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default</string>
 </resources>

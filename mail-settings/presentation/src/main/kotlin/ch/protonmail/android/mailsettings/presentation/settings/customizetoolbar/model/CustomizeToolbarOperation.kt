@@ -28,7 +28,7 @@ sealed interface CustomizeToolbarOperation {
 
     data class ActionMoved(val fromIndex: Int, val toIndex: Int) : CustomizeToolbarOperation
 
-    data object ResetToDefaultClicked : CustomizeToolbarOperation
+    data object ResetToDefaultConfirmed : CustomizeToolbarOperation
 
     data object SaveClicked : CustomizeToolbarOperation
 }

@@ -29,6 +29,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -53,6 +54,20 @@ internal fun ToolbarActions(
     onAction: (CustomizeToolbarOperation) -> Unit,
     modifier: Modifier
 ) {
+    var showResetToDefaultConfirmationDialog by remember { mutableStateOf(false) }
+
+    if (showResetToDefaultConfirmationDialog) {
+        ResetToDefaultConfirmationDialog(
+            onContinueClicked = {
+                showResetToDefaultConfirmationDialog = false
+                onAction(CustomizeToolbarOperation.ResetToDefaultConfirmed)
+            },
+            onCancelClicked = {
+                showResetToDefaultConfirmationDialog = false
+            }
+        )
+    }
+
     val listState = rememberLazyListState()
     val dragDropState = rememberDragDropState(
         listState,
@@ -141,7 +156,7 @@ internal fun ToolbarActions(
         item {
             Box(modifier = Modifier.fillMaxWidth()) {
                 ResetToDefaultButton(onClick = {
-                    onAction(CustomizeToolbarOperation.ResetToDefaultClicked)
+                    showResetToDefaultConfirmationDialog = true
                 })
             }
         }
