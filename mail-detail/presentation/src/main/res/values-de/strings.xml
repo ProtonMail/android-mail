@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Unterhaltung in den Papierkorb verschoben</string>
   <string name="conversation_moved_to_selected_destination">Unterhaltung nach „%1$s“ verschoben</string>
   <string name="conversation_moved_to_archive">Unterhaltung ins Archiv verschoben</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Verschieben der Unterhaltung fehlgeschlagen. Bitte versuche es erneut.</string>
   <string name="error_loading_message">Etwas ist schief gelaufen. Bitte versuche es erneut.</string>
   <string name="error_offline_loading_message">Du bist offline. Um den Inhalt dieser Nachricht anzuzeigen, ist eine Internetverbindung erforderlich.</string>
@@ -100,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Eingebettete Bilder laden</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Externe und eingebettete Inhalte laden</string>
   <string name="message_report_phishing_dialog_title_offline">Achtung</string>
-  <string name="message_report_phishing_dialog_message_offline">Diese Funktion ist nur mit einer Internetverbindung verfügbar.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Phishing-Bericht bestätigen</string>
   <string name="message_report_phishing_dialog_message">Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.</string>

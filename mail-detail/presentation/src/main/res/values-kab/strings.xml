@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Adiwenni yettwasenkez ɣer tqecwalt</string>
   <string name="conversation_moved_to_selected_destination">Adiwenni yettwasenkez ɣer %1$s</string>
   <string name="conversation_moved_to_archive">Adiwenni yettwasenkez ɣer teṛcivt</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Asenkez n udiwenni yecceḍ. Ttxil ɛawed-as.</string>
   <string name="error_loading_message">Yella kra i yeḍran, ttxil ɛreḍ tikkelt-nniḍen.</string>
   <string name="error_offline_loading_message">Ur teqqineḍ ara. Tlaq tuqqna ɣer internet akken ad twaliḍ agbur n yizen-a.</string>

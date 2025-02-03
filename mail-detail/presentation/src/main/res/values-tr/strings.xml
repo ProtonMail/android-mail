@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Yazışma çöpe atıldı</string>
   <string name="conversation_moved_to_selected_destination">Yazışma %1$s klasörüne taşındı</string>
   <string name="conversation_moved_to_archive">Yazışma arşivlendi</string>
+  <string name="conversation_moved_to_spam">Konuşma Spam\'e taşındı</string>
   <string name="error_move_conversation_failed">Yazışma taşınamadı. Lütfen yeniden deneyin.</string>
   <string name="error_loading_message">Bir sorun çıktı. Lütfen yeniden deneyin.</string>
   <string name="error_offline_loading_message">Çevrim dışısınız. Bu iletinin içeriğini görüntüleyebilmek için internet bağlantınız olmalı.</string>

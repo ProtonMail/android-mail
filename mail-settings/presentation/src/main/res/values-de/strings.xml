@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Zugelassen</string>
   <string name="mail_settings_denied">Abgelehnt</string>
   <string name="mail_settings_auto_detect">Automatisch erkennen</string>
-  <string name="mail_settings_customize_toolbar">Customize toolbar</string>
+  <string name="mail_settings_customize_toolbar">Symbolleiste anpassen</string>
   <string name="mail_settings_app_information">App-Informationen</string>
   <string name="mail_settings_app_version">App-Version</string>
   <string name="mail_settings_app_logs">Anwendungsprotokolle</string>
@@ -183,16 +183,16 @@
   <string name="biometric_error_hw_not_available">Biometrische Hardware nicht verfügbar.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Diese Symbolleiste wird beim Lesen einer Nachricht angezeigt.</string>
-  <string name="customize_toolbar_disclaimer_conversation">This toolbar is visible when reading a conversation.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Diese Symbolleiste wird beim Lesen einer Unterhaltung angezeigt.</string>
   <string name="customize_toolbar_disclaimer_inbox">Diese Symbolleiste wird angezeigt, wenn mehrere Nachrichten im Postfach ausgewählt werden.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">This toolbar appears when selecting multiple messages in your mailbox.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Diese Symbolleiste wird angezeigt, wenn mehrere Nachrichten im Postfach ausgewählt werden.</string>
   <string name="customize_toolbar_message">Nachricht</string>
   <string name="customize_toolbar_conversation">Unterhaltung</string>
   <string name="customize_toolbar_inbox">Posteingang</string>
-  <string name="customize_toolbar_mailbox">Mailbox</string>
+  <string name="customize_toolbar_mailbox">Postfach</string>
   <string name="customize_toolbar_done_action">Fertig</string>
   <string name="customize_toolbar_reset_to_default">Auf Standardwert zurücksetzen</string>
-  <string name="customize_toolbar_reset_to_default_btn">Reset to default</string>
+  <string name="customize_toolbar_reset_to_default_btn">Auf Standard zurücksetzen</string>
   <string name="customize_toolbar_actions_section">Symbolleistenaktionen (bis zu 5 auswählen)</string>
   <string name="customize_toolbar_available_actions_section">Verfügbare Aktionen</string>
 </resources>

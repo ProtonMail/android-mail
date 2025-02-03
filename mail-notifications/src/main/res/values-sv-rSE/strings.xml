@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Nytt meddelande</string>
   <string name="notification_actions_archive_description">Arkivera</string>
   <string name="notification_actions_trash_description">Lägg i papperskorg</string>
-  <string name="notification_actions_reply_description">Svara</string>
   <string name="notification_actions_mark_as_read_description">Markera läst</string>
   <string name="notification_permission_dialog_title">Missa inte ett e-postmeddelande</string>
   <string name="notification_permission_dialog_message">Aviseringar sätter dig i kontroll av din inkorg utan att du behöver kolla appen.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Vill du hålla dig uppdaterad?</string>
+  <string name="notification_permission_dialog_post_send_message">Slå på aviseringar för att veta när du får svar på ditt e-postmeddelande.</string>
+  <string name="notification_permission_dialog_button_enable">Aktivera pushaviseringar</string>
   <string name="notification_permission_dialog_button_dismiss">Avfärda</string>
 </resources>

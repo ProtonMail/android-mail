@@ -56,6 +56,7 @@
   <string name="conversation_moved_to_trash">Razgovor premješten u Otpad</string>
   <string name="conversation_moved_to_selected_destination">Razgovor premješten u $%1$s</string>
   <string name="conversation_moved_to_archive">Razgovor premješten u Arhivu</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Moving conversation failed. Please retry.</string>
   <string name="error_loading_message">Nešto je pošlo po zlu. Pokušajte ponovno.</string>
   <string name="error_offline_loading_message">You are offline. An internet connection is required to display the content of this message.</string>

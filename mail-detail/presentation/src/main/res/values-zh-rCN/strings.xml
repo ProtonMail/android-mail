@@ -52,6 +52,7 @@
   <string name="conversation_moved_to_trash">会话已移动到废件箱</string>
   <string name="conversation_moved_to_selected_destination">会话已移至 %1$s</string>
   <string name="conversation_moved_to_archive">会话已存档</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">会话移动失败，请重试。</string>
   <string name="error_loading_message">出现错误。请重试。</string>
   <string name="error_offline_loading_message">您已离线。请连接至网络以显示邮件内容。</string>

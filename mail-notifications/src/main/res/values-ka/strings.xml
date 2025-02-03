@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">ახალი შეტყობინება</string>
   <string name="notification_actions_archive_description">დაარქივება</string>
   <string name="notification_actions_trash_description">ნაგვის ყუთი</string>
-  <string name="notification_actions_reply_description">პასუხი</string>
   <string name="notification_actions_mark_as_read_description">წაკითხულად მონიშვნა</string>
   <string name="notification_permission_dialog_title">არ გამოტოვოთ ელფოსტა</string>
   <string name="notification_permission_dialog_message">გაფრთხილებები დაგეხმარებათ, ყოველთვის იცოდეთ რა ხდება თქვენს საფოსტო ყუთში აპლიკაციის შემოწმების გარეშე.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">გნებავთ, ყოველთვის განახლებული ბრძანდებოდეთ?</string>
+  <string name="notification_permission_dialog_post_send_message">ჩართეთ გაფრთხილებები, რომ იცოდეთ, როდის გიპასუხებენ თქვენს ელფოსტაზე.</string>
+  <string name="notification_permission_dialog_button_enable">პუშ-გაფრთხილებების ჩართვა</string>
   <string name="notification_permission_dialog_button_dismiss">მოცილება</string>
 </resources>

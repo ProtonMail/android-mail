@@ -58,6 +58,7 @@
   <string name="conversation_moved_to_trash">Pogovor je premaknjen v smetnjak</string>
   <string name="conversation_moved_to_selected_destination">Pogovor je premaknjen v %1$s</string>
   <string name="conversation_moved_to_archive">Pogovor je premaknjen v arhiv</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Premikanje pogovora ni uspelo. Poskusite znova.</string>
   <string name="error_loading_message">Nekaj je šlo narobe, poskusite znova.</string>
   <string name="error_offline_loading_message">Nimate povezave. Za prikaz vsebine tega sporočila je potrebna internetna povezava.</string>

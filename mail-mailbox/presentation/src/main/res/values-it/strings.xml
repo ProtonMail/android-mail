@@ -44,12 +44,12 @@
   <string name="mailbox_is_empty_spam_description">La cartella spam è vuota</string>
   <string name="mailbox_is_empty_trash_description">Il cestino è vuoto</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Conversazione spostata nel Cestino</item>
-    <item quantity="other">%d conversazioni spostate nel Cestino</item>
+    <item quantity="one">1 conversazione spostata nel cestino</item>
+    <item quantity="other">%d conversazioni spostate nel cestino</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
-    <item quantity="one">Messaggio spostato nel Cestino</item>
-    <item quantity="other">%d messaggi spostati nel Cestino</item>
+    <item quantity="one">1 messaggio spostato nel cestino</item>
+    <item quantity="other">%d messaggi spostati nel cestino</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Elimina 1 conversazione</item>
@@ -94,13 +94,13 @@
   <string name="mailbox_action_clear_spam_dialog_body_conversation">Sei sicuro di voler eliminare definitivamente tutte le conversazioni presenti nella cartella spam?</string>
   <string name="mailbox_action_clear_operation_scheduled">"Lo svuotamento è programmato"</string>
   <!--    Storage Limit Warning-->
-  <string name="storage_limit_warning_dialog_title">Avviso</string>
+  <string name="storage_limit_warning_dialog_title">Spazio quasi pieno</string>
   <string name="storage_first_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre l\'80%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno per oltre il 90%. Libera spazio o effettua l\'upgrade per avere più spazio di archiviazione.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Non ricordarmelo di nuovo</string>
   <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
-  <string name="storage_quota_over_dialog_title">Avviso</string>
+  <string name="storage_quota_over_dialog_title">Spazio esaurito</string>
   <string name="storage_quota_over_dialog_text">Lo spazio di archiviazione del tuo account Proton è pieno al 100%. Non potrai inviare o ricevere email finché non elimini definitivamente alcune email o effettui l\'upgrade per avere più spazio di archiviazione.</string>
   <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

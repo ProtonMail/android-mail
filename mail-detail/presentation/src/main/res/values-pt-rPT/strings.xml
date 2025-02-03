@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Conversa movida para o Lixo</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
   <string name="conversation_moved_to_archive">Conversa movida para a pasta Arquivo</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente mais tarde.</string>
   <string name="error_offline_loading_message">Está offline. A ligação à internet é necessária para mostrar o conteúdo desta mensagem.</string>
@@ -100,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Carregar as imagens incorporadas</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carregar o conteúdo remoto e incorporado</string>
   <string name="message_report_phishing_dialog_title_offline">Atenção</string>
-  <string name="message_report_phishing_dialog_message_offline">Esta funcionalidade está disponível apenas online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Aceitar</string>
   <string name="message_report_phishing_dialog_title">Confirmar relatório de phishing</string>
   <string name="message_report_phishing_dialog_message">Reportar uma mensagem como tentativa de phishing, enviará a mensagem para nós, para que possamos analisá-la e melhorar os nossos filtros. Isto significa que poderemos ver o conteúdo da mensagem na íntegra.</string>

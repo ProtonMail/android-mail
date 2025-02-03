@@ -52,6 +52,7 @@
   <string name="conversation_moved_to_trash">대화가 휴지통으로 이동됨</string>
   <string name="conversation_moved_to_selected_destination">대화가 %1$s으로 이동됨</string>
   <string name="conversation_moved_to_archive">대화가 보관함으로 이동함</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">대화 이동에 실패하였습니다. 다시 시도해 주세요.</string>
   <string name="error_loading_message">문제가 발생했습니다, 다시 시도해 주세요.</string>
   <string name="error_offline_loading_message">오프라인입니다. 이 메시지의 내용을 표시하려면 인터넷 연결이 필요합니다.</string>

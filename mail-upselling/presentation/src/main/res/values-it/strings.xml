@@ -134,7 +134,7 @@
   <string name="post_subscription_proton_calendar">Proton Calendar</string>
   <string name="post_subscription_proton_calendar_message">Hai sbloccato la condivisione del calendario e altri 8 calendari.</string>
   <string name="post_subscription_proton_drive">Proton Drive</string>
-  <string name="post_subscription_proton_drive_message">Hai sbloccato uno spazio di archiviazione di 15 GB</string>
+  <string name="post_subscription_proton_drive_message">Hai aumentato lo spazio di archiviazione a 15 GB.</string>
   <string name="post_subscription_proton_vpn">Proton VPN</string>
   <string name="post_subscription_proton_vpn_message">La migliore VPN per sicurezza e velocità.</string>
   <string name="post_subscription_proton_pass">Proton Pass</string>

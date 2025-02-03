@@ -23,7 +23,6 @@
   <string name="notification_title_text_new_message_fallback">Нове повідомлення</string>
   <string name="notification_actions_archive_description">Архів</string>
   <string name="notification_actions_trash_description">Смітник</string>
-  <string name="notification_actions_reply_description">Відповісти</string>
   <string name="notification_actions_mark_as_read_description">Позначити прочитаним</string>
   <string name="notification_permission_dialog_title">Не проґавте лист</string>
   <string name="notification_permission_dialog_message">Сповіщення допомагають вам стежити за своєю скринькою, не відкриваючи застосунок.</string>

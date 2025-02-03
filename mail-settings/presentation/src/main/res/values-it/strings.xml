@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">Consentito</string>
   <string name="mail_settings_denied">Negato</string>
   <string name="mail_settings_auto_detect">Riconoscimento automatico</string>
-  <string name="mail_settings_customize_toolbar">Personalizza toolbar</string>
+  <string name="mail_settings_customize_toolbar">Personalizza la barra degli strumenti</string>
   <string name="mail_settings_app_information">Informazioni sull\'applicazione</string>
   <string name="mail_settings_app_version">Versione</string>
   <string name="mail_settings_app_logs">Log dell\'applicazione</string>
@@ -118,7 +118,7 @@
   <string name="mail_settings_swipe_action_trash_title">Cestino</string>
   <string name="mail_settings_swipe_action_label_as_title">Etichetta come…</string>
   <string name="mail_settings_swipe_action_move_to_title">Sposta in…</string>
-  <string name="mail_settings_swipe_action_none_description">Nessuno</string>
+  <string name="mail_settings_swipe_action_none_description">Nessuna</string>
   <string name="mail_settings_swipe_action_archive_description">Sposta nell\'archivio</string>
   <string name="mail_settings_swipe_action_read_description">Letto/non letto</string>
   <string name="mail_settings_swipe_action_spam_description">Sposta in spam</string>
@@ -182,17 +182,17 @@
   <string name="unlock_using_biometrics">Sblocco con la biometria</string>
   <string name="biometric_error_hw_not_available">Hardware biometrico non disponibile</string>
   <!-- customize toolbar-->
-  <string name="customize_toolbar_disclaimer_message">Questa toolbar sarà visibile durante la lettura di un messaggio.</string>
-  <string name="customize_toolbar_disclaimer_conversation">Questa toolbar sarà visibile durante la lettura di una conversazione.</string>
-  <string name="customize_toolbar_disclaimer_inbox">Questa barra degli strumenti appare in caso di selezione multipla di messaggi nella posta in arrivo.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">Questa barra degli strumenti appare in caso di selezione multipla di messaggi nella posta in arrivo.</string>
+  <string name="customize_toolbar_disclaimer_message">Questa barra degli strumenti appare quando apri un messaggio.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Questa barra degli strumenti appare quando apri una conversazione.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Questa barra degli strumenti appare quando selezioni messaggi nella casella di posta.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Questa barra degli strumenti appare quando selezioni messaggi nella casella di posta.</string>
   <string name="customize_toolbar_message">Messaggio</string>
   <string name="customize_toolbar_conversation">Conversazione</string>
   <string name="customize_toolbar_inbox">Posta in arrivo</string>
   <string name="customize_toolbar_mailbox">Casella di posta</string>
-  <string name="customize_toolbar_done_action">Fatto</string>
-  <string name="customize_toolbar_reset_to_default">Reimpostare al valore predefinito</string>
-  <string name="customize_toolbar_reset_to_default_btn">Reimposta al valore predefinito</string>
-  <string name="customize_toolbar_actions_section">Comandi toolbar (seleziona fino a 5)</string>
-  <string name="customize_toolbar_available_actions_section">Comandi disponibili</string>
+  <string name="customize_toolbar_done_action">Salva</string>
+  <string name="customize_toolbar_reset_to_default">Reimposta</string>
+  <string name="customize_toolbar_reset_to_default_btn">Reimposta</string>
+  <string name="customize_toolbar_actions_section">Azioni (seleziona fino a 5)</string>
+  <string name="customize_toolbar_available_actions_section">Azioni disponibili</string>
 </resources>

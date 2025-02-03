@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Yeni ileti</string>
   <string name="notification_actions_archive_description">Arşiv</string>
   <string name="notification_actions_trash_description">Çöp</string>
-  <string name="notification_actions_reply_description">Yanıtla</string>
   <string name="notification_actions_mark_as_read_description">Okunmuş olarak işaretle</string>
   <string name="notification_permission_dialog_title">Hiçbir e-postayı kaçırmayın</string>
   <string name="notification_permission_dialog_message">Bildirimler, uygulamayı açmanıza gerek kalmadan gelen kutunuzu kontrol etmenize yardımcı olur.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Güncel kalmak ister misiniz?</string>
+  <string name="notification_permission_dialog_post_send_message">E-postanız yanıtlandığında bilgi almak için bildirimleri açın.</string>
+  <string name="notification_permission_dialog_button_enable">Anlık bildirimleri aç</string>
   <string name="notification_permission_dialog_button_dismiss">Yok say</string>
 </resources>

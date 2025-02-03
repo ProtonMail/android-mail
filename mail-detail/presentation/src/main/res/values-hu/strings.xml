@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">A beszélgetés átkerült a lomtárba</string>
   <string name="conversation_moved_to_selected_destination">A beszélgetés átkerült a %1$s</string>
   <string name="conversation_moved_to_archive">Beszélgetés áthelyezve az archívumba</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">A beszélgetés áthelyezése sikertelen. Próbálja újra.</string>
   <string name="error_loading_message">Nem meghatározott hiba történt, kérjük próbálja meg újra.</string>
   <string name="error_offline_loading_message">Ön jelenleg offline. Internet kapcsolat szükséges az üzenet tartalmának betöltéséhez.</string>

@@ -42,7 +42,7 @@
   <string name="undisclosed_recipients">Destinatarios ocultos</string>
   <string name="error_mark_as_unread_failed">Error al marcar como no leído. Intente otra vez.</string>
   <string name="error_star_operation_failed">Error al destacar. Intente de nuevo.</string>
-  <string name="error_unstar_operation_failed">Error al borrar el destacado. Intente de nuevo.</string>
+  <string name="error_unstar_operation_failed">Error al eliminar el destacado. Inténtelo de nuevo.</string>
   <string name="error_move_to_trash_failed">Error al mover a la papelera. Intente de nuevo.</string>
   <string name="message_moved_to_trash">Mensaje movido a la papelera</string>
   <string name="message_moved_to_archive">Mensaje movido al archivo</string>
@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Conversación movida a la papelera</string>
   <string name="conversation_moved_to_selected_destination">Conversación movida a %1$s</string>
   <string name="conversation_moved_to_archive">Conversación movida al archivo</string>
+  <string name="conversation_moved_to_spam">Se movió la conversación al spam.</string>
   <string name="error_move_conversation_failed">Error al mover la conversación. Intente de nuevo.</string>
   <string name="error_loading_message">Hubo un problema. Intente de nuevo.</string>
   <string name="error_offline_loading_message">No tiene conexión. Se necesita una conexión a internet para mostrar el contenido de este mensaje.</string>

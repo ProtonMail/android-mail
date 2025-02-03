@@ -23,7 +23,6 @@
   <string name="notification_title_text_new_message_fallback">Novo sporočilo</string>
   <string name="notification_actions_archive_description">Arhiviraj</string>
   <string name="notification_actions_trash_description">V smetnjak</string>
-  <string name="notification_actions_reply_description">Odgovori</string>
   <string name="notification_actions_mark_as_read_description">Označi kot prebrano</string>
   <string name="notification_permission_dialog_title">Don\'t miss an email</string>
   <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>

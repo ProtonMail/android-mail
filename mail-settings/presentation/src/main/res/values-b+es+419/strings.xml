@@ -183,7 +183,7 @@
   <string name="biometric_error_hw_not_available">El sensor biométrico no está disponible.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Esta barra de herramientas es visible cuando se lee un mensaje.</string>
-  <string name="customize_toolbar_disclaimer_conversation">Puede ver esta barra de herramientas cuando lees una conversación.</string>
+  <string name="customize_toolbar_disclaimer_conversation">Puede ver esta barra de herramientas cuando lee una conversación.</string>
   <string name="customize_toolbar_disclaimer_inbox">Esta barra de herramientas aparece al seleccionar múltiples mensajes en su buzón.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Esta barra de herramientas aparece al seleccionar múltiples mensajes en su buzón.</string>
   <string name="customize_toolbar_message">Mensaje</string>

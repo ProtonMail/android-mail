@@ -102,8 +102,8 @@
   </plurals>
   <plurals name="expiration_days_full_word">
     <item quantity="one">%d dzień</item>
-    <item quantity="few">%d dnia</item>
-    <item quantity="many">%d dnia</item>
+    <item quantity="few">%d dni</item>
+    <item quantity="many">%d dni</item>
     <item quantity="other">%d dnia</item>
   </plurals>
   <!-- notification channels -->

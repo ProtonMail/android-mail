@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Nová správa</string>
   <string name="notification_actions_archive_description">Archivovať</string>
   <string name="notification_actions_trash_description">Presunúť do koša</string>
-  <string name="notification_actions_reply_description">Odpovedať</string>
   <string name="notification_actions_mark_as_read_description">Označiť ako prečítané</string>
   <string name="notification_permission_dialog_title">Nezmeškajte žiadny email</string>
   <string name="notification_permission_dialog_message">Notifikácie vám pomôžu mať prehľad o doručenej pošte bez toho, aby ste museli kontrolovať aplikáciu.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Chcete zostať v obraze?</string>
+  <string name="notification_permission_dialog_post_send_message">Zapnite si notifikácie, aby ste vedeli, kedy dostanete odpoveď na svoj email.</string>
+  <string name="notification_permission_dialog_button_enable">Povoliť push notifikácie</string>
   <string name="notification_permission_dialog_button_dismiss">Odmietnuť</string>
 </resources>

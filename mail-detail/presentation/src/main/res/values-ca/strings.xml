@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">La conversa s\'ha mogut a la paperera.</string>
   <string name="conversation_moved_to_selected_destination">La conversa s\'ha mogut a %1$s</string>
   <string name="conversation_moved_to_archive">La conversa s\'ha mogut a l\'arxiu.</string>
+  <string name="conversation_moved_to_spam">S\'ha mogut la conversa al correu brossa.</string>
   <string name="error_move_conversation_failed">No s\'ha pogut moure la conversa. Proveu de nou.</string>
   <string name="error_loading_message">Alguna cosa ha anat malament. Torneu a provar-ho.</string>
   <string name="error_offline_loading_message">No esteu connectat. Cal una connexió a internet per a mostrar el contingut d\'aquest missatge.</string>

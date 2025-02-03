@@ -23,7 +23,6 @@
   <string name="notification_title_text_new_message_fallback">Új üzenet</string>
   <string name="notification_actions_archive_description">Archívum</string>
   <string name="notification_actions_trash_description">Lomtár</string>
-  <string name="notification_actions_reply_description">Válasz</string>
   <string name="notification_actions_mark_as_read_description">Megjelölés olvasottként</string>
   <string name="notification_permission_dialog_title">Ne maradjon le egy e-mailről sem</string>
   <string name="notification_permission_dialog_message">Az értesítések segítenek nyomon követni a beérkezett üzeneteket anélkül, hogy az alkalmazást ellenőrizné.</string>

@@ -50,7 +50,7 @@
   <string name="composer_button_add_password">Aggiungi una password</string>
   <string name="composer_button_set_expiration">Imposta la scadenza</string>
   <string name="composer_expiration_time_bottom_sheet_title">Scadenza</string>
-  <string name="composer_expiration_time_bottom_sheet_done">Chiudi</string>
+  <string name="composer_expiration_time_bottom_sheet_done">Salva</string>
   <string name="composer_bottom_bar_expiration_time_none">Nessuna</string>
   <string name="composer_bottom_bar_expiration_time_one_hour">1 ora</string>
   <string name="composer_bottom_bar_expiration_time_one_day">1 giorno</string>

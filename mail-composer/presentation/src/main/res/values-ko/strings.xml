@@ -76,7 +76,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">발송 실패</string>
   <string name="message_sending_error_dialog_button_dismiss">닫기</string>
-  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
+  <string name="message_sending_error_dialog_text_error">회원님의 이메일이 해당 이유로 입력하신 이메일에 전송되지 못했습니다:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">신뢰 키가 없습니다: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">주소가 존재하지 않습니다: %s</string>
   <string name="set_message_password_title">메시지 암호화</string>

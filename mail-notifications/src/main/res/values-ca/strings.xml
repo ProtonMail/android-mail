@@ -23,7 +23,6 @@
   <string name="notification_title_text_new_message_fallback">Nou missatge</string>
   <string name="notification_actions_archive_description">Arxiva</string>
   <string name="notification_actions_trash_description">Paperera</string>
-  <string name="notification_actions_reply_description">Respon</string>
   <string name="notification_actions_mark_as_read_description">Marca com a llegit</string>
   <string name="notification_permission_dialog_title">No us perdeu cap correu electrònic</string>
   <string name="notification_permission_dialog_message">Les notificacions us ajuden a mantenir-vos al capdavant de la vostra safata d\'entrada sense comprovar l\'aplicació.</string>

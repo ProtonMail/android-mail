@@ -56,6 +56,7 @@
   <string name="conversation_moved_to_trash">Conversația a fost mutată în «Gunoi».</string>
   <string name="conversation_moved_to_selected_destination">Conversația a fost mutată în «%1$s».</string>
   <string name="conversation_moved_to_archive">Conversația a fost mutată în «Arhivă».</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
   <string name="error_loading_message">Ceva nu a funcționat bine. Mai încercați.</string>
   <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>

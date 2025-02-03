@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Pesan baru</string>
   <string name="notification_actions_archive_description">Arsip</string>
   <string name="notification_actions_trash_description">Sampah</string>
-  <string name="notification_actions_reply_description">Balas</string>
   <string name="notification_actions_mark_as_read_description">Tandai dibaca</string>
   <string name="notification_permission_dialog_title">Jangan lewatkan email apa pun</string>
   <string name="notification_permission_dialog_message">Notifikasi membantu Anda untuk tetap terkini dengan kotak masuk Anda tanpa perlu membuka aplikasi.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Ingin tetap terbarui?</string>
+  <string name="notification_permission_dialog_post_send_message">Nyalakan notifikasi untuk mengetahui ketika terdapat balasan pada email Anda.</string>
+  <string name="notification_permission_dialog_button_enable">Aktifkan notifikasi push</string>
   <string name="notification_permission_dialog_button_dismiss">Tutup</string>
 </resources>

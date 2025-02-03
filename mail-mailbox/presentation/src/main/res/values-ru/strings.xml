@@ -100,8 +100,8 @@
   <string name="mailbox_action_failed_retrieving_colors">Не удалось получить настройки цвета</string>
   <string name="mailbox_action_move_messages_failed">Операция перемещения не удалась</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Не удалось получить папки</string>
-  <string name="mailbox_action_move_conversation">Conversation moved to %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_conversation">Цепочка писем перемещена в %s</string>
+  <string name="mailbox_action_move_message">Сообщение перемещено в %s</string>
   <string name="mailbox_search_placeholder_text">Поиск сообщений</string>
   <string name="mailbox_search_no_results_title">Результатов не найдено</string>
   <string name="mailbox_search_no_results_explanation">Поиск по дате, имени, адресу электронной почты или теме письма</string>

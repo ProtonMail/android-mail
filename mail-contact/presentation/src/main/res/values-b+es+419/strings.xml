@@ -84,7 +84,7 @@
   <string name="email_address">Dirección de correo</string>
   <string name="phone_number">Número telefónico</string>
   <string name="additional_info">Info. adicional</string>
-  <string name="remove_contact_property">Borrar propiedad del contacto</string>
+  <string name="remove_contact_property">Eliminar la propiedad del contacto</string>
   <string name="property_type">Tipo de propiedad</string>
   <string name="property_label">Etiqueta</string>
   <string name="address_street">Calle</string>
@@ -112,9 +112,9 @@
   <string name="contact_group_details_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
   <string name="contact_group_details_deletion_success">Grupo de contactos eliminado</string>
   <string name="contact_group_details_deletion_error">Error al eliminar el grupo de contactos</string>
-  <string name="contact_group_delete_dialog_title">¿Borrar el grupo %s de los contactos?</string>
+  <string name="contact_group_delete_dialog_title">¿Eliminar el grupo %s de los contactos?</string>
   <string name="contact_group_delete_dialog_message">El grupo se disolverá, pero los contactos asignados no se verán afectados.</string>
-  <string name="contact_group_delete_dialog_confirm">Borrar</string>
+  <string name="contact_group_delete_dialog_confirm">Eliminar</string>
   <string name="contact_group_delete_dialog_dismiss">Mantener</string>
   <string name="contact_group_delete_button_text">Eliminar grupo</string>
   <string name="contact_group_form_loading_error">Error al cargar el grupo de contactos, intente de nuevo más tarde</string>
@@ -123,7 +123,7 @@
   <string name="send_group_message">Enviar mensaje grupal</string>
   <string name="contact_group_form_save">Guardar</string>
   <string name="contact_group_form_name_hint">Nombre a mostrar</string>
-  <string name="remove_member_content_description">Borrar miembro</string>
+  <string name="remove_member_content_description">Eliminar el miembro</string>
   <string name="add_members">Añadir miembros</string>
   <string name="change_color">Cambiar color</string>
   <string name="contact_group_form_create_success">Grupo de contactos creado</string>

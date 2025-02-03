@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Ny melding</string>
   <string name="notification_actions_archive_description">Arkiver</string>
   <string name="notification_actions_trash_description">Papirkurv</string>
-  <string name="notification_actions_reply_description">Svar</string>
   <string name="notification_actions_mark_as_read_description">Merk som lest</string>
   <string name="notification_permission_dialog_title">Ikke gå glipp av en e-post</string>
   <string name="notification_permission_dialog_message">Varsler hjelper deg med å holde oversikt over innboksen din uten å sjekke appen.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Vil du holde deg oppdatert?</string>
+  <string name="notification_permission_dialog_post_send_message">Slå på varsler for å vite når du får svar på e-posten din.</string>
+  <string name="notification_permission_dialog_button_enable">Aktiver push-varsler</string>
   <string name="notification_permission_dialog_button_dismiss">Avvis</string>
 </resources>

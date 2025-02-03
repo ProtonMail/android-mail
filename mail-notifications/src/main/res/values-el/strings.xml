@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">Νέο μήνυμα</string>
   <string name="notification_actions_archive_description">Αρχειοθετημένα</string>
   <string name="notification_actions_trash_description">Διαγραμμένα</string>
-  <string name="notification_actions_reply_description">Απάντηση</string>
   <string name="notification_actions_mark_as_read_description">Επισήμανση ως αναγνωσμένο</string>
   <string name="notification_permission_dialog_title">Μην χάσετε κανένα email</string>
   <string name="notification_permission_dialog_message">Οι ειδοποιήσεις σάς βοηθούν να διατηρείτε τον έλεγχο των εισερχομένων σας χωρίς να ελέγχετε την εφαρμογή.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Θέλετε να μείνετε ενημερωμένοι;</string>
+  <string name="notification_permission_dialog_post_send_message">Ενεργοποιήστε τις ειδοποιήσεις για να γνωρίζετε πότε λαμβάνετε απάντηση στο email σας.</string>
+  <string name="notification_permission_dialog_button_enable">Ενεργοποίηση ειδοποιήσεων push</string>
   <string name="notification_permission_dialog_button_dismiss">Παράβλεψη</string>
 </resources>

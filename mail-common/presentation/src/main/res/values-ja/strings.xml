@@ -28,7 +28,7 @@
   <string name="action_forward_description">転送</string>
   <string name="action_mark_read_description">既読にする</string>
   <string name="action_mark_unread_description">未読にする</string>
-  <string name="action_star_description">スター</string>
+  <string name="action_star_description">スターを付ける</string>
   <string name="action_unstar_description">スターを外す</string>
   <string name="action_label_description">…としてラベル付け</string>
   <string name="action_move_description">移動…</string>
@@ -52,7 +52,7 @@
   <string name="action_forward_content_description">転送</string>
   <string name="action_mark_read_content_description">既読にする</string>
   <string name="action_mark_unread_content_description">未読に戻す</string>
-  <string name="action_star_content_description">スター</string>
+  <string name="action_star_content_description">スターを付ける</string>
   <string name="action_unstar_content_description">スターを外す</string>
   <string name="action_label_content_description">…としてラベル付け</string>
   <string name="action_move_content_description">移動…</string>

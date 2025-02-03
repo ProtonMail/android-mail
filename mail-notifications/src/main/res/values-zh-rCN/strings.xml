@@ -23,12 +23,11 @@
   <string name="notification_title_text_new_message_fallback">撰写邮件</string>
   <string name="notification_actions_archive_description">归档</string>
   <string name="notification_actions_trash_description">回收站</string>
-  <string name="notification_actions_reply_description">回复</string>
   <string name="notification_actions_mark_as_read_description">标记已阅读</string>
   <string name="notification_permission_dialog_title">不要错过电子邮件</string>
   <string name="notification_permission_dialog_message">通知可帮助您随时了解收件箱信息，而无需查看应用程序。</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">想要继续更新吗？</string>
+  <string name="notification_permission_dialog_post_send_message">开启通知以了解何时收到对您电子邮件的回复。</string>
+  <string name="notification_permission_dialog_button_enable">启用推送通知消息</string>
   <string name="notification_permission_dialog_button_dismiss">忽略</string>
 </resources>

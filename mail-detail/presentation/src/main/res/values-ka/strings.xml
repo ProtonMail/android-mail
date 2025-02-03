@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">საუბარი გადატანილია ნაგავში</string>
   <string name="conversation_moved_to_selected_destination">საუბარი გადატანილია %1$s-ში</string>
   <string name="conversation_moved_to_archive">საუბარი გადატანილია არქივში</string>
+  <string name="conversation_moved_to_spam">საუბარი გადატანილია სპამში</string>
   <string name="error_move_conversation_failed">საუბრის გადატანის შეცდომა. თავიდან სცადეთ.</string>
   <string name="error_loading_message">რაღაც არასწორად წავიდა. მოგვიანებით სცადეთ.</string>
   <string name="error_offline_loading_message">ინტერნეტი არ გაქვთ. ამ შეტყობინებს შემცველობის სანახავად ინტერნეტ-შეერთება აუცილებელია.</string>

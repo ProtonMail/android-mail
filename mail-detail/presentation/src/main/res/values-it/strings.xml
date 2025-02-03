@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
+  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
   <string name="error_offline_loading_message">Nessuna connessione a Internet. Caricamento dei contenuti del messaggio non riuscito.</string>
@@ -79,9 +80,9 @@
   <string name="external_link_confirmation_dialog_cancel_button">Annulla</string>
   <string name="external_link_confirmation_dialog_continue_button">Continua</string>
   <!-- Phishing link confirmation dialog -->
-  <string name="phishing_link_confirmation_dialog_title">Avviso: sito web sospetto</string>
+  <string name="phishing_link_confirmation_dialog_title">Sito web sospetto</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">Questo link conduce a un sito web che potrebbe tentare di rubare le tue informazioni, come password e dettagli della carta di credito.</string>
-  <string name="phishing_link_confirmation_dialog_content_part_2">Per la tua sicurezza, non proseguire.</string>
+  <string name="phishing_link_confirmation_dialog_content_part_2">Sei sicuro di voler proseguire?</string>
   <string name="phishing_link_confirmation_dialog_button_go_back">Torna indietro (consigliato)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">Ignora l\'avviso e prosegui</string>
   <string name="message_delete_dialog_title">Elimina il messaggio</string>
@@ -100,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
   <string name="message_report_phishing_dialog_title_offline">Avviso</string>
-  <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
+  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Segnala come phishing</string>
   <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>

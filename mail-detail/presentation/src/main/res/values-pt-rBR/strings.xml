@@ -54,6 +54,7 @@
   <string name="conversation_moved_to_trash">Conversa movida para a lixeira</string>
   <string name="conversation_moved_to_selected_destination">Conversa movida para %1$s</string>
   <string name="conversation_moved_to_archive">Conversa movida para o arquivo</string>
+  <string name="conversation_moved_to_spam">Conversa movida para Spam</string>
   <string name="error_move_conversation_failed">Erro ao mover a conversa. Tente novamente.</string>
   <string name="error_loading_message">Ocorreu um erro. Tente novamente mais tarde.</string>
   <string name="error_offline_loading_message">Você está off-line. É necessária uma conexão com a Internet para exibir o conteúdo desta mensagem.</string>
