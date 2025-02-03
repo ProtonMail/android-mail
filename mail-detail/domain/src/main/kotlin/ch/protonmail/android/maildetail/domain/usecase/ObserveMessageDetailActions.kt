@@ -25,8 +25,8 @@ import ch.protonmail.android.maildetail.domain.model.BottomBarDefaults
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.domain.entity.UserId
@@ -39,7 +39,7 @@ class ObserveMessageDetailActions @Inject constructor(
 
     operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, List<Action>>> = combine(
         observeMessage(userId, messageId),
-        observeToolbarActions.invoke(userId, isMailBox = false)
+        observeToolbarActions(userId, isMailBox = false)
     ) { either, toolbarActions ->
         either.map { message ->
             val actions = (toolbarActions ?: BottomBarDefaults.Message.actions).toMutableList()

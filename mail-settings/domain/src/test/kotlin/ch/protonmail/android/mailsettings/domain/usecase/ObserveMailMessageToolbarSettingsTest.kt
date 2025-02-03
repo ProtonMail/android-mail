@@ -16,11 +16,12 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.mailsettings.domain.usecase
 
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -37,6 +38,8 @@ import me.proton.core.mailsettings.domain.entity.ToolbarAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import org.junit.After
+import javax.inject.Provider
+import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -45,13 +48,55 @@ class ObserveMailMessageToolbarSettingsTest {
     private val userId = UserIdSample.Primary
 
     private val repo = mockk<MailSettingsRepository>()
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
 
-    private val useCase = ObserveMailMessageToolbarSettings(repo)
+    private val useCase by lazy {
+        ObserveMailMessageToolbarSettings(repo, provideIsCustomizeToolbarEnabled.get())
+    }
+
+    @BeforeTest
+    fun setUp() {
+        MockKAnnotations.init(this)
+        customizeToolbarFeatureEnabled(true)
+    }
 
     @After
     fun teardown() {
         Dispatchers.resetMain()
         unmockkAll()
+    }
+
+    @Test
+    fun `null actions are emitted when feature flag is off`() = runTest {
+        val settings = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns MobileSettings(
+                listToolbar = ActionsToolbarSetting(
+                    isCustom = true,
+                    actions = listOf(
+                        ToolbarAction.LabelAs,
+                        ToolbarAction.Forward,
+                        ToolbarAction.ViewMessageInLightMode
+                    ).map { ToolbarAction.enumOf(it.value) }
+                ),
+                messageToolbar = null,
+                conversationToolbar = null
+            )
+        }
+
+        // Given
+        customizeToolbarFeatureEnabled(false)
+        every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
+
+        // When
+        useCase.invoke(userId, isMailBox = true).test {
+            // Then
+            assertEquals(
+                null,
+                awaitItem()
+            )
+            awaitComplete()
+        }
     }
 
     @Test
@@ -178,5 +223,11 @@ class ObserveMailMessageToolbarSettingsTest {
             )
             awaitComplete()
         }
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
     }
 }

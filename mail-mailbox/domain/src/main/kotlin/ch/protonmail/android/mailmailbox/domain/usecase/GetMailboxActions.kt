@@ -25,7 +25,7 @@ import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmailbox.domain.model.MailboxBottomBarDefaults
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId

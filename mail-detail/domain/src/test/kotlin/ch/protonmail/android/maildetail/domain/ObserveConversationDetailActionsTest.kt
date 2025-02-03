@@ -26,7 +26,7 @@ import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
 import io.mockk.every

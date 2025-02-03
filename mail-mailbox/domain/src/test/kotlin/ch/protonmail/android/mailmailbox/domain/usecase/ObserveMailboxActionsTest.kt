@@ -24,7 +24,7 @@ import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
-import ch.protonmail.android.mailmessage.domain.usecase.ObserveMailMessageToolbarSettings
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first

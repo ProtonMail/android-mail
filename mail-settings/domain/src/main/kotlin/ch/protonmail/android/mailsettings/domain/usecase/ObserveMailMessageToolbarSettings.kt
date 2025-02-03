@@ -16,9 +16,10 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailmessage.domain.usecase
+package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
+import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.arch.mapSuccessValueOrNull
@@ -29,11 +30,13 @@ import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObserveMailMessageToolbarSettings @Inject constructor(
-    private val mailSettingsRepository: MailSettingsRepository
+    private val mailSettingsRepository: MailSettingsRepository,
+    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
 ) {
 
     operator fun invoke(userId: UserId, isMailBox: Boolean): Flow<List<Action>?> =
         mailSettingsRepository.getMailSettingsFlow(userId).mapSuccessValueOrNull().map { settings ->
+            if (isCustomizeToolbarEnabled.not()) return@map null
             val isConvMode = settings?.viewMode?.enum == ViewMode.ConversationGrouping
             val toolbar = when {
                 isMailBox -> settings?.mobileSettings?.listToolbar
