@@ -26,4 +26,4 @@ class NotificationPermissionTelemetryEventDimensions {
     fun addNotificationPermissionDialogType(value: String) = mutableMap.put(DIMENSION_NAME_DIALOG_TYPE, value)
 }
 
-private const val DIMENSION_NAME_DIALOG_TYPE = "notification_permission_dialog_type"
+private const val DIMENSION_NAME_DIALOG_TYPE = "notificationPermissionDialogType"
