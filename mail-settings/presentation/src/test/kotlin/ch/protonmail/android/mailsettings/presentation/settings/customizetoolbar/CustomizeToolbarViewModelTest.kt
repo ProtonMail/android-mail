@@ -145,9 +145,9 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.LabelAs
                 ),
                 mailboxActionsUnselected = listOf(
-                    ToolbarAction.MoveToSpam,
                     ToolbarAction.StarOrUnstar,
-                    ToolbarAction.MoveToArchive
+                    ToolbarAction.MoveToArchive,
+                    ToolbarAction.MoveToSpam
                 ),
                 ActionEnabledStates(
                     canAddMessage = true,

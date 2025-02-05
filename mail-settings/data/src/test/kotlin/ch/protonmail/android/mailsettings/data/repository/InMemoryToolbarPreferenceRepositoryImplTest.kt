@@ -260,7 +260,12 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
             // Then
             val expected = expectedDefaultPreference(
                 convMode = true,
-                mailboxActions = emptyList()
+                mailboxActions = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
+                    ToolbarAction.MoveTo,
+                    ToolbarAction.LabelAs
+                ).stringEnums()
             )
             assertEquals(expected, awaitItem().getOrNull())
         }

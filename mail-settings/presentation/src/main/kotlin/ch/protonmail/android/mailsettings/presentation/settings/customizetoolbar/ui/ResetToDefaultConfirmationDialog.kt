@@ -21,21 +21,19 @@ package ch.protonmail.android.mailsettings.presentation.settings.customizetoolba
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import ch.protonmail.android.mailsettings.presentation.R
 import me.proton.core.compose.component.ProtonAlertDialog
 import me.proton.core.compose.component.ProtonAlertDialogButton
+import me.proton.core.compose.component.ProtonAlertDialogText
 import me.proton.core.compose.theme.ProtonDimens
-import me.proton.core.compose.theme.ProtonTheme
-import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 internal fun ResetToDefaultConfirmationDialog(
     onCancelClicked: () -> Unit,
-    onContinueClicked: () -> Unit,
+    onConfirmClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ProtonAlertDialog(
@@ -43,9 +41,8 @@ internal fun ResetToDefaultConfirmationDialog(
         titleResId = R.string.customize_toolbar_reset_default_confirmation_title,
         text = {
             Column {
-                Text(
-                    text = stringResource(id = R.string.customize_toolbar_reset_default_confirmation_desc),
-                    style = ProtonTheme.typography.defaultNorm
+                ProtonAlertDialogText(
+                    text = stringResource(id = R.string.customize_toolbar_reset_default_confirmation_desc)
                 )
                 Spacer(modifier = Modifier.height(ProtonDimens.DefaultSpacing))
             }
@@ -56,8 +53,8 @@ internal fun ResetToDefaultConfirmationDialog(
             }
         },
         confirmButton = {
-            ProtonAlertDialogButton(R.string.presentation_alert_continue) {
-                onContinueClicked()
+            ProtonAlertDialogButton(R.string.customize_toolbar_reset_default_confirm) {
+                onConfirmClicked()
             }
         },
         onDismissRequest = { onCancelClicked() }

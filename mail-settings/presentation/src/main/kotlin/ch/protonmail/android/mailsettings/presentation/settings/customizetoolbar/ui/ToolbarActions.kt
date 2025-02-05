@@ -58,7 +58,7 @@ internal fun ToolbarActions(
 
     if (showResetToDefaultConfirmationDialog) {
         ResetToDefaultConfirmationDialog(
-            onContinueClicked = {
+            onConfirmClicked = {
                 showResetToDefaultConfirmationDialog = false
                 onAction(CustomizeToolbarOperation.ResetToDefaultConfirmed)
             },

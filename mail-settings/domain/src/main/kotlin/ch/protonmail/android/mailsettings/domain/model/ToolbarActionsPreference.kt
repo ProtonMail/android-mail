@@ -22,6 +22,7 @@ import me.proton.core.domain.type.StringEnum
 import me.proton.core.mailsettings.domain.entity.ActionsToolbarSetting
 import me.proton.core.mailsettings.domain.entity.MobileSettings
 import me.proton.core.mailsettings.domain.entity.ToolbarAction
+import me.proton.core.util.kotlin.takeIfNotEmpty
 
 data class ToolbarActionsPreference(
     val messageToolbar: ToolbarActions,
@@ -115,9 +116,7 @@ data class ToolbarActionsPreference(
         private fun ActionsToolbarSetting?.createActions(default: List<ToolbarAction>, all: List<ToolbarAction>) =
             ToolbarActions(
                 current = ActionSelection(
-                    selected = this?.actions?.takeIf {
-                        isCustom == true || it.isNotEmpty()
-                    } ?: default.map { ToolbarAction.enumOf(it.value) },
+                    selected = this?.actions?.takeIfNotEmpty() ?: default.map { ToolbarAction.enumOf(it.value) },
                     all = all
                 ),
                 default = default
@@ -154,9 +153,9 @@ data class ToolbarActionsPreference(
         )
 
         val AllMailboxActions: List<ToolbarAction> = MailboxActions + listOf(
-            ToolbarAction.MoveToSpam,
             ToolbarAction.StarOrUnstar,
-            ToolbarAction.MoveToArchive
+            ToolbarAction.MoveToArchive,
+            ToolbarAction.MoveToSpam
         )
 
         val AllActions = ToolbarAction.entries

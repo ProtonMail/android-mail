@@ -27,6 +27,7 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.mailsettings.domain.entity.ToolbarAction
 import me.proton.core.mailsettings.domain.entity.ViewMode
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
+import me.proton.core.util.kotlin.takeIfNotEmpty
 import javax.inject.Inject
 
 class ObserveMailMessageToolbarSettings @Inject constructor(
@@ -43,7 +44,8 @@ class ObserveMailMessageToolbarSettings @Inject constructor(
                 isConvMode -> settings?.mobileSettings?.conversationToolbar
                 else -> settings?.mobileSettings?.messageToolbar
             }
-            toolbar?.actions?.mapNotNull { it.enum }?.map { toolbarAction ->
+            val toolbarActions = toolbar?.actions?.mapNotNull { it.enum }?.takeIfNotEmpty()
+            toolbarActions?.map { toolbarAction ->
                 when (toolbarAction) {
                     ToolbarAction.ReplyOrReplyAll -> Action.Reply
                     ToolbarAction.Forward -> Action.Forward

@@ -28,6 +28,7 @@ import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPrefe
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
@@ -53,10 +54,13 @@ class InMemoryToolbarPreferenceRepositoryImpl @Inject constructor(
                 mailSettingsRepository.getMailSettingsFlow(userId)
                     .mapSuccessValueOrNull()
                     .filterNotNull()
-                    .flatMapLatest { settings ->
+                    .map { settings ->
                         val isConversationMode = settings.viewMode?.enum?.let { it == ViewMode.ConversationGrouping }
-                        val preference = ToolbarActionsPreference
+                        ToolbarActionsPreference
                             .create(settings.mobileSettings, isConversationMode ?: false)
+                    }
+                    .distinctUntilChanged()
+                    .flatMapLatest { preference ->
                         proposedPreferences.update { preference }
                         proposedPreferences.filterNotNull().map { it.right() }
                     }

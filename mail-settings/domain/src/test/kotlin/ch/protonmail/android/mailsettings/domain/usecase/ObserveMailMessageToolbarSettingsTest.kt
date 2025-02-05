@@ -190,6 +190,72 @@ class ObserveMailMessageToolbarSettingsTest {
     }
 
     @Test
+    fun `null actions are returned when mail settings is not empty and no actions are supported`() = runTest {
+        val settings = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns MobileSettings(
+                listToolbar = null,
+                messageToolbar = ActionsToolbarSetting(
+                    isCustom = true,
+                    actions = listOf(
+                        ToolbarAction.enumOf("unsupported1"),
+                        ToolbarAction.enumOf("unsupported2"),
+                        ToolbarAction.enumOf("unsupported3")
+                    )
+                ),
+                conversationToolbar = null
+            )
+        }
+
+        // Given
+        every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
+
+        // When
+        useCase.invoke(userId, isMailBox = false).test {
+            // Then
+            assertEquals(
+                null,
+                awaitItem()
+            )
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `filters out unsupported actions`() = runTest {
+        val settings = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns MobileSettings(
+                listToolbar = null,
+                messageToolbar = ActionsToolbarSetting(
+                    isCustom = true,
+                    actions = listOf(
+                        ToolbarAction.enumOf("unsupported1"),
+                        ToolbarAction.enumOf("toggle_star"),
+                        ToolbarAction.enumOf("unsupported3")
+                    )
+                ),
+                conversationToolbar = null
+            )
+        }
+
+        // Given
+        every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
+
+        // When
+        useCase.invoke(userId, isMailBox = false).test {
+            // Then
+            assertEquals(
+                listOf(
+                    Action.Star
+                ),
+                awaitItem()
+            )
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `mailbox actions are returned when isMailbox is true`() = runTest {
         val settings = mockk<MailSettings> {
             every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)
