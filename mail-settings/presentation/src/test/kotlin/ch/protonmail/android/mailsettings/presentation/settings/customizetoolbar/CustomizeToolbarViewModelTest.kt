@@ -120,7 +120,8 @@ class CustomizeToolbarViewModelTest {
             val actual = awaitItem()
             actual.assertTabsEqual(
                 tabIndex = 0,
-                firstTabTitleRes = R.string.customize_toolbar_conversation
+                firstTabTitleRes = R.string.customize_toolbar_conversation,
+                mailboxDisclaimerRes = R.string.customize_toolbar_disclaimer_mailbox_conversations
             )
             actual.assertActionsEqual(
                 messageActionsSelected = listOf(
@@ -192,7 +193,8 @@ class CustomizeToolbarViewModelTest {
             val actual = awaitItem()
             actual.assertTabsEqual(
                 tabIndex = 0,
-                firstTabTitleRes = R.string.customize_toolbar_conversation
+                firstTabTitleRes = R.string.customize_toolbar_conversation,
+                mailboxDisclaimerRes = R.string.customize_toolbar_disclaimer_mailbox_conversations
             )
             actual.assertActionsEqual(
                 messageActionsSelected = listOf(
@@ -266,7 +268,8 @@ class CustomizeToolbarViewModelTest {
             val actual = awaitItem()
             actual.assertTabsEqual(
                 tabIndex = 0,
-                firstTabTitleRes = R.string.customize_toolbar_conversation
+                firstTabTitleRes = R.string.customize_toolbar_conversation,
+                mailboxDisclaimerRes = R.string.customize_toolbar_disclaimer_mailbox_conversations
             )
             actual.assertActionsEqual(
                 messageActionsSelected = listOf(
@@ -323,7 +326,8 @@ class CustomizeToolbarViewModelTest {
             val actual = awaitItem()
             actual.assertTabsEqual(
                 tabIndex = 1,
-                firstTabTitleRes = R.string.customize_toolbar_conversation
+                firstTabTitleRes = R.string.customize_toolbar_conversation,
+                mailboxDisclaimerRes = R.string.customize_toolbar_disclaimer_mailbox_conversations
             )
         }
     }
@@ -341,7 +345,8 @@ class CustomizeToolbarViewModelTest {
             val actual = awaitItem()
             actual.assertTabsEqual(
                 tabIndex = 0,
-                firstTabTitleRes = R.string.customize_toolbar_message
+                firstTabTitleRes = R.string.customize_toolbar_message,
+                mailboxDisclaimerRes = R.string.customize_toolbar_disclaimer_mailbox
             )
         }
     }
@@ -407,10 +412,15 @@ class CustomizeToolbarViewModelTest {
         }
     }
 
-    private fun CustomizeToolbarState.assertTabsEqual(tabIndex: Int, @StringRes firstTabTitleRes: Int) {
+    private fun CustomizeToolbarState.assertTabsEqual(
+        tabIndex: Int,
+        @StringRes firstTabTitleRes: Int,
+        @StringRes mailboxDisclaimerRes: Int
+    ) {
         assertTrue(this is Data)
         assertEquals(tabIndex, this.selectedTabIdx)
         assertEquals(firstTabTitleRes, (tabs.first() as TextUiModel.TextRes).value)
+        assertEquals(mailboxDisclaimerRes, (pages[1].disclaimer as TextUiModel.TextRes).value)
     }
 
     private data class ActionEnabledStates(

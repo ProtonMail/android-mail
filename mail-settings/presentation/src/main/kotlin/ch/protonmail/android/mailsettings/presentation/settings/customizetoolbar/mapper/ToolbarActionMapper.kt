@@ -46,7 +46,11 @@ class ToolbarActionMapper @Inject constructor() {
                     } else {
                         presentationR.string.customize_toolbar_disclaimer_message
                     }
-                    true -> presentationR.string.customize_toolbar_disclaimer_mailbox
+                    true -> if (isInConversationMode) {
+                        presentationR.string.customize_toolbar_disclaimer_mailbox_conversations
+                    } else {
+                        presentationR.string.customize_toolbar_disclaimer_mailbox
+                    }
                 }
             ),
             selectedActions = recognizedSelected.map { toUiModel(it, enabled = selectedEnabled) },
