@@ -22,8 +22,10 @@ import arrow.core.Either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
+import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
@@ -35,4 +37,30 @@ class ObserveLabels @Inject constructor(
     operator fun invoke(userId: UserId, labelType: LabelType): Flow<Either<DataError, List<Label>>> =
         labelRepository.observeLabels(userId, labelType)
             .mapToEither()
+            .map { either ->
+                either.map {
+                    if (labelType == LabelType.MessageFolder) {
+                        it.filterDeletedSubfolders()
+                    } else {
+                        it
+                    }
+                }
+            }
+
+    private fun List<Label>.filterDeletedSubfolders(): List<Label> {
+        val mapping = associateBy { it.labelId }
+        return filter {
+            val topParentId = it.findTopParentId(mapping)
+            topParentId == null || mapping[topParentId] != null
+        }
+    }
+}
+
+fun Label.findTopParentId(mapping: Map<LabelId, Label>): LabelId? {
+    var currentParentId = parentId
+    while (currentParentId != null) {
+        val nextParent = mapping[currentParentId] ?: return currentParentId
+        currentParentId = nextParent.parentId
+    }
+    return null
 }

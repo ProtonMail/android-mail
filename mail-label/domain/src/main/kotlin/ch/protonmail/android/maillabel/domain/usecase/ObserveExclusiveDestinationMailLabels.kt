@@ -27,14 +27,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
-import me.proton.core.domain.arch.mapSuccessValueOrNull
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveExclusiveDestinationMailLabels @Inject constructor(
-    private val labelRepository: LabelRepository
+    private val observeLabels: ObserveLabels
 ) {
 
     operator fun invoke(userId: UserId) = combine(
@@ -50,8 +48,8 @@ class ObserveExclusiveDestinationMailLabels @Inject constructor(
 
     private fun observeSystemLabelIds() = flowOf(SystemLabelId.exclusiveDestinationList)
 
-    private fun observeMessageFolders(userId: UserId) = labelRepository.observeLabels(userId, LabelType.MessageFolder)
-        .mapSuccessValueOrNull()
+    private fun observeMessageFolders(userId: UserId) = observeLabels(userId, LabelType.MessageFolder)
+        .map { it.getOrNull() }
         .mapLatest { list ->
             list.orEmpty()
                 .filter { !it.labelId.isReservedSystemLabelId() }

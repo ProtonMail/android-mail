@@ -19,57 +19,46 @@
 package ch.protonmail.android.maildetail.domain.usecase
 
 import app.cash.turbine.test
+import arrow.core.Either
 import arrow.core.left
 import arrow.core.nonEmptyListOf
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.ConversationIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelIdSample
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcommon.domain.sample.UserIdSample
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.mailmessage.domain.repository.MessageRepository
 import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class ObserveConversationMessagesWithLabelsTest {
 
-    private val messageLabelsFlow = flowOf(DataResult.Success(ResponseSource.Local, listOf(LabelSample.Archive)))
-    private val messageFoldersFlow = flowOf(DataResult.Success(ResponseSource.Local, listOf(LabelSample.Document)))
-    private val labelRepository: LabelRepository = mockk {
-        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageLabel) } returns messageLabelsFlow
-        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageFolder) } returns messageFoldersFlow
+    private val messageLabelsFlow = flowOf(Either.Right(listOf(LabelSample.Archive)))
+    private val messageFoldersFlow = flowOf(Either.Right(listOf(LabelSample.Document)))
+    private val observeLabels: ObserveLabels = mockk {
+        every { this@mockk.invoke(userId = UserIdSample.Primary, LabelType.MessageLabel) } returns messageLabelsFlow
+        every { this@mockk.invoke(userId = UserIdSample.Primary, LabelType.MessageFolder) } returns messageFoldersFlow
     }
     private val messageRepository: MessageRepository = mockk {
         every { observeCachedMessages(UserIdSample.Primary, ConversationIdSample.WeatherForecast) } returns
             flowOf(nonEmptyListOf(MessageSample.AugWeatherForecast).right())
     }
     private val observeConversationMessagesWithLabels = ObserveConversationMessagesWithLabels(
-        labelRepository = labelRepository,
+        observeLabels = observeLabels,
         messageRepository = messageRepository
     )
-
-    @BeforeTest
-    fun setUp() {
-        mockkStatic("ch.protonmail.android.mailcommon.domain.mapper.DataResultEitherMappingsKt")
-        every { messageLabelsFlow.mapToEither() } returns flowOf(emptyList<Label>().right())
-        every { messageFoldersFlow.mapToEither() } returns flowOf(emptyList<Label>().right())
-    }
 
     @AfterTest
     fun tearDown() {
@@ -80,6 +69,11 @@ internal class ObserveConversationMessagesWithLabelsTest {
     fun `when messages and labels are emitted, right model is emitted`() = runTest {
         // given
         val expected = nonEmptyListOf(MessageWithLabelsSample.AugWeatherForecast).right()
+
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageLabel) } returns
+            flowOf(emptyList<Label>().right())
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageFolder) } returns
+            flowOf(emptyList<Label>().right())
 
         // when
         observeConversationMessagesWithLabels(
@@ -107,8 +101,10 @@ internal class ObserveConversationMessagesWithLabelsTest {
         val allFolders = listOf(LabelSample.Archive, LabelSample.Inbox)
         val expected = nonEmptyListOf(messageWithLabels).right()
 
-        every { messageLabelsFlow.mapToEither() } returns flowOf(allLabels.right())
-        every { messageFoldersFlow.mapToEither() } returns flowOf(allFolders.right())
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageLabel) } returns flowOf(allLabels.right())
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageFolder) } returns
+            flowOf(allFolders.right())
+
         every { messageRepository.observeCachedMessages(UserIdSample.Primary, ConversationIdSample.Invoices) } returns
             flowOf(nonEmptyListOf(message).right())
 
@@ -151,7 +147,7 @@ internal class ObserveConversationMessagesWithLabelsTest {
     fun `when message labels emits an error, the error is emitted`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        every { messageLabelsFlow.mapToEither() } returns flowOf(error)
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageLabel) } returns flowOf(error)
 
         // when
         observeConversationMessagesWithLabels(
@@ -169,7 +165,7 @@ internal class ObserveConversationMessagesWithLabelsTest {
     fun `when message folder emits an error, the error is emitted`() = runTest {
         // given
         val error = DataError.Local.NoDataCached.left()
-        every { messageFoldersFlow.mapToEither() } returns flowOf(error)
+        every { observeLabels(userId = UserIdSample.Primary, LabelType.MessageFolder) } returns flowOf(error)
 
         // when
         observeConversationMessagesWithLabels(

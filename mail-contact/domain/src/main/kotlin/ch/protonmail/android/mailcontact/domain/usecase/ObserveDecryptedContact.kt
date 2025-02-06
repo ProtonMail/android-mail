@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.contact.domain.entity.ContactId
@@ -32,13 +33,12 @@ import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.Label
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveDecryptedContact @Inject constructor(
     private val contactRepository: ContactRepository,
     private val getDecryptedContact: GetDecryptedContact,
-    private val labelRepository: LabelRepository
+    private val observeLabels: ObserveLabels
 ) {
 
     operator fun invoke(
@@ -48,7 +48,7 @@ class ObserveDecryptedContact @Inject constructor(
     ): Flow<Either<DataError, DecryptedContact>> {
         return combine(
             contactRepository.observeContactWithCards(userId, contactId, refresh).mapToEither(),
-            labelRepository.observeLabels(userId, LabelType.ContactGroup).mapToEither()
+            observeLabels(userId, LabelType.ContactGroup)
         ) { contactWithCardsEither, labelsEither ->
             either {
 

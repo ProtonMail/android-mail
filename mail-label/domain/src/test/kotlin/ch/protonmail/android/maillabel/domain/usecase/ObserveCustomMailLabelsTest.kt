@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import android.graphics.Color
 import app.cash.turbine.test
+import arrow.core.Either
 import ch.protonmail.android.maillabel.domain.model.toMailLabelCustom
 import ch.protonmail.android.testdata.label.LabelTestData.buildLabel
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -29,10 +30,7 @@ import io.mockk.mockkStatic
 import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -41,10 +39,9 @@ import kotlin.test.assertEquals
 class ObserveCustomMailLabelsTest {
 
     private val userId = UserIdTestData.userId
-    private val labelRepository = mockk<LabelRepository> {
-        every { observeLabels(any(), type = LabelType.MessageLabel) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+    private val observeLabels = mockk<ObserveLabels> {
+        every { this@mockk.invoke(any(), labelType = LabelType.MessageLabel) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "id0", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "id2", order = 2),
@@ -54,7 +51,7 @@ class ObserveCustomMailLabelsTest {
         )
     }
 
-    private val observeCustomLabels = ObserveCustomMailLabels(labelRepository)
+    private val observeCustomLabels = ObserveCustomMailLabels(observeLabels)
 
     @Before
     fun setUp() {

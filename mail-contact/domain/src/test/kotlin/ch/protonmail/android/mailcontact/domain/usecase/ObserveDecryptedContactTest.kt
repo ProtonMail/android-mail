@@ -20,12 +20,14 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.sample.LabelSample
 import ch.protonmail.android.mailcontact.domain.model.ContactGroupLabel
 import ch.protonmail.android.mailcontact.domain.model.DecryptedContact
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.testdata.contact.ContactWithCardsSample
 import ch.protonmail.android.testdata.user.UserIdTestData
 import io.mockk.coEvery
@@ -37,7 +39,6 @@ import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -63,14 +64,14 @@ class ObserveDecryptedContactTest {
         )
     }
 
-    private val labelRepositoryMock = mockk<LabelRepository> {
+    private val observeLabels = mockk<ObserveLabels> {
         every {
-            this@mockk.observeLabels(
+            this@mockk.invoke(
                 UserIdTestData.Primary,
                 LabelType.ContactGroup
             )
         } returns flowOf(
-            DataResult.Success(ResponseSource.Local, listOf(LabelSample.GroupCoworkers, LabelSample.GroupFriends))
+            Either.Right(listOf(LabelSample.GroupCoworkers, LabelSample.GroupFriends))
         )
     }
 
@@ -86,7 +87,7 @@ class ObserveDecryptedContactTest {
     private val observeDecryptedContact = ObserveDecryptedContact(
         contactRepositoryMock,
         getDecryptedContactMock,
-        labelRepositoryMock
+        observeLabels
     )
 
     @Test
@@ -149,16 +150,12 @@ class ObserveDecryptedContactTest {
     @Test
     fun `propagates error when labelRepository fails`() = runTest {
         // Given
-        every { labelRepositoryMock.observeLabels(any(), any()) } returns flowOf(
-            DataResult.Error.Remote(
-                message = "",
-                cause = null,
-                httpCode = 404
-            )
+        every { observeLabels(any(), any()) } returns flowOf(
+            DataError.Remote.Http(NetworkError.NotFound, "info").left()
         )
         val expectedError = DataError.Remote.Http(
             networkError = NetworkError.NotFound,
-            apiErrorInfo = ""
+            apiErrorInfo = "info"
         )
 
         // When

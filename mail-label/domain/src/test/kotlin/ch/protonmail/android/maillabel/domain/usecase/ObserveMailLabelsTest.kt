@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import android.graphics.Color
 import app.cash.turbine.test
+import arrow.core.Either
 import ch.protonmail.android.maillabel.domain.SelectedMailLabelId
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
@@ -44,7 +45,6 @@ import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.mailsettings.domain.entity.AlmostAllMail
 import me.proton.core.mailsettings.domain.entity.MailSettings
 import me.proton.core.mailsettings.domain.entity.ShowMoved
@@ -63,10 +63,9 @@ class ObserveMailLabelsTest {
         coEvery { getMailSettingsFlow(any()) } returns mutableMailSettings
     }
 
-    private val labelRepository = mockk<LabelRepository> {
-        every { observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+    private val observeLabels = mockk<ObserveLabels> {
+        every { this@mockk.invoke(userId = any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id0", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id1", order = 1),
@@ -74,9 +73,8 @@ class ObserveMailLabelsTest {
                 )
             )
         )
-        every { observeLabels(any(), type = LabelType.MessageLabel) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { this@mockk.invoke(userId = any(), labelType = LabelType.MessageLabel) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "id3", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageLabel, id = "id4", order = 1),
@@ -93,7 +91,7 @@ class ObserveMailLabelsTest {
     private val TestScope.observeMailLabels
         get() = ObserveMailLabels(
             dispatcher = UnconfinedTestDispatcher(testScheduler),
-            labelRepository = labelRepository,
+            observeLabels = observeLabels,
             mailSettingsRepository = mailSettingsRepository
         )
 
@@ -151,9 +149,8 @@ class ObserveMailLabelsTest {
             buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id0.2.1", order = 0, parentId = "id0.2"),
             buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id0.2.2", order = 1, parentId = "id0.2")
         )
-        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { observeLabels.invoke(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = labels
             )
         )
@@ -182,9 +179,8 @@ class ObserveMailLabelsTest {
         // Given
         every { selectedMailLabelId.flow } returns MutableStateFlow(MailLabelId.System.AllMail)
 
-        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { observeLabels.invoke(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(
                         userId = userId,

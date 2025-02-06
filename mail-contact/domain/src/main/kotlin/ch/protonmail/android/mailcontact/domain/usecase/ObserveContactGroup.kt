@@ -22,6 +22,7 @@ import arrow.core.Either
 import arrow.core.raise.either
 import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import me.proton.core.contact.domain.entity.ContactEmail
@@ -29,17 +30,16 @@ import me.proton.core.contact.domain.repository.ContactRepository
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveContactGroup @Inject constructor(
-    private val labelRepository: LabelRepository,
+    private val observeLabels: ObserveLabels,
     private val contactRepository: ContactRepository
 ) {
 
     operator fun invoke(userId: UserId, labelId: LabelId): Flow<Either<GetContactGroupError, ContactGroup>> {
         return combine(
-            labelRepository.observeLabels(userId, LabelType.ContactGroup).mapToEither(),
+            observeLabels(userId, LabelType.ContactGroup),
             contactRepository.observeAllContacts(userId).mapToEither()
         ) { labels, contacts ->
             either {

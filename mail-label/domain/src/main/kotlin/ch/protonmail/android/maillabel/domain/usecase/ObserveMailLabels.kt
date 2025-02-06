@@ -38,17 +38,16 @@ import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.entity.LabelType.MessageFolder
 import me.proton.core.label.domain.entity.LabelType.MessageLabel
-import me.proton.core.label.domain.repository.LabelRepository
-import me.proton.core.mailsettings.domain.entity.ShowMoved
 import me.proton.core.mailsettings.domain.entity.AlmostAllMail
 import me.proton.core.mailsettings.domain.entity.MailSettings
+import me.proton.core.mailsettings.domain.entity.ShowMoved
 import me.proton.core.mailsettings.domain.repository.MailSettingsRepository
 import javax.inject.Inject
 
 class ObserveMailLabels @Inject constructor(
     @DefaultDispatcher
     private val dispatcher: CoroutineDispatcher,
-    private val labelRepository: LabelRepository,
+    private val observeLabels: ObserveLabels,
     private val mailSettingsRepository: MailSettingsRepository
 ) {
 
@@ -93,8 +92,8 @@ class ObserveMailLabels @Inject constructor(
         return displayedList
     }
 
-    private fun observeCustomLabels(userId: UserId, type: LabelType) = labelRepository.observeLabels(userId, type)
-        .mapSuccessValueOrNull()
+    private fun observeCustomLabels(userId: UserId, type: LabelType) = observeLabels(userId, type)
+        .map { it.getOrNull() }
         .mapLatest { list ->
             list.orEmpty()
                 .filter { !it.labelId.isReservedSystemLabelId() }

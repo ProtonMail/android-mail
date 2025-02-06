@@ -29,20 +29,19 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.user.domain.extension.hasSubscriptionForMail
 import timber.log.Timber
 import javax.inject.Inject
 
 class IsLabelLimitReached @Inject constructor(
-    private val labelRepository: LabelRepository,
+    private val getLabels: GetLabels,
     private val observeUser: ObserveUser
 ) {
 
     suspend operator fun invoke(userId: UserId, labelType: LabelType): Either<DataError, Boolean> = Either.catch {
         val hasSubscriptionForMail = observeUser(userId).filterNotNull().first().hasSubscriptionForMail()
         if (!hasSubscriptionForMail) {
-            val customLabelList = labelRepository.getLabels(userId, labelType).filter {
+            val customLabelList = getLabels(userId, labelType).getOrNull().orEmpty().filter {
                 !it.labelId.isReservedSystemLabelId()
             }
             if (customLabelList.size >= FREE_USER_LABEL_LIMIT) return@catch true

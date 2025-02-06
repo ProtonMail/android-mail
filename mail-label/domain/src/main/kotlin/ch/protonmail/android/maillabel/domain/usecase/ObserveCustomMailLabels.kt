@@ -19,7 +19,6 @@
 package ch.protonmail.android.maillabel.domain.usecase
 
 import arrow.core.Either
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
@@ -28,16 +27,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class ObserveCustomMailLabels @Inject constructor(
-    private val labelRepository: LabelRepository
+    private val observeLabels: ObserveLabels
 ) {
 
     operator fun invoke(userId: UserId): Flow<Either<DataError, List<MailLabel.Custom>>> =
-        labelRepository.observeLabels(userId, LabelType.MessageLabel)
-            .mapToEither()
+        observeLabels(userId, LabelType.MessageLabel)
             .mapLatest { labelList ->
                 labelList.map { labels ->
                     labels.filter { !it.labelId.isReservedSystemLabelId() }

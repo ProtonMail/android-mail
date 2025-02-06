@@ -31,16 +31,15 @@ import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class IsLabelLimitReachedTest {
 
-    private val labelRepository: LabelRepository = mockk()
+    private val getLabels: GetLabels = mockk()
     private val observeUser: ObserveUser = mockk()
 
-    private val isLabelLimitReached = IsLabelLimitReached(labelRepository, observeUser)
+    private val isLabelLimitReached = IsLabelLimitReached(getLabels, observeUser)
 
     private val defaultTestLabel = LabelTestData.buildLabel(id = "LabelId")
 
@@ -55,7 +54,7 @@ class IsLabelLimitReachedTest {
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        verify { labelRepository wasNot called }
+        verify { getLabels wasNot called }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -64,11 +63,11 @@ class IsLabelLimitReachedTest {
         // Given
         val expectedResult = true
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.paidUser)
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
+        coEvery { getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
             LabelTestData.buildLabel(id = "LabelId1"),
             LabelTestData.buildLabel(id = "LabelId2"),
             LabelTestData.buildLabel(id = "LabelId3")
-        )
+        ).right()
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
@@ -83,16 +82,16 @@ class IsLabelLimitReachedTest {
         // Given
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
+        coEvery { getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
             defaultTestLabel
-        )
+        ).right()
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        coVerify { getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -101,18 +100,18 @@ class IsLabelLimitReachedTest {
         // Given
         val expectedResult = true
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
-        coEvery { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
+        coEvery { getLabels(UserIdTestData.userId, LabelType.MessageLabel) } returns listOf(
             LabelTestData.buildLabel(id = "LabelId1"),
             LabelTestData.buildLabel(id = "LabelId2"),
             LabelTestData.buildLabel(id = "LabelId3")
-        )
+        ).right()
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        coVerify { getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -122,19 +121,21 @@ class IsLabelLimitReachedTest {
         val expectedResult = false
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
         coEvery {
-            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
-        } returns LabelTestData.systemLabels.map {
-            LabelTestData.buildLabel(id = it.id.labelId.id)
-        } + listOf(
-            LabelTestData.buildLabel(id = "Custom Label")
-        )
+            getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+        } returns (
+            LabelTestData.systemLabels.map {
+                LabelTestData.buildLabel(id = it.id.labelId.id)
+            } + listOf(
+                LabelTestData.buildLabel(id = "Custom Label")
+            )
+            ).right()
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        coVerify { getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
         assertEquals(expectedResult.right(), result)
     }
 
@@ -144,21 +145,23 @@ class IsLabelLimitReachedTest {
         val expectedResult = true
         coEvery { observeUser(UserIdTestData.userId) } returns flowOf(UserTestData.freeUser)
         coEvery {
-            labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel)
-        } returns LabelTestData.systemLabels.map {
-            LabelTestData.buildLabel(id = it.id.labelId.id)
-        } + listOf(
-            LabelTestData.buildLabel(id = "Custom Label 1"),
-            LabelTestData.buildLabel(id = "Custom Label 2"),
-            LabelTestData.buildLabel(id = "Custom Label 3")
-        )
+            getLabels(UserIdTestData.userId, LabelType.MessageLabel)
+        } returns (
+            LabelTestData.systemLabels.map {
+                LabelTestData.buildLabel(id = it.id.labelId.id)
+            } + listOf(
+                LabelTestData.buildLabel(id = "Custom Label 1"),
+                LabelTestData.buildLabel(id = "Custom Label 2"),
+                LabelTestData.buildLabel(id = "Custom Label 3")
+            )
+            ).right()
 
         // When
         val result = isLabelLimitReached(UserIdTestData.userId, LabelType.MessageLabel)
 
         // Then
         coVerify { observeUser(UserIdTestData.userId) }
-        coVerify { labelRepository.getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
+        coVerify { getLabels(UserIdTestData.userId, LabelType.MessageLabel) }
         assertEquals(expectedResult.right(), result)
     }
 }

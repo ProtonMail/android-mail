@@ -20,6 +20,7 @@ package ch.protonmail.android.maillabel.domain.usecase
 
 import android.graphics.Color
 import app.cash.turbine.test
+import arrow.core.Either
 import ch.protonmail.android.maillabel.domain.model.MailLabels
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.toMailLabelSystem
@@ -34,10 +35,7 @@ import io.mockk.unmockkStatic
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import me.proton.core.domain.arch.DataResult
-import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -47,10 +45,9 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
 
     private val userId = UserIdTestData.userId
 
-    private val labelRepository = mockk<LabelRepository> {
-        every { observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+    private val observeLabels = mockk<ObserveLabels> {
+        every { this@mockk.invoke(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "B", order = 1),
@@ -62,7 +59,7 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
 
     private val TestScope.observeMailLabels
         get() = ObserveExclusiveDestinationMailLabels(
-            labelRepository = labelRepository
+            observeLabels = observeLabels
         )
 
     @Before
@@ -109,9 +106,8 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
             buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.C.D", order = 0, parentId = "A.C"),
             buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.C.E", order = 1, parentId = "A.C")
         )
-        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { observeLabels(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = labels
             )
         )
@@ -137,9 +133,8 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
     @Test
     fun `return correct folders order on success`() = runTest {
         // Given
-        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { observeLabels(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 0),
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.A", order = 0, parentId = "A"),
@@ -172,9 +167,8 @@ internal class ObserveExclusiveDestinationMailLabelsTest {
     @Test
     fun `does not return system folders as custom folders`() = runTest {
         // Given
-        every { labelRepository.observeLabels(any(), type = LabelType.MessageFolder) } returns flowOf(
-            DataResult.Success(
-                source = ResponseSource.Local,
+        every { observeLabels(any(), labelType = LabelType.MessageFolder) } returns flowOf(
+            Either.Right(
                 value = listOf(
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A", order = 2),
                     buildLabel(userId = userId, type = LabelType.MessageFolder, id = "A.A", order = 0, parentId = "A"),

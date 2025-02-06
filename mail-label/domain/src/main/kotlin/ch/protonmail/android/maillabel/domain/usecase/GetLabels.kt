@@ -45,5 +45,19 @@ class GetLabels @Inject constructor(private val labelRepository: LabelRepository
         }
 
         DataError.Remote.Http(error)
+    }.map { labels ->
+        if (labelType == LabelType.MessageFolder) {
+            labels.filterDeletedSubfolders()
+        } else {
+            labels
+        }
+    }
+
+    private fun List<Label>.filterDeletedSubfolders(): List<Label> {
+        val mapping = associateBy { it.labelId }
+        return filter {
+            val topParentId = it.findTopParentId(mapping)
+            topParentId == null || mapping[topParentId] != null
+        }
     }
 }

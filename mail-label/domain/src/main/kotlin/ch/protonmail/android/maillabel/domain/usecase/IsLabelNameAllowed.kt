@@ -26,13 +26,12 @@ import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import me.proton.core.util.kotlin.equalsNoCase
 import timber.log.Timber
 import javax.inject.Inject
 
 class IsLabelNameAllowed @Inject constructor(
-    private val labelRepository: LabelRepository
+    private val getLabels: GetLabels
 ) {
 
     suspend operator fun invoke(
@@ -65,7 +64,7 @@ class IsLabelNameAllowed @Inject constructor(
         name: String,
         parentId: LabelId?
     ): Boolean {
-        return labelRepository.getLabels(userId, LabelType.MessageFolder).filter {
+        return getLabels(userId, LabelType.MessageFolder).getOrNull().orEmpty().filter {
             it.parentId == parentId
         }.none {
             it.name.equalsNoCase(name)
@@ -75,10 +74,10 @@ class IsLabelNameAllowed @Inject constructor(
     private fun noSystemFolderWithSameName(name: String) = FORBIDDEN_LABEL_NAME.none { it.equalsNoCase(name) }
 
     private suspend fun noLabelWithSameName(userId: UserId, name: String) =
-        labelRepository.getLabels(userId, LabelType.MessageLabel).none { it.name.equalsNoCase(name) }
+        getLabels(userId, LabelType.MessageLabel).getOrNull().orEmpty().none { it.name.equalsNoCase(name) }
 
     private suspend fun noFolderWithSameName(userId: UserId, name: String) =
-        labelRepository.getLabels(userId, LabelType.MessageFolder).none { it.name.equalsNoCase(name) }
+        getLabels(userId, LabelType.MessageFolder).getOrNull().orEmpty().none { it.name.equalsNoCase(name) }
 
     private companion object {
 

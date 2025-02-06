@@ -20,7 +20,11 @@ package ch.protonmail.android.mailcontact.domain.usecase
 
 import app.cash.turbine.test
 import arrow.core.Either
+import arrow.core.left
+import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcontact.domain.model.ContactGroup
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.testdata.contact.ContactIdTestData
 import ch.protonmail.android.testdata.contact.ContactTestData
 import ch.protonmail.android.testdata.label.LabelTestData
@@ -36,7 +40,6 @@ import me.proton.core.domain.arch.DataResult
 import me.proton.core.domain.arch.ResponseSource
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -50,10 +53,9 @@ class ObserveContactGroupTest {
         "Label 1"
     )
     private val labels = listOf(label)
-    private val labelRepository = mockk<LabelRepository> {
-        every { this@mockk.observeLabels(UserIdTestData.userId, LabelType.ContactGroup) } returns flowOf(
-            DataResult.Success(
-                ResponseSource.Remote,
+    private val observeLabels = mockk<ObserveLabels> {
+        every { this@mockk.invoke(UserIdTestData.userId, LabelType.ContactGroup) } returns flowOf(
+            Either.Right(
                 labels
             )
         )
@@ -107,7 +109,7 @@ class ObserveContactGroupTest {
         listOf(contact.contactEmails[0])
     )
 
-    private val observeContactGroup = ObserveContactGroup(labelRepository, contactRepository)
+    private val observeContactGroup = ObserveContactGroup(observeLabels, contactRepository)
 
     @Test
     fun `when repository returns labels and contacts they are successfully mapped and emitted`() = runTest {
@@ -123,8 +125,8 @@ class ObserveContactGroupTest {
     @Test
     fun `when label repository returns any data error then emit get contact groups error`() = runTest {
         // Given
-        every { labelRepository.observeLabels(UserIdTestData.userId, LabelType.ContactGroup) } returns flowOf(
-            DataResult.Error.Remote(message = "Unauthorised", cause = null, httpCode = 401)
+        every { observeLabels(UserIdTestData.userId, LabelType.ContactGroup) } returns flowOf(
+            DataError.Remote.Http(NetworkError.Unauthorized, "").left()
         )
         // When
         observeContactGroup(UserIdTestData.userId, LabelId("LabelId1")).test {

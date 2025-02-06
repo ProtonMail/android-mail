@@ -20,20 +20,19 @@ package ch.protonmail.android.mailmessage.domain.usecase
 
 import arrow.core.Either
 import arrow.core.raise.either
-import ch.protonmail.android.mailcommon.domain.mapper.mapToEither
 import ch.protonmail.android.mailcommon.domain.model.DataError
+import ch.protonmail.android.maillabel.domain.usecase.ObserveLabels
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MessageWithLabels
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import me.proton.core.domain.entity.UserId
 import me.proton.core.label.domain.entity.LabelType
-import me.proton.core.label.domain.repository.LabelRepository
 import javax.inject.Inject
 
 class GetMessagesWithLabels @Inject constructor(
     private val observeMessages: ObserveMessages,
-    private val labelsRepository: LabelRepository
+    private val observeLabels: ObserveLabels
 ) {
 
     suspend operator fun invoke(
@@ -42,8 +41,8 @@ class GetMessagesWithLabels @Inject constructor(
     ): Either<DataError, List<MessageWithLabels>> {
         return combine(
             observeMessages(userId, messageIds),
-            labelsRepository.observeLabels(userId, LabelType.MessageLabel).mapToEither(),
-            labelsRepository.observeLabels(userId, LabelType.MessageFolder).mapToEither()
+            observeLabels(userId, LabelType.MessageLabel),
+            observeLabels(userId, LabelType.MessageFolder)
         ) { messagesEither, labelsEither, foldersEither ->
             either {
                 val messages = messagesEither.bind()

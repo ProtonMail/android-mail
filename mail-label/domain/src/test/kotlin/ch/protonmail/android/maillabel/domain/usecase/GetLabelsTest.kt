@@ -35,6 +35,7 @@ import me.proton.core.label.domain.entity.LabelType
 import me.proton.core.label.domain.repository.LabelRepository
 import org.junit.Rule
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 internal class GetLabelsTest {
@@ -125,5 +126,39 @@ internal class GetLabelsTest {
         getLabels(userId, LabelType.MessageLabel)
         // Then
         coVerify { labelRepository.getLabels(userId, LabelType.MessageLabel, false) }
+    }
+
+    @Test
+    fun `filters folders with deleted parents`() = runTest {
+        // Given
+        val localItems = listOf(
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id3", order = 0, parentId = null),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id4", order = 1, parentId = "id3"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id5", order = 1, parentId = "id4"),
+            buildLabel(
+                userId = userId, type = LabelType.MessageFolder, id = "id6", order = 2,
+                parentId = "already_deleted"
+            ),
+            buildLabel(
+                userId = userId, type = LabelType.MessageFolder, id = "id7", order = 2,
+                parentId = "id6"
+            ),
+            buildLabel(
+                userId = userId, type = LabelType.MessageFolder, id = "id8", order = 2,
+                parentId = "id7"
+            )
+        )
+        coEvery { labelRepository.getLabels(userId, LabelType.MessageFolder) } returns localItems
+
+
+        // When
+        val actual = getLabels(userId, LabelType.MessageFolder)
+        // Then
+        val expectedLabels = listOf(
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id3", order = 0, parentId = null),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id4", order = 1, parentId = "id3"),
+            buildLabel(userId = userId, type = LabelType.MessageFolder, id = "id5", order = 1, parentId = "id4")
+        )
+        assertContentEquals(expectedLabels, actual.getOrNull())
     }
 }
