@@ -133,6 +133,7 @@ sealed interface MailboxMoreActionsBottomSheetState : BottomSheetContentState {
 
 sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
     data class Data(
+        val isAffectingConversation: Boolean,
         val messageDataUiModel: MessageDataUiModel,
         val replyActionsUiModel: ImmutableList<ActionUiModel>
     ) : DetailMoreActionsBottomSheetState
@@ -142,6 +143,7 @@ sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
     sealed interface MessageDetailMoreActionsBottomSheetOperation : BottomSheetOperation
     sealed interface MessageDetailMoreActionsBottomSheetEvent : MessageDetailMoreActionsBottomSheetOperation {
         data class DataLoaded(
+            val affectingConversation: Boolean,
             val messageSender: String,
             val messageSubject: String,
             val messageId: String,

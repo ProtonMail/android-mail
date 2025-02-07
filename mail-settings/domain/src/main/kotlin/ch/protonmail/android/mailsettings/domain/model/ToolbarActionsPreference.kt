@@ -116,7 +116,9 @@ data class ToolbarActionsPreference(
         private fun ActionsToolbarSetting?.createActions(default: List<ToolbarAction>, all: List<ToolbarAction>) =
             ToolbarActions(
                 current = ActionSelection(
-                    selected = this?.actions?.takeIfNotEmpty() ?: default.map { ToolbarAction.enumOf(it.value) },
+                    selected = this?.actions
+                        ?.takeIf { action -> action.any { it.enum != null } }
+                        ?: default.map { ToolbarAction.enumOf(it.value) },
                     all = all
                 ),
                 default = default

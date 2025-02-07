@@ -200,6 +200,9 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data class RequestMoreActionsBottomSheet(val messageId: MessageId) :
         ConversationDetailViewAction, AffectingBottomSheet
 
+    data object RequestConversationMoreActionsBottomSheet :
+        ConversationDetailViewAction, AffectingBottomSheet
+
     data class ExpandMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class CollapseMessage(val messageId: MessageIdUiModel) : ConversationDetailViewAction
     data class MessageBodyLinkClicked(val messageId: MessageIdUiModel, val uri: Uri) : ConversationDetailViewAction

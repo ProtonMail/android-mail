@@ -267,6 +267,7 @@ internal class BottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = false,
                     messageSender = "Sender",
                     messageSubject = "Subject",
                     messageId = "messageId",
@@ -274,6 +275,7 @@ internal class BottomSheetReducerTest(
                 ),
                 expectedState = BottomSheetState(
                     DetailMoreActionsBottomSheetState.Data(
+                        false,
                         DetailMoreActionsBottomSheetState.MessageDataUiModel(
                             headerDescriptionText = TextUiModel("Sender"),
                             headerSubjectText = TextUiModel("Subject"),

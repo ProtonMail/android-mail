@@ -272,6 +272,43 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
     }
 
     @Test
+    fun `returns default actions when user preference has unsupported actions`() = runTest {
+        // Given
+        val mobileSettings = MobileSettings(
+            listToolbar = ActionsToolbarSetting(
+                isCustom = true,
+                actions = listOf(
+                    "unknown1",
+                    "unknown2"
+                ).map { ToolbarAction.enumOf(it) }
+            ),
+            messageToolbar = null,
+            conversationToolbar = null
+        )
+        val settingsMock = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns mobileSettings
+        }
+        val resp = DataResult.Success(ResponseSource.Remote, settingsMock)
+        coEvery { mailSettingsRepository.getMailSettingsFlow(any(), any()) } returns flowOf(resp)
+
+        // When
+        repo.inMemoryPreferences().test {
+            // Then
+            val expected = expectedDefaultPreference(
+                convMode = true,
+                mailboxActions = listOf(
+                    ToolbarAction.MarkAsReadOrUnread,
+                    ToolbarAction.MoveToTrash,
+                    ToolbarAction.MoveTo,
+                    ToolbarAction.LabelAs
+                ).stringEnums()
+            )
+            assertEquals(expected, awaitItem().getOrNull())
+        }
+    }
+
+    @Test
     fun `removes an action from the selection when deselected`() = runTest {
         // Given
         val mobileSettings = MobileSettings(

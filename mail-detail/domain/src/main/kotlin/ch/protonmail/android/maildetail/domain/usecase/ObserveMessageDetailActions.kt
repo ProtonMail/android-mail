@@ -55,6 +55,7 @@ class ObserveMessageDetailActions @Inject constructor(
             } else {
                 actions.replace(Action.Unstar, with = Action.Star)
             }
+            actions.add(Action.More)
             actions.distinct()
         }
     }

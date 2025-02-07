@@ -59,6 +59,7 @@ fun DetailMoreActionsBottomSheetContent(
 ) {
     when (state) {
         is DetailMoreActionsBottomSheetState.Data -> DetailMoreActionsBottomSheetContent(
+            isAffectingConversation = state.isAffectingConversation,
             uiModel = state.messageDataUiModel,
             actionsUiModel = state.replyActionsUiModel,
             actionCallbacks = actions
@@ -70,6 +71,7 @@ fun DetailMoreActionsBottomSheetContent(
 
 @Composable
 fun DetailMoreActionsBottomSheetContent(
+    isAffectingConversation: Boolean,
     uiModel: DetailMoreActionsBottomSheetState.MessageDataUiModel,
     actionsUiModel: ImmutableList<ActionUiModel>,
     actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
@@ -105,7 +107,15 @@ fun DetailMoreActionsBottomSheetContent(
                 ProtonRawListItem(
                     modifier = Modifier
                         .clickable {
-                            callbackForAction(actionItem.action, actionCallbacks).invoke(MessageId(uiModel.messageId))
+                            val convCallback = if (isAffectingConversation) {
+                                conversationCallbackForAction(
+                                    actionItem.action, actionCallbacks
+                                )
+                            } else {
+                                null
+                            }
+                            convCallback?.invoke() ?: callbackForAction(actionItem.action, actionCallbacks)
+                                .invoke(MessageId(uiModel.messageId))
                         }
                         .padding(ProtonDimens.DefaultSpacing)
                 ) {
@@ -149,6 +159,29 @@ private fun callbackForAction(
     }
 }
 
+private fun conversationCallbackForAction(
+    action: Action,
+    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
+): (() -> Unit)? = when (action) {
+    Action.Reply -> null
+    Action.ReplyAll -> null
+    Action.Forward -> null
+    Action.MarkUnread -> actionCallbacks.onMarkUnreadConversation
+    Action.Label -> actionCallbacks.onLabelConversation
+    Action.ViewInLightMode -> null
+    Action.ViewInDarkMode -> null
+    Action.Trash -> actionCallbacks.onMoveToTrashConversation
+    Action.Archive -> actionCallbacks.onMoveToArchiveConversation
+    Action.Spam -> actionCallbacks.onMoveToSpamConversation
+    Action.Move -> actionCallbacks.onMoveConversation
+    Action.Print -> null
+    Action.ReportPhishing -> null
+
+    else -> {
+        { Timber.d("Action not handled $action.") }
+    }
+}
+
 private fun shouldSkipActionItem(actionItem: ActionUiModel, isSystemInDarkTheme: Boolean): Boolean =
     !isSystemInDarkTheme && actionItem.action in arrayOf(Action.ViewInLightMode, Action.ViewInDarkMode)
 
@@ -159,13 +192,19 @@ object DetailMoreActionsBottomSheetContent {
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onMarkUnread: (MessageId) -> Unit,
+        val onMarkUnreadConversation: () -> Unit,
         val onLabel: (MessageId) -> Unit,
+        val onLabelConversation: () -> Unit,
         val onViewInLightMode: (MessageId) -> Unit,
         val onViewInDarkMode: (MessageId) -> Unit,
         val onMoveToTrash: (MessageId) -> Unit,
+        val onMoveToTrashConversation: () -> Unit,
         val onMoveToArchive: (MessageId) -> Unit,
+        val onMoveToArchiveConversation: () -> Unit,
         val onMoveToSpam: (MessageId) -> Unit,
+        val onMoveToSpamConversation: () -> Unit,
         val onMove: (MessageId) -> Unit,
+        val onMoveConversation: () -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onReportPhishing: (MessageId) -> Unit
     )
@@ -177,6 +216,7 @@ private fun BottomSheetContentPreview() {
     ProtonTheme {
         DetailMoreActionsBottomSheetContent(
             state = DetailMoreActionsBottomSheetState.Data(
+                isAffectingConversation = false,
                 messageDataUiModel = DetailMoreActionsBottomSheetState.MessageDataUiModel(
                     TextUiModel("Kudos on a Successful Completion of a Challenging Project!"),
                     TextUiModel("Message from Antony Hayes"),
@@ -202,7 +242,13 @@ private fun BottomSheetContentPreview() {
                 onMoveToSpam = {},
                 onMove = {},
                 onPrint = {},
-                onReportPhishing = {}
+                onReportPhishing = {},
+                onMoveToSpamConversation = {},
+                onMoveToArchiveConversation = {},
+                onLabelConversation = {},
+                onMoveConversation = {},
+                onMoveToTrashConversation = {},
+                onMarkUnreadConversation = {}
             )
         )
     }

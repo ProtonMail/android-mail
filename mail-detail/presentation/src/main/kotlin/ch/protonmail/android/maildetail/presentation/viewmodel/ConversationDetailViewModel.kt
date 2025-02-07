@@ -276,6 +276,8 @@ class ConversationDetailViewModel @Inject constructor(
             is LabelAsConfirmed -> onLabelAsConfirmed(action)
             is ConversationDetailViewAction.RequestMoreActionsBottomSheet ->
                 showMoreActionsBottomSheetAndLoadData(action)
+            is ConversationDetailViewAction.RequestConversationMoreActionsBottomSheet ->
+                showConversationMoreActionsBottomSheet()
 
             is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> showMessageLabelAsBottomSheet(action)
             is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
@@ -808,8 +810,17 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
+    private fun showConversationMoreActionsBottomSheet() {
+        val lastMessageId = retrieveLastMessageId() ?: return
+        showMoreActionsBottomSheetAndLoadData(
+            ConversationDetailViewAction.RequestMoreActionsBottomSheet(MessageId(lastMessageId.id)),
+            affectingConversation = true
+        )
+    }
+
     private fun showMoreActionsBottomSheetAndLoadData(
-        initialEvent: ConversationDetailViewAction.RequestMoreActionsBottomSheet
+        initialEvent: ConversationDetailViewAction.RequestMoreActionsBottomSheet,
+        affectingConversation: Boolean = false,
     ) {
         viewModelScope.launch {
             emitNewStateFrom(initialEvent)
@@ -828,6 +839,7 @@ class ConversationDetailViewModel @Inject constructor(
 
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = affectingConversation,
                     messageSender = sender,
                     messageSubject = message.subject,
                     messageId = message.messageId.id,

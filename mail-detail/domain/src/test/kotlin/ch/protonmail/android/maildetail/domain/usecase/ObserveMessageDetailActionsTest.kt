@@ -65,7 +65,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.MarkUnread,
                 Action.Trash,
                 Action.Label,
-                Action.Move
+                Action.Move,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -89,7 +90,8 @@ internal class ObserveMessageDetailActionsTest {
             val expected = listOf(
                 Action.Label,
                 Action.ReportPhishing,
-                Action.Star
+                Action.Star,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -109,7 +111,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
-                Action.Move
+                Action.Move,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -129,7 +132,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
-                Action.Move
+                Action.Move,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -149,7 +153,8 @@ internal class ObserveMessageDetailActionsTest {
                 Action.MarkUnread,
                 Action.Delete,
                 Action.Label,
-                Action.Move
+                Action.Move,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -173,7 +178,8 @@ internal class ObserveMessageDetailActionsTest {
             // Then
             val expected = listOf(
                 Action.Move,
-                Action.Delete
+                Action.Delete,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -197,7 +203,8 @@ internal class ObserveMessageDetailActionsTest {
             // Then
             val expected = listOf(
                 Action.Spam,
-                Action.Trash
+                Action.Trash,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -221,7 +228,8 @@ internal class ObserveMessageDetailActionsTest {
             // Then
             val expected = listOf(
                 Action.Unstar,
-                Action.Trash
+                Action.Trash,
+                Action.More
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

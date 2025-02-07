@@ -61,6 +61,7 @@ class ObserveConversationDetailActions @Inject constructor(
             if (conversation.areAllMessagesArchived()) {
                 actions.replace(Action.Archive, with = Action.Move)
             }
+            actions.add(Action.More)
             actions.distinct()
         }
     }

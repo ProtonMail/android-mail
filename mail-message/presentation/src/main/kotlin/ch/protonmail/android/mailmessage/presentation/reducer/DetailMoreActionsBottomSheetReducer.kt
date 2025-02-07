@@ -44,6 +44,7 @@ class DetailMoreActionsBottomSheetReducer @Inject constructor(
 
         return BottomSheetState(
             contentState = DetailMoreActionsBottomSheetState.Data(
+                isAffectingConversation = affectingConversation,
                 messageDataUiModel = headerUiModel,
                 replyActionsUiModel = actionsUiModel
             ),

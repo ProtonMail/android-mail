@@ -498,6 +498,7 @@ class MessageDetailViewModel @Inject constructor(
 
             val event = MessageDetailEvent.MessageBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = false,
                     messageSender = sender,
                     messageSubject = message.subject,
                     messageId = message.messageId.id,

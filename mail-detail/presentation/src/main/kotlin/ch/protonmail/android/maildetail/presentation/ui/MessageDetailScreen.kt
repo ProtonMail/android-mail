@@ -219,7 +219,13 @@ fun MessageDetailScreen(
                         onMoveToSpam = { viewModel.submit(MessageViewAction.Spam) },
                         onMove = { viewModel.submit(MessageViewAction.RequestMoveToBottomSheet) },
                         onPrint = { viewModel.submit(MessageViewAction.PrintRequested) },
-                        onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) }
+                        onReportPhishing = { viewModel.submit(MessageViewAction.ReportPhishing(it)) },
+                        onMoveToTrashConversation = {},
+                        onMoveToArchiveConversation = {},
+                        onLabelConversation = {},
+                        onMoveConversation = {},
+                        onMoveToSpamConversation = {},
+                        onMarkUnreadConversation = {}
                     )
                 )
 
@@ -443,7 +449,7 @@ fun MessageDetailScreen(
                     onSavePdf = { Timber.d("message onSavePdf clicked") },
                     onSenderEmail = { Timber.d("message onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("message onSaveAttachments clicked") },
-                    onMore = { Timber.d("message onMore clicked") }
+                    onMore = { messageId?.let { actions.onMoreActionsClick(MessageId(it)) } },
                 )
             )
         }

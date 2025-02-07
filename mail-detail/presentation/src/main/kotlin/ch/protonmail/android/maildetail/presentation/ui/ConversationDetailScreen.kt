@@ -244,7 +244,25 @@ fun ConversationDetailScreen(
                         onMoveToSpam = { viewModel.submit(ConversationDetailViewAction.MoveMessage.MoveToSpam(it)) },
                         onMove = { viewModel.submit(ConversationDetailViewAction.RequestMessageMoveToBottomSheet(it)) },
                         onPrint = { viewModel.submit(ConversationDetailViewAction.PrintRequested(it)) },
-                        onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) }
+                        onReportPhishing = { viewModel.submit(ConversationDetailViewAction.ReportPhishing(it)) },
+                        onMoveConversation = {
+                            viewModel.submit(ConversationDetailViewAction.RequestMoveToBottomSheet)
+                        },
+                        onLabelConversation = {
+                            viewModel.submit(ConversationDetailViewAction.RequestConversationLabelAsBottomSheet)
+                        },
+                        onMarkUnreadConversation = {
+                            viewModel.submit(ConversationDetailViewAction.MarkUnread)
+                        },
+                        onMoveToSpamConversation = {
+                            viewModel.submit(ConversationDetailViewAction.MoveToSpam)
+                        },
+                        onMoveToArchiveConversation = {
+                            viewModel.submit(ConversationDetailViewAction.Archive)
+                        },
+                        onMoveToTrashConversation = {
+                            viewModel.submit(ConversationDetailViewAction.Trash)
+                        }
                     )
                 )
 
@@ -383,6 +401,9 @@ fun ConversationDetailScreen(
                 },
                 onTrashedMessagesBannerClick = {
                     viewModel.submit(ConversationDetailViewAction.ChangeVisibilityOfMessages)
+                },
+                onMoreActionsBottomBarClick = {
+                    viewModel.submit(ConversationDetailViewAction.RequestConversationMoreActionsBottomSheet)
                 }
             ),
             scrollToMessageId = state.scrollToMessage?.id
@@ -553,7 +574,7 @@ fun ConversationDetailScreen(
                     onSavePdf = { Timber.d("conversation onSavePdf clicked") },
                     onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") },
-                    onMore = { Timber.d("conversation onMore clicked") }
+                    onMore = actions.onMoreActionsBottomBarClick
                 )
             )
         }
@@ -856,6 +877,7 @@ object ConversationDetailScreen {
         val onReplyAllLastMessage: () -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,
         val onMoreActionsClick: (MessageId) -> Unit,
+        val onMoreActionsBottomBarClick: () -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
@@ -904,6 +926,7 @@ object ConversationDetailScreen {
                 onForward = {},
                 onBodyExpandCollapseButtonClicked = {},
                 onMoreActionsClick = {},
+                onMoreActionsBottomBarClick = {},
                 onLoadRemoteContent = {},
                 onLoadEmbeddedImages = {},
                 onLoadRemoteAndEmbeddedContent = {},
