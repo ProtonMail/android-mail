@@ -22,7 +22,7 @@ import arrow.core.left
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
-import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import ch.protonmail.android.testdata.user.UserIdTestData
@@ -42,33 +42,54 @@ class GetComposerSenderAddressesTest {
     private val observePrimaryUserId = mockk<ObservePrimaryUserId> {
         every { this@mockk.invoke() } returns flowOf(userId)
     }
-    private val isPaidUser = mockk<IsPaidUser>()
+    private val isPaidMailUser = mockk<IsPaidMailUser>()
     private val observeUserAddresses = mockk<ObserveUserAddresses> {
         coEvery { this@mockk(userId) } returns flowOf(addresses)
     }
 
     private val getComposerSenderAddresses = GetComposerSenderAddresses(
         observePrimaryUserId,
-        isPaidUser,
+        isPaidMailUser,
         observeUserAddresses
     )
 
     @Test
-    fun `returns paid feature error when user account is free`() = runTest {
+    fun `returns paid feature error when user account has 1 send enabled address only and no paid mail subscription`() =
+        runTest {
+            // Given
+            coEvery { isPaidMailUser(userId) } returns false.right()
+
+            val addresses = listOf(
+                UserAddressSample.PrimaryAddress,
+                UserAddressSample.AliasAddress.copy(canSend = false)
+            )
+
+            every { observeUserAddresses(userId) } returns flowOf(addresses)
+
+
+            // When
+            val actual = getComposerSenderAddresses()
+
+            // Then
+            Assert.assertEquals(GetComposerSenderAddresses.Error.UpgradeToChangeSender.left(), actual)
+        }
+
+    @Test
+    fun `returns list of addresses to free user when addresses are send-enabled`() = runTest {
         // Given
-        coEvery { isPaidUser(userId) } returns false.right()
+        coEvery { isPaidMailUser(userId) } returns false.right()
 
         // When
         val actual = getComposerSenderAddresses()
 
         // Then
-        Assert.assertEquals(GetComposerSenderAddresses.Error.UpgradeToChangeSender.left(), actual)
+        Assert.assertEquals(addresses.right(), actual)
     }
 
     @Test
-    fun `returns list of user addresses when user has a paid subscription`() = runTest {
+    fun `returns list of user addresses when user has a paid mail subscription`() = runTest {
         // Given
-        coEvery { isPaidUser(userId) } returns true.right()
+        coEvery { isPaidMailUser(userId) } returns true.right()
 
         // When
         val actual = getComposerSenderAddresses()
@@ -85,7 +106,7 @@ class GetComposerSenderAddressesTest {
             UserAddressSample.DisabledAddress,
             UserAddressSample.ExternalAddress
         )
-        coEvery { isPaidUser(userId) } returns true.right()
+        coEvery { isPaidMailUser(userId) } returns true.right()
         coEvery { observeUserAddresses(userId) } returns flowOf(disabledExternalAddresses)
 
         // When
@@ -111,7 +132,7 @@ class GetComposerSenderAddressesTest {
     @Test
     fun `returns failed determining user subscription when is paid user fails`() = runTest {
         // Given
-        coEvery { isPaidUser(userId) } returns DataError.Local.NoDataCached.left()
+        coEvery { isPaidMailUser(userId) } returns DataError.Local.NoDataCached.left()
 
         // When
         val actual = getComposerSenderAddresses()

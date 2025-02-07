@@ -19,9 +19,10 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import arrow.core.Either
+import arrow.core.getOrElse
 import arrow.core.left
 import arrow.core.right
-import ch.protonmail.android.mailcommon.domain.usecase.IsPaidUser
+import ch.protonmail.android.mailcommon.domain.usecase.IsPaidMailUser
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
 import ch.protonmail.android.mailcommon.domain.usecase.ObserveUserAddresses
 import kotlinx.coroutines.flow.first
@@ -31,26 +32,25 @@ import javax.inject.Inject
 
 class GetComposerSenderAddresses @Inject constructor(
     private val observePrimaryUserId: ObservePrimaryUserId,
-    private val isPaidUser: IsPaidUser,
+    private val isPaidUser: IsPaidMailUser,
     private val observeUserAddresses: ObserveUserAddresses
 ) {
 
     suspend operator fun invoke(): Either<Error, List<UserAddress>> {
         val userId = observePrimaryUserId().first() ?: return Error.FailedGettingPrimaryUser.left()
 
-        return isPaidUser(userId).fold(
-            ifLeft = { Error.FailedDeterminingUserSubscription.left() },
-            ifRight = { isPaid ->
-                if (!isPaid) {
-                    return Error.UpgradeToChangeSender.left()
-                }
+        val isPaidUser = isPaidUser.invoke(userId).getOrElse {
+            return Error.FailedDeterminingUserSubscription.left()
+        }
 
-                observeUserAddresses(userId).first()
-                    .filter { it.enabled }
-                    .filterNot { it.isExternal() }
-                    .right()
-            }
-        )
+        val addresses = observeUserAddresses(userId).first()
+            .filter { it.enabled && it.canSend && !it.isExternal() }
+
+        return if (addresses.size < 2 && isPaidUser == false) {
+            Error.UpgradeToChangeSender.left()
+        } else {
+            addresses.right()
+        }
     }
 
     sealed interface Error {
