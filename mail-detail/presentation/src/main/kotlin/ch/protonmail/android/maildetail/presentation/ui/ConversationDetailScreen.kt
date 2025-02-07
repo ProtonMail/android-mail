@@ -262,6 +262,9 @@ fun ConversationDetailScreen(
                         },
                         onMoveToTrashConversation = {
                             viewModel.submit(ConversationDetailViewAction.Trash)
+                        },
+                        onPrintLastMessage = {
+                            viewModel.submit(ConversationDetailViewAction.PrintLastMessage(context))
                         }
                     )
                 )

@@ -225,7 +225,8 @@ fun MessageDetailScreen(
                         onLabelConversation = {},
                         onMoveConversation = {},
                         onMoveToSpamConversation = {},
-                        onMarkUnreadConversation = {}
+                        onMarkUnreadConversation = {},
+                        onPrintLastMessage = {}
                     )
                 )
 

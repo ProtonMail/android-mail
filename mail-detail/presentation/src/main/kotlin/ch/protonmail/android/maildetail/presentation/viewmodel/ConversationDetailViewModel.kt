@@ -811,7 +811,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun showConversationMoreActionsBottomSheet() {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessageId = retrieveLastMessageId(requireExpanded = false) ?: return
         showMoreActionsBottomSheetAndLoadData(
             ConversationDetailViewAction.RequestMoreActionsBottomSheet(MessageId(lastMessageId.id)),
             affectingConversation = true
@@ -1043,7 +1043,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun replyToLastMessage(action: ConversationDetailViewAction.ReplyToLastMessage) {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
         if (action.replyToAll) {
             emitNewStateFrom(ConversationDetailEvent.ReplyAllToMessageRequested(lastMessageId))
         } else {
@@ -1052,12 +1052,12 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun forwardLastMessage() {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
         emitNewStateFrom(ConversationDetailEvent.ForwardMessageRequested(lastMessageId))
     }
 
     private fun reportPhishingLastMessage() {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
         handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.id)))
     }
 
@@ -1080,21 +1080,34 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun printLastMessage(context: Context) {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
         handlePrint(context, MessageId(lastMessageId.id))
     }
 
-    private fun retrieveLastMessageId(): MessageIdUiModel? {
+    private fun retrieveLastMessageId(requireExpanded: Boolean): MessageIdUiModel? {
         val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
         if (dataState == null) {
             Timber.e("Messages state is not data to perform this operation")
             return null
         }
-        val lastMessage = dataState.messages
-            .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
-            .lastOrNull()
-            ?: dataState.messages.last()
-        return lastMessage.messageId
+        return if (requireExpanded) {
+            val lastMessage = dataState.messages
+                .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
+                .lastOrNull()
+            if (lastMessage == null) {
+                emitNewStateFrom(ConversationDetailEvent.MessageLoadFailed)
+            }
+            lastMessage?.messageId
+        } else {
+            dataState.messages.lastOrNull {
+                when (it) {
+                    is ConversationDetailMessageUiModel.Collapsed -> it.isDraft.not()
+                    is ConversationDetailMessageUiModel.Expanded -> true
+                    is ConversationDetailMessageUiModel.Expanding -> it.collapsed.isDraft.not()
+                    is ConversationDetailMessageUiModel.Hidden -> false
+                }
+            }?.messageId
+        }
     }
 
     private fun onDoNotAskLinkConfirmationChecked() {
@@ -1288,6 +1301,8 @@ class ConversationDetailViewModel @Inject constructor(
                         it.expandCollapseMode,
                         this@ConversationDetailViewModel::loadEmbeddedImage
                     )
+                } else {
+                    emitNewStateFrom(ConversationDetailEvent.ErrorLoadingMessages)
                 }
             }
         }

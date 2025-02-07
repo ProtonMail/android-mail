@@ -147,6 +147,8 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val mailLabelText: MailLabelText
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
 
+    data object MessageLoadFailed : ConversationDetailEvent, AffectingBottomSheet, AffectingMessageBar
+
     data object MovedToSpam : ConversationDetailEvent
 
     data class LastMessageMoved(val mailLabelText: MailLabelText) : ConversationDetailEvent, AffectingBottomSheet

@@ -152,6 +152,7 @@ class ConversationDetailReducer @Inject constructor(
                 is ConversationDetailViewAction.MoveMessage,
                 is ConversationDetailViewAction.MoveToDestinationConfirmed,
                 is ConversationDetailEvent.MessageMoved,
+                is ConversationDetailEvent.MessageLoadFailed,
                 is ConversationDetailEvent.LastMessageMoved -> BottomSheetOperation.Dismiss
             }
             bottomSheetReducer.newStateFrom(bottomSheetState, bottomSheetOperation)
@@ -192,6 +193,12 @@ class ConversationDetailReducer @Inject constructor(
                     TextUiModel.TextResWithArgs(
                         R.string.message_moved_to,
                         listOf(mailLabelTextMapper.mapToString(operation.mailLabelText))
+                    )
+                }
+
+                ConversationDetailEvent.MessageLoadFailed -> {
+                    TextUiModel.TextRes(
+                        R.string.error_offline_loading_message
                     )
                 }
             }

@@ -22,6 +22,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -85,18 +86,22 @@ fun DetailMoreActionsBottomSheetContent(
                 .padding(horizontal = ProtonDimens.DefaultSpacing),
             text = uiModel.headerSubjectText.string(),
             style = ProtonTheme.typography.defaultStrongNorm,
-            maxLines = 1,
+            maxLines = if (isAffectingConversation) 2 else 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            modifier = Modifier
-                .padding(horizontal = ProtonDimens.DefaultSpacing)
-                .padding(bottom = ProtonDimens.SmallSpacing),
-            text = uiModel.headerDescriptionText.string(),
-            style = ProtonTheme.typography.defaultWeak(),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        if (isAffectingConversation.not()) {
+            Text(
+                modifier = Modifier
+                    .padding(horizontal = ProtonDimens.DefaultSpacing)
+                    .padding(bottom = ProtonDimens.SmallSpacing),
+                text = uiModel.headerDescriptionText.string(),
+                style = ProtonTheme.typography.defaultWeak(),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        } else {
+            Spacer(modifier = Modifier.height(ProtonDimens.SmallSpacing))
+        }
 
         MailDivider()
 
@@ -174,7 +179,7 @@ private fun conversationCallbackForAction(
     Action.Archive -> actionCallbacks.onMoveToArchiveConversation
     Action.Spam -> actionCallbacks.onMoveToSpamConversation
     Action.Move -> actionCallbacks.onMoveConversation
-    Action.Print -> null
+    Action.Print -> actionCallbacks.onPrintLastMessage
     Action.ReportPhishing -> null
 
     else -> {
@@ -206,6 +211,7 @@ object DetailMoreActionsBottomSheetContent {
         val onMove: (MessageId) -> Unit,
         val onMoveConversation: () -> Unit,
         val onPrint: (MessageId) -> Unit,
+        val onPrintLastMessage: () -> Unit,
         val onReportPhishing: (MessageId) -> Unit
     )
 }
@@ -229,27 +235,54 @@ private fun BottomSheetContentPreview() {
                     ActionUiModel(Action.ReportPhishing)
                 ).toImmutableList()
             ),
-            actions = DetailMoreActionsBottomSheetContent.Actions(
-                onReply = {},
-                onReplyAll = {},
-                onForward = {},
-                onMarkUnread = {},
-                onLabel = {},
-                onViewInLightMode = {},
-                onViewInDarkMode = {},
-                onMoveToTrash = {},
-                onMoveToArchive = {},
-                onMoveToSpam = {},
-                onMove = {},
-                onPrint = {},
-                onReportPhishing = {},
-                onMoveToSpamConversation = {},
-                onMoveToArchiveConversation = {},
-                onLabelConversation = {},
-                onMoveConversation = {},
-                onMoveToTrashConversation = {},
-                onMarkUnreadConversation = {}
-            )
+            actions = emptyActions
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun BottomSheetContentPreview_Conversation() {
+    ProtonTheme {
+        DetailMoreActionsBottomSheetContent(
+            state = DetailMoreActionsBottomSheetState.Data(
+                isAffectingConversation = true,
+                messageDataUiModel = DetailMoreActionsBottomSheetState.MessageDataUiModel(
+                    TextUiModel("Kudos on a Successful Completion of a Challenging Project!"),
+                    TextUiModel("Message from Antony Hayes"),
+                    "123"
+                ),
+                replyActionsUiModel = listOf(
+                    ActionUiModel(Action.Reply),
+                    ActionUiModel(Action.ReplyAll),
+                    ActionUiModel(Action.Forward),
+                    ActionUiModel(Action.ReportPhishing)
+                ).toImmutableList()
+            ),
+            actions = emptyActions
+        )
+    }
+}
+
+private val emptyActions = DetailMoreActionsBottomSheetContent.Actions(
+    onReply = {},
+    onReplyAll = {},
+    onForward = {},
+    onMarkUnread = {},
+    onLabel = {},
+    onViewInLightMode = {},
+    onViewInDarkMode = {},
+    onMoveToTrash = {},
+    onMoveToArchive = {},
+    onMoveToSpam = {},
+    onMove = {},
+    onPrint = {},
+    onReportPhishing = {},
+    onMoveToSpamConversation = {},
+    onMoveToArchiveConversation = {},
+    onLabelConversation = {},
+    onMoveConversation = {},
+    onMoveToTrashConversation = {},
+    onMarkUnreadConversation = {},
+    onPrintLastMessage = {}
+)
