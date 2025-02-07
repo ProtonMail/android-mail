@@ -19,10 +19,10 @@
 package ch.protonmail.android.maildetail.presentation.viewmodel
 
 import java.util.concurrent.ConcurrentHashMap
-import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
-import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessagesState
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState
+import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessagesState
+import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,8 +40,12 @@ class FakeInMemoryConversationStateRepository : InMemoryConversationStateReposit
     override val conversationState: Flow<MessagesState> =
         conversationStateFlow
 
-    override suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody) {
-        conversationCache[messageId] = MessageState.Expanded(decryptedBody)
+    override suspend fun expandMessage(
+        messageId: MessageId,
+        decryptedBody: DecryptedMessageBody,
+        postExpandEffect: InMemoryConversationStateRepository.PostExpandEffect?
+    ) {
+        conversationCache[messageId] = MessageState.Expanded(decryptedBody, postExpandEffect)
         conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
     }
 

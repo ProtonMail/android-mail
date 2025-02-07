@@ -23,6 +23,7 @@ import arrow.core.getOrElse
 import ch.protonmail.android.mailcommon.presentation.mapper.ColorMapper
 import ch.protonmail.android.mailcommon.presentation.mapper.ExpirationTimeMapper
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
+import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.domain.model.isReservedSystemLabelId
@@ -97,6 +98,7 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
         messageWithLabels: MessageWithLabels,
         contacts: List<Contact>,
         decryptedMessageBody: DecryptedMessageBody,
+        effect: InMemoryConversationStateRepository.PostExpandEffect?,
         folderColorSettings: FolderColorSettings,
         autoDeleteSetting: AutoDeleteSetting,
         userAddress: UserAddress,
@@ -107,7 +109,8 @@ class ConversationDetailMessageUiModelMapper @Inject constructor(
             messageBodyUiModelMapper.toUiModel(
                 message.userId,
                 decryptedMessageBody,
-                existingMessageUiState?.messageBodyUiModel
+                existingMessageUiState?.messageBodyUiModel,
+                effect = effect
             )
         return ConversationDetailMessageUiModel.Expanded(
             messageId = messageIdUiModelMapper.toUiModel(message.messageId),

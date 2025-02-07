@@ -22,7 +22,6 @@ import me.proton.core.domain.type.StringEnum
 import me.proton.core.mailsettings.domain.entity.ActionsToolbarSetting
 import me.proton.core.mailsettings.domain.entity.MobileSettings
 import me.proton.core.mailsettings.domain.entity.ToolbarAction
-import me.proton.core.util.kotlin.takeIfNotEmpty
 
 data class ToolbarActionsPreference(
     val messageToolbar: ToolbarActions,

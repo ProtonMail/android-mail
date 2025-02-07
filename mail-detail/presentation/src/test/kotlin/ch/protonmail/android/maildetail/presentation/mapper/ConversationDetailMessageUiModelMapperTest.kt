@@ -199,7 +199,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             decryptedMessageBody = decryptedMessageBody,
             folderColorSettings = folderColorSettings,
             autoDeleteSetting = autoDeleteSetting,
-            userAddress = UserAddressSample.PrimaryAddress
+            userAddress = UserAddressSample.PrimaryAddress,
+            effect = null
         )
 
         // then
@@ -381,7 +382,8 @@ internal class ConversationDetailMessageUiModelMapperTest {
             folderColorSettings = folderColorSettings,
             userAddress = UserAddressSample.PrimaryAddress,
             existingMessageUiState = previousState,
-            autoDeleteSetting = autoDeleteSetting
+            autoDeleteSetting = autoDeleteSetting,
+            effect = null
         )
 
         // then

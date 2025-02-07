@@ -19,6 +19,7 @@
 package ch.protonmail.android.maildetail.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveRemoteContent
 import ch.protonmail.android.maildetail.domain.usecase.ShouldShowEmbeddedImages
@@ -52,7 +53,8 @@ class MessageBodyUiModelMapper @Inject constructor(
     suspend fun toUiModel(
         userId: UserId,
         decryptedMessageBody: DecryptedMessageBody,
-        existingMessageBodyUiModel: MessageBodyUiModel? = null
+        existingMessageBodyUiModel: MessageBodyUiModel? = null,
+        effect: InMemoryConversationStateRepository.PostExpandEffect? = null
     ): MessageBodyUiModel {
         val decryptedMessageBodyWithType = MessageBodyWithType(
             decryptedMessageBody.value,
@@ -98,7 +100,10 @@ class MessageBodyUiModelMapper @Inject constructor(
             } else null,
             userAddress = decryptedMessageBody.userAddress,
             viewModePreference = viewModePreference,
-            printEffect = Effect.empty()
+            printEffect = when (effect) {
+                InMemoryConversationStateRepository.PostExpandEffect.PrintRequested -> Effect.of(Unit)
+                null -> Effect.empty()
+            }
         )
     }
 

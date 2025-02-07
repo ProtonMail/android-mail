@@ -26,7 +26,11 @@ interface InMemoryConversationStateRepository {
 
     val conversationState: Flow<MessagesState>
 
-    suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody)
+    suspend fun expandMessage(
+        messageId: MessageId,
+        decryptedBody: DecryptedMessageBody,
+        postExpandEffect: PostExpandEffect?
+    )
 
     suspend fun expandingMessage(messageId: MessageId)
 
@@ -42,6 +46,10 @@ interface InMemoryConversationStateRepository {
     sealed class MessageState {
         data object Collapsed : MessageState()
         data object Expanding : MessageState()
-        data class Expanded(val decryptedBody: DecryptedMessageBody) : MessageState()
+        data class Expanded(val decryptedBody: DecryptedMessageBody, val effect: PostExpandEffect?) : MessageState()
+    }
+
+    sealed interface PostExpandEffect {
+        data object PrintRequested : PostExpandEffect
     }
 }

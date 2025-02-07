@@ -27,8 +27,12 @@ class SetMessageViewState @Inject constructor(
     private val inMemoryConversationStateRepository: InMemoryConversationStateRepository
 ) {
 
-    suspend fun expanded(messageId: MessageId, decryptedBody: DecryptedMessageBody) {
-        inMemoryConversationStateRepository.expandMessage(messageId, decryptedBody)
+    suspend fun expanded(
+        messageId: MessageId,
+        decryptedBody: DecryptedMessageBody,
+        postExpandEffect: InMemoryConversationStateRepository.PostExpandEffect?
+    ) {
+        inMemoryConversationStateRepository.expandMessage(messageId, decryptedBody, postExpandEffect)
     }
 
     suspend fun expanding(messageId: MessageId) {

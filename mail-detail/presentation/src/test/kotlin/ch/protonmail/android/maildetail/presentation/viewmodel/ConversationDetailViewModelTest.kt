@@ -433,6 +433,7 @@ class ConversationDetailViewModelTest {
                 any(),
                 any(),
                 any(),
+                any(),
                 any()
             )
         } returns messages.first()
@@ -467,7 +468,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
@@ -502,7 +504,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val expectedState = initialState.copy(
@@ -542,7 +545,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val dataState = initialState.copy(
@@ -596,7 +600,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns
             InvoiceWithLabelExpanded
@@ -635,7 +640,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = any(),
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns
             InvoiceWithLabelExpanded
@@ -711,7 +717,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val actions = listOf(Action.Archive)
@@ -748,7 +755,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val expected = initialState.copy(bottomBarState = BottomBarState.Error.FailedLoadingActions)
@@ -783,7 +791,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         givenReducerReturnsStarredUiModel()
@@ -812,7 +821,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val actionUiModels = listOf(
@@ -852,7 +862,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery { starConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
@@ -890,7 +901,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         every {
@@ -927,7 +939,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery { unStarConversations.invoke(UserIdSample.Primary, any()) } returns DataError.Local.NoDataCached.left()
@@ -964,7 +977,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery {
@@ -1005,7 +1019,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery {
@@ -1048,7 +1063,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery {
@@ -1129,7 +1145,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1186,7 +1203,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1292,7 +1310,8 @@ class ConversationDetailViewModelTest {
                     decryptedMessageBody = any(),
                     folderColorSettings = defaultFolderColorSettings,
                     autoDeleteSetting = defaultAutoDeleteSetting,
-                    userAddress = UserAddressSample.PrimaryAddress
+                    userAddress = UserAddressSample.PrimaryAddress,
+                    effect = null
                 )
             } returns messages.first()
             val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1460,6 +1479,99 @@ class ConversationDetailViewModelTest {
                     loadEmbeddedImage = any()
                 )
             }
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `verify print is called when last message is collapsed`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecast,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+        val messagesExpanded = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        val expectedExpandedConvState = expectedConvState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesExpanded.toImmutableList())
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailViewAction.DismissBottomSheet>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedExpandedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationData>()
+            )
+        } returns expectedExpandedConvState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                listOf(
+                    ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.copy(
+                        messageBodyUiModel = ConversationDetailMessageUiModelSample
+                            .AugWeatherForecastExpanded
+                            .messageBodyUiModel
+                            .copy(
+                                printEffect = Effect.of(Unit)
+                            )
+                    ),
+                    ConversationDetailMessageUiModelSample.EmptyDraft
+                ).toImmutableList()
+            )
+        )
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedExpandedConvState
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.PrintLastMessage(mockk()))
+
+            advanceUntilIdle()
+
+            assertEquals(expectedExpandedConvState, awaitItem())
+            val actualState = awaitItem() // With print effect
+
+            val actualFirstMessage = (actualState.messagesState as ConversationDetailsMessagesState.Data).messages
+                .first() as ConversationDetailMessageUiModel.Expanded
+
+            assertEquals(Effect.of(Unit), actualFirstMessage.messageBodyUiModel.printEffect)
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -1660,7 +1772,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
 
@@ -1873,7 +1986,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val event = LabelAsBottomSheetState.LabelAsBottomSheetEvent.ActionData(
@@ -1986,7 +2100,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
@@ -2010,7 +2125,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns ConversationSample.WeatherForecast.right()
@@ -2045,7 +2161,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         coEvery { markConversationAsUnread(userId, conversationId) } returns DataError.Local.NoDataCached.left()
@@ -2104,7 +2221,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
 
@@ -2229,7 +2347,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         every {
@@ -2275,7 +2394,8 @@ class ConversationDetailViewModelTest {
                     decryptedMessageBody = any(),
                     folderColorSettings = defaultFolderColorSettings,
                     autoDeleteSetting = defaultAutoDeleteSetting,
-                    userAddress = UserAddressSample.PrimaryAddress
+                    userAddress = UserAddressSample.PrimaryAddress,
+                    effect = null
                 )
             } returns expectedUiModel
             every {
@@ -2328,7 +2448,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns expectedUiModel
         every {
@@ -2393,7 +2514,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
 
@@ -2418,7 +2540,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
 
@@ -2443,7 +2566,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns messages.first()
         val participant = Participant(
@@ -2617,7 +2741,8 @@ class ConversationDetailViewModelTest {
                 decryptedMessageBody = any(),
                 folderColorSettings = defaultFolderColorSettings,
                 autoDeleteSetting = defaultAutoDeleteSetting,
-                userAddress = UserAddressSample.PrimaryAddress
+                userAddress = UserAddressSample.PrimaryAddress,
+                effect = null
             )
         } returns
             InvoiceWithLabelExpanded

@@ -44,8 +44,12 @@ class InMemoryConversationStateRepositoryImpl @Inject constructor() :
     override val conversationState: Flow<MessagesState> =
         conversationStateFlow
 
-    override suspend fun expandMessage(messageId: MessageId, decryptedBody: DecryptedMessageBody) {
-        conversationCache[messageId] = MessageState.Expanded(decryptedBody)
+    override suspend fun expandMessage(
+        messageId: MessageId,
+        decryptedBody: DecryptedMessageBody,
+        postExpandEffect: InMemoryConversationStateRepository.PostExpandEffect?
+    ) {
+        conversationCache[messageId] = MessageState.Expanded(decryptedBody, postExpandEffect)
         conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
     }
 

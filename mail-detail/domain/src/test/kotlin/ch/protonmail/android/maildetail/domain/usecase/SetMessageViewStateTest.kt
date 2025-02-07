@@ -47,10 +47,10 @@ class SetMessageViewStateTest {
         )
 
         // When
-        useCase.expanded(messageId, decryptedMessageBody)
+        useCase.expanded(messageId, decryptedMessageBody, null)
 
         // Then
-        coVerify { repo.expandMessage(messageId, decryptedMessageBody) }
+        coVerify { repo.expandMessage(messageId, decryptedMessageBody, null) }
     }
 
     @Test

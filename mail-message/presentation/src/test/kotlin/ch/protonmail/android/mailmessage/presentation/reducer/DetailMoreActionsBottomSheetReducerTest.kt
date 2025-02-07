@@ -33,7 +33,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
-import kotlin.test.fail
 
 @RunWith(Parameterized::class)
 internal class DetailMoreActionsBottomSheetReducerTest(

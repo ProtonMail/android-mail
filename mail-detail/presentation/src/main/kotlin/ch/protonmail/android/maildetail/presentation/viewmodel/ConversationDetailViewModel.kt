@@ -282,7 +282,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.RequestMessageLabelAsBottomSheet -> showMessageLabelAsBottomSheet(action)
             is ConversationDetailViewAction.RequestMessageMoveToBottomSheet -> showMoveToBottomSheetAndLoadData(action)
 
-            is ExpandMessage -> onExpandMessage(action.messageId)
+            is ExpandMessage -> onExpandMessage(action.messageId, null)
             is CollapseMessage -> onCollapseMessage(action.messageId)
             is DoNotAskLinkConfirmationAgain -> onDoNotAskLinkConfirmationChecked()
             is ShowAllAttachmentsForMessage -> showAllAttachmentsForMessage(action.messageId)
@@ -447,7 +447,6 @@ class ConversationDetailViewModel @Inject constructor(
     ): NonEmptyList<ConversationDetailMessageUiModel> {
         val messagesList = messages.map { messageWithLabels ->
             val existingMessageState = getExistingExpandedMessageUiState(messageWithLabels.message.messageId)
-
             if (
                 shouldMessageBeHidden(
                     filterByLocation,
@@ -475,7 +474,8 @@ class ConversationDetailViewModel @Inject constructor(
                             contacts,
                             viewState.decryptedBody,
                             folderColorSettings,
-                            autoDeleteSetting
+                            autoDeleteSetting,
+                            effect = viewState.effect
                         )
                     }
 
@@ -542,15 +542,17 @@ class ConversationDetailViewModel @Inject constructor(
         contacts: List<Contact>,
         decryptedBody: DecryptedMessageBody,
         folderColorSettings: FolderColorSettings,
-        autoDeleteSetting: AutoDeleteSetting
+        autoDeleteSetting: AutoDeleteSetting,
+        effect: InMemoryConversationStateRepository.PostExpandEffect?
     ): ConversationDetailMessageUiModel.Expanded = conversationMessageMapper.toUiModel(
-        messageWithLabels,
-        contacts,
-        decryptedBody,
-        folderColorSettings,
-        autoDeleteSetting,
-        decryptedBody.userAddress,
-        existingMessageUiState
+        messageWithLabels = messageWithLabels,
+        contacts = contacts,
+        effect = effect,
+        decryptedMessageBody = decryptedBody,
+        folderColorSettings = folderColorSettings,
+        autoDeleteSetting = autoDeleteSetting,
+        userAddress = decryptedBody.userAddress,
+        existingMessageUiState = existingMessageUiState
     )
 
     private fun observeBottomBarActions(conversationId: ConversationId) = primaryUserId.flatMapLatest { userId ->
@@ -811,7 +813,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun showConversationMoreActionsBottomSheet() {
-        val lastMessageId = retrieveLastMessageId(requireExpanded = false) ?: return
+        val lastMessageId = retrieveLastMessageId() ?: return
         showMoreActionsBottomSheetAndLoadData(
             ConversationDetailViewAction.RequestMoreActionsBottomSheet(MessageId(lastMessageId.id)),
             affectingConversation = true
@@ -1003,13 +1005,16 @@ class ConversationDetailViewModel @Inject constructor(
         }
     }
 
-    private fun onExpandMessage(messageId: MessageIdUiModel) {
+    private fun onExpandMessage(
+        messageId: MessageIdUiModel,
+        effect: InMemoryConversationStateRepository.PostExpandEffect?
+    ) {
         viewModelScope.launch(ioDispatcher) {
             val domainMsgId = MessageId(messageId.id)
             setMessageViewState.expanding(domainMsgId)
             getDecryptedMessageBody(primaryUserId.first(), domainMsgId)
                 .onRight { message ->
-                    setMessageViewState.expanded(domainMsgId, message)
+                    setMessageViewState.expanded(domainMsgId, message, effect)
 
                     if (message.attachments.isNotEmpty()) {
                         updateObservedAttachments(mapOf(domainMsgId to message.attachments))
@@ -1043,7 +1048,7 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun replyToLastMessage(action: ConversationDetailViewAction.ReplyToLastMessage) {
-        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
+        val lastMessageId = retrieveLastMessageId() ?: return
         if (action.replyToAll) {
             emitNewStateFrom(ConversationDetailEvent.ReplyAllToMessageRequested(lastMessageId))
         } else {
@@ -1052,12 +1057,12 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun forwardLastMessage() {
-        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
+        val lastMessageId = retrieveLastMessageId() ?: return
         emitNewStateFrom(ConversationDetailEvent.ForwardMessageRequested(lastMessageId))
     }
 
     private fun reportPhishingLastMessage() {
-        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
+        val lastMessageId = retrieveLastMessageId() ?: return
         handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.id)))
     }
 
@@ -1080,34 +1085,24 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun printLastMessage(context: Context) {
-        val lastMessageId = retrieveLastMessageId(requireExpanded = true) ?: return
+        val lastMessageId = retrieveLastMessageId() ?: return
         handlePrint(context, MessageId(lastMessageId.id))
     }
 
-    private fun retrieveLastMessageId(requireExpanded: Boolean): MessageIdUiModel? {
+    private fun retrieveLastMessageId(): MessageIdUiModel? {
         val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
         if (dataState == null) {
             Timber.e("Messages state is not data to perform this operation")
             return null
         }
-        return if (requireExpanded) {
-            val lastMessage = dataState.messages
-                .filterIsInstance<ConversationDetailMessageUiModel.Expanded>()
-                .lastOrNull()
-            if (lastMessage == null) {
-                emitNewStateFrom(ConversationDetailEvent.MessageLoadFailed)
+        return dataState.messages.lastOrNull {
+            when (it) {
+                is ConversationDetailMessageUiModel.Collapsed -> it.isDraft.not()
+                is ConversationDetailMessageUiModel.Expanded -> true
+                is ConversationDetailMessageUiModel.Expanding -> it.collapsed.isDraft.not()
+                is ConversationDetailMessageUiModel.Hidden -> false
             }
-            lastMessage?.messageId
-        } else {
-            dataState.messages.lastOrNull {
-                when (it) {
-                    is ConversationDetailMessageUiModel.Collapsed -> it.isDraft.not()
-                    is ConversationDetailMessageUiModel.Expanded -> true
-                    is ConversationDetailMessageUiModel.Expanding -> it.collapsed.isDraft.not()
-                    is ConversationDetailMessageUiModel.Hidden -> false
-                }
-            }?.messageId
-        }
+        }?.messageId
     }
 
     private fun onDoNotAskLinkConfirmationChecked() {
@@ -1294,15 +1289,19 @@ class ConversationDetailViewModel @Inject constructor(
             messagesState.messages.find { it.messageId.id == messageId.id }?.let {
                 if (it is ConversationDetailMessageUiModel.Expanded) {
                     printMessage(
-                        context,
-                        conversationState.conversationUiModel.subject,
-                        it.messageDetailHeaderUiModel,
-                        it.messageBodyUiModel,
-                        it.expandCollapseMode,
-                        this@ConversationDetailViewModel::loadEmbeddedImage
+                        context = context,
+                        subject = conversationState.conversationUiModel.subject,
+                        messageHeaderUiModel = it.messageDetailHeaderUiModel,
+                        messageBodyUiModel = it.messageBodyUiModel,
+                        messageBodyExpandCollapseMode = it.expandCollapseMode,
+                        loadEmbeddedImage = this@ConversationDetailViewModel::loadEmbeddedImage
                     )
                 } else {
-                    emitNewStateFrom(ConversationDetailEvent.ErrorLoadingMessages)
+                    emitNewStateFrom(DismissBottomSheet)
+                    onExpandMessage(
+                        MessageIdUiModel(messageId.id),
+                        effect = InMemoryConversationStateRepository.PostExpandEffect.PrintRequested
+                    )
                 }
             }
         }
