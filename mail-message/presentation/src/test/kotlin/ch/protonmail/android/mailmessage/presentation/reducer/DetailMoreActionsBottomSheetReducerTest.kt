@@ -33,6 +33,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.test.assertEquals
+import kotlin.test.fail
 
 @RunWith(Parameterized::class)
 internal class DetailMoreActionsBottomSheetReducerTest(
@@ -92,6 +93,7 @@ internal class DetailMoreActionsBottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = false,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
                     messageId = ExpectedMessageId,
@@ -99,6 +101,7 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                 ),
                 expectedState = BottomSheetState(
                     contentState = DetailMoreActionsBottomSheetState.Data(
+                        isAffectingConversation = false,
                         messageDataUiModel = expectedUiModel,
                         replyActionsUiModel = expectedSingleParticipantAction
                     )
@@ -107,6 +110,7 @@ internal class DetailMoreActionsBottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = false,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
                     messageId = ExpectedMessageId,
@@ -114,6 +118,7 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                 ),
                 expectedState = BottomSheetState(
                     contentState = DetailMoreActionsBottomSheetState.Data(
+                        isAffectingConversation = false,
                         messageDataUiModel = expectedUiModel,
                         replyActionsUiModel = expectedMultipleParticipantAction
                     )

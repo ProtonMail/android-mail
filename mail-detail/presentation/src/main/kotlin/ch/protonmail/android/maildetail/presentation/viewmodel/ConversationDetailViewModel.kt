@@ -820,7 +820,7 @@ class ConversationDetailViewModel @Inject constructor(
 
     private fun showMoreActionsBottomSheetAndLoadData(
         initialEvent: ConversationDetailViewAction.RequestMoreActionsBottomSheet,
-        affectingConversation: Boolean = false,
+        affectingConversation: Boolean = false
     ) {
         viewModelScope.launch {
             emitNewStateFrom(initialEvent)

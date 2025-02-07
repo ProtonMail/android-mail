@@ -109,6 +109,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.sample.MessageSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
@@ -116,7 +117,10 @@ import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantNameResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetVisibilityEffect
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.ContactActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState
+import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.DetailMoreActionsBottomSheetState.MessageDataUiModel
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
@@ -142,6 +146,7 @@ import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
@@ -1756,6 +1761,104 @@ class ConversationDetailViewModelTest {
                 )
             }
             assertNotNull(lastEmittedItem().exitScreenWithMessageEffect.consume())
+        }
+    }
+
+    @Test
+    fun `verify more actions bottomsheet opened when more clicked`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailViewAction.RequestMoreActionsBottomSheet>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
+            )
+        } returns expectedConvState
+
+        val messageDataMock = mockk<MessageDataUiModel>()
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                match { operation ->
+                    operation is ConversationDetailEvent.ConversationBottomSheetEvent &&
+                        operation.bottomSheetOperation is
+                        DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded &&
+                        (
+                            operation.bottomSheetOperation as
+                                DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded
+                            )
+                            .affectingConversation &&
+                        (
+                            operation.bottomSheetOperation as
+                                DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded
+                            )
+                            .messageId == "aug_weather_forecast"
+                }
+            )
+        } returns expectedConvState.copy(
+            bottomSheetState = BottomSheetState(
+                contentState = DetailMoreActionsBottomSheetState.Data(
+                    isAffectingConversation = true,
+                    messageDataUiModel = messageDataMock,
+                    replyActionsUiModel = persistentListOf()
+                ),
+                bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+            )
+        )
+
+        val expectedTargetMessage = messages[0] as ConversationDetailMessageUiModel.Expanded
+        coEvery { observeMessage(userId, MessageId(expectedTargetMessage.messageId.id)) } returns
+            flowOf(MessageSample.AugWeatherForecast.right())
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.RequestConversationMoreActionsBottomSheet)
+
+            advanceUntilIdle()
+
+            val expectedEndState = expectedConvState.copy(
+                bottomSheetState = BottomSheetState(
+                    contentState = DetailMoreActionsBottomSheetState.Data(
+                        isAffectingConversation = true,
+                        messageDataUiModel = messageDataMock,
+                        replyActionsUiModel = persistentListOf()
+                    ),
+                    bottomSheetVisibilityEffect = Effect.of(BottomSheetVisibilityEffect.Show)
+                )
+            )
+            assertEquals(expectedEndState, awaitItem())
+
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

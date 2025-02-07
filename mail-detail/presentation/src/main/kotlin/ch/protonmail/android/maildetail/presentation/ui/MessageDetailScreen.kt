@@ -449,7 +449,7 @@ fun MessageDetailScreen(
                     onSavePdf = { Timber.d("message onSavePdf clicked") },
                     onSenderEmail = { Timber.d("message onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("message onSaveAttachments clicked") },
-                    onMore = { messageId?.let { actions.onMoreActionsClick(MessageId(it)) } },
+                    onMore = { messageId?.let { actions.onMoreActionsClick(MessageId(it)) } }
                 )
             )
         }
