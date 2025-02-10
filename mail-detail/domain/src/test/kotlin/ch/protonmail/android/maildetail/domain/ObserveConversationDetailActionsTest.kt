@@ -39,6 +39,7 @@ import kotlin.test.assertEquals
 internal class ObserveConversationDetailActionsTest {
 
     private val archivedConversationId = "archived-id"
+    private val customFolderConversationId = "custom-folder-conv-id"
 
     private val observeConversation = mockk<ObserveConversation> {
         every {
@@ -49,6 +50,13 @@ internal class ObserveConversationDetailActionsTest {
         } returns flowOf(
             ConversationTestData.conversationWithArchiveLabel
                 .copy(conversationId = ConversationId(archivedConversationId))
+                .right()
+        )
+        every {
+            this@mockk.invoke(userId, ConversationId(customFolderConversationId), true)
+        } returns flowOf(
+            ConversationTestData.customFolderConversation
+                .copy(conversationId = ConversationId(customFolderConversationId))
                 .right()
         )
     }
@@ -90,7 +98,8 @@ internal class ObserveConversationDetailActionsTest {
             listOf(
                 Action.Label,
                 Action.ReportPhishing,
-                Action.Star
+                Action.Star,
+                Action.Trash
             )
         )
         // When
@@ -99,7 +108,8 @@ internal class ObserveConversationDetailActionsTest {
             val expected = listOf(
                 Action.Label,
                 Action.ReportPhishing,
-                Action.Star
+                Action.Star,
+                Action.Trash
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -167,6 +177,30 @@ internal class ObserveConversationDetailActionsTest {
             val expected = listOf(
                 Action.Move,
                 Action.Delete
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns standard actions for a conversation in a custom folder`() = runTest {
+        // Given
+        val conversationId = ConversationId(customFolderConversationId)
+        val conversation = ConversationTestData.customFolderConversation
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Trash
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Trash
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()

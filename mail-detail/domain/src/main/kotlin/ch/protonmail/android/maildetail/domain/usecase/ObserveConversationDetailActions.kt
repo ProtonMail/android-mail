@@ -83,7 +83,6 @@ class ObserveConversationDetailActions @Inject constructor(
         .ignoringAllDrafts()
         .areAllArchive()
 
-
     private fun Conversation.anyMessageStarred() = labels
         .ignoringAllMail()
         .ignoringAllSent()
@@ -115,7 +114,6 @@ class ObserveConversationDetailActions @Inject constructor(
     }
 
     private fun List<ConversationLabel>.ignoringAllDrafts() = this.filterNot {
-        it.labelId == SystemLabelId.AllDrafts.labelId || SystemLabelId.displayedList
-            .none { systemLabelId -> systemLabelId.labelId == it.labelId }
+        it.labelId == SystemLabelId.AllDrafts.labelId
     }
 }

@@ -101,6 +101,17 @@ object ConversationTestData {
         )
     )
 
+    val customFolderConversation = buildConversation(
+        userId = userId,
+        id = RAW_CONVERSATION_ID,
+        subject = RAW_SUBJECT,
+        labelIds = listOf(
+            SystemLabelId.AllSent.labelId.id,
+            SystemLabelId.AllDrafts.labelId.id,
+            "custom"
+        )
+    )
+
     val conversationWithConversationLabels = buildConversationWithConversationLabels(
         userId = userId,
         id = RAW_CONVERSATION_ID,
