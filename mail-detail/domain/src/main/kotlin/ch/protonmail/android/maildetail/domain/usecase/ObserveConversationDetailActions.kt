@@ -58,7 +58,7 @@ class ObserveConversationDetailActions @Inject constructor(
             if (conversation.anyMessageStarred()) {
                 actions.replace(Action.Star, with = Action.Unstar)
             }
-            if (conversation.areAllMessageArchived()) {
+            if (conversation.areAllMessagesArchived()) {
                 actions.replace(Action.Archive, with = Action.Move)
             }
             actions.distinct()
@@ -76,7 +76,7 @@ class ObserveConversationDetailActions @Inject constructor(
         .ignoringAllDrafts()
         .areAllTrashOrSpam()
 
-    private fun Conversation.areAllMessageArchived() = labels
+    private fun Conversation.areAllMessagesArchived() = labels
         .ignoringAllMail()
         .ignoringAlmostAllMail()
         .ignoringAllSent()

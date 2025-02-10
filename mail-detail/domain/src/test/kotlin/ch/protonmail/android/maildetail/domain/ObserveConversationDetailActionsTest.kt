@@ -40,6 +40,7 @@ internal class ObserveConversationDetailActionsTest {
 
     private val archivedConversationId = "archived-id"
     private val customFolderConversationId = "custom-folder-conv-id"
+    private val starredConversationId = "starred-folder-conv-id"
 
     private val observeConversation = mockk<ObserveConversation> {
         every {
@@ -57,6 +58,13 @@ internal class ObserveConversationDetailActionsTest {
         } returns flowOf(
             ConversationTestData.customFolderConversation
                 .copy(conversationId = ConversationId(customFolderConversationId))
+                .right()
+        )
+        every {
+            this@mockk.invoke(userId, ConversationId(starredConversationId), true)
+        } returns flowOf(
+            ConversationTestData.starredConversation
+                .copy(conversationId = ConversationId(starredConversationId))
                 .right()
         )
     }
@@ -133,6 +141,30 @@ internal class ObserveConversationDetailActionsTest {
             val expected = listOf(
                 Action.Move,
                 Action.Star
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns unstar action for starred conversations`() = runTest {
+        // Given
+        val conversationId = ConversationId(starredConversationId)
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Move,
+                Action.Archive,
+                Action.Star
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
+            // Then
+            val expected = listOf(
+                Action.Move,
+                Action.Archive,
+                Action.Unstar
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
