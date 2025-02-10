@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">ეს ხელსაწყოების ზოლი ხილულია, როცა საუბარს კითხულობთ.</string>
   <string name="customize_toolbar_disclaimer_inbox">ეს პანელი გამოჩნდება, როცა საფოსტო ყუთში ბევრ შეტყობინებას მონიშნავთ.</string>
   <string name="customize_toolbar_disclaimer_mailbox">ეს პანელი გამოჩნდება, როცა საფოსტო ყუთში ბევრ შეტყობინებას მონიშნავთ.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">ეს პანელი გამოჩნდება, როცა საფოსტო ყუთში ერთზე მეტ საუბარს მონიშნავთ.</string>
   <string name="customize_toolbar_message">შეტყობინება</string>
   <string name="customize_toolbar_conversation">საუბარი</string>
   <string name="customize_toolbar_inbox">შემომავალი</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">ნაგულისხმევზე ჩამოყრა</string>
   <string name="customize_toolbar_actions_section">ხელსაწყოების ზოლის ქმედებები (მაქს 5)</string>
   <string name="customize_toolbar_available_actions_section">ხელმისაწვდომი ქმედებები</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">ჩამოვყარო ნაგულისხმევზე?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">ქმედებები ხელსაწყოების ზოლზე საწყის მნიშვნელობებზე დაბრუნდება.</string>
+  <string name="customize_toolbar_reset_default_confirm">დასტური</string>
 </resources>

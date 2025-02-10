@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Denne verktøylinjen er synlig når du leser en samtale.</string>
   <string name="customize_toolbar_disclaimer_inbox">Denne verktøylinjen vises når du velger flere meldinger i postboksen.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Denne verktøylinjen vises når du velger flere meldinger i postboksen.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Denne verktøylinjen vises når du velger flere samtaler i postboksen.</string>
   <string name="customize_toolbar_message">Melding</string>
   <string name="customize_toolbar_conversation">Samtale</string>
   <string name="customize_toolbar_inbox">Innboks</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Tilbakestill til standard</string>
   <string name="customize_toolbar_actions_section">Verktøylinjehandlinger (velg opptil 5)</string>
   <string name="customize_toolbar_available_actions_section">Tilgjengelige handlinger</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Tilbakestille til standard?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Handlingene på verktøylinjen tilbakestilles til standard.</string>
+  <string name="customize_toolbar_reset_default_confirm">Bekreft</string>
 </resources>

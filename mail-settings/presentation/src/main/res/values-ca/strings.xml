@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Aquesta barra d\'eines és visible quan s\'està llegint una conversa.</string>
   <string name="customize_toolbar_disclaimer_inbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la bústia de correu.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Aquesta barra d\'eines apareix quan se seleccionen múltiples missatges en la bústia de correu.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Aquesta barra d\'eines es mostra en seleccionar diverses converses del vostre correu.</string>
   <string name="customize_toolbar_message">Missatge</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Safata d\'entrada</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Restableix als valors per defecte</string>
   <string name="customize_toolbar_actions_section">Accions de la barra d\'eines (seleccioneu-ne fins a 5)</string>
   <string name="customize_toolbar_available_actions_section">Accions disponibles</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Voleu restablir als valors per defecte?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Les accions a la barra d\'eines es restabliran a les predeterminades.</string>
+  <string name="customize_toolbar_reset_default_confirm">Confirma</string>
 </resources>

@@ -190,6 +190,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Tento panel nástrojů je viditelný při čtení konverzace.</string>
   <string name="customize_toolbar_disclaimer_inbox">Tento panel nástrojů se zobrazí při výběru více zpráv v e-mailové schránce.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Tento panel nástrojů se zobrazí při výběru více zpráv v e-mailové schránce.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Tento panel nástrojů se zobrazí při výběru více konverzací v e-mailové schránce.</string>
   <string name="customize_toolbar_message">Zpráva</string>
   <string name="customize_toolbar_conversation">Konverzace</string>
   <string name="customize_toolbar_inbox">Doručená pošta</string>
@@ -199,4 +200,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Obnovit výchozí nastavení</string>
   <string name="customize_toolbar_actions_section">Akce panelu nástrojů (vyberte až 5)</string>
   <string name="customize_toolbar_available_actions_section">Dostupné akce</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Obnovit výchozí?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Akce na panelu nástrojů budou obnoveny na výchozí hodnoty.</string>
+  <string name="customize_toolbar_reset_default_confirm">Potvrdit</string>
 </resources>

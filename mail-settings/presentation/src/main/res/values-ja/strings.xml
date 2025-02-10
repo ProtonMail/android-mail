@@ -182,10 +182,11 @@
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">このツールバーは、メッセージ閲覧時に表示されます。</string>
   <string name="customize_toolbar_disclaimer_conversation">会話を読む際に表示されるツールバーです。</string>
-  <string name="customize_toolbar_disclaimer_inbox">このツールバーは、受信トレイで複数メッセージ選択時に表示されます。</string>
+  <string name="customize_toolbar_disclaimer_inbox">このツールバーは、受信トレイで複数のメッセージを選択時に表示されます。</string>
   <string name="customize_toolbar_disclaimer_mailbox">このツールバーは、受信トレイで複数メッセージを選択した時に表示されます。</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">このツールバーは、受信トレイで複数の会話を選択時に表示されます。</string>
   <string name="customize_toolbar_message">メッセージ</string>
-  <string name="customize_toolbar_conversation">会話</string>
+  <string name="customize_toolbar_conversation">やり取り</string>
   <string name="customize_toolbar_inbox">受信トレイ</string>
   <string name="customize_toolbar_mailbox">受信トレイ</string>
   <string name="customize_toolbar_done_action">完了</string>
@@ -193,4 +194,7 @@
   <string name="customize_toolbar_reset_to_default_btn">初期値に戻す</string>
   <string name="customize_toolbar_actions_section">ツールバーアクション (5 件まで選択可能)</string>
   <string name="customize_toolbar_available_actions_section">利用可能なアクション</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">デフォルトにリセットしますか？</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">ツールバーのアクションはデフォルトにリセットされます。</string>
+  <string name="customize_toolbar_reset_default_confirm">確認</string>
 </resources>

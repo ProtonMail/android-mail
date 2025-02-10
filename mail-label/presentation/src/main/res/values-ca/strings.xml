@@ -29,7 +29,7 @@
   <string name="label_title_all_drafts">Tots els esborranys</string>
   <string name="label_title_all_sent">Tots els enviats</string>
   <string name="label_title_all_scheduled">Totes les programacions</string>
-  <string name="label_title_snoozed">En pausa</string>
+  <string name="label_title_snoozed">Ajornat</string>
   <string name="label_title_folders">Carpetes</string>
   <string name="label_title_parent_folder">Carpeta principal</string>
   <string name="label_title_labels">Etiquetes</string>

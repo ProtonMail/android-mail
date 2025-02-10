@@ -52,7 +52,7 @@
   <string name="conversation_moved_to_trash">無法將往來對話訊息丟進垃圾桶</string>
   <string name="conversation_moved_to_selected_destination">往來對話已移至 %1$s</string>
   <string name="conversation_moved_to_archive">往來對話訊息已移至封存檔</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">無法將往來對話訊息丟進垃圾郵件</string>
   <string name="error_move_conversation_failed">無法移動往來對話。請再試一次。</string>
   <string name="error_loading_message">載入訊息時發生錯誤，請再試一次。</string>
   <string name="error_offline_loading_message">您目前是離線狀態。需要網際網路連線才能顯示此訊息的內容。</string>
@@ -81,7 +81,7 @@
   <string name="phishing_link_confirmation_dialog_title">警告：疑似假冒網站</string>
   <string name="phishing_link_confirmation_dialog_content_part_1">此連結指向的網站可能試圖竊取您的資訊，例如密碼或信用卡細節 。</string>
   <string name="phishing_link_confirmation_dialog_content_part_2">為了您的安全，不要繼續</string>
-  <string name="phishing_link_confirmation_dialog_button_go_back">返回（推薦）</string>
+  <string name="phishing_link_confirmation_dialog_button_go_back">返回(推薦)</string>
   <string name="phishing_link_confirmation_dialog_button_continue">忽略警告並繼續</string>
   <string name="message_delete_dialog_title">刪除訊息</string>
   <string name="message_delete_dialog_message">您確定要永久刪除此郵件嗎？</string>
@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">載入內嵌圖片</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">戴入遠端及內崁內容</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">此功能僅在線上提供。</string>
   <string name="message_report_phishing_dialog_confim_button_offline">好</string>
   <string name="message_report_phishing_dialog_title">確認提報釣魚郵件</string>
   <string name="message_report_phishing_dialog_message">檢舉一封郵件帶有網路釣魚的企圖，將會把郵件傳送給我們，讓我們可以分析郵件並改進我們的篩選。這意味我們將能夠完全飽覽郵件的內容。</string>

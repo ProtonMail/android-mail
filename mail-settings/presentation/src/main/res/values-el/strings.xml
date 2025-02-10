@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Αυτή η γραμμή εργαλείων είναι ορατή κατά την ανάγνωση μιας συνομιλίας.</string>
   <string name="customize_toolbar_disclaimer_inbox">Αυτή η γραμμή εργαλείων εμφανίζεται όταν επιλέγετε πολλά μηνύματα στο γραμματοκιβώτιό σας.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Αυτή η γραμμή εργαλείων εμφανίζεται όταν επιλέγετε πολλά μηνύματα στο γραμματοκιβώτιό σας.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Αυτή η γραμμή εργαλείων εμφανίζεται όταν επιλέγετε πολλές συνομιλίες στο γραμματοκιβώτιό σας.</string>
   <string name="customize_toolbar_message">Μήνυμα</string>
   <string name="customize_toolbar_conversation">Συνομιλία</string>
   <string name="customize_toolbar_inbox">Εισερχόμενα</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Επαναφορά των προεπιλογών</string>
   <string name="customize_toolbar_actions_section">Ενέργειες γραμμής εργαλείων (επιλέξτε έως 5)</string>
   <string name="customize_toolbar_available_actions_section">Διαθέσιμες ενέργειες</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Επαναφορά των προεπιλογών;</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Οι ενέργειες στη γραμμή εργαλείων θα επαναφερθούν στις προεπιλογές.</string>
+  <string name="customize_toolbar_reset_default_confirm">Επιβεβαίωση</string>
 </resources>

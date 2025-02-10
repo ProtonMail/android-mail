@@ -190,6 +190,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Эта панель инструментов видна при чтении цепочки писем.</string>
   <string name="customize_toolbar_disclaimer_inbox">Эта панель инструментов появляется при выборе нескольких сообщений в вашем почтовом ящике.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Эта панель инструментов появляется при выборе нескольких сообщений в вашем почтовом ящике.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">This toolbar appears when selecting multiple conversations in your mailbox.</string>
   <string name="customize_toolbar_message">Сообщение</string>
   <string name="customize_toolbar_conversation">Цепочка писем</string>
   <string name="customize_toolbar_inbox">Входящие</string>
@@ -199,4 +200,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Сбросить настройки по умолчанию</string>
   <string name="customize_toolbar_actions_section">Действия на панели инструментов (выберите до 5)</string>
   <string name="customize_toolbar_available_actions_section">Доступные действия</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Сбросить настройки по умолчанию?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Панель инструментов будет сброшена по умолчанию.</string>
+  <string name="customize_toolbar_reset_default_confirm">Подтвердить</string>
 </resources>

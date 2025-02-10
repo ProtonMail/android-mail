@@ -58,7 +58,7 @@
   <string name="conversation_moved_to_trash">Konverzace přesunuta do Koše</string>
   <string name="conversation_moved_to_selected_destination">Konverzace přesunuta do %1$s</string>
   <string name="conversation_moved_to_archive">Konverzace přesunuta do Archivu</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Konverzace přesunuta do spamu</string>
   <string name="error_move_conversation_failed">Přesunutí konverzace se nezdařilo. Zkuste to znovu.</string>
   <string name="error_loading_message">Něco se pokazilo, prosím zkuste to znovu.</string>
   <string name="error_offline_loading_message">Jste offline. Pro zobrazení obsahu této zprávy je nutné připojení k internetu.</string>
@@ -105,7 +105,7 @@
   <string name="message_body_load_embedded_images_button_text">Načíst vložené obrázky</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Načíst vzdálený a vložený obsah</string>
   <string name="message_report_phishing_dialog_title_offline">Upozornění</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Tato funkce je dostupná jen v režimu online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Potvrdit oznámení phishingu</string>
   <string name="message_report_phishing_dialog_message">Nahlášení této zprávy jako pokusu o phishing odešle tuto zprávu nám, abychom ji mohli analyzovat a zlepšit tím naše filtry. To znamená, že uvidíme kompletně celý obsah této zprávy.</string>

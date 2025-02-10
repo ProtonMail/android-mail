@@ -188,6 +188,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Această bară de unelte este vizibilă la citirea unei conversații.</string>
   <string name="customize_toolbar_disclaimer_inbox">Această bară de utilitare apare atunci când selectați mai multe mesaje primite.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Această bară de unelte apare când se selectează mai multe mesaje primite.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Această bară de unelte apare când se selectează mai multe conversații primite.</string>
   <string name="customize_toolbar_message">Mesaj</string>
   <string name="customize_toolbar_conversation">Conversație</string>
   <string name="customize_toolbar_inbox">Primite</string>
@@ -197,4 +198,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Resetare la implicite</string>
   <string name="customize_toolbar_actions_section">Acțiuni bară utilitare (selectați max 5)</string>
   <string name="customize_toolbar_available_actions_section">Acțiuni disponibile</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Resetare la implicite</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Acest acțiuni din bara de utilitare vor fi resetate la valorile implicite.</string>
+  <string name="customize_toolbar_reset_default_confirm">Confirmare</string>
 </resources>

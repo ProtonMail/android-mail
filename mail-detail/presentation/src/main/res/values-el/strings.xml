@@ -54,7 +54,7 @@
   <string name="conversation_moved_to_trash">Η συνομιλία μετακινήθηκε στα Διαγραμμένα</string>
   <string name="conversation_moved_to_selected_destination">Η συνομιλία μετακινήθηκε στο %1$s</string>
   <string name="conversation_moved_to_archive">Η συνομιλία μετακινήθηκε στα Αρχειοθετημένα</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Η συνομιλία μεταφέρθηκε στα Ανεπιθύμητα</string>
   <string name="error_move_conversation_failed">Η μετακινηση συνομιλίας απέτυχε. Παρακαλούμε προσπαθήστε ξανά.</string>
   <string name="error_loading_message">Κάτι πήγε στραβά, παρακαλούμε δοκιμάστε ξανά.</string>
   <string name="error_offline_loading_message">Βρίσκεστε εκτός σύνδεσης. Για εμφάνιση του περιεχομένου αυτού του μηνύματος, απαιτείται σύνδεση στο διαδίκτυο.</string>
@@ -101,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Φόρτωση ενσωματωμένων εικόνων</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Φόρτωση απομακρυσμένου και ενσωματωμένου περιεχομένου</string>
   <string name="message_report_phishing_dialog_title_offline">Προσοχή</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Αυτή η λειτουργία είναι διαθέσιμη μόνο όταν είστε συνδεδεμένοι στο διαδύκτιο</string>
   <string name="message_report_phishing_dialog_confim_button_offline">ΟΚ</string>
   <string name="message_report_phishing_dialog_title">Επιβεβαίωση αναφοράς ηλεκτρονικού ψαρέματος</string>
   <string name="message_report_phishing_dialog_message">Η αναφορά ενός μηνύματος ως προσπάθεια ηλεκτρονικού \"ψαρέματος\" (phising) θα το αποστείλει σε εμάς, ώστε να το αναλύσουμε και να βελτιώσουμε τα φίλτρα μας. Αυτό σημαίνει ότι θα μπορέσουμε να δούμε το περιεχόμενο ολόκληρου του μηνύματος.</string>

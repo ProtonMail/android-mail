@@ -30,7 +30,7 @@
   <string name="action_mark_unread_description">Označi kot neprebrano</string>
   <string name="action_star_description">Zvezdica</string>
   <string name="action_unstar_description">Odznači</string>
-  <string name="action_label_description">Označi kot ...</string>
+  <string name="action_label_description">Označi kot …</string>
   <string name="action_move_description">Premakni v …</string>
   <string name="action_trash_description">Premakni v smetnjak</string>
   <string name="action_delete_description">Izbriši</string>
@@ -54,7 +54,7 @@
   <string name="action_mark_unread_content_description">Označi kot neprebrano</string>
   <string name="action_star_content_description">Označi z zvezdico</string>
   <string name="action_unstar_content_description">Odstrani zvezdico</string>
-  <string name="action_label_content_description">Označi kot ...</string>
+  <string name="action_label_content_description">Označi kot …</string>
   <string name="action_move_content_description">Premakni v …</string>
   <string name="action_trash_content_description">Smetnjak</string>
   <string name="action_delete_content_description">Izbriši</string>
@@ -75,7 +75,7 @@
   <string name="yesterday">Včeraj</string>
   <string name="auto_delete_banner_text_activate_trash">Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.</string>
   <string name="auto_delete_banner_text_activate_spam">Samodejno izbriši sporočila, ki so med neželeno pošto več kot 30 dni.</string>
-  <string name="auto_delete_banner_text_upgrade">Nadgradite naročniški paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.</string>
+  <string name="auto_delete_banner_text_upgrade">Nadgradite paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.</string>
   <string name="auto_delete_banner_text_enabled_info">Sporočila, ki bodo v smetnjaku ali v neželeni pošti več kot 30 dni, se bodo samodejno izbrisala.</string>
   <string name="auto_delete_banner_button_activate_confirm">Omogoči</string>
   <string name="auto_delete_banner_button_activate_dismiss">Ne, hvala</string>

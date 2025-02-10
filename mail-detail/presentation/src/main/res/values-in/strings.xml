@@ -52,7 +52,7 @@
   <string name="conversation_moved_to_trash">Percakapan dipindahkan ke Sampah</string>
   <string name="conversation_moved_to_selected_destination">Percakapan dipindahkan ke %1$s</string>
   <string name="conversation_moved_to_archive">Percakapan dipindahkan ke Arsip</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Percakapan dipindahkan ke Spam</string>
   <string name="error_move_conversation_failed">Percakapan gagal dipindahkan. Silakan coba lagi.</string>
   <string name="error_loading_message">Terjadi suatu kesalahan. Silakan coba lagi.</string>
   <string name="error_offline_loading_message">Anda sedang offline. Koneksi internet diperlukan untuk menampilkan konten pesan ini.</string>
@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
   <string name="message_report_phishing_dialog_title_offline">Perhatian</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Fitur ini hanya tersedia secara online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Konfirmasi laporan phishing</string>
   <string name="message_report_phishing_dialog_message">Dengan melaporkan pesan sebagai upaya phishing, pesan tersebut akan dikirimkan kepada kami agar kami dapat menganalisanya dan meningkatkan filter kami. Hal ini berarti bahwa kami akan dapat melihat isi pesan tersebut secara utuh.</string>

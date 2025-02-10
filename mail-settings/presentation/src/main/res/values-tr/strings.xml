@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Bu araç çubuğu bir yazışmayı okurken görüntülenir.</string>
   <string name="customize_toolbar_disclaimer_inbox">Bu araç çubuğu e-posta kutunuzda birden fazla ileti seçtiğinizde görünür.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Bu araç çubuğu, e-posta kutunuzda birden fazla ileti seçildiğinde görüntülenir.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Bu araç çubuğu, e-posta kutunuzda birden fazla yazışma seçildiğinde görüntülenir.</string>
   <string name="customize_toolbar_message">İleti</string>
   <string name="customize_toolbar_conversation">Yazışma</string>
   <string name="customize_toolbar_inbox">Gelen kutusu</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Varsayılana sıfırla</string>
   <string name="customize_toolbar_actions_section">Araç çubuğu işlemleri (en fazla 5 işlem seçin)</string>
   <string name="customize_toolbar_available_actions_section">Yapılabilecek işlemler</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Varsayılana sıfırlansın mı?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Araç çubuğu varsayılan işlemlere sıfırlanacak.</string>
+  <string name="customize_toolbar_reset_default_confirm">Onayla</string>
 </resources>

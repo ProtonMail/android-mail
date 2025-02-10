@@ -52,7 +52,7 @@
   <string name="conversation_moved_to_trash">会話をごみ箱に移動しました</string>
   <string name="conversation_moved_to_selected_destination">会話が %1$s に移動されました</string>
   <string name="conversation_moved_to_archive">会話をアーカイブに移動しました</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">会話をスパムに移動しました</string>
   <string name="error_move_conversation_failed">会話の移動に失敗しました。再度お試しください。</string>
   <string name="error_loading_message">問題が発生しました。再度お試しください。</string>
   <string name="error_offline_loading_message">現在、オフラインです。このメッセージの内容を表示するには、インターネット接続が必要です。</string>
@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">埋め込み画像を読み込む</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">リモートおよび埋め込みコンテンツを読み込む</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">この機能はオンライン時のみ利用可能です。</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">フィッシング報告の確認</string>
   <string name="message_report_phishing_dialog_message">フィッシング詐欺としてこのメッセージを報告すると、私たちにこのメッセージが送信され、私たちはこのメッセージを分析してフィルターを改善することができます。メッセージを報告すると、このメッセージのすべての内容を私たちが閲覧可能になります。</string>

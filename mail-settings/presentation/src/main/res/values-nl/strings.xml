@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Deze werkbalk is zichtbaar wanneer u een bericht leest.</string>
   <string name="customize_toolbar_disclaimer_inbox">Deze werkbalk wordt zichtbaar wanneer u meerdere berichten selecteert in uw postvak in.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Deze werkbalk wordt zichtbaar wanneer u meerdere berichten selecteert in uw postvak in.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Deze werkbalk wordt zichtbaar wanneer u meerdere berichten selecteert in uw mailbox.</string>
   <string name="customize_toolbar_message">Bericht</string>
   <string name="customize_toolbar_conversation">Conversatie</string>
   <string name="customize_toolbar_inbox">Postvak in</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Terugzetten naar standaard</string>
   <string name="customize_toolbar_actions_section">Werkbalk acties (selecteer tot 5)</string>
   <string name="customize_toolbar_available_actions_section">Beschikbare acties</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Terugzetten naar standaardinstellingen?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">De acties in de werkbalk worden teruggezet naar de standaardinstellingen.</string>
+  <string name="customize_toolbar_reset_default_confirm">Bevestigen</string>
 </resources>

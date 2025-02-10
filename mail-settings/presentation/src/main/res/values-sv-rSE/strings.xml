@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Detta verktygsfält är synligt när du läser en konversation.</string>
   <string name="customize_toolbar_disclaimer_inbox">Detta verktygsfält visas när du väljer flera meddelanden i din brevlåda.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Detta verktygsfält visas när du väljer flera meddelanden i din brevlåda.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Detta verktygsfält visas när du väljer flera konversationer i din brevlåda.</string>
   <string name="customize_toolbar_message">Meddelande</string>
   <string name="customize_toolbar_conversation">Konversation</string>
   <string name="customize_toolbar_inbox">Inkorg</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Återställ till standard</string>
   <string name="customize_toolbar_actions_section">Verktygsfältsåtgärder (välj upp till 5)</string>
   <string name="customize_toolbar_available_actions_section">Tillgängliga åtgärder</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Återställ till standard?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Åtgärderna i verktygsfältet kommer att återställas till standard.</string>
+  <string name="customize_toolbar_reset_default_confirm">Bekräfta</string>
 </resources>

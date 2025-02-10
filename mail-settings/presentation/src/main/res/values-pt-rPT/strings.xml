@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Esta barra de ferramentas é visível quando se lê uma conversa.</string>
   <string name="customize_toolbar_disclaimer_inbox">Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de correio.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Esta barra de ferramentas aparece quando seleciona várias mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Esta barra de ferramentas aparece quando seleciona várias conversas na sua caixa de correio.</string>
   <string name="customize_toolbar_message">Mensagem</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Caixa de entrada</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Reposição predefinida</string>
   <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (selecione até 5)</string>
   <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Reposição predefinida?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">As ações na barra de ferramentas serão redefinidas para os valores padrão.</string>
+  <string name="customize_toolbar_reset_default_confirm">Confirmar</string>
 </resources>

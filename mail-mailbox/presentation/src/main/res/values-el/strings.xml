@@ -86,7 +86,7 @@
   <string name="mailbox_search_no_results_title">Δεν βρέθηκαν αποτελέσματα</string>
   <string name="mailbox_search_no_results_explanation">Αναζητήστε με ημερομηνία, όνομα, διεύθυνση ηλ. ταχυδρομείου ή θέμα</string>
   <string name="mailbox_action_button_clear_trash">Εκκαθάριση Διαγραμμένων</string>
-  <string name="mailbox_action_button_clear_spam">Εκκαθάριση Ενοχλητικών</string>
+  <string name="mailbox_action_button_clear_spam">Εκκαθάριση Ανεπιθύμητων</string>
   <string name="mailbox_action_clear_trash_dialog_title">Εκκαθάριση φακέλου Διαγραμμένων</string>
   <string name="mailbox_action_clear_spam_dialog_title">Εκκαθάριση φακέλου Ενοχλητικών</string>
   <string name="mailbox_action_clear_trash_dialog_body_message">Θέλετε σίγουρα να διαγράψετε οριστικά όλα τα μηνύματα στο φάκελο \"Διαγραμμένα\";</string>

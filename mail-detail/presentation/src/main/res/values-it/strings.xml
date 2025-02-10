@@ -54,7 +54,7 @@
   <string name="conversation_moved_to_trash">Conversazione spostata nel cestino</string>
   <string name="conversation_moved_to_selected_destination">Conversazione spostata in %1$s</string>
   <string name="conversation_moved_to_archive">Conversazione spostata nell\'archivio</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Conversazione spostata in spam</string>
   <string name="error_move_conversation_failed">Spostamento della conversazione non riuscito</string>
   <string name="error_loading_message">Si è verificato un errore. Riprova.</string>
   <string name="error_offline_loading_message">Nessuna connessione a Internet. Caricamento dei contenuti del messaggio non riuscito.</string>
@@ -101,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
   <string name="message_report_phishing_dialog_title_offline">Avviso</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Segnala come phishing</string>
   <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>

@@ -184,6 +184,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Toolbar ini akan terlihat pada saat membaca percakapan.</string>
   <string name="customize_toolbar_disclaimer_inbox">Toolbar ini akan terlihat pada saat memilih lebih dari satu pesan pada kotak masuk Anda.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Toolbar ini akan muncul pada saat memilih lebih dari satu pesan pada kotak masuk Anda.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Toolbar ini akan muncul pada saat memilih lebih dari satu percakapan pada kotak masuk Anda.</string>
   <string name="customize_toolbar_message">Pesan</string>
   <string name="customize_toolbar_conversation">Percakapan</string>
   <string name="customize_toolbar_inbox">Kotak masuk</string>
@@ -193,4 +194,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Atur ulang ke pengaturan bawaan</string>
   <string name="customize_toolbar_actions_section">Tindakan toolbar (pilih hingga 5 jenis tindakan)</string>
   <string name="customize_toolbar_available_actions_section">Tindakan yang tersedia</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Atur ulang ke pengaturan bawaan?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Daftar tindakan pada toolbar ini akan dikembalikan ke pengaturan bawaan.</string>
+  <string name="customize_toolbar_reset_default_confirm">Konfirmasi</string>
 </resources>

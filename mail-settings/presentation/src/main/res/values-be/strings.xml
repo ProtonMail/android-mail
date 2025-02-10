@@ -190,6 +190,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Гэта панэль інструментаў бачная пры чытанні размовы.</string>
   <string name="customize_toolbar_disclaimer_inbox">Гэта панэль інструментаў з\'явіцца пры выбары некалькіх паведамленняў у вашай паштовай скрыні.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Гэта панэль інструментаў з\'явіцца пры выбары некалькіх паведамленняў у вашай паштовай скрыні.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Гэта панэль інструментаў з\'явіцца пры выбары некалькіх размоў у вашай паштовай скрыні.</string>
   <string name="customize_toolbar_message">Паведамленне</string>
   <string name="customize_toolbar_conversation">Размова</string>
   <string name="customize_toolbar_inbox">Уваходныя</string>
@@ -199,4 +200,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Скінуць да прадвызначаных</string>
   <string name="customize_toolbar_actions_section">Дзеянні панэлі інструментаў (выберыце да 5 дзеянняў)</string>
   <string name="customize_toolbar_available_actions_section">Даступныя дзеянні</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Скінуць да прадвызначаных?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Дзеянні на панэлі інструментаў будуць скінуты да прадвызначаных.</string>
+  <string name="customize_toolbar_reset_default_confirm">Пацвердзіць</string>
 </resources>

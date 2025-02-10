@@ -138,7 +138,7 @@
   <string name="member_update_error">メンバーの更新にエラーが発生しました、後ほど再度お試しください</string>
   <string name="contact_group_color">連絡先グループの色</string>
   <plurals name="contact_search_contact_group_counter">
-    <item quantity="other">%d メンバー</item>
+    <item quantity="other">%d 人のメンバー</item>
   </plurals>
   <string name="contact_search_placeholder">連絡先やグループを検索</string>
   <string name="contact_search_content_description">連絡先やグループを検索</string>

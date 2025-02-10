@@ -181,9 +181,10 @@
   <string name="biometric_error_hw_not_available">생체 인증 하드웨어를 사용할 수 없습니다.</string>
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">메시지를 읽을 때 이 도구 모음이 표시됩니다.</string>
-  <string name="customize_toolbar_disclaimer_conversation">대화를 읽는 도중에 이 도구바가 표시됩니다.</string>
+  <string name="customize_toolbar_disclaimer_conversation">대화를 읽는 도중에 이 도구 모음이 표시됩니다.</string>
   <string name="customize_toolbar_disclaimer_inbox">메일함에서 여러개의 메시지를 선택하면 이 도구 모음이 나타납니다.</string>
   <string name="customize_toolbar_disclaimer_mailbox">메일함에서 여러개의 메시지를 선택하면 이 도구바가 표시됩니다.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">이 도구 모음은 메일함에서 여러 대화를 선택할 때 나타납니다.</string>
   <string name="customize_toolbar_message">메시지</string>
   <string name="customize_toolbar_conversation">대화</string>
   <string name="customize_toolbar_inbox">받은 편지함</string>
@@ -193,4 +194,7 @@
   <string name="customize_toolbar_reset_to_default_btn">기본값으로 초기화</string>
   <string name="customize_toolbar_actions_section">도구 모음 작업 (최대 5개 선택)</string>
   <string name="customize_toolbar_available_actions_section">가능한 작업</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">기본값으로 재설정하시겠습니까?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">툴바의 동작이 기본값으로 재설정됩니다.</string>
+  <string name="customize_toolbar_reset_default_confirm">확인</string>
 </resources>

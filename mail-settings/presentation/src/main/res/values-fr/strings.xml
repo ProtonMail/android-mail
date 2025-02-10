@@ -186,6 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Cette barre d\'outils est visible pendant la lecture d\'une conversation.</string>
   <string name="customize_toolbar_disclaimer_inbox">Cette barre d\'outils apparaît quand vous sélectionnez plusieurs messages dans votre messagerie.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Cette barre d\'outils apparaît quand vous sélectionnez plusieurs messages dans votre messagerie.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Cette barre d\'outils apparaît quand vous sélectionnez plusieurs conversations dans votre messagerie.</string>
   <string name="customize_toolbar_message">Message</string>
   <string name="customize_toolbar_conversation">Conversation</string>
   <string name="customize_toolbar_inbox">Boite de réception</string>
@@ -195,4 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Rétablir les valeurs par défaut</string>
   <string name="customize_toolbar_actions_section">Actions de la barre d\'outils (sélectionnez-en jusqu\'à 5)</string>
   <string name="customize_toolbar_available_actions_section">Actions disponibles</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Rétablir les valeurs par défaut ?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Les actions de la barre d\'outils seront rétablies à leurs valeurs par défaut.</string>
+  <string name="customize_toolbar_reset_default_confirm">Confirmer</string>
 </resources>

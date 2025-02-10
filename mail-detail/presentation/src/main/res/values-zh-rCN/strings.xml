@@ -52,7 +52,7 @@
   <string name="conversation_moved_to_trash">会话已移动到废件箱</string>
   <string name="conversation_moved_to_selected_destination">会话已移至 %1$s</string>
   <string name="conversation_moved_to_archive">会话已存档</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">对话已移至垃圾邮件</string>
   <string name="error_move_conversation_failed">会话移动失败，请重试。</string>
   <string name="error_loading_message">出现错误。请重试。</string>
   <string name="error_offline_loading_message">您已离线。请连接至网络以显示邮件内容。</string>
@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">加载嵌入图像</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">加载远程及内嵌内容</string>
   <string name="message_report_phishing_dialog_title_offline">注意</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">该功能仅在线可用。</string>
   <string name="message_report_phishing_dialog_confim_button_offline">好的</string>
   <string name="message_report_phishing_dialog_title">确认举报欺诈邮件</string>
   <string name="message_report_phishing_dialog_message">您举报的邮件会被上传，以便我们分析并改进过滤机制。这意味着我们将得知此邮件的所有内容。</string>

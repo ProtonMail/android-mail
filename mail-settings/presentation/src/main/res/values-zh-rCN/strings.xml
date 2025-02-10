@@ -184,6 +184,7 @@
   <string name="customize_toolbar_disclaimer_conversation">该工具栏在阅读对话时可见。</string>
   <string name="customize_toolbar_disclaimer_inbox">选择邮箱中的多封邮件时，会出现该工具栏。</string>
   <string name="customize_toolbar_disclaimer_mailbox">选择邮箱中的多封邮件时，会出现该工具栏。</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">选择邮箱中的多个会话时，会出现此工具栏。</string>
   <string name="customize_toolbar_message">消息</string>
   <string name="customize_toolbar_conversation">会话</string>
   <string name="customize_toolbar_inbox">收件箱</string>
@@ -193,4 +194,7 @@
   <string name="customize_toolbar_reset_to_default_btn">恢复默认设置</string>
   <string name="customize_toolbar_actions_section">工具栏操作按钮（最多可选择 5 个）</string>
   <string name="customize_toolbar_available_actions_section">可选操作</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">恢复默认设置？</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">工具栏中的操作将重置为默认设置.</string>
+  <string name="customize_toolbar_reset_default_confirm">确认</string>
 </resources>

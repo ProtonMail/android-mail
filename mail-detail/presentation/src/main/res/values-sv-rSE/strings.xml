@@ -54,7 +54,7 @@
   <string name="conversation_moved_to_trash">Konversation flyttad till papperskorg</string>
   <string name="conversation_moved_to_selected_destination">Konversation flyttad till %1$s</string>
   <string name="conversation_moved_to_archive">Konversation flyttad till arkiv</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">Konversation flyttad till skräppost</string>
   <string name="error_move_conversation_failed">Misslyckades att flytta konversation. Försök igen.</string>
   <string name="error_loading_message">Något gick fel, försök igen.</string>
   <string name="error_offline_loading_message">Du är offline. En Internetanslutning krävs för att visa innehållet i detta meddelande.</string>
@@ -101,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Ladda inbäddade bilder</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Ladda fjärr- och inbäddat innehåll</string>
   <string name="message_report_phishing_dialog_title_offline">Uppmärksamhet</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Denna funktion är endast tillgänglig online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Bekräfta nätfiskerapport</string>
   <string name="message_report_phishing_dialog_message">Att rapportera ett meddelande som ett nätfiskeförsök kommer skicka meddelandet till oss så att vi kan analysera det och förbättra våra filter. Detta innebär att vi kommer kunna se innehållet i meddelandet i sin helhet.</string>

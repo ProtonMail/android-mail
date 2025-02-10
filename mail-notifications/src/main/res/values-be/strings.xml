@@ -26,8 +26,8 @@
   <string name="notification_actions_mark_as_read_description">Пазначыць прачытаным</string>
   <string name="notification_permission_dialog_title">Не прапусціце ліст</string>
   <string name="notification_permission_dialog_message">Апавяшчэнні дапамагаюць быць у курсе, што адбываецца ў паштовай скрыні без праверкі праграмы.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
-  <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
-  <string name="notification_permission_dialog_button_enable">Enable push notifications</string>
+  <string name="notification_permission_dialog_post_send_title">Хочаце заставацца ў курсе падзей?</string>
+  <string name="notification_permission_dialog_post_send_message">Уключыце апавяшчэнні, каб быць у курсе атрымання адказу на вашу электронную пошту.</string>
+  <string name="notification_permission_dialog_button_enable">Уключыць push-апавяшчэнні</string>
   <string name="notification_permission_dialog_button_dismiss">Закрыць</string>
 </resources>

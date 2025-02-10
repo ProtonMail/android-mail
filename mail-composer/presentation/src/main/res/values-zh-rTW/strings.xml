@@ -88,7 +88,7 @@
   <string name="set_message_password_supporting_text">長度為 4 至 21 個字元</string>
   <string name="set_message_password_supporting_error_text">密碼長度必須介乎 4 至 21 個字元</string>
   <string name="set_message_password_supporting_text_repeat">密碼必須相符</string>
-  <string name="set_message_password_supporting_error_text_repeat">兩組密碼並不匹配</string>
+  <string name="set_message_password_supporting_error_text_repeat">2組密碼並不匹配</string>
   <string name="set_message_password_button_show">顯示密碼</string>
   <string name="set_message_password_button_hide">隱藏密碼</string>
   <string name="set_message_password_button_apply">套用密碼</string>

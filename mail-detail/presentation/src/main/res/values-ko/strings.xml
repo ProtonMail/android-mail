@@ -52,7 +52,7 @@
   <string name="conversation_moved_to_trash">대화가 휴지통으로 이동됨</string>
   <string name="conversation_moved_to_selected_destination">대화가 %1$s으로 이동됨</string>
   <string name="conversation_moved_to_archive">대화가 보관함으로 이동함</string>
-  <string name="conversation_moved_to_spam">Conversation moved to Spam</string>
+  <string name="conversation_moved_to_spam">대화가 스팸함으로 이동됨</string>
   <string name="error_move_conversation_failed">대화 이동에 실패하였습니다. 다시 시도해 주세요.</string>
   <string name="error_loading_message">문제가 발생했습니다, 다시 시도해 주세요.</string>
   <string name="error_offline_loading_message">오프라인입니다. 이 메시지의 내용을 표시하려면 인터넷 연결이 필요합니다.</string>
@@ -99,7 +99,7 @@
   <string name="message_body_load_embedded_images_button_text">삽입된 이미지 불러오기</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">외부 및 삽입된 이미지 불러오기</string>
   <string name="message_report_phishing_dialog_title_offline">주의</string>
-  <string name="message_report_phishing_dialog_message_offline">This feature is only available online.</string>
+  <string name="message_report_phishing_dialog_message_offline">이 기능은 온라인에서만 사용할 수 있습니다.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">확인</string>
   <string name="message_report_phishing_dialog_title">피싱 신고 확인</string>
   <string name="message_report_phishing_dialog_message">피싱 시도로 메시지를 보고하면 메시지를 분석하여 필터를 개선할 수 있습니다. 다만, 분석을 위해 Proton에서 메시지의 내용을 전반적으로 확인할 수 있습니다.</string>

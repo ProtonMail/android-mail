@@ -184,8 +184,9 @@
   <!-- customize toolbar-->
   <string name="customize_toolbar_disclaimer_message">Essa barra de ferramentas é visível ao ler as mensagens.</string>
   <string name="customize_toolbar_disclaimer_conversation">Essa barra de ferramentas é visível ao ler as conversas.</string>
-  <string name="customize_toolbar_disclaimer_inbox">Essa barra de ferramentas aparece quando é selecionado múltiplas mensagens na sua caixa de correio.</string>
-  <string name="customize_toolbar_disclaimer_mailbox">Essa barra de ferramentas aparece quando é selecionado múltiplas mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Essa barra de ferramentas aparece quando são selecionadas múltiplas mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_mailbox">Essa barra de ferramentas aparece quando são selecionadas múltiplas mensagens na sua caixa de correio.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Essa barra de ferramentas aparece quando são selecionadas múltiplas conversas na sua caixa de correio.</string>
   <string name="customize_toolbar_message">Mensagem</string>
   <string name="customize_toolbar_conversation">Conversa</string>
   <string name="customize_toolbar_inbox">Caixa de entrada</string>
@@ -193,6 +194,9 @@
   <string name="customize_toolbar_done_action">Concluído</string>
   <string name="customize_toolbar_reset_to_default">Restaurar para padrão</string>
   <string name="customize_toolbar_reset_to_default_btn">Restaurar para padrão</string>
-  <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (até 5)</string>
+  <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (selecione até 5)</string>
   <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Restaurar para padrão?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">As ações na barra de ferramentas serão redefinidas para o padrão.</string>
+  <string name="customize_toolbar_reset_default_confirm">Confirmar</string>
 </resources>

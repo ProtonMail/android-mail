@@ -184,6 +184,7 @@
   <string name="customize_toolbar_disclaimer_conversation">讀取對話時，工具列將顯示。</string>
   <string name="customize_toolbar_disclaimer_inbox">多選訊息時，信箱會出現此工具列。</string>
   <string name="customize_toolbar_disclaimer_mailbox">多選訊息時，信箱會出現此工具列。</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">多選對話時，信箱會出現此工具列。</string>
   <string name="customize_toolbar_message">訊息</string>
   <string name="customize_toolbar_conversation">交談</string>
   <string name="customize_toolbar_inbox">收件匣</string>
@@ -193,4 +194,7 @@
   <string name="customize_toolbar_reset_to_default_btn">還原至預設</string>
   <string name="customize_toolbar_actions_section">工具列動作 (最多可選 5 項)</string>
   <string name="customize_toolbar_available_actions_section">可用的操作</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">還原至預設?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirm">確認</string>
 </resources>
