@@ -394,12 +394,13 @@ class ConversationDetailViewModel @Inject constructor(
 
                 Timber.i("Retrieved ${messagesUiModels.size} messages")
 
+                val stateIsLoadingOrOffline = stateIsLoadingOrOffline()
                 val initialScrollTo = initialScrollToMessageId
                     ?: getMessageIdToExpand(
                         messages, filterByLocation, conversationViewState.shouldHideMessagesBasedOnTrashFilter
                     )?.let { messageIdUiModelMapper.toUiModel(it) }
-                if (
-                    stateIsLoading() && initialScrollTo != null && allCollapsed(conversationViewState.messagesState)
+                if (stateIsLoadingOrOffline && initialScrollTo != null &&
+                    allCollapsed(conversationViewState.messagesState)
                 ) {
                     ConversationDetailEvent.MessagesData(
                         messagesUiModels,
@@ -428,7 +429,9 @@ class ConversationDetailViewModel @Inject constructor(
         }
         .launchIn(viewModelScope)
 
-    private fun stateIsLoading(): Boolean = state.value.messagesState == ConversationDetailsMessagesState.Loading
+    private fun stateIsLoadingOrOffline(): Boolean = state.value.messagesState.let {
+        it == ConversationDetailsMessagesState.Loading || it is ConversationDetailsMessagesState.Offline
+    }
 
     private fun allCollapsed(viewState: Map<MessageId, InMemoryConversationStateRepository.MessageState>): Boolean =
         viewState.values.all { it == InMemoryConversationStateRepository.MessageState.Collapsed }
