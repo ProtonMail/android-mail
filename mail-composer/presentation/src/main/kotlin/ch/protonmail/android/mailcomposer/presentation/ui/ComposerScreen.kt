@@ -61,11 +61,12 @@ import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreAttachments
 import ch.protonmail.android.mailcomposer.presentation.R
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerAction
+import ch.protonmail.android.mailcomposer.presentation.model.ComposerBottomSheetType
 import ch.protonmail.android.mailcomposer.presentation.model.ComposerDraftState
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
+import ch.protonmail.android.mailcomposer.presentation.model.SendExpiringMessageDialogState
 import ch.protonmail.android.mailcomposer.presentation.viewmodel.ComposerViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.uicomponents.bottomsheet.bottomSheetHeightConstrainedContent
 import ch.protonmail.android.uicomponents.dismissKeyboard
@@ -88,6 +89,7 @@ import kotlin.time.Duration
 @OptIn(ExperimentalMaterialApi::class, ExperimentalPermissionsApi::class)
 @Suppress("UseComposableActions")
 @Composable
+@Deprecated("Part of Composer V1, to be replaced with ComposerScreen2")
 fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -101,7 +103,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
         mutableStateOf(if (state.fields.to.isEmpty()) FocusedFieldType.TO else FocusedFieldType.BODY)
     }
     val snackbarHostState = remember { ProtonSnackbarHostState() }
-    val bottomSheetType = rememberSaveable { mutableStateOf(BottomSheetType.ChangeSender) }
+    val bottomSheetType = rememberSaveable { mutableStateOf(ComposerBottomSheetType.ChangeSender) }
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val attachmentSizeDialogState = remember { mutableStateOf(false) }
     val sendingErrorDialogState = remember { mutableStateOf<String?>(null) }
@@ -162,12 +164,12 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
     ProtonModalBottomSheetLayout(
         sheetContent = bottomSheetHeightConstrainedContent {
             when (bottomSheetType.value) {
-                BottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
+                ComposerBottomSheetType.ChangeSender -> ChangeSenderBottomSheetContent(
                     state.senderAddresses,
                     { sender -> viewModel.submit(ComposerAction.SenderChanged(sender)) }
                 )
 
-                BottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
+                ComposerBottomSheetType.SetExpirationTime -> SetExpirationTimeBottomSheetContent(
                     expirationTime = state.messageExpiresIn,
                     onDoneClick = { viewModel.submit(ComposerAction.ExpirationTimeSet(it)) }
                 )
@@ -201,7 +203,7 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                     isMessageExpirationTimeSet = state.messageExpiresIn != Duration.ZERO,
                     onSetMessagePasswordClick = actions.onSetMessagePasswordClick,
                     onSetExpirationTimeClick = {
-                        bottomSheetType.value = BottomSheetType.SetExpirationTime
+                        bottomSheetType.value = ComposerBottomSheetType.SetExpirationTime
                         viewModel.submit(ComposerAction.OnSetExpirationTimeRequested)
                     },
                     enableInteractions = !isUpdatingBodyState
@@ -429,7 +431,7 @@ private fun buildActions(
     viewModel: ComposerViewModel,
     onToggleRecipients: (Boolean) -> Unit,
     onFocusChanged: (FocusedFieldType) -> Unit,
-    setBottomSheetType: (BottomSheetType) -> Unit
+    setBottomSheetType: (ComposerBottomSheetType) -> Unit
 ): ComposerFormActions = ComposerFormActions(
     onToggleRecipients = onToggleRecipients,
     onFocusChanged = onFocusChanged,
@@ -446,18 +448,21 @@ private fun buildActions(
         viewModel.submit(ComposerAction.DraftBodyChanged(DraftBody(it)))
     },
     onChangeSender = {
-        setBottomSheetType(BottomSheetType.ChangeSender)
+        setBottomSheetType(ComposerBottomSheetType.ChangeSender)
         viewModel.submit(ComposerAction.ChangeSenderRequested)
     },
     onRespondInline = { viewModel.submit(ComposerAction.RespondInlineRequested) }
 )
 
+@Deprecated("Part of Composer V1, keys to be ported to ComposerScreen2")
 object ComposerScreen {
 
     const val DraftMessageIdKey = "draft_message_id"
     const val SerializedDraftActionKey = "serialized_draft_action_key"
     const val DraftActionForShareKey = "draft_action_for_share_key"
+    const val HasSavedDraftKey = "draft_action_for_saved_draft_key"
 
+    @Deprecated("Part of Composer V1, to be ported to ComposerScreen2")
     data class Actions(
         val onCloseComposerClick: () -> Unit,
         val onSetMessagePasswordClick: (MessageId, SenderEmail) -> Unit,
@@ -479,13 +484,6 @@ object ComposerScreen {
         }
     }
 }
-
-private enum class BottomSheetType { ChangeSender, SetExpirationTime }
-
-private data class SendExpiringMessageDialogState(
-    val isVisible: Boolean,
-    val externalParticipants: List<Participant>
-)
 
 @Composable
 @AdaptivePreviews

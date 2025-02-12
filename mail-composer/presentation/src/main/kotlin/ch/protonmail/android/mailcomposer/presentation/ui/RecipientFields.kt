@@ -58,6 +58,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber
 
 @Composable
+@Deprecated("Part of Composer V1, to be replaced with RecipientFields2")
 internal fun FocusableFormScope<FocusedFieldType>.RecipientFields(
     modifier: Modifier = Modifier,
     fields: ComposerFields,

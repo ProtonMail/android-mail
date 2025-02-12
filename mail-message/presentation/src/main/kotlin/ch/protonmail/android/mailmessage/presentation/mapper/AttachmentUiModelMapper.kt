@@ -22,6 +22,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentUiModel
 import javax.inject.Inject
 
+@Deprecated(message = "Part of Composer V1, to be replaced with AttachmentUiModelMapper2")
 class AttachmentUiModelMapper @Inject constructor() {
 
     fun toUiModel(attachment: MessageAttachment, deletable: Boolean = false) = AttachmentUiModel(

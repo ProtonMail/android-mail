@@ -45,6 +45,7 @@ import me.proton.core.compose.theme.ProtonDimens
 import timber.log.Timber
 
 @Composable
+@Deprecated("Part of Composer V1, to be replaced with ComposerForm2")
 internal fun ComposerForm(
     emailValidator: (String) -> Boolean,
     recipientsOpen: Boolean,

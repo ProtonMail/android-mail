@@ -18,11 +18,9 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
+import ch.protonmail.android.mailmessage.domain.model.Participant
 
-@Deprecated("Part of Composer V1, to be removed")
-data class DraftUiModel(
-    val draftFields: DraftFields,
-    val quotedHtmlContent: QuotedHtmlContent?
+internal data class SendExpiringMessageDialogState(
+    val isVisible: Boolean,
+    val externalParticipants: List<Participant>
 )

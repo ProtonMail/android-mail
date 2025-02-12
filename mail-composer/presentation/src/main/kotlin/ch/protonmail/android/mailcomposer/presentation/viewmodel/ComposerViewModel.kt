@@ -119,6 +119,7 @@ import javax.inject.Inject
 import kotlin.time.Duration
 
 @Suppress("LongParameterList", "TooManyFunctions", "LargeClass")
+@Deprecated("Part of Composer V1, to be replaced with ComposerViewModel2")
 @HiltViewModel
 class ComposerViewModel @Inject constructor(
     private val appInBackgroundState: AppInBackgroundState,

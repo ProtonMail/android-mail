@@ -56,6 +56,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
+@Deprecated("Part of Composer V1, to be replaced with BodyTextField2")
 internal fun BodyTextField(
     initialValue: String,
     replaceDraftBody: Effect<TextUiModel>,

@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
+@Deprecated("Part of Composer V1, to be removed")
 class StoreDraftWithSubject @Inject constructor(
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,

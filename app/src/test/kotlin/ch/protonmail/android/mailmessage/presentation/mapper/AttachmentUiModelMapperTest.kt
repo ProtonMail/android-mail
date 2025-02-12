@@ -18,11 +18,12 @@
 
 package ch.protonmail.android.mailmessage.presentation.mapper
 
-import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
+import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@Deprecated("Part of Composer V1, to be replaced with AttachmentUiModelMapper2Test")
 class AttachmentUiModelMapperTest {
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()

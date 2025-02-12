@@ -19,20 +19,22 @@
 package ch.protonmail.android.mailcomposer.presentation.model
 
 import android.net.Uri
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
 import ch.protonmail.android.mailcomposer.domain.model.MessageExpirationTime
 import ch.protonmail.android.mailcomposer.domain.model.MessagePassword
 import ch.protonmail.android.mailcomposer.domain.model.Subject
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import kotlin.time.Duration
 
+@Deprecated("Part of Composer V1, to be replaced with ComposerStateOperation")
 sealed interface ComposerOperation
 
+@Deprecated("Part of Composer V1, to be replaced with ComposerAction")
 internal sealed interface ComposerAction : ComposerOperation {
     data class AttachmentsAdded(val uriList: List<Uri>) : ComposerAction
     data class SenderChanged(val sender: SenderUiModel) : ComposerAction
@@ -62,6 +64,7 @@ internal sealed interface ComposerAction : ComposerOperation {
     data object RespondInlineRequested : ComposerAction
 }
 
+@Deprecated("Part of Composer V1, to be replaced with ComposerStateEvent")
 sealed interface ComposerEvent : ComposerOperation {
     data class DefaultSenderReceived(val sender: SenderUiModel) : ComposerEvent
     data class SenderAddressesReceived(val senders: List<SenderUiModel>) : ComposerEvent

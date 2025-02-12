@@ -22,6 +22,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.ContactSuggestionsF
 import ch.protonmail.android.mailcomposer.presentation.model.FocusedFieldType
 import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 
+@Deprecated("Part of Composer V1, to be removed")
 internal data class ComposerFormActions(
     val onToggleRecipients: (Boolean) -> Unit,
     val onFocusChanged: (FocusedFieldType) -> Unit,

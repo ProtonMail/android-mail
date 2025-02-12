@@ -28,6 +28,7 @@ import ch.protonmail.android.mailmessage.domain.model.Recipient
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
+@Deprecated("Part of Composer V1, to be removed")
 class StoreDraftWithRecipients @Inject constructor(
     private val getLocalDraft: GetLocalDraft,
     private val saveDraft: SaveDraft,
@@ -59,6 +60,7 @@ class StoreDraftWithRecipients @Inject constructor(
         }
     }
 
+    @Deprecated("Part of Composer V1, to be removed")
     sealed interface Error {
         object DraftSaveError : Error
         object DraftReadError : Error

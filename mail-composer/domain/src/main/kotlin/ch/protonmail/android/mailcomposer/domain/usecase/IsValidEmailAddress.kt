@@ -20,6 +20,7 @@ package ch.protonmail.android.mailcomposer.domain.usecase
 
 import javax.inject.Inject
 
+@Deprecated("Part of Composer V1, to be replaced with EmailValidator")
 class IsValidEmailAddress @Inject constructor() {
 
     operator fun invoke(emailAddress: String): Boolean {

@@ -26,6 +26,7 @@ import ch.protonmail.android.mailmessage.domain.model.Participant
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import kotlin.time.Duration
 
+@Deprecated("Part of Composer V1, to be replaced with ComposerState")
 data class ComposerDraftState(
     val fields: ComposerFields,
     val attachments: AttachmentGroupUiModel,

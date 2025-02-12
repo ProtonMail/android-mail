@@ -18,11 +18,4 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
-import ch.protonmail.android.mailcomposer.domain.model.DraftFields
-import ch.protonmail.android.mailcomposer.domain.model.QuotedHtmlContent
-
-@Deprecated("Part of Composer V1, to be removed")
-data class DraftUiModel(
-    val draftFields: DraftFields,
-    val quotedHtmlContent: QuotedHtmlContent?
-)
+internal enum class ComposerBottomSheetType { ChangeSender, SetExpirationTime }

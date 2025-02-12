@@ -25,6 +25,7 @@ import me.proton.core.util.kotlin.equalsNoCase
 import me.proton.core.util.kotlin.takeIfNotBlank
 import javax.inject.Inject
 
+@Deprecated("Part of Composer V1, to be replaced with ComposerParticipantMapper")
 class ParticipantMapper @Inject constructor() {
 
     fun recipientUiModelToParticipant(recipient: RecipientUiModel.Valid, contacts: List<Contact>): Participant {

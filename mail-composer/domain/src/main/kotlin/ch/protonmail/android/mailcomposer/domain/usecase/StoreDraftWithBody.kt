@@ -30,6 +30,7 @@ import me.proton.core.domain.entity.UserId
 import timber.log.Timber
 import javax.inject.Inject
 
+@Deprecated("Part of Composer V1, to be removed")
 class StoreDraftWithBody @Inject constructor(
     private val prepareAndEncryptDraftBody: PrepareAndEncryptDraftBody,
     private val saveDraft: SaveDraft,
@@ -61,6 +62,7 @@ class StoreDraftWithBody @Inject constructor(
     }
 }
 
+@Deprecated("Part of Composer V1, to be removed")
 sealed interface StoreDraftWithBodyError {
     data object DraftBodyEncryptionError : StoreDraftWithBodyError
     data object DraftSaveError : StoreDraftWithBodyError

@@ -44,6 +44,7 @@ import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
+@Deprecated("Part of Composer V1, to be replaced with SubjectTextField2")
 internal fun SubjectTextField(
     initialValue: String,
     onSubjectChange: (String) -> Unit,

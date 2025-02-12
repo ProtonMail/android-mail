@@ -46,6 +46,7 @@ import javax.inject.Inject
 import kotlin.time.Duration
 
 @Suppress("TooManyFunctions")
+@Deprecated("Part of Composer V1, to be removed")
 class ComposerReducer @Inject constructor(
     private val attachmentUiModelMapper: AttachmentUiModelMapper,
     private val shouldRestrictWebViewHeight: ShouldRestrictWebViewHeight
