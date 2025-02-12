@@ -40,7 +40,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.mailcomposer.presentation.R
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme

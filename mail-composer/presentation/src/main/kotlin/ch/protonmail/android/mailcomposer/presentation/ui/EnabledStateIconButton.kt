@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.semantics
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import kotlinx.coroutines.launch
 import me.proton.core.compose.theme.ProtonTheme
 

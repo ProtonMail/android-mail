@@ -36,7 +36,7 @@ import androidx.compose.ui.focus.focusRequester
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.MaxLines.MultiLine
 import ch.protonmail.android.mailsettings.presentation.accountsettings.identity.ui.MaxLines.SingleLine
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.component.protonOutlineTextFieldColors
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme

@@ -32,7 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.component.ProtonRawListItem
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme

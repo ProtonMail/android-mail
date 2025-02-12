@@ -27,6 +27,7 @@ import ch.protonmail.android.uicomponents.chips.ChipsListState.Companion.ChipsCr
 import ch.protonmail.android.uicomponents.chips.item.ChipItem
 import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItem
 import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItemElement
+import ch.protonmail.android.uicomponents.thenIf
 import kotlinx.coroutines.flow.collectLatest
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
@@ -149,12 +150,4 @@ object ChipsListField {
         val onSuggestionsDismissed: () -> Unit,
         val onListChanged: (List<ChipItem>) -> Unit
     )
-}
-
-fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
-    return if (condition) {
-        then(modifier())
-    } else {
-        this
-    }
 }

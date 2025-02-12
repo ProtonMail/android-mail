@@ -80,7 +80,7 @@ import ch.protonmail.android.maildetail.presentation.previewdata.MessageDetailHe
 import ch.protonmail.android.maillabel.presentation.model.LabelUiModel
 import ch.protonmail.android.maillabel.presentation.ui.LabelsList
 import ch.protonmail.android.mailmessage.domain.model.MessageId
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import kotlinx.collections.immutable.ImmutableList
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme

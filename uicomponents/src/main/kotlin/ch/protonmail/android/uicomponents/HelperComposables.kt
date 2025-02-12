@@ -18,48 +18,14 @@
 
 package ch.protonmail.android.uicomponents
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ScrollState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import me.proton.core.compose.theme.ProtonTheme
 
 @Composable
-fun Modifier.verticalScrollbar(
-    state: ScrollState,
-    width: Dp = 4.dp,
-    color: Color = ProtonTheme.colors.shade50
-): Modifier {
-    val targetAlpha = if (state.isScrollInProgress) 1f else 0.4f
-    val duration = if (state.isScrollInProgress) 150 else 500
-    val alpha by animateFloatAsState(
-        targetValue = targetAlpha,
-        animationSpec = tween(durationMillis = duration)
-    )
-
-    return drawWithContent {
-        drawContent()
-
-        val isDrawScrollbarNeeded = state.isScrollInProgress || alpha > 0.0f
-        if (isDrawScrollbarNeeded) {
-            val scrollingProgress = state.value.toFloat() / state.maxValue
-            val scrollbarHeight = this.size.height / 4
-            val scrollbarY = scrollingProgress * (this.size.height - scrollbarHeight)
-
-            drawRect(
-                color = color,
-                topLeft = Offset(this.size.width - width.toPx(), scrollbarY),
-                size = Size(width.toPx(), scrollbarHeight),
-                alpha = alpha
-            )
-        }
+fun Modifier.thenIf(condition: Boolean, modifier: Modifier.() -> Modifier): Modifier {
+    return if (condition) {
+        then(modifier())
+    } else {
+        this
     }
 }

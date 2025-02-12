@@ -51,8 +51,8 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.uicomponents.chips.ChipsListField
 import ch.protonmail.android.uicomponents.chips.ContactSuggestionState
 import ch.protonmail.android.uicomponents.chips.item.ChipItem
-import ch.protonmail.android.uicomponents.chips.thenIf
 import ch.protonmail.android.uicomponents.composer.suggestions.ContactSuggestionItem
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import timber.log.Timber

@@ -36,6 +36,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import ch.protonmail.android.uicomponents.chips.item.ChipItemsList
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonDimens.ExtraSmallSpacing
 import me.proton.core.compose.theme.ProtonTheme
@@ -43,7 +44,7 @@ import me.proton.core.compose.theme.defaultNorm
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun ChipsListTextField(
+fun ChipsListTextField(
     state: ChipsListState,
     textFieldState: TextFieldState,
     modifier: Modifier = Modifier,

@@ -58,12 +58,11 @@ import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.Dynam
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.isYearly
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
-import ch.protonmail.android.uicomponents.chips.thenIf
+import ch.protonmail.android.uicomponents.thenIf
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
