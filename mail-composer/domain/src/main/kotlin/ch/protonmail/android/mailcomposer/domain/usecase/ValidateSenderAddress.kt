@@ -82,7 +82,8 @@ class ValidateSenderAddress @Inject constructor(
 
     enum class ValidationError {
         DisabledAddress,
-        PaidAddress
+        PaidAddress,
+        GenericError
     }
 
     companion object {
