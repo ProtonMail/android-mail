@@ -19,10 +19,10 @@
 package ch.protonmail.android.mailcomposer.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.coroutines.DefaultDispatcher
-import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
-import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
+import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.domain.repository.DraftStateRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -44,7 +44,7 @@ class DraftUploader @Inject constructor(
 
     private var syncJob: Job? = null
 
-    suspend fun startContinuousUpload(
+    fun startContinuousUpload(
         userId: UserId,
         messageId: MessageId,
         action: DraftAction,
@@ -71,6 +71,7 @@ class DraftUploader @Inject constructor(
     }
 
     companion object {
+
         val SyncInterval = 1.seconds
     }
 }
