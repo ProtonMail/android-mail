@@ -18,7 +18,17 @@
 
 package ch.protonmail.android.mailcomposer.presentation.model
 
+import ch.protonmail.android.uicomponents.chips.item.ChipItem
+import kotlinx.collections.immutable.toImmutableList
+
 sealed class RecipientUiModel {
     data class Valid(val address: String) : RecipientUiModel()
     data class Invalid(val address: String) : RecipientUiModel()
+}
+
+fun List<RecipientUiModel>.toImmutableChipList() = this.map { it.toChipItem() }.toImmutableList()
+
+private fun RecipientUiModel.toChipItem(): ChipItem = when (this) {
+    is RecipientUiModel.Invalid -> ChipItem.Invalid(address)
+    is RecipientUiModel.Valid -> ChipItem.Valid(address)
 }
