@@ -21,7 +21,7 @@ package ch.protonmail.android.uicomponents.chips.item
 import androidx.compose.runtime.Stable
 
 @Stable
-internal sealed class ChipItemsList {
+sealed class ChipItemsList {
 
     data object Empty : ChipItemsList()
 
