@@ -58,6 +58,7 @@ class ReEncryptAttachments @Inject constructor(
         previousSender: SenderEmail,
         newSenderEmail: SenderEmail
     ): Either<AttachmentReEncryptionError, Unit> = transactor.performTransaction {
+        Timber.d("Re encrypting attachments - $previousSender -> $newSenderEmail")
         either {
             val draft = getLocalDraft(userId, messageId, newSenderEmail)
                 .mapLeft { AttachmentReEncryptionError.DraftNotFound }
@@ -84,9 +85,12 @@ class ReEncryptAttachments @Inject constructor(
     ): Either<AttachmentReEncryptionError, Boolean> {
         val updatedAttachments = message.messageBody.attachments
             .map { oldAttachment ->
-                oldAttachment.copy(
-                    keyPackets = reEncryptedKeyPackets.first { it.attachmentId == oldAttachment.attachmentId }.keyPacket
-                )
+                val reEncryptedKeyPackets = reEncryptedKeyPackets.firstOrNull {
+                    it.attachmentId == oldAttachment.attachmentId
+                }?.keyPacket
+                    ?: return AttachmentReEncryptionError.FailedToUpdateAttachmentKeyPackets.left()
+
+                oldAttachment.copy(keyPackets = reEncryptedKeyPackets)
             }
 
         val updatedMessage = message.copy(
@@ -122,7 +126,6 @@ class ReEncryptAttachments @Inject constructor(
             }
         }
 
-
     private suspend fun decryptKeyPackets(
         userId: UserId,
         oldAddressId: SenderEmail,
@@ -141,7 +144,6 @@ class ReEncryptAttachments @Inject constructor(
                 }
             }
         }
-
 
     private data class AttachmentKeyPacket(val attachmentId: AttachmentId, val keyPacket: String)
     private data class AttachmentSessionKey(val attachmentId: AttachmentId, val sessionKey: SessionKey)
