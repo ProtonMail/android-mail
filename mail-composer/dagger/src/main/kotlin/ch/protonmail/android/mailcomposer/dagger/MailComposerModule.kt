@@ -20,6 +20,8 @@ package ch.protonmail.android.mailcomposer.dagger
 
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSource
 import ch.protonmail.android.composer.data.local.AttachmentStateLocalDataSourceImpl
+import ch.protonmail.android.composer.data.local.ContactsPermissionLocalDataSource
+import ch.protonmail.android.composer.data.local.ContactsPermissionLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSource
 import ch.protonmail.android.composer.data.local.DraftStateLocalDataSourceImpl
 import ch.protonmail.android.composer.data.local.MessageExpirationTimeLocalDataSource
@@ -35,6 +37,7 @@ import ch.protonmail.android.composer.data.remote.MessageRemoteDataSource
 import ch.protonmail.android.composer.data.remote.MessageRemoteDataSourceImpl
 import ch.protonmail.android.composer.data.repository.AttachmentRepositoryImpl
 import ch.protonmail.android.composer.data.repository.AttachmentStateRepositoryImpl
+import ch.protonmail.android.composer.data.repository.ContactsPermissionRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftRepositoryImpl
 import ch.protonmail.android.composer.data.repository.DraftStateRepositoryImpl
 import ch.protonmail.android.composer.data.repository.MessageExpirationTimeRepositoryImpl
@@ -44,6 +47,7 @@ import ch.protonmail.android.mailcomposer.domain.Transactor
 import ch.protonmail.android.mailcomposer.domain.annotation.IsComposerV2Enabled
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentRepository
 import ch.protonmail.android.mailcomposer.domain.repository.AttachmentStateRepository
+import ch.protonmail.android.mailcomposer.domain.repository.ContactsPermissionRepository
 import ch.protonmail.android.mailcomposer.domain.repository.DraftRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessageExpirationTimeRepository
 import ch.protonmail.android.mailcomposer.domain.repository.MessagePasswordRepository
@@ -141,4 +145,13 @@ abstract class MailComposerModule {
         fun provideComposerV2FeatureFlag(isEnabled: IsComposerV2FeatureEnabled) = isEnabled()
     }
 
+    @Binds
+    @Singleton
+    abstract fun bindContactsPermissionLocalData(
+        dataSource: ContactsPermissionLocalDataSourceImpl
+    ): ContactsPermissionLocalDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindContactsPermissionRepository(repo: ContactsPermissionRepositoryImpl): ContactsPermissionRepository
 }
