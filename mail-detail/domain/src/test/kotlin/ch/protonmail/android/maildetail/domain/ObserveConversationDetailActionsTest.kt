@@ -20,12 +20,15 @@ package ch.protonmail.android.maildetail.domain
 
 import app.cash.turbine.test
 import arrow.core.left
+import arrow.core.nonEmptyListOf
 import arrow.core.right
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailconversation.domain.usecase.ObserveConversation
 import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationDetailActions
+import ch.protonmail.android.maildetail.domain.usecase.ObserveConversationMessagesWithLabels
+import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
@@ -75,9 +78,16 @@ internal class ObserveConversationDetailActionsTest {
         } returns flowOf(null)
     }
 
+    private val observeMessages = mockk<ObserveConversationMessagesWithLabels> {
+        every {
+            this@mockk.invoke(userId, any())
+        } returns flowOf(nonEmptyListOf(MessageWithLabelsSample.InvoiceWithLabel).right())
+    }
+
     private val observeDetailActions = ObserveConversationDetailActions(
         observeConversation = observeConversation,
-        observeToolbarActions = observeToolbarActions
+        observeToolbarActions = observeToolbarActions,
+        observeMessages = observeMessages
     )
 
     @Test
@@ -325,6 +335,77 @@ internal class ObserveConversationDetailActionsTest {
                 awaitComplete()
             }
         }
+
+    @Test
+    fun `returns reply all action when the last message has multiple recipients`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.conversation
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Move,
+                Action.Reply
+            )
+        )
+        every {
+            observeMessages.invoke(userId, conversationId)
+        } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithoutLabelsMultipleRecipients,
+                MessageWithLabelsSample.EmptyDraft
+            ).right()
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Move,
+                Action.ReplyAll,
+                Action.More
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns reply action when the last message has one recipient, regardless of previous`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        val conversation = ConversationTestData.conversation
+        every { observeConversation.invoke(userId, conversationId, true) } returns flowOf(conversation.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Spam,
+                Action.Move,
+                Action.Reply
+            )
+        )
+        every {
+            observeMessages.invoke(userId, conversationId)
+        } returns flowOf(
+            nonEmptyListOf(
+                MessageWithLabelsSample.InvoiceWithoutLabelsMultipleRecipients,
+                MessageWithLabelsSample.InvoiceWithLabel,
+                MessageWithLabelsSample.EmptyDraft
+            ).right()
+        )
+        // When
+        observeDetailActions.invoke(userId, conversationId, true).test {
+            // Then
+            val expected = listOf(
+                Action.Spam,
+                Action.Move,
+                Action.Reply,
+                Action.More
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
 
     @Test
     fun `returns data error when failing to get conversation`() = runTest {

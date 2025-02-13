@@ -212,6 +212,31 @@ internal class ObserveMessageDetailActionsTest {
     }
 
     @Test
+    fun `returns reply all action when when message has multiple recipients`() = runTest {
+        // Given
+        val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)
+        val message = MessageTestData.multipleRecipientsMessage
+        every { observeMessage.invoke(userId, messageId) } returns flowOf(message.right())
+        every { observeToolbarActions.invoke(userId, false) } returns flowOf(
+            listOf(
+                Action.Print,
+                Action.Reply
+            )
+        )
+        // When
+        observeDetailActions.invoke(userId, messageId).test {
+            // Then
+            val expected = listOf(
+                Action.Print,
+                Action.ReplyAll,
+                Action.More
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `returns unstar action when preference returns star and the message is starred`() = runTest {
         // Given
         val messageId = MessageId(MessageTestData.RAW_MESSAGE_ID)

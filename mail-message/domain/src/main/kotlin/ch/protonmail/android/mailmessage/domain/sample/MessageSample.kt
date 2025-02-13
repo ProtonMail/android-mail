@@ -110,6 +110,16 @@ object MessageSample {
         subject = "Invoice"
     )
 
+    val InvoiceMultipleRecipients = build(
+        conversationId = ConversationIdSample.Invoices,
+        messageId = MessageIdSample.Invoice,
+        labelIds = listOf(LabelIdSample.Archive, LabelIdSample.Document),
+        toList = listOf(RecipientSample.Bob),
+        ccList = listOf(RecipientSample.John),
+        numAttachments = 1,
+        subject = "Invoice"
+    )
+
     val UnreadInvoice = build(
         conversationId = ConversationIdSample.Invoices,
         messageId = MessageIdSample.Invoice,

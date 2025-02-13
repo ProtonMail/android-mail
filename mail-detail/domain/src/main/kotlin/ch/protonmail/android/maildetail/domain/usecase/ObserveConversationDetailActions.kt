@@ -35,7 +35,8 @@ import javax.inject.Inject
 
 class ObserveConversationDetailActions @Inject constructor(
     private val observeConversation: ObserveConversation,
-    private val observeToolbarActions: ObserveMailMessageToolbarSettings
+    private val observeToolbarActions: ObserveMailMessageToolbarSettings,
+    private val observeMessages: ObserveConversationMessagesWithLabels
 ) {
 
     operator fun invoke(
@@ -44,8 +45,9 @@ class ObserveConversationDetailActions @Inject constructor(
         refreshConversations: Boolean
     ): Flow<Either<DataError, List<Action>>> = combine(
         observeConversation(userId, conversationId, refreshConversations),
-        observeToolbarActions(userId, isMailBox = false)
-    ) { either, toolbarActions ->
+        observeToolbarActions(userId, isMailBox = false),
+        observeMessages(userId, conversationId)
+    ) { either, toolbarActions, messagesEither ->
         either.map { conversation ->
             val actions = (toolbarActions ?: BottomBarDefaults.Conversation.actions).toMutableList()
 
@@ -60,6 +62,14 @@ class ObserveConversationDetailActions @Inject constructor(
             }
             if (conversation.areAllMessagesArchived()) {
                 actions.replace(Action.Archive, with = Action.Move)
+            }
+            if (actions.contains(Action.Reply)) {
+                val hasMultipleRecipients = messagesEither.getOrNull()?.lastOrNull {
+                    it.message.isDraft().not()
+                }?.message?.allRecipientsDeduplicated?.size?.let { it > 1 } ?: false
+                if (hasMultipleRecipients) {
+                    actions.replace(Action.Reply, with = Action.ReplyAll)
+                }
             }
             actions.add(Action.More)
             actions.distinct()

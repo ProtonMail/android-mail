@@ -44,6 +44,11 @@ class ObserveMessageDetailActions @Inject constructor(
         either.map { message ->
             val actions = (toolbarActions ?: BottomBarDefaults.Message.actions).toMutableList()
 
+            val hasMultipleRecipients = message.allRecipientsDeduplicated.size > 1
+            if (hasMultipleRecipients) {
+                actions.replace(Action.Reply, with = Action.ReplyAll)
+            }
+
             if (message.messageIsSpamOrTrash()) {
                 actions.replace(Action.Trash, with = Action.Delete) // permanently delete for spam/trash
                 actions.replace(Action.Spam, with = Action.Move) // move to inbox (not spam) for spam/trash

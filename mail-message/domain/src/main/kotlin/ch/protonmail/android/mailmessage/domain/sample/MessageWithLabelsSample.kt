@@ -80,6 +80,14 @@ object MessageWithLabelsSample {
         labels = emptyList()
     )
 
+    val InvoiceWithoutLabelsMultipleRecipients = build(
+        message = MessageSample.InvoiceMultipleRecipients,
+        labels = listOf(
+            LabelSample.Document,
+            LabelSample.Label2021
+        )
+    )
+
     val AnotherInvoiceWithoutLabels = build(
         message = MessageSample.Invoice,
         labels = emptyList()
