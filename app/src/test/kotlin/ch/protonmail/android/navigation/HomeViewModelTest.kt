@@ -38,8 +38,8 @@ import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDial
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
 import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
 import ch.protonmail.android.mailnotifications.domain.usecase.TrackNotificationPermissionTelemetryEvent
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailsettings.domain.usecase.autolock.ShouldPresentPinInsertionScreen
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
@@ -63,6 +63,7 @@ import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
 import me.proton.core.user.domain.entity.User
 import org.junit.Assert.assertNull
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -110,6 +111,10 @@ class HomeViewModelTest {
         relaxUnitFun = true
     )
 
+    private val isComposerV2Enabled = mockk<Provider<Boolean>> {
+        every { this@mockk.get() } returns false
+    }
+
     private val homeViewModel by lazy {
         HomeViewModel(
             networkManager,
@@ -122,6 +127,7 @@ class HomeViewModelTest {
             savePermissionDialogTimestamp,
             saveShouldStopShowingPermissionDialog,
             trackNotificationPermissionTelemetry,
+            isComposerV2Enabled.get(),
             observePrimaryUserMock,
             shareIntentObserver
         )

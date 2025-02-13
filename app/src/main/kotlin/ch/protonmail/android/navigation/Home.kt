@@ -459,7 +459,8 @@ fun Home(
                     activityActions,
                     showDraftSavedSnackbar = { showDraftSavedSnackbar(it) },
                     showMessageSendingSnackbar = { showMessageSendingSnackbar() },
-                    showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() }
+                    showMessageSendingOfflineSnackbar = { showMessageSendingOfflineSnackbar() },
+                    showComposerV2 = viewModel.isComposerV2Enabled
                 )
 
                 addSetMessagePassword(navController)

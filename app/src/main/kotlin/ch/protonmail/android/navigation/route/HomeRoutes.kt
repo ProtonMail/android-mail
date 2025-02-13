@@ -32,6 +32,7 @@ import ch.protonmail.android.mailbugreport.presentation.model.ApplicationLogsVie
 import ch.protonmail.android.mailcommon.domain.model.ConversationId
 import ch.protonmail.android.mailcommon.presentation.extension.navigateBack
 import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen
+import ch.protonmail.android.mailcomposer.presentation.ui.ComposerScreen2
 import ch.protonmail.android.mailcomposer.presentation.ui.SetMessagePasswordScreen
 import ch.protonmail.android.mailcontact.presentation.contactdetails.ContactDetailsScreen
 import ch.protonmail.android.mailcontact.presentation.contactform.ContactFormScreen
@@ -141,7 +142,8 @@ internal fun NavGraphBuilder.addComposer(
     activityActions: MainActivity.Actions,
     showDraftSavedSnackbar: (messasgeId: MessageId) -> Unit,
     showMessageSendingSnackbar: () -> Unit,
-    showMessageSendingOfflineSnackbar: () -> Unit
+    showMessageSendingOfflineSnackbar: () -> Unit,
+    showComposerV2: Boolean = false
 ) {
     val actions = ComposerScreen.Actions(
         onCloseComposerClick = navController::navigateBack,
@@ -152,15 +154,28 @@ internal fun NavGraphBuilder.addComposer(
         showMessageSendingSnackbar = showMessageSendingSnackbar,
         showMessageSendingOfflineSnackbar = showMessageSendingOfflineSnackbar
     )
-    composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
-    composable(route = Destination.Screen.ShareFileComposer.route) {
-        ComposerScreen(
-            actions.copy(
-                onCloseComposerClick = { activityActions.finishActivity() }
+    if (showComposerV2) {
+        composable(route = Destination.Screen.Composer.route) { ComposerScreen2(actions) }
+        composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen2(actions) }
+        composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen2(actions) }
+        composable(route = Destination.Screen.ShareFileComposer.route) {
+            ComposerScreen2(
+                actions.copy(
+                    onCloseComposerClick = { activityActions.finishActivity() }
+                )
             )
-        )
+        }
+    } else {
+        composable(route = Destination.Screen.Composer.route) { ComposerScreen(actions) }
+        composable(route = Destination.Screen.EditDraftComposer.route) { ComposerScreen(actions) }
+        composable(route = Destination.Screen.MessageActionComposer.route) { ComposerScreen(actions) }
+        composable(route = Destination.Screen.ShareFileComposer.route) {
+            ComposerScreen(
+                actions.copy(
+                    onCloseComposerClick = { activityActions.finishActivity() }
+                )
+            )
+        }
     }
 }
 

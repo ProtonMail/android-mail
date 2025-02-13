@@ -30,6 +30,7 @@ import ch.protonmail.android.mailcommon.domain.model.encode
 import ch.protonmail.android.mailcommon.domain.model.isNotEmpty
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUser
 import ch.protonmail.android.mailcommon.presentation.Effect
+import ch.protonmail.android.mailcomposer.domain.annotation.IsComposerV2Enabled
 import ch.protonmail.android.mailcomposer.domain.model.MessageSendingStatus
 import ch.protonmail.android.mailcomposer.domain.usecase.DiscardDraft
 import ch.protonmail.android.mailcomposer.domain.usecase.ObserveSendingMessagesStatus
@@ -40,12 +41,12 @@ import ch.protonmail.android.mailmailbox.domain.usecase.RecordMailboxScreenView
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailnotifications.domain.model.telemetry.NotificationPermissionTelemetryEventType
-import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
-import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.mailnotifications.domain.usecase.SavePermissionDialogTimestamp
 import ch.protonmail.android.mailnotifications.domain.usecase.SaveShouldStopShowingPermissionDialog
+import ch.protonmail.android.mailnotifications.domain.usecase.ShouldShowNotificationPermissionDialog
 import ch.protonmail.android.mailnotifications.domain.usecase.TrackNotificationPermissionTelemetryEvent
 import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogState
+import ch.protonmail.android.mailnotifications.presentation.model.NotificationPermissionDialogType
 import ch.protonmail.android.navigation.model.Destination
 import ch.protonmail.android.navigation.model.HomeState
 import ch.protonmail.android.navigation.share.ShareIntentObserver
@@ -79,6 +80,7 @@ class HomeViewModel @Inject constructor(
     private val savePermissionDialogTimestamp: SavePermissionDialogTimestamp,
     private val saveShouldStopShowingPermissionDialog: SaveShouldStopShowingPermissionDialog,
     private val trackNotificationPermissionTelemetryEvent: TrackNotificationPermissionTelemetryEvent,
+    @IsComposerV2Enabled val isComposerV2Enabled: Boolean,
     observePrimaryUser: ObservePrimaryUser,
     shareIntentObserver: ShareIntentObserver
 ) : ViewModel() {
