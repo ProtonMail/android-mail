@@ -247,7 +247,8 @@ fun ComposerScreen(actions: ComposerScreen.Actions, viewModel: ComposerViewModel
                             { bottomSheetType.value = it }
                         ),
                         contactSuggestions = state.contactSuggestions,
-                        areContactSuggestionsExpanded = state.areContactSuggestionsExpanded
+                        areContactSuggestionsExpanded = state.areContactSuggestionsExpanded,
+                        shouldRestrictWebViewHeight = state.shouldRestrictWebViewHeight
                     )
                     if (state.attachments.attachments.isNotEmpty()) {
                         AttachmentFooter(

@@ -32,6 +32,7 @@ import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyErr
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
@@ -85,6 +86,9 @@ class MessageBodyUiModelMapperTest {
     private val extractMessageBodyWithoutQuote = mockk<ExtractMessageBodyWithoutQuote> {
         coEvery { this@mockk.invoke(any()) } returns MessageBodyWithoutQuote(decryptedMessageBody, false)
     }
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
 
     private val messageBodyUiModelMapper = MessageBodyUiModelMapper(
         attachmentUiModelMapper = attachmentUiModelMapper,
@@ -94,7 +98,8 @@ class MessageBodyUiModelMapperTest {
         sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
         shouldShowEmbeddedImages = shouldShowEmbeddedImages,
         shouldShowRemoteContent = shouldShowRemoteContent,
-        extractMessageBodyWithoutQuote = extractMessageBodyWithoutQuote
+        extractMessageBodyWithoutQuote = extractMessageBodyWithoutQuote,
+        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
     )
 
     @Test
@@ -121,7 +126,8 @@ class MessageBodyUiModelMapperTest {
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -166,7 +172,8 @@ class MessageBodyUiModelMapperTest {
             ),
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -207,7 +214,8 @@ class MessageBodyUiModelMapperTest {
             ),
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -249,7 +257,8 @@ class MessageBodyUiModelMapperTest {
                 ),
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             )
 
             every {
@@ -299,7 +308,8 @@ class MessageBodyUiModelMapperTest {
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -334,7 +344,8 @@ class MessageBodyUiModelMapperTest {
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -371,7 +382,8 @@ class MessageBodyUiModelMapperTest {
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -408,7 +420,8 @@ class MessageBodyUiModelMapperTest {
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
@@ -445,7 +458,8 @@ class MessageBodyUiModelMapperTest {
                 attachments = null,
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
@@ -476,7 +490,8 @@ class MessageBodyUiModelMapperTest {
             attachments = null,
             userAddress = null,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -514,7 +529,8 @@ class MessageBodyUiModelMapperTest {
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         // When
@@ -548,7 +564,8 @@ class MessageBodyUiModelMapperTest {
             attachments = null,
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.DarkMode,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true

@@ -56,7 +56,8 @@ data class ComposerDraftState(
     val senderChangedNotice: Effect<TextUiModel> = Effect.empty(),
     val messageExpiresIn: Duration,
     val confirmSendExpiringMessage: Effect<List<Participant>>,
-    val openImagePicker: Effect<Unit>
+    val openImagePicker: Effect<Unit>,
+    val shouldRestrictWebViewHeight: Boolean
 ) {
 
     companion object {
@@ -104,7 +105,8 @@ data class ComposerDraftState(
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
             isDeviceContactsSuggestionsPromptEnabled = false,
-            openImagePicker = Effect.empty()
+            openImagePicker = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
     }
 }

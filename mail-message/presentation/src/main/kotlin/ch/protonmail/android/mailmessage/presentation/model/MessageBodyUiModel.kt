@@ -37,7 +37,8 @@ data class MessageBodyUiModel(
     val attachments: AttachmentGroupUiModel?,
     val userAddress: UserAddress?,
     val viewModePreference: ViewModePreference,
-    val printEffect: Effect<Unit>
+    val printEffect: Effect<Unit>,
+    val shouldRestrictWebViewHeight: Boolean
 )
 
 enum class MimeTypeUiModel(val value: String) {

@@ -56,6 +56,7 @@ internal fun ComposerForm(
     actions: ComposerFormActions,
     contactSuggestions: Map<ContactSuggestionsField, List<ContactSuggestionUiModel>>,
     areContactSuggestionsExpanded: Map<ContactSuggestionsField, Boolean>,
+    shouldRestrictWebViewHeight: Boolean,
     modifier: Modifier = Modifier
 ) {
     val isKeyboardVisible by keyboardVisibilityAsState()
@@ -138,6 +139,7 @@ internal fun ComposerForm(
                     RespondInlineButton(actions.onRespondInline)
                     BodyHtmlQuote(
                         value = fields.quotedBody.styled.value,
+                        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight,
                         modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
                     )
                 }

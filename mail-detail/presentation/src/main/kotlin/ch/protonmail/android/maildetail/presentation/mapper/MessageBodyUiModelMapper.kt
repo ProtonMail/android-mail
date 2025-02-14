@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.maildetail.presentation.mapper
 
+import android.os.Build
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.usecase.DoesMessageBodyHaveEmbeddedImages
@@ -28,6 +29,7 @@ import ch.protonmail.android.maildetail.presentation.usecase.ExtractMessageBodyW
 import ch.protonmail.android.mailmessage.domain.model.DecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MimeType
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
@@ -47,7 +49,8 @@ class MessageBodyUiModelMapper @Inject constructor(
     private val sanitizeHtmlOfDecryptedMessageBody: SanitizeHtmlOfDecryptedMessageBody,
     private val extractMessageBodyWithoutQuote: ExtractMessageBodyWithoutQuote,
     private val shouldShowEmbeddedImages: ShouldShowEmbeddedImages,
-    private val shouldShowRemoteContent: ShouldShowRemoteContent
+    private val shouldShowRemoteContent: ShouldShowRemoteContent,
+    private val shouldRestrictWebViewHeight: ShouldRestrictWebViewHeight
 ) {
 
     suspend fun toUiModel(
@@ -103,7 +106,9 @@ class MessageBodyUiModelMapper @Inject constructor(
             printEffect = when (effect) {
                 InMemoryConversationStateRepository.PostExpandEffect.PrintRequested -> Effect.of(Unit)
                 null -> Effect.empty()
-            }
+            },
+            shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null) &&
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.P
         )
     }
 
@@ -121,7 +126,8 @@ class MessageBodyUiModelMapper @Inject constructor(
         attachments = null,
         userAddress = null,
         viewModePreference = ViewModePreference.ThemeDefault,
-        printEffect = Effect.empty()
+        printEffect = Effect.empty(),
+        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null)
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

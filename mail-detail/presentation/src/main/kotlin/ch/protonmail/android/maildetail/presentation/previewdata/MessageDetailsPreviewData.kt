@@ -77,7 +77,8 @@ object MessageDetailsPreviewData {
                 attachments = null,
                 userAddress = null,
                 viewModePreference = ViewModePreference.LightMode,
-                printEffect = Effect.empty()
+                printEffect = Effect.empty(),
+                shouldRestrictWebViewHeight = false
             ),
             expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),

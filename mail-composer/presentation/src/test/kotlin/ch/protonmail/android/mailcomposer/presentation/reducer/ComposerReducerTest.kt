@@ -57,11 +57,14 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.Recipient
 import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
 import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSample
 import ch.protonmail.android.testdata.user.UserIdTestData
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -77,7 +80,10 @@ class ComposerReducerTest(
 ) {
 
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
-    private val composerReducer = ComposerReducer(attachmentUiModelMapper)
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
+    private val composerReducer = ComposerReducer(attachmentUiModelMapper, shouldRestrictWebViewHeight)
 
     @Test
     fun `Test composer transition states`() = runTest {
@@ -1039,7 +1045,8 @@ class ComposerReducerTest(
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
             isDeviceContactsSuggestionsPromptEnabled = false,
-            openImagePicker = Effect.empty()
+            openImagePicker = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         private fun aNotSubmittableState(
@@ -1100,7 +1107,8 @@ class ComposerReducerTest(
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
             isDeviceContactsSuggestionsPromptEnabled = false,
-            openImagePicker = Effect.empty()
+            openImagePicker = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         private fun aPositiveRandomInt(bound: Int = 10) = Random().nextInt(bound)

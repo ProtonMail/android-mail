@@ -93,6 +93,7 @@ object MessageDetailBodyUiModelSample {
         attachments = attachments,
         userAddress = userAddress,
         viewModePreference = ViewModePreference.ThemeDefault,
-        printEffect = Effect.empty()
+        printEffect = Effect.empty(),
+        shouldRestrictWebViewHeight = false
     )
 }

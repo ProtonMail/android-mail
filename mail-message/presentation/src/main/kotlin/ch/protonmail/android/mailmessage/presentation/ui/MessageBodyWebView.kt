@@ -196,6 +196,12 @@ fun MessageBodyWebView(
 
     Column(modifier = modifier) {
         key(client) {
+            val webViewMaxHeight = if (messageBodyUiModel.shouldRestrictWebViewHeight) {
+                WEB_VIEW_FIXED_MAX_HEIGHT_RESTRICTED
+            } else {
+                WEB_VIEW_FIXED_MAX_HEIGHT
+            }
+
             WebView(
                 onCreated = {
                     it.settings.builtInZoomControls = true
@@ -215,10 +221,10 @@ fun MessageBodyWebView(
                 modifier = Modifier
                     .testTag(MessageBodyWebViewTestTags.WebView)
                     .fillMaxWidth()
-                    .heightIn(max = (WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
+                    .heightIn(max = (webViewMaxHeight - 1).pxToDp())
                     .onSizeChanged { size ->
                         webViewHeightPx = size.height
-                        if (size.height >= WEB_VIEW_FIXED_MAX_HEIGHT - 1 && shouldAllowViewingEntireMessage) {
+                        if (size.height >= webViewMaxHeight - 1 && shouldAllowViewingEntireMessage) {
                             shouldShowViewEntireMessageButton.value = true
                         }
                     },
@@ -233,7 +239,7 @@ fun MessageBodyWebView(
             )
         }
 
-        if (shouldShowViewEntireMessageButton.value) {
+        if (shouldShowViewEntireMessageButton.value && messageBodyUiModel.shouldRestrictWebViewHeight) {
             ViewEntireMessageButton(
                 onClick = {
                     actions.onViewEntireMessageClicked(
@@ -360,5 +366,7 @@ private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
+// (Limit set in androidx.compose.ui.unit.Constraints)
+private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
 // (Limit as seen in the error messages from the crashes)
-private const val WEB_VIEW_FIXED_MAX_HEIGHT = 8192
+private const val WEB_VIEW_FIXED_MAX_HEIGHT_RESTRICTED = 4096

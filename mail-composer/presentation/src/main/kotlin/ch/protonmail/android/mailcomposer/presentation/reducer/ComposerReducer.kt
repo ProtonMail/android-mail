@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailcomposer.presentation.reducer
 
+import android.os.Build
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcomposer.domain.model.DraftBody
@@ -37,6 +38,7 @@ import ch.protonmail.android.mailcomposer.presentation.model.RecipientUiModel
 import ch.protonmail.android.mailcomposer.presentation.model.SenderUiModel
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageAttachment
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
@@ -45,7 +47,8 @@ import kotlin.time.Duration
 
 @Suppress("TooManyFunctions")
 class ComposerReducer @Inject constructor(
-    private val attachmentUiModelMapper: AttachmentUiModelMapper
+    private val attachmentUiModelMapper: AttachmentUiModelMapper,
+    private val shouldRestrictWebViewHeight: ShouldRestrictWebViewHeight
 ) {
 
     fun newStateFrom(currentState: ComposerDraftState, operation: ComposerOperation): ComposerDraftState =
@@ -237,7 +240,9 @@ class ComposerReducer @Inject constructor(
                     Effect.of(TextUiModel(R.string.composer_sender_changed_original_address_disabled))
 
                 else -> Effect.empty()
-            }
+            },
+            shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null) &&
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.P
         )
     }
 

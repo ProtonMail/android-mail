@@ -30,8 +30,12 @@ import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 
 @Composable
-internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
-    val uiModel = remember { buildFakeMessageBodyUiModel(value) }
+internal fun BodyHtmlQuote(
+    value: String,
+    shouldRestrictWebViewHeight: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val uiModel = remember { buildFakeMessageBodyUiModel(value, shouldRestrictWebViewHeight) }
     MessageBodyWebView(
         modifier = modifier,
         messageBodyUiModel = uiModel,
@@ -48,7 +52,7 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
     )
 }
 
-private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
+private fun buildFakeMessageBodyUiModel(body: String, shouldRestrictWebViewHeight: Boolean) = MessageBodyUiModel(
     MessageId("fake-message-id-for-quoted-message-body"),
     body,
     messageBodyWithoutQuote = body,
@@ -62,5 +66,6 @@ private fun buildFakeMessageBodyUiModel(body: String) = MessageBodyUiModel(
     attachments = null,
     userAddress = null,
     viewModePreference = ViewModePreference.ThemeDefault,
-    printEffect = Effect.empty()
+    printEffect = Effect.empty(),
+    shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
 )

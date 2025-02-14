@@ -152,6 +152,7 @@ import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.mailmessage.domain.usecase.ResolveParticipantName
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.mapper.DetailMoreActionsBottomSheetUiMapper
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
@@ -390,6 +391,9 @@ class ConversationDetailViewModelIntegrationTest {
     private val transformDecryptedMessageBody =
         TransformDecryptedMessageBody(injectCssIntoDecryptedMessageBody, mockk())
     private val extractMessageBodyWithoutQuote = ExtractMessageBodyWithoutQuote()
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
     private val conversationMessageMapper = ConversationDetailMessageUiModelMapper(
         avatarUiModelMapper = DetailAvatarUiModelMapper(getInitial),
         expirationTimeMapper = ExpirationTimeMapper(getCurrentEpochTimeDuration),
@@ -417,7 +421,8 @@ class ConversationDetailViewModelIntegrationTest {
             sanitizeHtmlOfDecryptedMessageBody = sanitizeHtmlOfDecryptedMessageBody,
             shouldShowEmbeddedImages = shouldShowEmbeddedImages,
             shouldShowRemoteContent = shouldShowRemoteContent,
-            extractMessageBodyWithoutQuote = extractMessageBodyWithoutQuote
+            extractMessageBodyWithoutQuote = extractMessageBodyWithoutQuote,
+            shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
         ),
         participantUiModelMapper = ParticipantUiModelMapper(resolveParticipantName),
         messageIdUiModelMapper = messageIdUiModelMapper

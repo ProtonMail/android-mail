@@ -109,6 +109,7 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageAttachmentSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageIdSample
 import ch.protonmail.android.mailmessage.domain.sample.MessageWithBodySample
 import ch.protonmail.android.mailmessage.domain.sample.RecipientSample
+import ch.protonmail.android.mailmessage.domain.usecase.ShouldRestrictWebViewHeight
 import ch.protonmail.android.mailmessage.presentation.mapper.AttachmentUiModelMapper
 import ch.protonmail.android.mailmessage.presentation.model.AttachmentGroupUiModel
 import ch.protonmail.android.mailmessage.presentation.model.NO_ATTACHMENT_LIMIT
@@ -224,7 +225,10 @@ class ComposerViewModelTest {
     }
     private val attachmentUiModelMapper = AttachmentUiModelMapper()
     private val sortContactsForSuggestions = SortContactsForSuggestions(getInitials, testDispatcher)
-    private val reducer = ComposerReducer(attachmentUiModelMapper)
+    private val shouldRestrictWebViewHeight = mockk<ShouldRestrictWebViewHeight> {
+        every { this@mockk.invoke(null) } returns false
+    }
+    private val reducer = ComposerReducer(attachmentUiModelMapper, shouldRestrictWebViewHeight)
 
     private val viewModel by lazy {
         ComposerViewModel(
@@ -2708,7 +2712,8 @@ class ComposerViewModelTest {
             confirmSendExpiringMessage = Effect.empty(),
             isDeviceContactsSuggestionsEnabled = false,
             isDeviceContactsSuggestionsPromptEnabled = false,
-            openImagePicker = Effect.empty()
+            openImagePicker = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
 
         mockkObject(ComposerDraftState.Companion)

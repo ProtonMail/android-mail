@@ -139,7 +139,8 @@ object MessageBodyUiModelTestData {
             shouldShowExpandCollapseButton = false,
             userAddress = userAddress,
             viewModePreference = viewModePreference,
-            printEffect = Effect.empty()
+            printEffect = Effect.empty(),
+            shouldRestrictWebViewHeight = false
         )
     }
 }
