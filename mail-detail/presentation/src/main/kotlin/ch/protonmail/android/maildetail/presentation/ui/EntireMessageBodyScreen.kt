@@ -40,6 +40,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
+import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyAction
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.viewmodel.EntireMessageBodyViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
@@ -84,7 +85,7 @@ fun EntireMessageBodyScreen(
                 linkConfirmationDialogState.value?.let { onOpenMessageBodyLink(it) }
                 linkConfirmationDialogState.value = null
                 if (doNotShowAgain) {
-                    TODO()
+                    viewModel.submit(EntireMessageBodyAction.DoNotAskLinkConfirmationAgain)
                 }
             },
             linkUri = linkConfirmationDialogState.value
@@ -135,19 +136,19 @@ fun EntireMessageBodyScreen(
             is MessageBodyState.Data -> MessageBodyWebView(
                 modifier = Modifier.padding(padding),
                 messageBodyUiModel = messageBodyState.messageBodyUiModel,
-                onMessageBodyLinkClicked = { TODO() },
-                loadEmbeddedImage = { messageId, contentId -> TODO() }
+                onMessageBodyLinkClicked = { viewModel.submit(EntireMessageBodyAction.MessageBodyLinkClicked(it)) },
+                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) }
             )
             is MessageBodyState.Error.Decryption -> MessageBodyWebView(
                 modifier = Modifier.padding(padding),
                 messageBodyUiModel = messageBodyState.encryptedMessageBody,
-                onMessageBodyLinkClicked = { TODO() },
-                loadEmbeddedImage = { messageId, contentId -> TODO() }
+                onMessageBodyLinkClicked = { viewModel.submit(EntireMessageBodyAction.MessageBodyLinkClicked(it)) },
+                loadEmbeddedImage = { messageId, contentId -> viewModel.loadEmbeddedImage(messageId, contentId) }
             )
             is MessageBodyState.Error.Data -> MessageBodyLoadingError(
                 modifier = Modifier.padding(padding),
                 messageBodyState = messageBodyState,
-                onReload = { TODO() }
+                onReload = { viewModel.submit(EntireMessageBodyAction.ReloadMessageBody) }
             )
         }
     }

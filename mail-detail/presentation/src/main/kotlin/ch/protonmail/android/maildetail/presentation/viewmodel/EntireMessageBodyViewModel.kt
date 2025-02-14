@@ -24,15 +24,20 @@ import androidx.lifecycle.viewModelScope
 import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailcommon.domain.model.NetworkError
 import ch.protonmail.android.mailcommon.domain.usecase.ObservePrimaryUserId
+import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.maildetail.presentation.mapper.MessageBodyUiModelMapper
+import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyAction
 import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
 import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
+import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.mailmessage.domain.model.GetDecryptedMessageBodyError
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetDecryptedMessageBody
+import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
+import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -45,6 +50,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import me.proton.core.util.kotlin.deserializeOrNull
 import timber.log.Timber
 import javax.inject.Inject
@@ -53,10 +59,12 @@ import javax.inject.Inject
 class EntireMessageBodyViewModel @Inject constructor(
     observePrimaryUserId: ObservePrimaryUserId,
     private val getDecryptedMessageBody: GetDecryptedMessageBody,
+    private val getEmbeddedImageAvoidDuplicatedExecution: GetEmbeddedImageAvoidDuplicatedExecution,
     private val messageBodyUiModelMapper: MessageBodyUiModelMapper,
     private val observeMessage: ObserveMessage,
     private val observePrivacySettings: ObservePrivacySettings,
     private val savedStateHandle: SavedStateHandle,
+    private val updateLinkConfirmationSetting: UpdateLinkConfirmationSetting
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -77,6 +85,23 @@ class EntireMessageBodyViewModel @Inject constructor(
         getMessageBody(messageId)
         observeMessage()
         observePrivacySettings()
+    }
+
+    fun submit(action: EntireMessageBodyAction) = when (action) {
+        is EntireMessageBodyAction.MessageBodyLinkClicked -> handleMessageBodyLinkClicked(action)
+        is EntireMessageBodyAction.DoNotAskLinkConfirmationAgain -> handleDoNotAskLinkConfirmationAgain()
+        is EntireMessageBodyAction.ReloadMessageBody -> getMessageBody(messageId)
+    }
+
+    fun loadEmbeddedImage(messageId: MessageId, contentId: String): GetEmbeddedImageResult? {
+        return runBlocking {
+            getEmbeddedImageAvoidDuplicatedExecution(
+                userId = primaryUserId.first(),
+                messageId = messageId,
+                contentId = contentId,
+                coroutineContext = viewModelScope.coroutineContext
+            )
+        }
     }
 
     private fun requireMessageId(): MessageId {
@@ -163,4 +188,14 @@ class EntireMessageBodyViewModel @Inject constructor(
             )
         }
     }.launchIn(viewModelScope)
+
+    private fun handleMessageBodyLinkClicked(action: EntireMessageBodyAction.MessageBodyLinkClicked) {
+        mutableState.value = mutableState.value.copy(
+            openMessageBodyLinkEffect = Effect.of(action.uri)
+        )
+    }
+
+    private fun handleDoNotAskLinkConfirmationAgain() {
+        viewModelScope.launch { updateLinkConfirmationSetting(false) }
+    }
 }
