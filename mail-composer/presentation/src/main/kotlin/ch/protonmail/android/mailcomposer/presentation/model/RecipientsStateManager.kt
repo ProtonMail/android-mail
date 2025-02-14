@@ -40,7 +40,11 @@ class RecipientsStateManager @Inject constructor() {
         }
     }
 
-    fun setFromRawRecipients(toRecipients: List<String>, ccRecipients: List<String>, bccRecipients: List<String>) {
+    fun setFromRawRecipients(
+        toRecipients: List<String>,
+        ccRecipients: List<String>,
+        bccRecipients: List<String>
+    ) {
         mutableRecipients.update {
             it.copy(
                 toRecipients = RecipientUiModelMapper.mapFromRawValue(toRecipients).toImmutableList(),
