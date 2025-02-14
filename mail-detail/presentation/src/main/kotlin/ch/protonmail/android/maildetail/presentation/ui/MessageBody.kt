@@ -50,6 +50,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import me.proton.core.compose.component.ProtonButton
@@ -114,7 +115,8 @@ fun MessageBody(
                 onMessageBodyLinkLongClicked = {}, // Deferred init to MessageBodyWebView.
                 onExpandCollapseButtonCLicked = actions.onExpandCollapseButtonClicked,
                 loadEmbeddedImage = actions.loadEmbeddedImage,
-                onPrint = actions.onPrint
+                onPrint = actions.onPrint,
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
             ),
             onMessageBodyLoaded = onMessageBodyLoaded
         )
@@ -238,7 +240,8 @@ object MessageBody {
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,
         val onOpenInProtonCalendar: (MessageId) -> Unit,
-        val onPrint: (MessageId) -> Unit
+        val onPrint: (MessageId) -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 

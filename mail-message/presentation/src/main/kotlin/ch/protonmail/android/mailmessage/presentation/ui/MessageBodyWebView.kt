@@ -38,6 +38,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,6 +54,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -61,6 +64,7 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
 import ch.protonmail.android.mailcommon.presentation.extension.openShareIntentForUri
+import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -88,6 +92,7 @@ fun MessageBodyWebView(
     messageBodyUiModel: MessageBodyUiModel,
     bodyDisplayMode: MessageBodyExpandCollapseMode,
     webViewActions: MessageBodyWebView.Actions,
+    shouldAllowViewingEntireMessage: Boolean = true,
     onMessageBodyLoaded: (messageId: MessageId, height: Int) -> Unit = { _, _ -> },
     viewModel: MessageBodyWebViewViewModel = hiltViewModel()
 ) {
@@ -129,6 +134,8 @@ fun MessageBodyWebView(
     val messageId = messageBodyUiModel.messageId
 
     val isSystemInDarkTheme = isSystemInDarkTheme()
+
+    val shouldShowViewEntireMessageButton = remember { mutableStateOf(false) }
 
     var webView by remember { mutableStateOf<WebView?>(null) }
     LaunchedEffect(key1 = messageBodyUiModel.viewModePreference) {
@@ -211,14 +218,31 @@ fun MessageBodyWebView(
                     .heightIn(max = (WEB_VIEW_FIXED_MAX_HEIGHT - 1).pxToDp())
                     .onSizeChanged { size ->
                         webViewHeightPx = size.height
+                        if (size.height >= WEB_VIEW_FIXED_MAX_HEIGHT - 1 && shouldAllowViewingEntireMessage) {
+                            shouldShowViewEntireMessageButton.value = true
+                        }
                     },
                 client = client
             )
         }
+
         if (bodyDisplayMode != MessageBodyExpandCollapseMode.NotApplicable) {
             ExpandCollapseBodyButton(
                 modifier = Modifier.offset(x = ProtonDimens.SmallSpacing),
                 onClick = { actions.onExpandCollapseButtonCLicked() }
+            )
+        }
+
+        if (shouldShowViewEntireMessageButton.value) {
+            ViewEntireMessageButton(
+                onClick = {
+                    actions.onViewEntireMessageClicked(
+                        messageId,
+                        messageBodyUiModel.shouldShowEmbeddedImages,
+                        messageBodyUiModel.shouldShowRemoteContent,
+                        messageBodyUiModel.viewModePreference
+                    )
+                }
             )
         }
     }
@@ -295,6 +319,17 @@ private fun ExpandCollapseBodyButton(modifier: Modifier = Modifier, onClick: () 
     }
 }
 
+@Composable
+private fun ViewEntireMessageButton(onClick: () -> Unit) {
+    MailDivider()
+    TextButton(
+        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
+        onClick = onClick
+    ) {
+        Text(text = stringResource(id = R.string.button_view_entire_message))
+    }
+}
+
 @Preview
 @Composable
 private fun ExpandCollapseBodyButtonPreview() {
@@ -311,7 +346,8 @@ object MessageBodyWebView {
         val onMessageBodyLinkLongClicked: (uri: Uri) -> Unit,
         val onExpandCollapseButtonCLicked: () -> Unit,
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
-        val onPrint: (MessageId) -> Unit
+        val onPrint: (MessageId) -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 
@@ -324,5 +360,5 @@ private const val WEB_PAGE_CONTENT_LOAD_TIMEOUT = 250L
 
 // Max constraint for WebView height. If the height is greater
 // than this value, we will not fix the height of the WebView or it will crash.
-// (Limit set in androidx.compose.ui.unit.Constraints)
-private const val WEB_VIEW_FIXED_MAX_HEIGHT = 262_143
+// (Limit as seen in the error messages from the crashes)
+private const val WEB_VIEW_FIXED_MAX_HEIGHT = 8192

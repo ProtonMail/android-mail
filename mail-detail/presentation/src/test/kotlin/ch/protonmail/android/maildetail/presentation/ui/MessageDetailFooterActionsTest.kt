@@ -54,7 +54,8 @@ internal class MessageDetailFooterActionsTest {
             showFeatureMissingSnackbar = {},
             onPrint = {},
             onAvatarClicked = { _, _ -> },
-            onParticipantClicked = { _, _ -> }
+            onParticipantClicked = { _, _ -> },
+            onViewEntireMessageClicked = { _, _, _, _ -> }
         )
 
         // When
@@ -88,7 +89,8 @@ internal class MessageDetailFooterActionsTest {
             onPrint = {},
             onAvatarClicked = { _, _ -> },
             onParticipantClicked = { _, _ -> },
-            onOpenComposer = {}
+            onOpenComposer = {},
+            onViewEntireMessageClicked = { _, _, _, _ -> }
         )
 
         // When

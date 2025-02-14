@@ -44,6 +44,7 @@ import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHead
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -150,7 +151,8 @@ private fun ConversationDetailExpandedItem(
                 onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                 onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
                 onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
-                onPrint = { actions.onPrint(it) }
+                onPrint = { actions.onPrint(it) },
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
             ),
             onMessageBodyLoaded = onMessageBodyLoadFinished
         )
@@ -184,7 +186,8 @@ object ConversationDetailItem {
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 

@@ -379,7 +379,8 @@ fun Home(
                                 )
                             }
                         },
-                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() }
+                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
+                        onViewEntireMessageClicked = { _, _, _, _ -> }
                     )
                 )
                 addMailbox(
@@ -430,7 +431,8 @@ fun Home(
                         navigateToCustomizeToolbar = {
                             navController.navigate(Screen.CustomizeToolbar.route)
                         },
-                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() }
+                        recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
+                        onViewEntireMessageClicked = { _, _, _, _ -> }
                     )
                 )
                 addComposer(

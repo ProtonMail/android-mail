@@ -36,12 +36,14 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
         modifier = modifier,
         messageBodyUiModel = uiModel,
         bodyDisplayMode = MessageBodyExpandCollapseMode.NotApplicable,
+        shouldAllowViewingEntireMessage = false,
         webViewActions = MessageBodyWebView.Actions(
             onMessageBodyLinkClicked = {},
             onMessageBodyLinkLongClicked = {},
             onExpandCollapseButtonCLicked = {},
             loadEmbeddedImage = { _, _ -> null },
-            onPrint = {}
+            onPrint = {},
+            onViewEntireMessageClicked = { _, _, _, _ -> }
         )
     )
 }

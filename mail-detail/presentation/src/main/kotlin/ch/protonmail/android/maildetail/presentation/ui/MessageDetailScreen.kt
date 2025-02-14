@@ -325,7 +325,8 @@ fun MessageDetailScreen(
                             avatarUiModel
                         )
                     )
-                }
+                },
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
             )
         )
     }
@@ -483,7 +484,8 @@ fun MessageDetailScreen(
                     onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
                     onPrint = actions.onPrint,
                     onAvatarClicked = actions.onAvatarClicked,
-                    onParticipantClicked = actions.onParticipantClicked
+                    onParticipantClicked = actions.onParticipantClicked,
+                    onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                 )
                 MessageDetailContent(
                     padding = innerPadding,
@@ -569,7 +571,8 @@ private fun MessageDetailContent(
                             onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                             onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
                             onOpenInProtonCalendar = actions.onOpenInProtonCalendar,
-                            onPrint = actions.onPrint
+                            onPrint = actions.onPrint,
+                            onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                         )
                     )
                     MessageDetailFooter(
@@ -603,7 +606,8 @@ private fun MessageDetailContent(
                             onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                             onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
                             onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
-                            onPrint = actions.onPrint
+                            onPrint = actions.onPrint,
+                            onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                         )
                     )
                 }
@@ -630,7 +634,8 @@ object MessageDetail {
         val onComposeNewMessage: (recipientAddress: String) -> Unit,
         val showSnackbar: (message: String) -> Unit,
         val recordMailboxScreenView: () -> Unit,
-        val navigateToCustomizeToolbar: () -> Unit
+        val navigateToCustomizeToolbar: () -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 
@@ -673,7 +678,8 @@ object MessageDetailScreen {
         val onPrint: (MessageId) -> Unit,
         val onReportPhishing: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     ) {
 
         companion object {
@@ -713,7 +719,8 @@ object MessageDetailScreen {
                 onViewInDarkMode = {},
                 onPrint = {},
                 onAvatarClicked = { _, _ -> },
-                onParticipantClicked = { _, _ -> }
+                onParticipantClicked = { _, _ -> },
+                onViewEntireMessageClicked = { _, _, _, _ -> }
             )
         }
     }
@@ -739,7 +746,8 @@ object MessageDetailContent {
         val onOpenInProtonCalendar: (MessageId) -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit
+        val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 

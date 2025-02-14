@@ -415,7 +415,8 @@ fun ConversationDetailScreen(
                 },
                 onMoreActionsBottomBarClick = {
                     viewModel.submit(ConversationDetailViewAction.RequestConversationMoreActionsBottomSheet)
-                }
+                },
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -614,7 +615,8 @@ fun ConversationDetailScreen(
                     onOpenInProtonCalendar = { actions.onOpenInProtonCalendar(it) },
                     onPrint = actions.onPrint,
                     onAvatarClicked = actions.onAvatarClicked,
-                    onParticipantClicked = actions.onParticipantClicked
+                    onParticipantClicked = actions.onParticipantClicked,
+                    onViewEntireMessageClicked = actions.onViewEntireMessageClicked
                 )
                 MessagesContent(
                     uiModels = state.messagesState.messages,
@@ -842,7 +844,8 @@ object ConversationDetail {
         val navigateToCustomizeToolbar: () -> Unit,
         val openComposerForDraftMessage: (messageId: MessageId) -> Unit,
         val showSnackbar: (message: String) -> Unit,
-        val recordMailboxScreenView: () -> Unit
+        val recordMailboxScreenView: () -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     )
 }
 
@@ -898,7 +901,8 @@ object ConversationDetailScreen {
         val onPrint: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onTrashedMessagesBannerClick: () -> Unit
+        val onTrashedMessagesBannerClick: () -> Unit,
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
     ) {
 
         companion object {
@@ -947,7 +951,8 @@ object ConversationDetailScreen {
                 onPrint = { _ -> },
                 onAvatarClicked = { _, _ -> },
                 onParticipantClicked = { _, _ -> },
-                onTrashedMessagesBannerClick = {}
+                onTrashedMessagesBannerClick = {},
+                onViewEntireMessageClicked = { _, _, _, _ -> }
             )
         }
     }
