@@ -20,6 +20,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    kotlin("plugin.serialization")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -57,6 +58,7 @@ dependencies {
     kapt(libs.bundles.app.annotationProcessors)
     debugImplementation(libs.bundles.compose.debug)
 
+    implementation(libs.accompanist.webview)
     implementation(libs.bundles.module.presentation)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.kotlinx.immutableCollections)

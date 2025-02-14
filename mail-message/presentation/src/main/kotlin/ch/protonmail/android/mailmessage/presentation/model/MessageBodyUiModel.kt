@@ -20,6 +20,7 @@ package ch.protonmail.android.mailmessage.presentation.model
 
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import kotlinx.serialization.Serializable
 import me.proton.core.user.domain.entity.UserAddress
 
 data class MessageBodyUiModel(
@@ -44,4 +45,5 @@ enum class MimeTypeUiModel(val value: String) {
     Html("text/html")
 }
 
+@Serializable
 enum class ViewModePreference { ThemeDefault, LightMode, DarkMode }

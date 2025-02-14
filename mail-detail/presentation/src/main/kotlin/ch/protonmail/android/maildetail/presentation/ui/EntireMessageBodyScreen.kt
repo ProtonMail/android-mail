@@ -35,16 +35,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.maildetail.presentation.R
-import ch.protonmail.android.maildetail.presentation.model.EntireMessageBodyState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
+import ch.protonmail.android.maildetail.presentation.viewmodel.EntireMessageBodyViewModel
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
+import kotlinx.serialization.Serializable
 import me.proton.core.compose.component.ProtonCenteredProgress
 import me.proton.core.compose.component.appbar.ProtonTopAppBar
 import me.proton.core.compose.theme.ProtonDimens
@@ -55,8 +59,9 @@ import me.proton.core.compose.theme.defaultStrongNorm
 fun EntireMessageBodyScreen(
     onBackClick: () -> Unit,
     onOpenMessageBodyLink: (Uri) -> Unit,
-    state: EntireMessageBodyState
+    viewModel: EntireMessageBodyViewModel = hiltViewModel()
 ) {
+    val state = viewModel.state.collectAsStateWithLifecycle().value
     val linkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
     val phishingLinkConfirmationDialogState = remember { mutableStateOf<Uri?>(null) }
 
@@ -167,5 +172,18 @@ private fun MessageBodyWebView(
             onPrint = {}, // Print action is not available in this screen
             onViewEntireMessageClicked = { _, _, _, _ -> } // Button won't be shown
         )
+    )
+}
+
+object EntireMessageBodyScreen {
+
+    const val MESSAGE_ID_KEY = "message id"
+    const val INPUT_PARAMS_KEY = "input params"
+
+    @Serializable
+    data class InputParams(
+        val shouldShowEmbeddedImages: Boolean,
+        val shouldShowRemoteContent: Boolean,
+        val viewModePreference: ViewModePreference
     )
 }
