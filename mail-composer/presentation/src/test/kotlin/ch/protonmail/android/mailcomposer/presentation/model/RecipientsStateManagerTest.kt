@@ -57,9 +57,9 @@ internal class RecipientsStateManagerTest {
 
         // When
         recipientsStateManager.setFromRawRecipients(
-            rawToRecipients = rawToList,
-            rawCcRecipients = rawCcList,
-            rawBccRecipients = rawBccList
+            toRecipients = rawToList,
+            ccRecipients = rawCcList,
+            bccRecipients = rawBccList
         )
 
         // Then
@@ -91,9 +91,9 @@ internal class RecipientsStateManagerTest {
 
         // When
         recipientsStateManager.setFromRawRecipients(
-            rawToRecipients = rawToList,
-            rawCcRecipients = rawCcList,
-            rawBccRecipients = rawBccList
+            toRecipients = rawToList,
+            ccRecipients = rawCcList,
+            bccRecipients = rawBccList
         )
 
         val actualRecipients = recipientsStateManager.recipients.value
