@@ -92,6 +92,7 @@ import ch.protonmail.android.navigation.route.addLabelList
 import ch.protonmail.android.navigation.route.addLanguageSettings
 import ch.protonmail.android.navigation.route.addMailbox
 import ch.protonmail.android.navigation.route.addManageMembers
+import ch.protonmail.android.navigation.route.addEntireMessageBody
 import ch.protonmail.android.navigation.route.addMessageDetail
 import ch.protonmail.android.navigation.route.addNotificationsSettings
 import ch.protonmail.android.navigation.route.addParentFolderList
@@ -380,7 +381,14 @@ fun Home(
                             }
                         },
                         recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
-                        onViewEntireMessageClicked = { _, _, _, _ -> }
+                        onViewEntireMessageClicked =
+                        { messageId, shouldShowEmbeddedImages, shouldShowRemoteContent, viewModePreference ->
+                            navController.navigate(
+                                Screen.EntireMessageBody(
+                                    messageId, shouldShowEmbeddedImages, shouldShowRemoteContent, viewModePreference
+                                )
+                            )
+                        }
                     )
                 )
                 addMailbox(
@@ -432,8 +440,19 @@ fun Home(
                             navController.navigate(Screen.CustomizeToolbar.route)
                         },
                         recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() },
-                        onViewEntireMessageClicked = { _, _, _, _ -> }
+                        onViewEntireMessageClicked =
+                        { messageId, shouldShowEmbeddedImages, shouldShowRemoteContent, viewModePreference ->
+                            navController.navigate(
+                                Screen.EntireMessageBody(
+                                    messageId, shouldShowEmbeddedImages, shouldShowRemoteContent, viewModePreference
+                                )
+                            )
+                        }
                     )
+                )
+                addEntireMessageBody(
+                    navController,
+                    onOpenMessageBodyLink = activityActions.openInActivityInNewTask
                 )
                 addComposer(
                     navController,

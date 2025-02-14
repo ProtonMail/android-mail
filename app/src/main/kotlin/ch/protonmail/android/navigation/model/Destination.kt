@@ -37,6 +37,8 @@ import ch.protonmail.android.mailcontact.presentation.contactgroupform.ContactGr
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ConversationIdKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.FilterByLocationKey
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.ScrollToMessageIdKey
+import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
+import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen.INPUT_PARAMS_KEY
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen.MESSAGE_ID_KEY
 import ch.protonmail.android.maillabel.domain.model.MailLabel
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen.FolderFormLabelIdKey
@@ -45,6 +47,7 @@ import ch.protonmail.android.maillabel.presentation.folderparentlist.ParentFolde
 import ch.protonmail.android.maillabel.presentation.labelform.LabelFormScreen.LabelFormLabelIdKey
 import ch.protonmail.android.mailmessage.domain.model.DraftAction
 import ch.protonmail.android.mailmessage.domain.model.MessageId
+import ch.protonmail.android.mailmessage.presentation.model.ViewModePreference
 import ch.protonmail.android.mailsettings.domain.model.SwipeActionDirection
 import ch.protonmail.android.mailsettings.domain.model.autolock.AutoLockInsertionMode
 import ch.protonmail.android.mailsettings.presentation.settings.autolock.ui.pin.AutoLockPinScreen.AutoLockPinModeKey
@@ -75,6 +78,26 @@ sealed class Destination(val route: String) {
         object Message : Destination("mailbox/message/${MESSAGE_ID_KEY.wrap()}") {
 
             operator fun invoke(messageId: MessageId) = route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
+        }
+
+        data object EntireMessageBody : Destination(
+            "mailbox/message/${MESSAGE_ID_KEY.wrap()}/body/${INPUT_PARAMS_KEY.wrap()}"
+        ) {
+
+            operator fun invoke(
+                messageId: MessageId,
+                shouldShowEmbeddedImages: Boolean,
+                shouldShowRemoteContent: Boolean,
+                viewModePreference: ViewModePreference
+            ) = route.replace(MESSAGE_ID_KEY.wrap(), messageId.id)
+                .replace(
+                    INPUT_PARAMS_KEY.wrap(),
+                    EntireMessageBodyScreen.InputParams(
+                        shouldShowEmbeddedImages,
+                        shouldShowRemoteContent,
+                        viewModePreference
+                    ).serialize()
+                )
         }
 
         object Composer : Destination("composer")

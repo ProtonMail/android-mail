@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.navigation.route
 
+import android.net.Uri
 import androidx.compose.material.DrawerState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavGraphBuilder
@@ -41,6 +42,7 @@ import ch.protonmail.android.mailcontact.presentation.contactsearch.ContactSearc
 import ch.protonmail.android.mailcontact.presentation.managemembers.ManageMembersScreen
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetail
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.EntireMessageBodyScreen
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetail
 import ch.protonmail.android.maildetail.presentation.ui.MessageDetailScreen
 import ch.protonmail.android.maillabel.presentation.folderform.FolderFormScreen
@@ -115,6 +117,18 @@ internal fun NavGraphBuilder.addMailbox(
 internal fun NavGraphBuilder.addMessageDetail(actions: MessageDetail.Actions) {
     composable(route = Destination.Screen.Message.route) {
         MessageDetailScreen(actions = actions)
+    }
+}
+
+internal fun NavGraphBuilder.addEntireMessageBody(
+    navController: NavHostController,
+    onOpenMessageBodyLink: (Uri) -> Unit
+) {
+    composable(route = Destination.Screen.EntireMessageBody.route) {
+        EntireMessageBodyScreen(
+            onBackClick = { navController.navigateBack() },
+            onOpenMessageBodyLink = onOpenMessageBodyLink
+        )
     }
 }
 
