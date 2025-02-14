@@ -164,6 +164,7 @@ fun CustomSingleLineTopAppBar(
             .testTag(DetailScreenTopBarTestTags.RootItem)
             .background(ProtonTheme.colors.backgroundNorm)
             .height(MailDimens.SingleLineTopAppBarHeight)
+            .padding(ProtonDimens.ExtraSmallSpacing)
     ) {
         IconButton(
             modifier = Modifier
