@@ -32,11 +32,14 @@ import ch.protonmail.android.mailmessage.domain.sample.MessageWithLabelsSample
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import ch.protonmail.android.testdata.conversation.ConversationTestData
 import ch.protonmail.android.testdata.user.UserIdTestData.userId
+import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import javax.inject.Provider
+import kotlin.test.BeforeTest
 import kotlin.test.assertEquals
 
 internal class ObserveConversationDetailActionsTest {
@@ -84,11 +87,22 @@ internal class ObserveConversationDetailActionsTest {
         } returns flowOf(nonEmptyListOf(MessageWithLabelsSample.InvoiceWithLabel).right())
     }
 
-    private val observeDetailActions = ObserveConversationDetailActions(
-        observeConversation = observeConversation,
-        observeToolbarActions = observeToolbarActions,
-        observeMessages = observeMessages
-    )
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+
+    private val observeDetailActions by lazy {
+        ObserveConversationDetailActions(
+            observeConversation = observeConversation,
+            observeToolbarActions = observeToolbarActions,
+            observeMessages = observeMessages,
+            isCustomizeToolbarEnabled = provideIsCustomizeToolbarEnabled.get()
+        )
+    }
+
+    @BeforeTest
+    fun setUp() {
+        MockKAnnotations.init(this)
+        customizeToolbarFeatureEnabled(true)
+    }
 
     @Test
     fun `returns default actions list for conversation`() = runTest {
@@ -103,6 +117,25 @@ internal class ObserveConversationDetailActionsTest {
                 Action.Trash,
                 Action.Label,
                 Action.More
+            )
+            assertEquals(expected.right(), awaitItem())
+            awaitComplete()
+        }
+    }
+
+    @Test
+    fun `returns default actions without more when FF is disabled`() = runTest {
+        // Given
+        val conversationId = ConversationId(ConversationTestData.RAW_CONVERSATION_ID)
+        customizeToolbarFeatureEnabled(false)
+        // When
+        observeDetailActions.invoke(userId, conversationId, refreshConversations = true).test {
+            // Then
+            val expected = listOf(
+                Action.MarkUnread,
+                Action.Move,
+                Action.Trash,
+                Action.Label
             )
             assertEquals(expected.right(), awaitItem())
             awaitComplete()
@@ -420,5 +453,11 @@ internal class ObserveConversationDetailActionsTest {
             assertEquals(DataError.Local.NoDataCached.left(), awaitItem())
             awaitComplete()
         }
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
     }
 }

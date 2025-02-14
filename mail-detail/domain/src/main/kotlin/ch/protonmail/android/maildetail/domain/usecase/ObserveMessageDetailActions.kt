@@ -26,6 +26,7 @@ import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.mailmessage.domain.model.Message
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.ObserveMessage
+import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveMailMessageToolbarSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -34,7 +35,8 @@ import javax.inject.Inject
 
 class ObserveMessageDetailActions @Inject constructor(
     private val observeMessage: ObserveMessage,
-    private val observeToolbarActions: ObserveMailMessageToolbarSettings
+    private val observeToolbarActions: ObserveMailMessageToolbarSettings,
+    @CustomizeToolbarFeatureEnabled val isCustomizeToolbarEnabled: Boolean
 ) {
 
     operator fun invoke(userId: UserId, messageId: MessageId): Flow<Either<DataError, List<Action>>> = combine(
@@ -60,7 +62,9 @@ class ObserveMessageDetailActions @Inject constructor(
             } else {
                 actions.replace(Action.Unstar, with = Action.Star)
             }
-            actions.add(Action.More)
+            if (isCustomizeToolbarEnabled) {
+                actions.add(Action.More)
+            }
             actions.distinct()
         }
     }
