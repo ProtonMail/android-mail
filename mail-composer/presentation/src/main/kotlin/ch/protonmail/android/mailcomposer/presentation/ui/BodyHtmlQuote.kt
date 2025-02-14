@@ -39,9 +39,7 @@ internal fun BodyHtmlQuote(value: String, modifier: Modifier = Modifier) {
         webViewActions = MessageBodyWebView.Actions(
             onMessageBodyLinkClicked = {},
             onMessageBodyLinkLongClicked = {},
-            onShowAllAttachments = {},
             onExpandCollapseButtonCLicked = {},
-            onAttachmentClicked = {},
             loadEmbeddedImage = { _, _ -> null },
             onPrint = {}
         )

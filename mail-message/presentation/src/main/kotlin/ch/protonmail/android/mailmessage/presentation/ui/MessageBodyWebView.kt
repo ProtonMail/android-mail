@@ -24,7 +24,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -62,7 +61,6 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.extension.copyTextToClipboard
 import ch.protonmail.android.mailcommon.presentation.extension.openShareIntentForUri
-import ch.protonmail.android.mailmessage.domain.model.AttachmentId
 import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.model.MimeType
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
@@ -223,17 +221,6 @@ fun MessageBodyWebView(
                 onClick = { actions.onExpandCollapseButtonCLicked() }
             )
         }
-        val attachmentsUiModel = messageBodyUiModel.attachments
-        if (attachmentsUiModel != null && attachmentsUiModel.attachments.isNotEmpty()) {
-            AttachmentFooter(
-                modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
-                messageBodyAttachmentsUiModel = attachmentsUiModel,
-                actions = AttachmentFooter.Actions(
-                    onShowAllAttachments = actions.onShowAllAttachments,
-                    onAttachmentClicked = actions.onAttachmentClicked
-                )
-            )
-        }
     }
 
     if (longClickDialogState.value && webViewInteractionState.lastFocusedUri != null) {
@@ -319,14 +306,10 @@ private fun ExpandCollapseBodyButtonPreview() {
 
 object MessageBodyWebView {
 
-    const val PrintJobName = "Proton Mail Document"
-
     data class Actions(
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
         val onMessageBodyLinkLongClicked: (uri: Uri) -> Unit,
-        val onShowAllAttachments: () -> Unit,
         val onExpandCollapseButtonCLicked: () -> Unit,
-        val onAttachmentClicked: (attachmentId: AttachmentId) -> Unit,
         val loadEmbeddedImage: (messageId: MessageId, contentId: String) -> GetEmbeddedImageResult?,
         val onPrint: (MessageId) -> Unit
     )

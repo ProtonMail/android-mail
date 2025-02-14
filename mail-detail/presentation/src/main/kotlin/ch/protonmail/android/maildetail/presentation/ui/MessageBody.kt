@@ -50,6 +50,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailmessage.domain.usecase.GetEmbeddedImageResult
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyExpandCollapseMode
 import ch.protonmail.android.mailmessage.presentation.model.MessageBodyUiModel
+import ch.protonmail.android.mailmessage.presentation.ui.AttachmentFooter
 import ch.protonmail.android.mailmessage.presentation.ui.MessageBodyWebView
 import me.proton.core.compose.component.ProtonButton
 import me.proton.core.compose.component.ProtonSolidButton
@@ -111,14 +112,23 @@ fun MessageBody(
             webViewActions = MessageBodyWebView.Actions(
                 onMessageBodyLinkClicked = actions.onMessageBodyLinkClicked,
                 onMessageBodyLinkLongClicked = {}, // Deferred init to MessageBodyWebView.
-                onShowAllAttachments = actions.onShowAllAttachments,
                 onExpandCollapseButtonCLicked = actions.onExpandCollapseButtonClicked,
-                onAttachmentClicked = actions.onAttachmentClicked,
                 loadEmbeddedImage = actions.loadEmbeddedImage,
                 onPrint = actions.onPrint
             ),
             onMessageBodyLoaded = onMessageBodyLoaded
         )
+        val attachmentsUiModel = messageBodyUiModel.attachments
+        if (attachmentsUiModel != null && attachmentsUiModel.attachments.isNotEmpty()) {
+            AttachmentFooter(
+                modifier = Modifier.background(color = ProtonTheme.colors.backgroundNorm),
+                messageBodyAttachmentsUiModel = attachmentsUiModel,
+                actions = AttachmentFooter.Actions(
+                    onShowAllAttachments = actions.onShowAllAttachments,
+                    onAttachmentClicked = actions.onAttachmentClicked
+                )
+            )
+        }
     } else {
         MessageBodyNoWebView(
             modifier = modifier
