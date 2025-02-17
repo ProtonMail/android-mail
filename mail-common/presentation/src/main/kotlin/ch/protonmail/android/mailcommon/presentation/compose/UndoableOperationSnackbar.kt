@@ -67,7 +67,7 @@ fun UndoableOperationSnackbar(
             if (it is ActionResult.UndoableActionResult) {
                 val result = snackbarHostState.showSnackbar(ProtonSnackbarType.NORM, message, undoActionLabel)
                 if (result == SnackbarResult.ActionPerformed) {
-                    Timber.d("Undo action performed")
+                    Timber.d("Undo action performed - $it")
                     viewModel.submitUndo()
                 }
             } else {

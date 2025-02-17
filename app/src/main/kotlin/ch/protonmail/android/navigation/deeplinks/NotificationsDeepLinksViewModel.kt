@@ -93,7 +93,6 @@ class NotificationsDeepLinksViewModel @Inject constructor(
     }
 
     private fun navigateToMessageOrConversation(messageId: String, userId: UserId) {
-        Timber.d("navigateToMessage: $messageId, $userId")
         navigateJob?.cancel()
         navigateJob = viewModelScope.launch {
             when (val switchAccountResult = switchActiveUserIfRequiredTo(userId.id)) {

@@ -23,13 +23,13 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.R
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isMessageReadNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewLoginNotification
 import ch.protonmail.android.mailnotifications.data.local.ProcessPushNotificationDataWorkerUtils.isNewMessageNotification
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationData
 import ch.protonmail.android.mailnotifications.data.remote.resource.PushNotificationSender
-import ch.protonmail.android.mailcommon.domain.AppInBackgroundState
 import ch.protonmail.android.mailnotifications.domain.model.LocalPushNotificationData
 import ch.protonmail.android.mailnotifications.domain.model.MessageReadPushData
 import ch.protonmail.android.mailnotifications.domain.model.NewLoginPushData
@@ -48,7 +48,6 @@ import me.proton.core.accountmanager.domain.SessionManager
 import me.proton.core.domain.entity.UserId
 import me.proton.core.network.domain.session.SessionId
 import me.proton.core.user.domain.UserManager
-import timber.log.Timber
 
 @HiltWorker
 internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
@@ -98,8 +97,6 @@ internal class ProcessPushNotificationDataWorker @AssistedInject constructor(
         val data = decryptedNotification.value.data ?: return Result.failure(
             workDataOf(KeyProcessPushNotificationDataError to "Push Notification data is null.")
         )
-
-        Timber.d("Decrypted data: $decryptedNotification")
 
         val hasBackgroundSyncEnabled = observeBackgroundSyncSetting().first().getOrNull()?.isEnabled ?: true
 
