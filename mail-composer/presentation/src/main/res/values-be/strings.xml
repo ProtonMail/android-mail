@@ -32,7 +32,7 @@
   <string name="composer_change_sender_paid_feature">Неабходна платная падпіска Proton Mail, каб змяніць адрас адпраўніка</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Немагчыма змяніць адпраўніка, бо не ўдаецца атрымаць падпіску карыстальніка. Паспрабуйце яшчэ раз.</string>
   <string name="composer_error_store_draft_sender_address">Збой захавання адраса адпраўніка гэтага чарнавіка</string>
-  <string name="composer_error_store_draft_body">Збой захавання зместу гэтага чарнавіка</string>
+  <string name="composer_error_store_draft_body">Збой захавання тэксту гэтага чарнавіка</string>
   <string name="composer_error_duplicate_recipient">Дубліраваныя атрымальнік(і) выдалены</string>
   <string name="composer_error_store_draft_subject">Збой захавання тэмы гэтага чарнавіка</string>
   <string name="composer_error_store_draft_recipients">Збой захавання атрымальнікаў гэтага чарнавіка</string>

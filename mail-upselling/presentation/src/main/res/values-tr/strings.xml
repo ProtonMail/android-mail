@@ -42,7 +42,7 @@
   <string name="upselling_plus_feature_storage">15 GB depolama alanı</string>
   <string name="upselling_plus_feature_email_addresses">10 e-posta adresi</string>
   <string name="upselling_plus_feature_custom_domain">Özel e-posta etki alanı desteği</string>
-  <string name="upselling_plus_feature_desktop_app">Yeni Proton Mail masaüstü uygulaması</string>
+  <string name="upselling_plus_feature_desktop_app">Yeni Proton Mail bilgisayar uygulaması</string>
   <string name="upselling_plus_feature_folders_labels">Sınırsız klasör, etiket, süzgeç</string>
   <string name="upselling_plus_feature_plus_7_features">+7 ücretli özellik</string>
   <!-- Unlimited -->
@@ -75,7 +75,7 @@
   <string name="upselling_comparison_table_storage">Depolama alanı</string>
   <string name="upselling_comparison_table_email_addresses">E-posta adresleri</string>
   <string name="upselling_comparison_table_custom_email_domain">Özel e-posta etki alanı</string>
-  <string name="upselling_comparison_table_desktop_app">Masaüstü uygulamasına erişim</string>
+  <string name="upselling_comparison_table_desktop_app">Bilgisayar uygulamasına erişim</string>
   <string name="upselling_comparison_table_unlimited_folders_labels">Sınırsız sayıda klasör ve etiket</string>
   <string name="upselling_comparison_table_priority_support">Öncelikli müşteri desteği</string>
   <!-- Rectangular plan buttons -->
@@ -128,7 +128,7 @@
   <string name="post_subscription_plus_feature_email_domains">1 özel e-posta etki alanı desteği</string>
   <string name="post_subscription_plus_feature_folders_labels">Sınırsız sayıda klasör ve etiket</string>
   <string name="post_subscription_plus_feature_aliases">10 hide-my-email takma adı</string>
-  <string name="post_subscription_plus_feature_desktop_app">Yeni Proton Mail masaüstü uygulaması</string>
+  <string name="post_subscription_plus_feature_desktop_app">Yeni Proton Mail bilgisayar uygulaması</string>
   <string name="post_subscription_plus_feature_customer_support">Öncelikli müşteri desteği</string>
   <string name="post_subscription_discover_apps_page_title">Tüm uygulamaları keşfedin</string>
   <string name="post_subscription_proton_calendar">Proton Calendar</string>

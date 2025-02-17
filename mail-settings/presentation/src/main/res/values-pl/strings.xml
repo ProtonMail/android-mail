@@ -190,7 +190,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Pasek narzędzi widoczny jest podczas czytania wątku.</string>
   <string name="customize_toolbar_disclaimer_inbox">Pasek narzędzi pojawia się po zaznaczeniu wielu wiadomości.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Pasek narzędzi pojawia się po zaznaczeniu wielu wiadomości.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">Ten pasek narzędzi pojawia się po wybraniu wielu wątków w twojej skrzynce pocztowej.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Pasek narzędzi pojawia się po zaznaczeniu wielu wątków.</string>
   <string name="customize_toolbar_message">Wiadomość</string>
   <string name="customize_toolbar_conversation">Wątek</string>
   <string name="customize_toolbar_inbox">Skrzynka odbiorcza</string>
@@ -200,7 +200,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Przywróć ustawienia domyślne</string>
   <string name="customize_toolbar_actions_section">Akcje na pasku narzędzi (wybierz do 5 akcji)</string>
   <string name="customize_toolbar_available_actions_section">Dostępne akcje</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Reset to default?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">The actions in the toolbar will be reset to default.</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Przywrócić ustawienia domyślne?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">Akcje na pasku narzędzi zostaną zresetowane do wartości domyślnych.</string>
   <string name="customize_toolbar_reset_default_confirm">Potwierdź</string>
 </resources>

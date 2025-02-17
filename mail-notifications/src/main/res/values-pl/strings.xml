@@ -24,9 +24,9 @@
   <string name="notification_actions_archive_description">Archiwizuj</string>
   <string name="notification_actions_trash_description">Przenieś do Kosza</string>
   <string name="notification_actions_mark_as_read_description">Oznacz jako przeczytane</string>
-  <string name="notification_permission_dialog_title">Don\'t miss an email</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
-  <string name="notification_permission_dialog_post_send_title">Want to stay updated?</string>
+  <string name="notification_permission_dialog_title">Nie przegap wiadomości</string>
+  <string name="notification_permission_dialog_message">Powiadomienia pomagają być na bieżąco ze skrzynką odbiorczą bez konieczności sprawdzania aplikacji.</string>
+  <string name="notification_permission_dialog_post_send_title">Chcesz być na bieżąco?</string>
   <string name="notification_permission_dialog_post_send_message">Turn on notifications to know when you get a response to your email.</string>
   <string name="notification_permission_dialog_button_enable">Włącz powiadomienia</string>
   <string name="notification_permission_dialog_button_dismiss">Odrzuć</string>

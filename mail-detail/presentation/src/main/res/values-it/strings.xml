@@ -101,7 +101,7 @@
   <string name="message_body_load_embedded_images_button_text">Carica le immagini incorporate</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Carica i contenuti remoti e incorporati</string>
   <string name="message_report_phishing_dialog_title_offline">Avviso</string>
-  <string name="message_report_phishing_dialog_message_offline">Questa funzionalità è disponibile solo online.</string>
+  <string name="message_report_phishing_dialog_message_offline">Nessuna connessione a Internet. Segnalazione non riuscita.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
   <string name="message_report_phishing_dialog_title">Segnala come phishing</string>
   <string name="message_report_phishing_dialog_message">Sei sicuro voler segnalare questo messaggio come tentativo di phishing? Il contenuto del messaggio verrà visionato integralmente e analizzato per migliorare i filtri.</string>

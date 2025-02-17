@@ -89,15 +89,15 @@
   <string name="expiration_auto_delete_day">Wiadomość zostanie automatycznie usunięta za mniej niż 24 godziny</string>
   <string name="expiration_auto_delete_days" description="example: This message will be automatically deleted in 5 days">Wiadomość zostanie automatycznie usunięta za %s</string>
   <plurals name="expiration_minutes_full_word">
-    <item quantity="one">%d minutę</item>
+    <item quantity="one">%d minuta</item>
     <item quantity="few">%d minuty</item>
     <item quantity="many">%d minut</item>
-    <item quantity="other">%d minut</item>
+    <item quantity="other">%d minuty</item>
   </plurals>
   <plurals name="expiration_hours_full_word">
-    <item quantity="one">%d godzinę</item>
-    <item quantity="few">%d godzin</item>
-    <item quantity="many">%d godziny</item>
+    <item quantity="one">%d godzina</item>
+    <item quantity="few">%d godziny</item>
+    <item quantity="many">%d godzin</item>
     <item quantity="other">%d godziny</item>
   </plurals>
   <plurals name="expiration_days_full_word">

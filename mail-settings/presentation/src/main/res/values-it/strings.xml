@@ -48,7 +48,7 @@
   <string name="mail_settings_customize_toolbar">Personalizza la barra degli strumenti</string>
   <string name="mail_settings_app_information">Informazioni sull\'applicazione</string>
   <string name="mail_settings_app_version">Versione</string>
-  <string name="mail_settings_app_logs">Log dell\'applicazione</string>
+  <string name="mail_settings_app_logs">Registro degli eventi</string>
   <string name="mail_settings_account">Account</string>
   <!-- Account Settings items -->
   <string name="mail_settings_subscription">Abbonamento</string>
@@ -186,7 +186,7 @@
   <string name="customize_toolbar_disclaimer_conversation">Questa barra degli strumenti appare quando apri una conversazione.</string>
   <string name="customize_toolbar_disclaimer_inbox">Questa barra degli strumenti appare quando selezioni messaggi nella casella di posta.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Questa barra degli strumenti appare quando selezioni messaggi nella casella di posta.</string>
-  <string name="customize_toolbar_disclaimer_mailbox_conversations">Questa barra degli strumenti appare quando selezioni più conversazioni nella tua casella di posta.</string>
+  <string name="customize_toolbar_disclaimer_mailbox_conversations">Questa barra degli strumenti appare quando selezioni conversazioni nella casella di posta.</string>
   <string name="customize_toolbar_message">Messaggio</string>
   <string name="customize_toolbar_conversation">Conversazione</string>
   <string name="customize_toolbar_inbox">Posta in arrivo</string>
@@ -196,7 +196,7 @@
   <string name="customize_toolbar_reset_to_default_btn">Reimposta</string>
   <string name="customize_toolbar_actions_section">Azioni (seleziona fino a 5)</string>
   <string name="customize_toolbar_available_actions_section">Azioni disponibili</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Reimpostare al valore predefinito?</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Sei sicuro di voler reimpostare la barra degli strumenti?</string>
   <string name="customize_toolbar_reset_default_confirmation_desc">Le azioni nella barra degli strumenti verranno ripristinate ai valori predefiniti.</string>
-  <string name="customize_toolbar_reset_default_confirm">Conferma</string>
+  <string name="customize_toolbar_reset_default_confirm">Reimposta</string>
 </resources>

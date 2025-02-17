@@ -25,7 +25,7 @@
   <string name="notification_actions_trash_description">Papierkorb</string>
   <string name="notification_actions_mark_as_read_description">Als gelesen markieren</string>
   <string name="notification_permission_dialog_title">Keine E-Mail verpassen</string>
-  <string name="notification_permission_dialog_message">Notifications help you keep on top of your inbox without checking the app.</string>
+  <string name="notification_permission_dialog_message">Benachrichtigungen helfen dir, deinen Posteingang im Blick zu behalten, ohne die App überprüfen zu müssen.</string>
   <string name="notification_permission_dialog_post_send_title">Du willst auf dem aktuellen Stand bleiben?</string>
   <string name="notification_permission_dialog_post_send_message">Schalte Benachrichtigungen ein, damit du weißt, wann du eine Antwort auf deine E-Mail erhältst.</string>
   <string name="notification_permission_dialog_button_enable">Push-Benachrichtigungen aktivieren</string>
