@@ -23,6 +23,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -46,7 +47,8 @@ data class ConversationDetailState(
     val requestLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState,
     val reportPhishingDialogState: ReportPhishingDialogState,
-    val trashedMessagesBannerState: TrashedMessagesBannerState
+    val trashedMessagesBannerState: TrashedMessagesBannerState,
+    val spotlightTooltip: SpotlightTooltipState
 ) {
 
     companion object {
@@ -63,6 +65,7 @@ data class ConversationDetailState(
             openMessageBodyLinkEffect = Effect.empty(),
             openAttachmentEffect = Effect.empty(),
             openProtonCalendarIntent = Effect.empty(),
+            spotlightTooltip = SpotlightTooltipState.Hidden,
             openReply = Effect.empty(),
             openReplyAll = Effect.empty(),
             openForward = Effect.empty(),

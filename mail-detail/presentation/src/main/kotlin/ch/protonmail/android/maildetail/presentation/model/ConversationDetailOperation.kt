@@ -55,6 +55,7 @@ sealed interface ConversationDetailOperation {
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
     sealed interface AffectingReportPhishingDialog
+    sealed interface AffectingSpotlight
     sealed interface AffectingTrashedMessagesBanner
 }
 
@@ -140,6 +141,10 @@ sealed interface ConversationDetailEvent : ConversationDetailOperation {
         val messageId: MessageId,
         val isOffline: Boolean
     ) : ConversationDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
+
+    data object RequestCustomizeToolbarSpotlight :
+        ConversationDetailEvent,
+        ConversationDetailOperation.AffectingSpotlight
 
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : ConversationDetailEvent
 
@@ -263,6 +268,9 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     ) : ConversationDetailViewAction, AffectingBottomSheet
 
     data object ChangeVisibilityOfMessages : ConversationDetailViewAction
+
+    data object SpotlightDismissed : ConversationDetailViewAction, ConversationDetailOperation.AffectingSpotlight
+    data object SpotlightDisplayed : ConversationDetailViewAction
 
     sealed class MoveMessage(
         val messageId: MessageId,

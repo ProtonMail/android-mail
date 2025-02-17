@@ -23,9 +23,11 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
@@ -48,7 +50,8 @@ class MessageDetailReducer @Inject constructor(
     private val bottomSheetReducer: BottomSheetReducer,
     private val deleteDialogReducer: MessageDeleteDialogReducer,
     private val requestPhishingDialogReducer: MessageReportPhishingDialogReducer,
-    private val mailLabelTextMapper: MailLabelTextMapper
+    private val mailLabelTextMapper: MailLabelTextMapper,
+    private val customizeToolbarSpotlightReducer: MessageCustomizeToolbarSpotlightReducer
 ) {
 
     suspend fun newStateFrom(currentState: MessageDetailState, operation: MessageDetailOperation): MessageDetailState =
@@ -66,7 +69,8 @@ class MessageDetailReducer @Inject constructor(
             openProtonCalendarIntent = currentState.toNewOpenProtonCalendarIntentFrom(operation),
             deleteDialogState = currentState.toNewDeleteDialogStateFrom(operation),
             requestPhishingLinkConfirmation = currentState.toNewPhishingLinkConfirmationState(operation),
-            reportPhishingDialogState = currentState.toNewReportPhishingDialogStateFrom(operation)
+            reportPhishingDialogState = currentState.toNewReportPhishingDialogStateFrom(operation),
+            spotlightTooltip = currentState.toNewSpotlightState(operation)
         )
 
     private fun MessageDetailState.toNewErrorStateFrom(operation: MessageDetailOperation) =
@@ -227,4 +231,17 @@ class MessageDetailReducer @Inject constructor(
         } else {
             reportPhishingDialogState
         }
+
+    private fun MessageDetailState.toNewSpotlightState(operation: MessageDetailOperation): SpotlightTooltipState {
+        return if (operation is MessageDetailOperation.AffectingSpotlight) {
+            val canShow = bottomSheetState == null && bottomBarState is BottomBarState.Data
+            if (canShow) {
+                customizeToolbarSpotlightReducer.newStateFrom(operation)
+            } else {
+                spotlightTooltip
+            }
+        } else {
+            spotlightTooltip
+        }
+    }
 }

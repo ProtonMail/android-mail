@@ -48,6 +48,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatExtendedTime
 import ch.protonmail.android.mailcommon.presentation.usecase.FormatShortTime
 import ch.protonmail.android.mailcommon.presentation.usecase.GetInitial
@@ -109,6 +110,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailVie
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailViewAction.ShowAllAttachmentsForMessage
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
+import ch.protonmail.android.maildetail.presentation.reducer.ConversationCustomizeToolbarSpotlightReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMessagesReducer
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailMetadataReducer
@@ -174,7 +176,9 @@ import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.UpdateCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.contact.ContactSample
@@ -200,10 +204,12 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -438,7 +444,8 @@ class ConversationDetailViewModelIntegrationTest {
         deleteDialogReducer = ConversationDeleteDialogReducer(),
         reportPhishingDialogReducer = ConversationReportPhishingDialogReducer(),
         trashedMessagesBannerReducer = TrashedMessagesBannerReducer(),
-        mailLabelTextMapper = mailLabelTextMapper
+        mailLabelTextMapper = mailLabelTextMapper,
+        customizeToolbarSpotlightReducer = ConversationCustomizeToolbarSpotlightReducer()
     )
 
     private val inMemoryConversationStateRepository = FakeInMemoryConversationStateRepository()
@@ -446,6 +453,11 @@ class ConversationDetailViewModelIntegrationTest {
     private val observeConversationViewState = spyk(ObserveConversationViewState(inMemoryConversationStateRepository))
     private val moveRemoteMessageAndLocalConversation = mockk<MoveRemoteMessageAndLocalConversation>()
     private val observeMailLabels = mockk<ObserveMailLabels>()
+
+    private val observeCustomizeToolbarSpotlight = mockk<ObserveCustomizeToolbarSpotlight> {
+        every { this@mockk.invoke() } returns flowOf()
+    }
+    private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
     private val networkManager = mockk<NetworkManager>()
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
@@ -2734,6 +2746,52 @@ class ConversationDetailViewModelIntegrationTest {
         }
     }
 
+    @Test
+    fun `should display spotlight when use case emits`() = runTest(UnconfinedTestDispatcher()) {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+
+        val spotlightEvents = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+        coEvery { observeCustomizeToolbarSpotlight() } returns spotlightEvents
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            // Then
+            skipItems(2)
+            spotlightEvents.tryEmit(Unit)
+            advanceUntilIdle()
+            val state = awaitItem()
+            assertIs<SpotlightTooltipState.Shown>(state.spotlightTooltip)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should not display spotlight when use case does not emit`() = runTest {
+        // Given
+        val messages = nonEmptyListOf(
+            MessageWithLabelsSample.AugWeatherForecast
+        )
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns flowOf(messages.right())
+        coEvery { observeCustomizeToolbarSpotlight() } returns flowOf()
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            // Then
+            skipItems(2)
+            val state = awaitItem()
+            assertIs<SpotlightTooltipState.Hidden>(state.spotlightTooltip)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
     @Suppress("LongParameterList")
     private fun buildConversationDetailViewModel(
         observePrimaryUser: ObservePrimaryUserId = observePrimaryUserId,
@@ -2812,7 +2870,9 @@ class ConversationDetailViewModelIntegrationTest {
         onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
         shouldMessageBeHidden = shouldMessageBeHidden,
         observeMailLabels = observeMailLabels,
-        moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation
+        moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
+        observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
+        updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(

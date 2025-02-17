@@ -72,6 +72,7 @@ class ConversationDetailReducerTest(
     private val reportPhishingDialogReducer = mockk<ConversationReportPhishingDialogReducer>(relaxed = true)
     private val trashedMessagesBannerReducer = mockk<TrashedMessagesBannerReducer>(relaxed = true)
     private val mailLabelTextMapper = MailLabelTextMapper(mockk())
+    private val customizeToolbarSpotlightReducer = mockk<ConversationCustomizeToolbarSpotlightReducer>()
     private val reducer = ConversationDetailReducer(
         bottomBarReducer = bottomBarReducer,
         messagesReducer = messagesReducer,
@@ -80,7 +81,8 @@ class ConversationDetailReducerTest(
         deleteDialogReducer = deleteDialogReducer,
         reportPhishingDialogReducer = reportPhishingDialogReducer,
         trashedMessagesBannerReducer = trashedMessagesBannerReducer,
-        mailLabelTextMapper = mailLabelTextMapper
+        mailLabelTextMapper = mailLabelTextMapper,
+        customizeToolbarSpotlightReducer = customizeToolbarSpotlightReducer
     )
 
     @Test
@@ -173,7 +175,8 @@ class ConversationDetailReducerTest(
         val reducesLinkClick: Boolean,
         val reducesMessageScroll: Boolean,
         val reducesDeleteDialog: Boolean,
-        val reducesTrashedMessagesBanner: Boolean
+        val reducesTrashedMessagesBanner: Boolean,
+        val reducesSpotlight: Boolean
     ) {
 
         fun operationAffectingBottomBar() = operation as ConversationDetailEvent.ConversationBottomBarEvent
@@ -308,7 +311,8 @@ class ConversationDetailReducerTest(
                 )
             ),
             ConversationDetailEvent.MessageMoved(MailLabelText("spam")) affects listOf(BottomSheet, MessageBar),
-            ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar)
+            ConversationDetailEvent.ErrorMovingMessage affects listOf(BottomSheet, ErrorBar),
+            ConversationDetailEvent.RequestCustomizeToolbarSpotlight affects Spotlight
         )
 
         @JvmStatic
@@ -334,7 +338,8 @@ private infix fun ConversationDetailOperation.affects(entities: List<Entity>) = 
     reducesLinkClick = entities.contains(LinkClick),
     reducesMessageScroll = entities.contains(MessageScroll),
     reducesDeleteDialog = entities.contains(DeleteDialog),
-    reducesTrashedMessagesBanner = entities.contains(TrashedMessagesBanner)
+    reducesTrashedMessagesBanner = entities.contains(TrashedMessagesBanner),
+    reducesSpotlight = entities.contains(Spotlight)
 )
 
 private infix fun ConversationDetailOperation.affects(entity: Entity) = this.affects(listOf(entity))
@@ -352,6 +357,7 @@ private data object LinkClick : Entity
 private data object MessageScroll : Entity
 private data object DeleteDialog : Entity
 private data object TrashedMessagesBanner : Entity
+private data object Spotlight : Entity
 
 private val allMessagesFirstExpanded = listOf(
     ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,

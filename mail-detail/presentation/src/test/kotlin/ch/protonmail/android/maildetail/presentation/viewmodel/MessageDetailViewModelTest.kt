@@ -74,6 +74,7 @@ import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.model.ReportPhishingDialogState
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBannersReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageBodyReducer
+import ch.protonmail.android.maildetail.presentation.reducer.MessageCustomizeToolbarSpotlightReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDeleteDialogReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailMetadataReducer
 import ch.protonmail.android.maildetail.presentation.reducer.MessageDetailReducer
@@ -134,7 +135,9 @@ import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.UpdateCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -385,6 +388,11 @@ class MessageDetailViewModelTest {
     }
     private val onMessageLabelAsConfirmed = mockk<OnMessageLabelAsConfirmed>()
 
+    private val observeCustomizeToolbarSpotlight = mockk<ObserveCustomizeToolbarSpotlight> {
+        every { this@mockk.invoke() } returns flowOf()
+    }
+    private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
+
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(
             messageDetailActionBarUiModelMapper,
@@ -404,7 +412,8 @@ class MessageDetailViewModelTest {
         ),
         MessageDeleteDialogReducer(),
         MessageReportPhishingDialogReducer(),
-        MailLabelTextMapper(mockk())
+        MailLabelTextMapper(mockk()),
+        MessageCustomizeToolbarSpotlightReducer()
     )
 
     private val viewModel by lazy {
@@ -442,7 +451,9 @@ class MessageDetailViewModelTest {
             printMessage = printMessage,
             findContactByEmail = findContactByEmail,
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
-            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed
+            onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
+            observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
+            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
         )
     }
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }

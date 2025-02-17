@@ -367,6 +367,9 @@ fun Home(
                                 )
                             )
                         },
+                        navigateToCustomizeToolbar = {
+                            navController.navigate(Screen.CustomizeToolbar.route)
+                        },
                         openComposerForDraftMessage = { navController.navigate(Screen.EditDraftComposer(it)) },
                         showSnackbar = { message ->
                             scope.launch {
@@ -423,6 +426,9 @@ fun Home(
                                     type = ProtonSnackbarType.NORM
                                 )
                             }
+                        },
+                        navigateToCustomizeToolbar = {
+                            navController.navigate(Screen.CustomizeToolbar.route)
                         },
                         recordMailboxScreenView = { viewModel.recordViewOfMailboxScreen() }
                     )

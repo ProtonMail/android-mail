@@ -127,7 +127,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBo
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.UpdateCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -213,7 +215,9 @@ class ConversationDetailViewModel @Inject constructor(
     private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
     private val moveRemoteMessageAndLocalConversation: MoveRemoteMessageAndLocalConversation,
     private val observeMailLabels: ObserveMailLabels,
-    private val shouldMessageBeHidden: ShouldMessageBeHidden
+    private val shouldMessageBeHidden: ShouldMessageBeHidden,
+    private val observeCustomizeToolbarSpotlight: ObserveCustomizeToolbarSpotlight,
+    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -246,7 +250,8 @@ class ConversationDetailViewModel @Inject constructor(
                 observeConversationMessages(conversationId),
                 observeBottomBarActions(conversationId),
                 observePrivacySettings(),
-                observeAttachments()
+                observeAttachments(),
+                observeCustomizeToolbarSpotlights()
             )
         )
     }
@@ -311,6 +316,7 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.LoadRemoteAndEmbeddedContent,
             is ConversationDetailViewAction.LoadRemoteContent,
             is ConversationDetailViewAction.ReportPhishingDismissed,
+            ConversationDetailViewAction.SpotlightDismissed,
             is ConversationDetailViewAction.SwitchViewMode,
             is ConversationDetailViewAction.PrintRequested -> directlyHandleViewAction(action)
 
@@ -320,6 +326,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.ReportPhishingLastMessage -> reportPhishingLastMessage()
             is ConversationDetailViewAction.MoveToSpam -> moveToSpam()
             is ConversationDetailViewAction.PrintLastMessage -> printLastMessage(action.context)
+
+            ConversationDetailViewAction.SpotlightDisplayed -> updateSpotlightLastSeenTimestamp()
         }
     }
 
@@ -1175,6 +1183,16 @@ class ConversationDetailViewModel @Inject constructor(
             emitNewStateFrom(event)
         }
         .launchIn(viewModelScope)
+
+    private fun observeCustomizeToolbarSpotlights() = observeCustomizeToolbarSpotlight()
+        .onEach {
+            emitNewStateFrom(ConversationDetailEvent.RequestCustomizeToolbarSpotlight)
+        }
+        .launchIn(viewModelScope)
+
+    private fun updateSpotlightLastSeenTimestamp() = viewModelScope.launch {
+        updateCustomizeToolbarSpotlight()
+    }
 
     private fun onOpenAttachmentClicked(messageId: MessageIdUiModel, attachmentId: AttachmentId) {
         val domainMsgId = MessageId(messageId.id)

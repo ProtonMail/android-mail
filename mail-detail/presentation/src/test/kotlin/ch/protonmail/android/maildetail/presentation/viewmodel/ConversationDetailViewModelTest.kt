@@ -129,7 +129,9 @@ import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.model.PrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.UpdateCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import ch.protonmail.android.testdata.action.ActionUiModelTestData
@@ -357,6 +359,11 @@ class ConversationDetailViewModelTest {
     private val moveRemoteMessageAndLocalConversation = mockk<MoveRemoteMessageAndLocalConversation>()
     private val observeMailLabels = mockk<ObserveMailLabels>()
 
+    private val observeCustomizeToolbarSpotlight = mockk<ObserveCustomizeToolbarSpotlight> {
+        every { this@mockk.invoke() } returns flowOf()
+    }
+    private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
+
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
     }
@@ -408,7 +415,9 @@ class ConversationDetailViewModelTest {
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
             shouldMessageBeHidden = shouldMessageBeHidden,
             moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
-            observeMailLabels = observeMailLabels
+            observeMailLabels = observeMailLabels,
+            observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
+            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
         )
     }
 

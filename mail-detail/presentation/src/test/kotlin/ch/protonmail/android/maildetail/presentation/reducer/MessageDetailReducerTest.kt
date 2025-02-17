@@ -25,6 +25,7 @@ import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.presentation.R.string
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -109,6 +110,8 @@ class MessageDetailReducerTest(
 
     private val mailLabelTextMapper = MailLabelTextMapper(mockk())
 
+    private val customizeToolbarSpotlightReducer = mockk<MessageCustomizeToolbarSpotlightReducer>()
+
     private val detailReducer = MessageDetailReducer(
         messageMetadataReducer,
         messageBannersReducer,
@@ -117,7 +120,8 @@ class MessageDetailReducerTest(
         bottomSheetReducer,
         deleteDialogReducer,
         reportPhishingDialogReducer,
-        mailLabelTextMapper
+        mailLabelTextMapper,
+        customizeToolbarSpotlightReducer
     )
 
     @Test
@@ -259,7 +263,8 @@ class MessageDetailReducerTest(
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+            spotlightTooltip = SpotlightTooltipState.Hidden
         )
 
         private val actions = listOf(

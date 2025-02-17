@@ -29,6 +29,7 @@ import ch.protonmail.android.mailsettings.data.repository.BackgroundSyncSettingR
 import ch.protonmail.android.mailsettings.data.repository.BiometricsSystemStateRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.CombinedContactsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.InMemoryToolbarPreferenceRepositoryImpl
+import ch.protonmail.android.mailsettings.data.repository.LocalSpotlightEventsRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.LocalStorageDataRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.MobileFooterRepositoryImpl
 import ch.protonmail.android.mailsettings.data.repository.NotificationsSettingsRepositoryImpl
@@ -54,6 +55,7 @@ import ch.protonmail.android.mailsettings.domain.repository.BackgroundSyncSettin
 import ch.protonmail.android.mailsettings.domain.repository.BiometricsSystemStateRepository
 import ch.protonmail.android.mailsettings.domain.repository.CombinedContactsRepository
 import ch.protonmail.android.mailsettings.domain.repository.InMemoryToolbarPreferenceRepository
+import ch.protonmail.android.mailsettings.domain.repository.LocalSpotlightEventsRepository
 import ch.protonmail.android.mailsettings.domain.repository.LocalStorageDataRepository
 import ch.protonmail.android.mailsettings.domain.repository.MobileFooterRepository
 import ch.protonmail.android.mailsettings.domain.repository.NotificationsSettingsRepository
@@ -183,6 +185,9 @@ object SettingsModule {
         fun bindBiometricsSystemStateRepository(
             impl: BiometricsSystemStateRepositoryImpl
         ): BiometricsSystemStateRepository
+
+        @Binds
+        fun bindLocalSpotlightEventsRepository(impl: LocalSpotlightEventsRepositoryImpl): LocalSpotlightEventsRepository
     }
 }
 

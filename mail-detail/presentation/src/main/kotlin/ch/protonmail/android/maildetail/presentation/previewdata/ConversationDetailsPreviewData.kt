@@ -29,6 +29,7 @@ import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.sample.TextMessageSample
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMetadataState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailState
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMessagesState
@@ -89,7 +90,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val SuccessWithRandomMessageIds = ConversationDetailState(
@@ -143,7 +145,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val FailedLoadingConversation = ConversationDetailState(
@@ -165,7 +168,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val FailedLoadingMessages = ConversationDetailState(
@@ -187,7 +191,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val FailedLoadingBottomBar = ConversationDetailState(
@@ -209,7 +214,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val Loading = ConversationDetailState(
@@ -231,7 +237,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val NotLoggedIn = ConversationDetailState(
@@ -253,7 +260,8 @@ object ConversationDetailsPreviewData {
         requestLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
         reportPhishingDialogState = ReportPhishingDialogState.Hidden,
-        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden
+        trashedMessagesBannerState = TrashedMessagesBannerState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 }
 

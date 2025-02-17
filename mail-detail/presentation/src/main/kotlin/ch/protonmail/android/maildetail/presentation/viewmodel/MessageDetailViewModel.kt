@@ -84,7 +84,9 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
+import ch.protonmail.android.mailsettings.domain.usecase.ObserveCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsettings.domain.usecase.UpdateCustomizeToolbarSpotlight
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.ObservePrivacySettings
 import ch.protonmail.android.mailsettings.domain.usecase.privacy.UpdateLinkConfirmationSetting
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -155,7 +157,9 @@ class MessageDetailViewModel @Inject constructor(
     private val printMessage: PrintMessage,
     private val findContactByEmail: FindContactByEmail,
     private val loadDataForMessageLabelAsBottomSheet: LoadDataForMessageLabelAsBottomSheet,
-    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed
+    private val onMessageLabelAsConfirmed: OnMessageLabelAsConfirmed,
+    private val observeCustomizeToolbarSpotlight: ObserveCustomizeToolbarSpotlight,
+    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -186,7 +190,8 @@ class MessageDetailViewModel @Inject constructor(
                 observeMessageWithLabels(messageId),
                 observeBottomBarActions(messageId),
                 observePrivacySettings(),
-                observeAttachments()
+                observeAttachments(),
+                observeCustomizeToolbarSpotlights()
             )
         )
     }
@@ -216,6 +221,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.DismissBottomSheet,
             is MessageViewAction.DeleteRequested,
             is MessageViewAction.DeleteDialogDismissed,
+            is MessageViewAction.SpotlightDismissed,
             is MessageViewAction.ReportPhishingDismissed -> directlyHandleViewAction(action)
 
             is MessageViewAction.DeleteConfirmed -> handleDeleteConfirmed(action)
@@ -239,6 +245,7 @@ class MessageDetailViewModel @Inject constructor(
             is MessageViewAction.Print -> handlePrint(action.context)
             is MessageViewAction.Archive -> handleArchive()
             is MessageViewAction.Spam -> handleSpam()
+            is MessageViewAction.SpotlightDisplayed -> updateSpotlightLastSeenTimestamp()
         }
     }
 
@@ -644,6 +651,15 @@ class MessageDetailViewModel @Inject constructor(
         emitNewStateFrom(event)
     }.launchIn(viewModelScope)
 
+    private fun observeCustomizeToolbarSpotlights() = observeCustomizeToolbarSpotlight()
+        .onEach {
+            emitNewStateFrom(MessageDetailEvent.RequestCustomizeToolbarSpotlight)
+        }
+        .launchIn(viewModelScope)
+
+    private fun updateSpotlightLastSeenTimestamp() = viewModelScope.launch {
+        updateCustomizeToolbarSpotlight()
+    }
 
     private fun onOpenAttachmentClicked(attachmentId: AttachmentId) {
         viewModelScope.launch {

@@ -54,6 +54,7 @@ sealed interface MessageDetailOperation {
     sealed interface AffectingErrorBar
     sealed interface AffectingBottomSheet
     sealed interface AffectingDeleteDialog
+    sealed interface AffectingSpotlight
     sealed interface AffectingPhishingLinkConfirmationDialog
     sealed interface AffectingReportPhishingDialog
 }
@@ -103,6 +104,10 @@ sealed interface MessageDetailEvent : MessageDetailOperation {
         val messageId: MessageId,
         val isOffline: Boolean
     ) : MessageDetailEvent, AffectingBottomSheet, AffectingReportPhishingDialog
+
+    data object RequestCustomizeToolbarSpotlight :
+        MessageDetailEvent,
+        MessageDetailOperation.AffectingSpotlight
 
     data class HandleOpenProtonCalendarRequest(val intent: OpenProtonCalendarIntentValues) : MessageDetailEvent
 
@@ -161,6 +166,9 @@ sealed interface MessageViewAction : MessageDetailOperation {
         val participant: ParticipantUiModel,
         val avatarUiModel: AvatarUiModel
     ) : MessageViewAction, AffectingBottomSheet
+
+    data object SpotlightDismissed : MessageViewAction, MessageDetailOperation.AffectingSpotlight
+    data object SpotlightDisplayed : MessageViewAction
 
     data object Archive : MessageViewAction
     data object Spam : MessageViewAction

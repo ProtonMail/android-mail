@@ -24,6 +24,7 @@ import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.BottomSheetState
@@ -43,7 +44,8 @@ data class MessageDetailState(
     val requestLinkConfirmation: Boolean,
     val requestPhishingLinkConfirmation: Boolean,
     val deleteDialogState: DeleteDialogState,
-    val reportPhishingDialogState: ReportPhishingDialogState
+    val reportPhishingDialogState: ReportPhishingDialogState,
+    val spotlightTooltip: SpotlightTooltipState
 ) {
 
     companion object {
@@ -63,7 +65,8 @@ data class MessageDetailState(
             requestLinkConfirmation = false,
             requestPhishingLinkConfirmation = false,
             deleteDialogState = DeleteDialogState.Hidden,
-            reportPhishingDialogState = ReportPhishingDialogState.Hidden
+            reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+            spotlightTooltip = SpotlightTooltipState.Hidden
         )
     }
 }

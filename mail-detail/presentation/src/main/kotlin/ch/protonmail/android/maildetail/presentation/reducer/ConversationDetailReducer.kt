@@ -22,9 +22,11 @@ import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.DefinitiveActionResult
 import ch.protonmail.android.mailcommon.presentation.model.ActionResult.UndoableActionResult
+import ch.protonmail.android.mailcommon.presentation.model.BottomBarState
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.reducer.BottomBarReducer
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
@@ -73,7 +75,8 @@ class ConversationDetailReducer @Inject constructor(
     private val deleteDialogReducer: ConversationDeleteDialogReducer,
     private val reportPhishingDialogReducer: ConversationReportPhishingDialogReducer,
     private val trashedMessagesBannerReducer: TrashedMessagesBannerReducer,
-    private val mailLabelTextMapper: MailLabelTextMapper
+    private val mailLabelTextMapper: MailLabelTextMapper,
+    private val customizeToolbarSpotlightReducer: ConversationCustomizeToolbarSpotlightReducer
 ) {
 
     fun newStateFrom(
@@ -98,7 +101,8 @@ class ConversationDetailReducer @Inject constructor(
             scrollToMessage = currentState.toScrollToMessageState(operation),
             deleteDialogState = currentState.toNewDeleteDialogState(operation),
             reportPhishingDialogState = currentState.toNewReportPhishingDialogState(operation),
-            trashedMessagesBannerState = currentState.toNewTrashedMessagesBannerState(operation)
+            trashedMessagesBannerState = currentState.toNewTrashedMessagesBannerState(operation),
+            spotlightTooltip = currentState.toNewSpotlightState(operation)
         )
     }
 
@@ -354,6 +358,21 @@ class ConversationDetailReducer @Inject constructor(
             trashedMessagesBannerReducer.newStateFrom(operation)
         } else {
             trashedMessagesBannerState
+        }
+    }
+
+    private fun ConversationDetailState.toNewSpotlightState(
+        operation: ConversationDetailOperation
+    ): SpotlightTooltipState {
+        return if (operation is ConversationDetailOperation.AffectingSpotlight) {
+            val canShow = bottomSheetState == null && bottomBarState is BottomBarState.Data
+            if (canShow) {
+                customizeToolbarSpotlightReducer.newStateFrom(operation)
+            } else {
+                spotlightTooltip
+            }
+        } else {
+            spotlightTooltip
         }
     }
 }

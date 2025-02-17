@@ -75,6 +75,7 @@ import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.BottomActionBar
 import ch.protonmail.android.mailcommon.presentation.ui.CommonTestTags
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialog
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltip
 import ch.protonmail.android.maildetail.domain.model.OpenAttachmentIntentValues
 import ch.protonmail.android.maildetail.domain.model.OpenProtonCalendarIntentValues
 import ch.protonmail.android.maildetail.presentation.R
@@ -179,6 +180,13 @@ fun ConversationDetailScreen(
         state = state.reportPhishingDialogState,
         onConfirm = { viewModel.submit(ConversationDetailViewAction.ReportPhishingConfirmed(it)) },
         onDismiss = { viewModel.submit(ConversationDetailViewAction.ReportPhishingDismissed) }
+    )
+
+    SpotlightTooltip(
+        dialogState = state.spotlightTooltip,
+        ctaClick = actions.navigateToCustomizeToolbar,
+        dismiss = { viewModel.submit(ConversationDetailViewAction.SpotlightDismissed) },
+        displayed = { viewModel.submit(ConversationDetailViewAction.SpotlightDisplayed) }
     )
 
     ProtonModalBottomSheetLayout(
@@ -831,6 +839,7 @@ object ConversationDetail {
         val onViewContactDetails: (ContactId) -> Unit,
         val onAddContact: (basicContactInfo: BasicContactInfo) -> Unit,
         val onComposeNewMessage: (recipientAddress: String) -> Unit,
+        val navigateToCustomizeToolbar: () -> Unit,
         val openComposerForDraftMessage: (messageId: MessageId) -> Unit,
         val showSnackbar: (message: String) -> Unit,
         val recordMailboxScreenView: () -> Unit

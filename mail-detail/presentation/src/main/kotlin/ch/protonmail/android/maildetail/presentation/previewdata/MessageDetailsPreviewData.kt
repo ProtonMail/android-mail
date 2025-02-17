@@ -27,6 +27,7 @@ import ch.protonmail.android.mailcommon.presentation.model.contentDescription
 import ch.protonmail.android.mailcommon.presentation.model.description
 import ch.protonmail.android.mailcommon.presentation.model.iconDrawable
 import ch.protonmail.android.mailcommon.presentation.ui.delete.DeleteDialogState
+import ch.protonmail.android.mailcommon.presentation.ui.spotlight.SpotlightTooltipState
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersState
 import ch.protonmail.android.maildetail.presentation.model.MessageBannersUiModel
 import ch.protonmail.android.maildetail.presentation.model.MessageBodyState
@@ -106,7 +107,8 @@ object MessageDetailsPreviewData {
         requestLinkConfirmation = false,
         requestPhishingLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
-        reportPhishingDialogState = ReportPhishingDialogState.Hidden
+        reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 
     val MessageWithLabels = Message.copy(
@@ -137,7 +139,8 @@ object MessageDetailsPreviewData {
         requestLinkConfirmation = false,
         requestPhishingLinkConfirmation = false,
         deleteDialogState = DeleteDialogState.Hidden,
-        reportPhishingDialogState = ReportPhishingDialogState.Hidden
+        reportPhishingDialogState = ReportPhishingDialogState.Hidden,
+        spotlightTooltip = SpotlightTooltipState.Hidden
     )
 }
 
