@@ -47,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
@@ -108,9 +109,9 @@ fun SpotlightTooltip(
                             painter = painterResource(id = R.drawable.ic_wand),
                             contentDescription = null
                         )
-                        Column {
+                        Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                modifier = Modifier.padding(horizontal = ProtonDimens.DefaultSpacing),
+                                modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
                                 text = model.title.string(),
                                 style = ProtonTheme.typography.body2Medium,
                                 color = ProtonTheme.colors.textNorm,
@@ -118,11 +119,14 @@ fun SpotlightTooltip(
                             )
                             Text(
                                 modifier = Modifier
-                                    .padding(horizontal = ProtonDimens.DefaultSpacing)
-                                    .padding(top = ProtonDimens.SmallSpacing),
+                                    .padding(start = ProtonDimens.SmallSpacing)
+                                    .padding(top = ProtonDimens.SmallSpacing)
+                                    .fillMaxWidth(),
                                 text = model.message.string(),
                                 style = ProtonTheme.typography.body2Regular,
                                 color = ProtonTheme.colors.textNorm,
+                                maxLines = 4,
+                                overflow = TextOverflow.Ellipsis,
                                 textAlign = TextAlign.Start
                             )
                         }
@@ -183,8 +187,7 @@ private fun SpotlightTooltipPreview() {
                 SpotlightUiModel(
                     title = TextUiModel.Text("Customize toolbar"),
                     message = TextUiModel.Text(
-                        "You can now choose and rearrange \n" +
-                            "the actions in the message toolbar"
+                        "You can now choose and rearrange the actions in this toolbar"
                     ),
                     cta = TextUiModel.Text("Show me")
                 )

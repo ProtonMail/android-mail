@@ -115,7 +115,7 @@
     <string name="show">Show</string>
     <string name="hide">Hide</string>
     <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-    <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this bar.</string>
+    <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
     <string name="tooltip_customize_toolbar_cta">Customize</string>
 
 </resources>
