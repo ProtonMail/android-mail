@@ -48,7 +48,7 @@ import ch.protonmail.android.mailmessage.presentation.sample.AttachmentUiModelSa
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultSmall
-import me.proton.core.compose.theme.defaultSmallStrong
+import me.proton.core.compose.theme.defaultSmallStrongUnspecified
 import me.proton.core.presentation.R.drawable
 
 @Composable
@@ -118,7 +118,8 @@ fun AttachmentFooter(
                         id = R.string.attachment_show_more_label,
                         attachments.size - messageBodyAttachmentsUiModel.limit
                     ),
-                    style = ProtonTheme.typography.defaultSmallStrong.copy(color = ProtonTheme.colors.brandNorm)
+                    style = ProtonTheme.typography.defaultSmallStrongUnspecified,
+                    color = ProtonTheme.colors.textAccent
                 )
             }
         }

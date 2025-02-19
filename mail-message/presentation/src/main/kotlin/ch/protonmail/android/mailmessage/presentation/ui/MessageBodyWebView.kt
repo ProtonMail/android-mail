@@ -24,6 +24,8 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,7 +41,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -55,6 +56,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -85,6 +87,7 @@ import com.google.accompanist.web.rememberWebViewStateWithHTMLData
 import kotlinx.coroutines.delay
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
+import me.proton.core.compose.theme.defaultUnspecified
 
 @Composable
 fun MessageBodyWebView(
@@ -328,12 +331,21 @@ private fun ExpandCollapseBodyButton(modifier: Modifier = Modifier, onClick: () 
 @Composable
 private fun ViewEntireMessageButton(onClick: () -> Unit) {
     MailDivider()
-    TextButton(
-        modifier = Modifier.padding(horizontal = ProtonDimens.SmallSpacing),
-        onClick = onClick
-    ) {
-        Text(text = stringResource(id = R.string.button_view_entire_message))
-    }
+    Text(
+        modifier = Modifier
+            .padding(ProtonDimens.DefaultSpacing)
+            .clickable(
+                enabled = true,
+                onClickLabel = null,
+                role = Role.Button,
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ),
+        text = stringResource(id = R.string.button_view_entire_message),
+        style = ProtonTheme.typography.defaultUnspecified,
+        color = ProtonTheme.colors.textAccent
+    )
 }
 
 @Preview
