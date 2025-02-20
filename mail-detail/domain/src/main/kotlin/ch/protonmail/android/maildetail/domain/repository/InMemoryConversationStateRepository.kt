@@ -32,6 +32,8 @@ interface InMemoryConversationStateRepository {
         postExpandEffect: PostExpandEffect?
     )
 
+    suspend fun consumeEffect(messageId: MessageId)
+
     suspend fun expandingMessage(messageId: MessageId)
 
     suspend fun collapseMessage(messageId: MessageId)
@@ -51,5 +53,8 @@ interface InMemoryConversationStateRepository {
 
     sealed interface PostExpandEffect {
         data object PrintRequested : PostExpandEffect
+        data object ReplyRequested : PostExpandEffect
+        data object ReplyAllRequested : PostExpandEffect
+        data object ForwardRequested : PostExpandEffect
     }
 }

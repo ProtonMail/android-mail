@@ -168,9 +168,9 @@ private fun conversationCallbackForAction(
     action: Action,
     actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
 ): (() -> Unit)? = when (action) {
-    Action.Reply -> null
-    Action.ReplyAll -> null
-    Action.Forward -> null
+    Action.Reply -> actionCallbacks.onReplyConversation
+    Action.ReplyAll -> actionCallbacks.onReplyAllConversation
+    Action.Forward -> actionCallbacks.onForwardConversation
     Action.MarkUnread -> actionCallbacks.onMarkUnreadConversation
     Action.Label -> actionCallbacks.onLabelConversation
     Action.ViewInLightMode -> null
@@ -200,6 +200,9 @@ object DetailMoreActionsBottomSheetContent {
         val onMarkUnreadConversation: () -> Unit,
         val onLabel: (MessageId) -> Unit,
         val onLabelConversation: () -> Unit,
+        val onReplyConversation: () -> Unit,
+        val onReplyAllConversation: () -> Unit,
+        val onForwardConversation: () -> Unit,
         val onViewInLightMode: (MessageId) -> Unit,
         val onViewInDarkMode: (MessageId) -> Unit,
         val onMoveToTrash: (MessageId) -> Unit,
@@ -268,6 +271,9 @@ private val emptyActions = DetailMoreActionsBottomSheetContent.Actions(
     onReply = {},
     onReplyAll = {},
     onForward = {},
+    onReplyConversation = {},
+    onReplyAllConversation = {},
+    onForwardConversation = {},
     onMarkUnread = {},
     onLabel = {},
     onViewInLightMode = {},

@@ -171,6 +171,9 @@ private fun MessageBodyWebView(
             onExpandCollapseButtonCLicked = {}, // Button won't be shown
             loadEmbeddedImage = loadEmbeddedImage,
             onPrint = {}, // Print action is not available in this screen
+            onReply = {},
+            onReplyAll = {},
+            onForward = {},
             onViewEntireMessageClicked = { _, _, _, _ -> } // Button won't be shown
         )
     )

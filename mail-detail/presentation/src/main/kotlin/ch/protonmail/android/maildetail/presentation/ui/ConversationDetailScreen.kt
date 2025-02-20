@@ -89,6 +89,7 @@ import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
 import ch.protonmail.android.maildetail.presentation.model.TrashedMessagesBannerState
 import ch.protonmail.android.maildetail.presentation.previewdata.ConversationDetailsPreviewProvider
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen.scrollOffsetDp
+import ch.protonmail.android.maildetail.presentation.ui.MessageBody.DoOnDisplayedEffect
 import ch.protonmail.android.maildetail.presentation.ui.dialog.ReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.viewmodel.ConversationDetailViewModel
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -273,6 +274,15 @@ fun ConversationDetailScreen(
                         },
                         onPrintLastMessage = {
                             viewModel.submit(ConversationDetailViewAction.PrintLastMessage(context))
+                        },
+                        onReplyConversation = {
+                            viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = false))
+                        },
+                        onReplyAllConversation = {
+                            viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = true))
+                        },
+                        onForwardConversation = {
+                            viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
                         }
                     )
                 )
@@ -356,6 +366,9 @@ fun ConversationDetailScreen(
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward,
+                onEffectConsumed = { messageId, effect ->
+                    viewModel.submit(ConversationDetailViewAction.EffectConsumed(messageId, effect))
+                },
                 onReadClick = {
                     Timber.i("Read click not handled for conversation detail")
                 },
@@ -606,6 +619,7 @@ fun ConversationDetailScreen(
                     onReply = actions.onReply,
                     onReplyAll = actions.onReplyAll,
                     onForward = actions.onForward,
+                    onEffectConsumed = actions.onEffectConsumed,
                     onScrollRequestCompleted = actions.onScrollRequestCompleted,
                     onBodyExpandCollapseButtonClicked = actions.onBodyExpandCollapseButtonClicked,
                     onMoreActionsClick = actions.onMoreActionsClick,
@@ -885,6 +899,7 @@ object ConversationDetailScreen {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
+        val onEffectConsumed: (MessageId, DoOnDisplayedEffect) -> Unit,
         val onReplyLastMessage: () -> Unit,
         val onForwardLastMessage: () -> Unit,
         val onMoveToSpam: () -> Unit,
@@ -934,6 +949,7 @@ object ConversationDetailScreen {
                 loadEmbeddedImage = { _, _ -> null },
                 onReply = {},
                 onReplyAll = {},
+                onEffectConsumed = { _, _ -> },
                 onReplyLastMessage = {},
                 onReplyAllLastMessage = {},
                 onForwardLastMessage = {},

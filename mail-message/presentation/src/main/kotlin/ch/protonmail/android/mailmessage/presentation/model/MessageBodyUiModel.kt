@@ -38,7 +38,10 @@ data class MessageBodyUiModel(
     val userAddress: UserAddress?,
     val viewModePreference: ViewModePreference,
     val printEffect: Effect<Unit>,
-    val shouldRestrictWebViewHeight: Boolean
+    val shouldRestrictWebViewHeight: Boolean,
+    val replyEffect: Effect<Unit>,
+    val replyAllEffect: Effect<Unit>,
+    val forwardEffect: Effect<Unit>
 )
 
 enum class MimeTypeUiModel(val value: String) {

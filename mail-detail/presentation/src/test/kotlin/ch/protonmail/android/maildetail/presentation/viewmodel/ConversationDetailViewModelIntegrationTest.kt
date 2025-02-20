@@ -2238,6 +2238,98 @@ class ConversationDetailViewModelIntegrationTest {
     }
 
     @Test
+    fun `should emit reply effect when a collapsed message is replied to`() = runTest {
+        // Given
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messages = nonEmptyListOf(MessageWithLabelsSample.InvoiceWithLabel)
+
+        coEvery { observeMailLabels(userId, any()) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = false))
+
+            skipItems(1)
+
+            val state = awaitItem()
+            // then
+            val firstExpandedMessage = (state.messagesState as? ConversationDetailsMessagesState.Data)
+                ?.messages
+                ?.firstOrNull()
+                ?.let { it as? Expanded }
+
+            assertNotNull(
+                firstExpandedMessage?.messageBodyUiModel?.replyEffect?.consume()
+            )
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `should emit reply effect when a collapsed message is forwarded`() = runTest {
+        // Given
+        val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId
+        val messages = nonEmptyListOf(MessageWithLabelsSample.InvoiceWithLabel)
+
+        coEvery { observeMailLabels(userId, any()) } returns
+            flowOf(
+                MailLabels(
+                    systemLabels = LabelTestData.systemLabels,
+                    folders = emptyList(),
+                    labels = listOf(MailLabelTestData.customLabelOne)
+                )
+            )
+
+        coEvery { observeConversationMessagesWithLabels(userId, any()) } returns
+            flowOf(messages.right())
+
+        coEvery { observeMessage(userId, messageId) } returns
+            flowOf(MessageWithLabelsSample.InvoiceWithLabel.message.right())
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+
+        viewModel.state.test {
+            skipItems(4)
+
+            viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
+
+            skipItems(1)
+
+            val state = awaitItem()
+            // then
+            val firstExpandedMessage = (state.messagesState as? ConversationDetailsMessagesState.Data)
+                ?.messages
+                ?.firstOrNull()
+                ?.let { it as? Expanded }
+
+            assertNotNull(
+                firstExpandedMessage?.messageBodyUiModel?.forwardEffect?.consume()
+            )
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `should show message move to bottom sheet and load data when it is requested`() = runTest {
         // Given
         val messageId = MessageWithLabelsSample.InvoiceWithLabel.message.messageId

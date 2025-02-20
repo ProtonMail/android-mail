@@ -94,6 +94,9 @@ object MessageDetailBodyUiModelSample {
         userAddress = userAddress,
         viewModePreference = ViewModePreference.ThemeDefault,
         printEffect = Effect.empty(),
-        shouldRestrictWebViewHeight = false
+        shouldRestrictWebViewHeight = false,
+        replyEffect = Effect.empty(),
+        replyAllEffect = Effect.empty(),
+        forwardEffect = Effect.empty()
     )
 }

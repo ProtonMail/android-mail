@@ -140,7 +140,10 @@ object MessageBodyUiModelTestData {
             userAddress = userAddress,
             viewModePreference = viewModePreference,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
     }
 }

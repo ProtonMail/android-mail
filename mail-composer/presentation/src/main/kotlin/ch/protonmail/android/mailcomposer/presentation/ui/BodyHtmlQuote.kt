@@ -47,7 +47,10 @@ internal fun BodyHtmlQuote(
             onExpandCollapseButtonCLicked = {},
             loadEmbeddedImage = { _, _ -> null },
             onPrint = {},
-            onViewEntireMessageClicked = { _, _, _, _ -> }
+            onViewEntireMessageClicked = { _, _, _, _ -> },
+            onReply = {},
+            onReplyAll = {},
+            onForward = {}
         )
     )
 }
@@ -67,5 +70,8 @@ private fun buildFakeMessageBodyUiModel(body: String, shouldRestrictWebViewHeigh
     userAddress = null,
     viewModePreference = ViewModePreference.ThemeDefault,
     printEffect = Effect.empty(),
-    shouldRestrictWebViewHeight = shouldRestrictWebViewHeight
+    shouldRestrictWebViewHeight = shouldRestrictWebViewHeight,
+    replyEffect = Effect.empty(),
+    replyAllEffect = Effect.empty(),
+    forwardEffect = Effect.empty()
 )

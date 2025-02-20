@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.NO_CONTENT_DESCRIPTION
 import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
@@ -105,6 +106,18 @@ fun MessageBody(
 
     MailDivider(modifier = Modifier.padding(top = ProtonDimens.SmallSpacing))
 
+    ConsumableLaunchedEffect(messageBodyUiModel.replyEffect) {
+        actions.onEffectConsumed(messageBodyUiModel.messageId, MessageBody.DoOnDisplayedEffect.Reply)
+    }
+
+    ConsumableLaunchedEffect(messageBodyUiModel.replyAllEffect) {
+        actions.onEffectConsumed(messageBodyUiModel.messageId, MessageBody.DoOnDisplayedEffect.ReplyAll)
+    }
+
+    ConsumableLaunchedEffect(messageBodyUiModel.forwardEffect) {
+        actions.onEffectConsumed(messageBodyUiModel.messageId, MessageBody.DoOnDisplayedEffect.Forward)
+    }
+
     if (hasWebView) {
         MessageBodyWebView(
             modifier = modifier,
@@ -116,7 +129,10 @@ fun MessageBody(
                 onExpandCollapseButtonCLicked = actions.onExpandCollapseButtonClicked,
                 loadEmbeddedImage = actions.loadEmbeddedImage,
                 onPrint = actions.onPrint,
-                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked,
+                onReply = actions.onReply,
+                onReplyAll = actions.onReplyAll,
+                onForward = actions.onForward
             ),
             onMessageBodyLoaded = onMessageBodyLoaded
         )
@@ -227,6 +243,12 @@ fun MessageBodyButtonBanner(
 
 object MessageBody {
 
+    sealed interface DoOnDisplayedEffect {
+        data object Reply : DoOnDisplayedEffect
+        data object ReplyAll : DoOnDisplayedEffect
+        data object Forward : DoOnDisplayedEffect
+    }
+
     data class Actions(
         val onExpandCollapseButtonClicked: () -> Unit,
         val onMessageBodyLinkClicked: (uri: Uri) -> Unit,
@@ -236,6 +258,7 @@ object MessageBody {
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
         val onForward: (MessageId) -> Unit,
+        val onEffectConsumed: (MessageId, DoOnDisplayedEffect) -> Unit,
         val onLoadRemoteContent: (MessageId) -> Unit,
         val onLoadEmbeddedImages: (MessageId) -> Unit,
         val onLoadRemoteAndEmbeddedContent: (MessageId) -> Unit,

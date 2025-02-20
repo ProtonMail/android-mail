@@ -90,7 +90,8 @@ internal class MessageDetailFooterActionsTest {
             onAvatarClicked = { _, _ -> },
             onParticipantClicked = { _, _ -> },
             onOpenComposer = {},
-            onViewEntireMessageClicked = { _, _, _, _ -> }
+            onViewEntireMessageClicked = { _, _, _, _ -> },
+            onEffectConsumed = { _, _ -> }
         )
 
         // When

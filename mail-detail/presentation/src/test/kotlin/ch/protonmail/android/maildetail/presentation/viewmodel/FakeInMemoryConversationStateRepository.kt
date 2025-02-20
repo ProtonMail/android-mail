@@ -49,6 +49,12 @@ class FakeInMemoryConversationStateRepository : InMemoryConversationStateReposit
         conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
     }
 
+    override suspend fun consumeEffect(messageId: MessageId) {
+        val current = conversationCache[messageId] as? MessageState.Expanded ?: return
+        conversationCache[messageId] = current.copy(effect = null)
+        conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))
+    }
+
     override suspend fun expandingMessage(messageId: MessageId) {
         conversationCache[messageId] = MessageState.Expanding
         conversationStateFlow.emit(MessagesState(conversationCache, shouldHideMessagesBasedOnTrashFilter))

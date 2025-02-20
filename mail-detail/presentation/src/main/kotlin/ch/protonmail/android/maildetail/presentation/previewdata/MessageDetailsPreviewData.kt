@@ -78,7 +78,10 @@ object MessageDetailsPreviewData {
                 userAddress = null,
                 viewModePreference = ViewModePreference.LightMode,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             ),
             expandCollapseMode = MessageBodyExpandCollapseMode.Collapsed
         ),

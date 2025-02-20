@@ -50,9 +50,7 @@ class MessageBodyTest : HiltInstrumentedTest() {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions(
-                        {}, {}, {}, {}, { _, _ -> null }, {}, {}, {}, {}, {}, {}, {}, {}, { _, _, _, _ -> }
-                    ),
+                    actions = EmptyActions,
                     expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }
@@ -75,9 +73,7 @@ class MessageBodyTest : HiltInstrumentedTest() {
                 MessageBody(
                     modifier = Modifier,
                     messageBodyUiModel = state,
-                    actions = MessageBody.Actions(
-                        {}, {}, {}, {}, { _, _ -> null }, {}, {}, {}, {}, {}, {}, {}, {}, { _, _, _, _ -> }
-                    ),
+                    actions = EmptyActions,
                     expandCollapseMode = MessageBodyExpandCollapseMode.NotApplicable
                 )
             }
@@ -88,3 +84,21 @@ class MessageBodyTest : HiltInstrumentedTest() {
         composeTestRule.onNodeWithTag(MessageBodyTestTags.WebViewAlternative).assertExists()
     }
 }
+
+private val EmptyActions = MessageBody.Actions(
+    onExpandCollapseButtonClicked = {},
+    onMessageBodyLinkClicked = {},
+    onShowAllAttachments = {},
+    onAttachmentClicked = {},
+    loadEmbeddedImage = { _, _ -> null },
+    onReply = {},
+    onReplyAll = {},
+    onForward = {},
+    onEffectConsumed = { _, _ -> },
+    onLoadRemoteContent = {},
+    onLoadEmbeddedImages = {},
+    onLoadRemoteAndEmbeddedContent = {},
+    onOpenInProtonCalendar = {},
+    onPrint = {},
+    onViewEntireMessageClicked = { _, _, _, _ -> },
+)

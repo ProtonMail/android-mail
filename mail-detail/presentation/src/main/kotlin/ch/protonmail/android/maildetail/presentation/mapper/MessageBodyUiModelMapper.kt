@@ -53,6 +53,7 @@ class MessageBodyUiModelMapper @Inject constructor(
     private val shouldRestrictWebViewHeight: ShouldRestrictWebViewHeight
 ) {
 
+    @Suppress("LongMethod")
     suspend fun toUiModel(
         userId: UserId,
         decryptedMessageBody: DecryptedMessageBody,
@@ -105,10 +106,22 @@ class MessageBodyUiModelMapper @Inject constructor(
             viewModePreference = viewModePreference,
             printEffect = when (effect) {
                 InMemoryConversationStateRepository.PostExpandEffect.PrintRequested -> Effect.of(Unit)
-                null -> Effect.empty()
+                else -> Effect.empty()
             },
             shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null) &&
-                Build.VERSION.SDK_INT == Build.VERSION_CODES.P
+                Build.VERSION.SDK_INT == Build.VERSION_CODES.P,
+            replyEffect = when (effect) {
+                InMemoryConversationStateRepository.PostExpandEffect.ReplyRequested -> Effect.of(Unit)
+                else -> Effect.empty()
+            },
+            replyAllEffect = when (effect) {
+                InMemoryConversationStateRepository.PostExpandEffect.ReplyAllRequested -> Effect.of(Unit)
+                else -> Effect.empty()
+            },
+            forwardEffect = when (effect) {
+                InMemoryConversationStateRepository.PostExpandEffect.ForwardRequested -> Effect.of(Unit)
+                else -> Effect.empty()
+            }
         )
     }
 
@@ -127,7 +140,10 @@ class MessageBodyUiModelMapper @Inject constructor(
         userAddress = null,
         viewModePreference = ViewModePreference.ThemeDefault,
         printEffect = Effect.empty(),
-        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null)
+        shouldRestrictWebViewHeight = shouldRestrictWebViewHeight(null),
+        replyEffect = Effect.empty(),
+        replyAllEffect = Effect.empty(),
+        forwardEffect = Effect.empty()
     )
 
     private fun MimeType.toMimeTypeUiModel() = when (this) {

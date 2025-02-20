@@ -39,6 +39,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMes
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailMessageUiModel.Expanding
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.model.ParticipantUiModel
+import ch.protonmail.android.maildetail.presentation.ui.MessageBody.DoOnDisplayedEffect
 import ch.protonmail.android.maildetail.presentation.ui.footer.MessageDetailFooter
 import ch.protonmail.android.maildetail.presentation.ui.header.MessageDetailHeader
 import ch.protonmail.android.mailmessage.domain.model.AttachmentId
@@ -147,6 +148,7 @@ private fun ConversationDetailExpandedItem(
                 onReply = actions.onReply,
                 onReplyAll = actions.onReplyAll,
                 onForward = actions.onForward,
+                onEffectConsumed = actions.onEffectConsumed,
                 onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                 onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                 onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },
@@ -176,6 +178,7 @@ object ConversationDetailItem {
         val loadEmbeddedImage: (messageId: MessageId?, contentId: String) -> GetEmbeddedImageResult?,
         val onReply: (MessageId) -> Unit,
         val onReplyAll: (MessageId) -> Unit,
+        val onEffectConsumed: (MessageId, DoOnDisplayedEffect) -> Unit,
         val onForward: (MessageId) -> Unit,
         val onScrollRequestCompleted: () -> Unit,
         val onBodyExpandCollapseButtonClicked: (MessageIdUiModel) -> Unit,

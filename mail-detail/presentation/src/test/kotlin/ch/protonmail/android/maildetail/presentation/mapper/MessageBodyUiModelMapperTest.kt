@@ -127,7 +127,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -173,7 +176,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -215,7 +221,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -258,7 +267,10 @@ class MessageBodyUiModelMapperTest {
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             )
 
             every {
@@ -309,7 +321,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -345,7 +360,10 @@ class MessageBodyUiModelMapperTest {
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns true
@@ -383,7 +401,10 @@ class MessageBodyUiModelMapperTest {
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             )
             every { doesMessageBodyHaveRemoteContent(messageBody) } returns true
             coEvery { shouldShowRemoteContent(UserIdTestData.userId) } returns false
@@ -421,7 +442,10 @@ class MessageBodyUiModelMapperTest {
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns true
@@ -459,7 +483,10 @@ class MessageBodyUiModelMapperTest {
                 userAddress = UserAddressSample.PrimaryAddress,
                 viewModePreference = ViewModePreference.ThemeDefault,
                 printEffect = Effect.empty(),
-                shouldRestrictWebViewHeight = false
+                shouldRestrictWebViewHeight = false,
+                replyEffect = Effect.empty(),
+                replyAllEffect = Effect.empty(),
+                forwardEffect = Effect.empty()
             )
             every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true
             coEvery { shouldShowEmbeddedImages(UserIdTestData.userId) } returns false
@@ -491,7 +518,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = null,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -530,7 +560,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.ThemeDefault,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         // When
@@ -565,7 +598,10 @@ class MessageBodyUiModelMapperTest {
             userAddress = UserAddressSample.PrimaryAddress,
             viewModePreference = ViewModePreference.DarkMode,
             printEffect = Effect.empty(),
-            shouldRestrictWebViewHeight = false
+            shouldRestrictWebViewHeight = false,
+            replyEffect = Effect.empty(),
+            replyAllEffect = Effect.empty(),
+            forwardEffect = Effect.empty()
         )
 
         every { doesMessageBodyHaveEmbeddedImages(messageBody) } returns true

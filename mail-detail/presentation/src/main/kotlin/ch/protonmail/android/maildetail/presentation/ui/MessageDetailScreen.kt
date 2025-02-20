@@ -234,7 +234,10 @@ fun MessageDetailScreen(
                         onMoveConversation = {},
                         onMoveToSpamConversation = {},
                         onMarkUnreadConversation = {},
-                        onPrintLastMessage = {}
+                        onPrintLastMessage = {},
+                        onReplyConversation = {},
+                        onForwardConversation = {},
+                        onReplyAllConversation = {}
                     )
                 )
 
@@ -567,6 +570,7 @@ private fun MessageDetailContent(
                             onReply = actions.onReply,
                             onReplyAll = actions.onReplyAll,
                             onForward = actions.onForward,
+                            onEffectConsumed = { _, _ -> },
                             onLoadRemoteContent = actions.onLoadRemoteContent,
                             onLoadEmbeddedImages = actions.onLoadEmbeddedImages,
                             onLoadRemoteAndEmbeddedContent = actions.onLoadRemoteAndEmbeddedContent,
@@ -602,6 +606,7 @@ private fun MessageDetailContent(
                             onReply = { Timber.d("Message: Reply to message $it") },
                             onReplyAll = { Timber.d("Message: Reply All to message $it") },
                             onForward = { Timber.d("Message: Forward message $it") },
+                            onEffectConsumed = { _, _ -> },
                             onLoadRemoteContent = { actions.onLoadRemoteContent(it) },
                             onLoadEmbeddedImages = { actions.onLoadEmbeddedImages(it) },
                             onLoadRemoteAndEmbeddedContent = { actions.onLoadRemoteAndEmbeddedContent(it) },

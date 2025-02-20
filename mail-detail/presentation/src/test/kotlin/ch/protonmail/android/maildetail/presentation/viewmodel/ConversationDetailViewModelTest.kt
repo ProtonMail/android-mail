@@ -1587,6 +1587,99 @@ class ConversationDetailViewModelTest {
     }
 
     @Test
+    fun `verify reply effect is set when replying and last message is collapsed`() = runTest {
+        // given
+        val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast
+
+        val messages = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecast,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+        val messagesExpanded = listOf(
+            ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded,
+            ConversationDetailMessageUiModelSample.EmptyDraft
+        )
+
+        val expectedConvState = initialState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messages.toImmutableList()),
+            conversationState = ConversationDetailMetadataState.Data(conversationUiModel)
+        )
+        val expectedExpandedConvState = expectedConvState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(messagesExpanded.toImmutableList())
+        )
+        every {
+            reducer.newStateFrom(
+                currentState = initialState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailViewAction.DismissBottomSheet>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationBottomBarEvent>()
+            )
+        } returns expectedConvState
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedExpandedConvState,
+                operation = ofType<ConversationDetailEvent.ConversationData>()
+            )
+        } returns expectedExpandedConvState.copy(
+            messagesState = ConversationDetailsMessagesState.Data(
+                listOf(
+                    ConversationDetailMessageUiModelSample.AugWeatherForecastExpanded.copy(
+                        messageBodyUiModel = ConversationDetailMessageUiModelSample
+                            .AugWeatherForecastExpanded
+                            .messageBodyUiModel
+                            .copy(
+                                replyEffect = Effect.of(Unit)
+                            )
+                    ),
+                    ConversationDetailMessageUiModelSample.EmptyDraft
+                ).toImmutableList()
+            )
+        )
+
+        every {
+            reducer.newStateFrom(
+                currentState = expectedConvState,
+                operation = ofType<ConversationDetailEvent.MessagesData>()
+            )
+        } returns expectedExpandedConvState
+
+        // when
+        viewModel.state.test {
+            initialStateEmitted()
+
+            // then
+            assertEquals(expectedConvState, awaitItem())
+
+            viewModel.submit(ConversationDetailViewAction.ReplyToLastMessage(replyToAll = false))
+
+            advanceUntilIdle()
+
+            assertEquals(expectedExpandedConvState, awaitItem())
+            val actualState = awaitItem() // With print effect
+
+            val actualFirstMessage = (actualState.messagesState as ConversationDetailsMessagesState.Data).messages
+                .first() as ConversationDetailMessageUiModel.Expanded
+
+            assertEquals(Effect.of(Unit), actualFirstMessage.messageBodyUiModel.replyEffect)
+
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
     fun `verify reply effect is triggered when replying to last message`() = runTest {
         // given
         val conversationUiModel = ConversationDetailMetadataUiModelSample.WeatherForecast

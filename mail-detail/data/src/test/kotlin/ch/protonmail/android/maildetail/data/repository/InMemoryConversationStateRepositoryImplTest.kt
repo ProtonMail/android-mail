@@ -22,6 +22,7 @@ import java.util.Random
 import java.util.UUID
 import app.cash.turbine.test
 import ch.protonmail.android.mailcommon.domain.sample.UserAddressSample
+import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Collapsed
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Expanded
 import ch.protonmail.android.maildetail.domain.repository.InMemoryConversationStateRepository.MessageState.Expanding
@@ -99,6 +100,67 @@ class InMemoryConversationStateRepositoryImplTest {
         repo.expandMessage(messageId, decryptedBody, null)
 
         repo.conversationState.test {
+            val conversationState = awaitItem()
+
+            // Then
+            assertEquals(conversationState.messagesState[messageId], Expanded(decryptedBody, null))
+            assertEquals(1, conversationState.messagesState.size)
+        }
+    }
+
+    @Test
+    fun `Should emit expanded with effect when putting a expanded message with effect`() = runTest {
+        // Given
+        val repo = buildRepository()
+        val messageId = MessageIdSample.Invoice
+        val decryptedBody = DecryptedMessageBody(
+            messageId = messageId,
+            value = UUID.randomUUID().toString(),
+            mimeType = MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
+
+        // When
+        repo.expandMessage(
+            messageId, decryptedBody,
+            InMemoryConversationStateRepository.PostExpandEffect.ForwardRequested
+        )
+
+        repo.conversationState.test {
+            val conversationState = awaitItem()
+
+            // Then
+            assertEquals(
+                conversationState.messagesState[messageId],
+                Expanded(decryptedBody, InMemoryConversationStateRepository.PostExpandEffect.ForwardRequested)
+            )
+            assertEquals(1, conversationState.messagesState.size)
+        }
+    }
+
+    @Test
+    fun `Should clean any effects when consuming`() = runTest {
+        // Given
+        val repo = buildRepository()
+        val messageId = MessageIdSample.Invoice
+        val decryptedBody = DecryptedMessageBody(
+            messageId = messageId,
+            value = UUID.randomUUID().toString(),
+            mimeType = MimeType.Html,
+            userAddress = UserAddressSample.PrimaryAddress
+        )
+
+        // When
+        repo.expandMessage(
+            messageId, decryptedBody,
+            InMemoryConversationStateRepository.PostExpandEffect.ReplyRequested
+        )
+
+        repo.conversationState.test {
+            skipItems(1)
+
+            repo.consumeEffect(messageId)
+
             val conversationState = awaitItem()
 
             // Then

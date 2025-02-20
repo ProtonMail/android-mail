@@ -46,4 +46,8 @@ class SetMessageViewState @Inject constructor(
     suspend fun switchTrashedMessagesFilter() {
         inMemoryConversationStateRepository.switchTrashedMessagesFilter()
     }
+
+    suspend fun effectConsumed(messageId: MessageId) {
+        inMemoryConversationStateRepository.consumeEffect(messageId)
+    }
 }

@@ -33,6 +33,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOpe
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingMessages
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingReportPhishingDialog
 import ch.protonmail.android.maildetail.presentation.model.ConversationDetailOperation.AffectingTrashedMessagesBanner
+import ch.protonmail.android.maildetail.presentation.ui.MessageBody
 import ch.protonmail.android.maillabel.domain.model.MailLabelId
 import ch.protonmail.android.maillabel.domain.model.SystemLabelId
 import ch.protonmail.android.maillabel.presentation.model.MailLabelText
@@ -183,6 +184,10 @@ sealed interface ConversationDetailViewAction : ConversationDetailOperation {
     data object ReportPhishingLastMessage : ConversationDetailViewAction
     data object MoveToSpam : ConversationDetailViewAction
     data object Archive : ConversationDetailViewAction
+    data class EffectConsumed(
+        val messageId: MessageId,
+        val effect: MessageBody.DoOnDisplayedEffect
+    ) : ConversationDetailViewAction
     object DeleteRequested : ConversationDetailViewAction, AffectingDeleteDialog
     object DeleteDialogDismissed : ConversationDetailViewAction, AffectingDeleteDialog
     object DeleteConfirmed : ConversationDetailViewAction, AffectingDeleteDialog

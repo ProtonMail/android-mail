@@ -92,6 +92,7 @@ import ch.protonmail.android.maildetail.presentation.model.ConversationDetailsMe
 import ch.protonmail.android.maildetail.presentation.model.MessageIdUiModel
 import ch.protonmail.android.maildetail.presentation.reducer.ConversationDetailReducer
 import ch.protonmail.android.maildetail.presentation.ui.ConversationDetailScreen
+import ch.protonmail.android.maildetail.presentation.ui.MessageBody
 import ch.protonmail.android.maildetail.presentation.usecase.GetEmbeddedImageAvoidDuplicatedExecution
 import ch.protonmail.android.maildetail.presentation.usecase.LoadDataForMessageLabelAsBottomSheet
 import ch.protonmail.android.maildetail.presentation.usecase.OnMessageLabelAsConfirmed
@@ -327,7 +328,8 @@ class ConversationDetailViewModel @Inject constructor(
             is ConversationDetailViewAction.MoveToSpam -> moveToSpam()
             is ConversationDetailViewAction.PrintLastMessage -> printLastMessage(action.context)
 
-            ConversationDetailViewAction.SpotlightDisplayed -> updateSpotlightLastSeenTimestamp()
+            is ConversationDetailViewAction.SpotlightDisplayed -> updateSpotlightLastSeenTimestamp()
+            is ConversationDetailViewAction.EffectConsumed -> consumeEffect(action)
         }
     }
 
@@ -821,9 +823,9 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun showConversationMoreActionsBottomSheet() {
-        val lastMessageId = retrieveLastMessageId() ?: return
+        val lastMessage = retrieveLastMessageId() ?: return
         showMoreActionsBottomSheetAndLoadData(
-            ConversationDetailViewAction.RequestMoreActionsBottomSheet(MessageId(lastMessageId.id)),
+            ConversationDetailViewAction.RequestMoreActionsBottomSheet(MessageId(lastMessage.messageId.id)),
             affectingConversation = true
         )
     }
@@ -1056,22 +1058,48 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun replyToLastMessage(action: ConversationDetailViewAction.ReplyToLastMessage) {
-        val lastMessageId = retrieveLastMessageId() ?: return
-        if (action.replyToAll) {
-            emitNewStateFrom(ConversationDetailEvent.ReplyAllToMessageRequested(lastMessageId))
-        } else {
-            emitNewStateFrom(ConversationDetailEvent.ReplyToMessageRequested(lastMessageId))
+        val lastMessage = retrieveLastMessageId() ?: return
+        when (lastMessage) {
+            is ConversationDetailMessageUiModel.Expanded -> {
+                if (action.replyToAll) {
+                    emitNewStateFrom(ConversationDetailEvent.ReplyAllToMessageRequested(lastMessage.messageId))
+                } else {
+                    emitNewStateFrom(ConversationDetailEvent.ReplyToMessageRequested(lastMessage.messageId))
+                }
+            }
+            else -> {
+                emitNewStateFrom(DismissBottomSheet)
+                onExpandMessage(
+                    lastMessage.messageId,
+                    effect = if (action.replyToAll) {
+                        InMemoryConversationStateRepository.PostExpandEffect.ReplyAllRequested
+                    } else {
+                        InMemoryConversationStateRepository.PostExpandEffect.ReplyRequested
+                    }
+                )
+            }
         }
     }
 
     private fun forwardLastMessage() {
-        val lastMessageId = retrieveLastMessageId() ?: return
-        emitNewStateFrom(ConversationDetailEvent.ForwardMessageRequested(lastMessageId))
+        val lastMessage = retrieveLastMessageId() ?: return
+        when (lastMessage) {
+            is ConversationDetailMessageUiModel.Expanded -> {
+                emitNewStateFrom(ConversationDetailEvent.ForwardMessageRequested(lastMessage.messageId))
+            }
+            else -> {
+                emitNewStateFrom(DismissBottomSheet)
+                onExpandMessage(
+                    lastMessage.messageId,
+                    effect = InMemoryConversationStateRepository.PostExpandEffect.ForwardRequested
+                )
+            }
+        }
     }
 
     private fun reportPhishingLastMessage() {
         val lastMessageId = retrieveLastMessageId() ?: return
-        handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.id)))
+        handleReportPhishing(ConversationDetailViewAction.ReportPhishing(MessageId(lastMessageId.messageId.id)))
     }
 
     private fun moveToSpam() {
@@ -1093,11 +1121,11 @@ class ConversationDetailViewModel @Inject constructor(
     }
 
     private fun printLastMessage(context: Context) {
-        val lastMessageId = retrieveLastMessageId() ?: return
-        handlePrint(context, MessageId(lastMessageId.id))
+        val lastMessage = retrieveLastMessageId() ?: return
+        handlePrint(context, MessageId(lastMessage.messageId.id))
     }
 
-    private fun retrieveLastMessageId(): MessageIdUiModel? {
+    private fun retrieveLastMessageId(): ConversationDetailMessageUiModel? {
         val dataState = state.value.messagesState as? ConversationDetailsMessagesState.Data
         if (dataState == null) {
             Timber.e("Messages state is not data to perform this operation")
@@ -1110,7 +1138,7 @@ class ConversationDetailViewModel @Inject constructor(
                 is ConversationDetailMessageUiModel.Expanding -> it.collapsed.isDraft.not()
                 is ConversationDetailMessageUiModel.Hidden -> false
             }
-        }?.messageId
+        }
     }
 
     private fun onDoNotAskLinkConfirmationChecked() {
@@ -1257,6 +1285,17 @@ class ConversationDetailViewModel @Inject constructor(
             }
             emitNewStateFrom(operation)
         }
+    }
+
+    private fun consumeEffect(event: ConversationDetailViewAction.EffectConsumed) = viewModelScope.launch {
+        setMessageViewState.effectConsumed(event.messageId)
+        val messageId = MessageIdUiModel(event.messageId.id)
+        val operation = when (event.effect) {
+            MessageBody.DoOnDisplayedEffect.Forward -> ConversationDetailEvent.ForwardMessageRequested(messageId)
+            MessageBody.DoOnDisplayedEffect.Reply -> ConversationDetailEvent.ReplyToMessageRequested(messageId)
+            MessageBody.DoOnDisplayedEffect.ReplyAll -> ConversationDetailEvent.ReplyAllToMessageRequested(messageId)
+        }
+        emitNewStateFrom(operation)
     }
 
     private fun handleOpenInProtonCalendar(action: ConversationDetailViewAction.OpenInProtonCalendar) {
