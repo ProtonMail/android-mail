@@ -72,7 +72,7 @@
   <string name="mailbox_action_failed_retrieving_colors">カラー設定の取得に失敗しました</string>
   <string name="mailbox_action_move_messages_failed">移動できませんでした</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">フォルダーを取得できませんでした</string>
-  <string name="mailbox_action_move_conversation">メッセージが %s に移動されました</string>
+  <string name="mailbox_action_move_conversation">会話を %s に移動しました</string>
   <string name="mailbox_action_move_message">メッセージが %s に移動されました</string>
   <string name="mailbox_search_placeholder_text">メッセージを検索</string>
   <string name="mailbox_search_no_results_title">該当する項目がありません</string>

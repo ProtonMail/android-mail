@@ -105,7 +105,7 @@
   <string name="message_body_load_embedded_images_button_text">Загружаць убудаваныя відарысы</string>
   <string name="message_body_load_embedded_and_remote_content_button_text">Загружаць аддаленае і ўбудаванае змесціва</string>
   <string name="message_report_phishing_dialog_title_offline">Увага</string>
-  <string name="message_report_phishing_dialog_message_offline">Гэта функцыя даступна толькі калі вы ў сетцы.</string>
+  <string name="message_report_phishing_dialog_message_offline">Гэта функцыя даступна толькі падчас знаходжання ў сетцы.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">Добра</string>
   <string name="message_report_phishing_dialog_title">Пацвердзіць скаргу на фішынг</string>
   <string name="message_report_phishing_dialog_message">Адпраўляючы скаргу пра спробу фішынгу, вы адправіце гэта паведамленне нам, каб мы маглі прааналізаваць яго і палепшыць нашы фільтры. Гэта азначае, што мы зможам цалкам убачыць змесціва гэтага паведамлення.</string>
@@ -118,4 +118,7 @@
   <string name="non_trashed_messages_banner">Гэта размова змяшчае паведамленні, якія не былі выдалены.</string>
   <string name="show">Паказаць</string>
   <string name="hide">Схаваць</string>
+  <string name="tooltip_customize_toolbar_title">Наладзіць панэль інструментаў</string>
+  <string name="tooltip_customize_toolbar_message">Цяпер вы можаце выбраць і змяніць парадак паказу дзеянняў на гэтай панэлі інструментаў.</string>
+  <string name="tooltip_customize_toolbar_cta">Наладзіць</string>
 </resources>

@@ -70,4 +70,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">Добра</string>
   <string name="device_contacts_permission_dialog_action_button">Запытаць дазвол</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Забараніць</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">Паглядзець паведамленне поўнасцю</string>
 </resources>

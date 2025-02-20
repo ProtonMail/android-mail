@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Dit gesprek bevat berichten die zich niet in de prullenbak bevinden.</string>
   <string name="show">Tonen</string>
   <string name="hide">Verbergen</string>
+  <string name="tooltip_customize_toolbar_title">Werkbalk aanpassen</string>
+  <string name="tooltip_customize_toolbar_message">U kan nu acties kiezen en herschikken in deze werkbalk.</string>
+  <string name="tooltip_customize_toolbar_cta">Aanpassen</string>
 </resources>

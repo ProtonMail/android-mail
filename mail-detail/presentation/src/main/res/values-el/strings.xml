@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Αυτή η συνομιλία περιέχει μη διαγραμμένα μηνύματα.</string>
   <string name="show">Εμφάνιση</string>
   <string name="hide">Απόκρυψη</string>
+  <string name="tooltip_customize_toolbar_title">Προσαρμογή γραμμής εργαλείων</string>
+  <string name="tooltip_customize_toolbar_message">Μπορείτε τώρα να επιλέξετε και να αναδιατάξετε τις ενέργειες σε αυτή τη γραμμή εργαλείων.</string>
+  <string name="tooltip_customize_toolbar_cta">Προσαρμογή</string>
 </resources>

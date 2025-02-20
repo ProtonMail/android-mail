@@ -68,4 +68,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Be om tillatelse</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Avslå</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">Vis hele meldingen</string>
 </resources>

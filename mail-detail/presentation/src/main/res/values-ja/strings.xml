@@ -112,4 +112,7 @@
   <string name="non_trashed_messages_banner">この会話には削除されていないメッセージが含まれています。</string>
   <string name="show">表示</string>
   <string name="hide">非表示</string>
+  <string name="tooltip_customize_toolbar_title">ツールバーを編集</string>
+  <string name="tooltip_customize_toolbar_message">このツールバーのアクションを編集したり並べ替えることができるようになりました。</string>
+  <string name="tooltip_customize_toolbar_cta">カスタマイズ</string>
 </resources>

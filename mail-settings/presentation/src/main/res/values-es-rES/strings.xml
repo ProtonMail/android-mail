@@ -171,7 +171,7 @@
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
   <string name="mail_settings_pin_insertion_created_success">El código PIN ha sido creado.</string>
-  <string name="mail_settings_pin_insertion_changed_success">El código PIN ha sido cambiado.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Se ha cambiado el código PIN.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Borrando los datos de la caché local…</string>
   <!-- Error messages -->

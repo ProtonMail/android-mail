@@ -30,7 +30,7 @@
   <string name="action_mark_unread_description">Markér som ulæst</string>
   <string name="action_star_description">Stjernemarkér</string>
   <string name="action_unstar_description">Fjern stjernemarkering</string>
-  <string name="action_label_description">Label as…</string>
+  <string name="action_label_description">Tilføj etiket…</string>
   <string name="action_move_description">Flyt til…</string>
   <string name="action_trash_description">Flyt til papirkurv</string>
   <string name="action_delete_description">Slet</string>
@@ -54,7 +54,7 @@
   <string name="action_mark_unread_content_description">Markér som ulæst</string>
   <string name="action_star_content_description">Stjernemarkér</string>
   <string name="action_unstar_content_description">Fjern stjernemarkering</string>
-  <string name="action_label_content_description">Label as…</string>
+  <string name="action_label_content_description">Tilføj etiket…</string>
   <string name="action_move_content_description">Flyt til…</string>
   <string name="action_trash_content_description">Flyt til papirkurv</string>
   <string name="action_delete_content_description">Slet</string>

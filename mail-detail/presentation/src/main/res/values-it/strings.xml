@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Conversazione contenente messaggi non spostati nel cestino</string>
   <string name="show">Mostra</string>
   <string name="hide">Nascondi</string>
+  <string name="tooltip_customize_toolbar_title">Personalizza la barra degli strumenti</string>
+  <string name="tooltip_customize_toolbar_message">Puoi scegliere e ordinare le azioni in questa barra.</string>
+  <string name="tooltip_customize_toolbar_cta">Personalizza</string>
 </resources>

@@ -70,4 +70,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Запитати дозвіл</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Заборонити</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">View entire message</string>
 </resources>

@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Cette conversation comporte des messages qui ne sont pas dans le dossier Corbeille.</string>
   <string name="show">Afficher</string>
   <string name="hide">Masquer</string>
+  <string name="tooltip_customize_toolbar_title">Personnaliser la barre d\'outils</string>
+  <string name="tooltip_customize_toolbar_message">Vous pouvez désormais choisir et réorganiser les actions de cette barre d\'outils.</string>
+  <string name="tooltip_customize_toolbar_cta">Personnaliser</string>
 </resources>

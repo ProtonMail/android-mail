@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Denna konversation innehåller icke kastade meddelanden.</string>
   <string name="show">Visa</string>
   <string name="hide">Dölj</string>
+  <string name="tooltip_customize_toolbar_title">Anpassa verktygsfält</string>
+  <string name="tooltip_customize_toolbar_message">Du kan nu välja och sortera om åtgärderna i detta verktygsfält.</string>
+  <string name="tooltip_customize_toolbar_cta">Anpassa</string>
 </resources>

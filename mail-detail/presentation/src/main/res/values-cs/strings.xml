@@ -118,4 +118,7 @@
   <string name="non_trashed_messages_banner">Tato konverzace obsahuje zprávy, které nejsou v koši.</string>
   <string name="show">Zobrazit</string>
   <string name="hide">Skrýt</string>
+  <string name="tooltip_customize_toolbar_title">Přizpůsobit panel nástrojů</string>
+  <string name="tooltip_customize_toolbar_message">Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů.</string>
+  <string name="tooltip_customize_toolbar_cta">Přizpůsobit</string>
 </resources>

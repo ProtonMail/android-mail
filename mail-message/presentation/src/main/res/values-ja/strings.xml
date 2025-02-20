@@ -67,4 +67,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">許可を要求</string>
   <string name="device_contacts_permission_dialog_action_button_deny">拒否</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">メッセージ全体を表示</string>
 </resources>

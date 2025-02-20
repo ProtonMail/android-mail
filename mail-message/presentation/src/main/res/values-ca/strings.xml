@@ -68,4 +68,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">D\'acord</string>
   <string name="device_contacts_permission_dialog_action_button">Sol·licitar permís</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Denega</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">Mostra tot el missatge</string>
 </resources>

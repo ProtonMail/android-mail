@@ -67,4 +67,6 @@
   <string name="device_contacts_permission_dialog_dismiss_button">好</string>
   <string name="device_contacts_permission_dialog_action_button">請求授權</string>
   <string name="device_contacts_permission_dialog_action_button_deny">婉拒</string>
+  <!-- View entire message button -->
+  <string name="button_view_entire_message">View entire message</string>
 </resources>

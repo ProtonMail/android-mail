@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">ეს საუბარი შეიცავს წაუშლელ შეტყობინებებს.</string>
   <string name="show">ჩვენება</string>
   <string name="hide">დამალვა</string>
+  <string name="tooltip_customize_toolbar_title">ხელსაწყოების ზოლის მორგება</string>
+  <string name="tooltip_customize_toolbar_message">ახლა შეგიძლიათ, აირჩიოთ და გადაალაგოთ ქმედებები ამ ხელსაწყოების ზოლზე.</string>
+  <string name="tooltip_customize_toolbar_cta">მორგება</string>
 </resources>

@@ -20,7 +20,7 @@
   <string name="detail_error_loading_contacts">Încărcarea contactelor a eșuat.</string>
   <string name="detail_error_loading_conversation">Eșuare încărcare conversație.</string>
   <string name="detail_error_loading_messages">Încărcarea mesajelor a eșuat.</string>
-  <string name="error_mark_unread_failed">Marcarea ca necitit a eșuat. Mai reîncercați.</string>
+  <string name="error_mark_unread_failed">Marcarea ca necitit a eșuat. Reîncercați.</string>
   <plurals name="message_count_label_text">
     <item quantity="one">Un mesaj</item>
     <item quantity="few">%d mesaje</item>
@@ -43,8 +43,8 @@
   <string name="hide_details">Ascundere detalii</string>
   <string name="undisclosed_recipients">Destinatari confidențiali</string>
   <string name="error_mark_as_unread_failed">Operația de marcare ca mesaj citit a eșuat. Reîncercați.</string>
-  <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Mai reîncercați.</string>
-  <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Mai reîncercați.</string>
+  <string name="error_star_operation_failed">Operația de marcare cu stea a eșuat. Reîncercați.</string>
+  <string name="error_unstar_operation_failed">Operația de eliminare stea a eșuat. Reîncercați.</string>
   <string name="error_move_to_trash_failed">Mutarea în gunoi a eșuat. Reîncercați.</string>
   <string name="message_moved_to_trash">Mesajul a fost mutat în «Gunoi».</string>
   <string name="message_moved_to_archive">Mesajul a fost mutat în «Arhivă».</string>
@@ -58,7 +58,7 @@
   <string name="conversation_moved_to_archive">Conversația a fost mutată în «Arhivă».</string>
   <string name="conversation_moved_to_spam">Conversația a fost mutată în «Nedorite».</string>
   <string name="error_move_conversation_failed">Mutarea conversației a eșuat. Reîncercați.</string>
-  <string name="error_loading_message">Ceva nu a funcționat bine. Mai încercați.</string>
+  <string name="error_loading_message">Ceva nu a funcționat bine. Reîncercați.</string>
   <string name="error_offline_loading_message">Nu aveți conexiune. Pentru a afișa conținutul acestui mesaj aveți nevoie de conexiune la internet.</string>
   <string name="error_get_attachment_failed">Eșuare preluare atașament.</string>
   <string name="error_attachment_download_in_progress">Descărcarea actuală trebuie să se încheie înainte de a începe alta.</string>
@@ -116,4 +116,7 @@
   <string name="non_trashed_messages_banner">Această conversație conține mesaje neșterse.</string>
   <string name="show">Afișare</string>
   <string name="hide">Ascundere</string>
+  <string name="tooltip_customize_toolbar_title">Personalizare bară de unelte</string>
+  <string name="tooltip_customize_toolbar_message">Acum puteți alege și rearanja acțiunile din această bară de unelte.</string>
+  <string name="tooltip_customize_toolbar_cta">Personalizare</string>
 </resources>

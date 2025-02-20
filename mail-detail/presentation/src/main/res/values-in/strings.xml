@@ -112,4 +112,7 @@
   <string name="non_trashed_messages_banner">Percakapan ini berisi pesan yang tidak dibuang.</string>
   <string name="show">Tampilkan</string>
   <string name="hide">Sembunyikan</string>
+  <string name="tooltip_customize_toolbar_title">Sesuaikan toolbar</string>
+  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_cta">Sesuaikan</string>
 </resources>

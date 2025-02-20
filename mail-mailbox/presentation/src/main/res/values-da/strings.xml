@@ -44,12 +44,12 @@
   <string name="mailbox_is_empty_spam_description">Din spam-mappe er tom</string>
   <string name="mailbox_is_empty_trash_description">Papirkurven er tom</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Samtale flyttet til Papirkurv</item>
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="one">Samtale flyttet til papirkurv</item>
+    <item quantity="other">%d samtaler flyttet til papirkurv</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Besked flyttet til papirkurv</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="other">%d beskeder flyttet til papirkurv</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Slet samtale</item>

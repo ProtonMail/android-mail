@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Diese Unterhaltung enthält nicht-gelöschte Nachrichten.</string>
   <string name="show">Anzeigen</string>
   <string name="hide">Ausblenden</string>
+  <string name="tooltip_customize_toolbar_title">Symbolleiste anpassen</string>
+  <string name="tooltip_customize_toolbar_message">Du kannst jetzt die Aktionen in dieser Symbolleiste auswählen und neu anordnen.</string>
+  <string name="tooltip_customize_toolbar_cta">Anpassen</string>
 </resources>

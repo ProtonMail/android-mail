@@ -112,4 +112,7 @@
   <string name="non_trashed_messages_banner">이 대화에는 버리지 않은 메시지가 포함되어 있습니다.</string>
   <string name="show">보기</string>
   <string name="hide">숨기기</string>
+  <string name="tooltip_customize_toolbar_title">도구바 사용자화</string>
+  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_cta">사용자 지정</string>
 </resources>

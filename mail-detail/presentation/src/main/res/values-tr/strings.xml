@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Bu yazışmada çöpe atılmamış iletiler var.</string>
   <string name="show">Görüntüle</string>
   <string name="hide">Gizle</string>
+  <string name="tooltip_customize_toolbar_title">Araç çubuğunu özelleştir</string>
+  <string name="tooltip_customize_toolbar_message">Artık bu araç çubuğundaki eylemleri seçebilir ve yeniden düzenleyebilirsiniz.</string>
+  <string name="tooltip_customize_toolbar_cta">Özelleştir</string>
 </resources>

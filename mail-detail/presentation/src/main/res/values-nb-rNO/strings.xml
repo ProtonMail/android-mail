@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Denne samtalen inneholder ikke meldinger i papirkurven.</string>
   <string name="show">Vis</string>
   <string name="hide">Skjul</string>
+  <string name="tooltip_customize_toolbar_title">Tilpass verktøylinjen</string>
+  <string name="tooltip_customize_toolbar_message">Du kan nå velge og omorganisere handlingene på denne verktøylinjen.</string>
+  <string name="tooltip_customize_toolbar_cta">Tilpass</string>
 </resources>

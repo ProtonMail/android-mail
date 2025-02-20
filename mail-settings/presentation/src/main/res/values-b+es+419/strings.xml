@@ -170,8 +170,8 @@
   <string name="mail_settings_pin_insertion_signout_dialog_description">¿Está seguro de que quiere la cerrar sesión?</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">Sí</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">No</string>
-  <string name="mail_settings_pin_insertion_created_success">Código PIN creado con éxito.</string>
-  <string name="mail_settings_pin_insertion_changed_success">Código PIN cambiado con éxito.</string>
+  <string name="mail_settings_pin_insertion_created_success">Se creó el código PIN.</string>
+  <string name="mail_settings_pin_insertion_changed_success">Se cambió el código PIN.</string>
   <!-- Local storage -->
   <string name="mail_settings_clearing_cached_data">Borrando los datos de la caché local…</string>
   <!-- Error messages -->

@@ -48,16 +48,16 @@
   <string name="mailbox_is_empty_spam_description">Mapa z neželeno pošto je prazna</string>
   <string name="mailbox_is_empty_trash_description">Smetnjak je prazen</string>
   <plurals name="mailbox_action_trash_conversation">
-    <item quantity="one">Pogovor je premaknjen v smetnjak</item>
-    <item quantity="two">%d conversations moved to Trash</item>
-    <item quantity="few">%d conversations moved to Trash</item>
-    <item quantity="other">%d conversations moved to Trash</item>
+    <item quantity="one">Pogovor premaknjen v smetnjak</item>
+    <item quantity="two">%d pogovora premaknjena v smetnjak</item>
+    <item quantity="few">%d pogovori premaknjeni v smetnjak</item>
+    <item quantity="other">%d pogovorov premaknjenih v smetnjak</item>
   </plurals>
   <plurals name="mailbox_action_trash_message">
     <item quantity="one">Sporočilo premaknjeno v smetnjak</item>
-    <item quantity="two">%d messages moved to Trash</item>
-    <item quantity="few">%d messages moved to Trash</item>
-    <item quantity="other">%d messages moved to Trash</item>
+    <item quantity="two">%d sporočili premaknjeni v smetnjak</item>
+    <item quantity="few">%d sporočila premaknjena v smetnjak</item>
+    <item quantity="other">%d sporočil premaknjenih v smetnjak</item>
   </plurals>
   <plurals name="mailbox_action_delete_conversation_dialog_title">
     <item quantity="one">Izbriši pogovor</item>
@@ -101,7 +101,7 @@
   <string name="mailbox_action_move_messages_failed">Operacija premikanja ni uspela</string>
   <string name="mailbox_action_move_messages_failed_retrieving_folders">Map ni bilo mogoče pridobiti</string>
   <string name="mailbox_action_move_conversation">Pogovor je premaknjen v %s</string>
-  <string name="mailbox_action_move_message">Message moved to %s</string>
+  <string name="mailbox_action_move_message">Sporočilo premaknjeno v mapo %s</string>
   <string name="mailbox_search_placeholder_text">Išči sporočila</string>
   <string name="mailbox_search_no_results_title">Ni najdenih rezultatov</string>
   <string name="mailbox_search_no_results_explanation">Iskanje datuma, imena, e-poštnega naslova ali zadeve sporočila</string>

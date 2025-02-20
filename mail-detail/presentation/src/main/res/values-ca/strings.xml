@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Aquesta conversa conté missatges que no es troben a la paperera.</string>
   <string name="show">Mostra</string>
   <string name="hide">Amaga</string>
+  <string name="tooltip_customize_toolbar_title">Personalitza la barra d\'eines</string>
+  <string name="tooltip_customize_toolbar_message">Ara podeu triar i organitzar les accions d\'aquesta barra d\'eines.</string>
+  <string name="tooltip_customize_toolbar_cta">Personalitza</string>
 </resources>

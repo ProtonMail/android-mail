@@ -114,4 +114,7 @@
   <string name="non_trashed_messages_banner">Esta conversación contiene mensajes que no son borrados.</string>
   <string name="show">Mostrar</string>
   <string name="hide">Ocultar</string>
+  <string name="tooltip_customize_toolbar_title">Personalizar la barra de herramientas</string>
+  <string name="tooltip_customize_toolbar_message">Ahora puedes elegir y reordenar las acciones en esta barra de herramientas.</string>
+  <string name="tooltip_customize_toolbar_cta">Personalizar</string>
 </resources>
