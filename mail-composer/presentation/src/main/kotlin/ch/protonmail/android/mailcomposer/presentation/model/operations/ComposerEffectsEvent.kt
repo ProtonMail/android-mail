@@ -21,6 +21,7 @@ package ch.protonmail.android.mailcomposer.presentation.model.operations
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAttachmentError
 import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationResult
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.ComposerStateModifications
+import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.BottomSheetEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.CompletionEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ConfirmationsEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.ContentEffectsStateModifications
@@ -132,5 +133,12 @@ internal sealed interface EffectsEvent : ComposerStateEvent {
         data object OnCancelSendNoSubject : SendEvent
         data class OnSendExpiringToExternalRecipients(val externalRecipients: List<Recipient>) : SendEvent
         data class OnSendingError(val message: String) : SendEvent
+    }
+
+    data object SetExpirationReady : EffectsEvent {
+
+        override fun toStateModifications(): ComposerStateModifications = ComposerStateModifications(
+            effectsModification = BottomSheetEffectsStateModification.ShowBottomSheet
+        )
     }
 }

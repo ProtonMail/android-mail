@@ -53,10 +53,6 @@ internal sealed interface CompositeEvent : ComposerStateEvent {
             effectsModification = ConfirmationsEffectsStateModification.SendNoSubjectConfirmationRequested
         )
 
-        is SetExpirationReady -> ComposerStateModifications(
-            effectsModification = BottomSheetEffectsStateModification.ShowBottomSheet
-        )
-
         is SetExpirationDismissed -> ComposerStateModifications(
             effectsModification = BottomSheetEffectsStateModification.HideBottomSheet,
             accessoriesModification = AccessoriesStateModification.MessageExpirationUpdated(expiration)
@@ -79,7 +75,6 @@ internal sealed interface CompositeEvent : ComposerStateEvent {
     data class SenderAddressesListReady(val sendersList: List<SenderUiModel>) : CompositeEvent
     data class UserChangedSender(val newSender: SenderEmail) : CompositeEvent
 
-    data object SetExpirationReady : CompositeEvent
     data class SetExpirationDismissed(val expiration: Duration) : CompositeEvent
 
     data object OnSendWithEmptySubject : CompositeEvent

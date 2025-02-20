@@ -488,7 +488,7 @@ class ComposerViewModel2 @AssistedInject constructor(
                 is ComposerAction2.RespondInline -> onRespondInline()
 
                 is ComposerAction2.OpenExpirationSettings ->
-                    emitNewStateFromOperation(CompositeEvent.SetExpirationReady)
+                    emitNewStateFromOperation(EffectsEvent.SetExpirationReady)
 
                 is ComposerAction2.SetMessageExpiration -> onExpirationSet(action.duration)
 
