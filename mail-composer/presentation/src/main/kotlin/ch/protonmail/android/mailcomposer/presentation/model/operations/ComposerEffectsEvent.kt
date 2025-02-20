@@ -19,7 +19,6 @@
 package ch.protonmail.android.mailcomposer.presentation.model.operations
 
 import ch.protonmail.android.mailcomposer.domain.usecase.StoreDraftWithAttachmentError
-import ch.protonmail.android.mailcomposer.domain.usecase.ValidateSenderAddress.ValidationResult
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.ComposerStateModifications
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.BottomSheetEffectsStateModification
 import ch.protonmail.android.mailcomposer.presentation.reducer.modifications.effects.CompletionEffectsStateModification
@@ -38,21 +37,9 @@ internal sealed interface EffectsEvent : ComposerStateEvent {
 
         override fun toStateModifications(): ComposerStateModifications = ComposerStateModifications(
             effectsModification = when (this) {
-                is OnDraftReady -> ContentEffectsStateModifications.DraftContentReady(
-                    validationResult,
-                    isDataRefresh,
-                    forceBodyFocus
-                )
-
                 is OnDraftLoadingFailed -> LoadingError.DraftContent
             }
         )
-
-        data class OnDraftReady(
-            val validationResult: ValidationResult,
-            val isDataRefresh: Boolean,
-            val forceBodyFocus: Boolean
-        ) : DraftEvent
 
         data object OnDraftLoadingFailed : DraftEvent
     }
