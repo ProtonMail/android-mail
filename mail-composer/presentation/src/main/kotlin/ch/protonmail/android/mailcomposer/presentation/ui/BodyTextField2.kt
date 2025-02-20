@@ -42,6 +42,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcommon.presentation.ConsumableLaunchedEffect
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcomposer.presentation.R
@@ -80,7 +81,10 @@ internal fun BodyTextField2(
                     shouldFocus = false
                 }
             },
-        keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            keyboardType = KeyboardType.Text
+        ),
         textStyle = ProtonTheme.typography.defaultNorm,
         cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
         lineLimits = TextFieldLineLimits.MultiLine(minHeightInLines = bodyMinLines),

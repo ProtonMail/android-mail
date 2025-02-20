@@ -25,31 +25,30 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import ch.protonmail.android.mailcomposer.presentation.R
 import me.proton.core.compose.theme.ProtonTheme
 import me.proton.core.compose.theme.defaultNorm
 
 @Composable
 internal fun SubjectTextField2(textFieldState: TextFieldState, modifier: Modifier = Modifier) {
-
-    val keyboardOptions = remember {
-        KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences, imeAction = ImeAction.Next)
-    }
-
     BasicTextField(
         modifier = modifier,
         state = textFieldState,
         textStyle = ProtonTheme.typography.defaultNorm,
         cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
         lineLimits = TextFieldLineLimits.SingleLine,
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            capitalization = KeyboardCapitalization.Sentences,
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Next
+        ),
         decorator = @Composable { innerTextField ->
             if (textFieldState.text.isEmpty()) {
                 PlaceholderText()
