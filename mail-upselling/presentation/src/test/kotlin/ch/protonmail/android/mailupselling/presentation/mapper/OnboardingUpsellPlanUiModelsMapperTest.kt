@@ -5,11 +5,11 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValuePlusDrawables
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData.PremiumValueUnlimitedDrawables
@@ -28,9 +28,9 @@ class OnboardingUpsellPlanUiModelsMapperTest {
             listOf(PlanEntitlementListUiModel.Overridden(TextUiModel.Text("entitlement"), 0))
         )
     }
-    private val onboardingDynamicPlanInstanceUiMapper = mockk<OnboardingDynamicPlanInstanceUiMapper> {
+    private val onboardingDynamicPlanInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper> {
         every {
-            toUiModel(any(), any(), any())
+            createPlanUiModel(any(), any(), any(), any())
         } returns OnboardingDynamicPlanInstanceUiModel
     }
 

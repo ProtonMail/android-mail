@@ -21,6 +21,7 @@ package ch.protonmail.android.mailupselling.presentation.model.onboarding
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlans
 
@@ -32,7 +33,7 @@ interface OnboardingUpsellState {
         val planSwitcherUiModel: OnboardingUpsellPlanSwitcherUiModel,
         val planUiModels: OnboardingUpsellPlanUiModels,
         val buttonsUiModel: OnboardingUpsellButtonsUiModel,
-        val selectedPayButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?
+        val selectedPayButtonPlanUiModel: DynamicPlanInstanceUiModel?
     ) : OnboardingUpsellState
 
     data class Error(val error: Effect<TextUiModel>) : OnboardingUpsellState
@@ -52,7 +53,7 @@ interface OnboardingUpsellState {
                 data object NoUserId : LoadingError
             }
 
-            data class PlanSelected(val planUiModel: OnboardingDynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
+            data class PlanSelected(val planUiModel: DynamicPlanInstanceUiModel?) : OnboardingUpsellEvent
 
             sealed interface UnsupportedFlow : OnboardingUpsellEvent {
                 data object NoSubscriptions : UnsupportedFlow

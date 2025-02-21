@@ -5,11 +5,12 @@ import ch.protonmail.android.mailcommon.domain.sample.UserSample
 import ch.protonmail.android.mailcommon.presentation.Effect
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingDynamicPlanInstanceUiMapper
+import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellButtonsUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanSwitcherUiModelMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.OnboardingUpsellPlanUiModelsMapper
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState.OnboardingUpsellOperation.OnboardingUpsellEvent
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.OnboardingUpsellPreviewData
@@ -18,7 +19,6 @@ import ch.protonmail.android.testdata.upselling.UpsellingTestData.PlusPlan
 import ch.protonmail.android.testdata.upselling.UpsellingTestData.UnlimitedPlan
 import io.mockk.every
 import io.mockk.mockk
-import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -43,7 +43,7 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
     private val onboardingUpsellButtonsUiModelMapper = mockk<OnboardingUpsellButtonsUiModelMapper> {
         every { toUiModel(UpsellingTestData.DynamicPlans) } returns OnboardingUpsellPreviewData.ButtonsUiModel
     }
-    private val onboardingDynamicPlanInstanceUiMapper = mockk<OnboardingDynamicPlanInstanceUiMapper> { }
+    private val onboardingDynamicPlanInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper> { }
 
     private val onboardingUpsellReducer: OnboardingUpsellReducer = OnboardingUpsellReducer(
         onboardingUpsellPlanSwitchUiModelMapper,
@@ -53,14 +53,16 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
 
     private fun expectDynamicPlanInstanceUiMapper(
         dynamicPlanInstance: DynamicPlanInstance,
-        dynamicPlan: DynamicPlan,
-        uiModelToReturn: OnboardingDynamicPlanInstanceUiModel
+        dynamicPlan: DynamicPlanCycle,
+        uiModelToReturn: DynamicPlanInstanceUiModel
     ) {
         every {
-            onboardingDynamicPlanInstanceUiMapper.toUiModel(
+            onboardingDynamicPlanInstanceUiMapper.createPlanUiModel(
+                any(),
                 any(),
                 dynamicPlanInstance,
-                dynamicPlan
+                dynamicPlan,
+                any()
             )
         } returns uiModelToReturn
     }
@@ -69,22 +71,22 @@ internal class OnboardingUpsellReducerTest(private val testInput: TestInput) {
     fun mockDynamicPlanInstances() {
         expectDynamicPlanInstanceUiMapper(
             UnlimitedPlan.instances[1]!!,
-            UnlimitedPlan,
+            DynamicPlanCycle.Monthly,
             OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             UnlimitedPlan.instances[12]!!,
-            UnlimitedPlan,
+            DynamicPlanCycle.Yearly,
             OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             PlusPlan.instances[1]!!,
-            PlusPlan,
+            DynamicPlanCycle.Monthly,
             OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
         expectDynamicPlanInstanceUiMapper(
             PlusPlan.instances[12]!!,
-            PlusPlan,
+            DynamicPlanCycle.Yearly,
             OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel
         )
     }

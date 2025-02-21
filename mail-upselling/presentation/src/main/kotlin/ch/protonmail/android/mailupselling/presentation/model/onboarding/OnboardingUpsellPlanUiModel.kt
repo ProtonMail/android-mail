@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailupselling.presentation.model.onboarding
 
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 
 data class OnboardingUpsellPlanUiModels(
@@ -29,6 +30,6 @@ data class OnboardingUpsellPlanUiModel(
     val title: String,
     val priceUiModel: OnboardingUpsellPriceUiModel,
     val entitlements: PlanEntitlementsUiModel.SimpleList,
-    val payButtonPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
+    val payButtonPlanUiModel: DynamicPlanInstanceUiModel?,
     val premiumValueDrawables: List<Int>
 )

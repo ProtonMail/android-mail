@@ -24,20 +24,24 @@ import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.extension.normalizedPrice
 import ch.protonmail.android.mailupselling.presentation.extension.toDecimalString
+import ch.protonmail.android.mailupselling.presentation.extension.totalDefaultPriceNullable
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper.Companion.OnboardingFreeOverriddenEntitlements
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.onboarding.PROTON_FREE
 import me.proton.core.domain.entity.UserId
+import me.proton.core.plan.domain.entity.DynamicPlanInstance
+import me.proton.core.plan.domain.entity.DynamicPlanPrice
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 
 class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
     private val dynamicPlanEntitlementsUiMapper: DynamicPlanEntitlementsUiMapper,
-    private val onboardingDynamicPlanInstanceUiMapper: OnboardingDynamicPlanInstanceUiMapper
+    private val dynamicPlanInstanceUiMapper: DynamicPlanInstanceUiMapper
 ) {
 
     fun toUiModel(dynamicPlans: DynamicPlans, userId: UserId): OnboardingUpsellPlanUiModels {
@@ -62,9 +66,12 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
         return dynamicPlans.plans.map { plan ->
             val monthlyPlanInstance = requireNotNull(plan.instances[1])
             val monthlyPlanPrice = monthlyPlanInstance.price.values.first()
+
             val priceUiModel = OnboardingUpsellPriceUiModel.Paid(
                 currency = monthlyPlanPrice.currency,
-                originalAmount = null,
+                originalAmount = monthlyPlanPrice.totalDefaultPriceNullable()?.let {
+                    TextUiModel.Text(it.toDecimalString())
+                },
                 amount = monthlyPlanPrice.normalizedPrice(monthlyPlanInstance.cycle),
                 period = TextUiModel.TextRes(R.string.upselling_onboarding_month)
             )
@@ -73,10 +80,11 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                 title = plan.title,
                 priceUiModel = priceUiModel,
                 entitlements = dynamicPlanEntitlementsUiMapper.toListUiModel(plan, UpsellingEntryPoint.PostOnboarding),
-                payButtonPlanUiModel = onboardingDynamicPlanInstanceUiMapper.toUiModel(
-                    userId,
-                    monthlyPlanInstance,
-                    plan = plan
+                payButtonPlanUiModel = dynamicPlanInstanceUiMapper.createPlanUiModel(
+                    userId = userId,
+                    planInstance = monthlyPlanInstance,
+                    cycle = DynamicPlanCycle.Monthly,
+                    dynamicPlan = plan
                 ),
                 premiumValueDrawables = planNameToPremiumValueDrawables(plan.name)
             )
@@ -87,13 +95,14 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
         return dynamicPlans.plans.map { plan ->
             val monthlyPlanInstance = requireNotNull(plan.instances[1])
             val annualPlanInstance = requireNotNull(plan.instances[12])
-            val annualOriginalPrice = monthlyPlanInstance.price.values.first().totalPrice() * 12
-            val annualDiscountedPrice = annualPlanInstance.price.values.first()
+
+            val annualPrice = annualPlanInstance.price.values.first()
+            val annualOriginalPrice = resolveAnnualPlanOriginalPrice(annualPrice, monthlyPlanInstance)
 
             val priceUiModel = OnboardingUpsellPriceUiModel.Paid(
-                currency = annualDiscountedPrice.currency,
+                currency = annualPrice.currency,
                 originalAmount = TextUiModel.Text(annualOriginalPrice.toDecimalString()),
-                amount = TextUiModel.Text(annualDiscountedPrice.totalPrice().toDecimalString()),
+                amount = TextUiModel.Text(annualPrice.totalPrice().toDecimalString()),
                 period = TextUiModel.TextRes(R.string.upselling_onboarding_year)
             )
 
@@ -101,14 +110,29 @@ class OnboardingUpsellPlanUiModelsMapper @Inject constructor(
                 title = plan.title,
                 priceUiModel = priceUiModel,
                 entitlements = dynamicPlanEntitlementsUiMapper.toListUiModel(plan, UpsellingEntryPoint.PostOnboarding),
-                payButtonPlanUiModel = onboardingDynamicPlanInstanceUiMapper.toUiModel(
-                    userId,
-                    annualPlanInstance,
-                    plan = plan
+                payButtonPlanUiModel = dynamicPlanInstanceUiMapper.createPlanUiModel(
+                    userId = userId,
+                    planInstance = annualPlanInstance,
+                    cycle = DynamicPlanCycle.Yearly,
+                    dynamicPlan = plan
                 ),
                 premiumValueDrawables = planNameToPremiumValueDrawables(plan.name)
             )
         }
+    }
+
+    private fun resolveAnnualPlanOriginalPrice(
+        annualPrice: DynamicPlanPrice,
+        monthlyInstance: DynamicPlanInstance
+    ): Float {
+        val annualRenewalPrice = annualPrice.totalDefaultPriceNullable()
+        if (annualRenewalPrice != null) return annualRenewalPrice
+
+        val monthlyPrice = monthlyInstance.price.values.first()
+        val standardMonthlyPrice = monthlyPrice.totalDefaultPriceNullable() ?: monthlyPrice.totalPrice()
+
+        @Suppress("MagicNumber")
+        return standardMonthlyPrice * 12
     }
 
     private fun planNameToPremiumValueDrawables(planName: String?): List<Int> {
