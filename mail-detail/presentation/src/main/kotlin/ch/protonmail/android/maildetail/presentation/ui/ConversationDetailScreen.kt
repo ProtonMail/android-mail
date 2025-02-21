@@ -704,6 +704,11 @@ private fun MessagesContent(
     // Sometimes we do not get all conversation items in the first call. The complete list of items can be provided
     // after a delay. In that case we need to repeat the initial automatic scroll to the most recent non-draft item
     var lastScrolledIndex by remember { mutableStateOf(-1) }
+    LaunchedEffect(scrollToMessageId) {
+        if (scrollToMessageId == null) {
+            lastScrolledIndex = -1
+        }
+    }
 
     // Insert some offset to scrolling to make sure the message above will also be visible partially
     val scrollOffsetPx = scrollOffsetDp.dpToPx()

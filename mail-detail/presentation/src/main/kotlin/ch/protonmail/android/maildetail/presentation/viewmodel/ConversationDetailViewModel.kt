@@ -520,7 +520,10 @@ class ConversationDetailViewModel @Inject constructor(
         val requestScrollTo = if (conversationViewState.size == 1 && expandedMessageIds.size == 1) {
             messageIdUiModelMapper.toUiModel(expandedMessageIds.first())
         } else {
-            null
+            val messageWithEffect = conversationViewState.entries.firstOrNull {
+                (it.value as? InMemoryConversationStateRepository.MessageState.Expanded)?.effect != null
+            }
+            messageWithEffect?.let { messageIdUiModelMapper.toUiModel(it.key) }
         }
         return requestScrollTo
     }
