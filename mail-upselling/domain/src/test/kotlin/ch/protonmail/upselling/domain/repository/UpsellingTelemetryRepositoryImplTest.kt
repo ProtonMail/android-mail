@@ -62,7 +62,6 @@ internal class UpsellingTelemetryRepositoryImplTest {
     private val getSubscriptionName = mockk<GetSubscriptionName>()
     private val telemetryManager = mockk<TelemetryManager>()
     private val telemetryEnabled = mockk<Provider<Boolean>>()
-    private val horizontalLayoutEnabled = mockk<Provider<Boolean>> { every { this@mockk.get() } returns false }
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
@@ -75,7 +74,6 @@ internal class UpsellingTelemetryRepositoryImplTest {
             getSubscriptionName,
             telemetryManager,
             telemetryEnabled.get(),
-            horizontalLayoutEnabled.get(),
             scopeProvider
         )
 
@@ -112,7 +110,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
 
         val entryPoint = UpsellingEntryPoint.Feature.Mailbox
         val expectedDimensions = BaseDimensions.apply {
-            addUpsellModalVersion("B.2")
+            addUpsellModalVersion()
             addUpsellEntryPoint(entryPoint.getDimensionValue())
         }
 
@@ -137,7 +135,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
+        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeAttempt(payload)
         val expectedEvent = UpsellingTelemetryEvent.UpgradeAttempt(UpgradeDimensions).toTelemetryEvent()
 
@@ -159,7 +157,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
+        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeCancelled(payload)
         val expectedEvent = UpsellingTelemetryEvent.UpgradeCancelled(UpgradeDimensions).toTelemetryEvent()
 
@@ -181,7 +179,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
+        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.UpgradeErrored(payload)
         val expectedEvent = UpsellingTelemetryEvent.UpgradeErrored(UpgradeDimensions).toTelemetryEvent()
 
@@ -203,7 +201,7 @@ internal class UpsellingTelemetryRepositoryImplTest {
         expectValidUserData()
         expectTelemetryEnabled()
 
-        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1)
+        val payload = UpsellingTelemetryTargetPlanPayload("mail2022", 1, isPromotional = false)
         val eventType = UpsellingTelemetryEventType.Upgrade.PurchaseCompleted(payload)
         val expectedEvent = UpsellingTelemetryEvent.PurchaseCompleted(UpgradeDimensions).toTelemetryEvent()
 

@@ -20,5 +20,6 @@ package ch.protonmail.android.mailupselling.domain.model.telemetry
 
 data class UpsellingTelemetryTargetPlanPayload(
     val planName: String,
-    val planCycle: Int
+    val planCycle: Int,
+    val isPromotional: Boolean = false
 )

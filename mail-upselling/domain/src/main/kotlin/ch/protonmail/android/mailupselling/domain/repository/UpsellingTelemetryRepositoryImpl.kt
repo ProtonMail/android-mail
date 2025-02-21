@@ -21,7 +21,6 @@ package ch.protonmail.android.mailupselling.domain.repository
 import arrow.core.getOrElse
 import arrow.core.raise.either
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
-import ch.protonmail.android.mailupselling.domain.annotations.PaymentButtonsHorizontalLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.domain.model.getDimensionValue
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEvent
@@ -49,7 +48,6 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
     private val getSubscriptionName: GetSubscriptionName,
     private val telemetryManager: TelemetryManager,
     @OneClickUpsellingTelemetryEnabled private val isOneClickTelemetryEnabled: Boolean,
-    @PaymentButtonsHorizontalLayoutEnabled private val isHorizontalLayoutEnabled: Boolean,
     private val scopeProvider: CoroutineScopeProvider
 ) : UpsellingTelemetryRepository {
 
@@ -105,21 +103,11 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         val accountAgeInDays = getAccountAgeInDays(user).toUpsellingTelemetryDimensionValue()
         val subscriptionName = getSubscriptionName(user.userId).bind()
 
-        val upsellModalVersion = when {
-            // Comparison table + horizontal layout
-            upsellingEntryPoint is UpsellingEntryPoint.Feature.Mailbox && isHorizontalLayoutEnabled -> "B.3"
-
-            // Comparison + side by side layout
-            upsellingEntryPoint is UpsellingEntryPoint.Feature.Mailbox -> "B.2"
-
-            else -> "A.1" // Default
-        }
-
         UpsellingTelemetryEventDimensions().apply {
             addPlanBeforeUpgrade(subscriptionName.value)
             addDaysSinceAccountCreation(accountAgeInDays)
-            addUpsellModalVersion(upsellModalVersion)
             addUpsellEntryPoint(upsellingEntryPoint.getDimensionValue())
+            addUpsellModalVersion()
         }
     }
 
@@ -131,6 +119,7 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
         buildTelemetryDimensions(user, upsellingEntryPoint).bind().apply {
             addSelectedPlan(payload.planName)
             addSelectedPlanCycle(payload.planCycle)
+            addUpsellModalVersion()
         }
     }
 

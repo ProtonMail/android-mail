@@ -59,7 +59,6 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
     private val getSubscriptionName = mockk<GetSubscriptionName>()
     private val telemetryManager = mockk<TelemetryManager>()
     private val telemetryEnabled = mockk<Provider<Boolean>> { every { this@mockk.get() } returns true }
-    private val horizontalLayoutEnabled = mockk<Provider<Boolean>> { every { this@mockk.get() } returns false }
     private val dispatcherProvider = TestDispatcherProvider(UnconfinedTestDispatcher())
     private val scopeProvider = TestCoroutineScopeProvider(dispatcherProvider)
 
@@ -70,7 +69,6 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
             getSubscriptionName,
             telemetryManager,
             telemetryEnabled.get(),
-            horizontalLayoutEnabled.get(),
             scopeProvider
         )
 
@@ -90,13 +88,12 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
     fun test() = runTest {
         // Given
         expectValidUserData()
-        expectHorizontalLayoutState(testInput.isHorizontalLayoutEnabled)
 
         val eventType = UpsellingTelemetryEventType.Base.MailboxButtonTap
         val expectedEvent = UpsellingTelemetryEvent.UpsellButtonTapped(
             BaseDimensions.apply {
                 addUpsellEntryPoint(testInput.entryPoint.getDimensionValue())
-                addUpsellModalVersion(testInput.expectedModalVersion)
+                addUpsellModalVersion()
             }
         ).toTelemetryEvent()
 
@@ -118,23 +115,12 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
         coEvery { getSubscriptionName(user.userId) } returns SubscriptionName("free").right()
     }
 
-    private fun expectHorizontalLayoutState(enabled: Boolean) {
-        every { horizontalLayoutEnabled.get() } returns enabled
-    }
-
     companion object {
 
         private fun baseEntryPointInput(entryPoint: UpsellingEntryPoint) = arrayOf(
             TestInput(
-                testName = "should return modal A.1 on ${entryPoint.getDimensionValue()} with no horizontal layout",
+                testName = "should return modal A.1 on ${entryPoint.getDimensionValue()}",
                 entryPoint = entryPoint,
-                isHorizontalLayoutEnabled = false,
-                expectedModalVersion = "A.1"
-            ),
-            TestInput(
-                testName = "should return modal A.1 on ${entryPoint.getDimensionValue()} with horizontal layout",
-                entryPoint = entryPoint,
-                isHorizontalLayoutEnabled = true,
                 expectedModalVersion = "A.1"
             )
         )
@@ -142,18 +128,7 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = arrayOf(
-            TestInput(
-                testName = "should return modal version B.3 on Mailbox + horizontal layout",
-                entryPoint = UpsellingEntryPoint.Feature.Mailbox,
-                isHorizontalLayoutEnabled = true,
-                expectedModalVersion = "B.3"
-            ),
-            TestInput(
-                testName = "should return modal version B.2 on Mailbox with no horizontal layout",
-                entryPoint = UpsellingEntryPoint.Feature.Mailbox,
-                isHorizontalLayoutEnabled = false,
-                expectedModalVersion = "B.2"
-            ),
+            *baseEntryPointInput(UpsellingEntryPoint.Feature.Mailbox),
             *baseEntryPointInput(UpsellingEntryPoint.Feature.AutoDelete),
             *baseEntryPointInput(UpsellingEntryPoint.Feature.ContactGroups),
             *baseEntryPointInput(UpsellingEntryPoint.Feature.Folders),
@@ -166,7 +141,6 @@ internal class UpsellingTelemetryRepositoryImplDimensionsTest(testName: String, 
     data class TestInput(
         val testName: String,
         val entryPoint: UpsellingEntryPoint,
-        val isHorizontalLayoutEnabled: Boolean,
         val expectedModalVersion: String
     )
 }
