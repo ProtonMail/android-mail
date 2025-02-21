@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui.screen.plans
+package ch.protonmail.android.mailupselling.presentation.ui.screen.footer.plans
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

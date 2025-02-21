@@ -20,6 +20,9 @@ package ch.protonmail.android.mailupselling.presentation.ui.screen
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
@@ -28,8 +31,6 @@ import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.Dynam
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UpsellingScreenContentState
-import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.plan.domain.entity.DynamicEntitlement
@@ -55,7 +56,7 @@ internal object UpsellingContentPreviewData {
     val Base = UpsellingScreenContentState.Data(
         DynamicPlansUiModel(
             icon = DynamicPlanIconUiModel(R.drawable.illustration_upselling_mailbox),
-            title = DynamicPlanTitleUiModel(TextUiModel.Text("Upgrade to Mail Plus")),
+            title = DynamicPlanTitleUiModel(TextUiModel.Text("Mail Plus")),
             description = DynamicPlanDescriptionUiModel(TextUiModel.Text("Description")),
             entitlements = PlanEntitlementsUiModel.SimpleList(
                 listOf(
@@ -73,28 +74,26 @@ internal object UpsellingContentPreviewData {
                     )
                 )
             ),
-            list = DynamicPlanInstanceListUiModel.Data(
-                DynamicPlanInstanceUiModel(
-                    name = "Upgrade to Mail Plus",
+            list = DynamicPlanInstanceListUiModel.Data.Standard(
+                DynamicPlanInstanceUiModel.Standard(
+                    name = "Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
-                    discount = null,
-                    price = TextUiModel.Text("9.99"),
-                    fullPrice = TextUiModel.Text("19.99"),
-                    cycle = 1,
-                    highlighted = false,
+                    pricePerCycle = TextUiModel("0.99"),
+                    totalPrice = TextUiModel("4.99"),
+                    discountRate = null,
+                    cycle = DynamicPlanCycle.Monthly,
                     viewId = 123,
                     dynamicPlan = dynPlan
                 ),
-                DynamicPlanInstanceUiModel(
-                    name = "Upgrade to Mail Plus",
+                DynamicPlanInstanceUiModel.Standard(
+                    name = "Mail Plus",
                     userId = UserIdUiModel(UserId("12")),
                     currency = "EUR",
-                    discount = 20,
-                    price = TextUiModel.Text("1.49"),
-                    fullPrice = TextUiModel.Text("11.49"),
-                    cycle = 12,
-                    highlighted = true,
+                    pricePerCycle = TextUiModel("4.99"),
+                    totalPrice = TextUiModel("49.99"),
+                    discountRate = null,
+                    cycle = DynamicPlanCycle.Yearly,
                     viewId = 123,
                     dynamicPlan = dynPlan
                 )

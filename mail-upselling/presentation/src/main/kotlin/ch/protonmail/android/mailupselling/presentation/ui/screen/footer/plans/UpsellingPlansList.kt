@@ -16,20 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui.screen.plans
+package ch.protonmail.android.mailupselling.presentation.ui.screen.footer.plans
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
-import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingAutoRenewPolicyText
+import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingAutoRenewGenericPolicyText
 import me.proton.core.compose.theme.ProtonDimens
 import me.proton.core.compose.theme.ProtonTheme
 
@@ -37,11 +39,12 @@ import me.proton.core.compose.theme.ProtonTheme
 @Composable
 internal fun UpsellingPlansList(
     modifier: Modifier = Modifier,
-    dynamicPlansModel: DynamicPlanInstanceListUiModel.Data,
+    shorterCycle: DynamicPlanInstanceUiModel.Standard,
+    longerCycle: DynamicPlanInstanceUiModel.Standard,
     actions: UpsellingScreen.Actions
 ) {
     Column {
-        UpsellingAutoRenewPolicyText(modifier = Modifier.padding(ProtonDimens.DefaultSpacing))
+        UpsellingAutoRenewGenericPolicyText(modifier = Modifier.padding(ProtonDimens.DefaultSpacing))
 
         FlowRow(
             modifier = modifier,
@@ -50,12 +53,12 @@ internal fun UpsellingPlansList(
         ) {
             UpsellingPlanItem(
                 modifier = Modifier.weight(1f),
-                planUiModel = dynamicPlansModel.shorterCycle,
+                planUiModel = shorterCycle,
                 actions = actions
             )
             UpsellingPlanItem(
                 modifier = Modifier.weight(1f),
-                planUiModel = dynamicPlansModel.longerCycle,
+                planUiModel = longerCycle,
                 actions = actions
             )
         }
@@ -65,11 +68,12 @@ internal fun UpsellingPlansList(
 @AdaptivePreviews
 @Composable
 private fun UpsellingItem() {
+    val plans = UpsellingContentPreviewData.Base.plans.list as DynamicPlanInstanceListUiModel.Data.Standard
     ProtonTheme {
         UpsellingPlansList(
-            modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing),
-            dynamicPlansModel = UpsellingContentPreviewData.Base.plans.list
-                as DynamicPlanInstanceListUiModel.Data,
+            modifier = Modifier.padding(top = ProtonDimens.DefaultSpacing).wrapContentHeight(),
+            plans.shorterCycle,
+            plans.longerCycle,
             actions = UpsellingScreen.Actions(
                 onDisplayed = {},
                 onDismiss = {},

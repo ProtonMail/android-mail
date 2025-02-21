@@ -52,9 +52,9 @@ import ch.protonmail.android.mailcommon.presentation.AdaptivePreviews
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.isYearly
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingContentPreviewData
 import me.proton.core.compose.theme.ProtonDimens
@@ -145,24 +145,20 @@ internal fun CycleOptionCard(
 
 @Composable
 private fun CycleName(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanceUiModel) {
-    val name = if (uiModel.isYearly()) {
-        stringResource(R.string.upselling_select_plan_year)
-    } else {
-        stringResource(R.string.upselling_select_plan_month)
-    }
-
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = name,
+            text = uiModel.cycle.cyclePlanName().string(),
             style = ProtonTheme.typography.body2Regular,
             fontSize = UpsellingLayoutValues.RectangularPaymentButtons.textSize,
             color = UpsellingLayoutValues.RectangularPaymentButtons.textColor
         )
 
-        if (uiModel.discount != null) {
+        val discountRate = uiModel.discountRate
+
+        if (discountRate != null) {
             Box(
                 modifier = Modifier.padding(start = ProtonDimens.SmallSpacing),
                 contentAlignment = Alignment.Center
@@ -178,7 +174,7 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanc
                         .padding(horizontal = ProtonDimens.SmallSpacing, vertical = ProtonDimens.ExtraSmallSpacing),
                     text = TextUiModel.TextResWithArgs(
                         R.string.upselling_select_plan_save,
-                        listOf(uiModel.discount.toString())
+                        listOf(uiModel.discountRate.toString())
                     ).string(),
                     style = ProtonTheme.typography.captionMedium,
                     color = UpsellingLayoutValues.RectangularPaymentButtons.discountTagTextColor,
@@ -193,13 +189,11 @@ private fun CycleName(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanc
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CyclePrices(modifier: Modifier = Modifier, uiModel: DynamicPlanInstanceUiModel) {
-    val (highlightedPrice, price, period) = when {
-        uiModel.discount != null ->
-            Triple(uiModel.fullPrice, uiModel.price.string(), stringResource(R.string.upselling_year))
 
-        else ->
-            Triple(uiModel.price, null, stringResource(R.string.upselling_month))
-    }
+    val primaryPrice = uiModel.primaryPrice
+    val displayedPrice = primaryPrice.highlightedPrice
+    val pricePerCycle = primaryPrice.pricePerCycle
+    val period = uiModel.cycle.cycleStringValue()
 
     Column(
         modifier = modifier,
@@ -207,7 +201,7 @@ private fun CyclePrices(modifier: Modifier = Modifier, uiModel: DynamicPlanInsta
     ) {
         FlowRow {
             Text(
-                text = "${uiModel.currency} ${highlightedPrice.string()}",
+                text = "${uiModel.currency} ${displayedPrice.string()}",
                 style = ProtonTheme.typography.body1Bold,
                 fontSize = UpsellingLayoutValues.RectangularPaymentButtons.mainPriceTextSize,
                 color = UpsellingLayoutValues.RectangularPaymentButtons.mainPriceTextColor
@@ -216,17 +210,17 @@ private fun CyclePrices(modifier: Modifier = Modifier, uiModel: DynamicPlanInsta
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = ProtonDimens.ExtraSmallSpacing / 2),
-                text = period,
+                text = period.string(),
                 style = ProtonTheme.typography.captionRegular,
                 fontSize = UpsellingLayoutValues.RectangularPaymentButtons.subtextSize,
                 color = UpsellingLayoutValues.RectangularPaymentButtons.subtextColor
             )
         }
 
-        if (uiModel.discount != null) {
+        if (uiModel.cycle != DynamicPlanCycle.Monthly) {
             Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
             Text(
-                text = "${uiModel.currency} $price${stringResource(R.string.upselling_month)}",
+                text = "${uiModel.currency} ${pricePerCycle.string()}${stringResource(R.string.upselling_month)}",
                 style = ProtonTheme.typography.captionRegular,
                 fontSize = UpsellingLayoutValues.RectangularPaymentButtons.subtextSize,
                 color = UpsellingLayoutValues.RectangularPaymentButtons.subtextColor,

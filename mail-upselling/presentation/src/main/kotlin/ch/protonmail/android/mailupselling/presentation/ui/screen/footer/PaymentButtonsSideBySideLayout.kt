@@ -18,24 +18,25 @@
 
 package ch.protonmail.android.mailupselling.presentation.ui.screen.footer
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
-import me.proton.core.compose.theme.ProtonTheme
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
+import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.plans.UpsellingPlansList
+import me.proton.core.compose.theme.ProtonDimens
 
 @Composable
-internal fun UpsellingAutoRenewPolicyText(modifier: Modifier = Modifier) {
-    Text(
-        modifier = modifier.fillMaxWidth(),
-        text = stringResource(R.string.upselling_auto_renew_text),
-        style = ProtonTheme.typography.captionRegular,
-        fontSize = UpsellingLayoutValues.autoRenewTextSize,
-        color = UpsellingLayoutValues.autoRenewText,
-        textAlign = TextAlign.Center
+internal fun PaymentButtonsSideBySideLayout(
+    plans: DynamicPlanInstanceListUiModel.Data.Standard,
+    actions: UpsellingScreen.Actions
+) {
+    UpsellingPlansList(
+        modifier = Modifier
+            .padding(horizontal = ProtonDimens.DefaultSpacing)
+            .padding(bottom = ProtonDimens.DefaultSpacing),
+        shorterCycle = plans.shorterCycle,
+        longerCycle = plans.longerCycle,
+        actions = actions
     )
 }

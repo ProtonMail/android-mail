@@ -16,7 +16,7 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.presentation.ui.screen.plans
+package ch.protonmail.android.mailupselling.presentation.ui.screen.footer.plans
 
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.compose.foundation.background
@@ -54,9 +54,9 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailcommon.presentation.compose.pxToDp
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailupselling.presentation.R
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.isYearly
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
@@ -71,23 +71,18 @@ import me.proton.core.payment.presentation.view.ProtonPaymentButton
 @Composable
 internal fun UpsellingPlanItem(
     modifier: Modifier = Modifier,
-    planUiModel: DynamicPlanInstanceUiModel,
+    planUiModel: DynamicPlanInstanceUiModel.Standard,
     actions: UpsellingScreen.Actions
 ) {
-    val billingPeriod = if (planUiModel.isYearly()) {
-        stringResource(R.string.upselling_year)
-    } else {
-        stringResource(R.string.upselling_month)
-    }
-
-    val price = if (planUiModel.isYearly()) planUiModel.fullPrice else planUiModel.price
+    val displayedPrice = planUiModel.primaryPrice
+    val period = planUiModel.cycle.cycleStringValue()
 
     Box(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = ProtonDimens.SmallSpacing)
     ) {
-        if (planUiModel.discount != null) {
+        if (planUiModel.discountRate != null) {
             var discountTagHeight by remember { mutableIntStateOf(0) }
             UpsellingDiscountTag(
                 modifier = Modifier
@@ -95,13 +90,13 @@ internal fun UpsellingPlanItem(
                     .offset(y = UpsellingLayoutValues.SquarePaymentButtons.discountTagVerticalOffset)
                     .align(Alignment.TopCenter)
                     .onGloballyPositioned { discountTagHeight = it.size.height },
-                discountRate = planUiModel.discount
+                discountRate = planUiModel.discountRate
             )
         }
 
         Column(
             modifier = Modifier
-                .thenIf(planUiModel.discount != null) {
+                .thenIf(planUiModel.discountRate != null) {
                     Modifier
                         .background(
                             color = UpsellingLayoutValues.SquarePaymentButtons.highlightedBackgroundColor,
@@ -113,7 +108,7 @@ internal fun UpsellingPlanItem(
                             shape = UpsellingLayoutValues.SquarePaymentButtons.shape
                         )
                 }
-                .thenIf(planUiModel.discount == null) {
+                .thenIf(planUiModel.discountRate == null) {
                     Modifier
                         .background(
                             color = UpsellingLayoutValues.SquarePaymentButtons.nonHighlightedBackgroundColor,
@@ -132,7 +127,11 @@ internal fun UpsellingPlanItem(
                     top = ProtonDimens.MediumSpacing,
                     bottom = ProtonDimens.SmallSpacing + ProtonDimens.ExtraSmallSpacing
                 ),
-                text = pluralStringResource(R.plurals.upselling_month, planUiModel.cycle, planUiModel.cycle),
+                text = pluralStringResource(
+                    R.plurals.upselling_month,
+                    planUiModel.cycle.months,
+                    planUiModel.cycle.months
+                ),
                 style = ProtonTheme.typography.captionRegular,
                 color = UpsellingLayoutValues.SquarePaymentButtons.textColor
             )
@@ -148,12 +147,12 @@ internal fun UpsellingPlanItem(
                 )
                 Spacer(modifier = Modifier.padding(UpsellingLayoutValues.SquarePaymentButtons.currencyDivider))
                 Text(
-                    text = price.string(),
+                    text = displayedPrice.highlightedPrice.string(),
                     style = ProtonTheme.typography.body1Bold,
                     color = UpsellingLayoutValues.SquarePaymentButtons.textColor
                 )
                 Text(
-                    text = billingPeriod,
+                    text = period.string(),
                     style = ProtonTheme.typography.overlineRegular,
                     color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor,
                     modifier = Modifier.align(Alignment.CenterVertically)
@@ -163,7 +162,7 @@ internal fun UpsellingPlanItem(
             Spacer(modifier = Modifier.height(ProtonDimens.ExtraSmallSpacing))
 
             Row {
-                if (planUiModel.isYearly()) {
+                if (planUiModel.cycle == DynamicPlanCycle.Yearly && displayedPrice.secondaryPrice != null) {
                     Text(
                         text = planUiModel.currency,
                         style = ProtonTheme.typography.overlineRegular,
@@ -171,7 +170,7 @@ internal fun UpsellingPlanItem(
                     )
                     Spacer(modifier = Modifier.padding(UpsellingLayoutValues.SquarePaymentButtons.currencyDivider))
                     Text(
-                        text = planUiModel.price.string(),
+                        text = displayedPrice.secondaryPrice.string(),
                         style = ProtonTheme.typography.overlineRegular,
                         color = UpsellingLayoutValues.SquarePaymentButtons.subtextColor
                     )
@@ -219,14 +218,14 @@ internal fun UpsellingPlanItem(
                             this.cornerRadius = buttonCornerRadius
                             this.userId = planUiModel.userId.value
                             this.currency = planUiModel.currency
-                            this.cycle = planUiModel.cycle
+                            this.cycle = planUiModel.cycle.months
                             this.plan = planUiModel.dynamicPlan
                             this.text = context.getString(R.string.upselling_get_button, planUiModel.name)
                             this.outlineProvider = null
                             this.clipToOutline = false
                             this.elevation = 0f
 
-                            if (!planUiModel.highlighted) {
+                            if (planUiModel.discountRate == null) {
                                 setBackgroundColor(
                                     UpsellingLayoutValues.SquarePaymentButtons.SecondaryPaymentButtonBackground
                                 )
@@ -249,12 +248,12 @@ private fun UpsellingItem() {
         Column {
             UpsellingPlanItem(
                 modifier = Modifier,
-                plans.longerCycle,
+                plans.longerCycle as DynamicPlanInstanceUiModel.Standard,
                 actions = UpsellingScreen.Actions.Empty
             )
             UpsellingPlanItem(
                 modifier = Modifier,
-                plans.shorterCycle,
+                plans.shorterCycle as DynamicPlanInstanceUiModel.Standard,
                 actions = UpsellingScreen.Actions.Empty
             )
         }
