@@ -20,8 +20,6 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellBillingMessageUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellButtonsUiModel
 import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlans
@@ -31,33 +29,9 @@ class OnboardingUpsellButtonsUiModelMapper @Inject constructor() {
 
     fun toUiModel(dynamicPlans: DynamicPlans): OnboardingUpsellButtonsUiModel {
         return OnboardingUpsellButtonsUiModel(
-            billingMessage = dynamicPlans.plans.associate { plan ->
-                plan.title to getBillingMessagesForPlan(plan)
-            },
             getButtonLabel = dynamicPlans.plans.associate { plan ->
                 plan.title to getButtonLabelForPlan(plan)
             }
-        )
-    }
-
-    private fun getBillingMessagesForPlan(plan: DynamicPlan): OnboardingUpsellBillingMessageUiModel {
-        val monthlyPlanInstance = requireNotNull(plan.instances[1])
-        val monthlyPlanPrice = monthlyPlanInstance.price.values.first()
-        val monthlyBillingMessage = TextUiModel.TextResWithArgs(
-            R.string.upselling_onboarding_billing_monthly,
-            listOf(monthlyPlanPrice.currency, monthlyPlanPrice.totalPrice())
-        )
-
-        val annualPlanInstance = requireNotNull(plan.instances[12])
-        val annualPlanPrice = annualPlanInstance.price.values.first()
-        val annualBillingMessage = TextUiModel.TextResWithArgs(
-            R.string.upselling_onboarding_billing_annual,
-            listOf(annualPlanPrice.currency, annualPlanPrice.totalPrice())
-        )
-
-        return OnboardingUpsellBillingMessageUiModel(
-            monthlyBillingMessage = monthlyBillingMessage,
-            annualBillingMessage = annualBillingMessage
         )
     }
 
