@@ -37,15 +37,15 @@ import ch.protonmail.android.mailcommon.presentation.compose.MailDimens
 import ch.protonmail.android.mailupselling.domain.model.UpsellingActions
 import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryTargetPlanPayload
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.toTelemetryPayload
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.toTelemetryPayload
 import ch.protonmail.android.mailupselling.presentation.ui.UpsellingLayoutValues
 import ch.protonmail.android.mailupselling.presentation.ui.eventlistener.UpsellingPaymentEventListener
 import me.proton.core.payment.presentation.view.ProtonPaymentButton
 
 @Composable
 internal fun OnboardingPayButton(
-    planInstanceUiModel: OnboardingDynamicPlanInstanceUiModel,
+    planInstanceUiModel: DynamicPlanInstanceUiModel,
     actions: OnboardingPayButton.Actions
 ) {
     val buttonCornerRadius = UpsellingLayoutValues.Onboarding.payButtonCornerRadius
@@ -79,7 +79,7 @@ internal fun OnboardingPayButton(
                     this.cornerRadius = buttonCornerRadius
                     this.userId = planInstanceUiModel.userId.value
                     this.currency = planInstanceUiModel.currency
-                    this.cycle = planInstanceUiModel.cycle
+                    this.cycle = planInstanceUiModel.cycle.months
                     this.plan = planInstanceUiModel.dynamicPlan
                     this.text = context.getString(R.string.upselling_get_button, planInstanceUiModel.name)
                     setOnEventListener(eventListener)

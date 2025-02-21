@@ -71,15 +71,17 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailcommon.presentation.model.string
 import ch.protonmail.android.mailcommon.presentation.ui.MailDivider
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellOperation.Action
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellState
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.ui.screen.footer.UpsellingAutoRenewGenericPolicyText
 import ch.protonmail.android.mailupselling.presentation.viewmodel.OnboardingUpsellViewModel
 import coil.compose.AsyncImage
 import me.proton.core.compose.component.ProtonCenteredProgress
@@ -101,8 +103,8 @@ import me.proton.core.util.kotlin.takeIfNotEmpty
 @Composable
 fun OnboardingUpsellScreen(
     modifier: Modifier = Modifier,
-    viewModel: OnboardingUpsellViewModel = hiltViewModel(),
-    exitScreen: () -> Unit
+    exitScreen: () -> Unit,
+    viewModel: OnboardingUpsellViewModel = hiltViewModel()
 ) {
     val paymentButtonActions = remember {
         OnboardingPayButton.Actions.Empty.copy(
@@ -204,7 +206,6 @@ private fun OnboardingUpsellScreenContent(
         }
 
         UpsellButtons(
-            selectedPlansType = selectedPlansType.value,
             selectedPlan = selectedPlan.value,
             buttonsUiModel = state.buttonsUiModel,
             selectedPlanUiModel = state.selectedPayButtonPlanUiModel,
@@ -538,23 +539,15 @@ private fun PremiumValueSection(modifier: Modifier = Modifier, logoDrawables: Li
 @Composable
 private fun UpsellButtons(
     modifier: Modifier = Modifier,
-    selectedPlansType: PlansType,
     selectedPlan: String,
     buttonsUiModel: OnboardingUpsellButtonsUiModel,
     onContinueWithProtonFree: () -> Unit,
     exitScreen: () -> Unit,
-    selectedPlanUiModel: OnboardingDynamicPlanInstanceUiModel?,
+    selectedPlanUiModel: DynamicPlanInstanceUiModel?,
     paymentButtonActions: OnboardingPayButton.Actions
 ) {
 
     val context = LocalContext.current
-
-    val billingMessage = buttonsUiModel.billingMessage[selectedPlan]?.let {
-        when (selectedPlansType) {
-            PlansType.Monthly -> it.monthlyBillingMessage
-            PlansType.Annual -> it.annualBillingMessage
-        }
-    }
 
     val getButtonLabel = buttonsUiModel.getButtonLabel[selectedPlan]
         ?: TextUiModel.TextRes(R.string.upselling_onboarding_continue_with_proton_free)
@@ -567,23 +560,16 @@ private fun UpsellButtons(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box(
-            modifier = Modifier
-                .padding(top = ProtonDimens.SmallSpacing)
-                .padding(bottom = ProtonDimens.SmallSpacing)
-        ) {
-            if (billingMessage != null) {
-                Text(
-                    modifier = Modifier
-                        .padding(top = ProtonDimens.SmallSpacing)
-                        .padding(bottom = ProtonDimens.ExtraSmallSpacing),
-                    text = billingMessage.string(),
-                    style = ProtonTheme.typography.captionRegular.copy(color = ProtonTheme.colors.textAccent)
-                )
-            }
-        }
-
         if (selectedPlanUiModel != null) {
+            UpsellingAutoRenewGenericPolicyText(
+                modifier = Modifier.padding(
+                    vertical = ProtonDimens.DefaultSpacing,
+                    horizontal = ProtonDimens.SmallSpacing
+                ),
+                color = ProtonTheme.colors.textAccent,
+                planUiModel = selectedPlanUiModel
+            )
+
             OnboardingPayButton(
                 planInstanceUiModel = selectedPlanUiModel,
                 actions = paymentButtonActions.copy(
@@ -596,7 +582,7 @@ private fun UpsellButtons(
             ProtonSolidButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = ProtonDimens.DefaultSpacing)
+                    .padding(vertical = ProtonDimens.DefaultSpacing)
                     .height(MailDimens.OnboardingUpsellButtonHeight),
                 onClick = onContinueWithProtonFree
             ) {
@@ -648,13 +634,16 @@ private fun OnboardingUpsellScreenContentPreview() {
                 planSwitcherUiModel = OnboardingUpsellPreviewData.PlanSwitcherUiModel,
                 planUiModels = OnboardingUpsellPreviewData.PlanUiModels,
                 buttonsUiModel = OnboardingUpsellPreviewData.ButtonsUiModel,
-                selectedPayButtonPlanUiModel = OnboardingDynamicPlanInstanceUiModel(
+                selectedPayButtonPlanUiModel = DynamicPlanInstanceUiModel.Standard(
                     name = "Proton Unlimited",
                     userId = UserIdUiModel(UserId("")),
                     currency = "CHF",
-                    cycle = 12,
+                    cycle = DynamicPlanCycle.Yearly,
                     viewId = 1,
-                    dynamicPlan = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel.dynamicPlan
+                    pricePerCycle = TextUiModel("12.99"),
+                    totalPrice = TextUiModel("144.99"),
+                    dynamicPlan = OnboardingUpsellPreviewData.OnboardingDynamicPlanInstanceUiModel.dynamicPlan,
+                    discountRate = null
                 )
             ),
             exitScreen = {},

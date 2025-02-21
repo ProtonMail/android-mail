@@ -20,16 +20,16 @@ package ch.protonmail.android.mailupselling.presentation.ui.onboarding
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.presentation.R
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingDynamicPlanInstanceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellBillingMessageUiModel
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellButtonsUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanSwitcherUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModel
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanUiModels
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPriceUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.domain.type.IntEnum
 import me.proton.core.plan.domain.entity.DynamicEntitlement
@@ -56,13 +56,16 @@ internal object OnboardingUpsellPreviewData {
         type = IntEnum(1, DynamicPlanType.Primary)
     )
 
-    val OnboardingDynamicPlanInstanceUiModel = OnboardingDynamicPlanInstanceUiModel(
+    val OnboardingDynamicPlanInstanceUiModel = DynamicPlanInstanceUiModel.Standard(
         name = "Upgrade to Mail Plus",
         userId = UserIdUiModel(UserId("12")),
         currency = "EUR",
-        cycle = 1,
+        cycle = DynamicPlanCycle.Monthly,
         viewId = 123,
-        dynamicPlan = dynPlan
+        dynamicPlan = dynPlan,
+        pricePerCycle = TextUiModel("12.99"),
+        totalPrice = TextUiModel("144.99"),
+        discountRate = null
     )
 
     val PremiumValuePlusDrawables = listOf(
@@ -262,16 +265,6 @@ internal object OnboardingUpsellPreviewData {
     )
 
     val ButtonsUiModel = OnboardingUpsellButtonsUiModel(
-        billingMessage = mapOf(
-            "Unlimited" to OnboardingUpsellBillingMessageUiModel(
-                monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
-                annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
-            ),
-            "Mail Plus" to OnboardingUpsellBillingMessageUiModel(
-                monthlyBillingMessage = TextUiModel.Text("Billed at CHF 9.99 every month"),
-                annualBillingMessage = TextUiModel.Text("Billed at CHF 119.88 every 12 months")
-            )
-        ),
         getButtonLabel = mapOf(
             "Proton Unlimited" to TextUiModel.Text("Get Proton Unlimited"),
             "Mail Plus" to TextUiModel.Text("Get Mail Plus")
