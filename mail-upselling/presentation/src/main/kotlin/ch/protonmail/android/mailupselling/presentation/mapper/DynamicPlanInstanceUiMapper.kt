@@ -19,39 +19,90 @@
 package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.extension.normalized
 import ch.protonmail.android.mailupselling.presentation.extension.normalizedPrice
 import ch.protonmail.android.mailupselling.presentation.extension.toDecimalString
+import ch.protonmail.android.mailupselling.presentation.extension.totalDefaultPrice
 import ch.protonmail.android.mailupselling.presentation.extension.totalPrice
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.usecase.GetDiscountRate
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import javax.inject.Inject
 
-class DynamicPlanInstanceUiMapper @Inject constructor() {
+class DynamicPlanInstanceUiMapper @Inject constructor(
+    private val getDiscountRate: GetDiscountRate
+) {
 
     fun toUiModel(
         userId: UserId,
-        instance: DynamicPlanInstance,
-        highlighted: Boolean,
-        discount: Int?,
+        monthlyPlanInstance: DynamicPlanInstance,
+        yearlyPlanInstance: DynamicPlanInstance,
         plan: DynamicPlan
-    ): DynamicPlanInstanceUiModel {
-        val price = instance.price.values.first()
+    ): Pair<DynamicPlanInstanceUiModel, DynamicPlanInstanceUiModel> {
 
-        return DynamicPlanInstanceUiModel(
-            userId = UserIdUiModel(userId),
-            name = plan.title,
-            price = price.normalizedPrice(cycle = instance.cycle),
-            fullPrice = TextUiModel.Text(price.totalPrice().toDecimalString()),
-            cycle = instance.cycle,
-            currency = price.currency,
-            discount = discount,
-            viewId = computeViewId(userId, instance),
-            highlighted = highlighted,
-            dynamicPlan = plan
+        val monthlyUiModel = createPlanUiModel(
+            userId = userId,
+            dynamicPlan = plan,
+            cycle = DynamicPlanCycle.Monthly,
+            planInstance = monthlyPlanInstance
         )
+
+        val yearlyUiModel = createPlanUiModel(
+            userId = userId,
+            dynamicPlan = plan,
+            cycle = DynamicPlanCycle.Yearly,
+            planInstance = yearlyPlanInstance,
+            comparisonPriceInstance = monthlyPlanInstance
+        )
+
+        return Pair(monthlyUiModel, yearlyUiModel)
+    }
+
+    fun createPlanUiModel(
+        dynamicPlan: DynamicPlan,
+        userId: UserId,
+        planInstance: DynamicPlanInstance,
+        cycle: DynamicPlanCycle,
+        comparisonPriceInstance: DynamicPlanInstance? = null
+    ): DynamicPlanInstanceUiModel {
+        val price = planInstance.price.values.first()
+        val currentPrice = price.current
+        val defaultPrice = price.default
+
+        val isPromotional = defaultPrice != null && currentPrice < defaultPrice
+
+        return if (isPromotional) {
+            val promotionalPrice = currentPrice.normalized(cycle.months)
+            val renewalPrice = defaultPrice.normalized(cycle.months)
+            DynamicPlanInstanceUiModel.Promotional(
+                name = dynamicPlan.title,
+                userId = UserIdUiModel(userId),
+                pricePerCycle = price.normalizedPrice(cycle.months),
+                promotionalPrice = TextUiModel.Text(price.totalPrice().toDecimalString()),
+                renewalPrice = TextUiModel.Text(price.totalDefaultPrice().toDecimalString()),
+                discountRate = getDiscountRate(promotionalPrice, renewalPrice),
+                currency = price.currency,
+                cycle = cycle,
+                viewId = computeViewId(userId, planInstance),
+                dynamicPlan = dynamicPlan
+            )
+        } else {
+            DynamicPlanInstanceUiModel.Standard(
+                name = dynamicPlan.title,
+                userId = UserIdUiModel(userId),
+                pricePerCycle = price.normalizedPrice(cycle.months),
+                totalPrice = TextUiModel.Text(price.totalPrice().toDecimalString()),
+                discountRate = comparisonPriceInstance?.let { getDiscountRate(it, planInstance) },
+                currency = price.currency,
+                cycle = cycle,
+                viewId = computeViewId(userId, planInstance),
+                dynamicPlan = dynamicPlan
+            )
+        }
     }
 
     private fun computeViewId(userId: UserId, instance: DynamicPlanInstance) = "$userId$instance".hashCode()

@@ -37,6 +37,20 @@ object UpsellingTestData {
         price = mapOf("EUR" to DynamicPlanPrice(id = "id", currency = "EUR", current = 10, default = null))
     )
 
+    val MonthlyDynamicPromoPlanInstance = DynamicPlanInstance(
+        cycle = 1,
+        description = "1 month cycle",
+        periodEnd = Instant.now(),
+        price = mapOf("EUR" to DynamicPlanPrice(id = "id", currency = "EUR", current = 10, default = 40))
+    )
+
+    val YearlyDynamicPromoPlanInstance = DynamicPlanInstance(
+        cycle = 12,
+        description = "12 months cycle",
+        periodEnd = Instant.now(),
+        price = mapOf("EUR" to DynamicPlanPrice(id = "id", currency = "EUR", current = 108, default = 120))
+    )
+
     val YearlyDynamicPlanInstance = DynamicPlanInstance(
         cycle = 12,
         description = "12 months cycle",
@@ -67,6 +81,37 @@ object UpsellingTestData {
         state = DynamicPlanState.Available,
         title = "Mail Plus",
         instances = mapOf(1 to MonthlyDynamicPlanInstance, 12 to YearlyDynamicPlanInstance),
+        type = IntEnum(DynamicPlanType.Primary.code, DynamicPlanType.Primary),
+        entitlements = listOf<DynamicEntitlement>(
+            DynamicEntitlement.Description(
+                text = "10 email addresses",
+                iconUrl = "iconUrl"
+            )
+        )
+    )
+
+    val PlusMonthlyPromoPlan = DynamicPlan(
+        name = "mail2022",
+        description = "Mail Plus 2022",
+        order = 2,
+        state = DynamicPlanState.Available,
+        title = "Mail Plus",
+        instances = mapOf(1 to MonthlyDynamicPromoPlanInstance, 12 to YearlyDynamicPlanInstance),
+        type = IntEnum(DynamicPlanType.Primary.code, DynamicPlanType.Primary),
+        entitlements = listOf<DynamicEntitlement>(
+            DynamicEntitlement.Description(
+                text = "10 email addresses",
+                iconUrl = "iconUrl"
+            )
+        )
+    )
+    val PlusYearlyPromoPlan = DynamicPlan(
+        name = "mail2022",
+        description = "Mail Plus 2022",
+        order = 2,
+        state = DynamicPlanState.Available,
+        title = "Mail Plus",
+        instances = mapOf(1 to MonthlyDynamicPlanInstance, 12 to YearlyDynamicPromoPlanInstance),
         type = IntEnum(DynamicPlanType.Primary.code, DynamicPlanType.Primary),
         entitlements = listOf<DynamicEntitlement>(
             DynamicEntitlement.Description(

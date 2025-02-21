@@ -20,9 +20,9 @@ package ch.protonmail.android.mailupselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import ch.protonmail.android.mailupselling.domain.model.DynamicPlansOneClickIds
-import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.model.onboarding.OnboardingUpsellPlanSwitcherUiModel
+import ch.protonmail.android.mailupselling.presentation.usecase.GetDiscountRate
 import me.proton.core.plan.domain.entity.DynamicPlans
 import javax.inject.Inject
 

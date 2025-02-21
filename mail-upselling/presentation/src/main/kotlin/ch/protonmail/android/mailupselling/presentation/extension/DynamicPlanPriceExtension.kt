@@ -22,15 +22,20 @@ import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 import me.proton.core.plan.domain.entity.DynamicPlanPrice
 
 internal fun DynamicPlanPrice.normalizedPrice(cycle: Int): TextUiModel {
-    val actualPrice = (current / 100f / cycle).takeIf {
-        it != Float.POSITIVE_INFINITY && it != Float.NEGATIVE_INFINITY
-    } ?: 0f
+    val actualPrice = current.normalized(cycle)
     return TextUiModel.Text(actualPrice.toDecimalString())
 }
 
-internal fun DynamicPlanPrice.totalPrice(): Float {
-    val actualPrice = (current / 100f).takeIf {
-        it != Float.POSITIVE_INFINITY && it != Float.NEGATIVE_INFINITY
-    } ?: 0f
-    return actualPrice
-}
+internal fun DynamicPlanPrice.totalPrice(): Float = current.toActualPrice()
+internal fun DynamicPlanPrice.totalDefaultPrice(): Float = (default ?: 0).toActualPrice()
+internal fun DynamicPlanPrice.totalDefaultPriceNullable(): Float? = default?.toActualPrice()
+
+@Suppress("MagicNumber")
+internal fun Int.toActualPrice() = (this / 100f).takeIf {
+    it != Float.POSITIVE_INFINITY && it != Float.NEGATIVE_INFINITY
+} ?: 0f
+
+@Suppress("MagicNumber")
+internal fun Int.normalized(cycle: Int) = (this / 100f / cycle).takeIf {
+    it != Float.POSITIVE_INFINITY && it != Float.NEGATIVE_INFINITY
+} ?: 0f

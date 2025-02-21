@@ -16,9 +16,8 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.usecase
+package ch.protonmail.android.mailupselling.presentation.usecase
 
-import ch.protonmail.android.mailupselling.domain.extensions.currentPrice
 import me.proton.core.plan.domain.entity.DynamicPlanInstance
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -31,16 +30,32 @@ class GetDiscountRate @Inject constructor() {
 
         if (longerInstancePrice == null || shorterInstancePrice == null) return null
 
-        val safeRatio = kotlin.runCatching {
+        val ratio = runCatching {
             @Suppress("UnnecessaryParentheses")
             (longerInstancePrice / longerInstance.cycle) /
                 (shorterInstancePrice / shorterInstance.cycle)
-        }
+        }.getOrNull() ?: return null
+
+        return calculateDiscountFromRatio(ratio)
+    }
+
+    operator fun invoke(promotionalPrice: Float, renewalPrice: Float): Int? {
+        if (promotionalPrice == renewalPrice) return null
+
+        val ratio = runCatching { promotionalPrice / renewalPrice }
             .getOrNull()
-            ?.takeIf { it > 0f && it <= 1f }
             ?: return null
 
+        return calculateDiscountFromRatio(ratio)
+    }
+
+    private fun calculateDiscountFromRatio(ratio: Float): Int? {
+        if (ratio <= 0f || ratio > 1f) return null
+
         @Suppress("MagicNumber")
-        return ((1 - safeRatio) * 100).takeIf { it > 0 }?.roundToInt()
+        return ((1 - ratio) * 100).takeIf { it > 0 }?.roundToInt()
     }
 }
+
+private val DynamicPlanInstance.currentPrice: Float?
+    get() = price.values.firstOrNull()?.current?.toFloat()

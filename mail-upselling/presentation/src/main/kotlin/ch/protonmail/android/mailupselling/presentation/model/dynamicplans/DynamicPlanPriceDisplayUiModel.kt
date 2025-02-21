@@ -18,24 +18,10 @@
 
 package ch.protonmail.android.mailupselling.presentation.model.dynamicplans
 
-sealed interface DynamicPlanInstanceListUiModel {
-    data object Empty : DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
 
-    data object Invalid : DynamicPlanInstanceListUiModel
-
-    sealed class Data(
-        open val shorterCycle: DynamicPlanInstanceUiModel,
-        open val longerCycle: DynamicPlanInstanceUiModel
-    ) : DynamicPlanInstanceListUiModel {
-
-        data class Standard(
-            override val shorterCycle: DynamicPlanInstanceUiModel.Standard,
-            override val longerCycle: DynamicPlanInstanceUiModel.Standard
-        ) : Data(shorterCycle, longerCycle)
-
-        class Promotional(
-            override val shorterCycle: DynamicPlanInstanceUiModel,
-            override val longerCycle: DynamicPlanInstanceUiModel
-        ) : Data(shorterCycle, longerCycle)
-    }
-}
+data class DynamicPlanPriceDisplayUiModel(
+    val pricePerCycle: TextUiModel,
+    val highlightedPrice: TextUiModel,
+    val secondaryPrice: TextUiModel?
+)

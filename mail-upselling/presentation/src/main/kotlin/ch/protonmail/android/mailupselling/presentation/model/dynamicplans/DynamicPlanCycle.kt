@@ -16,9 +16,22 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.mailupselling.domain.extensions
+package ch.protonmail.android.mailupselling.presentation.model.dynamicplans
 
-import me.proton.core.plan.domain.entity.DynamicPlanInstance
+import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
+import ch.protonmail.android.mailupselling.presentation.R
 
-internal val DynamicPlanInstance.currentPrice: Float?
-    get() = price.values.firstOrNull()?.current?.toFloat()
+enum class DynamicPlanCycle(val months: Int) {
+    Monthly(1),
+    Yearly(12);
+
+    fun cycleStringValue(): TextUiModel = when (this) {
+        Monthly -> TextUiModel.TextRes(R.string.upselling_month)
+        Yearly -> TextUiModel.TextRes(R.string.upselling_year)
+    }
+
+    fun cyclePlanName(): TextUiModel = when (this) {
+        Monthly -> TextUiModel.TextRes(R.string.upselling_select_plan_month)
+        Yearly -> TextUiModel.TextRes(R.string.upselling_select_plan_year)
+    }
+}

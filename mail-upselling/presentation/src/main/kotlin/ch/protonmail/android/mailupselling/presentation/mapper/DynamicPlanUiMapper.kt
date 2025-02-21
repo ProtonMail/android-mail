@@ -18,10 +18,10 @@
 
 package ch.protonmail.android.mailupselling.presentation.mapper
 
-import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
 import me.proton.core.domain.entity.UserId
 import me.proton.core.plan.domain.entity.DynamicPlan
 import javax.inject.Inject
@@ -31,8 +31,7 @@ internal class DynamicPlanUiMapper @Inject constructor(
     private val titleUiMapper: DynamicPlanTitleUiMapper,
     private val descriptionUiMapper: DynamicPlanDescriptionUiMapper,
     private val planInstanceUiMapper: DynamicPlanInstanceUiMapper,
-    private val entitlementsUiMapper: DynamicPlanEntitlementsUiMapper,
-    private val getDiscountRate: GetDiscountRate
+    private val entitlementsUiMapper: DynamicPlanEntitlementsUiMapper
 ) {
 
     fun toUiModel(
@@ -53,33 +52,34 @@ internal class DynamicPlanUiMapper @Inject constructor(
         val monthlyPlan = requireNotNull(plan.instances.minByOrNull { it.key }?.value)
         val yearlyPlan = requireNotNull(plan.instances.maxByOrNull { it.key }?.value)
 
-        val shorterCycleUiModel = planInstanceUiMapper.toUiModel(
-            userId,
-            monthlyPlan,
-            discount = null,
-            highlighted = false,
-            plan = plan
-        )
-
         if (monthlyPlan == yearlyPlan) {
             return emptyUiModel.copy(list = DynamicPlanInstanceListUiModel.Invalid)
         }
 
-        val discountRate = getDiscountRate(monthlyPlan, yearlyPlan)
-
-        val longerCycleUiModel = planInstanceUiMapper.toUiModel(
+        val (shorterCycleUiModel, longerCycleUiModel) = planInstanceUiMapper.toUiModel(
             userId,
+            monthlyPlan,
             yearlyPlan,
-            discount = discountRate,
-            highlighted = true,
-            plan = plan
+            plan
         )
 
-        return emptyUiModel.copy(
-            list = DynamicPlanInstanceListUiModel.Data(
-                shorterCycleUiModel,
-                longerCycleUiModel
+        val listUiModel = resolveListUiModel(shorterCycleUiModel, longerCycleUiModel)
+        return emptyUiModel.copy(list = listUiModel)
+    }
+
+    private fun resolveListUiModel(
+        shorterCycleUiModel: DynamicPlanInstanceUiModel,
+        longerCycleUiModel: DynamicPlanInstanceUiModel
+    ): DynamicPlanInstanceListUiModel.Data {
+        return when {
+            shorterCycleUiModel is DynamicPlanInstanceUiModel.Promotional ||
+                longerCycleUiModel is DynamicPlanInstanceUiModel.Promotional ->
+                DynamicPlanInstanceListUiModel.Data.Promotional(shorterCycleUiModel, longerCycleUiModel)
+
+            else -> DynamicPlanInstanceListUiModel.Data.Standard(
+                shorterCycleUiModel as DynamicPlanInstanceUiModel.Standard,
+                longerCycleUiModel as DynamicPlanInstanceUiModel.Standard
             )
-        )
+        }
     }
 }

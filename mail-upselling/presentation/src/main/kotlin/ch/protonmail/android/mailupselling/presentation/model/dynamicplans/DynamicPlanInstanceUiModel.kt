@@ -23,22 +23,85 @@ import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelem
 import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
 import me.proton.core.plan.domain.entity.DynamicPlan
 
-data class DynamicPlanInstanceUiModel(
-    val name: String,
-    val userId: UserIdUiModel,
-    val price: TextUiModel,
-    val fullPrice: TextUiModel,
-    val currency: String,
-    val discount: Int?,
-    val cycle: Int,
-    val highlighted: Boolean,
-    val viewId: Int,
-    val dynamicPlan: DynamicPlan
+sealed class DynamicPlanInstanceUiModel(
+    open val name: String,
+    open val userId: UserIdUiModel,
+    open val currency: String,
+    open val discountRate: Int?,
+    open val cycle: DynamicPlanCycle,
+    open val viewId: Int,
+    open val dynamicPlan: DynamicPlan
+) {
+
+    abstract val primaryPrice: DynamicPlanPriceDisplayUiModel
+
+    data class Standard(
+        override val name: String,
+        override val userId: UserIdUiModel,
+        private val pricePerCycle: TextUiModel,
+        private val totalPrice: TextUiModel,
+        override val discountRate: Int?,
+        override val currency: String,
+        override val cycle: DynamicPlanCycle,
+        override val viewId: Int,
+        override val dynamicPlan: DynamicPlan
+    ) : DynamicPlanInstanceUiModel(
+        name,
+        userId,
+        currency,
+        discountRate,
+        cycle,
+        viewId,
+        dynamicPlan
+    ) {
+
+        override val primaryPrice: DynamicPlanPriceDisplayUiModel
+            get() {
+                val (displayedPrice, standardPrice) = when (cycle) {
+                    DynamicPlanCycle.Monthly -> Pair(pricePerCycle, null)
+                    DynamicPlanCycle.Yearly -> Pair(totalPrice, pricePerCycle)
+                }
+
+                return DynamicPlanPriceDisplayUiModel(
+                    pricePerCycle = pricePerCycle,
+                    highlightedPrice = displayedPrice,
+                    secondaryPrice = standardPrice
+                )
+            }
+    }
+
+    data class Promotional(
+        override val name: String,
+        override val userId: UserIdUiModel,
+        private val pricePerCycle: TextUiModel,
+        private val promotionalPrice: TextUiModel,
+        private val renewalPrice: TextUiModel,
+        override val discountRate: Int?,
+        override val currency: String,
+        override val cycle: DynamicPlanCycle,
+        override val viewId: Int,
+        override val dynamicPlan: DynamicPlan
+    ) : DynamicPlanInstanceUiModel(
+        name,
+        userId,
+        currency,
+        discountRate,
+        cycle,
+        viewId,
+        dynamicPlan
+    ) {
+
+        override val primaryPrice: DynamicPlanPriceDisplayUiModel
+            get() = DynamicPlanPriceDisplayUiModel(
+                pricePerCycle = pricePerCycle,
+                highlightedPrice = promotionalPrice,
+                secondaryPrice = renewalPrice
+            )
+    }
+}
+
+internal fun DynamicPlanInstanceUiModel.toTelemetryPayload() = UpsellingTelemetryTargetPlanPayload(
+    planName = dynamicPlan.name ?: "",
+    planCycle = cycle.months,
+    isPromotional = this is DynamicPlanInstanceUiModel.Promotional
 )
-
-internal fun DynamicPlanInstanceUiModel.isYearly() = this.cycle == YEARLY_CYCLE
-
-internal fun DynamicPlanInstanceUiModel.toTelemetryPayload() =
-    UpsellingTelemetryTargetPlanPayload(dynamicPlan.name ?: "", cycle)
-
-private const val YEARLY_CYCLE = 12

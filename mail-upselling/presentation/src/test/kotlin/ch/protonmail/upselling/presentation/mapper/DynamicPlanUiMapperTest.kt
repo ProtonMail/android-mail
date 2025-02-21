@@ -19,7 +19,7 @@
 package ch.protonmail.upselling.presentation.mapper
 
 import ch.protonmail.android.mailcommon.presentation.model.TextUiModel
-import ch.protonmail.android.mailupselling.domain.usecase.GetDiscountRate
+import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
 import ch.protonmail.android.mailupselling.presentation.R
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanDescriptionUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanEntitlementsUiMapper
@@ -27,14 +27,14 @@ import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanIconUi
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanInstanceUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanTitleUiMapper
 import ch.protonmail.android.mailupselling.presentation.mapper.DynamicPlanUiMapper
+import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanCycle
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanDescriptionUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanIconUiModel
+import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanTitleUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlansUiModel
-import ch.protonmail.android.mailupselling.presentation.model.UserIdUiModel
-import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.DynamicPlanInstanceListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementListUiModel
 import ch.protonmail.android.mailupselling.presentation.model.dynamicplans.PlanEntitlementsUiModel
 import ch.protonmail.android.testdata.upselling.UpsellingTestData
@@ -57,14 +57,12 @@ internal class DynamicPlanUiMapperTest {
     private val descriptionUiMapper = mockk<DynamicPlanDescriptionUiMapper>()
     private val planInstanceUiMapper = mockk<DynamicPlanInstanceUiMapper>()
     private val entitlementsUiMapper = mockk<DynamicPlanEntitlementsUiMapper>()
-    private val getDiscountRate = mockk<GetDiscountRate>()
     private val mapper = DynamicPlanUiMapper(
         iconUiMapper,
         titleUiMapper,
         descriptionUiMapper,
         planInstanceUiMapper,
-        entitlementsUiMapper,
-        getDiscountRate
+        entitlementsUiMapper
     )
 
     @AfterTest
@@ -107,26 +105,24 @@ internal class DynamicPlanUiMapperTest {
         val plan = DynamicPlanPlusWithIdenticalInstances
         val instance = requireNotNull(DynamicPlanPlusWithIdenticalInstances.instances[1])
 
-        val expectedInstance = DynamicPlanInstanceUiModel(
+        val expectedInstance = DynamicPlanInstanceUiModel.Standard(
             userId = UserIdUiModel(UserId),
             name = UpsellingTestData.PlusPlan.title,
-            price = TextUiModel.Text("0.1"),
-            fullPrice = TextUiModel.Text("0.1"),
-            discount = null,
+            pricePerCycle = TextUiModel.Text("0.1"),
+            totalPrice = TextUiModel.Text("0.1"),
             currency = "EUR",
-            cycle = 1,
-            highlighted = false,
+            cycle = DynamicPlanCycle.Monthly,
             viewId = "$UserId$instance".hashCode(),
-            dynamicPlan = plan
+            dynamicPlan = plan,
+            discountRate = null
         )
 
         expectInstanceUiModel(
             userId = UserId,
-            instance = instance,
-            highlighted = false,
-            discount = null,
+            monthlyInstance = instance,
+            yearlyInstance = instance,
             plan = plan,
-            expectedInstance = expectedInstance
+            expectedInstance = Pair(expectedInstance, expectedInstance)
         )
 
         val expectedPlansUiModel = DynamicPlansUiModel(
@@ -155,49 +151,36 @@ internal class DynamicPlanUiMapperTest {
         val plan = UpsellingTestData.PlusPlan
         val shorterInstance = requireNotNull(plan.instances[1])
         val longerInstance = requireNotNull(plan.instances[12])
-        expectDiscountRate(shorterInstance, longerInstance)
 
-        val expectedShorterInstance = DynamicPlanInstanceUiModel(
+        val expectedShorterInstance = DynamicPlanInstanceUiModel.Standard(
             userId = UserIdUiModel(UserId),
             name = plan.title,
-            price = TextUiModel.Text("0.1"),
-            fullPrice = TextUiModel.Text("0.1"),
-            discount = null,
+            pricePerCycle = TextUiModel.Text("0.1"),
+            totalPrice = TextUiModel.Text("0.1"),
             currency = "EUR",
-            cycle = 1,
-            highlighted = false,
+            cycle = DynamicPlanCycle.Monthly,
             viewId = "$UserId$shorterInstance".hashCode(),
-            dynamicPlan = plan
+            dynamicPlan = plan,
+            discountRate = null
         )
-        val expectedLongerInstance = DynamicPlanInstanceUiModel(
+        val expectedLongerInstance = DynamicPlanInstanceUiModel.Standard(
             userId = UserIdUiModel(UserId),
             name = plan.title,
-            price = TextUiModel.Text("0.09"),
-            fullPrice = TextUiModel.Text("0.09"),
-            discount = 10,
+            pricePerCycle = TextUiModel.Text("0.09"),
+            totalPrice = TextUiModel.Text("1.08"),
             currency = "EUR",
-            cycle = 12,
-            highlighted = true,
+            cycle = DynamicPlanCycle.Yearly,
             viewId = "$UserId$longerInstance".hashCode(),
-            dynamicPlan = plan
+            dynamicPlan = plan,
+            discountRate = 10
         )
 
         expectInstanceUiModel(
             userId = UserId,
-            instance = shorterInstance,
-            highlighted = false,
-            discount = null,
+            monthlyInstance = shorterInstance,
+            yearlyInstance = longerInstance,
             plan = plan,
-            expectedInstance = expectedShorterInstance
-        )
-
-        expectInstanceUiModel(
-            userId = UserId,
-            instance = longerInstance,
-            highlighted = true,
-            discount = 10,
-            plan = plan,
-            expectedInstance = expectedLongerInstance
+            expectedInstance = Pair(expectedShorterInstance, expectedLongerInstance)
         )
 
         val expectedPlansUiModel = DynamicPlansUiModel(
@@ -205,7 +188,7 @@ internal class DynamicPlanUiMapperTest {
             title = ExpectedTitleUiModel,
             description = ExpectedDescriptionUiModel,
             entitlements = PlanEntitlementsUiModel.SimpleList(listOf(ExpectedEntitlementsUiModel)),
-            list = DynamicPlanInstanceListUiModel.Data(expectedShorterInstance, expectedLongerInstance)
+            list = DynamicPlanInstanceListUiModel.Data.Standard(expectedShorterInstance, expectedLongerInstance)
         )
 
         // When
@@ -235,17 +218,12 @@ internal class DynamicPlanUiMapperTest {
     @Suppress("LongParameterList")
     private fun expectInstanceUiModel(
         userId: UserId,
-        instance: DynamicPlanInstance,
-        highlighted: Boolean,
-        discount: Int?,
+        monthlyInstance: DynamicPlanInstance,
+        yearlyInstance: DynamicPlanInstance,
         plan: DynamicPlan,
-        expectedInstance: DynamicPlanInstanceUiModel
+        expectedInstance: Pair<DynamicPlanInstanceUiModel, DynamicPlanInstanceUiModel>
     ) {
-        every { planInstanceUiMapper.toUiModel(userId, instance, highlighted, discount, plan) } returns expectedInstance
-    }
-
-    private fun expectDiscountRate(shorterInstance: DynamicPlanInstance, longerInstance: DynamicPlanInstance) {
-        every { getDiscountRate(shorterInstance, longerInstance) } returns 10
+        every { planInstanceUiMapper.toUiModel(userId, monthlyInstance, yearlyInstance, plan) } returns expectedInstance
     }
 
     private companion object {
