@@ -24,7 +24,6 @@ import ch.protonmail.android.mailupselling.data.repository.UpsellingVisibilityRe
 import ch.protonmail.android.mailupselling.domain.annotations.ForceOneClickUpsellingDetailsOverride
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingAlwaysShown
 import ch.protonmail.android.mailupselling.domain.annotations.OneClickUpsellingTelemetryEnabled
-import ch.protonmail.android.mailupselling.domain.annotations.PaymentButtonsHorizontalLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.SidebarUpsellingEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingAutodeleteEnabled
 import ch.protonmail.android.mailupselling.domain.annotations.UpsellingMobileSignatureEnabled
@@ -36,7 +35,6 @@ import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryR
 import ch.protonmail.android.mailupselling.domain.repository.UpsellingVisibilityRepository
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.AlwaysShowOneClickUpselling
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsOneClickUpsellingTelemetryEnabled
-import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsPaymentButtonsHorizontalLayoutEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSidebarUpsellingEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsSignupPaidPlanSupportEnabled
 import ch.protonmail.android.mailupselling.domain.usecase.featureflags.IsUpgradePaidPlanSupportEnabled
@@ -100,10 +98,6 @@ object UpsellingModule {
     @Provides
     @SidebarUpsellingEnabled
     fun provideSidebarUpsellingEnabled(isEnabled: IsSidebarUpsellingEnabled) = isEnabled(null)
-
-    @Provides
-    @PaymentButtonsHorizontalLayoutEnabled
-    fun providePaymentHorizontalLayoutEnabled(isEnabled: IsPaymentButtonsHorizontalLayoutEnabled) = isEnabled(null)
 
     @Provides
     fun provideClientPlansFilterPredicate(): ClientPlanFilter? = null
