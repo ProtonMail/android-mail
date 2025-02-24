@@ -235,7 +235,8 @@ sealed class Destination(val route: String) {
         object PostSubscription : Destination("postSubscription")
 
         object Upselling {
-            data object Standalone : Destination("upselling/standalone")
+            data object StandaloneMailbox : Destination("upselling/standalone/mailbox")
+            data object StandaloneNavbar : Destination("upselling/standalone/navbar")
         }
     }
 

@@ -106,7 +106,7 @@ internal fun NavGraphBuilder.addMailbox(
                 onAddLabel = { navController.navigate(Destination.Screen.CreateLabel.route) },
                 onAddFolder = { navController.navigate(Destination.Screen.CreateFolder.route) },
                 onNavigateToStandaloneUpselling = {
-                    navController.navigate(Destination.Screen.Upselling.Standalone.route)
+                    navController.navigate(Destination.Screen.Upselling.StandaloneMailbox.route)
                 },
                 onRequestNotificationPermission = onRequestNotificationPermission,
                 navigateToCustomizeToolbar = {

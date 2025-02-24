@@ -32,6 +32,8 @@ import ch.protonmail.android.maillabel.presentation.toUiModels
 import ch.protonmail.android.mailmailbox.domain.usecase.ObserveUnreadCounters
 import ch.protonmail.android.mailmessage.domain.model.UnreadCounter
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSettings
+import ch.protonmail.android.mailsidebar.presentation.usecase.ObserveSidebarUpsellingVisibility
+import ch.protonmail.android.mailsidebar.presentation.usecase.TrackSidebarUpsellingClick
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -55,7 +57,9 @@ class SidebarViewModel @Inject constructor(
     observePrimaryUser: ObservePrimaryUser,
     observeFolderColors: ObserveFolderColorSettings,
     observeMailLabels: ObserveMailLabels,
-    observeUnreadCounters: ObserveUnreadCounters
+    observeUnreadCounters: ObserveUnreadCounters,
+    private val observeSidebarUpsellingVisibility: ObserveSidebarUpsellingVisibility,
+    private val trackUpsellingClick: TrackSidebarUpsellingClick
 ) : ViewModel() {
 
     val initialState = State.Disabled
@@ -75,12 +79,14 @@ class SidebarViewModel @Inject constructor(
             selectedMailLabelId.flow,
             observeFolderColors(user.userId),
             observeMailLabels(user.userId, true),
-            observeUnreadCounters(user.userId)
-        ) { selectedMailLabelId, folderColors, mailLabels, counters ->
+            observeUnreadCounters(user.userId),
+            observeSidebarUpsellingVisibility()
+        ) { selectedMailLabelId, folderColors, mailLabels, counters, showUpsell ->
             State.Enabled(
                 selectedMailLabelId = selectedMailLabelId,
                 canChangeSubscription = paymentManager.isSubscriptionAvailable(user.userId),
-                mailLabels = mailLabels.toUiModels(folderColors, counters.toMap(), selectedMailLabelId)
+                mailLabels = mailLabels.toUiModels(folderColors, counters.toMap(), selectedMailLabelId),
+                showUpsell = showUpsell
             )
         }
     }.stateIn(
@@ -93,6 +99,7 @@ class SidebarViewModel @Inject constructor(
         viewModelScope.launch {
             when (action) {
                 is Action.LabelAction -> onSidebarLabelAction(action.action)
+                Action.UpsellClicked -> trackUpsellingClick()
             }.exhaustive
         }
     }
@@ -121,7 +128,8 @@ class SidebarViewModel @Inject constructor(
         data class Enabled(
             val selectedMailLabelId: MailLabelId,
             val canChangeSubscription: Boolean,
-            val mailLabels: MailLabelsUiModel
+            val mailLabels: MailLabelsUiModel,
+            val showUpsell: Boolean
         ) : State()
 
         object Disabled : State()
@@ -129,5 +137,6 @@ class SidebarViewModel @Inject constructor(
 
     sealed interface Action {
         data class LabelAction(val action: SidebarLabelAction) : Action
+        data object UpsellClicked : Action
     }
 }

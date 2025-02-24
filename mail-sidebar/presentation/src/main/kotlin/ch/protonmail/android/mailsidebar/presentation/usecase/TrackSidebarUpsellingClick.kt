@@ -16,25 +16,21 @@
  * along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
  */
 
-package ch.protonmail.android.navigation.route
+package ch.protonmail.android.mailsidebar.presentation.usecase
 
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import ch.protonmail.android.mailupselling.domain.model.UpsellingEntryPoint
-import ch.protonmail.android.mailupselling.presentation.ui.screen.UpsellingScreen
-import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.mailupselling.domain.model.telemetry.UpsellingTelemetryEventType
+import ch.protonmail.android.mailupselling.domain.repository.UpsellingTelemetryRepository
+import javax.inject.Inject
 
-fun NavGraphBuilder.addUpsellingRoutes(actions: UpsellingScreen.Actions) {
-    composable(route = Destination.Screen.Upselling.StandaloneMailbox.route) {
-        UpsellingScreen(
-            bottomSheetActions = actions,
-            entryPoint = UpsellingEntryPoint.Feature.Mailbox
-        )
-    }
-    composable(route = Destination.Screen.Upselling.StandaloneNavbar.route) {
-        UpsellingScreen(
-            bottomSheetActions = actions,
-            entryPoint = UpsellingEntryPoint.Feature.Navbar
+class TrackSidebarUpsellingClick @Inject constructor(
+    private val upsellingTelemetryRepository: UpsellingTelemetryRepository
+) {
+
+    operator fun invoke() {
+        upsellingTelemetryRepository.trackEvent(
+            UpsellingTelemetryEventType.Base.NavbarButtonTap,
+            UpsellingEntryPoint.Feature.Navbar
         )
     }
 }

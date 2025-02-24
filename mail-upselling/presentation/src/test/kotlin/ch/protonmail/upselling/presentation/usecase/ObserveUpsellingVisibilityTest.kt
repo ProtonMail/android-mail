@@ -304,7 +304,8 @@ internal class ObserveUpsellingVisibilityTest {
             UpsellingEntryPoint.Feature.Folders -> every { isUpsellingFoldersEnabled.invoke() } returns value
 
             UpsellingEntryPoint.Feature.Labels -> every { isUpsellingLabelsEnabled.invoke() } returns value
-            UpsellingEntryPoint.Feature.Mailbox -> {
+            UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.Navbar -> {
                 val featureFlag = FeatureFlag(
                     userId = null,
                     featureId = mockk(),

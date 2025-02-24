@@ -37,6 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import ch.protonmail.android.mailcommon.domain.AppInformation
 import ch.protonmail.android.maillabel.presentation.MailLabelsUiModel
 import ch.protonmail.android.maillabel.presentation.sidebar.SidebarLabelAction
+import ch.protonmail.android.maillabel.presentation.sidebar.SidebarUpsellItem
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarFolderItems
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarLabelItems
 import ch.protonmail.android.maillabel.presentation.sidebar.sidebarSystemLabelItems
@@ -82,8 +83,13 @@ fun Sidebar(
         is Enabled -> {
             viewState.isSubscriptionVisible = viewModelState.canChangeSubscription
             viewState.mailLabels = viewModelState.mailLabels
+            viewState.showUpsellButton = viewModelState.showUpsell
             val actions = navigationActions.toSidebarActions(
                 close = ::close,
+                onUpsellAction = {
+                    viewModel.submit(SidebarViewModel.Action.UpsellClicked)
+                    navigationActions.onUpsell()
+                },
                 onLabelAction = { sidebarLabelAction ->
                     when (sidebarLabelAction) {
                         is SidebarLabelAction.ViewList -> {
@@ -151,11 +157,19 @@ fun Sidebar(
         colors = ProtonTheme.colors.sidebarColors ?: ProtonTheme.colors
     ) {
         UpgradeStorageInfo(
-            modifier = modifier
+            modifier = Modifier
                 .background(sidebarColors.backgroundNorm),
             onUpgradeClicked = { actions.onSubscription() },
             withTopDivider = true,
             withBottomDivider = true
+        )
+        SidebarUpsellItem(
+            show = viewState.showUpsellButton,
+            onClick = {
+                actions.onUpsell()
+            },
+            modifier = Modifier
+                .background(sidebarColors.backgroundNorm)
         )
     }
 
@@ -219,6 +233,7 @@ object Sidebar {
     data class Actions(
         val onSignIn: (UserId?) -> Unit,
         val onSignOut: (UserId?) -> Unit,
+        val onUpsell: () -> Unit,
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,
@@ -233,6 +248,7 @@ object Sidebar {
             val Empty = Actions(
                 onSignIn = {},
                 onSignOut = {},
+                onUpsell = {},
                 onRemoveAccount = {},
                 onSwitchAccount = {},
                 onSettings = {},
@@ -247,6 +263,7 @@ object Sidebar {
     data class NavigationActions(
         val onSignIn: (UserId?) -> Unit,
         val onSignOut: (UserId?) -> Unit,
+        val onUpsell: () -> Unit,
         val onRemoveAccount: (UserId?) -> Unit,
         val onSwitchAccount: (UserId) -> Unit,
         val onSettings: () -> Unit,
@@ -259,13 +276,21 @@ object Sidebar {
         val onReportBug: () -> Unit
     ) {
 
-        fun toSidebarActions(close: () -> Unit, onLabelAction: (SidebarLabelAction) -> Unit) = Actions(
+        fun toSidebarActions(
+            close: () -> Unit,
+            onLabelAction: (SidebarLabelAction) -> Unit,
+            onUpsellAction: () -> Unit
+        ) = Actions(
             onSignIn = {
                 onSignIn(it)
                 close()
             },
             onSignOut = {
                 onSignOut(it)
+                close()
+            },
+            onUpsell = {
+                onUpsellAction()
                 close()
             },
             onRemoveAccount = {
@@ -303,6 +328,7 @@ object Sidebar {
             val Empty = NavigationActions(
                 onSignIn = {},
                 onSignOut = {},
+                onUpsell = {},
                 onRemoveAccount = {},
                 onSwitchAccount = {},
                 onSettings = {},
@@ -336,7 +362,8 @@ fun PreviewSidebar() {
             viewState = SidebarState(
                 hasPrimaryAccount = false,
                 isSubscriptionVisible = true,
-                mailLabels = MailLabelsUiModel.PreviewForTesting
+                mailLabels = MailLabelsUiModel.PreviewForTesting,
+                showUpsell = true
             ),
             actions = Sidebar.Actions.Empty
         )

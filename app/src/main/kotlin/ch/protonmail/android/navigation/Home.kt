@@ -689,6 +689,7 @@ private fun buildSidebarActions(navController: NavHostController, launcherAction
     Sidebar.NavigationActions(
         onSignIn = launcherActions.onSignIn,
         onSignOut = { navController.navigate(Dialog.SignOut(it)) },
+        onUpsell = { navController.navigate(Screen.Upselling.StandaloneNavbar.route) },
         onRemoveAccount = { navController.navigate(Dialog.RemoveAccount(it)) },
         onSwitchAccount = launcherActions.onSwitchAccount,
         onSettings = { navController.navigate(Screen.Settings.route) },

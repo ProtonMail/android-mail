@@ -69,7 +69,8 @@ class ObserveUpsellingVisibility @Inject constructor(
             UpsellingEntryPoint.Feature.ContactGroups -> isUpsellingContactGroupsEnabled()
             UpsellingEntryPoint.Feature.Folders -> isUpsellingFoldersEnabled()
             UpsellingEntryPoint.Feature.Labels -> isUpsellingLabelsEnabled()
-            UpsellingEntryPoint.Feature.Mailbox -> {
+            UpsellingEntryPoint.Feature.Mailbox,
+            UpsellingEntryPoint.Feature.Navbar -> {
                 observeOneClickUpsellingEnabled(null).firstOrNull()?.value == true
             }
 

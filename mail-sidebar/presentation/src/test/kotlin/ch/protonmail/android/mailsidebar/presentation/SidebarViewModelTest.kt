@@ -39,6 +39,8 @@ import ch.protonmail.android.mailsettings.domain.usecase.ObserveFolderColorSetti
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.Action.LabelAction
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Disabled
 import ch.protonmail.android.mailsidebar.presentation.SidebarViewModel.State.Enabled
+import ch.protonmail.android.mailsidebar.presentation.usecase.ObserveSidebarUpsellingVisibility
+import ch.protonmail.android.mailsidebar.presentation.usecase.TrackSidebarUpsellingClick
 import ch.protonmail.android.testdata.user.UserIdTestData
 import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.coEvery
@@ -92,6 +94,10 @@ class SidebarViewModelTest {
     private val paymentManager = mockk<PaymentManager> {
         coEvery { this@mockk.isSubscriptionAvailable(userId = any()) } returns true
     }
+    private val observeSidebarUpsellingVisibility = mockk<ObserveSidebarUpsellingVisibility> {
+        coEvery { this@mockk.invoke() } returns flowOf(false)
+    }
+    private val trackUpsellingClick = mockk<TrackSidebarUpsellingClick>()
 
     private lateinit var sidebarViewModel: SidebarViewModel
 
@@ -106,7 +112,9 @@ class SidebarViewModelTest {
             observePrimaryUser = observePrimaryUser,
             observeFolderColors = observeFolderColors,
             observeMailLabels = observeMailboxLabels,
-            observeUnreadCounters = observeUnreadCounters
+            observeUnreadCounters = observeUnreadCounters,
+            observeSidebarUpsellingVisibility = observeSidebarUpsellingVisibility,
+            trackUpsellingClick = trackUpsellingClick
         )
     }
 
@@ -123,6 +131,7 @@ class SidebarViewModelTest {
             // Then
             val actual = awaitItem() as Enabled
             val expected = Enabled(
+                showUpsell = false,
                 selectedMailLabelId = Inbox,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
@@ -144,6 +153,7 @@ class SidebarViewModelTest {
             // Then
             val actual = awaitItem() as Enabled
             val expected = Enabled(
+                showUpsell = false,
                 selectedMailLabelId = Inbox,
                 canChangeSubscription = true,
                 mailLabels = MailLabelsUiModel.Loading
@@ -165,6 +175,7 @@ class SidebarViewModelTest {
             // Then
             val actual = awaitItem() as Enabled
             val expected = Enabled(
+                showUpsell = false,
                 selectedMailLabelId = Inbox,
                 canChangeSubscription = false,
                 mailLabels = MailLabelsUiModel.Loading
@@ -206,5 +217,28 @@ class SidebarViewModelTest {
 
         // Then
         coVerify { updateLabelExpandedState.invoke(UserTestData.Primary.userId, mailLabelId, true) }
+    }
+
+    @Test
+    fun `emit upsell when upselling enabled`() = runTest {
+        sidebarViewModel.state.test {
+            // Initial state is Disabled.
+            assertEquals(Disabled, awaitItem())
+
+            // Given
+            coEvery { paymentManager.isSubscriptionAvailable(UserIdTestData.adminUserId) } returns false
+            coEvery { observeSidebarUpsellingVisibility.invoke() } returns flowOf(true)
+            primaryUser.emit(UserTestData.orgMemberUser)
+
+            // Then
+            val actual = awaitItem() as Enabled
+            val expected = Enabled(
+                showUpsell = true,
+                selectedMailLabelId = Inbox,
+                canChangeSubscription = false,
+                mailLabels = MailLabelsUiModel.Loading
+            )
+            assertEquals(expected, actual)
+        }
     }
 }

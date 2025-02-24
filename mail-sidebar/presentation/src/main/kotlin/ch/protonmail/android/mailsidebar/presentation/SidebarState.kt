@@ -40,10 +40,12 @@ class SidebarState(
     val accountPrimaryState: AccountPrimaryState = AccountPrimaryState(),
     val hasPrimaryAccount: Boolean = true,
     val showContacts: Boolean = true,
+    showUpsell: Boolean = false,
     mailLabels: MailLabelsUiModel = MailLabelsUiModel.Loading,
     isSubscriptionVisible: Boolean = true
 ) {
 
+    var showUpsellButton by mutableStateOf(showUpsell)
     var mailLabels by mutableStateOf(mailLabels)
     var isSubscriptionVisible by mutableStateOf(isSubscriptionVisible)
 }

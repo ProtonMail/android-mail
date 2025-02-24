@@ -75,7 +75,8 @@ class DynamicPlanEntitlementsUiMapper @Inject constructor(
         UpsellingEntryPoint.Feature.ContactGroups -> ContactGroupsPlusOverriddenEntitlements
         UpsellingEntryPoint.Feature.Folders -> FoldersPlusOverriddenEntitlements
         UpsellingEntryPoint.Feature.Labels -> LabelsPlusOverriddenEntitlements
-        UpsellingEntryPoint.Feature.Mailbox -> MailboxPlusOverriddenEntitlements
+        UpsellingEntryPoint.Feature.Mailbox,
+        UpsellingEntryPoint.Feature.Navbar -> MailboxPlusOverriddenEntitlements
         UpsellingEntryPoint.Feature.MobileSignature -> MobileSignaturePlusOverriddenEntitlements
         UpsellingEntryPoint.Feature.AutoDelete -> AutoDeletePlusOverriddenEntitlements
         UpsellingEntryPoint.PostOnboarding -> OnboardingPlusOverriddenEntitlements

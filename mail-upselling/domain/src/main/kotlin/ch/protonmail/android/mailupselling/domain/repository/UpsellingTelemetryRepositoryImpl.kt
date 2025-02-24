@@ -79,6 +79,8 @@ class UpsellingTelemetryRepositoryImpl @Inject constructor(
 
         when (event) {
             Base.MailboxButtonTap -> UpsellingTelemetryEvent.UpsellButtonTapped(dimensions).toTelemetryEvent()
+
+            Base.NavbarButtonTap -> UpsellingTelemetryEvent.UpsellButtonTapped(dimensions).toTelemetryEvent()
         }
     }
 
