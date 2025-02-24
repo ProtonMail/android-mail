@@ -134,7 +134,8 @@ internal fun ComposerForm2(
                     RespondInlineButton(actions.onRespondInline)
                     BodyHtmlQuote(
                         value = quotedHtmlContent.value,
-                        modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody)
+                        modifier = maxWidthModifier.testTag(ComposerTestTags.MessageHtmlQuotedBody),
+                        shouldRestrictWebViewHeight = false // See MAILANDR-2527
                     )
                 }
             }
