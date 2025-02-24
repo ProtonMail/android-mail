@@ -41,6 +41,9 @@ object ActionUiModelSample {
     val MarkUnread: ActionUiModel =
         build(Action.MarkUnread)
 
+    val CustomizeToolbar: ActionUiModel =
+        build(Action.OpenCustomizeToolbar)
+
     val Trash: ActionUiModel =
         build(Action.Trash)
 

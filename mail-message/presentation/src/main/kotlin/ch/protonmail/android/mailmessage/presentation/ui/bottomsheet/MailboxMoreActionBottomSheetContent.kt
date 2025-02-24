@@ -101,6 +101,7 @@ private fun callbackForAction(action: Action, actionCallbacks: MoreActionBottomS
         Action.Move -> actionCallbacks.onMove
         Action.Trash -> actionCallbacks.onTrash
         Action.Delete -> actionCallbacks.onTrash
+        Action.OpenCustomizeToolbar -> actionCallbacks.onOpenCustomizeToolbar
         Action.Reply,
         Action.ReplyAll,
         Action.Forward,
@@ -130,7 +131,8 @@ object MoreActionBottomSheetContent {
         val onUnRead: () -> Unit,
         val onTrash: () -> Unit,
         val onMove: () -> Unit,
-        val onLabel: () -> Unit
+        val onLabel: () -> Unit,
+        val onOpenCustomizeToolbar: () -> Unit
     ) {
 
         companion object {
@@ -144,7 +146,8 @@ object MoreActionBottomSheetContent {
                 onRead = {},
                 onUnRead = {},
                 onLabel = {},
-                onTrash = {}
+                onTrash = {},
+                onOpenCustomizeToolbar = {}
             )
         }
     }

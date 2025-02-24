@@ -106,6 +106,7 @@ import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelId
 import ch.protonmail.android.mailpagination.presentation.paging.EmptyLabelInProgressSignal
 import ch.protonmail.android.mailsettings.data.usecase.UpdateAutoDeleteSpamAndTrashDays
 import ch.protonmail.android.mailsettings.domain.annotations.AutodeleteFeatureEnabled
+import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAlmostAllMailSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
@@ -190,7 +191,8 @@ class MailboxViewModel @Inject constructor(
     private val shouldShowRatingBooster: ShouldShowRatingBooster,
     private val showRatingBooster: ShowRatingBooster,
     private val recordRatingBoosterTriggered: RecordRatingBoosterTriggered,
-    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal
+    private val emptyLabelInProgressSignal: EmptyLabelInProgressSignal,
+    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -979,7 +981,7 @@ class MailboxViewModel @Inject constructor(
         emitNewStateFrom(
             MailboxEvent.MailboxBottomSheetEvent(
                 MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
-                    listOf(
+                    listOfNotNull(
                         Action.MarkRead,
                         Action.MarkUnread,
                         Action.Trash,
@@ -988,7 +990,8 @@ class MailboxViewModel @Inject constructor(
                         Action.Spam,
                         Action.Star,
                         Action.Unstar,
-                        Action.Archive
+                        Action.Archive,
+                        Action.OpenCustomizeToolbar.takeIf { showCustomizeToolbarAction }
                     )
                         .map { actionUiModelMapper.toUiModel(it) }
                         .toImmutableList()

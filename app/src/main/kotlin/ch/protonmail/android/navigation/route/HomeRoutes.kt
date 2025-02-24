@@ -57,6 +57,7 @@ import ch.protonmail.android.mailmessage.domain.model.MessageId
 import ch.protonmail.android.mailsettings.presentation.settings.MainSettingsScreen
 import ch.protonmail.android.mailupselling.presentation.ui.postsubscription.PostSubscriptionScreen
 import ch.protonmail.android.navigation.model.Destination
+import ch.protonmail.android.navigation.model.Destination.Screen
 import ch.protonmail.android.navigation.model.SavedStateKey
 import me.proton.core.compose.navigation.get
 import me.proton.core.domain.entity.UserId
@@ -107,7 +108,10 @@ internal fun NavGraphBuilder.addMailbox(
                 onNavigateToStandaloneUpselling = {
                     navController.navigate(Destination.Screen.Upselling.Standalone.route)
                 },
-                onRequestNotificationPermission = onRequestNotificationPermission
+                onRequestNotificationPermission = onRequestNotificationPermission,
+                navigateToCustomizeToolbar = {
+                    navController.navigate(Screen.CustomizeToolbar.route)
+                }
             ),
             drawerState = drawerState
         )

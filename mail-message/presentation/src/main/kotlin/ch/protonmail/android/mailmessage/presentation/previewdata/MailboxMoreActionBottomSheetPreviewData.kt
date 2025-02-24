@@ -54,6 +54,12 @@ object MailboxMoreActionBottomSheetPreviewData {
                 Action.Move.iconDrawable(),
                 Action.Move.description(),
                 Action.Move.contentDescription()
+            ),
+            ActionUiModel(
+                Action.OpenCustomizeToolbar,
+                Action.OpenCustomizeToolbar.iconDrawable(),
+                Action.OpenCustomizeToolbar.description(),
+                Action.OpenCustomizeToolbar.contentDescription()
             )
         ).toImmutableList()
     )

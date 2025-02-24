@@ -46,12 +46,16 @@ internal class DetailMoreActionsBottomSheetReducerTest(
     @Before
     fun setup() {
         every {
-            mapper.mapMoreActionUiModels()
+            mapper.mapMoreActionUiModels(true)
         } returns expectedSingleParticipantAction
 
         every {
-            mapper.mapMoreActionUiModels()
+            mapper.mapMoreActionUiModels(true)
         } returns expectedMultipleParticipantAction
+
+        every {
+            mapper.mapMoreActionUiModels(false)
+        } returns expectedActionsNoToolbar
 
         every {
             mapper.toHeaderUiModel(ExpectedSender, ExpectedSubject, ExpectedMessageId)
@@ -84,14 +88,25 @@ internal class DetailMoreActionsBottomSheetReducerTest(
             messageId = ExpectedMessageId
         )
         private val expectedSingleParticipantAction =
-            listOf(ActionUiModelSample.Reply, ActionUiModelSample.ReportPhishing).toImmutableList()
+            listOf(
+                ActionUiModelSample.Reply, ActionUiModelSample.ReportPhishing,
+                ActionUiModelSample.CustomizeToolbar
+            ).toImmutableList()
         private val expectedMultipleParticipantAction =
-            listOf(ActionUiModelSample.Forward, ActionUiModelSample.ReportPhishing).toImmutableList()
+            listOf(
+                ActionUiModelSample.Forward, ActionUiModelSample.ReportPhishing,
+                ActionUiModelSample.CustomizeToolbar
+            ).toImmutableList()
+        private val expectedActionsNoToolbar =
+            listOf(
+                ActionUiModelSample.Reply, ActionUiModelSample.ReportPhishing
+            ).toImmutableList()
 
         private val transitionsFromLoadingState = listOf(
             TestInput(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    showCustomizeToolbarButton = true,
                     affectingConversation = false,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
@@ -110,6 +125,7 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                 currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
                     affectingConversation = false,
+                    showCustomizeToolbarButton = true,
                     messageSender = ExpectedSender,
                     messageSubject = ExpectedSubject,
                     messageId = ExpectedMessageId,
@@ -120,6 +136,24 @@ internal class DetailMoreActionsBottomSheetReducerTest(
                         isAffectingConversation = false,
                         messageDataUiModel = expectedUiModel,
                         replyActionsUiModel = expectedMultipleParticipantAction
+                    )
+                )
+            ),
+            TestInput(
+                currentState = BottomSheetState(DetailMoreActionsBottomSheetState.Loading),
+                operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    affectingConversation = false,
+                    showCustomizeToolbarButton = false,
+                    messageSender = ExpectedSender,
+                    messageSubject = ExpectedSubject,
+                    messageId = ExpectedMessageId,
+                    participantsCount = SingleParticipantCount
+                ),
+                expectedState = BottomSheetState(
+                    contentState = DetailMoreActionsBottomSheetState.Data(
+                        isAffectingConversation = false,
+                        messageDataUiModel = expectedUiModel,
+                        replyActionsUiModel = expectedActionsNoToolbar
                     )
                 )
             )

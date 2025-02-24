@@ -70,7 +70,34 @@ internal class DetailMoreActionsBottomSheetUiMapperTest {
         ).toImmutableList()
 
         // When
-        val actual = mapper.mapMoreActionUiModels()
+        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = false)
+
+        // Then
+        assertEquals(expectedList, actual)
+    }
+
+    @Test
+    fun `should include customize toolbar when passed true`() {
+        // Given
+        val expectedList = listOf(
+            ActionUiModel(Action.Reply),
+            ActionUiModel(Action.ReplyAll),
+            ActionUiModel(Action.Forward),
+            ActionUiModel(Action.MarkUnread),
+            ActionUiModel(Action.Label),
+            ActionUiModel(Action.ViewInLightMode),
+            ActionUiModel(Action.ViewInDarkMode),
+            ActionUiModel(Action.Trash),
+            ActionUiModel(Action.Archive),
+            ActionUiModel(Action.Spam),
+            ActionUiModel(Action.Move),
+            ActionUiModel(Action.Print),
+            ActionUiModel(Action.OpenCustomizeToolbar),
+            ActionUiModel(Action.ReportPhishing)
+        ).toImmutableList()
+
+        // When
+        val actual = mapper.mapMoreActionUiModels(showCustomizeToolbar = true)
 
         // Then
         assertEquals(expectedList, actual)

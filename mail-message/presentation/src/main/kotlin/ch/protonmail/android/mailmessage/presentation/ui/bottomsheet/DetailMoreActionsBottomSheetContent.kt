@@ -119,8 +119,10 @@ fun DetailMoreActionsBottomSheetContent(
                             } else {
                                 null
                             }
-                            convCallback?.invoke() ?: callbackForAction(actionItem.action, actionCallbacks)
-                                .invoke(MessageId(uiModel.messageId))
+                            convCallback?.invoke()
+                                ?: callbackForAction(actionItem.action, actionCallbacks)
+                                    ?.invoke(MessageId(uiModel.messageId))
+                                ?: customCallbackForAction(actionItem.action, actionCallbacks).invoke()
                         }
                         .padding(ProtonDimens.DefaultSpacing)
                 ) {
@@ -144,7 +146,7 @@ fun DetailMoreActionsBottomSheetContent(
 private fun callbackForAction(
     action: Action,
     actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
-): (MessageId) -> Unit = when (action) {
+): ((MessageId) -> Unit)? = when (action) {
     Action.Reply -> actionCallbacks.onReply
     Action.ReplyAll -> actionCallbacks.onReplyAll
     Action.Forward -> actionCallbacks.onForward
@@ -159,9 +161,7 @@ private fun callbackForAction(
     Action.Print -> actionCallbacks.onPrint
     Action.ReportPhishing -> actionCallbacks.onReportPhishing
 
-    else -> {
-        { Timber.d("Action not handled $action.") }
-    }
+    else -> null
 }
 
 private fun conversationCallbackForAction(
@@ -181,6 +181,15 @@ private fun conversationCallbackForAction(
     Action.Move -> actionCallbacks.onMoveConversation
     Action.Print -> actionCallbacks.onPrintLastMessage
     Action.ReportPhishing -> null
+
+    else -> null
+}
+
+private fun customCallbackForAction(
+    action: Action,
+    actionCallbacks: DetailMoreActionsBottomSheetContent.Actions
+): () -> Unit = when (action) {
+    Action.OpenCustomizeToolbar -> actionCallbacks.onOpenCustomizeToolbar
 
     else -> {
         { Timber.d("Action not handled $action.") }
@@ -215,7 +224,8 @@ object DetailMoreActionsBottomSheetContent {
         val onMoveConversation: () -> Unit,
         val onPrint: (MessageId) -> Unit,
         val onPrintLastMessage: () -> Unit,
-        val onReportPhishing: (MessageId) -> Unit
+        val onReportPhishing: (MessageId) -> Unit,
+        val onOpenCustomizeToolbar: () -> Unit
     )
 }
 
@@ -235,7 +245,8 @@ private fun BottomSheetContentPreview() {
                     ActionUiModel(Action.Reply),
                     ActionUiModel(Action.ReplyAll),
                     ActionUiModel(Action.Forward),
-                    ActionUiModel(Action.ReportPhishing)
+                    ActionUiModel(Action.ReportPhishing),
+                    ActionUiModel(Action.OpenCustomizeToolbar)
                 ).toImmutableList()
             ),
             actions = emptyActions
@@ -290,5 +301,6 @@ private val emptyActions = DetailMoreActionsBottomSheetContent.Actions(
     onMoveConversation = {},
     onMoveToTrashConversation = {},
     onMarkUnreadConversation = {},
-    onPrintLastMessage = {}
+    onPrintLastMessage = {},
+    onOpenCustomizeToolbar = {}
 )

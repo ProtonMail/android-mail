@@ -73,6 +73,8 @@
     <string name="action_more_content_description">More</string>
     <string name="common_error_loading_actions">Failed loading actions</string>
     <string name="yesterday">Yesterday</string>
+    <string name="action_open_customize_toolbar">Customize toolbar</string>
+    <string name="action_open_customize_toolbar_description">Customize toolbar</string>
 
     <string name="auto_delete_banner_text_activate_trash">Automatically delete messages that have been in trash for more than 30 days.</string>
     <string name="auto_delete_banner_text_activate_spam">Automatically delete messages that have been in spam for more than 30 days.</string>

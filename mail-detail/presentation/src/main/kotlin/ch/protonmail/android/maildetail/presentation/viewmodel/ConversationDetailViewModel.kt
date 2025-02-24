@@ -125,6 +125,7 @@ import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsB
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.LabelAsBottomSheetState
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetEntryPoint
 import ch.protonmail.android.mailmessage.presentation.model.bottomsheet.MoveToBottomSheetState
+import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
 import ch.protonmail.android.mailsettings.domain.model.AutoDeleteSetting
 import ch.protonmail.android.mailsettings.domain.model.FolderColorSettings
 import ch.protonmail.android.mailsettings.domain.usecase.ObserveAutoDeleteSetting
@@ -218,7 +219,8 @@ class ConversationDetailViewModel @Inject constructor(
     private val observeMailLabels: ObserveMailLabels,
     private val shouldMessageBeHidden: ShouldMessageBeHidden,
     private val observeCustomizeToolbarSpotlight: ObserveCustomizeToolbarSpotlight,
-    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight
+    private val updateCustomizeToolbarSpotlight: UpdateCustomizeToolbarSpotlight,
+    @CustomizeToolbarFeatureEnabled private val showCustomizeToolbarAction: Boolean
 ) : ViewModel() {
 
     private val primaryUserId = observePrimaryUserId()
@@ -854,6 +856,7 @@ class ConversationDetailViewModel @Inject constructor(
 
             val event = ConversationDetailEvent.ConversationBottomSheetEvent(
                 DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    showCustomizeToolbarButton = showCustomizeToolbarAction,
                     affectingConversation = affectingConversation,
                     messageSender = sender,
                     messageSubject = message.subject,

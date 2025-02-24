@@ -163,6 +163,7 @@ import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.label.domain.entity.LabelId
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -364,6 +365,8 @@ class ConversationDetailViewModelTest {
     }
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+
     private val testDispatcher: TestDispatcher by lazy {
         StandardTestDispatcher().apply { Dispatchers.setMain(this) }
     }
@@ -417,13 +420,15 @@ class ConversationDetailViewModelTest {
             moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
             observeMailLabels = observeMailLabels,
             observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
-            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
+            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight,
+            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
         )
     }
 
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        customizeToolbarFeatureEnabled(true)
     }
 
     @AfterTest
@@ -2921,5 +2926,11 @@ class ConversationDetailViewModelTest {
     private suspend fun ReceiveTurbine<ConversationDetailState>.lastEmittedItem(): ConversationDetailState {
         val events = cancelAndConsumeRemainingEvents()
         return (events.last() as Event.Item).value
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
     }
 }

@@ -315,7 +315,8 @@ fun MailboxScreen(
                         onLabel = { viewModel.submit(MailboxViewAction.RequestLabelAsBottomSheet) },
                         onRead = { viewModel.submit(MailboxViewAction.MarkAsRead) },
                         onUnRead = { viewModel.submit(MailboxViewAction.MarkAsUnread) },
-                        onMove = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) }
+                        onMove = { viewModel.submit(MailboxViewAction.RequestMoveToBottomSheet) },
+                        onOpenCustomizeToolbar = actions.navigateToCustomizeToolbar
                     )
                 )
 
@@ -450,7 +451,8 @@ fun MailboxScreen(
                     onUnstar = actions.unstar,
                     onReply = { Timber.e("mailbox onReply clicked - unhandled") },
                     onReplyAll = { Timber.e("mailbox onReplyAll clicked - unhandled") },
-                    onForward = { Timber.e("mailbox onForward clicked - unhandled") }
+                    onForward = { Timber.e("mailbox onForward clicked - unhandled") },
+                    onCustomizeToolbar = actions.navigateToCustomizeToolbar
                 )
             )
         },
@@ -1116,7 +1118,8 @@ object MailboxScreen {
         val onAutoDeleteShowUpselling: () -> Unit,
         val onAutoDeleteDialogShow: () -> Unit,
         val onAutoDeleteDialogAction: (Boolean) -> Unit,
-        val onRequestNotificationPermission: () -> Unit
+        val onRequestNotificationPermission: () -> Unit,
+        val navigateToCustomizeToolbar: () -> Unit
     ) {
 
         companion object {
@@ -1175,7 +1178,8 @@ object MailboxScreen {
                 onAutoDeleteDialogAction = {},
                 onAutoDeleteShowUpselling = {},
                 onAutoDeleteDialogShow = {},
-                onRequestNotificationPermission = {}
+                onRequestNotificationPermission = {},
+                navigateToCustomizeToolbar = {}
             )
         }
     }

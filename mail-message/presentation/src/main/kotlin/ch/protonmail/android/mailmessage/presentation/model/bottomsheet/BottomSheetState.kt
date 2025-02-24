@@ -122,12 +122,16 @@ sealed interface LabelAsBottomSheetState : BottomSheetContentState {
 
 sealed interface MailboxMoreActionsBottomSheetState : BottomSheetContentState {
 
-    data class Data(val actionUiModels: ImmutableList<ActionUiModel>) : MailboxMoreActionsBottomSheetState
+    data class Data(
+        val actionUiModels: ImmutableList<ActionUiModel>
+    ) : MailboxMoreActionsBottomSheetState
     object Loading : MailboxMoreActionsBottomSheetState
 
     sealed interface MailboxMoreActionsBottomSheetOperation : BottomSheetOperation
     sealed interface MailboxMoreActionsBottomSheetEvent : MailboxMoreActionsBottomSheetOperation {
-        data class ActionData(val actionUiModels: ImmutableList<ActionUiModel>) : MailboxMoreActionsBottomSheetEvent
+        data class ActionData(
+            val actionUiModels: ImmutableList<ActionUiModel>
+        ) : MailboxMoreActionsBottomSheetEvent
     }
 }
 
@@ -143,6 +147,7 @@ sealed interface DetailMoreActionsBottomSheetState : BottomSheetContentState {
     sealed interface MessageDetailMoreActionsBottomSheetOperation : BottomSheetOperation
     sealed interface MessageDetailMoreActionsBottomSheetEvent : MessageDetailMoreActionsBottomSheetOperation {
         data class DataLoaded(
+            val showCustomizeToolbarButton: Boolean,
             val affectingConversation: Boolean,
             val messageSender: String,
             val messageSubject: String,

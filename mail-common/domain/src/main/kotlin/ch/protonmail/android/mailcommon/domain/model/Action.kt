@@ -42,5 +42,6 @@ enum class Action {
     SavePdf,
     SenderEmails,
     SaveAttachments,
-    More
+    More,
+    OpenCustomizeToolbar
 }

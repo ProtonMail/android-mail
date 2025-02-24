@@ -39,7 +39,7 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
         messageId
     )
 
-    fun mapMoreActionUiModels(): ImmutableList<ActionUiModel> {
+    fun mapMoreActionUiModels(showCustomizeToolbar: Boolean): ImmutableList<ActionUiModel> {
         return mutableListOf<ActionUiModel>().apply {
             add(ActionUiModel(Action.Reply))
             add(ActionUiModel(Action.ReplyAll))
@@ -53,6 +53,9 @@ class DetailMoreActionsBottomSheetUiMapper @Inject constructor() {
             add(ActionUiModel(Action.Spam))
             add(ActionUiModel(Action.Move))
             add(ActionUiModel(Action.Print))
+            if (showCustomizeToolbar) {
+                add(ActionUiModel(Action.OpenCustomizeToolbar))
+            }
             add(ActionUiModel(Action.ReportPhishing))
         }.toImmutableList()
     }

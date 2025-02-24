@@ -237,7 +237,8 @@ fun MessageDetailScreen(
                         onPrintLastMessage = {},
                         onReplyConversation = {},
                         onForwardConversation = {},
-                        onReplyAllConversation = {}
+                        onReplyAllConversation = {},
+                        onOpenCustomizeToolbar = actions.navigateToCustomizeToolbar
                     )
                 )
 
@@ -329,7 +330,8 @@ fun MessageDetailScreen(
                         )
                     )
                 },
-                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked,
+                navigateToCustomizeToolbar = actions.navigateToCustomizeToolbar
             )
         )
     }
@@ -462,7 +464,8 @@ fun MessageDetailScreen(
                     onSavePdf = { Timber.d("message onSavePdf clicked") },
                     onSenderEmail = { Timber.d("message onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("message onSaveAttachments clicked") },
-                    onMore = { messageId?.let { actions.onMoreActionsClick(MessageId(it)) } }
+                    onMore = { messageId?.let { actions.onMoreActionsClick(MessageId(it)) } },
+                    onCustomizeToolbar = actions.navigateToCustomizeToolbar
                 )
             )
         }
@@ -684,7 +687,8 @@ object MessageDetailScreen {
         val onReportPhishing: (MessageId) -> Unit,
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
-        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit,
+        val navigateToCustomizeToolbar: () -> Unit
     ) {
 
         companion object {
@@ -725,7 +729,8 @@ object MessageDetailScreen {
                 onPrint = {},
                 onAvatarClicked = { _, _ -> },
                 onParticipantClicked = { _, _ -> },
-                onViewEntireMessageClicked = { _, _, _, _ -> }
+                onViewEntireMessageClicked = { _, _, _, _ -> },
+                navigateToCustomizeToolbar = {}
             )
         }
     }

@@ -294,6 +294,8 @@ class MailboxViewModelTest {
     private val emptyLabelInProgressSignal = mockk<EmptyLabelInProgressSignal>()
     private val provideIsAutodeleteFeatureEnabled = mockk<Provider<Boolean>>()
 
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+
     private val mailboxViewModel by lazy {
         MailboxViewModel(
             mailboxPagerFactory = pagerFactory,
@@ -341,7 +343,8 @@ class MailboxViewModelTest {
             emptyLabelInProgressSignal = emptyLabelInProgressSignal,
             observeAutoDeleteSetting = observeAutoDeleteSetting,
             updateAutoDeleteSpamAndTrashDays = updateAutoDeleteSpamAndTrashDays,
-            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get()
+            isAutodeleteFeatureEnabled = provideIsAutodeleteFeatureEnabled.get(),
+            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
         )
     }
 
@@ -349,6 +352,7 @@ class MailboxViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         mockkStatic(Log::class)
+        customizeToolbarFeatureEnabled(false)
         every { Log.isLoggable(any(), any()) } returns false
         autoDeleteFeatureEnabled(false)
     }
@@ -3649,6 +3653,52 @@ class MailboxViewModelTest {
     }
 
     @Test
+    fun `when more action bottom sheet is requested with FF disabled the toolbar action is skipped`() = runTest {
+        // Given
+        val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
+        val secondItem = unreadMailboxItemUiModel.copy(id = MessageIdSample.AlphaAppQAReport.id, showStar = false)
+        val selectedItemsList = listOf(item, secondItem)
+
+        val initialState = createMailboxDataState()
+        val expectedActionItems = listOf(
+            ActionUiModelSample.build(Action.MarkRead),
+            ActionUiModelSample.build(Action.MarkUnread),
+            ActionUiModelSample.build(Action.Trash),
+            ActionUiModelSample.build(Action.Move),
+            ActionUiModelSample.build(Action.Label),
+            ActionUiModelSample.build(Action.Spam),
+            ActionUiModelSample.build(Action.Star),
+            ActionUiModelSample.build(Action.Unstar),
+            ActionUiModelSample.build(Action.Archive)
+        )
+        val expectedBottomSheetContent = MailboxMoreActionsBottomSheetState.Data(
+            actionUiModels = expectedActionItems.toImmutableList()
+        )
+        val bottomSheetShownState =
+            createMailboxStateWithMoreActionBottomSheet(selectedItemsList, expectedBottomSheetContent)
+        val intermediateState = MailboxStateSampleData.createSelectionMode(
+            listOf(item, secondItem),
+            currentMailLabel = MailLabel.System(MailLabelId.System.Trash)
+        )
+        expectViewModeForCurrentLocation(NoConversationGrouping)
+        expectedSelectedLabelCountStateChange(initialState)
+        returnExpectedStateForBottomBarEvent(expectedState = intermediateState)
+        returnExpectedStateWhenEnterSelectionMode(initialState, item, intermediateState)
+        expectedMoreActionBottomSheetRequestedStateChange(expectedActionItems, bottomSheetShownState)
+
+
+        mailboxViewModel.state.test {
+            awaitItem() // First emission for selected user
+
+            // When + Then
+            mailboxViewModel.submit(MailboxViewAction.OnItemAvatarClicked(item))
+            assertEquals(intermediateState, awaitItem())
+            mailboxViewModel.submit(MailboxViewAction.RequestMoreActionsBottomSheet)
+            assertEquals(bottomSheetShownState, awaitItem())
+        }
+    }
+
+    @Test
     fun `when more action bottom sheet is requested with all items starred then unstar action is shown`() = runTest {
         // Given
         val item = readMailboxItemUiModel.copy(id = MessageIdSample.Invoice.id, showStar = true)
@@ -3986,7 +4036,6 @@ class MailboxViewModelTest {
             MailboxViewAction.MoveToConfirmed(MoveToBottomSheetEntryPoint.SelectionMode),
             initialState
         )
-
 
         mailboxViewModel.state.test {
             awaitItem() // First emission for selected user
@@ -5523,6 +5572,12 @@ class MailboxViewModelTest {
     private fun autoDeleteFeatureEnabled(value: Boolean) {
         every {
             provideIsAutodeleteFeatureEnabled.get()
+        } returns value
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
         } returns value
     }
 }

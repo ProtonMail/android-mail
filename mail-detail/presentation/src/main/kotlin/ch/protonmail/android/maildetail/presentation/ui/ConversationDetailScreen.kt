@@ -283,7 +283,8 @@ fun ConversationDetailScreen(
                         },
                         onForwardConversation = {
                             viewModel.submit(ConversationDetailViewAction.ForwardLastMessage)
-                        }
+                        },
+                        onOpenCustomizeToolbar = actions.navigateToCustomizeToolbar
                     )
                 )
 
@@ -429,7 +430,8 @@ fun ConversationDetailScreen(
                 onMoreActionsBottomBarClick = {
                     viewModel.submit(ConversationDetailViewAction.RequestConversationMoreActionsBottomSheet)
                 },
-                onViewEntireMessageClicked = actions.onViewEntireMessageClicked
+                onViewEntireMessageClicked = actions.onViewEntireMessageClicked,
+                navigateToCustomizeToolbar = actions.navigateToCustomizeToolbar
             ),
             scrollToMessageId = state.scrollToMessage?.id
         )
@@ -599,7 +601,8 @@ fun ConversationDetailScreen(
                     onSavePdf = { Timber.d("conversation onSavePdf clicked") },
                     onSenderEmail = { Timber.d("conversation onSenderEmail clicked") },
                     onSaveAttachments = { Timber.d("conversation onSaveAttachments clicked") },
-                    onMore = actions.onMoreActionsBottomBarClick
+                    onMore = actions.onMoreActionsBottomBarClick,
+                    onCustomizeToolbar = actions.navigateToCustomizeToolbar
                 )
             )
         }
@@ -922,7 +925,8 @@ object ConversationDetailScreen {
         val onAvatarClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onParticipantClicked: (ParticipantUiModel, AvatarUiModel) -> Unit,
         val onTrashedMessagesBannerClick: () -> Unit,
-        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit
+        val onViewEntireMessageClicked: (MessageId, Boolean, Boolean, ViewModePreference) -> Unit,
+        val navigateToCustomizeToolbar: () -> Unit
     ) {
 
         companion object {
@@ -973,7 +977,8 @@ object ConversationDetailScreen {
                 onAvatarClicked = { _, _ -> },
                 onParticipantClicked = { _, _ -> },
                 onTrashedMessagesBannerClick = {},
-                onViewEntireMessageClicked = { _, _, _, _ -> }
+                onViewEntireMessageClicked = { _, _, _, _ -> },
+                navigateToCustomizeToolbar = {}
             )
         }
     }

@@ -218,6 +218,7 @@ import kotlinx.coroutines.test.setMain
 import me.proton.core.contact.domain.entity.Contact
 import me.proton.core.network.domain.NetworkManager
 import me.proton.core.network.domain.NetworkStatus
+import javax.inject.Provider
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -464,6 +465,8 @@ class ConversationDetailViewModelIntegrationTest {
     }
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+
     private val networkManager = mockk<NetworkManager>()
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
 
@@ -473,7 +476,7 @@ class ConversationDetailViewModelIntegrationTest {
 
         mockkStatic(Formatter::formatShortFileSize)
         every { Formatter.formatShortFileSize(any(), any()) } returns "0"
-
+        customizeToolbarFeatureEnabled(true)
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockk()
     }
@@ -1534,6 +1537,52 @@ class ConversationDetailViewModelIntegrationTest {
                 assertIs<DetailMoreActionsBottomSheetState.Data>(lastEmittedItem().bottomSheetState?.contentState)
             }
         }
+
+    @Test
+    fun `verify bottom sheet does not include customize toolbar if usecase returns false`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        coEvery {
+            observeMessage(userId = userId, messageId = messageId)
+        } returns flowOf(MessageSample.AugWeatherForecast.right())
+
+        customizeToolbarFeatureEnabled(false)
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            advanceUntilIdle()
+
+            // Then
+            val item = lastEmittedItem().bottomSheetState
+            val data = item?.contentState as? DetailMoreActionsBottomSheetState.Data
+            assertEquals(false, data?.replyActionsUiModel?.any { it.action == Action.OpenCustomizeToolbar })
+        }
+    }
+
+    @Test
+    fun `verify bottom sheet includes customize toolbar if usecase returns true`() = runTest {
+        // Given
+        val messageId = MessageId("messageId")
+        coEvery {
+            observeMessage(userId = userId, messageId = messageId)
+        } returns flowOf(MessageSample.AugWeatherForecast.right())
+
+        customizeToolbarFeatureEnabled(true)
+
+        // When
+        val viewModel = buildConversationDetailViewModel()
+        viewModel.state.test {
+            viewModel.submit(ConversationDetailViewAction.RequestMoreActionsBottomSheet(messageId))
+            advanceUntilIdle()
+
+            // Then
+            val item = lastEmittedItem().bottomSheetState
+            val data = item?.contentState as? DetailMoreActionsBottomSheetState.Data
+            assertEquals(true, data?.replyActionsUiModel?.any { it.action == Action.OpenCustomizeToolbar })
+        }
+    }
 
     @Test
     fun `verify no bottom sheet data is emitted when more actions bottom sheet is requested and loading fails`() =
@@ -2969,7 +3018,8 @@ class ConversationDetailViewModelIntegrationTest {
         observeMailLabels = observeMailLabels,
         moveRemoteMessageAndLocalConversation = moveRemoteMessageAndLocalConversation,
         observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
-        updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
+        updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight,
+        showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
     )
 
     private fun aMessageAttachment(id: String): MessageAttachment = MessageAttachment(
@@ -3023,5 +3073,11 @@ class ConversationDetailViewModelIntegrationTest {
                 allowBackgroundSync = false
             ).right()
         )
+    }
+
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
     }
 }

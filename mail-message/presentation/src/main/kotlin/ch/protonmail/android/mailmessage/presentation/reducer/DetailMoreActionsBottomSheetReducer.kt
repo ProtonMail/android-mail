@@ -40,7 +40,7 @@ class DetailMoreActionsBottomSheetReducer @Inject constructor(
 
     private fun DataLoaded.toNewBottomSheetState(currentState: BottomSheetState?): BottomSheetState {
         val headerUiModel = mapper.toHeaderUiModel(messageSender, messageSubject, messageId)
-        val actionsUiModel = mapper.mapMoreActionUiModels()
+        val actionsUiModel = mapper.mapMoreActionUiModels(showCustomizeToolbarButton)
 
         return BottomSheetState(
             contentState = DetailMoreActionsBottomSheetState.Data(

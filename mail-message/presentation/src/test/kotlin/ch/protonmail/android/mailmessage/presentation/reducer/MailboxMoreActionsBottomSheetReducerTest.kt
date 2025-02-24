@@ -61,6 +61,25 @@ internal class MailboxMoreActionsBottomSheetReducerTest(
                         ).toImmutableList()
                     )
                 )
+            ),
+            TestInput(
+                currentState = BottomSheetState(MailboxMoreActionsBottomSheetState.Loading),
+                operation = MailboxMoreActionsBottomSheetState.MailboxMoreActionsBottomSheetEvent.ActionData(
+                    actionUiModels = listOf(
+                        ActionUiModelSample.Archive,
+                        ActionUiModelSample.MarkUnread,
+                        ActionUiModelSample.CustomizeToolbar
+                    ).toImmutableList()
+                ),
+                expectedState = BottomSheetState(
+                    contentState = MailboxMoreActionsBottomSheetState.Data(
+                        actionUiModels = listOf(
+                            ActionUiModelSample.Archive,
+                            ActionUiModelSample.MarkUnread,
+                            ActionUiModelSample.CustomizeToolbar
+                        ).toImmutableList()
+                    )
+                )
             )
         )
 

@@ -184,6 +184,7 @@ import me.proton.core.network.domain.NetworkStatus
 import org.junit.After
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
+import javax.inject.Provider
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -393,6 +394,8 @@ class MessageDetailViewModelTest {
     }
     private val updateCustomizeToolbarSpotlight = mockk<UpdateCustomizeToolbarSpotlight>()
 
+    private val provideIsCustomizeToolbarEnabled = mockk<Provider<Boolean>>()
+
     private val messageDetailReducer = MessageDetailReducer(
         MessageDetailMetadataReducer(
             messageDetailActionBarUiModelMapper,
@@ -453,7 +456,8 @@ class MessageDetailViewModelTest {
             loadDataForMessageLabelAsBottomSheet = loadDataForMessageLabelAsBottomSheet,
             onMessageLabelAsConfirmed = onMessageLabelAsConfirmed,
             observeCustomizeToolbarSpotlight = observeCustomizeToolbarSpotlight,
-            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight
+            updateCustomizeToolbarSpotlight = updateCustomizeToolbarSpotlight,
+            showCustomizeToolbarAction = provideIsCustomizeToolbarEnabled.get()
         )
     }
     private val testDispatcher: TestDispatcher by lazy { StandardTestDispatcher() }
@@ -461,7 +465,7 @@ class MessageDetailViewModelTest {
     @BeforeTest
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-
+        customizeToolbarFeatureEnabled(true)
         mockkStatic(Uri::class)
         every { Uri.parse(any()) } returns mockk()
     }
@@ -1953,4 +1957,9 @@ class MessageDetailViewModelTest {
         return (events.last() as Event.Item).value
     }
 
+    private fun customizeToolbarFeatureEnabled(value: Boolean) {
+        every {
+            provideIsCustomizeToolbarEnabled.get()
+        } returns value
+    }
 }

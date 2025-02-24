@@ -57,6 +57,7 @@ fun Action.iconDrawable() = when (this) {
     Action.SenderEmails -> R.drawable.ic_proton_envelope
     Action.SaveAttachments -> R.drawable.ic_proton_arrow_down_to_square
     Action.More -> R.drawable.ic_proton_three_dots_horizontal
+    Action.OpenCustomizeToolbar -> R.drawable.ic_proton_magic_proton_wand
 }
 
 @get:StringRes
@@ -86,6 +87,7 @@ val Action.contentDescriptionRes: Int
         Action.SenderEmails -> R.string.action_sender_emails_content_description
         Action.SaveAttachments -> R.string.action_save_attachments_content_description
         Action.More -> R.string.action_more_content_description
+        Action.OpenCustomizeToolbar -> R.string.action_open_customize_toolbar
     }
 
 @SuppressWarnings("ComplexMethod")
@@ -118,6 +120,7 @@ val Action.descriptionRes: Int
         Action.SenderEmails -> R.string.action_sender_emails_description
         Action.SaveAttachments -> R.string.action_save_attachments_description
         Action.More -> R.string.action_more_description
+        Action.OpenCustomizeToolbar -> R.string.action_open_customize_toolbar_description
     }
 
 fun Action.description() = TextUiModel.TextRes(descriptionRes)

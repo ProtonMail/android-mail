@@ -135,6 +135,7 @@ fun callbackForAction(action: Action, viewActionCallbacks: BottomActionBar.Actio
     Action.Reply -> viewActionCallbacks.onReply
     Action.ReplyAll -> viewActionCallbacks.onReplyAll
     Action.Forward -> viewActionCallbacks.onForward
+    Action.OpenCustomizeToolbar -> viewActionCallbacks.onCustomizeToolbar
 }
 
 @Composable
@@ -188,7 +189,8 @@ object BottomActionBar {
         val onSavePdf: () -> Unit,
         val onSenderEmail: () -> Unit,
         val onSaveAttachments: () -> Unit,
-        val onMore: () -> Unit
+        val onMore: () -> Unit,
+        val onCustomizeToolbar: () -> Unit
     ) {
 
         companion object {
@@ -217,7 +219,8 @@ object BottomActionBar {
                 onSavePdf = {},
                 onSenderEmail = {},
                 onSaveAttachments = {},
-                onMore = {}
+                onMore = {},
+                onCustomizeToolbar = {}
             )
         }
     }

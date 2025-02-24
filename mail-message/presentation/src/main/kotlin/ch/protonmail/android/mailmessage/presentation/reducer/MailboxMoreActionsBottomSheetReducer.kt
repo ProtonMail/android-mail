@@ -39,7 +39,9 @@ class MailboxMoreActionsBottomSheetReducer @Inject constructor() {
         currentState: BottomSheetState?
     ): BottomSheetState {
         return BottomSheetState(
-            contentState = MailboxMoreActionsBottomSheetState.Data(actionUiModels = actionUiModels),
+            contentState = MailboxMoreActionsBottomSheetState.Data(
+                actionUiModels = actionUiModels
+            ),
             bottomSheetVisibilityEffect = currentState?.bottomSheetVisibilityEffect ?: Effect.empty()
         )
     }

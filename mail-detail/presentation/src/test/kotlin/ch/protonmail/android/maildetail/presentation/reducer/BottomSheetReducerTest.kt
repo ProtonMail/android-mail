@@ -267,6 +267,7 @@ internal class BottomSheetReducerTest(
             TestInput(
                 currentState = BottomSheetState(null, Effect.empty()),
                 operation = DetailMoreActionsBottomSheetState.MessageDetailMoreActionsBottomSheetEvent.DataLoaded(
+                    showCustomizeToolbarButton = true,
                     affectingConversation = false,
                     messageSender = "Sender",
                     messageSubject = "Subject",
@@ -275,13 +276,13 @@ internal class BottomSheetReducerTest(
                 ),
                 expectedState = BottomSheetState(
                     DetailMoreActionsBottomSheetState.Data(
-                        false,
-                        DetailMoreActionsBottomSheetState.MessageDataUiModel(
+                        isAffectingConversation = false,
+                        messageDataUiModel = DetailMoreActionsBottomSheetState.MessageDataUiModel(
                             headerDescriptionText = TextUiModel("Sender"),
                             headerSubjectText = TextUiModel("Subject"),
                             messageId = "messageId"
                         ),
-                        emptyList<ActionUiModel>().toImmutableList()
+                        replyActionsUiModel = emptyList<ActionUiModel>().toImmutableList()
                     )
                 ),
                 reducesBottomSheetVisibilityEffects = false,
