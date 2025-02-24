@@ -26,7 +26,7 @@
   <string name="attachment_show_more_label">+яшчэ %1$d</string>
   <string name="attachment_permission_dialog_title">Патрабуецца дазвол</string>
   <string name="attachment_permission_dialog_message">Proton Mail неабходны дазвол доступу да вашага сховішча, каб спампаваць далучэнне.</string>
-  <string name="attachment_permission_dialog_dismiss_button">Добра</string>
+  <string name="attachment_permission_dialog_dismiss_button">OK</string>
   <string name="attachment_permission_dialog_action_button">Налады</string>
   <string name="attachment_type_description">Тып файла: %1$s</string>
   <!-- Attachment Types -->
@@ -67,7 +67,7 @@
   <!-- Device Contacts permission dialog -->
   <string name="device_contacts_permission_dialog_title">Патрабуецца дазвол</string>
   <string name="device_contacts_permission_dialog_message">Proton Mail неабходны дазвол на чытанне вашых кантактаў, каб прапаноўваць атрымальнікаў.</string>
-  <string name="device_contacts_permission_dialog_dismiss_button">Добра</string>
+  <string name="device_contacts_permission_dialog_dismiss_button">OK</string>
   <string name="device_contacts_permission_dialog_action_button">Запытаць дазвол</string>
   <string name="device_contacts_permission_dialog_action_button_deny">Забараніць</string>
   <!-- View entire message button -->

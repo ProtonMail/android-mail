@@ -81,6 +81,6 @@
   <string name="parent_folder_none">无</string>
   <string name="delete_label">删除标签？</string>
   <string name="delete_folder">删除文件夹？</string>
-  <string name="delete_label_message">该动作不能撤消。使用此标签标记的电子邮件将不会被删除，并且可以在“ All Mail”文件夹中找到。</string>
-  <string name="delete_folder_message">该动作不能撤消。此文件夹中包含的电子邮件将不会被删除，并且可以在“所有邮件”文件夹中找到。</string>
+  <string name="delete_label_message">此操作无法撤销。标记此标签的邮件不会被删除，您可以在“所有邮件”文件夹中找到。</string>
+  <string name="delete_folder_message">此操作无法撤销。该文件夹中的邮件不会被删除，您可以在“所有邮件”文件夹中找到。</string>
 </resources>

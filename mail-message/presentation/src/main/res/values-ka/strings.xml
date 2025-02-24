@@ -69,5 +69,5 @@
   <string name="device_contacts_permission_dialog_action_button">წვდომის მოთხოვნა</string>
   <string name="device_contacts_permission_dialog_action_button_deny">უარყოფა</string>
   <!-- View entire message button -->
-  <string name="button_view_entire_message">View entire message</string>
+  <string name="button_view_entire_message">მთელი შეტყობინების ნახვა</string>
 </resources>

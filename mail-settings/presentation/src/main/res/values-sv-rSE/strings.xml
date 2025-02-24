@@ -110,7 +110,7 @@
   <string name="mail_settings_swipe_actions_subtitle">Ställ in svepgester för att komma åt de mest använda åtgärderna.</string>
   <string name="mail_settings_swipe_right_name">Vänster till höger</string>
   <string name="mail_settings_swipe_left_name">Höger till vänster</string>
-  <string name="mail_settings_swipe_action_none_title">Ej valt</string>
+  <string name="mail_settings_swipe_action_none_title">Inte inställt</string>
   <string name="mail_settings_swipe_action_archive_title">Arkiv</string>
   <string name="mail_settings_swipe_action_read_title">Oläst</string>
   <string name="mail_settings_swipe_action_spam_title">Skräppost</string>

@@ -115,6 +115,6 @@
   <string name="show">Görüntüle</string>
   <string name="hide">Gizle</string>
   <string name="tooltip_customize_toolbar_title">Araç çubuğunu özelleştir</string>
-  <string name="tooltip_customize_toolbar_message">Artık bu araç çubuğundaki eylemleri seçebilir ve yeniden düzenleyebilirsiniz.</string>
+  <string name="tooltip_customize_toolbar_message">Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz.</string>
   <string name="tooltip_customize_toolbar_cta">Özelleştir</string>
 </resources>

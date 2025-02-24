@@ -118,9 +118,9 @@
   <string name="storage_first_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 80%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
   <string name="storage_second_limit_exceeded_warning_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена больш чым на 90%. Вызваліце прастору або перайдзіце на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
   <string name="storage_limit_warning_dialog_do_not_remind_button">Больш не нагадваць</string>
-  <string name="storage_limit_warning_dialog_confirm_button">Добра</string>
+  <string name="storage_limit_warning_dialog_confirm_button">OK</string>
   <!--    Storage Quota Over Warning-->
   <string name="storage_quota_over_dialog_title">Папярэджанне</string>
   <string name="storage_quota_over_dialog_text">Сховішча вашага ўліковага запісу Proton запоўнена на 100%. Цяпер вы не можаце адпраўляць і атрымліваць электронныя лісты, пакуль некаторыя з іх не будуць незваротна выдалены. У вас таксама ёсць магчымасць перайсці на тарыфны план больш высокага ўзроўню, каб атрымаць больш сховішча.</string>
-  <string name="storage_quota_over_dialog_confirm_button">Добра</string>
+  <string name="storage_quota_over_dialog_confirm_button">OK</string>
 </resources>

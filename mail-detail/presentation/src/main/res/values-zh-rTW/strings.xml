@@ -112,7 +112,7 @@
   <string name="non_trashed_messages_banner">這對話內容含有非拉圾訊息。</string>
   <string name="show">顯示</string>
   <string name="hide">隱藏</string>
-  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_title">自訂工具列</string>
+  <string name="tooltip_customize_toolbar_message">您可自由選擇或重新安排工具列的動作。</string>
+  <string name="tooltip_customize_toolbar_cta">自訂</string>
 </resources>
