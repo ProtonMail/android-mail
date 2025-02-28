@@ -58,7 +58,7 @@ class ObserveUpsellingVisibility @Inject constructor(
 
         if (isFeatureFlagOff(upsellingEntryPoint)) return@combine false
 
-        if (!canUpgradeFromMobile()) return@combine false
+        if (!canUpgradeFromMobile(user.userId)) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
         userHasAvailablePlans(user.userId)

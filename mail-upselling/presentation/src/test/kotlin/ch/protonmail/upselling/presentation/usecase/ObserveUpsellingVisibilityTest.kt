@@ -96,7 +96,6 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(null)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, true)
 
         // When + Then
@@ -111,7 +110,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(false)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, false)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, true)
 
         // When + Then
@@ -126,7 +125,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, true)
 
@@ -142,7 +141,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, true)
@@ -159,7 +158,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, false)
@@ -176,7 +175,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.Mailbox, false)
@@ -193,7 +192,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.Labels, false)
@@ -210,7 +209,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.Folders, false)
@@ -227,7 +226,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.MobileSignature, false)
@@ -244,7 +243,7 @@ internal class ObserveUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
         expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.AutoDelete, false)
@@ -263,7 +262,7 @@ internal class ObserveUpsellingVisibilityTest {
             // Given
             expectedUser(UserSample.Primary)
             expectPurchases(listOf(mockk<Purchase>()))
-            expectCanUpgradeFromMobile(true)
+            expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
             expectPendingPurchasesValue(UserSample.Primary.userId, false)
             expectUserHasAvailablePlans(UserSample.Primary.userId, true)
             expectUpsellingFeatureFlag(UpsellingEntryPoint.Feature.ContactGroups, true)
@@ -291,8 +290,8 @@ internal class ObserveUpsellingVisibilityTest {
         coEvery { userHasPendingPurchases(any(), userId) } returns value
     }
 
-    private fun expectCanUpgradeFromMobile(value: Boolean) {
-        coEvery { canUpgradeFromMobile() } returns value
+    private fun expectCanUpgradeFromMobile(userId: UserId, value: Boolean) {
+        coEvery { canUpgradeFromMobile(userId) } returns value
     }
 
     private fun expectUpsellingFeatureFlag(upsellingEntryPoint: UpsellingEntryPoint.Feature, value: Boolean) {

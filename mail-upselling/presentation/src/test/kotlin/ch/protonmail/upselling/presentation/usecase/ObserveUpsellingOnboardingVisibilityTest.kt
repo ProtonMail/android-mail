@@ -94,7 +94,7 @@ internal class ObserveUpsellingOnboardingVisibilityTest {
         expectedUser(UserSample.Primary)
         expectPurchases(emptyList())
         expectFeatureFlagEnabled(true)
-        expectCanUpgradeFromMobile(false)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, false)
 
         // When + Then
         sut().test {
@@ -108,7 +108,7 @@ internal class ObserveUpsellingOnboardingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectFeatureFlagEnabled(true)
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPurchases(listOf(mockk<Purchase>()))
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
 
@@ -139,7 +139,7 @@ internal class ObserveUpsellingOnboardingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectFeatureFlagEnabled(true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectOnboardingUpsellingPlans(UserSample.Primary.userId)
@@ -167,8 +167,8 @@ internal class ObserveUpsellingOnboardingVisibilityTest {
         coEvery { userHasPendingPurchases(any(), userId) } returns value
     }
 
-    private fun expectCanUpgradeFromMobile(value: Boolean) {
-        coEvery { canUpgradeFromMobile() } returns value
+    private fun expectCanUpgradeFromMobile(userId: UserId, value: Boolean) {
+        coEvery { canUpgradeFromMobile(userId) } returns value
     }
 
     private fun expectOnboardingUpsellingPlans(userId: UserId) {

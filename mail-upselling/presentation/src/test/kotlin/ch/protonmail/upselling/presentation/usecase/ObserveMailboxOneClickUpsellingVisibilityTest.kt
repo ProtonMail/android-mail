@@ -88,7 +88,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
 
         // When + Then
         sut().test {
@@ -105,7 +105,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
 
         // When + Then
         sut().test {
@@ -122,7 +122,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
 
         // When + Then
         sut().test {
@@ -139,7 +139,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(false)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, false)
 
         // When + Then
         sut().test {
@@ -156,7 +156,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
 
         // When + Then
@@ -174,7 +174,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
 
@@ -193,7 +193,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -212,7 +212,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOnCooldown()
         expectOneClickButtonAlwaysShown(true)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -231,7 +231,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOnCooldown()
         expectOneClickButtonAlwaysShown(false)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -250,7 +250,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         expectLastSeenThresholdOffCooldown()
         expectOneClickButtonAlwaysShown(true)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -270,7 +270,7 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
             expectLastSeenThresholdOffCooldown()
             expectOneClickButtonAlwaysShown(false)
             expectPurchases(listOf(mockk<Purchase>()))
-            expectCanUpgradeFromMobile(true)
+            expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
             expectPendingPurchasesValue(UserSample.Primary.userId, false)
             expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -318,8 +318,8 @@ internal class ObserveMailboxOneClickUpsellingVisibilityTest {
         coEvery { userHasPendingPurchases(any(), userId) } returns value
     }
 
-    private fun expectCanUpgradeFromMobile(value: Boolean) {
-        coEvery { canUpgradeFromMobile() } returns value
+    private fun expectCanUpgradeFromMobile(userId: UserId, value: Boolean) {
+        coEvery { canUpgradeFromMobile(userId) } returns value
     }
 
     private fun expectOneClickButtonAlwaysShown(value: Boolean) {

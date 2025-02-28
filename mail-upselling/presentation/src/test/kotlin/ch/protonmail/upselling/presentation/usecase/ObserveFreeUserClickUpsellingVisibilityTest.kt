@@ -75,7 +75,6 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         // Given
         expectedUser(null)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(true)
 
         // When + Then
         sut().test {
@@ -89,7 +88,6 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         // Given
         expectedUser(null)
         expectPurchases(emptyList())
-        expectCanUpgradeFromMobile(false)
 
         // When + Then
         sut().test {
@@ -103,7 +101,7 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, true)
 
         // When + Then
@@ -118,7 +116,7 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, false)
 
@@ -134,7 +132,7 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         // Given
         expectedUser(UserSample.Primary)
         expectPurchases(listOf(mockk<Purchase>()))
-        expectCanUpgradeFromMobile(true)
+        expectCanUpgradeFromMobile(UserSample.Primary.userId, true)
         expectPendingPurchasesValue(UserSample.Primary.userId, false)
         expectUserHasAvailablePlans(UserSample.Primary.userId, true)
 
@@ -161,7 +159,7 @@ class ObserveFreeUserClickUpsellingVisibilityTest {
         coEvery { userHasPendingPurchases(any(), userId) } returns value
     }
 
-    private fun expectCanUpgradeFromMobile(value: Boolean) {
-        coEvery { canUpgradeFromMobile() } returns value
+    private fun expectCanUpgradeFromMobile(userId: UserId, value: Boolean) {
+        coEvery { canUpgradeFromMobile(userId) } returns value
     }
 }

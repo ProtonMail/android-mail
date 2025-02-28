@@ -44,7 +44,7 @@ class ObserveUpsellingOnboardingVisibility @Inject constructor(
         if (user == null) return@combine false
 
         if (!isFeatureFlagEnabled) return@combine false
-        if (!canUpgradeFromMobile()) return@combine false
+        if (!canUpgradeFromMobile(user.userId)) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
         getOnboardingUpsellingPlans(user.userId).isRight()

@@ -41,7 +41,7 @@ class ObserveFreeUserClickUpsellingVisibility @Inject constructor(
         purchaseManager.observePurchases()
     ) { user, purchases ->
         if (user == null) return@combine false
-        if (!canUpgradeFromMobile()) return@combine false
+        if (!canUpgradeFromMobile(user.userId)) return@combine false
         if (userHasPendingPurchases(purchases, user.userId)) return@combine false
 
         userHasAvailablePlans(user.userId)

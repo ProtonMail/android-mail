@@ -54,6 +54,14 @@ internal class UpsellingPaymentEventListener(
                 actions.onDismiss()
             }
 
+            is ProtonPaymentEvent.Error.SubscriptionManagedByOtherApp -> {
+                logEvent("Subscription managed by other app - ${event::class.java}")
+
+                actions.onError(context.getString(R.string.upselling_snackbar_upgrade_error_generic))
+                actions.onUpgradeErrored(telemetryPayload)
+                actions.onDismiss()
+            }
+
             is ProtonPaymentEvent.GiapSuccess -> {
                 actions.onUpgrade(context.getString(R.string.upselling_snackbar_upgrade_in_progress))
                 actions.onSuccess(telemetryPayload)
