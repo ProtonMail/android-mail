@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Verander afzender</string>
   <string name="composer_change_sender_paid_feature">U heeft een betaald Proton Mail abonnement nodig om het afzenderadres te wijzigen</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan de afzender niet wijzigen omdat het ophalen van het abonnement van de gebruiker is mislukt. Probeer het nog eens.</string>
-  <string name="composer_error_store_draft_sender_address">Het opslaan van het afzenderadres van dit concept is mislukt</string>
-  <string name="composer_error_store_draft_body">Het opslaan van deze body versie is mislukt</string>
+  <string name="composer_error_store_draft_sender_address">Adres van de afzender werd niet bewaard</string>
+  <string name="composer_error_store_draft_body">Concept e-mail bericht is niet opgeslagen</string>
   <string name="composer_error_duplicate_recipient">Dubbele ontvanger(s) verwijderd</string>
-  <string name="composer_error_store_draft_subject">Opslaan van het onderwerp van dit concept is mislukt</string>
+  <string name="composer_error_store_draft_subject">Onderwerp lijn is niet opgeslagen</string>
   <string name="composer_error_store_draft_recipients">Opslaan van de ontvangers van dit concept is mislukt</string>
   <string name="composer_error_loading_draft">De inhoud van deze conceptversie is op dit moment niet beschikbaar. Bewerking zal eventuele al bestaande inhoud overschrijven.</string>
   <string name="composer_add_attachments_content_description">Bestanden toevoegen</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Bijlage-limiet bereikt</string>
   <string name="composer_attachment_size_exceeded_dialog_message">De maximale grootte voor bijlagen is 1%1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Herversleuteling van bijlage mislukt. Wegens veiligheidsredenen werden alle bijlagen verwijderd.</string>
+  <string name="composer_attachment_not_found">Bijlage niet gevonden.</string>
+  <string name="composer_attachment_error_draft_loading">Kan het originele conceptbericht niet laden.</string>
+  <string name="composer_attachment_error_saving_attachment">Kan de bijlage niet opslaan. Probeer het opnieuw.</string>
   <string name="composer_warning_local_data_shown">Het laden van de laatste versie van dit concept is mislukt. Wijzigingen zal het inhoud overschrijven.</string>
   <string name="composer_button_add_password">Wachtwoord toevoegen</string>
   <string name="composer_button_set_expiration">Stel vervaltijd in</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Melding versturen</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Berichten versturen vanaf een @pm.me-adres is enkel beschikbaar voor betalende gebruikers. Uw bericht wordt verzonden vanaf.</string>
   <string name="composer_sender_changed_original_address_disabled">Het geselecteerde afzenderadres is uitgeschakeld. Uw bericht wordt vanaf uw standaard adres verzonden.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Het geselecteerde afzenderadres kon niet opgehaald worden. Uw bericht wordt vanaf uw standaard adres verzonden.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Opstellen</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Fout bij verzenden</string>
   <string name="message_sending_error_dialog_button_dismiss">Sluiten</string>
-  <string name="message_sending_error_dialog_text_error">Uw e-mail kan niet worden verzonden naar het adres om de volgende reden:</string>
+  <string name="message_sending_error_dialog_text_error">Uw e-mail kan niet worden verzonden naar het e-mailadres om de volgende reden:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Er zijn geen vertrouwde sleutels: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bestaat niet: %s</string>
   <string name="set_message_password_title">Bericht versleutelen</string>

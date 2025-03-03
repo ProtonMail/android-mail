@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Περισσότερα</string>
   <string name="common_error_loading_actions">Αποτυχία φόρτωσης ενεργειών</string>
   <string name="yesterday">Χθες</string>
+  <string name="action_open_customize_toolbar">Προσαρμογή γραμμής εργαλείων</string>
+  <string name="action_open_customize_toolbar_description">Προσαρμογή γραμμής εργαλείων</string>
   <string name="auto_delete_banner_text_activate_trash">Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα για περισσότερες από 30 ημέρες.</string>
   <string name="auto_delete_banner_text_activate_spam">Αυτόματη διαγραφή μηνυμάτων που παραμένουν στα Ενοχλητικά για περισσότερες από 30 ημέρες.</string>
   <string name="auto_delete_banner_text_upgrade">Αναβαθμίστε για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες.</string>

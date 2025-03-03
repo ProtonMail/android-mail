@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Več</string>
   <string name="common_error_loading_actions">Neuspešno nalaganje dejanj</string>
   <string name="yesterday">Včeraj</string>
+  <string name="action_open_customize_toolbar">Customize toolbar</string>
+  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
   <string name="auto_delete_banner_text_activate_trash">Samodejno izbriši sporočila, ki so v smetnjaku več kot 30 dni.</string>
   <string name="auto_delete_banner_text_activate_spam">Samodejno izbriši sporočila, ki so med neželeno pošto več kot 30 dni.</string>
   <string name="auto_delete_banner_text_upgrade">Nadgradite paket za samodejno brisanje sporočil, ki so v smetnjaku ali neželeni pošti več kot 30 dni.</string>

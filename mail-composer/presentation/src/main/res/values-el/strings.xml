@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Αλλαγή αποστολέα</string>
   <string name="composer_change_sender_paid_feature">Χρειάζεστε μια πληρωμένη συνδρομή Proton Mail για να αλλάξετε τη διεύθυνση αποστολέα</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Δεν είναι δυνατή η αλλαγή αποστολέα καθώς απέτυχε η λήψη της συνδρομής του χρήστη. Δοκιμάστε ξανά.</string>
-  <string name="composer_error_store_draft_sender_address">Αποτυχία αποθήκευσης της διεύθυνσης αποστολέα αυτού του πρόχειρου</string>
-  <string name="composer_error_store_draft_body">Αποτυχία αποθήκευσης του σώματος αυτού του πρόχειρου</string>
+  <string name="composer_error_store_draft_sender_address">Αποτυχία αποθήκευσης της διεύθυνσης αποστολέα</string>
+  <string name="composer_error_store_draft_body">Αποτυχία αποθήκευσης του περιεχομένου του προχείρου</string>
   <string name="composer_error_duplicate_recipient">Οι διπλότυποι παραλήπτες καταργήθηκαν</string>
-  <string name="composer_error_store_draft_subject">Η αποθήκευση αυτού του θέματος του πρόχειρου απέτυχε</string>
+  <string name="composer_error_store_draft_subject">Αποτυχία αποθήκευσης θέματος του προχείρου</string>
   <string name="composer_error_store_draft_recipients">Η αποθήκευση των παραληπτών αυτού του πρόχειρου απέτυχε</string>
   <string name="composer_error_loading_draft">Το περιεχόμενο αυτού του πρόχειρου δεν είναι διαθέσιμο προς το παρόν. Η επεξεργασία θα αντικαταστήσει τυχόν προϋπάρχον περιεχόμενο.</string>
   <string name="composer_add_attachments_content_description">Προσθήκη συνημμένων</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Συμπλήρωση ορίου συνημμένων</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Το όριο μεγέθους για τα συνημμένα είναι %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Απέτυχε η εκ νέου κρυπτογράφηση του συνημμένου. Για λόγους ασφαλείας, όλα τα συνημμένα καταργήθηκαν.</string>
+  <string name="composer_attachment_not_found">Το συνημμένο δεν βρέθηκε.</string>
+  <string name="composer_attachment_error_draft_loading">Αποτυχία φόρτωσης του πρωτότυπου πρόχειρου μηνύματος.</string>
+  <string name="composer_attachment_error_saving_attachment">Αδυναμία αποθήκευσης συνημμένου. Δοκιμάστε ξανά.</string>
   <string name="composer_warning_local_data_shown">Απέτυχε η φόρτωση της τελευταίας έκδοσης αυτού του προχείρου. Οποιαδήποτε αλλαγή θα υπερισχύει του περιεχομένου της.</string>
   <string name="composer_button_add_password">Προσθήκη κωδικού πρόσβασης</string>
   <string name="composer_button_set_expiration">Ορισμός χρόνου λήξης</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Αποστολή ειδοποίησης</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Η αποστολή μηνυμάτων από διεύθυνση @pm.me είναι μια λειτουργία επί πληρωμή. Το μήνυμά σας θα σταλεί από την προεπιλεγμένη σας διεύθυνση.</string>
   <string name="composer_sender_changed_original_address_disabled">Η επιλεγμένη διεύθυνση αποστολέα είναι απενεργοποιημένη. Το μήνυμά σας θα σταλεί από την προεπιλεγμένη διεύθυνσή σας.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Η αρχική διεύθυνση αποστολέα δεν βρέθηκε. Το μήνυμά σας θα σταλεί από την προεπιλεγμένη διεύθυνσή σας.</string>
   <string name="composer_sender_changed_dialog_confirm_button">ΟΚ</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Σύνταξη</string>

@@ -31,21 +31,24 @@
   <string name="change_sender_button_content_description">Absender ändern</string>
   <string name="composer_change_sender_paid_feature">Du benötigst ein kostenpflichtiges Proton Mail Abonnement, um die Absenderadresse zu ändern</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Fehler beim Ändern des Absenders, da das Abonnement des Benutzers nicht abgerufen werden konnte. Bitte versuche es erneut.</string>
-  <string name="composer_error_store_draft_sender_address">Das Speichern der Absenderadresse dieses Entwurfs ist fehlgeschlagen.</string>
-  <string name="composer_error_store_draft_body">Das Speichern des Inhalts dieses Entwurfs ist fehlgeschlagen.</string>
+  <string name="composer_error_store_draft_sender_address">Absenderadresse wurde nicht gespeichert</string>
+  <string name="composer_error_store_draft_body">E-Mail-Entwurf wurde nicht gespeichert</string>
   <string name="composer_error_duplicate_recipient">Doppelte Empfänger entfernt</string>
-  <string name="composer_error_store_draft_subject">Das Speichern des Betreffs dieses Entwurfs ist fehlgeschlagen</string>
+  <string name="composer_error_store_draft_subject">Betreffzeile wurde nicht gespeichert</string>
   <string name="composer_error_store_draft_recipients">Das Speichern der Empfänger dieses Entwurfs ist fehlgeschlagen</string>
   <string name="composer_error_loading_draft">Der Inhalt dieses Entwurfs ist zu diesem Zeitpunkt nicht verfügbar. Durch die Bearbeitung wird der bereits vorhandene Inhalt überschrieben.</string>
   <string name="composer_add_attachments_content_description">Anhänge hinzufügen</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importieren aus…</string>
   <string name="composer_error_loading_parent_message">Die Informationen der Nachricht konnten nicht geladen werden.</string>
   <string name="composer_original_message_quote">Ursprüngliche Nachricht</string>
-  <string name="composer_sender_quote">Am %s um %s schrieb &lt;%s&gt;:</string>
+  <string name="composer_sender_quote">Am %s schrieb %s &lt;%s&gt;:</string>
   <string name="composer_attachment_size_exceeded_dialog_confirm_button">OK</string>
   <string name="composer_attachment_size_exceeded_dialog_title">Limit für Anhänge erreicht</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Die maximale Größe für Anhänge beträgt %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Die erneute Verschlüsselung des Anhangs ist fehlgeschlagen. Aus Sicherheitsgründen wurden alle Anhänge entfernt.</string>
+  <string name="composer_attachment_not_found">Anhang nicht gefunden.</string>
+  <string name="composer_attachment_error_draft_loading">Der ursprüngliche Nachrichtenentwurf kann nicht geladen werden.</string>
+  <string name="composer_attachment_error_saving_attachment">Der Anhang konnte nicht gespeichert werden. Bitte versuche es erneut.</string>
   <string name="composer_warning_local_data_shown">Die letzte Version dieses Entwurfs konnte nicht geladen werden. Jede Änderung wird den Inhalt überschreiben.</string>
   <string name="composer_button_add_password">Passwort hinzufügen</string>
   <string name="composer_button_set_expiration">Ablaufdatum festlegen</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Mitteilung wird gesendet</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Das Senden von Nachrichten von einer @pm.me-Adresse ist eine kostenpflichtige Funktion. Deine Nachricht wird von deiner Standardadresse gesendet</string>
   <string name="composer_sender_changed_original_address_disabled">Die ausgewählte Absenderadresse ist deaktiviert. Deine Nachricht wird von deiner Standardadresse aus gesendet.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Die ursprüngliche Absenderadresse wurde nicht gefunden. Deine Nachricht wird von deiner Standardadresse aus gesendet.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Verfassen</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Sendefehler</string>
   <string name="message_sending_error_dialog_button_dismiss">Schließen</string>
-  <string name="message_sending_error_dialog_text_error">Deine E-Mail kann aus folgendem Grund nicht an die angegebene E-Mail-Adresse gesendet werden:</string>
+  <string name="message_sending_error_dialog_text_error">Deine E-Mail kann aus folgendem Grund nicht an die angegebene Adresse versendet werden:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Es gibt keine vertrauenswürdigen Schlüssel: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresse existiert nicht: %s</string>
   <string name="set_message_password_title">Nachricht verschlüsseln</string>

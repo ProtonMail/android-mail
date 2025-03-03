@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Více</string>
   <string name="common_error_loading_actions">Načtení akcí selhalo</string>
   <string name="yesterday">Včera</string>
+  <string name="action_open_customize_toolbar">Přizpůsobit panel nástrojů</string>
+  <string name="action_open_customize_toolbar_description">Přizpůsobit panel nástrojů</string>
   <string name="auto_delete_banner_text_activate_trash">Automaticky smazat zprávy, které jsou v koši déle než 30 dní.</string>
   <string name="auto_delete_banner_text_activate_spam">Automaticky smazat zprávy, které jsou ve spamu déle než 30 dní.</string>
   <string name="auto_delete_banner_text_upgrade">Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní.</string>

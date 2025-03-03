@@ -119,6 +119,6 @@
   <string name="show">Pokaż</string>
   <string name="hide">Ukryj</string>
   <string name="tooltip_customize_toolbar_title">Dostosuj pasek narzędzi</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_message">Możesz teraz wybierać i zmieniać kolejność działań na tym pasku narzędzi.</string>
+  <string name="tooltip_customize_toolbar_cta">Personalizuj</string>
 </resources>

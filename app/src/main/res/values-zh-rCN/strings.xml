@@ -17,7 +17,7 @@
   ~ along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
   -->
 <resources>
-  <string name="dialog_sign_out_account_title">退出账号</string>
+  <string name="dialog_sign_out_account_title">登出</string>
   <string name="dialog_sign_out_account_description">确定登出？</string>
   <string name="dialog_sign_out_account_confirm">确认</string>
   <string name="dialog_sign_out_account_cancel">取消</string>
@@ -41,5 +41,5 @@
   <string name="label_deleted">标签已删除</string>
   <string name="label_list_loading_error">加载标签出错。请稍后再试。</string>
   <string name="app_locked">程序已锁定</string>
-  <string name="use_pin_instead">输入解锁密码</string>
+  <string name="use_pin_instead">输入 PIN 码</string>
 </resources>

@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Ubah pengirim</string>
   <string name="composer_change_sender_paid_feature">Anda memerlukan langganan Proton Mail berbayar untuk mengubah alamat pengirim</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Pengirim tidak dapat diubah karena status langganan pengguna gagal dimuat. Silakan coba lagi.</string>
-  <string name="composer_error_store_draft_sender_address">Alamat pengirim draf gagal disimpan</string>
-  <string name="composer_error_store_draft_body">Isi draf gagal disimpan</string>
+  <string name="composer_error_store_draft_sender_address">Alamat pengirim tidak disimpan</string>
+  <string name="composer_error_store_draft_body">Isi email draf tidak disimpan</string>
   <string name="composer_error_duplicate_recipient">Penerima yang terduplikasi dihapus</string>
-  <string name="composer_error_store_draft_subject">Subjek draf gagal disimpan</string>
+  <string name="composer_error_store_draft_subject">Baris subjek tidak disimpan</string>
   <string name="composer_error_store_draft_recipients">Gagal menyimpan draf penerima</string>
   <string name="composer_error_loading_draft">Konten draf ini sedang tidak tersedia. Dengan menyunting pesan, isi draf yang telah ada sebelumnya akan tertimpa.</string>
   <string name="composer_add_attachments_content_description">Tambah lampiran</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Batas lampiran tercapai</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Batas ukuran lampiran adalah %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Lampiran gagal dienkripsi ulang. Demi alasan keamanan, seluruh lampiran telah dihapus.</string>
+  <string name="composer_attachment_not_found">Lampiran tidak ditemukan.</string>
+  <string name="composer_attachment_error_draft_loading">Tidak dapat memuat pesan draf asli.</string>
+  <string name="composer_attachment_error_saving_attachment">Tidak dapat menyimpan lampiran. Silakan mencoba lagi.</string>
   <string name="composer_warning_local_data_shown">Versi terbaru draf ini gagal dimuat. Perubahan apa pun akan menimpa draf ini.</string>
   <string name="composer_button_add_password">Tambahkan kata sandi</string>
   <string name="composer_button_set_expiration">Tentukan waktu kedaluwarsa</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Mengirim pemberitahuan</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pengiriman pesan dari alamat @pm.me merupakan fitur berbayar. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
   <string name="composer_sender_changed_original_address_disabled">Alamat pengirim yang dipilih dinonaktifkan. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Alamat pengirim asli tidak bisa didapatkan. Pesan Anda akan dikirim dari alamat bawaan Anda.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Tulis</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">Panjangnya 4 hingga 21 karakter</string>
   <string name="set_message_password_supporting_error_text">Kata sandi harus terdiri dari 4 hingga 21 karakter</string>
   <string name="set_message_password_supporting_text_repeat">Kata sandi harus seragam</string>
-  <string name="set_message_password_supporting_error_text_repeat">Kedua kata sandi tidak sesuai</string>
+  <string name="set_message_password_supporting_error_text_repeat">Kata sandi tidak sesuai</string>
   <string name="set_message_password_button_show">Tampilkan kata sandi</string>
   <string name="set_message_password_button_hide">Sembunyikan kata sandi</string>
   <string name="set_message_password_button_apply">Terapkan kata sandi</string>

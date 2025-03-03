@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Modificare expeditor</string>
   <string name="composer_change_sender_paid_feature">Aveți nevoie de un abonament Proton Mail plătit pentru a schimba adresa expeditorului.</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Nu se poate schimba expeditorul deoarece obținerea datelor abonamentului utilizatorului a eșuat. Mai încercați.</string>
-  <string name="composer_error_store_draft_sender_address">Stocarea adresei expeditorului din această ciornă a eșuat.</string>
-  <string name="composer_error_store_draft_body">Stocarea conținutului acestei ciorne a eșuat.</string>
+  <string name="composer_error_store_draft_sender_address">Adresa expeditorului nu a fost salvată.</string>
+  <string name="composer_error_store_draft_body">Conținutului acestei ciorne nu a fost salvat.</string>
   <string name="composer_error_duplicate_recipient">Destinatari duplicați eliminați</string>
-  <string name="composer_error_store_draft_subject">Salvarea subiectului acestei ciorne a eșuat.</string>
+  <string name="composer_error_store_draft_subject">Subiectul nu a fost salvat.</string>
   <string name="composer_error_store_draft_recipients">Stocarea destinatarului acestei ciorne a eșuat.</string>
   <string name="composer_error_loading_draft">Conținutul acestei ciorne nu este disponibil momentan. Editarea va înlocui orice conținut preexistent.</string>
   <string name="composer_add_attachments_content_description">Adăugare atașamente</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">S-a atins limita pentru atașamente</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Limita dimensiunii atașamentelor este de %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Recriptarea atașamentului a eșuat. Din motive de securitate, toate atașamentele au fost eliminate.</string>
+  <string name="composer_attachment_not_found">Atașament negăsit.</string>
+  <string name="composer_attachment_error_draft_loading">Nu se poate încărca mesajul ciornei originale.</string>
+  <string name="composer_attachment_error_saving_attachment">Nu se poate stoca atașamentul. Reîncercați.</string>
   <string name="composer_warning_local_data_shown">Nu s-a încărcat ultima versiune a acestei ciorne. Orice modificare va anula conținutul acesteia.</string>
   <string name="composer_button_add_password">Adăugare parolă</string>
   <string name="composer_button_set_expiration">Setare timp expirare</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Notificare trimitere</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Trimiterea de mesaje de la adrese cu domeniul @pm.me este o funcție cu plată. Mesajul vă va fi trimis de pe adresa implicită.</string>
   <string name="composer_sender_changed_original_address_disabled">Adresa expeditorului selectată este dezactivată. Mesajul vă va fi trimis de la adresa implicită.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Adresa inițială a expeditorului nu a putut fi obținută. Mesajul va fi trimis de la adresa dvs. implicită.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Mesaj nou</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">Între 4 și 21 de caractere</string>
   <string name="set_message_password_supporting_error_text">Parola trebuie să aibă între 4 și 21 de caractere.</string>
   <string name="set_message_password_supporting_text_repeat">Parolele trebuie să corespundă.</string>
-  <string name="set_message_password_supporting_error_text_repeat">Parolele nu se potrivesc.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Parolele nu coincid.</string>
   <string name="set_message_password_button_show">Afișare parolă</string>
   <string name="set_message_password_button_hide">Ascundere parolă</string>
   <string name="set_message_password_button_apply">Aplicare parolă</string>

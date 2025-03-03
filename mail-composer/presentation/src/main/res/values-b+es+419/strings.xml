@@ -37,7 +37,7 @@
   <string name="composer_error_store_draft_subject">Error al guardar el asunto</string>
   <string name="composer_error_store_draft_recipients">Error al guardar los destinatarios de este borrador</string>
   <string name="composer_error_loading_draft">El contenido de este borrador no está disponible en este momento. Editarlo sobrescribirá cualquier contenido preexistente.</string>
-  <string name="composer_add_attachments_content_description">Añadir archivo adjunto</string>
+  <string name="composer_add_attachments_content_description">Agregar archivo adjunto</string>
   <string name="composer_add_attachments_bottom_sheet_import_from">Importar desde…</string>
   <string name="composer_error_loading_parent_message">No se pudo cargar la información del mensaje</string>
   <string name="composer_original_message_quote">Mensaje original</string>
@@ -46,8 +46,11 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Se alcanzó el límite de archivos adjuntos.</string>
   <string name="composer_attachment_size_exceeded_dialog_message">El límite del tamaño para los archivos adjuntos es de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Error al volver a cifrar el archivo adjunto. Por seguridad se eliminaron todos los archivos adjuntos.</string>
+  <string name="composer_attachment_not_found">No se encontró el archivo adjunto.</string>
+  <string name="composer_attachment_error_draft_loading">No se puede cargar el mensaje original del borrador.</string>
+  <string name="composer_attachment_error_saving_attachment">No se puede almacenar el archivo adjunto. Inténtelo de nuevo.</string>
   <string name="composer_warning_local_data_shown">Error al cargar la última versión de este borrador. Cualquier cambio sobrescribirá su contenido.</string>
-  <string name="composer_button_add_password">Añadir una contraseña</string>
+  <string name="composer_button_add_password">Agregar una contraseña</string>
   <string name="composer_button_set_expiration">Establecer tiempo de expiración</string>
   <string name="composer_expiration_time_bottom_sheet_title">Expiración del mensaje</string>
   <string name="composer_expiration_time_bottom_sheet_done">Establecer</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Aviso de envío</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">El envío de mensajes desde @pm.me es una función de pago. El mensaje será enviado desde la dirección por defecto.</string>
   <string name="composer_sender_changed_original_address_disabled">La selección de dirección de envío está desactivada. El mensaje se enviará desde la dirección de correo por defecto.</string>
+  <string name="composer_sender_changed_original_address_generic_error">No se pudo obtener la dirección del remitente original. Su mensaje se enviará desde Su dirección de correo por defecto.</string>
   <string name="composer_sender_changed_dialog_confirm_button">Aceptar</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Enviar</string>

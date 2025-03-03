@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">მიმაგრების ლიმიტი მიღწეულია</string>
   <string name="composer_attachment_size_exceeded_dialog_message">მიმაგრებული ფაილების მაქსიმალური ზომაა %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">მიმაგრებული ფაილის თავიდან დაშიფვრა ჩავარდა. უსაფრთხოების მიზნით, ყველა მიმაგრებული ფაილი წაიშალა.</string>
+  <string name="composer_attachment_not_found">მიმაგრებული ფაილი აღმოჩენილი არაა.</string>
+  <string name="composer_attachment_error_draft_loading">ორიგინალი მონახაზი შეტყობინების ჩატვირთვა შეუძლებელია.</string>
+  <string name="composer_attachment_error_saving_attachment">მიმაგრებული ფაილის დამახსოვრება შეუძლებელია. თავიდან სცადეთ.</string>
   <string name="composer_warning_local_data_shown">მონახაზის უკანასკნელი ვერსიის ჩატივრთვა ჩავარდა. ნებისმიერი ცვლილება გადაფარავს მის შემცველობას.</string>
   <string name="composer_button_add_password">პაროლის დამატება</string>
   <string name="composer_button_set_expiration">ვადის დაყენება</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">შეტყობინების გაგზავნა</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">\@pm.ge-ით შეტყობინებების გაგზავნა ფასიანი ფუნქციაა. თქვენი შეტყობინება გაიგზავნება თქვენი ნაგულისხმევი მისამართიდან.</string>
   <string name="composer_sender_changed_original_address_disabled">არჩეული გამგზავნის მისამართი გათიშულია. თქვენი შეტყობინება თქვენი ნაგულისხმევი მისამართით გაიგზავნება.</string>
+  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_dialog_confirm_button">დიახ</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">შედგენა</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">გაგზავნის შეცდომა</string>
   <string name="message_sending_error_dialog_button_dismiss">დახურვა</string>
-  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ ანგარიშზე ვერ გაიგზავნება შემდეგი მიზეზის გამო:</string>
+  <string name="message_sending_error_dialog_text_error">თქვენი ელფოსტა მითითებულ მისამართზე ვერ გაიგზავნება შემდეგი მიზეზის გამო:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">სანდო გასაღებების გარეშე: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">მისამართი არ არსებობს: %s</string>
   <string name="set_message_password_title">შეტყობინების დაშიფრვა</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">4-დან 15-მდე სიმბოლო</string>
   <string name="set_message_password_supporting_error_text">პაროლი სიგრძე 4 და 21 სიმბოლოს შორის უნდა მერყეობდეს</string>
   <string name="set_message_password_supporting_text_repeat">პაროლები უნდა ემთხვეოდეს</string>
-  <string name="set_message_password_supporting_error_text_repeat">ორი პაროლი ერთმანეთს არ ემთხვევა</string>
+  <string name="set_message_password_supporting_error_text_repeat">პაროლები არ ემთხვევა</string>
   <string name="set_message_password_button_show">პაროლის ჩვენება</string>
   <string name="set_message_password_button_hide">პაროლის დამალვა</string>
   <string name="set_message_password_button_apply">პაროლის დაყენება</string>

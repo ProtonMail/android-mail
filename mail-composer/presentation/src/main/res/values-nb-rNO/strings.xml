@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Endre avsender</string>
   <string name="composer_change_sender_paid_feature">Du trenger et betalt Proton Mail-abonnement for å endre avsenderadressen</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kan ikke endre avsender da innhenting av brukerens abonnement mislyktes. Prøv igjen.</string>
-  <string name="composer_error_store_draft_sender_address">Lagring av avsenderadressen til dette utkastet mislyktes</string>
-  <string name="composer_error_store_draft_body">Lagring av meldingsinnholdet til dette utkastet mislyktes</string>
+  <string name="composer_error_store_draft_sender_address">Avsenderadressen ble ikke lagret</string>
+  <string name="composer_error_store_draft_body">Meldingsinnholdet til dette utkastet ble ikke lagret</string>
   <string name="composer_error_duplicate_recipient">Duplisert(e) mottaker(e) fjernet</string>
-  <string name="composer_error_store_draft_subject">Lagring av meldingsemnet til dette utkastet mislyktes</string>
+  <string name="composer_error_store_draft_subject">Emnelinjen ble ikke lagret</string>
   <string name="composer_error_store_draft_recipients">Lagring av mottakerne til dette utkastet mislyktes</string>
   <string name="composer_error_loading_draft">Innholdet i dette utkastet er ikke tilgjengelig på dette tidspunktet. Redigering vil overstyre eksisterende innhold.</string>
   <string name="composer_add_attachments_content_description">Legg til vedlegg</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Vedleggsgrensen er nådd</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Størrelsesgrensen for vedlegg er %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Kryptering av vedlegg på nytt mislyktes. Av sikkerhetsmessige årsaker ble alle vedlegg fjernet.</string>
+  <string name="composer_attachment_not_found">Vedlegg ikke funnet.</string>
+  <string name="composer_attachment_error_draft_loading">Kan ikke laste inn den opprinnelige utkastmeldingen.</string>
+  <string name="composer_attachment_error_saving_attachment">Kan ikke lagre vedlegget. Prøv igjen.</string>
   <string name="composer_warning_local_data_shown">Den nyeste versjonen av dette utkastet kunne ikke lastes inn. Enhver endring vil overstyre innholdet.</string>
   <string name="composer_button_add_password">Legg til passord</string>
   <string name="composer_button_set_expiration">Angi utløpstid</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Sendevarsel</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Sending av meldinger fra @pm.me er en betalt funksjon. Meldingen vil bli sendt fra standardadressen din .</string>
   <string name="composer_sender_changed_original_address_disabled">Den valgte avsenderadressen er deaktivert. Meldingen sendes fra standardadressen din.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Den opprinnelige avsenderadressen kunne ikke hentes. Meldingen vil bli sendt fra standardadressen din.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Skriv e-post</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Feil ved sending</string>
   <string name="message_sending_error_dialog_button_dismiss">Lukk</string>
-  <string name="message_sending_error_dialog_text_error">E-posten din kan ikke sendes til den oppgitte adressen av følgende årsak:</string>
+  <string name="message_sending_error_dialog_text_error">E-posten din kan ikke sendes til den oppgitte e-postadressen av følgende årsak:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Det er ingen klarerte nøkler: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adressen eksisterer ikke: %s</string>
   <string name="set_message_password_title">Krypter melding</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">4 til 21 tegn lang</string>
   <string name="set_message_password_supporting_error_text">Passordet må bestå av mellom 4 og 21 tegn</string>
   <string name="set_message_password_supporting_text_repeat">Passordene må samsvare</string>
-  <string name="set_message_password_supporting_error_text_repeat">De 2 passordene samsvarer ikke</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passordene samsvarer ikke</string>
   <string name="set_message_password_button_show">Vis passord</string>
   <string name="set_message_password_button_hide">Skjul passord</string>
   <string name="set_message_password_button_apply">Anvend passord</string>

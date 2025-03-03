@@ -22,13 +22,13 @@
   <!-- Settings items -->
   <string name="mail_settings_account_settings">账户设置</string>
   <string name="mail_settings_app_settings">程序设置</string>
-  <string name="mail_settings_theme">配色</string>
+  <string name="mail_settings_theme">主题</string>
   <string name="mail_settings_push_notifications">推送通知</string>
   <string name="mail_settings_auto_lock">自动锁定</string>
   <string name="mail_settings_alternative_routing">备用线路</string>
-  <string name="mail_settings_app_language">语言</string>
+  <string name="mail_settings_app_language">界面语言</string>
   <string name="mail_settings_combined_contacts">共用通讯录</string>
-  <string name="mail_settings_local_cache">本机缓存</string>
+  <string name="mail_settings_local_cache">本地缓存</string>
   <string name="mail_settings_local_cache_hint">已使用空间: %s</string>
   <string name="mail_settings_local_cache_clear_button">清除数据</string>
   <string name="mail_settings_swipe_actions">滑动操作</string>
@@ -36,8 +36,8 @@
   <string name="mail_settings_alternative_routing_hint">当 Proton 网站遭到封禁时，此设置允许该应用程序改用其他网络路由连接 Proton，这能有助于绕过防火墙或解决网络问题：推荐开启此设置，以提高可靠性。</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">跟随系统</string>
-  <string name="mail_settings_theme_light">浅色</string>
-  <string name="mail_settings_theme_dark">深色</string>
+  <string name="mail_settings_theme_light">浅色主题</string>
+  <string name="mail_settings_theme_dark">深色主题</string>
   <!-- Settings item states -->
   <string name="mail_settings_no_information_available">无信息</string>
   <string name="mail_settings_enabled">开启</string>
@@ -45,7 +45,7 @@
   <string name="mail_settings_allowed">允许</string>
   <string name="mail_settings_denied">不允许</string>
   <string name="mail_settings_auto_detect">自动检测</string>
-  <string name="mail_settings_customize_toolbar">定制工具栏</string>
+  <string name="mail_settings_customize_toolbar">自定义工具栏</string>
   <string name="mail_settings_app_information">程序信息</string>
   <string name="mail_settings_app_version">程序版本</string>
   <string name="mail_settings_app_logs">应用程序日志</string>
@@ -65,14 +65,14 @@
   <string name="mail_settings_conversation_mode">会话模式</string>
   <string name="mail_settings_auto_delete">自动删除</string>
   <string name="mail_settings_auto_delete_full_text">自动删除不需要的消息</string>
-  <string name="mail_settings_auto_delete_hint">归入垃圾邮件或废件箱的邮件超过 30 天自动删除。</string>
+  <string name="mail_settings_auto_delete_hint">归入垃圾邮件或回收站的邮件超过 30 天自动删除。</string>
   <string name="mail_settings_auto_delete_subscription_needed">您需要付费的 Proton Mail 订阅才能使用此功能</string>
   <string name="mail_settings_auto_delete_dialog_button_cancel">取消</string>
   <string name="mail_settings_auto_delete_dialog_enabling_title">删除信息？</string>
-  <string name="mail_settings_auto_delete_dialog_enabling_text">这将删除在废件箱或垃圾邮件中超过 30 天的所有邮件，包括当前在这些文件夹中的邮件。</string>
+  <string name="mail_settings_auto_delete_dialog_enabling_text">这将删除在回收站或垃圾邮件中超过 30 天的所有邮件，包括当前在这些文件夹中的邮件。</string>
   <string name="mail_settings_auto_delete_dialog_enabling_button_confirm">启用</string>
   <string name="mail_settings_auto_delete_dialog_disabling_title">禁用自动删除？</string>
-  <string name="mail_settings_auto_delete_dialog_disabling_text">计划删除的电子邮件将保留在废件箱和垃圾邮件文件夹中。</string>
+  <string name="mail_settings_auto_delete_dialog_disabling_text">计划删除的电子邮件将保留在回收站和垃圾邮件文件夹中。</string>
   <string name="mail_settings_auto_delete_dialog_disabling_button_confirm">禁用</string>
   <string name="mail_settings_not_set">未设置</string>
   <string name="mail_settings_conversation_mode_hint">将收件箱中同一主题关联的往来邮件合并或单独显示</string>
@@ -115,7 +115,7 @@
   <string name="mail_settings_swipe_action_read_title">标为未读</string>
   <string name="mail_settings_swipe_action_spam_title">标为垃圾邮件</string>
   <string name="mail_settings_swipe_action_star_title">加星标</string>
-  <string name="mail_settings_swipe_action_trash_title">移至废件箱</string>
+  <string name="mail_settings_swipe_action_trash_title">移至回收站</string>
   <string name="mail_settings_swipe_action_label_as_title">标记为…</string>
   <string name="mail_settings_swipe_action_move_to_title">移至…</string>
   <string name="mail_settings_swipe_action_none_description">无</string>
@@ -123,7 +123,7 @@
   <string name="mail_settings_swipe_action_read_description">标为未读/已读</string>
   <string name="mail_settings_swipe_action_spam_description">归为垃圾邮件</string>
   <string name="mail_settings_swipe_action_star_description">星标/取消星标</string>
-  <string name="mail_settings_swipe_action_trash_description">移至废件箱</string>
+  <string name="mail_settings_swipe_action_trash_description">移至回收站</string>
   <string name="mail_settings_swipe_action_label_as_description">标记为…</string>
   <string name="mail_settings_swipe_action_move_to_description">移至…</string>
   <!-- Notification settings -->
@@ -137,8 +137,8 @@
   <!-- Auto lock -->
   <string name="mail_settings_auto_lock_title">自动锁定</string>
   <string name="mail_settings_auto_lock_item_title">自动锁定程序</string>
-  <string name="mail_settings_auto_lock_item_description">开启后程序可自动锁定，需要输入解锁密码才能使用。</string>
-  <string name="mail_settings_auto_lock_change_pin_description">更改解锁密码</string>
+  <string name="mail_settings_auto_lock_item_description">开启后程序可自动锁定，需要输入 PIN 码才能使用。</string>
+  <string name="mail_settings_auto_lock_change_pin_description">更改 PIN 码</string>
   <string name="mail_settings_auto_lock_item_timer_title">自动锁定时间</string>
   <string name="mail_settings_auto_lock_immediately">立刻</string>
   <string name="mail_settings_auto_lock_item_timer_description_five_minutes">五分钟无操作</string>
@@ -146,32 +146,32 @@
   <string name="mail_settings_auto_lock_item_timer_description_one_hour">一小时无操作</string>
   <string name="mail_settings_auto_lock_item_timer_description_one_day">一天内无操作</string>
   <string name="mail_settings_auto_lock_update_error">更新设置时出现错误</string>
-  <string name="mail_settings_pin_insertion_input_title">输入解锁密码</string>
-  <string name="mail_settings_pin_insertion_set_title">设置解锁密码</string>
-  <string name="mail_settings_pin_insertion_confirm_title">确认解锁密码</string>
+  <string name="mail_settings_pin_insertion_input_title">输入 PIN 码</string>
+  <string name="mail_settings_pin_insertion_set_title">设置 PIN 码</string>
+  <string name="mail_settings_pin_insertion_confirm_title">确认 PIN 码</string>
   <string name="mail_settings_pin_insertion_lock_icon_description">锁定图标</string>
   <string name="mail_settings_pin_insertion_pin_dot_description">Pin 点</string>
   <string name="mail_settings_pin_insertion_backspace_description">退格</string>
   <string name="mail_settings_pin_insertion_biometric_description">生物识别认证</string>
   <string name="mail_settings_pin_insertion_button_create">创建</string>
   <string name="mail_settings_pin_insertion_button_confirm">确定</string>
-  <string name="mail_settings_pin_insertion_error_no_match">两次输入的解锁密码不一致。</string>
+  <string name="mail_settings_pin_insertion_error_no_match">两次输入的 PIN 码不一致。</string>
   <plurals name="mail_settings_pin_insertion_error_wrong_code">
     <item quantity="other">剩余 %s 次尝试.</item>
   </plurals>
   <plurals name="mail_settings_pin_insertion_error_wrong_code_ultimatum">
     <item quantity="other">若再输错 %s 次数据将被清除！</item>
   </plurals>
-  <string name="mail_settings_pin_insertion_error_unknown">验证解锁密码失败</string>
-  <string name="mail_settings_pin_insertion_signout_text">退出账户</string>
-  <string name="mail_settings_pin_insertion_signout_dialog_title">退出账户</string>
+  <string name="mail_settings_pin_insertion_error_unknown">验证 PIN 码失败</string>
+  <string name="mail_settings_pin_insertion_signout_text">登出</string>
+  <string name="mail_settings_pin_insertion_signout_dialog_title">登出</string>
   <string name="mail_settings_pin_insertion_signout_dialog_description">你确定要登出吗？</string>
   <string name="mail_settings_pin_insertion_signout_dialog_confirm">是</string>
   <string name="mail_settings_pin_insertion_signout_dialog_cancel">否</string>
-  <string name="mail_settings_pin_insertion_created_success">解锁密码创建成功。</string>
-  <string name="mail_settings_pin_insertion_changed_success">解锁密码更改成功。</string>
+  <string name="mail_settings_pin_insertion_created_success">PIN 码创建成功。</string>
+  <string name="mail_settings_pin_insertion_changed_success">PIN 码更改成功。</string>
   <!-- Local storage -->
-  <string name="mail_settings_clearing_cached_data">清除本地缓存</string>
+  <string name="mail_settings_clearing_cached_data">正在清除本地缓存…</string>
   <!-- Error messages -->
   <string name="mail_settings_generic_error_message">出错了，请重试。</string>
   <!-- strings used for biometric enrollment -->
@@ -190,7 +190,7 @@
   <string name="customize_toolbar_inbox">收件箱</string>
   <string name="customize_toolbar_mailbox">邮箱</string>
   <string name="customize_toolbar_done_action">已完成</string>
-  <string name="customize_toolbar_reset_to_default">重置为默认值</string>
+  <string name="customize_toolbar_reset_to_default">恢复默认设置</string>
   <string name="customize_toolbar_reset_to_default_btn">恢复默认设置</string>
   <string name="customize_toolbar_actions_section">工具栏操作按钮（最多可选择 5 个）</string>
   <string name="customize_toolbar_available_actions_section">可选操作</string>

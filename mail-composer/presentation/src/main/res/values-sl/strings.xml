@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Spremeni pošiljatelja</string>
   <string name="composer_change_sender_paid_feature">Za spreminjanje naslova pošiljatelja potrebujete plačljivo naročnino na Proton Mail</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Pošiljatelja ni mogoče spremeniti, ker pridobivanje uporabnikove naročnine ni uspelo. Poskusite znova.</string>
-  <string name="composer_error_store_draft_sender_address">Shranjevanje pošiljateljevega naslova za ta osnutek ni uspelo</string>
-  <string name="composer_error_store_draft_body">Shranjevanje telesa tega osnutka ni uspelo</string>
+  <string name="composer_error_store_draft_sender_address">Sender address wasn\'t saved</string>
+  <string name="composer_error_store_draft_body">Draft email body wasn\'t saved</string>
   <string name="composer_error_duplicate_recipient">Podvojeni prejemnik(i) odstranjen(i)</string>
-  <string name="composer_error_store_draft_subject">Shranjevanje zadeve tega osnutka ni uspelo</string>
+  <string name="composer_error_store_draft_subject">Subject line wasn\'t saved</string>
   <string name="composer_error_store_draft_recipients">Shranjevanje prejemnikov tega osnutka ni uspelo</string>
   <string name="composer_error_loading_draft">Vsebina tega osnutka trenutno ni na voljo. Z urejanjem boste prepisali vso morebitno dosedanjo vsebino.</string>
   <string name="composer_add_attachments_content_description">Dodaj priponke</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Dosežena je omejitev velikosti priponk</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Velikost priponk je omejena na %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Vnovično šifriranje priponk ni bilo uspešno. Iz varnostnih razlogov so bile vse priponke odstranjene.</string>
+  <string name="composer_attachment_not_found">Attachment not found.</string>
+  <string name="composer_attachment_error_draft_loading">Unable to load the original draft message.</string>
+  <string name="composer_attachment_error_saving_attachment">Unable to store the attachment. Please try again.</string>
   <string name="composer_warning_local_data_shown">Zadnje različice tega osnutka ni bilo mogoče naložiti. Vsaka sprememba bo vplivala na njeno vsebino.</string>
   <string name="composer_button_add_password">Dodaj geslo</string>
   <string name="composer_button_set_expiration">Nastavi čas poteka</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Obvestilo pred pošiljanjem</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Pošiljanje sporočil z naslova @pm.me je plačljiva funkcija. Sporočilo bo poslano z vašega privzetega naslova.</string>
   <string name="composer_sender_changed_original_address_disabled">Izbrani naslov pošiljatelja je onemogočen. Sporočilo bo poslano z vašega privzetega naslova.</string>
+  <string name="composer_sender_changed_original_address_generic_error">The original sender address could not be obtained. Your message will be sent from your default address.</string>
   <string name="composer_sender_changed_dialog_confirm_button">V redu</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Sestavi</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Napaka pri pošiljanju</string>
   <string name="message_sending_error_dialog_button_dismiss">Zapri</string>
-  <string name="message_sending_error_dialog_text_error">Vaše e-pošte ni mogoče poslati na vneseni naslov zaradi naslednjega razloga:</string>
+  <string name="message_sending_error_dialog_text_error">Your email cannot be sent to the address entered due to the following reason:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Ni zaupanja vrednih ključev: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Naslov ne obstaja: %s</string>
   <string name="set_message_password_title">Šifriraj sporočilo</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">4 do 21 znakov</string>
   <string name="set_message_password_supporting_error_text">Geslo mora biti dolgo najmanj 4 in največ 21 znakov</string>
   <string name="set_message_password_supporting_text_repeat">Gesli se morata ujemati</string>
-  <string name="set_message_password_supporting_error_text_repeat">Gesli se ne ujemata.</string>
+  <string name="set_message_password_supporting_error_text_repeat">Passwords do not match</string>
   <string name="set_message_password_button_show">Prikaži geslo</string>
   <string name="set_message_password_button_hide">Skrij geslo</string>
   <string name="set_message_password_button_apply">Nastavi geslo</string>

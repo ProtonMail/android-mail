@@ -22,7 +22,7 @@
   <string name="onboarding_privacy_for_all_description">Başkalarını Proton Mail kullanmaya çağırın ve hepiniz uçtan uca şifrelemeden yararlanın.</string>
   <!--  Onboarding 2  -->
   <string name="onboarding_easily_up_to_date_headline">Kolayca güncel kalın</string>
-  <string name="onboarding_easily_up_to_date_description">Yazışma kipinde, ileti dizileri arasında hızla gezinin.</string>
+  <string name="onboarding_easily_up_to_date_description">Yazışma görünümünde, ileti dizileri arasında hızla gezinin.</string>
   <!--  Onboarding 3  -->
   <string name="onboarding_neat_and_tidy_headline">Temiz ve düzenli</string>
   <string name="onboarding_neat_and_tidy_description">Gelen kutunuzu düzenlemek için iletileri dosyalayın, etiketleyin ve renklendirin.</string>

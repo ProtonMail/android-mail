@@ -36,8 +36,8 @@
   <string name="action_delete_description">Sil</string>
   <string name="action_archive_description">Arşivle</string>
   <string name="action_spam_description">İstenmeyen kutusuna taşı</string>
-  <string name="action_view_in_light_mode_description">İletiyi açık kipte görüntüle</string>
-  <string name="action_view_in_dark_mode_description">İletiyi koyu kipte görüntüle</string>
+  <string name="action_view_in_light_mode_description">İletiyi açık tema ile görüntüle</string>
+  <string name="action_view_in_dark_mode_description">İletiyi koyu tema ile görüntüle</string>
   <string name="action_print_description">Yazdır</string>
   <string name="action_view_headers_description">Üst bilgileri görüntüle</string>
   <string name="action_view_html_description">HTML olarak görüntüle</string>
@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Diğer</string>
   <string name="common_error_loading_actions">İşlemler yüklenemedi</string>
   <string name="yesterday">Dün</string>
+  <string name="action_open_customize_toolbar">Araç çubuğunu özelleştir</string>
+  <string name="action_open_customize_toolbar_description">Araç çubuğunu özelleştir</string>
   <string name="auto_delete_banner_text_activate_trash">Çöp kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.</string>
   <string name="auto_delete_banner_text_activate_spam">İstenmeyen kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.</string>
   <string name="auto_delete_banner_text_upgrade">Çöp veya istenmeyen kutularında 30 günden uzun süredir duran iletilerin otomatik olarak silinmesi için tarifenizi yükseltin.</string>

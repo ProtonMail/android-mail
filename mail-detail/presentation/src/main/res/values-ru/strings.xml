@@ -118,7 +118,7 @@
   <string name="non_trashed_messages_banner">В этой цепочке писем есть неудаленные сообщения.</string>
   <string name="show">Показать</string>
   <string name="hide">Скрыть</string>
-  <string name="tooltip_customize_toolbar_title">Customize toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
-  <string name="tooltip_customize_toolbar_cta">Customize</string>
+  <string name="tooltip_customize_toolbar_title">Настроить панель инструментов</string>
+  <string name="tooltip_customize_toolbar_message">Вы можете выбрать и изменять действия на этой панели.</string>
+  <string name="tooltip_customize_toolbar_cta">Настроить</string>
 </resources>

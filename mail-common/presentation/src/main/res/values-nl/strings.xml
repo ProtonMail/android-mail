@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Meer</string>
   <string name="common_error_loading_actions">Acties laden mislukt</string>
   <string name="yesterday">Gisteren</string>
+  <string name="action_open_customize_toolbar">Werkbalk aanpassen</string>
+  <string name="action_open_customize_toolbar_description">Werkbalk aanpassen</string>
   <string name="auto_delete_banner_text_activate_trash">Automatisch berichten verwijderen die al 30 of meer dagen in de prullenbak zitten.</string>
   <string name="auto_delete_banner_text_activate_spam">Automatisch berichten verwijderen die al 30 of meer dagen in de spam zitten.</string>
   <string name="auto_delete_banner_text_upgrade">Upgrade om automatisch berichten te verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.</string>

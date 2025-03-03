@@ -192,11 +192,11 @@
   <string name="customize_toolbar_inbox">Caixa de entrada</string>
   <string name="customize_toolbar_mailbox">Caixa de correio</string>
   <string name="customize_toolbar_done_action">Terminado</string>
-  <string name="customize_toolbar_reset_to_default">Reposição predefinida</string>
-  <string name="customize_toolbar_reset_to_default_btn">Reposição predefinida</string>
+  <string name="customize_toolbar_reset_to_default">Repor predefinições</string>
+  <string name="customize_toolbar_reset_to_default_btn">Repor predefinições</string>
   <string name="customize_toolbar_actions_section">Ações da barra de ferramentas (selecione até 5)</string>
   <string name="customize_toolbar_available_actions_section">Ações disponíveis</string>
-  <string name="customize_toolbar_reset_default_confirmation_title">Reposição predefinida?</string>
-  <string name="customize_toolbar_reset_default_confirmation_desc">As ações na barra de ferramentas serão redefinidas para os valores padrão.</string>
+  <string name="customize_toolbar_reset_default_confirmation_title">Repor predefinições?</string>
+  <string name="customize_toolbar_reset_default_confirmation_desc">As ações na barra de ferramentas serão repostas pelas predefinições.</string>
   <string name="customize_toolbar_reset_default_confirm">Confirmar</string>
 </resources>

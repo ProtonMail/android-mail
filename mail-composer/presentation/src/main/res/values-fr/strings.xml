@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Limite de pièces jointes atteinte</string>
   <string name="composer_attachment_size_exceeded_dialog_message">La taille limite pour les pièces jointes est de %1$s.</string>
   <string name="composer_attachment_reencryption_failed_message">Chiffrer à nouveau la pièce jointe n\'a pas abouti. Pour des raisons de sécurité, toutes les pièces jointes ont été retirées.</string>
+  <string name="composer_attachment_not_found">La pièce jointe est introuvable.</string>
+  <string name="composer_attachment_error_draft_loading">Le message du brouillon d\'origine n\'a pas pu être chargé.</string>
+  <string name="composer_attachment_error_saving_attachment">La pièce jointe n\'a pas pu être stockée. Nous vous invitons à réessayer.</string>
   <string name="composer_warning_local_data_shown">La dernière version de ce brouillon n\'a pas pu être chargée. Toute modification remplacera son contenu.</string>
   <string name="composer_button_add_password">Ajouter un mot de passe</string>
   <string name="composer_button_set_expiration">Définir la date d\'expiration</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Envoi de notification</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">L\'envoi de messages depuis une adresse @pm.me est une fonctionnalité payante. Votre message sera envoyé à partir de votre adresse par défaut.</string>
   <string name="composer_sender_changed_original_address_disabled">L\'expéditeur sélectionné est désactivé. Votre message sera envoyé à partir de votre adresse par défaut.</string>
+  <string name="composer_sender_changed_original_address_generic_error">L\'adresse de l\'expéditeur d\'origine n\'a pas pu être obtenue. Votre message sera envoyé à partir de votre adresse par défaut.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Rédiger</string>

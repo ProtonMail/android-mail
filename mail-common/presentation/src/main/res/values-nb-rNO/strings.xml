@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Mer</string>
   <string name="common_error_loading_actions">Feil ved henting av handlinger</string>
   <string name="yesterday">I går</string>
+  <string name="action_open_customize_toolbar">Tilpass verktøylinjen</string>
+  <string name="action_open_customize_toolbar_description">Tilpass verktøylinjen</string>
   <string name="auto_delete_banner_text_activate_trash">Slett automatisk meldinger som har ligget i papirkurven i mer enn 30 dager.</string>
   <string name="auto_delete_banner_text_activate_spam">Slett automatisk meldinger som har ligget i søppelpostmappen i mer enn 30 dager.</string>
   <string name="auto_delete_banner_text_upgrade">Oppgrader for å få automatisk sletting av meldinger som har ligget i papirkurven eller søppelposten i mer enn 30 dager.</string>

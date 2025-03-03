@@ -23,9 +23,9 @@
   <string name="no_contact_groups">No se encontraron grupos de contactos</string>
   <string name="no_contacts_description">Mejore la experiencia de correo creando un contacto o importando los existentes.</string>
   <string name="no_contact_groups_description">Mejore la experiencia de correo electrónico creando un grupo de contactos</string>
-  <string name="add_contact">Añadir contacto</string>
-  <string name="add_contact_group">Añadir grupo de contactos</string>
-  <string name="add_contact_content_description">Añadir contacto</string>
+  <string name="add_contact">Agregar contacto</string>
+  <string name="add_contact_group">Agregar grupo de contactos</string>
+  <string name="add_contact_content_description">Agregar contacto</string>
   <string name="all_title">Todos</string>
   <string name="groups_title">Grupos</string>
   <string name="group_member_count">%1$s miembro</string>
@@ -71,7 +71,7 @@
   <string name="contact_form_update_success">Contacto actualizado</string>
   <string name="save_contact_content_description">Guardar contacto</string>
   <string name="contact_form_save">Guardar</string>
-  <string name="add_new">Añadir</string>
+  <string name="add_new">Agregar</string>
   <string name="email_section">Correo</string>
   <string name="phone_section">Número telefónico</string>
   <string name="address_section">Dirección</string>
@@ -124,7 +124,7 @@
   <string name="contact_group_form_save">Guardar</string>
   <string name="contact_group_form_name_hint">Nombre a mostrar</string>
   <string name="remove_member_content_description">Eliminar el miembro</string>
-  <string name="add_members">Añadir miembros</string>
+  <string name="add_members">Agregar miembros</string>
   <string name="change_color">Cambiar color</string>
   <string name="contact_group_form_create_success">Grupo de contactos creado</string>
   <string name="contact_group_form_update_success">Grupo de contactos actualizado</string>
@@ -133,7 +133,7 @@
   <string name="contact_group_form_subscription_error">Necesita una suscripción de pago a Proton Mail para crear grupos de contactos.</string>
   <string name="members_loading_error">Error al cargar los miembros. Inténtelo de nuevo más tarde.</string>
   <string name="members_done">Terminado</string>
-  <string name="add_members_error">Error al añadir los miembros. Inténtelo de nuevo más tarde.</string>
+  <string name="add_members_error">Error al agregar los miembros. Inténtelo de nuevo más tarde.</string>
   <string name="manage_members_title">Gestionar miembros</string>
   <string name="search_contact">Buscar por contacto</string>
   <string name="search_contacts_description">Buscar contactos</string>

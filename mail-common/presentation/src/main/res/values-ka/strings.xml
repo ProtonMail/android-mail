@@ -73,6 +73,8 @@
   <string name="action_more_content_description">მეტი</string>
   <string name="common_error_loading_actions">ქმედებების ჩატვირთვის შეცდომა</string>
   <string name="yesterday">გუშინ</string>
+  <string name="action_open_customize_toolbar">ხელსაწყოების ზოლის მორგება</string>
+  <string name="action_open_customize_toolbar_description">ხელსაწყოების ზოლის მორგება</string>
   <string name="auto_delete_banner_text_activate_trash">ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.</string>
   <string name="auto_delete_banner_text_activate_spam">სპამის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.</string>
   <string name="auto_delete_banner_text_upgrade">ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.</string>

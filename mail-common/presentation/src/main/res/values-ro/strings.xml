@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Detalii</string>
   <string name="common_error_loading_actions">Încărcarea acțiunilor a eșuat.</string>
   <string name="yesterday">Ieri</string>
+  <string name="action_open_customize_toolbar">Personalizare bară de unelte</string>
+  <string name="action_open_customize_toolbar_description">Personalizare bară de unelte</string>
   <string name="auto_delete_banner_text_activate_trash">Ștergere automată mesaje din gunoi mai vechi de 30 de zile.</string>
   <string name="auto_delete_banner_text_activate_spam">Ștergere automată mesaje din folderul «Nedorite» mai vechi de 30 de zile.</string>
   <string name="auto_delete_banner_text_upgrade">Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.</string>

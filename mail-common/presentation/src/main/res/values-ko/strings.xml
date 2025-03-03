@@ -73,6 +73,8 @@
   <string name="action_more_content_description">더 보기</string>
   <string name="common_error_loading_actions">동작을 불러오는 데 실패했습니다</string>
   <string name="yesterday">어제</string>
+  <string name="action_open_customize_toolbar">도구바 사용자화</string>
+  <string name="action_open_customize_toolbar_description">도구바 사용자화</string>
   <string name="auto_delete_banner_text_activate_trash">30일 이상 휴지통에 있는 메시지를 자동으로 삭제합니다.</string>
   <string name="auto_delete_banner_text_activate_spam">30일 이상 스팸함에 있던 메시지를 자동으로 삭제합니다.</string>
   <string name="auto_delete_banner_text_upgrade">휴지통 및 스팸함에 30일 이상 방치된 메시지들을 자동으로 삭제하려면 업그레이드하세요.</string>

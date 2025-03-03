@@ -91,7 +91,7 @@
   <string name="mail_settings_identity_signature">Firma</string>
   <string name="mail_settings_identity_signature_hint">Firma</string>
   <string name="mail_settings_identity_mobile_footer">Firma móvil</string>
-  <string name="mail_settings_identity_mobile_footer_subtext">Esto se añadirá después de la firma.</string>
+  <string name="mail_settings_identity_mobile_footer_subtext">Esto se agregará después de la firma.</string>
   <string name="mail_settings_identity_mobile_footer_hint">Firma móvil</string>
   <string name="mail_settings_identity_mobile_footer_default_free">Enviado desde Proton Mail para Android</string>
   <string name="mail_settings_identity_error_updating">Error al actualizar los ajustes</string>

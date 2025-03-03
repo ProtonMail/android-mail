@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Más</string>
   <string name="common_error_loading_actions">Error al cargar las acciones</string>
   <string name="yesterday">Ayer</string>
+  <string name="action_open_customize_toolbar">Personalizar la barra de herramientas</string>
+  <string name="action_open_customize_toolbar_description">Personalizar la barra de herramientas</string>
   <string name="auto_delete_banner_text_activate_trash">Elimina mensajes automáticamente que han estado en la carpeta Papelera por más de 30 días.</string>
   <string name="auto_delete_banner_text_activate_spam">Elimina mensajes automáticamente que han estado en la carpeta Spam por más de 30 días.</string>
   <string name="auto_delete_banner_text_upgrade">Mejora tu plan para eliminar automáticamente los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días.</string>

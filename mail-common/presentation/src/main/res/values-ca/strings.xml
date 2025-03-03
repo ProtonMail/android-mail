@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Més</string>
   <string name="common_error_loading_actions">No s\'han pogut carregar les accions</string>
   <string name="yesterday">Ahir</string>
+  <string name="action_open_customize_toolbar">Personalitza la barra d\'eines</string>
+  <string name="action_open_customize_toolbar_description">Personalitza la barra d\'eines</string>
   <string name="auto_delete_banner_text_activate_trash">Suprimeix automàticament els missatges que han estat a la paperera durant més de 30 dies.</string>
   <string name="auto_delete_banner_text_activate_spam">Suprimeix automàticament els missatges que han estat al correu brossa durant més de 30 dies.</string>
   <string name="auto_delete_banner_text_upgrade">Milloreu el vostre pla per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.</string>

@@ -33,7 +33,7 @@
   <string name="mail_settings_local_cache_clear_button">Verileri temizle</string>
   <string name="mail_settings_swipe_actions">Kaydırma işlemleri</string>
   <string name="mail_settings_combined_contacts_hint">E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.</string>
-  <string name="mail_settings_alternative_routing_hint">Proton sitelerinin engellenmesi durumunda bu ayar uygulamanın Proton\'a ulaşmak için alternatif ağ yönlendirmesini denemesini sağlar; bu, güvenlik duvarlarını veya ağ sorunlarını atlamak için yararlı olabilir: Daha fazla güvenilirlik için bu ayarı açık tutmanızı öneririz.</string>
+  <string name="mail_settings_alternative_routing_hint">Proton sitelerine erişimin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesi kullanmayı dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir.</string>
   <!-- Theme settings -->
   <string name="mail_settings_system_default">Sistem varsayılanı</string>
   <string name="mail_settings_theme_light">Açık</string>
@@ -44,7 +44,7 @@
   <string name="mail_settings_disabled">Kullanım dışı</string>
   <string name="mail_settings_allowed">İzin verildi</string>
   <string name="mail_settings_denied">Reddedildi</string>
-  <string name="mail_settings_auto_detect">Otomatik algılama</string>
+  <string name="mail_settings_auto_detect">Otomatik algılansın</string>
   <string name="mail_settings_customize_toolbar">Araç çubuğunu özelleştir</string>
   <string name="mail_settings_app_information">Uygulama bilgileri</string>
   <string name="mail_settings_app_version">Uygulama sürümü</string>
@@ -62,7 +62,7 @@
   <string name="mail_settings_privacy">Gizlilik</string>
   <string name="mail_settings_labels">Etiketler</string>
   <string name="mail_settings_folders">Klasörler</string>
-  <string name="mail_settings_conversation_mode">Yazışma kipi</string>
+  <string name="mail_settings_conversation_mode">Yazışma görünümü</string>
   <string name="mail_settings_auto_delete">Otomatik silme</string>
   <string name="mail_settings_auto_delete_full_text">İstenmeyen iletileri otomatik olarak silin</string>
   <string name="mail_settings_auto_delete_hint">Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.</string>
@@ -111,7 +111,7 @@
   <string name="mail_settings_swipe_right_name">Soldan sağa</string>
   <string name="mail_settings_swipe_left_name">Sağdan sola</string>
   <string name="mail_settings_swipe_action_none_title">Ayarlanmamış</string>
-  <string name="mail_settings_swipe_action_archive_title">Arşiv</string>
+  <string name="mail_settings_swipe_action_archive_title">Arşivle</string>
   <string name="mail_settings_swipe_action_read_title">Okunmamış</string>
   <string name="mail_settings_swipe_action_spam_title">İstenmeyen</string>
   <string name="mail_settings_swipe_action_star_title">Yıldız koy</string>
@@ -128,8 +128,8 @@
   <string name="mail_settings_swipe_action_move_to_description">Şuraya taşı...</string>
   <!-- Notification settings -->
   <string name="mail_settings_notifications_title">Anlık bildirimler</string>
-  <string name="mail_settings_notifications_extended_notifications_title">Genişletilmiş bildirimler</string>
-  <string name="mail_settings_notifications_extended_notifications_summary">Anlık bildirimlerde e-posta göndericisini görmek için bu özelliği açın.</string>
+  <string name="mail_settings_notifications_extended_notifications_title">Ayrıntılı bildirimler</string>
+  <string name="mail_settings_notifications_extended_notifications_summary">Anlık bildirimlerde e-posta göndericisini görüntüler.</string>
   <string name="mail_settings_notifications_notifications_settings">Bildirim ayarları</string>
   <string name="mail_settings_notifications_notifications_settings_hint">Sistem bildirimi ayarlarına git</string>
   <string name="mail_settings_notifications_update_error">Ayarlar güncellenirken sorun çıktı</string>
@@ -182,9 +182,9 @@
   <string name="unlock_using_biometrics">Kilidi biyometrik veriyle aç</string>
   <string name="biometric_error_hw_not_available">Biyometrik donanımı kullanılamıyor.</string>
   <!-- customize toolbar-->
-  <string name="customize_toolbar_disclaimer_message">Bu araç çubuğu bir ileti okurken görünür.</string>
+  <string name="customize_toolbar_disclaimer_message">Bu araç çubuğu bir ileti okurken görüntülenir.</string>
   <string name="customize_toolbar_disclaimer_conversation">Bu araç çubuğu bir yazışmayı okurken görüntülenir.</string>
-  <string name="customize_toolbar_disclaimer_inbox">Bu araç çubuğu e-posta kutunuzda birden fazla ileti seçtiğinizde görünür.</string>
+  <string name="customize_toolbar_disclaimer_inbox">Bu araç çubuğu e-posta kutunuzda birden fazla ileti seçtiğinizde görüntülenir.</string>
   <string name="customize_toolbar_disclaimer_mailbox">Bu araç çubuğu, e-posta kutunuzda birden fazla ileti seçildiğinde görüntülenir.</string>
   <string name="customize_toolbar_disclaimer_mailbox_conversations">Bu araç çubuğu, e-posta kutunuzda birden fazla yazışma seçildiğinde görüntülenir.</string>
   <string name="customize_toolbar_message">İleti</string>

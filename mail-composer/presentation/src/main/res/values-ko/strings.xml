@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">첨부파일 한도 도달</string>
   <string name="composer_attachment_size_exceeded_dialog_message">첨부 파일의 최대 크기는 %1$s 입니다</string>
   <string name="composer_attachment_reencryption_failed_message">첨부 파일에 대한 복호화 실패. 보안 상의 이유로 전체 첨부 파일이 삭제되었습니다.</string>
+  <string name="composer_attachment_not_found">첨부 파일을 찾을 수 없음.</string>
+  <string name="composer_attachment_error_draft_loading">원본 임시 저장 메시지를 불러올 수 없음.</string>
+  <string name="composer_attachment_error_saving_attachment">첨부 파일을 저장하지 못했습니다. 다시 시도하세요.</string>
   <string name="composer_warning_local_data_shown">이 원고의 가장 최근 버전을 불러오는 데 실패했습니다. 어떤 변경점이 있더라도 그것을 덮어쓰게 됩니다.</string>
   <string name="composer_button_add_password">비밀번호 추가</string>
   <string name="composer_button_set_expiration">만료 시간 설정</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">전송 알림</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">\@pm.me 주소에서 메시지를 보내는 것은 유료 기능입니다. 사용자의 메시지는 기본주소에서 발송됩니다</string>
   <string name="composer_sender_changed_original_address_disabled">선택한 발신자 주소가 비활성화되었습니다. 사용자의 메시지는 설정된 기본 주소에서 전송됩니다.</string>
+  <string name="composer_sender_changed_original_address_generic_error">원래 보낸 사람의 주소를 가져올 수 없습니다. 메시지가 사용자의 기본 주소에서 전송됩니다.</string>
   <string name="composer_sender_changed_dialog_confirm_button">확인</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">작성</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">발송 실패</string>
   <string name="message_sending_error_dialog_button_dismiss">닫기</string>
-  <string name="message_sending_error_dialog_text_error">회원님의 이메일이 해당 이유로 입력하신 이메일에 전송되지 못했습니다:</string>
+  <string name="message_sending_error_dialog_text_error">다음 이유로 인해 입력한 주소로 이메일이 전송되지 못했습니다:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">신뢰 키가 없습니다: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">주소가 존재하지 않습니다: %s</string>
   <string name="set_message_password_title">메시지 암호화</string>

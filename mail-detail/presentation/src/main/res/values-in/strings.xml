@@ -68,8 +68,8 @@
   <string name="message_body_error_no_webview">Anda harus memiliki WebView yang terpasang untuk melihat konten pesan ini.</string>
   <!-- Banners -->
   <string name="message_body_embedded_images_banner_text">Pemuatan otomatis gambar yang tersemat sedang dinonaktifkan. Hal ini dapat diubah pada menu pengaturan.</string>
-  <string name="message_body_remote_content_banner_text">Remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
-  <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan remote content tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
+  <string name="message_body_remote_content_banner_text">Konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
+  <string name="message_body_embedded_and_remote_content_banner_text">Gambar tersemat dan konten eksternal tengah diatur untuk tidak dimuat secara otomatis. Hal ini dapat diubah pada menu pengaturan.</string>
   <string name="message_phishing_banner_text">Sistem kami menandai pesan ini sebagai phishing. Mohon periksa keabsahan pesan.</string>
   <string name="message_expiration_banner_text">Pesan ini akan kedaluwarsa dalam %1$s</string>
   <!-- External link confirmation dialog -->
@@ -95,9 +95,9 @@
   <string name="conversation_delete_dialog_title">Hapus percakapan</string>
   <string name="conversation_delete_dialog_message">Apakah Anda yakin ingin menghapus percakapan ini secara permanen?</string>
   <string name="conversation_deleted">Percakapan dihapus</string>
-  <string name="message_body_load_remote_content_button_text">Muat remote content</string>
+  <string name="message_body_load_remote_content_button_text">Muat konten eksternal</string>
   <string name="message_body_load_embedded_images_button_text">Muat gambar yang tersemat</string>
-  <string name="message_body_load_embedded_and_remote_content_button_text">Muat remote content dan gambar yang tersemat</string>
+  <string name="message_body_load_embedded_and_remote_content_button_text">Muat konten eksternal dan yang tersemat</string>
   <string name="message_report_phishing_dialog_title_offline">Perhatian</string>
   <string name="message_report_phishing_dialog_message_offline">Fitur ini hanya tersedia secara online.</string>
   <string name="message_report_phishing_dialog_confim_button_offline">OK</string>
@@ -113,6 +113,6 @@
   <string name="show">Tampilkan</string>
   <string name="hide">Sembunyikan</string>
   <string name="tooltip_customize_toolbar_title">Sesuaikan toolbar</string>
-  <string name="tooltip_customize_toolbar_message">You can now choose and rearrange the actions in this toolbar.</string>
+  <string name="tooltip_customize_toolbar_message">Anda kini dapat menentukan dan mengatur ulang daftar tindakan pada bilah alat ini.</string>
   <string name="tooltip_customize_toolbar_cta">Sesuaikan</string>
 </resources>

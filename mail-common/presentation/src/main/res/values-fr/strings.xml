@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Plus</string>
   <string name="common_error_loading_actions">Les actions n\'ont pu être chargées.</string>
   <string name="yesterday">Hier</string>
+  <string name="action_open_customize_toolbar">Personnaliser la barre d\'outils</string>
+  <string name="action_open_customize_toolbar_description">Personnaliser la barre d\'outils</string>
   <string name="auto_delete_banner_text_activate_trash">Supprimez automatiquement les messages qui sont dans le dossier Corbeille depuis plus de 30 jours.</string>
   <string name="auto_delete_banner_text_activate_spam">Supprimez automatiquement les messages qui sont dans le dossier Indésirables/spam depuis plus de 30 jours.</string>
   <string name="auto_delete_banner_text_upgrade">Changez d\'abonnement pour supprimer automatiquement les messages dans les dossiers Corbeille ou Indésirables/spam depuis plus de 30 jours.</string>

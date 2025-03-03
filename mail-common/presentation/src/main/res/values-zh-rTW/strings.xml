@@ -73,6 +73,8 @@
   <string name="action_more_content_description">更多詳情</string>
   <string name="common_error_loading_actions">無法載入動作</string>
   <string name="yesterday">昨天</string>
+  <string name="action_open_customize_toolbar">自訂工具列</string>
+  <string name="action_open_customize_toolbar_description">自訂工具列</string>
   <string name="auto_delete_banner_text_activate_trash">於垃圾桶中超過 30 天的訊息將自動被刪除。</string>
   <string name="auto_delete_banner_text_activate_spam">於垃圾郵件中超過 30 天的訊息將自動被刪除。</string>
   <string name="auto_delete_banner_text_upgrade">升級以自動刪除在垃圾桶和垃圾郵件中超過 30 天的訊息。</string>

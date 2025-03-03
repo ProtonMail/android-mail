@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Změnit odesílatele</string>
   <string name="composer_change_sender_paid_feature">Pro změnu adresy odesílatele potřebujete předplatné Proton Mail</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Nelze změnit odesílatele, protože selhalo získání uživatelského předplatného. Zkuste to znovu.</string>
-  <string name="composer_error_store_draft_sender_address">Uložení adresy odesílatele tohoto konceptu selhalo</string>
-  <string name="composer_error_store_draft_body">Uložení těla tohoto konceptu selhalo</string>
+  <string name="composer_error_store_draft_sender_address">Selhalo uložení adresy odesílatele</string>
+  <string name="composer_error_store_draft_body">Selhalo uložení konceptu těla e-mailu</string>
   <string name="composer_error_duplicate_recipient">Duplicitní příjemci odebráni</string>
-  <string name="composer_error_store_draft_subject">Uložení předmětu tohoto konceptu selhalo</string>
+  <string name="composer_error_store_draft_subject">Selhalo uložení předmětu</string>
   <string name="composer_error_store_draft_recipients">Uložení příjemců tohoto konceptu selhalo</string>
   <string name="composer_error_loading_draft">Obsah tohoto návrhu není v tuto chvíli k dispozici. Úpravy přepíší veškerý již existující obsah.</string>
   <string name="composer_add_attachments_content_description">Přidat přílohy</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Byl dosažen limit velikosti příloh</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Velikost příloh je omezena na %1$s</string>
   <string name="composer_attachment_reencryption_failed_message">Opětovné zašifrování přílohy selhalo. Z bezpečnostních důvodů byly všechny přílohy odebrány.</string>
+  <string name="composer_attachment_not_found">Příloha nenalezena.</string>
+  <string name="composer_attachment_error_draft_loading">Nelze načíst původní koncept zprávy.</string>
+  <string name="composer_attachment_error_saving_attachment">Nelze uložit přílohu. Zkuste to prosím znovu.</string>
   <string name="composer_warning_local_data_shown">Nejnovější verzi tohoto návrhu se nepodařilo načíst. Jakákoli změna přepíše její obsah.</string>
   <string name="composer_button_add_password">Přidat heslo</string>
   <string name="composer_button_set_expiration">Nastavit dobu platnosti</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Zaslání upozornění</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">Odesílání zpráv z @pm.me je placená funkce. Vaše zpráva bude odeslána z vaší výchozí adresy.</string>
   <string name="composer_sender_changed_original_address_disabled">Vybraná adresa odesílatele byla deaktivována. Zpráva bude odeslána z vaší výchozí adresy.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Původní adresu odesílatele se nepodařilo získat. Vaše zpráva bude odeslána z vaší výchozí adresy.</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Nová zpráva</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Chyba při odesílání</string>
   <string name="message_sending_error_dialog_button_dismiss">Zavřít</string>
-  <string name="message_sending_error_dialog_text_error">Váš e-mail nelze odeslat na zadanou e-mailovou adresu z následujícího důvodu:</string>
+  <string name="message_sending_error_dialog_text_error">Váš e-mail nemůže být odeslán na zadanou e-mailovou adresu z následujícího důvodu:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Neexistují žádné důvěryhodné klíče: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adresa neexistuje: %s</string>
   <string name="set_message_password_title">Šifrovat zprávu</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">4 až 21 znaků</string>
   <string name="set_message_password_supporting_error_text">Heslo musí mít délku 4 až 21 znaků</string>
   <string name="set_message_password_supporting_text_repeat">Hesla se musí shodovat</string>
-  <string name="set_message_password_supporting_error_text_repeat">Tato 2 hesla nejsou shodná</string>
+  <string name="set_message_password_supporting_error_text_repeat">Hesla se neshodují</string>
   <string name="set_message_password_button_show">Zobrazit heslo</string>
   <string name="set_message_password_button_hide">Skrýt heslo</string>
   <string name="set_message_password_button_apply">Použít heslo</string>

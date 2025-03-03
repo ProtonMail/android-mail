@@ -34,7 +34,7 @@
   <string name="composer_error_store_draft_sender_address">下書きの送信元アドレスの保存に失敗しました</string>
   <string name="composer_error_store_draft_body">下書き本文の保存に失敗しました</string>
   <string name="composer_error_duplicate_recipient">重複した受取人(たち)が削除されました</string>
-  <string name="composer_error_store_draft_subject">下書きのタイトルの保存に失敗しました</string>
+  <string name="composer_error_store_draft_subject">件名の保存に失敗しました</string>
   <string name="composer_error_store_draft_recipients">下書きの宛先の保存に失敗しました</string>
   <string name="composer_error_loading_draft">この下書きの内容は現時点では利用できません。編集すると既存の内容が上書きされます。</string>
   <string name="composer_add_attachments_content_description">添付ファイルの追加</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">添付ファイルの制限に達しました。</string>
   <string name="composer_attachment_size_exceeded_dialog_message">添付ファイルのサイズ制限は%1$sです。</string>
   <string name="composer_attachment_reencryption_failed_message">添付ファイルの再暗号化に失敗しました。セキュリティ上の理由により、すべての添付ファイルは削除されました。</string>
+  <string name="composer_attachment_not_found">添付ファイルが見つかりません。</string>
+  <string name="composer_attachment_error_draft_loading">元の下書きメッセージを読み込めませんでした。</string>
+  <string name="composer_attachment_error_saving_attachment">添付ファイルを保存できませんでした。もう一度お試しください。</string>
   <string name="composer_warning_local_data_shown">この下書きの最新バージョンの読み込みに失敗しました。変更するとコンテンツが上書きされます。</string>
   <string name="composer_button_add_password">パスワードを追加</string>
   <string name="composer_button_set_expiration">有効期限を設定</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">通知の送信</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">\@pm.me からのメッセージ送信は有料の機能です。あなたのメッセージはデフォルトのアドレスから送信されます。</string>
   <string name="composer_sender_changed_original_address_disabled">選択された差出人のアドレスは無効です。あなたのメッセージはデフォルのアドレスから送信されます。</string>
+  <string name="composer_sender_changed_original_address_generic_error">元の送信者アドレスを取得できませんでした。あなたのメッセージはデフォルトのアドレスから送信されます。</string>
   <string name="composer_sender_changed_dialog_confirm_button">OK</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">新規作成</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">送信エラー</string>
   <string name="message_sending_error_dialog_button_dismiss">閉じる</string>
-  <string name="message_sending_error_dialog_text_error">次の理由により入力されたアドレスにメールを送ることができません :</string>
+  <string name="message_sending_error_dialog_text_error">次の理由により入力されたメールアドレスにメールを送信することができません:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">信頼済みのキーがありません:%s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">メールアドレスが存在しません:%s</string>
   <string name="set_message_password_title">メッセージを暗号化</string>
@@ -88,7 +92,7 @@
   <string name="set_message_password_supporting_text">4〜21 文字</string>
   <string name="set_message_password_supporting_error_text">パスワードは4文字以上21文字以下で入力してください</string>
   <string name="set_message_password_supporting_text_repeat">パスワードが一致する必要があります</string>
-  <string name="set_message_password_supporting_error_text_repeat">2 つのパスワードが一致しません</string>
+  <string name="set_message_password_supporting_error_text_repeat">パスワードが一致しません</string>
   <string name="set_message_password_button_show">パスワードを表示</string>
   <string name="set_message_password_button_hide">パスワードを非表示</string>
   <string name="set_message_password_button_apply">パスワードを適用</string>

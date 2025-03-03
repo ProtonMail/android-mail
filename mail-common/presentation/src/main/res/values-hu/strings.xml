@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Továbbiak</string>
   <string name="common_error_loading_actions">Töltés sikertelen</string>
   <string name="yesterday">Tegnap</string>
+  <string name="action_open_customize_toolbar">Customize toolbar</string>
+  <string name="action_open_customize_toolbar_description">Customize toolbar</string>
   <string name="auto_delete_banner_text_activate_trash">A 30 napnál régebben a lomtárba helyezett üzenetek automatikusan törlése kerülnek.</string>
   <string name="auto_delete_banner_text_activate_spam">A 30 napnál régebben Levélszemét mappába került üzenetek automatikus törlése.</string>
   <string name="auto_delete_banner_text_upgrade">Váltson nagyobb csomagra a 30 napja lomtárban vagy a levélszemét mappában lévő üzenetek automatikus törléséhez.</string>

@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Więcej</string>
   <string name="common_error_loading_actions">Ładowanie akcji nie powiodło się</string>
   <string name="yesterday">Wczoraj</string>
+  <string name="action_open_customize_toolbar">Dostosuj pasek narzędzi</string>
+  <string name="action_open_customize_toolbar_description">Dostosuj pasek narzędzi</string>
   <string name="auto_delete_banner_text_activate_trash">Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.</string>
   <string name="auto_delete_banner_text_activate_spam">Automatycznie usuwaj wiadomości, które znajdują się w Spamie dłużej niż 30 dni.</string>
   <string name="auto_delete_banner_text_upgrade">Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.</string>

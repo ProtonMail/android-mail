@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Mehr</string>
   <string name="common_error_loading_actions">Aktionen konnten nicht geladen werden</string>
   <string name="yesterday">Gestern</string>
+  <string name="action_open_customize_toolbar">Symbolleiste anpassen</string>
+  <string name="action_open_customize_toolbar_description">Symbolleiste anpassen</string>
   <string name="auto_delete_banner_text_activate_trash">Nachrichten, die länger als 30 Tage im Papierkorb liegen, automatisch löschen.</string>
   <string name="auto_delete_banner_text_activate_spam">Nachrichten, die länger als 30 Tage im Spam-Ordner liegen, automatisch löschen.</string>
   <string name="auto_delete_banner_text_upgrade">Führe ein Upgrade durch, um Nachrichten, die sich seit mehr als 30 Tagen im Papierkorb oder Spam befinden automatisch zu löschen.</string>

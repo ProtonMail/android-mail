@@ -31,10 +31,10 @@
   <string name="change_sender_button_content_description">Göndericiyi değiştir</string>
   <string name="composer_change_sender_paid_feature">Gönderici adresini değiştirebilmek için ücretli bir Proton Mail aboneliğiniz olmalıdır</string>
   <string name="composer_error_change_sender_failed_getting_subscription">Kuıllanıcının abonelik bilgileri alınamadığından gönderici değiştirilemedi. Yeniden deneyin.</string>
-  <string name="composer_error_store_draft_sender_address">Bu taslağın gönderici adresi kaydedilemedi</string>
-  <string name="composer_error_store_draft_body">Bu taslağın içeriği kaydedilemedi</string>
+  <string name="composer_error_store_draft_sender_address">Gönderici adresi kaydedilemedi</string>
+  <string name="composer_error_store_draft_body">Taslak e-postanın içeriği kaydedilemedi</string>
   <string name="composer_error_duplicate_recipient">Çift alıcılar kaldırıldı</string>
-  <string name="composer_error_store_draft_subject">Bu taslağın konusu kaydedilemedi</string>
+  <string name="composer_error_store_draft_subject">Konu satırı kaydedilemedi</string>
   <string name="composer_error_store_draft_recipients">Bu taslağın alıcıları kaydedilemedi</string>
   <string name="composer_error_loading_draft">Bu taslağın içeriği şu anda kullanılamıyor. Düzenleme daha önce var olan içerikleri değiştirecek.</string>
   <string name="composer_add_attachments_content_description">Dosyalar ekle</string>
@@ -46,6 +46,9 @@
   <string name="composer_attachment_size_exceeded_dialog_title">Ek dosya boyutu sınırına ulaşıldı</string>
   <string name="composer_attachment_size_exceeded_dialog_message">Ek dosyaların boyutu %1$s ile sınırlıdır</string>
   <string name="composer_attachment_reencryption_failed_message">Ek dosya yeniden şifrelenemedi. Güvenlik nedeniyle tüm ek dosyalar kaldırıldı.</string>
+  <string name="composer_attachment_not_found">Ek dosya bulunamadı.</string>
+  <string name="composer_attachment_error_draft_loading">Özgün taslak ileti yüklenemedi.</string>
+  <string name="composer_attachment_error_saving_attachment">Ek dosya kaydedilemedi. Lütfen yeniden deneyin.</string>
   <string name="composer_warning_local_data_shown">Taslağın son sürümü yüklenemedi. Yapılmış değişiklikler geçersiz olacak.</string>
   <string name="composer_button_add_password">Parola ekle</string>
   <string name="composer_button_set_expiration">Geçerlilik süresi ayarla</string>
@@ -67,6 +70,7 @@
   <string name="composer_sender_changed_dialog_title">Bildirim gönderimi</string>
   <string name="composer_sender_changed_pm_address_is_a_paid_feature">\@pm.me adresinden ileti göndermek ücretli bir özelliktir. İletiniz varsayılan adresinizden gönderilecek</string>
   <string name="composer_sender_changed_original_address_disabled">Seçilmiş gönderici adresi kullanımdan kaldırılmış. İletiniz varsayılan adresinizden gönderilecek.</string>
+  <string name="composer_sender_changed_original_address_generic_error">Özgün gönderici adresi alınamadı. İletiniz varsayılan adresinizden gönderilecek.</string>
   <string name="composer_sender_changed_dialog_confirm_button">Tamam</string>
   <!-- Message sending without subject dialog -->
   <string name="composer_send_without_subject_dialog_title">Oluştur</string>
@@ -76,7 +80,7 @@
   <!-- Message sending error dialog -->
   <string name="message_sending_error_dialog_header">Gönderme sorunu</string>
   <string name="message_sending_error_dialog_button_dismiss">Kapat</string>
-  <string name="message_sending_error_dialog_text_error">E-postanız şu nedenle belirtilen e-posta adresine gönderilemedi:</string>
+  <string name="message_sending_error_dialog_text_error">E-postanız şu nedenle yazılan adrese gönderilemedi:</string>
   <string name="message_sending_error_dialog_text_reason_no_trusted_keys">Herhangi bir güvenilen anahtar yok: %s</string>
   <string name="message_sending_error_dialog_text_reason_address_disabled">Adres bulunamadı: %s</string>
   <string name="set_message_password_title">İletiyi şifrele</string>

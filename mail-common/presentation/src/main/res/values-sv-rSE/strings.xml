@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Mer</string>
   <string name="common_error_loading_actions">Misslyckades ladda åtgärder</string>
   <string name="yesterday">Igår</string>
+  <string name="action_open_customize_toolbar">Anpassa verktygsfält</string>
+  <string name="action_open_customize_toolbar_description">Anpassa verktygsfält</string>
   <string name="auto_delete_banner_text_activate_trash">Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.</string>
   <string name="auto_delete_banner_text_activate_spam">Ta bort meddelanden som har legat i skräpposten i mer än 30 dagar automatiskt.</string>
   <string name="auto_delete_banner_text_upgrade">Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.</string>

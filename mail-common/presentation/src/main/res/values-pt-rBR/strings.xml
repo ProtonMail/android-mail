@@ -73,6 +73,8 @@
   <string name="action_more_content_description">Mais</string>
   <string name="common_error_loading_actions">Erro ao carregar ações</string>
   <string name="yesterday">Ontem</string>
+  <string name="action_open_customize_toolbar">Personalizar a barra de ferramentas</string>
+  <string name="action_open_customize_toolbar_description">Personalizar a barra de ferramentas</string>
   <string name="auto_delete_banner_text_activate_trash">Exclua automaticamente mensagens que estejam na lixeira por mais de 30 dias.</string>
   <string name="auto_delete_banner_text_activate_spam">Exclua automaticamente mensagens que estejam na caixa de spam por mais de 30 dias.</string>
   <string name="auto_delete_banner_text_upgrade">Faça upgrade para excluir automaticamente mensagens que estão na lixeira ou no spam por mais de 30 dias.</string>

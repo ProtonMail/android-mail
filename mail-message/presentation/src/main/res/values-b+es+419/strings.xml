@@ -58,7 +58,7 @@
   <string name="contact_actions_copy_name_performed">El nombre fue copiado al portapapeles.</string>
   <string name="contact_actions_new_message">Mensaje nuevo</string>
   <string name="contact_actions_new_message_description">Comience a escribir un mensaje a este contacto.</string>
-  <string name="contact_actions_add_contact">Añadir un contacto</string>
+  <string name="contact_actions_add_contact">Agregar un contacto</string>
   <string name="contact_actions_add_contact_description">Guarde este destinatario como un contacto.</string>
   <string name="contact_actions_view_contact_details">Ver los detalles del contacto</string>
   <string name="contact_actions_view_contact_details_description">Vea los datos del contacto.</string>
