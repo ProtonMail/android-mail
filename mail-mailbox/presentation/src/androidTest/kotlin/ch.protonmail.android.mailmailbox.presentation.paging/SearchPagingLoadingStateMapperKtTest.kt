@@ -21,6 +21,7 @@ package ch.protonmail.android.mailmailbox.presentation.paging
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import ch.protonmail.android.mailcommon.domain.model.DataError
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
@@ -189,6 +190,29 @@ class SearchPagingLoadingStateMapperKtTest {
             lazyPagingItems = createPagingItemsInError(appendError = true),
             currentScreenState = MailboxScreenState.SearchLoading,
             expectedScreenState = MailboxScreenState.AppendError
+        )
+    )
+
+    private val transitionsFromSearchDataState = listOf(
+        TestItem(
+            lazyPagingItems = nonEmptyPagingItemsNotRefreshLoading,
+            currentScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading),
+            expectedScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading)
+        ),
+        TestItem(
+            lazyPagingItems = createPagingItems(isRefreshLoading = false, itemCount = 0),
+            currentScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading),
+            expectedScreenState = MailboxScreenState.SearchNoData
+        ),
+        TestItem(
+            lazyPagingItems = createPagingItems(isRefreshLoading = true, itemCount = 5),
+            currentScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading),
+            expectedScreenState = MailboxScreenState.SearchLoadingWithData
+        ),
+        TestItem(
+            lazyPagingItems = createPagingItems(isRefreshLoading = false, itemCount = 5, isRefreshFailed = true),
+            currentScreenState = MailboxScreenState.SearchData(nonEmptyPagingItemsNotRefreshLoading),
+            expectedScreenState = MailboxScreenState.ErrorWithData
         )
     )
 
@@ -379,6 +403,22 @@ class SearchPagingLoadingStateMapperKtTest {
     }
 
     @Test
+    fun testTransitionsFromSearchDataState() {
+        transitionsFromSearchDataState.forEach { testItem ->
+            // Given
+            val lazyPagingItems = testItem.lazyPagingItems
+            val searchMode = testItem.searchMode
+            val currentScreenState = testItem.currentScreenState
+
+            // When
+            val result = lazyPagingItems.mapToUiStatesInSearch(searchMode, currentScreenState)
+
+            // Then
+            assertEquals(testItem.expectedScreenState, result)
+        }
+    }
+
+    @Test
     fun testTransitionsFromRefreshErrorState() {
         transitionsFromRefreshErrorState.forEach { testItem ->
             // Given
@@ -413,15 +453,29 @@ class SearchPagingLoadingStateMapperKtTest {
     private fun createPagingItems(
         isRefreshLoading: Boolean,
         isAppendLoading: Boolean = false,
+        isRefreshFailed: Boolean = false,
         itemCount: Int = 0
     ): LazyPagingItems<MailboxItemUiModel> {
         val loadState =
             CombinedLoadStates(
-                refresh = if (isRefreshLoading) LoadState.Loading else LoadState.NotLoading(true),
+                refresh = when {
+                    isRefreshLoading -> {
+                        LoadState.Loading
+                    }
+                    isRefreshFailed -> LoadState.Error(DataErrorException(DataError.Remote.Unknown))
+                    else -> {
+                        LoadState.NotLoading(true)
+                    }
+                },
                 append = if (isAppendLoading) LoadState.Loading else LoadState.NotLoading(true),
                 prepend = mockk(),
-                source = mockk(),
-                mediator = mockk()
+                source = mockk {
+                    every { isIdle } returns false
+                    every { hasError } returns false
+                },
+                mediator = mockk {
+                    every { hasError } returns false
+                }
             )
         every { loadState.source.refresh } returns loadState.refresh
         every { loadState.mediator?.refresh } returns loadState.refresh
@@ -429,6 +483,7 @@ class SearchPagingLoadingStateMapperKtTest {
         val mockPaging: LazyPagingItems<MailboxItemUiModel> = mockk(relaxed = true)
         every { mockPaging.loadState } returns loadState
         every { mockPaging.itemCount } returns itemCount
+
         return mockPaging
     }
 
@@ -444,8 +499,13 @@ class SearchPagingLoadingStateMapperKtTest {
                 append = if (appendError) LoadState.Error(DataErrorException(mockk()))
                 else LoadState.NotLoading(true),
                 prepend = mockk(),
-                source = mockk(),
-                mediator = mockk()
+                source = mockk {
+                    every { isIdle } returns false
+                    every { hasError } returns true
+                },
+                mediator = mockk {
+                    every { hasError } returns true
+                }
             )
         every { loadState.source.refresh } returns loadState.refresh
         every { loadState.mediator?.refresh } returns loadState.refresh

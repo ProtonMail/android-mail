@@ -22,6 +22,7 @@ import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.paging.appendErrorToUiState
+import ch.protonmail.android.mailmailbox.presentation.paging.isPageEmpty
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageInError
 import ch.protonmail.android.mailmailbox.presentation.paging.isPageRefreshFailed
 import ch.protonmail.android.mailmailbox.presentation.paging.refreshErrorToUiState
@@ -29,18 +30,17 @@ import ch.protonmail.android.mailmailbox.presentation.paging.refreshErrorToUiSta
 object SearchDataStateHandler {
 
     fun getNextState(paging: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
-        return if (!paging.isPageInError()) {
-            if (paging.isPageLoadingWhenSearchData()) {
-                MailboxScreenState.SearchLoadingWithData
-            } else {
-                MailboxScreenState.SearchData(paging)
+        return when {
+            paging.isPageEmpty() -> MailboxScreenState.SearchNoData
+            !paging.isPageInError() -> {
+                if (paging.isPageLoadingWhenSearchData()) {
+                    MailboxScreenState.SearchLoadingWithData
+                } else {
+                    MailboxScreenState.SearchData(paging)
+                }
             }
-        } else {
-            if (paging.isPageRefreshFailed()) {
-                refreshErrorToUiState(paging)
-            } else {
-                appendErrorToUiState(paging)
-            }
+            paging.isPageRefreshFailed() -> refreshErrorToUiState(paging)
+            else -> appendErrorToUiState(paging)
         }
     }
 }
