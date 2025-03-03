@@ -497,8 +497,12 @@ internal class InMemoryToolbarPreferenceRepositoryImplTest {
         conversationActions: List<StringEnum<ToolbarAction>>? = null,
         mailboxActions: List<StringEnum<ToolbarAction>>? = null
     ) = ToolbarActionsPreference(
-        messageToolbar = expectedActions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
-        conversationToolbar = expectedActions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
+        messageToolbar = expectedActions(
+            messageActions, Defaults.MessageConversationActions, Defaults.AllMessageActions
+        ),
+        conversationToolbar = expectedActions(
+            conversationActions, Defaults.MessageConversationActions, Defaults.AllConversationActions
+        ),
         listToolbar = expectedActions(mailboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
         isConversationMode = convMode
     )

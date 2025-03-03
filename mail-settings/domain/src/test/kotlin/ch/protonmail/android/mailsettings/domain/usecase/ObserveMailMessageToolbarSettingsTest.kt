@@ -154,6 +154,40 @@ class ObserveMailMessageToolbarSettingsTest {
     }
 
     @Test
+    fun `conversation actions do not include reply, reply all and forward`() = runTest {
+        val settings = mockk<MailSettings> {
+            every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.ConversationGrouping.value)
+            every { this@mockk.mobileSettings } returns MobileSettings(
+                listToolbar = null,
+                messageToolbar = null,
+                conversationToolbar = ActionsToolbarSetting(
+                    isCustom = true,
+                    actions = listOf(
+                        ToolbarAction.ReplyOrReplyAll,
+                        ToolbarAction.Forward,
+                        ToolbarAction.MoveToSpam
+                    ).map { ToolbarAction.enumOf(it.value) }
+                )
+            )
+        }
+
+        // Given
+        every { repo.getMailSettingsFlow(userId) } returns flowOf(DataResult.Success(ResponseSource.Remote, settings))
+
+        // When
+        useCase.invoke(userId, isMailBox = false).test {
+            // Then
+            assertEquals(
+                listOf(
+                    Action.Spam
+                ),
+                awaitItem()
+            )
+            awaitComplete()
+        }
+    }
+
+    @Test
     fun `message actions are returned when mail settings is not empty and conversation mode is off`() = runTest {
         val settings = mockk<MailSettings> {
             every { this@mockk.viewMode } returns ViewMode.enumOf(ViewMode.NoConversationGrouping.value)

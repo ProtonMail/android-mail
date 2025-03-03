@@ -46,15 +46,19 @@ internal class DetailMoreActionsBottomSheetReducerTest(
     @Before
     fun setup() {
         every {
-            mapper.mapMoreActionUiModels(true)
+            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
         } returns expectedSingleParticipantAction
 
         every {
-            mapper.mapMoreActionUiModels(true)
+            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
+        } returns expectedSingleParticipantAction
+
+        every {
+            mapper.mapMoreActionUiModels(showCustomizeToolbar = true, affectingConversation = false)
         } returns expectedMultipleParticipantAction
 
         every {
-            mapper.mapMoreActionUiModels(false)
+            mapper.mapMoreActionUiModels(showCustomizeToolbar = false, affectingConversation = false)
         } returns expectedActionsNoToolbar
 
         every {

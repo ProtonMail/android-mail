@@ -103,25 +103,32 @@ data class ToolbarActionsPreference(
         fun create(from: MobileSettings?, isConversationMode: Boolean): ToolbarActionsPreference {
             return ToolbarActionsPreference(
                 messageToolbar = from?.messageToolbar
-                    .createActions(Defaults.MessageActions, Defaults.AllMessageActions),
+                    .createActions(Defaults.MessageConversationActions, Defaults.AllMessageActions),
                 conversationToolbar = from?.conversationToolbar
-                    .createActions(Defaults.MessageActions, Defaults.AllMessageActions),
+                    .createActions(
+                        Defaults.MessageConversationActions, Defaults.AllConversationActions,
+                        Defaults.IgnoredConversationActions
+                    ),
                 listToolbar = from?.listToolbar
                     .createActions(Defaults.MailboxActions, Defaults.AllMailboxActions),
                 isConversationMode = isConversationMode
             )
         }
 
-        private fun ActionsToolbarSetting?.createActions(default: List<ToolbarAction>, all: List<ToolbarAction>) =
-            ToolbarActions(
-                current = ActionSelection(
-                    selected = this?.actions
-                        ?.takeIf { action -> action.any { it.enum != null } }
-                        ?: default.map { ToolbarAction.enumOf(it.value) },
-                    all = all
-                ),
-                default = default
-            )
+        private fun ActionsToolbarSetting?.createActions(
+            default: List<ToolbarAction>,
+            all: List<ToolbarAction>,
+            ignored: Set<ToolbarAction> = emptySet()
+        ) = ToolbarActions(
+            current = ActionSelection(
+                selected = this?.actions
+                    ?.filterNot { it.enum in ignored }
+                    ?.takeIf { action -> action.any { it.enum != null } }
+                    ?: default.map { ToolbarAction.enumOf(it.value) },
+                all = all
+            ),
+            default = default
+        )
     }
 
     object Defaults {
@@ -129,7 +136,12 @@ data class ToolbarActionsPreference(
         const val MIN_ACTIONS = 1
         const val MAX_ACTIONS = 5
 
-        val MessageActions = listOf(
+        val IgnoredConversationActions = setOf(
+            ToolbarAction.ReplyOrReplyAll,
+            ToolbarAction.Forward
+        )
+
+        val MessageConversationActions = listOf(
             ToolbarAction.MarkAsReadOrUnread,
             ToolbarAction.MoveToTrash,
             ToolbarAction.MoveTo,
@@ -143,7 +155,15 @@ data class ToolbarActionsPreference(
             ToolbarAction.LabelAs
         )
 
-        val AllMessageActions: List<ToolbarAction> = MessageActions + listOf(
+        val AllConversationActions: List<ToolbarAction> = MessageConversationActions + listOf(
+            ToolbarAction.StarOrUnstar,
+            ToolbarAction.MoveToArchive,
+            ToolbarAction.MoveToSpam,
+            ToolbarAction.Print,
+            ToolbarAction.ReportPhishing
+        )
+
+        val AllMessageActions: List<ToolbarAction> = MessageConversationActions + listOf(
             ToolbarAction.ReplyOrReplyAll,
             ToolbarAction.Forward,
             ToolbarAction.StarOrUnstar,

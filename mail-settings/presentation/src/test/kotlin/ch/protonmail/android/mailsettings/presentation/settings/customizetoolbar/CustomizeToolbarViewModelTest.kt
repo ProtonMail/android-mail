@@ -131,8 +131,6 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.LabelAs
                 ),
                 messageActionsUnselected = listOf(
-                    ToolbarAction.ReplyOrReplyAll,
-                    ToolbarAction.Forward,
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive,
                     ToolbarAction.MoveToSpam,
@@ -206,8 +204,6 @@ class CustomizeToolbarViewModelTest {
                     ToolbarAction.MarkAsReadOrUnread,
                     ToolbarAction.MoveToTrash,
                     ToolbarAction.LabelAs,
-                    ToolbarAction.ReplyOrReplyAll,
-                    ToolbarAction.Forward,
                     ToolbarAction.StarOrUnstar,
                     ToolbarAction.MoveToArchive,
                     ToolbarAction.MoveToSpam
@@ -246,6 +242,7 @@ class CustomizeToolbarViewModelTest {
                     conversationActions = listOf(
                         "unknown1",
                         "move",
+                        "spam",
                         "print",
                         "report_phishing",
                         "label",
@@ -274,6 +271,7 @@ class CustomizeToolbarViewModelTest {
             actual.assertActionsEqual(
                 messageActionsSelected = listOf(
                     ToolbarAction.MoveTo,
+                    ToolbarAction.MoveToSpam,
                     ToolbarAction.Print,
                     ToolbarAction.ReportPhishing,
                     ToolbarAction.LabelAs,
@@ -282,10 +280,7 @@ class CustomizeToolbarViewModelTest {
                 messageActionsUnselected = listOf(
                     ToolbarAction.MarkAsReadOrUnread,
                     ToolbarAction.MoveToTrash,
-                    ToolbarAction.ReplyOrReplyAll,
-                    ToolbarAction.Forward,
-                    ToolbarAction.MoveToArchive,
-                    ToolbarAction.MoveToSpam
+                    ToolbarAction.MoveToArchive
                 ),
                 mailboxActionsSelected = listOf(
                     ToolbarAction.LabelAs,
@@ -471,8 +466,11 @@ class CustomizeToolbarViewModelTest {
         conversationActions: List<StringEnum<ToolbarAction>>? = null,
         mailboxActions: List<StringEnum<ToolbarAction>>? = null
     ) = ToolbarActionsPreference(
-        messageToolbar = actions(messageActions, Defaults.MessageActions, Defaults.AllMessageActions),
-        conversationToolbar = actions(conversationActions, Defaults.MessageActions, Defaults.AllMessageActions),
+        messageToolbar = actions(messageActions, Defaults.MessageConversationActions, Defaults.AllMessageActions),
+        conversationToolbar = actions(
+            conversationActions,
+            Defaults.MessageConversationActions, Defaults.AllConversationActions
+        ),
         listToolbar = actions(mailboxActions, Defaults.MailboxActions, Defaults.AllMailboxActions),
         isConversationMode = convMode
     )

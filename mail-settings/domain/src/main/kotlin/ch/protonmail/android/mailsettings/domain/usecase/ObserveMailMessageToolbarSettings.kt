@@ -20,6 +20,7 @@ package ch.protonmail.android.mailsettings.domain.usecase
 
 import ch.protonmail.android.mailcommon.domain.model.Action
 import ch.protonmail.android.mailsettings.domain.annotations.CustomizeToolbarFeatureEnabled
+import ch.protonmail.android.mailsettings.domain.model.ToolbarActionsPreference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.proton.core.domain.arch.mapSuccessValueOrNull
@@ -40,11 +41,13 @@ class ObserveMailMessageToolbarSettings @Inject constructor(
             if (isCustomizeToolbarEnabled.not()) return@map null
             val isConvMode = settings?.viewMode?.enum == ViewMode.ConversationGrouping
             val toolbar = when {
-                isMailBox -> settings?.mobileSettings?.listToolbar
-                isConvMode -> settings?.mobileSettings?.conversationToolbar
-                else -> settings?.mobileSettings?.messageToolbar
+                isMailBox -> settings?.mobileSettings?.listToolbar?.actions
+                isConvMode ->
+                    settings?.mobileSettings?.conversationToolbar?.actions
+                        ?.filterNot { it.enum in ToolbarActionsPreference.Defaults.IgnoredConversationActions }
+                else -> settings?.mobileSettings?.messageToolbar?.actions
             }
-            val toolbarActions = toolbar?.actions?.mapNotNull { it.enum }?.takeIfNotEmpty()
+            val toolbarActions = toolbar?.mapNotNull { it.enum }?.takeIfNotEmpty()
             toolbarActions?.map { toolbarAction ->
                 when (toolbarAction) {
                     ToolbarAction.ReplyOrReplyAll -> Action.Reply
