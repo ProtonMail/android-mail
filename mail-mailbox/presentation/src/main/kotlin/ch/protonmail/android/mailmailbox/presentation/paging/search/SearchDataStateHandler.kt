@@ -31,7 +31,13 @@ object SearchDataStateHandler {
 
     fun getNextState(paging: LazyPagingItems<MailboxItemUiModel>): MailboxScreenState {
         return when {
-            paging.isPageEmpty() -> MailboxScreenState.SearchNoData
+            paging.isPageEmpty() -> {
+                if (paging.isPageLoadingWhenNoSearchData()) {
+                    MailboxScreenState.SearchLoading
+                } else {
+                    MailboxScreenState.SearchNoData
+                }
+            }
             !paging.isPageInError() -> {
                 if (paging.isPageLoadingWhenSearchData()) {
                     MailboxScreenState.SearchLoadingWithData

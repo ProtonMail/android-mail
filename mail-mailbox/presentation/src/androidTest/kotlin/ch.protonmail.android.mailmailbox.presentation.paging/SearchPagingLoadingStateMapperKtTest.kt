@@ -472,9 +472,13 @@ class SearchPagingLoadingStateMapperKtTest {
                 source = mockk {
                     every { isIdle } returns false
                     every { hasError } returns false
+                    every { prepend } returns LoadState.NotLoading(true)
+                    every { append } returns LoadState.NotLoading(true)
                 },
                 mediator = mockk {
                     every { hasError } returns false
+                    every { prepend } returns LoadState.NotLoading(true)
+                    every { append } returns LoadState.NotLoading(true)
                 }
             )
         every { loadState.source.refresh } returns loadState.refresh
@@ -502,9 +506,13 @@ class SearchPagingLoadingStateMapperKtTest {
                 source = mockk {
                     every { isIdle } returns false
                     every { hasError } returns true
+                    every { prepend } returns LoadState.NotLoading(true)
+                    every { append } returns LoadState.NotLoading(true)
                 },
                 mediator = mockk {
                     every { hasError } returns true
+                    every { prepend } returns LoadState.NotLoading(true)
+                    every { append } returns LoadState.NotLoading(true)
                 }
             )
         every { loadState.source.refresh } returns loadState.refresh

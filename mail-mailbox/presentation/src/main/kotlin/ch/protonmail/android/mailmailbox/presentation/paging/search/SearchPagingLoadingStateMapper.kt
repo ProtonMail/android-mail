@@ -18,13 +18,13 @@
 
 package ch.protonmail.android.mailmailbox.presentation.paging.search
 
+import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
 import androidx.paging.compose.LazyPagingItems
 import ch.protonmail.android.mailmailbox.presentation.mailbox.MailboxScreenState
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxItemUiModel
 import ch.protonmail.android.mailmailbox.presentation.mailbox.model.MailboxSearchMode
-import ch.protonmail.android.mailmailbox.presentation.paging.isMediatorLoading
-import ch.protonmail.android.mailmailbox.presentation.paging.isSourceLoading
 import me.proton.core.util.kotlin.exhaustive
 
 @Suppress("ComplexMethod", "ReturnCount")
@@ -71,4 +71,12 @@ fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingWhenSearchData(): Boolean =
 // This is to ensure that loading is completed after both source + mediator loading completed. Otherwise,
 // we may get a situation where "No Results Found" appear for a short time, then results appear
 fun LazyPagingItems<MailboxItemUiModel>.isPageLoadingWhenNoSearchData(): Boolean =
-    this.loadState.isSourceLoading() || this.loadState.isMediatorLoading()
+    this.loadState.isLoadingInAnyDirection()
+
+private fun CombinedLoadStates.isLoadingInAnyDirection(): Boolean {
+    return source.isLoadingInAnyDirection() ||
+        mediator?.isLoadingInAnyDirection() == true
+}
+
+private fun LoadStates.isLoadingInAnyDirection() =
+    refresh is LoadState.Loading || prepend is LoadState.Loading || append is LoadState.Loading

@@ -1289,11 +1289,6 @@ class MailboxViewModel @Inject constructor(
     private fun MailboxState.isInSearchMode() =
         this.mailboxListState is MailboxListState.Data && this.mailboxListState.searchState.isInSearch()
 
-    private fun MailboxState.getSearchQuery() = (this.mailboxListState as? MailboxListState.Data)
-        ?.searchState
-        ?.searchQuery
-        ?: ""
-
     private fun Flow<MailboxState>.observeSelectedMailboxItems() =
         this.map { it.mailboxListState as? MailboxListState.Data.SelectionMode }
             .mapNotNull { it?.selectedMailboxItems }
