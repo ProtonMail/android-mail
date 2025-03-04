@@ -25,9 +25,8 @@ import ch.protonmail.android.testdata.user.UserTestData
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import me.proton.core.user.domain.entity.User
 import org.junit.Test
 import kotlin.test.assertEquals
 
@@ -35,20 +34,50 @@ class ObservePrimaryUserAccountStorageStatusTest {
 
     private val primaryUser = UserTestData.Primary
 
-    private val observePrimaryUser = mockk<ObservePrimaryUser> {
-        every { this@mockk() } returns MutableStateFlow<User?>(primaryUser)
-    }
+    private val observePrimaryUser = mockk<ObservePrimaryUser>()
 
     private val observePrimaryUserAccountStorageStatus = ObservePrimaryUserAccountStorageStatus(observePrimaryUser)
 
     @Test
-    fun `should get storage status from primary user when use case is invoked`() = runTest {
+    fun `should get BASE storage status from primary user when account storage is split`() = runTest {
         // Given
-        val storageStatus = UserAccountStorageStatus(usedSpace = primaryUser.usedSpace, maxSpace = primaryUser.maxSpace)
+        val storageStatus = UserAccountStorageStatus(
+            usedSpace = primaryUser.usedBaseSpace!!,
+            maxSpace = primaryUser.maxBaseSpace!!
+        )
+        every { observePrimaryUser() } returns flowOf(primaryUser)
 
         // When
         observePrimaryUserAccountStorageStatus.invoke().test {
             val actual = awaitItem()
+
+            awaitComplete()
+
+            // Then
+            verify { observePrimaryUser() }
+            assertEquals(storageStatus, actual)
+        }
+    }
+
+    @Test
+    fun `should get TOTAL storage status from primary user when account storage is unified`() = runTest {
+        // Given
+        val storageStatus = UserAccountStorageStatus(
+            usedSpace = primaryUser.usedSpace,
+            maxSpace = primaryUser.maxSpace
+        )
+        every { observePrimaryUser() } returns flowOf(
+            primaryUser.copy(
+                usedBaseSpace = null,
+                maxBaseSpace = null
+            )
+        )
+
+        // When
+        observePrimaryUserAccountStorageStatus.invoke().test {
+            val actual = awaitItem()
+
+            awaitComplete()
 
             // Then
             verify { observePrimaryUser() }

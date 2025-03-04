@@ -72,6 +72,7 @@ object UserTestData {
         keys = emptyList(),
         flags = emptyMap(),
         maxSpace = MAX_SPACE_RAW,
+        maxBaseSpace = MAX_SPACE_RAW,
         maxUpload = 1,
         name = name,
         private = true,

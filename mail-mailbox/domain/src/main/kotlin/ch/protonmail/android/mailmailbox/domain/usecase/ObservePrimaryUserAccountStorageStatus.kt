@@ -33,7 +33,11 @@ class ObservePrimaryUserAccountStorageStatus @Inject constructor(
     operator fun invoke(): Flow<UserAccountStorageStatus> = observePrimaryUser()
         .filterNotNull()
         .mapLatest { user ->
-            UserAccountStorageStatus(user.usedBaseSpace ?: 0, user.maxSpace)
+            if (user.usedBaseSpace != null && user.maxBaseSpace != null) {
+                UserAccountStorageStatus(user.usedBaseSpace!!, user.maxBaseSpace!!)
+            } else {
+                UserAccountStorageStatus(user.usedSpace, user.maxSpace)
+            }
         }
         .distinctUntilChanged()
 }
