@@ -72,12 +72,24 @@ class SearchResultsLocalDataSourceImplTest {
     fun `delete search results calls corresponding dao function with given parameters`() = runTest {
         // Given
         val keyword = "keyword"
-        coEvery { searchResultDao.deleteAll(userId, keyword) } just runs
+        coEvery { searchResultDao.deleteAllForKeyword(userId, keyword) } just runs
 
         // When
         searchResultsLocalDataSource.deleteResults(userId, keyword)
 
         // Then
-        coVerify(exactly = 1) { searchResultDao.deleteAll(userId, keyword) }
+        coVerify(exactly = 1) { searchResultDao.deleteAllForKeyword(userId, keyword) }
+    }
+
+    @Test
+    fun `delete all search results calls corresponding dao function with given parameters`() = runTest {
+        // Given
+        coEvery { searchResultDao.deleteAll(userId) } just runs
+
+        // When
+        searchResultsLocalDataSource.deleteAllResults(userId)
+
+        // Then
+        coVerify(exactly = 1) { searchResultDao.deleteAll(userId) }
     }
 }

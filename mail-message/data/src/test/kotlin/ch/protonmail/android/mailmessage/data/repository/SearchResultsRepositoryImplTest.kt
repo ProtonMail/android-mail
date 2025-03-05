@@ -18,6 +18,7 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.SearchResultsLocalDataSource
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,21 +32,24 @@ import kotlin.test.Test
 class SearchResultsRepositoryImplTest {
 
     private val userId = UserId("1")
-    private val keyword = "keyword"
     private val searchResultsLocalDataSource = mockk<SearchResultsLocalDataSource>()
+    private val messageLocalDataSource = mockk<MessageLocalDataSource>()
     private val searchResultsRepository = SearchResultsRepositoryImpl(
-        localDataSource = searchResultsLocalDataSource
+        localDataSource = searchResultsLocalDataSource,
+        messageLocalDataSource = messageLocalDataSource
     )
 
     @Test
     fun `delete all should call delete search results from local data source`() = runTest {
         // Given
-        coEvery { searchResultsLocalDataSource.deleteResults(userId, keyword) } just runs
+        coEvery { searchResultsLocalDataSource.deleteAllResults(userId) } just runs
+        coEvery { messageLocalDataSource.deleteSearchIntervals(userId) } just runs
 
         // When
-        searchResultsRepository.deleteAll(userId, keyword)
+        searchResultsRepository.deleteAll(userId)
 
         // Then
-        coVerify(exactly = 1) { searchResultsLocalDataSource.deleteResults(userId, keyword) }
+        coVerify(exactly = 1) { searchResultsLocalDataSource.deleteAllResults(userId) }
+        coVerify(exactly = 1) { messageLocalDataSource.deleteSearchIntervals(userId) }
     }
 }

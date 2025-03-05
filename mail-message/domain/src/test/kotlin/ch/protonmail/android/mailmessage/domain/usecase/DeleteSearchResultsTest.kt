@@ -37,13 +37,12 @@ class DeleteSearchResultsTest {
     @Test
     fun `delete search results calls repository with given parameters`() = runTest {
         // Given
-        val keyword = "keyword"
-        coEvery { searchResultsRepository.deleteAll(userId, keyword) } just runs
+        coEvery { searchResultsRepository.deleteAll(userId) } just runs
 
         // When
-        deleteMessages(userId, keyword)
+        deleteMessages(userId)
 
         // Then
-        coVerify { searchResultsRepository.deleteAll(userId, keyword) }
+        coVerify { searchResultsRepository.deleteAll(userId) }
     }
 }
