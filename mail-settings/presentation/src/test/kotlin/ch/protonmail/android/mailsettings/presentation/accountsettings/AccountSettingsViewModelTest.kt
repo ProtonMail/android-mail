@@ -216,7 +216,7 @@ class AccountSettingsViewModelTest {
     }
 
     @Test
-    fun `state has mailbox sizes when use case returns a valid user`() = runTest {
+    fun `state has base mailbox sizes when use case returns a valid user with split storage`() = runTest {
         viewModel.state.test {
             // Given
             initialStateEmitted()
@@ -225,6 +225,24 @@ class AccountSettingsViewModelTest {
 
             // When
             userFlow.emit(UserTestData.Primary)
+
+            // Then
+            val actual = awaitItem() as Data
+            assertEquals(UserTestData.MAX_BASE_SPACE_RAW, actual.mailboxSize)
+            assertEquals(UserTestData.USED_BASE_SPACE_RAW, actual.mailboxUsedSpace)
+        }
+    }
+
+    @Test
+    fun `state has total mailbox sizes when use case returns a valid user with unified storage`() = runTest {
+        viewModel.state.test {
+            // Given
+            initialStateEmitted()
+            userSettingsExist()
+            mailSettingsExist()
+
+            // When
+            userFlow.emit(UserTestData.Primary.copy(usedBaseSpace = null, maxBaseSpace = null))
 
             // Then
             val actual = awaitItem() as Data

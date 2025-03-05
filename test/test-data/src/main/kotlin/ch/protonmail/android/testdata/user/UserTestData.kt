@@ -26,8 +26,10 @@ import me.proton.core.user.domain.entity.User
 
 object UserTestData {
 
-    const val MAX_SPACE_RAW = 20_000L
-    const val USED_SPACE_RAW = 5000L
+    const val MAX_SPACE_RAW = 40_000L
+    const val USED_SPACE_RAW = 10_000L
+    const val MAX_BASE_SPACE_RAW = 20_000L
+    const val USED_BASE_SPACE_RAW = 5000L
     const val USER_EMAIL_RAW = "userEmail"
     const val USER_DISPLAY_NAME_RAW = "userDisplayName"
     const val USER_NAME_RAW = "username"
@@ -72,7 +74,7 @@ object UserTestData {
         keys = emptyList(),
         flags = emptyMap(),
         maxSpace = MAX_SPACE_RAW,
-        maxBaseSpace = MAX_SPACE_RAW,
+        maxBaseSpace = MAX_BASE_SPACE_RAW,
         maxUpload = 1,
         name = name,
         private = true,
@@ -80,7 +82,7 @@ object UserTestData {
         services = 1,
         subscribed = subscribed,
         usedSpace = USED_SPACE_RAW,
-        usedBaseSpace = USED_SPACE_RAW,
+        usedBaseSpace = USED_BASE_SPACE_RAW,
         userId = userId,
         recovery = null
     )

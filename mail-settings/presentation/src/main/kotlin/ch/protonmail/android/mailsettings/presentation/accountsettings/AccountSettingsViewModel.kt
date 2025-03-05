@@ -119,10 +119,15 @@ class AccountSettingsViewModel @Inject constructor(
             observeRegisteredSecurityKeys(userId),
             autoDeleteState
         ) { user, userSettings, mailSettings, securityKeys, autoDeleteSettingsState ->
+            val (usedSpace, maxSpace) = if (user?.usedBaseSpace != null && user.maxBaseSpace != null) {
+                Pair(user.usedBaseSpace, user.maxBaseSpace)
+            } else {
+                Pair(user?.usedSpace, user?.maxSpace)
+            }
             Data(
                 getRecoveryEmail(userSettings),
-                user?.maxSpace,
-                user?.usedBaseSpace,
+                maxSpace,
+                usedSpace,
                 user?.email,
                 mailSettings?.viewMode?.enum?.let { it == ConversationGrouping },
                 registeredSecurityKeys = securityKeys,
