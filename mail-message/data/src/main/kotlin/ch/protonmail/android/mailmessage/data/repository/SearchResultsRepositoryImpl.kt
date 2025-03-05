@@ -18,16 +18,19 @@
 
 package ch.protonmail.android.mailmessage.data.repository
 
+import ch.protonmail.android.mailmessage.data.local.MessageLocalDataSource
 import ch.protonmail.android.mailmessage.data.local.SearchResultsLocalDataSource
 import ch.protonmail.android.mailmessage.domain.repository.SearchResultsRepository
 import me.proton.core.domain.entity.UserId
 import javax.inject.Inject
 
 class SearchResultsRepositoryImpl @Inject constructor(
-    private val localDataSource: SearchResultsLocalDataSource
+    private val localDataSource: SearchResultsLocalDataSource,
+    private val messageLocalDataSource: MessageLocalDataSource
 ) : SearchResultsRepository {
 
-    override suspend fun deleteAll(userId: UserId, keyword: String) {
-        localDataSource.deleteResults(userId, keyword)
+    override suspend fun deleteAll(userId: UserId) {
+        localDataSource.deleteAllResults(userId)
+        messageLocalDataSource.deleteSearchIntervals(userId)
     }
 }

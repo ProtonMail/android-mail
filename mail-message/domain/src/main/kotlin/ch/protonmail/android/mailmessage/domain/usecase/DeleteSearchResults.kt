@@ -26,7 +26,7 @@ class DeleteSearchResults @Inject constructor(
     private val searchResultsRepository: SearchResultsRepository
 ) {
 
-    suspend operator fun invoke(userId: UserId, keyword: String) {
-        searchResultsRepository.deleteAll(userId, keyword)
+    suspend operator fun invoke(userId: UserId) {
+        searchResultsRepository.deleteAll(userId)
     }
 }

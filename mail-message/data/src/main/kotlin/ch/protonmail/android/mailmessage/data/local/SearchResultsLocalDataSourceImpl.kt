@@ -40,5 +40,8 @@ class SearchResultsLocalDataSourceImpl @Inject constructor(private val db: Searc
         )
     }
 
-    override suspend fun deleteResults(userId: UserId, keyword: String) = searchResultDao.deleteAll(userId, keyword)
+    override suspend fun deleteResults(userId: UserId, keyword: String) =
+        searchResultDao.deleteAllForKeyword(userId, keyword)
+
+    override suspend fun deleteAllResults(userId: UserId) = searchResultDao.deleteAll(userId)
 }

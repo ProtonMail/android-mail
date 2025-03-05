@@ -28,6 +28,9 @@ import me.proton.core.domain.entity.UserId
 abstract class SearchResultDao : BaseDao<SearchResultEntity>() {
 
     @Query("DELETE FROM SearchResultEntity WHERE keyword = :keyword AND userId = :userId")
-    abstract suspend fun deleteAll(userId: UserId, keyword: String)
+    abstract suspend fun deleteAllForKeyword(userId: UserId, keyword: String)
+
+    @Query("DELETE FROM SearchResultEntity WHERE userId = :userId")
+    abstract suspend fun deleteAll(userId: UserId)
 
 }

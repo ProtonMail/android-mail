@@ -92,4 +92,11 @@ abstract class PageIntervalDao : BaseDao<PageIntervalEntity>() {
         """
     )
     abstract suspend fun deleteAll(userId: UserId, type: PageItemType)
+
+    @Query(
+        """
+        DELETE FROM PageIntervalEntity WHERE keyword <> ''
+        """
+    )
+    abstract suspend fun deleteSearchedIntervals()
 }

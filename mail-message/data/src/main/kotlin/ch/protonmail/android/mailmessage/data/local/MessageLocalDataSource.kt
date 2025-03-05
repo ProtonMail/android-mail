@@ -45,6 +45,11 @@ interface MessageLocalDataSource {
     suspend fun deleteAllMessages(userId: UserId)
 
     /**
+     * Delete all search intervals for [userId]
+     */
+    suspend fun deleteSearchIntervals(userId: UserId)
+
+    /**
      * Delete Message(s) for [userId], by [ids].
      */
     suspend fun deleteMessages(userId: UserId, ids: List<MessageId>)

@@ -22,5 +22,5 @@ import me.proton.core.domain.entity.UserId
 
 interface SearchResultsRepository {
 
-    suspend fun deleteAll(userId: UserId, keyword: String)
+    suspend fun deleteAll(userId: UserId)
 }

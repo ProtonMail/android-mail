@@ -29,4 +29,6 @@ interface SearchResultsLocalDataSource {
     )
 
     suspend fun deleteResults(userId: UserId, keyword: String)
+
+    suspend fun deleteAllResults(userId: UserId)
 }
